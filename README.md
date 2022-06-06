@@ -1,4 +1,4 @@
-# Project name
+# ONG Hub
 
 [![GitHub contributors][ico-contributors]][link-contributors]
 [![GitHub last commit][ico-last-commit]][link-last-commit]
@@ -21,16 +21,27 @@ Help us out by testing this project in the [staging environment][link-staging]. 
 If you would like to suggest new functionality, open an Issue and mark it as a __[Feature request]__. Please be specific about why you think this functionality will be of use. If you can, please include some visual description of what you would like the UI to look like, if you are suggesting new UI elements.
 
 ## Built With
+TBD
 
 ### Programming languages
 
+TBD
+
 ### Platforms
+
+TBD
 
 ### Frontend framework
 
+TBD
+
 ### Package managers
 
+TBD
+
 ### Database technology & provider
+
+TBD
 
 ## Repos and projects
 
