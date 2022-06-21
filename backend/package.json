@@ -19,6 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "deploy": "npm ci && npm run build && npm run start:prod",
     "generate:docs": "npx @compodoc/compodoc -p tsconfig.json -s"
   },
   "dependencies": {
@@ -43,7 +44,6 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",
-    "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@types/cookie-parser": "^1.4.3",
