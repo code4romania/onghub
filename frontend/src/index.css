@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'TitilliumWeb';
+  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+}
+
+@layer base {
+  html {
+    font-family: 'Roboto';
+  }
+}
