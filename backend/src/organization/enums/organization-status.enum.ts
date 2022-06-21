@@ -1,4 +1,4 @@
 export enum OrganizationStatus {
-  ACTIVE = 'ACTIVE',
-  PENDING = 'PENDING',
+  ACTIVE = 'active',
+  PENDING = 'pending',
 }
