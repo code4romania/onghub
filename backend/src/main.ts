@@ -4,16 +4,19 @@ import { AppModule } from './app.module';
 import { Environment } from './env.validation';
 import helmet from 'helmet';
 import * as csurf from 'csurf';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
-
   // TODO: check this
   app.use(helmet());
 
-  app.use(csurf());
+  app.use(cookieParser());
+  app.use(
+    csurf({
+      cookie: true,
+    }),
+  );
 
   app.enableCors();
 
