@@ -3,10 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { RateLimiterConfigService } from './common/config/rate-limiter-config.service';
 import { TypeOrmConfigService } from './common/config/typeorm-config.service';
 import { validate } from './env.validation';
+import { OrganizationModule } from './organization/organization.module';
 
 @Module({
   imports: [
@@ -14,14 +14,12 @@ import { validate } from './env.validation';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 10,
+    ThrottlerModule.forRootAsync({
+      useClass: RateLimiterConfigService,
     }),
+    OrganizationModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard, // TODO: move this when required
