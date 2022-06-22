@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { CreateContactDto } from 'src/common/dto/create-contact-dto';
 import { OrganizationType } from '../enums/organization-type.enum';
-export class CreateOrganizationDto {
+export class CreateOrganizationGeneralDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
@@ -105,8 +105,8 @@ export class CreateOrganizationDto {
   contact: CreateContactDto;
 
   @IsNumber()
-  countyId: number;
+  county_id: number;
 
   @IsNumber()
-  cityId: number;
+  city_id: number;
 }

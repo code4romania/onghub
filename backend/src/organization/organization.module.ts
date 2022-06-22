@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { OrganizationService } from './services/organization.service';
 import { OrganizationController } from './organization.controller';
-import { OrganizationRepository } from './repositories/organization.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Organization } from './entities/organization.entity';
 import { CommonModule } from 'src/common/common.module';
-import { OrganizationGeneral } from './entities/organization-general.entity';
+import { OrganizationGeneral, Organization } from './entities';
+import {
+  OrganizationGeneralRepository,
+  OrganizationRepository,
+} from './repositories';
+import { OrganizationGeneralService, OrganizationService } from './services';
 
 @Module({
   imports: [
@@ -13,6 +15,11 @@ import { OrganizationGeneral } from './entities/organization-general.entity';
     CommonModule,
   ],
   controllers: [OrganizationController],
-  providers: [OrganizationService, OrganizationRepository],
+  providers: [
+    OrganizationService,
+    OrganizationGeneralService,
+    OrganizationRepository,
+    OrganizationGeneralRepository,
+  ],
 })
 export class OrganizationModule {}

@@ -4,6 +4,7 @@ import { Contact } from 'src/common/entities/contact.entity';
 import { County } from 'src/common/entities/county.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class OrganizationGeneral extends BaseEntity {
@@ -68,13 +69,27 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'donation_keyword', nullable: true })
   donationKeyword: string;
 
-  @ManyToOne(() => City, (city) => city.name)
-  city: string;
-
-  @ManyToOne(() => County, (county) => county.name)
-  county: string;
-
-  @OneToOne(() => Contact)
+  @OneToOne(() => Contact, { cascade: true })
   @JoinColumn()
   contact: Contact;
+
+  @OneToOne(
+    () => Organization,
+    (organization) => organization.organizationGeneral,
+  )
+  organization: Organization;
+
+  @Column({ type: 'integer', nullable: true, name: 'city_id' })
+  cityId: number;
+
+  @ManyToOne((type) => City)
+  @JoinColumn({ name: 'city_id' })
+  city: City;
+
+  @Column({ type: 'integer', nullable: true, name: 'county_id' })
+  countyId: number;
+
+  @ManyToOne((type) => County)
+  @JoinColumn({ name: 'county_id' })
+  county: County;
 }

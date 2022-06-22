@@ -11,12 +11,12 @@ async function bootstrap() {
   // TODO: check this
   app.use(helmet());
 
-  app.use(cookieParser());
-  app.use(
-    csurf({
-      cookie: true,
-    }),
-  );
+  // app.use(cookieParser());
+  // app.use(
+  //   csurf({
+  //     cookie: true,
+  //   }),
+  // );
 
   app.enableCors();
 
