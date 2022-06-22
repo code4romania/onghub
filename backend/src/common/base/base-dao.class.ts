@@ -1,13 +1,19 @@
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 
 export abstract class BaseDAO<T> {
   constructor(private readonly repository: Repository<T>) {}
 
-  get(conditions: FindOptionsWhere<T>) {
+  get(conditions: FindOneOptions<T>) {
     return this.repository.findOne(conditions);
   }
 
-  getMany(conditions: FindOptionsWhere<T>) {
+  getMany(conditions: FindManyOptions<T>) {
     return this.repository.find(conditions);
   }
 
@@ -32,10 +38,7 @@ export abstract class BaseDAO<T> {
     return this.repository.update(findCriteria, updates);
   }
 
-  async saveOrUpdate(
-    findCriteria: FindOptionsWhere<T>,
-    updates: DeepPartial<T>,
-  ) {
+  async saveOrUpdate(findCriteria: FindOneOptions<T>, updates: DeepPartial<T>) {
     const record = await this.get(findCriteria);
     return this.repository.save({ ...record, ...updates });
   }

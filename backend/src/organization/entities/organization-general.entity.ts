@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { City } from 'src/common/entities/city.entity';
 import { Contact } from 'src/common/entities/contact.entity';
@@ -79,14 +80,16 @@ export class OrganizationGeneral extends BaseEntity {
   )
   organization: Organization;
 
-  @Column({ type: 'integer', nullable: true, name: 'city_id' })
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'city_id', select: false })
   cityId: number;
 
   @ManyToOne((type) => City)
   @JoinColumn({ name: 'city_id' })
   city: City;
 
-  @Column({ type: 'integer', nullable: true, name: 'county_id' })
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'county_id', select: false })
   countyId: number;
 
   @ManyToOne((type) => County)

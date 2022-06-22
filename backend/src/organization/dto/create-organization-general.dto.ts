@@ -105,8 +105,8 @@ export class CreateOrganizationGeneralDto {
   contact: CreateContactDto;
 
   @IsNumber()
-  county_id: number;
+  countyId: number;
 
   @IsNumber()
-  city_id: number;
+  cityId: number;
 }

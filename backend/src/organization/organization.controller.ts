@@ -9,7 +9,9 @@ export class OrganizationController {
   @Post()
   create(@Body() createOrganizationDto: any) {
     // return this.organizationService.create(createOrganizationDto);
-    return this.organizationService.create(OrganizationGeneralMock);
+    return this.organizationService.create({
+      general: OrganizationGeneralMock,
+    });
   }
 
   @Get(':id')
