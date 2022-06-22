@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import Header from './components/Header/Header';
-import Menu from './components/menu/Menu';
+import Router from './common/router/Router';
+import { AuthContext } from './contexts/AuthContext';
 
 const App = () => {
+  const [authState, setAuthState] = useState({
+    isAuthenticated: true,
+  });
+
   return (
-    <div className="App bg-gray-50 w-screen h-screen">
-      <Header />
-      <div className="p-6">
-        <Menu />
-      </div>
-    </div>
+    <AuthContext.Provider value={{ ...authState, setAuthState }}>
+      <Router />
+    </AuthContext.Provider>
   );
 };
 

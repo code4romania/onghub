@@ -17,3 +17,9 @@
     font-family: 'Roboto';
   }
 }
+
+@layer components {
+  .main-menu-item {
+    @apply h-10 text-gray-50 hover:bg-menu-green/[0.15]  hover:text-green flex items-center px-0 py-2 font-medium rounded-md;
+  }
+}
