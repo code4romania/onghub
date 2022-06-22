@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { HTTP_ERRORS_MESSAGES } from '../constants/errors.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -30,7 +31,7 @@ export class OrganizationService {
     });
 
     if (!organization) {
-      throw new NotFoundException('Organization not found');
+      throw new NotFoundException(HTTP_ERRORS_MESSAGES.ORGANIZATION);
     }
 
     return organization;

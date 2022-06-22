@@ -5,6 +5,7 @@ import { Environment } from './env.validation';
 import helmet from 'helmet';
 import * as csurf from 'csurf';
 import * as cookieParser from 'cookie-parser';
+import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,8 @@ async function bootstrap() {
   // );
 
   app.enableCors();
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Create swagger module only local or development
   if (!(process.env.NODE_ENV === Environment.Production)) {
