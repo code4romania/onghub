@@ -8,4 +8,9 @@ export class CommonController {
   healthCheck() {
     return 'OK';
   }
+
+  @Get('version')
+  version() {
+    return 'v0.0.1';
+  }
 }
