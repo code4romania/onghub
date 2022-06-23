@@ -5,12 +5,15 @@ import { Environment } from './env.validation';
 import helmet from 'helmet';
 import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.use(helmet());
 
   app.enableCors();
+
+  app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(
     new ValidationPipe({
