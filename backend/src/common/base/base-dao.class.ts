@@ -5,6 +5,7 @@ import {
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 export abstract class BaseDAO<T> {
   constructor(private readonly repository: Repository<T>) {}
@@ -34,7 +35,10 @@ export abstract class BaseDAO<T> {
     return this.repository.save(record);
   }
 
-  update(findCriteria: FindOptionsWhere<T>, updates: T) {
+  update(
+    findCriteria: FindOptionsWhere<T>,
+    updates: QueryDeepPartialEntity<T>,
+  ) {
     return this.repository.update(findCriteria, updates);
   }
 

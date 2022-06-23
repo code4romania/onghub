@@ -3,23 +3,23 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Environment } from './env.validation';
 import helmet from 'helmet';
-import * as csurf from 'csurf';
-import * as cookieParser from 'cookie-parser';
 import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // TODO: check this
   app.use(helmet());
 
-  // app.use(cookieParser());
-  // app.use(
-  //   csurf({
-  //     cookie: true,
-  //   }),
-  // );
-
   app.enableCors();
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+      forbidNonWhitelisted: false,
+    }),
+  );
 
   app.useGlobalFilters(new GlobalExceptionFilter());
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrganizationGeneralDto } from '../dto/create-organization-general.dto';
+import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 
 @Injectable()
@@ -8,16 +8,13 @@ export class OrganizationGeneralService {
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
   ) {}
 
-  create(createOrganizationGeneralDto: CreateOrganizationGeneralDto) {
-    // create the parent entry with default values
-    return this.organizationGeneralRepository.save({});
+  public update(
+    id: number,
+    updateOrganizationGeneralDto: UpdateOrganizationGeneralDto,
+  ) {
+    return this.organizationGeneralRepository.update(
+      { id },
+      updateOrganizationGeneralDto,
+    );
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} organization`;
-  }
-
-  // update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
-  //   return `This action updates a #${id} organization`;
-  // }
 }

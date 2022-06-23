@@ -70,8 +70,12 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'donation_keyword', nullable: true })
   donationKeyword: string;
 
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'contact_id' })
+  contactId: number;
+
   @OneToOne(() => Contact, { cascade: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
   @OneToOne(
@@ -81,7 +85,7 @@ export class OrganizationGeneral extends BaseEntity {
   organization: Organization;
 
   @Exclude()
-  @Column({ type: 'integer', nullable: true, name: 'city_id', select: false })
+  @Column({ type: 'integer', nullable: true, name: 'city_id' })
   cityId: number;
 
   @ManyToOne((type) => City)
@@ -89,7 +93,7 @@ export class OrganizationGeneral extends BaseEntity {
   city: City;
 
   @Exclude()
-  @Column({ type: 'integer', nullable: true, name: 'county_id', select: false })
+  @Column({ type: 'integer', nullable: true, name: 'county_id' })
   countyId: number;
 
   @ManyToOne((type) => County)

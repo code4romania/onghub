@@ -7,12 +7,15 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { QueryFailedError, EntityNotFoundError } from 'typeorm';
+import { TypeORMError } from 'typeorm';
 import { GlobalResponseError } from '../models/global-reponse-error';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException | unknown, host: ArgumentsHost) {
+  catch(
+    exception: HttpException | TypeORMError | unknown,
+    host: ArgumentsHost,
+  ) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -27,22 +30,15 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    switch (exception.constructor) {
-      case HttpException:
-        status = (exception as HttpException).getStatus();
-        break;
-      case QueryFailedError: // this is a TypeOrm error
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = (exception as QueryFailedError).message;
-        code = (exception as any).code;
-        break;
-      case EntityNotFoundError: // this is another TypeOrm error
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = (exception as EntityNotFoundError).message;
-        code = (exception as any).code;
-        break;
-      default:
-        status = HttpStatus.INTERNAL_SERVER_ERROR;
+    if (exception instanceof HttpException) {
+      status = (exception as HttpException).getStatus();
+      message = (exception as HttpException).getResponse()['message'];
+    } else if (exception instanceof TypeORMError) {
+      status = HttpStatus.UNPROCESSABLE_ENTITY;
+      message = (exception as TypeORMError).message;
+      code = (exception as any).code;
+    } else {
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
     response
