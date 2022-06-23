@@ -11,6 +11,6 @@ export class CommonController {
 
   @Get('version')
   version() {
-    return 'v0.0.2';
+    return 'v0.0.1';
   }
 }
