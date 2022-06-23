@@ -12,7 +12,11 @@ export abstract class BaseEntity {
   id: number;
 
   @Exclude()
-  @DeleteDateColumn({ name: 'deleted_on', type: 'timestamp with time zone' })
+  @DeleteDateColumn({
+    name: 'deleted_on',
+    type: 'timestamp with time zone',
+    select: false,
+  })
   deletedOn: Date;
 
   @Index()
@@ -20,6 +24,10 @@ export abstract class BaseEntity {
   createdOn: Date;
 
   @Exclude()
-  @UpdateDateColumn({ name: 'updated_on', type: 'timestamp with time zone' })
+  @UpdateDateColumn({
+    name: 'updated_on',
+    type: 'timestamp with time zone',
+    select: false,
+  })
   updatedOn: Date;
 }

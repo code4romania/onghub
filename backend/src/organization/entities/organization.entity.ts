@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
@@ -20,11 +21,19 @@ export class Organization extends BaseEntity {
   })
   status: OrganizationStatus;
 
+  @Exclude()
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'organization_general_id',
+  })
+  organizationGeneralId: number;
+
   @OneToOne(
     () => OrganizationGeneral,
     (organizationGeneral) => organizationGeneral.organization,
     { cascade: true },
   )
-  @JoinColumn()
+  @JoinColumn({ name: 'organization_general_id' })
   organizationGeneral: OrganizationGeneral;
 }

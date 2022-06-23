@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { City } from 'src/common/entities/city.entity';
 import { Contact } from 'src/common/entities/contact.entity';
@@ -69,8 +70,12 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'donation_keyword', nullable: true })
   donationKeyword: string;
 
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'contact_id' })
+  contactId: number;
+
   @OneToOne(() => Contact, { cascade: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
   @OneToOne(
@@ -79,6 +84,7 @@ export class OrganizationGeneral extends BaseEntity {
   )
   organization: Organization;
 
+  @Exclude()
   @Column({ type: 'integer', nullable: true, name: 'city_id' })
   cityId: number;
 
@@ -86,6 +92,7 @@ export class OrganizationGeneral extends BaseEntity {
   @JoinColumn({ name: 'city_id' })
   city: City;
 
+  @Exclude()
   @Column({ type: 'integer', nullable: true, name: 'county_id' })
   countyId: number;
 
