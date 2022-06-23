@@ -80,6 +80,7 @@ module.exports = {
         800: '#065F46',
         900: '#064E3B',
       },
+      'green-tab': '#D5F2E9',
       'menu-green': '#43ff64',
       background: '#E5E5E5',
     },
@@ -89,7 +90,8 @@ module.exports = {
       },
       fontFamily: {
         roboto: 'Roboto',
-        titillium: 'TitilliumWeb',
+        titilliumBold: 'TitilliumWeb-Bold',
+        titilliumSemiBold: 'TitilliumWeb-SemiBold',
       },
       transitionProperty: {
         width: 'width',
