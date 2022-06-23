@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonController } from './common.controller';
-import { City } from './entities/city.entity';
-import { Contact } from './entities/contact.entity';
-import { County } from './entities/county.entity';
+import { City, County, Contact, Area, Domain } from './entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([City, County, Contact])],
+  imports: [TypeOrmModule.forFeature([City, County, Contact, Area, Domain])],
   controllers: [CommonController],
 })
 export class CommonModule {}

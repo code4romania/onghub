@@ -2,7 +2,13 @@ import { Module } from '@nestjs/common';
 import { OrganizationController } from './organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from 'src/common/common.module';
-import { OrganizationGeneral, Organization } from './entities';
+import {
+  OrganizationGeneral,
+  Organization,
+  OrganizationActivity,
+  ActivityToCity,
+  ActivityToDomain,
+} from './entities';
 import {
   OrganizationGeneralRepository,
   OrganizationRepository,
@@ -11,7 +17,13 @@ import { OrganizationGeneralService, OrganizationService } from './services';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Organization, OrganizationGeneral]),
+    TypeOrmModule.forFeature([
+      Organization,
+      OrganizationGeneral,
+      OrganizationActivity,
+      ActivityToCity,
+      ActivityToDomain,
+    ]),
     CommonModule,
   ],
   controllers: [OrganizationController],

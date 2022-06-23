@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
-import { HTTP_ERRORS_MESSAGES } from '../constants/errors.constants';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from '../constants/errors.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
@@ -37,7 +40,10 @@ export class OrganizationService {
     });
 
     if (!organization) {
-      throw new NotFoundException(HTTP_ERRORS_MESSAGES.ORGANIZATION);
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG001,
+      });
     }
 
     return organization;
@@ -52,7 +58,10 @@ export class OrganizationService {
     });
 
     if (!organization) {
-      throw new NotFoundException(HTTP_ERRORS_MESSAGES.ORGANIZATION);
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG002,
+      });
     }
 
     if (updateOrganizationDto.general) {
