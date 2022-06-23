@@ -10,6 +10,7 @@ import { validate } from './env.validation';
 import { OrganizationModule } from './organization/organization.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         },
       },
     }),
+    EmailModule,
   ],
   providers: [
     {
