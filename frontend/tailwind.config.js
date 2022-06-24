@@ -3,6 +3,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     colors: {
+      transparent: 'transparent',
       black: '#020202',
       white: '#FFFFFF',
       orange: {
@@ -83,6 +84,9 @@ module.exports = {
       'green-tab': '#D5F2E9',
       'menu-green': '#43ff64',
       background: '#E5E5E5',
+      indigo: {
+        500: '#5243EA',
+      },
     },
     extend: {
       backgroundImage: {
@@ -98,5 +102,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 };
