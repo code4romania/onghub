@@ -51,6 +51,10 @@ export class OrganizationService {
         'organizationGeneral.city',
         'organizationGeneral.county',
         'organizationGeneral.contact',
+        'organizationActivity',
+        'organizationActivity.area',
+        'organizationActivity.domains',
+        'organizationActivity.cities',
       ],
     });
 
