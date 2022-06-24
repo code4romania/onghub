@@ -31,6 +31,21 @@ export const OrganizationGeneralMock = {
   countyId: 1,
 };
 
+export const OrganizationActivityMock = {
+  isPartOfFederation: true,
+  federations: ['FFS', 'FAAF'],
+  isPartOfInternationalOrganization: true,
+  internationalOrganizationName: 'International Org',
+  isSocialServiceViable: true,
+  offersGrants: true,
+  isPublicIntrestOrganization: true,
+  hasBranches: true,
+  branches: [1, 2],
+  areaId: 2,
+  domains: [1, 2],
+  cities: [2, 3],
+};
+
 export const CityMock = {};
 
 export const CountyMock = {};

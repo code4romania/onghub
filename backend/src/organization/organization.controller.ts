@@ -12,7 +12,10 @@ import { ApiBody } from '@nestjs/swagger';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
-import { OrganizationGeneralMock } from './mocks/organization.mock';
+import {
+  OrganizationActivityMock,
+  OrganizationGeneralMock,
+} from './mocks/organization.mock';
 import { OrganizationService } from './services/organization.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -28,6 +31,7 @@ export class OrganizationController {
     // return this.organizationService.create(createOrganizationDto);
     return this.organizationService.create({
       general: OrganizationGeneralMock,
+      activity: OrganizationActivityMock,
     });
   }
 

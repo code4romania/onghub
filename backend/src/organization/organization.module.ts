@@ -6,8 +6,6 @@ import {
   OrganizationGeneral,
   Organization,
   OrganizationActivity,
-  ActivityToCity,
-  ActivityToDomain,
 } from './entities';
 import {
   OrganizationGeneralRepository,
@@ -21,8 +19,6 @@ import { OrganizationGeneralService, OrganizationService } from './services';
       Organization,
       OrganizationGeneral,
       OrganizationActivity,
-      ActivityToCity,
-      ActivityToDomain,
     ]),
     CommonModule,
   ],

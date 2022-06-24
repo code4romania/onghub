@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateResult } from 'typeorm';
+import { NomenclaturesService } from 'src/common/services/nomenclatures.service';
+import { In, UpdateResult } from 'typeorm';
 import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
@@ -15,15 +16,29 @@ export class OrganizationService {
   constructor(
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
+    private readonly nomenclaturesService: NomenclaturesService,
   ) {}
 
-  public create(
+  public async create(
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
+    const domains = await this.nomenclaturesService.getDomains({
+      where: { id: In(createOrganizationDto.activity.domains) },
+    });
+
+    const cities = await this.nomenclaturesService.getCities({
+      where: { id: In(createOrganizationDto.activity.cities) },
+    });
+
     // create the parent entry with default values
     return this.organizationRepository.save({
       organizationGeneral: {
         ...createOrganizationDto.general,
+      },
+      organizationActivity: {
+        ...createOrganizationDto.activity,
+        domains,
+        cities,
       },
     });
   }

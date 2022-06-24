@@ -5,13 +5,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   OneToOne,
 } from 'typeorm';
-import { ActivityToDomain } from './activity-to-domain.entity';
-import { ActivityToCity } from './activity-to-city.entity';
 import { Organization } from './organization.entity';
+import { City, Domain } from 'src/common/entities';
 
 @Entity()
 export class OrganizationActivity extends BaseEntity {
@@ -45,7 +45,7 @@ export class OrganizationActivity extends BaseEntity {
   @Column({ type: 'boolean', name: 'has_branches' })
   hasBranches: boolean;
 
-  @Column({ type: 'jsonb', name: 'branches' })
+  @Column({ type: 'jsonb', name: 'branches', nullable: true })
   branches: number[];
 
   @Exclude()
@@ -62,17 +62,25 @@ export class OrganizationActivity extends BaseEntity {
   )
   organization: Organization;
 
-  @OneToMany(
-    () => ActivityToCity,
-    (activityToCity) => activityToCity.oragnizationActivity,
-    { cascade: true },
-  )
-  public activityToCities: ActivityToCity[];
+  @ManyToMany(() => City, { cascade: true })
+  @JoinTable({
+    name: 'activity_to_city',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'city_id', referencedColumnName: 'id' },
+  })
+  cities: City[];
 
-  @OneToMany(
-    () => ActivityToDomain,
-    (activityToDomain) => activityToDomain.oragnizationActivity,
-    { cascade: true },
-  )
-  public activityToDomains: ActivityToDomain[];
+  @ManyToMany(() => Domain, { cascade: true })
+  @JoinTable({
+    name: 'activity_to_domain',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'domain_id', referencedColumnName: 'id' },
+  })
+  domains: Domain[];
 }

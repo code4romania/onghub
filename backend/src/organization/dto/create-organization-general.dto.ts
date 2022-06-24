@@ -7,7 +7,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  Length,
   Max,
   MaxLength,
   Min,
@@ -92,7 +91,7 @@ export class CreateOrganizationGeneralDto {
   @IsOptional()
   @MinLength(200)
   @MaxLength(250)
-  shortDescription: string;
+  shortDescription?: string;
 
   @ApiPropertyOptional({
     description: 'Organization long description',
@@ -103,7 +102,7 @@ export class CreateOrganizationGeneralDto {
   @IsOptional()
   @MinLength(250)
   @MaxLength(500)
-  description: string;
+  description?: string;
 
   // TODO: this should be removed once we have the attachment table
   @ApiProperty({
@@ -117,56 +116,56 @@ export class CreateOrganizationGeneralDto {
   })
   @IsString()
   @IsOptional()
-  website: string;
+  website?: string;
 
   @ApiPropertyOptional({
     description: 'Organization facbook',
   })
   @IsString()
   @IsOptional()
-  facebook: string;
+  facebook?: string;
 
   @ApiPropertyOptional({
     description: 'Organization instagram',
   })
   @IsString()
   @IsOptional()
-  instagram: string;
+  instagram?: string;
 
   @ApiPropertyOptional({
     description: 'Organization twitter',
   })
   @IsString()
   @IsOptional()
-  twitter: string;
+  twitter?: string;
 
   @ApiPropertyOptional({
     description: 'Organization linkedin',
   })
   @IsString()
   @IsOptional()
-  linkedin: string;
+  linkedin?: string;
 
   @ApiPropertyOptional({
     description: 'Organization tiktok',
   })
   @IsString()
   @IsOptional()
-  tiktok: string;
+  tiktok?: string;
 
   @ApiPropertyOptional({
     description: 'Organization donation website',
   })
   @IsString()
   @IsOptional()
-  donationWebsite: string;
+  donationWebsite?: string;
 
   @ApiPropertyOptional({
     description: 'Organization donation redirect link',
   })
   @IsString()
   @IsOptional()
-  redirectLink: string;
+  redirectLink?: string;
 
   @ApiPropertyOptional({
     description: 'Organization donation sms number',
