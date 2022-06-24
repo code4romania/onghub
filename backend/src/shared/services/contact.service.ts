@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from 'src/common/entities';
+import { Contact } from 'src/shared/entities';
 import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()

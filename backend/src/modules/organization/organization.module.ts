@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { OrganizationController } from './organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommonModule } from 'src/common/common.module';
 import {
   OrganizationGeneral,
   Organization,
@@ -25,7 +24,6 @@ import {
       OrganizationGeneral,
       OrganizationActivity,
     ]),
-    CommonModule,
   ],
   controllers: [OrganizationController],
   providers: [

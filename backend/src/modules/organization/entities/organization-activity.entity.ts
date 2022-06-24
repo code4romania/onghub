@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Area } from 'src/common/entities/area.entity';
+import { Area } from 'src/shared/entities/area.entity';
 import {
   Column,
   Entity,
@@ -11,7 +11,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Organization } from './organization.entity';
-import { City, Domain } from 'src/common/entities';
+import { City, Domain } from 'src/shared/entities';
 
 @Entity()
 export class OrganizationActivity extends BaseEntity {

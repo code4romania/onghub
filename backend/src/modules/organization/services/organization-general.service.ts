@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ContactService } from 'src/common/services';
+import { ContactService } from 'src/shared/services';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 

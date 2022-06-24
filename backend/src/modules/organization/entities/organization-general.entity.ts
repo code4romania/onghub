@@ -1,8 +1,8 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { City } from 'src/common/entities/city.entity';
-import { Contact } from 'src/common/entities/contact.entity';
-import { County } from 'src/common/entities/county.entity';
+import { City } from 'src/shared/entities/city.entity';
+import { Contact } from 'src/shared/entities/contact.entity';
+import { County } from 'src/shared/entities/county.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Organization } from './organization.entity';

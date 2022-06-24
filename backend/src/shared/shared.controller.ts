@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('')
-export class CommonController {
+export class SharedController {
   constructor() {}
 
   @Get('health')

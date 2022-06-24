@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { City, Domain } from 'src/common/entities';
+import { City, Domain } from 'src/shared/entities';
 import { FindManyOptions, Repository } from 'typeorm';
 
 @Injectable()

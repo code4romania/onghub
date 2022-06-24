@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { NomenclaturesService } from 'src/common/services/nomenclatures.service';
+import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import {
   ERROR_CODES,

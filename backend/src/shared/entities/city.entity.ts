@@ -1,6 +1,6 @@
-import { OrganizationActivity } from 'src/organization/entities';
+import { OrganizationActivity } from 'src/modules/organization/entities';
 import { Column, Entity, ManyToMany } from 'typeorm';
-import { BaseEntity } from '../base/base-entity.class';
+import { BaseEntity } from '../../common/base/base-entity.class';
 
 @Entity({ name: '_city' })
 export class City extends BaseEntity {
