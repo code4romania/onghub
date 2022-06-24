@@ -8,9 +8,10 @@ import { RateLimiterConfigService } from './common/config/rate-limiter-config.se
 import { TypeOrmConfigService } from './common/config/typeorm-config.service';
 import { validate } from './env.validation';
 import { OrganizationModule } from './organization/organization.module';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { EmailModule } from './email/email.module';
+import { BullModule } from '@nestjs/bull';
+import { EmailProcessor } from './email/services/email-processor.service';
+import { EmailService } from './email/services/email.service';
 
 @Module({
   imports: [
@@ -23,30 +24,13 @@ import { EmailModule } from './email/email.module';
       useClass: RateLimiterConfigService,
     }),
     OrganizationModule,
-    MailerModule.forRoot({
-      transport: {
-        host: process.env.MAIL_HOST,
-        port: process.env.MAIL_PORT,
-        ignoreTLS: true,
-        secure: false,
-        auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
-        },
-      },
-      defaults: {
-        from: '"No Reply" <no-reply@localhost>',
-      },
-      preview: true,
-      template: {
-        dir: __dirname + '/templates',
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
-        },
+    EmailModule,
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
       },
     }),
-    EmailModule,
   ],
   providers: [
     {
