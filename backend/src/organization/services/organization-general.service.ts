@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ContactService } from 'src/common/services';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 
@@ -6,15 +7,25 @@ import { OrganizationGeneralRepository } from '../repositories/organization-gene
 export class OrganizationGeneralService {
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
+    private readonly contactService: ContactService,
   ) {}
 
   public update(
     id: number,
     updateOrganizationGeneralDto: UpdateOrganizationGeneralDto,
   ) {
-    return this.organizationGeneralRepository.update(
-      { id },
-      updateOrganizationGeneralDto,
-    );
+    const { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
+
+    if (contact) {
+      const contactEntity = this.contactService.get({
+        where: { id: contact.id },
+      });
+      updateOrganizationData['contact'] = { ...contactEntity, ...contact };
+    }
+
+    return this.organizationGeneralRepository.save({
+      id,
+      ...updateOrganizationData,
+    });
   }
 }

@@ -62,7 +62,7 @@ export class OrganizationActivity extends BaseEntity {
   )
   organization: Organization;
 
-  @ManyToMany(() => City, { cascade: true })
+  @ManyToMany(() => City, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
     name: 'activity_to_city',
     joinColumn: {
@@ -73,7 +73,7 @@ export class OrganizationActivity extends BaseEntity {
   })
   cities: City[];
 
-  @ManyToMany(() => Domain, { cascade: true })
+  @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
     name: 'activity_to_domain',
     joinColumn: {

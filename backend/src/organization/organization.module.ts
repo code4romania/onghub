@@ -8,10 +8,15 @@ import {
   OrganizationActivity,
 } from './entities';
 import {
+  OrganizationActivityRepository,
   OrganizationGeneralRepository,
   OrganizationRepository,
 } from './repositories';
-import { OrganizationGeneralService, OrganizationService } from './services';
+import {
+  OrganizationActivityService,
+  OrganizationGeneralService,
+  OrganizationService,
+} from './services';
 
 @Module({
   imports: [
@@ -28,6 +33,8 @@ import { OrganizationGeneralService, OrganizationService } from './services';
     OrganizationGeneralService,
     OrganizationRepository,
     OrganizationGeneralRepository,
+    OrganizationActivityService,
+    OrganizationActivityRepository,
   ],
 })
 export class OrganizationModule {}

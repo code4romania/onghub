@@ -55,12 +55,10 @@ export class CreateOrganizationActivityDto {
   areaId: number;
 
   @ApiProperty()
-  @IsNumber()
   @IsArray()
   domains: number[];
 
   @ApiProperty()
-  @IsNumber()
   @IsArray()
   cities: number[];
 }

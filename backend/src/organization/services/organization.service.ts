@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NomenclaturesService } from 'src/common/services/nomenclatures.service';
-import { In, UpdateResult } from 'typeorm';
+import { In } from 'typeorm';
 import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
@@ -9,6 +9,7 @@ import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRepository } from '../repositories/organization.repository';
+import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class OrganizationService {
   constructor(
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
+    private readonly organizationActivityService: OrganizationActivityService,
     private readonly nomenclaturesService: NomenclaturesService,
   ) {}
 
@@ -68,10 +70,14 @@ export class OrganizationService {
     return organization;
   }
 
+  /**
+   * Update organization will only update one child at the time
+   * TODO: Review the return type for this
+   */
   public async update(
     id: number,
     updateOrganizationDto: UpdateOrganizationDto,
-  ): Promise<UpdateResult> {
+  ): Promise<any> {
     const organization = await this.organizationRepository.get({
       where: { id },
     });
@@ -87,6 +93,13 @@ export class OrganizationService {
       return this.organizationGeneralService.update(
         organization.organizationGeneralId,
         updateOrganizationDto.general,
+      );
+    }
+
+    if (updateOrganizationDto.activity) {
+      return this.organizationActivityService.update(
+        organization.organizationActivityId,
+        updateOrganizationDto.activity,
       );
     }
 

@@ -13,7 +13,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateContactDto } from 'src/common/dto/create-contact-dto';
+import { CreateContactDto } from 'src/common/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
 export class CreateOrganizationGeneralDto {
   @ApiProperty({
