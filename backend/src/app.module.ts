@@ -10,8 +10,6 @@ import { validate } from './env.validation';
 import { OrganizationModule } from './organization/organization.module';
 import { EmailModule } from './email/email.module';
 import { BullModule } from '@nestjs/bull';
-import { EmailProcessor } from './email/services/email-processor.service';
-import { EmailService } from './email/services/email.service';
 
 @Module({
   imports: [
