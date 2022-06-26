@@ -4,9 +4,10 @@ import { EmailService } from './services/email.service';
 import { InjectQueue } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiTooManyRequestsResponse } from '@nestjs/swagger';
 import { CreateEmailDto } from './dto/create-email.dto';
 
+@ApiTooManyRequestsResponse()
 @Controller('email')
 export class EmailController {
   constructor(
