@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 import { CreateOrganizationActivityDto } from './create-organization-activity.dto';
+import { CreateOrganizationFinancialDto } from './create-organization-financial.dto';
 import { CreateOrganizationGeneralDto } from './create-organization-general.dto';
 import { CreateOrganizationLegalDto } from './create-organization-legal.dto';
 export class CreateOrganizationDto {
@@ -28,4 +29,12 @@ export class CreateOrganizationDto {
   @Type(() => CreateOrganizationLegalDto)
   @ValidateNested()
   legal: CreateOrganizationLegalDto;
+
+  @ApiProperty({
+    description: 'Organization Financial',
+    type: () => CreateOrganizationFinancialDto,
+  })
+  @Type(() => CreateOrganizationFinancialDto)
+  @ValidateNested()
+  financial: CreateOrganizationFinancialDto;
 }

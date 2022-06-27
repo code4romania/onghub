@@ -3,6 +3,7 @@ import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationActivity } from './organization-activity.entity';
+import { OrganizationFinancial } from './organization-financial.entity';
 import { OrganizationGeneral } from './organization-general.entity';
 import { OrganizationLegal } from './organization-legal.entity';
 
@@ -70,4 +71,20 @@ export class Organization extends BaseEntity {
   )
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
+
+  @Exclude()
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'organization_financial_id',
+  })
+  organizationFinancialId: number;
+
+  @OneToOne(
+    () => OrganizationFinancial,
+    (organizationFinancial) => organizationFinancial.organization,
+    { cascade: true },
+  )
+  @JoinColumn({ name: 'organization_financial_id' })
+  organizationFinancial: OrganizationFinancial;
 }

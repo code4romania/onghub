@@ -7,9 +7,12 @@ import {
   OrganizationActivity,
   OrganizationLegal,
   Contact,
+  OrganizationFinancial,
+  BalanceSheet,
 } from './entities';
 import {
   OrganizationActivityRepository,
+  OrganizationFinancialRepository,
   OrganizationGeneralRepository,
   OrganizationLegalRepository,
   OrganizationRepository,
@@ -17,6 +20,7 @@ import {
 import {
   ContactService,
   OrganizationActivityService,
+  OrganizationFinancialService,
   OrganizationGeneralService,
   OrganizationLegalService,
   OrganizationService,
@@ -26,10 +30,12 @@ import {
   imports: [
     TypeOrmModule.forFeature([
       Contact,
+      BalanceSheet,
       Organization,
       OrganizationGeneral,
       OrganizationActivity,
       OrganizationLegal,
+      OrganizationFinancial,
     ]),
   ],
   controllers: [OrganizationController],
@@ -43,6 +49,8 @@ import {
     OrganizationActivityRepository,
     OrganizationLegalRepository,
     OrganizationLegalService,
+    OrganizationFinancialRepository,
+    OrganizationFinancialService,
   ],
 })
 export class OrganizationModule {}

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
+import { OrganizationFinancialService } from '.';
 import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
@@ -20,6 +21,7 @@ export class OrganizationService {
     private readonly organizationGeneralService: OrganizationGeneralService,
     private readonly organizationActivityService: OrganizationActivityService,
     private readonly organizationLegalService: OrganizationLegalService,
+    private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly nomenclaturesService: NomenclaturesService,
   ) {}
 
@@ -47,6 +49,9 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
+      organizationFinancial: {
+        ...createOrganizationDto.financial,
+      },
     });
   }
 
@@ -65,6 +70,8 @@ export class OrganizationService {
         'organizationLegal',
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
+        'organizationFinancial',
+        'organizationFinancial.balanceSheets',
       ],
     });
 
@@ -115,6 +122,13 @@ export class OrganizationService {
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
+      );
+    }
+
+    if (updateOrganizationDto.financial) {
+      return this.organizationFinancialService.update(
+        organization.organizationFinancialId,
+        updateOrganizationDto.financial,
       );
     }
 

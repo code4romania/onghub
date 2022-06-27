@@ -62,6 +62,12 @@ export const OrganizationLegalMock = {
   others: [{ fullName: 'Test me', role: 'admin' }],
 };
 
+export const OrganizationFinancialMock = {
+  numberOfEmployees: 0,
+  totalIncome: 0,
+  totalExpenses: 0,
+};
+
 export const CityMock = {};
 
 export const CountyMock = {};
