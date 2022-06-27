@@ -8,8 +8,9 @@ export class EmailProcessor {
   constructor(private readonly mailerService: MailerService) {}
 
   @Process()
-  public async processor(job: Job<{ mailerOptions: ISendMailOptions }>) {
-    const { mailerOptions } = job.data;
-    await this.mailerService.sendMail(mailerOptions);
+  public async processor(job: Job<ISendMailOptions>) {
+    const mailOptions = job.data;
+    console.log(mailOptions);
+    await this.mailerService.sendMail(mailOptions);
   }
 }

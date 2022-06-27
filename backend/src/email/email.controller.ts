@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
-import { EmailProcessor } from './services/email-processor.service';
 import { EmailService } from './services/email.service';
 import { InjectQueue } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/queues.constants';
@@ -12,7 +11,6 @@ import { CreateEmailDto } from './dto/create-email.dto';
 export class EmailController {
   constructor(
     private readonly emailService: EmailService,
-    private readonly emailProcessor: EmailProcessor,
     @InjectQueue(QUEUES.MAILS) private readonly emailQueue: Queue,
   ) {}
 
