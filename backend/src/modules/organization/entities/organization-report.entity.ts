@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, OneToOne } from 'typeorm';
-import { IInvestor } from '../interfaces/inverstors.interface';
-import { IReport } from '../interfaces/report.interface';
+import { Investor } from '../dto/inverstor.dto';
+import { Report } from '../dto/report.dto';
 import { Organization } from './organization.entity';
 
 @Entity()
@@ -13,13 +13,13 @@ export class OrganizationReport extends BaseEntity {
   numberOfContractors: number;
 
   @Column({ type: 'jsonb', name: 'reports', nullable: true })
-  reports: IReport[];
+  reports: Report[];
 
   @Column({ type: 'jsonb', name: 'donors', nullable: true })
-  donors: IInvestor[];
+  donors: Investor[];
 
   @Column({ type: 'jsonb', name: 'partners', nullable: true })
-  partners: IInvestor[];
+  partners: Investor[];
 
   @OneToOne(
     () => Organization,

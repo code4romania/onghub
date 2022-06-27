@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
+import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
 import { OrganizationReportRepository } from '../repositories';
 
 @Injectable()
@@ -10,11 +11,11 @@ export class OrganizationReportService {
 
   public async update(
     id: number,
-    updateOrganizationLegalDto: UpdateOrganizationLegalDto,
+    updateOrganizationReportDto: UpdateOrganizationReportDto,
   ) {
     return this.organizationReportRepostory.save({
       id,
-      ...updateOrganizationLegalDto,
+      ...updateOrganizationReportDto,
     });
   }
 }

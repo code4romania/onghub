@@ -9,7 +9,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Organization } from './organization.entity';
-import { IPerson } from 'src/modules/organization/interfaces/person.interface';
+import { Person } from 'src/modules/organization/dto/person.dto';
 import { Contact } from './contact.entity';
 
 @Entity()
@@ -40,7 +40,7 @@ export class OrganizationLegal extends BaseEntity {
   directors: Contact[];
 
   @Column({ type: 'jsonb', name: 'others', nullable: true })
-  others: IPerson[];
+  others: Person[];
 
   @Column({ type: 'varchar', name: 'organization_statute', nullable: true })
   organizationStatute: string;

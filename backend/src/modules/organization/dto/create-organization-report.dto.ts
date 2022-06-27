@@ -1,7 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsNumber, IsOptional } from 'class-validator';
-import { IInvestor } from '../interfaces/inverstors.interface';
-import { IReport } from '../interfaces/report.interface';
+import { Type } from 'class-transformer';
+import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { Investor } from './inverstor.dto';
+import { Report } from './report.dto';
 
 export class CreateOrganizationReportDto {
   @ApiProperty()
@@ -12,18 +13,28 @@ export class CreateOrganizationReportDto {
   @IsNumber()
   numberOfContractors: number;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    type: () => [Report],
+  })
   @IsOptional()
   @IsArray()
-  reports?: IReport[];
+  @ValidateNested()
+  @Type(() => Report)
+  reports?: Report[];
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    type: [Investor],
+  })
+  @Type(() => Investor)
   @IsOptional()
   @IsArray()
-  donors?: IInvestor[];
+  donors?: Investor[];
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    type: [Investor],
+  })
+  @Type(() => Investor)
   @IsOptional()
   @IsArray()
-  partners?: IInvestor[];
+  partners?: Investor[];
 }

@@ -13,6 +13,7 @@ import { OrganizationRepository } from '../repositories/organization.repository'
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
+import { OrganizationReportService } from './organization-report.service';
 
 @Injectable()
 export class OrganizationService {
@@ -22,6 +23,7 @@ export class OrganizationService {
     private readonly organizationActivityService: OrganizationActivityService,
     private readonly organizationLegalService: OrganizationLegalService,
     private readonly organizationFinancialService: OrganizationFinancialService,
+    private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
   ) {}
 
@@ -133,6 +135,13 @@ export class OrganizationService {
       return this.organizationFinancialService.update(
         organization.organizationFinancialId,
         updateOrganizationDto.financial,
+      );
+    }
+
+    if (updateOrganizationDto.report) {
+      return this.organizationReportService.update(
+        organization.organizationReportId,
+        updateOrganizationDto.report,
       );
     }
 
