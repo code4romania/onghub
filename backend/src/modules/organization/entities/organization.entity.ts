@@ -6,6 +6,7 @@ import { OrganizationActivity } from './organization-activity.entity';
 import { OrganizationFinancial } from './organization-financial.entity';
 import { OrganizationGeneral } from './organization-general.entity';
 import { OrganizationLegal } from './organization-legal.entity';
+import { OrganizationReport } from './organization-report.entity';
 
 @Entity()
 export class Organization extends BaseEntity {
@@ -87,4 +88,20 @@ export class Organization extends BaseEntity {
   )
   @JoinColumn({ name: 'organization_financial_id' })
   organizationFinancial: OrganizationFinancial;
+
+  @Exclude()
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'organization_report_id',
+  })
+  organizationReportId: number;
+
+  @OneToOne(
+    () => OrganizationReport,
+    (organizationReport) => organizationReport.organization,
+    { cascade: true },
+  )
+  @JoinColumn({ name: 'organization_report_id' })
+  organizationReport: OrganizationReport;
 }

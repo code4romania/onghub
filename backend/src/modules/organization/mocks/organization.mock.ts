@@ -68,6 +68,11 @@ export const OrganizationFinancialMock = {
   totalExpenses: 0,
 };
 
+export const OrganizationReportMock = {
+  numberOfVolunteers: 0,
+  numberOfContractors: 0,
+};
+
 export const CityMock = {};
 
 export const CountyMock = {};

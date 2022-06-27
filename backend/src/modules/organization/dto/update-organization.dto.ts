@@ -5,6 +5,7 @@ import { UpdateOrganizationActivityDto } from './update-organization-activity.dt
 import { UpdateOrganizationFinancialDto } from './update-organization-financial.dto';
 import { UpdateOrganizationGeneralDto } from './update-organization-general.dto';
 import { UpdateOrganizationLegalDto } from './update-organization-legal.dto';
+import { UpdateOrganizationReportDto } from './update-organization-report.dto';
 
 export class UpdateOrganizationDto {
   @ApiPropertyOptional({
@@ -39,4 +40,13 @@ export class UpdateOrganizationDto {
   @Type(() => UpdateOrganizationFinancialDto)
   @ValidateNested()
   financial: UpdateOrganizationFinancialDto;
+
+  @ApiPropertyOptional({
+    description: 'Organization Report',
+    type: () => UpdateOrganizationReportDto,
+  })
+  @IsOptional()
+  @Type(() => UpdateOrganizationReportDto)
+  @ValidateNested()
+  report: UpdateOrganizationReportDto;
 }

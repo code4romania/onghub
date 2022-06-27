@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { IPerson } from 'src/common/models/person.interface';
+import { IPerson } from 'src/modules/organization/interfaces/person.interface';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 
 export class CreateOrganizationLegalDto {

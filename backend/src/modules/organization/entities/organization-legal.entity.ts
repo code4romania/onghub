@@ -9,7 +9,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Organization } from './organization.entity';
-import { IPerson } from 'src/common/models/person.interface';
+import { IPerson } from 'src/modules/organization/interfaces/person.interface';
 import { Contact } from './contact.entity';
 
 @Entity()

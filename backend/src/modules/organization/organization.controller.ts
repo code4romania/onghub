@@ -17,6 +17,7 @@ import {
   OrganizationFinancialMock,
   OrganizationGeneralMock,
   OrganizationLegalMock,
+  OrganizationReportMock,
 } from './mocks/organization.mock';
 import { OrganizationService } from './services/organization.service';
 
@@ -37,6 +38,7 @@ export class OrganizationController {
       activity: OrganizationActivityMock,
       legal: OrganizationLegalMock,
       financial: OrganizationFinancialMock,
+      report: OrganizationReportMock,
     });
   }
 

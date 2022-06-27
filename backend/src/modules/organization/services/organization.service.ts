@@ -52,6 +52,9 @@ export class OrganizationService {
       organizationFinancial: {
         ...createOrganizationDto.financial,
       },
+      organizationReport: {
+        ...createOrganizationDto.report,
+      },
     });
   }
 

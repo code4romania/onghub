@@ -9,12 +9,14 @@ import {
   Contact,
   OrganizationFinancial,
   BalanceSheet,
+  OrganizationReport,
 } from './entities';
 import {
   OrganizationActivityRepository,
   OrganizationFinancialRepository,
   OrganizationGeneralRepository,
   OrganizationLegalRepository,
+  OrganizationReportRepository,
   OrganizationRepository,
 } from './repositories';
 import {
@@ -25,6 +27,7 @@ import {
   OrganizationLegalService,
   OrganizationService,
 } from './services';
+import { OrganizationReportService } from './services/organization-report.service';
 
 @Module({
   imports: [
@@ -36,6 +39,7 @@ import {
       OrganizationActivity,
       OrganizationLegal,
       OrganizationFinancial,
+      OrganizationReport,
     ]),
   ],
   controllers: [OrganizationController],
@@ -51,6 +55,8 @@ import {
     OrganizationLegalService,
     OrganizationFinancialRepository,
     OrganizationFinancialService,
+    OrganizationReportRepository,
+    OrganizationReportService,
   ],
 })
 export class OrganizationModule {}

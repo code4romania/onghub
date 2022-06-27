@@ -5,6 +5,7 @@ import { CreateOrganizationActivityDto } from './create-organization-activity.dt
 import { CreateOrganizationFinancialDto } from './create-organization-financial.dto';
 import { CreateOrganizationGeneralDto } from './create-organization-general.dto';
 import { CreateOrganizationLegalDto } from './create-organization-legal.dto';
+import { CreateOrganizationReportDto } from './create-organization-report.dto';
 export class CreateOrganizationDto {
   @ApiProperty({
     description: 'Organization General',
@@ -37,4 +38,12 @@ export class CreateOrganizationDto {
   @Type(() => CreateOrganizationFinancialDto)
   @ValidateNested()
   financial: CreateOrganizationFinancialDto;
+
+  @ApiProperty({
+    description: 'Organization Report',
+    type: () => CreateOrganizationReportDto,
+  })
+  @Type(() => CreateOrganizationReportDto)
+  @ValidateNested()
+  report: CreateOrganizationReportDto;
 }
