@@ -1,9 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('')
 export class SharedController {
   constructor() {}
 
+  @SkipThrottle()
   @Get('health')
   healthCheck() {
     return 'OK';
@@ -11,6 +13,6 @@ export class SharedController {
 
   @Get('version')
   version() {
-    return 'v0.0.1';
+    return 'v0.0.2';
   }
 }
