@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType, OmitType } from '@nestjs/swagger';
+import { PartialType, OmitType, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateContactDto } from 'src/shared/dto/update-contact.dto';
@@ -8,7 +8,7 @@ export class UpdateOrganizationGeneralDto extends PartialType(
   OmitType(CreateOrganizationGeneralDto, ['contact']),
 ) {
   @IsOptional()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Organization contact person',
     type: () => UpdateContactDto,
   })
