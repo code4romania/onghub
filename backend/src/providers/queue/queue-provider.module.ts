@@ -9,4 +9,4 @@ import { BullConfigService } from 'src/common/config/bull-config.service';
     }),
   ],
 })
-export class BullProviderModule {}
+export class QueueProviderModule {}

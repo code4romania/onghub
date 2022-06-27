@@ -2,13 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QUEUES } from 'src/common/constants/queues.constants';
-import { CreateEmailDto } from '../dto/create-email.dto';
+import { ISendMailOptions } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class EmailService {
-  constructor(@InjectQueue(QUEUES.MAILS) private emailQueue: Queue) {}
+  constructor(
+    @InjectQueue(QUEUES.MAILS) private emailQueue: Queue<ISendMailOptions>,
+  ) {}
 
-  async sendEmail(email: CreateEmailDto) {
-    this.emailQueue.add(email);
+  async sendEmail(email: ISendMailOptions) {
+    return this.emailQueue.add(email);
   }
 }

@@ -12,7 +12,7 @@ import { OrganizationModule } from './modules/organization/organization.module';
 import { CacheProviderModule } from './providers/cache/cache-provider.module';
 import { DatabaseProviderModule } from './providers/database/database-provider.module';
 import { SharedModule } from './shared/shared.module';
-import { BullProviderModule } from './providers/bull/bull-provider.module';
+import { QueueProviderModule } from './providers/queue/queue-provider.module';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { BullProviderModule } from './providers/bull/bull-provider.module';
     // Providers
     DatabaseProviderModule,
     CacheProviderModule,
-    BullProviderModule,
+    QueueProviderModule,
 
     // Business modules
     OrganizationModule,
