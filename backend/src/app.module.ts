@@ -8,11 +8,11 @@ import { RateLimiterConfigService } from './common/config/rate-limiter-config.se
 import { ThrottlerGuardByIP } from './common/guards/ThrottlerGuardByIP.guard';
 import { validate } from './env.validation';
 import { EmailModule } from './email/email.module';
-import { BullModule } from '@nestjs/bull';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { CacheProviderModule } from './providers/cache/cache-provider.module';
 import { DatabaseProviderModule } from './providers/database/database-provider.module';
 import { SharedModule } from './shared/shared.module';
+import { BullProviderModule } from './providers/bull/bull-provider.module';
 
 @Module({
   imports: [
@@ -26,16 +26,11 @@ import { SharedModule } from './shared/shared.module';
     // Providers
     DatabaseProviderModule,
     CacheProviderModule,
+    BullProviderModule,
 
     // Business modules
     OrganizationModule,
     EmailModule,
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
     SharedModule,
   ],
   providers: [
