@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateContactDto } from 'src/modules/organization/dto/update-contact.dto';
 import { CreateOrganizationLegalDto } from './create-organization-legal.dto';
+import { UpsertContactDto } from './upsert-contact.dto';
 
 export class UpdateOrganizationLegalDto extends PartialType(
   OmitType(CreateOrganizationLegalDto, ['directors', 'legalReprezentative']),
@@ -21,7 +22,7 @@ export class UpdateOrganizationLegalDto extends PartialType(
     type: () => [UpdateContactDto],
   })
   @IsOptional()
-  @Type(() => UpdateContactDto)
+  @Type(() => UpsertContactDto)
   @ValidateNested()
-  directors: UpdateContactDto[];
+  directors: UpsertContactDto[];
 }
