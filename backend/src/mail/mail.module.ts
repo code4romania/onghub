@@ -1,9 +1,8 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { EmailController } from './email.controller';
-import { EmailService } from './services/email.service';
+import { MailService } from './services/mail.service';
 import { QUEUES } from 'src/common/constants/queues.constants';
-import { EmailProcessor } from './services/email-processor.service';
+import { MailProcessor } from './services/mail-processor.service';
 import { MailProviderModule } from 'src/providers/mail/mail.module';
 
 @Module({
@@ -13,7 +12,6 @@ import { MailProviderModule } from 'src/providers/mail/mail.module';
       name: QUEUES.MAILS,
     }),
   ],
-  controllers: [EmailController],
-  providers: [EmailService, EmailProcessor],
+  providers: [MailService, MailProcessor],
 })
-export class EmailModule {}
+export class MailModule {}

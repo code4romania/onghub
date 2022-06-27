@@ -7,7 +7,7 @@ import { PinoLoggerConfig } from './common/config/logging.config';
 import { RateLimiterConfigService } from './common/config/rate-limiter-config.service';
 import { ThrottlerGuardByIP } from './common/guards/ThrottlerGuardByIP.guard';
 import { validate } from './env.validation';
-import { EmailModule } from './email/email.module';
+import { MailModule } from './mail/mail.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { CacheProviderModule } from './providers/cache/cache-provider.module';
 import { DatabaseProviderModule } from './providers/database/database-provider.module';
@@ -30,7 +30,7 @@ import { QueueProviderModule } from './providers/queue/queue-provider.module';
 
     // Business modules
     OrganizationModule,
-    EmailModule,
+    MailModule,
     SharedModule,
   ],
   providers: [

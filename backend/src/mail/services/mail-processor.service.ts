@@ -2,10 +2,9 @@ import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer';
 import { Process, Processor } from '@nestjs/bull';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Job } from 'bull';
-import { CreateEmailDto } from '../dto/create-email.dto';
 
 @Processor(QUEUES.MAILS)
-export class EmailProcessor {
+export class MailProcessor {
   constructor(private readonly mailerService: MailerService) {}
 
   @Process()

@@ -5,7 +5,7 @@ import { QUEUES } from 'src/common/constants/queues.constants';
 import { ISendMailOptions } from '@nestjs-modules/mailer';
 
 @Injectable()
-export class EmailService {
+export class MailService {
   constructor(
     @InjectQueue(QUEUES.MAILS) private emailQueue: Queue<ISendMailOptions>,
   ) {}
