@@ -10,7 +10,6 @@ export class EmailProcessor {
   @Process()
   public async processor(job: Job<ISendMailOptions>) {
     const mailOptions = job.data;
-    console.log(mailOptions);
     await this.mailerService.sendMail(mailOptions);
   }
 }
