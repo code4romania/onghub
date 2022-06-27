@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateOrganizationActivityDto } from './update-organization-activity.dto';
 import { UpdateOrganizationGeneralDto } from './update-organization-general.dto';
+import { UpdateOrganizationLegalDto } from './update-organization-legal.dto';
 
 export class UpdateOrganizationDto {
   @ApiPropertyOptional({
@@ -20,4 +21,12 @@ export class UpdateOrganizationDto {
   @Type(() => UpdateOrganizationActivityDto)
   @ValidateNested()
   activity: UpdateOrganizationActivityDto;
+
+  @ApiPropertyOptional({
+    description: 'Organization Legal',
+  })
+  @IsOptional()
+  @Type(() => UpdateOrganizationLegalDto)
+  @ValidateNested()
+  legal: UpdateOrganizationLegalDto;
 }

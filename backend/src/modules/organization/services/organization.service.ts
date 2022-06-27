@@ -42,6 +42,9 @@ export class OrganizationService {
         domains,
         cities,
       },
+      organizationLegal: {
+        ...createOrganizationDto.legal,
+      },
     });
   }
 
@@ -57,6 +60,9 @@ export class OrganizationService {
         'organizationActivity.area',
         'organizationActivity.domains',
         'organizationActivity.cities',
+        'organizationLegal',
+        'organizationLegal.legalReprezentative',
+        'organizationLegal.directors',
       ],
     });
 

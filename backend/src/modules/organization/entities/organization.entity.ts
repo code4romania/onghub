@@ -4,6 +4,7 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationActivity } from './organization-activity.entity';
 import { OrganizationGeneral } from './organization-general.entity';
+import { OrganizationLegal } from './organization-legal.entity';
 
 @Entity()
 export class Organization extends BaseEntity {
@@ -53,4 +54,20 @@ export class Organization extends BaseEntity {
   )
   @JoinColumn({ name: 'organization_activity_id' })
   organizationActivity: OrganizationActivity;
+
+  @Exclude()
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'organization_legal_id',
+  })
+  organizationLegalId: number;
+
+  @OneToOne(
+    () => OrganizationLegal,
+    (organizationLegal) => organizationLegal.organization,
+    { cascade: true },
+  )
+  @JoinColumn({ name: 'organization_legal_id' })
+  organizationLegal: OrganizationLegal;
 }

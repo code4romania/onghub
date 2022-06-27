@@ -15,6 +15,7 @@ import { Organization } from './entities';
 import {
   OrganizationActivityMock,
   OrganizationGeneralMock,
+  OrganizationLegalMock,
 } from './mocks/organization.mock';
 import { OrganizationService } from './services/organization.service';
 
@@ -32,6 +33,7 @@ export class OrganizationController {
     return this.organizationService.create({
       general: OrganizationGeneralMock,
       activity: OrganizationActivityMock,
+      legal: OrganizationLegalMock,
     });
   }
 
