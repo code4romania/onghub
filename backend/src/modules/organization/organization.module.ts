@@ -5,6 +5,7 @@ import {
   OrganizationGeneral,
   Organization,
   OrganizationActivity,
+  OrganizationLegal,
 } from './entities';
 import {
   OrganizationActivityRepository,
@@ -23,6 +24,7 @@ import {
       Organization,
       OrganizationGeneral,
       OrganizationActivity,
+      OrganizationLegal,
     ]),
   ],
   controllers: [OrganizationController],

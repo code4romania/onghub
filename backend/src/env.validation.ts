@@ -44,6 +44,15 @@ class EnvironmentVariables {
 
   @IsNumber()
   THROTTLE_LIMIT: number;
+
+  @IsString()
+  REDIS_HOST: string;
+
+  @IsNumber()
+  REDIS_PORT: number;
+
+  @IsNumber()
+  CACHE_TTL: number;
 }
 
 export function validate(config: Record<string, unknown>) {

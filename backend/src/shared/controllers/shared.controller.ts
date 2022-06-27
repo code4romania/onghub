@@ -1,5 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  CacheInterceptor,
+  Controller,
+  Get,
+  UseInterceptors,
+} from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
+import { NomenclaturesService } from '../services';
 
 @Controller('')
 export class SharedController {
