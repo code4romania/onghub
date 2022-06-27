@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { TypeORMError } from 'typeorm';
+import { TypeORMError, QueryFailedError } from 'typeorm';
 import { GlobalResponseError } from '../models/global-reponse-error';
 
 @Catch()

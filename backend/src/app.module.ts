@@ -1,26 +1,33 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
+import { CacheConfigService } from './common/config/cache-config.service';
 import { RateLimiterConfigService } from './common/config/rate-limiter-config.service';
-import { TypeOrmConfigService } from './common/config/typeorm-config.service';
+import { ThrottlerGuardByIP } from './common/guards/ThrottlerGuardByIP.guard';
 import { validate } from './env.validation';
-import { OrganizationModule } from './organization/organization.module';
 import { EmailModule } from './email/email.module';
 import { BullModule } from '@nestjs/bull';
+import { OrganizationModule } from './modules/organization/organization.module';
+import { CacheProviderModule } from './providers/cache/cache-provider.module';
+import { DatabaseProviderModule } from './providers/database/database-provider.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
+    // Configuration modules
     LoggerModule.forRoot(),
     ConfigModule.forRoot({ validate, isGlobal: true }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
-    }),
     ThrottlerModule.forRootAsync({
       useClass: RateLimiterConfigService,
     }),
+
+    // Providers
+    DatabaseProviderModule,
+    CacheProviderModule,
+
+    // Business modules
     OrganizationModule,
     EmailModule,
     BullModule.forRoot({
@@ -29,11 +36,12 @@ import { BullModule } from '@nestjs/bull';
         port: 6379,
       },
     }),
+    SharedModule,
   ],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard, // TODO: move this when required
+      useClass: ThrottlerGuardByIP,
     },
   ],
 })

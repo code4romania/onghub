@@ -9,13 +9,13 @@ services:
     environment:
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: onghub
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
   mailcatcher:
     restart: on-failure:10
     image: dockage/mailcatcher:0.7.1
     ports:
       - '1080:1080'
       - '1025:1025'
-  redis:
-    image: redis:latest
-    ports:
-      - 6379:6379
