@@ -75,6 +75,7 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationFinancial.balanceSheets',
+        'organizationReport',
       ],
     });
 
