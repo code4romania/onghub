@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ContactService } from 'src/shared/services';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
+import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationGeneralService {
@@ -10,14 +10,14 @@ export class OrganizationGeneralService {
     private readonly contactService: ContactService,
   ) {}
 
-  public update(
+  public async update(
     id: number,
     updateOrganizationGeneralDto: UpdateOrganizationGeneralDto,
   ) {
     const { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
 
     if (contact) {
-      const contactEntity = this.contactService.get({
+      const contactEntity = await this.contactService.get({
         where: { id: contact.id },
       });
       updateOrganizationData['contact'] = { ...contactEntity, ...contact };

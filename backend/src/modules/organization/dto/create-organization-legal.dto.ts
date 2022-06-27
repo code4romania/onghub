@@ -8,7 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { IPerson } from 'src/common/models/person.interface';
-import { CreateContactDto } from 'src/shared/dto/create-contact.dto';
+import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 
 export class CreateOrganizationLegalDto {
   @ApiProperty({

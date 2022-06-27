@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from 'src/shared/entities';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { Contact } from '../entities';
 
 @Injectable()
 export class ContactService {
@@ -12,5 +12,9 @@ export class ContactService {
 
   get(conditions: FindOneOptions<Contact>) {
     return this.contactRepository.findOne(conditions);
+  }
+
+  getMany(conditions: FindManyOptions<Contact>) {
+    return this.contactRepository.find(conditions);
   }
 }

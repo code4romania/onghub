@@ -6,21 +6,26 @@ import {
   Organization,
   OrganizationActivity,
   OrganizationLegal,
+  Contact,
 } from './entities';
 import {
   OrganizationActivityRepository,
   OrganizationGeneralRepository,
+  OrganizationLegalRepository,
   OrganizationRepository,
 } from './repositories';
 import {
+  ContactService,
   OrganizationActivityService,
   OrganizationGeneralService,
+  OrganizationLegalService,
   OrganizationService,
 } from './services';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
+      Contact,
       Organization,
       OrganizationGeneral,
       OrganizationActivity,
@@ -29,12 +34,15 @@ import {
   ],
   controllers: [OrganizationController],
   providers: [
+    ContactService,
     OrganizationService,
     OrganizationGeneralService,
     OrganizationRepository,
     OrganizationGeneralRepository,
     OrganizationActivityService,
     OrganizationActivityRepository,
+    OrganizationLegalRepository,
+    OrganizationLegalService,
   ],
 })
 export class OrganizationModule {}

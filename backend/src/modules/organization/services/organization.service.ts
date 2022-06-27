@@ -11,6 +11,7 @@ import { Organization } from '../entities';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
+import { OrganizationLegalService } from './organization-legal.service';
 
 @Injectable()
 export class OrganizationService {
@@ -18,6 +19,7 @@ export class OrganizationService {
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
     private readonly organizationActivityService: OrganizationActivityService,
+    private readonly organizationLegalService: OrganizationLegalService,
     private readonly nomenclaturesService: NomenclaturesService,
   ) {}
 
@@ -78,7 +80,7 @@ export class OrganizationService {
 
   /**
    * Update organization will only update one child at the time
-   * TODO: Review the return type for this
+   * TODO: Review if we put this in organization
    */
   public async update(
     id: number,
@@ -106,6 +108,13 @@ export class OrganizationService {
       return this.organizationActivityService.update(
         organization.organizationActivityId,
         updateOrganizationDto.activity,
+      );
+    }
+
+    if (updateOrganizationDto.legal) {
+      return this.organizationLegalService.update(
+        organization.organizationLegalId,
+        updateOrganizationDto.legal,
       );
     }
 

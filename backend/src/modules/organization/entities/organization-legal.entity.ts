@@ -9,8 +9,8 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Organization } from './organization.entity';
-import { Contact } from 'src/shared/entities';
 import { IPerson } from 'src/common/models/person.interface';
+import { Contact } from './contact.entity';
 
 @Entity()
 export class OrganizationLegal extends BaseEntity {
