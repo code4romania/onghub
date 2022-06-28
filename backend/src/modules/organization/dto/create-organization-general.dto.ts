@@ -52,7 +52,6 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @Length(2, 12)
   @Matches(/((RO)?\d+)/)
-  // TODO: fix length and cif starting with lower case letters
   cui: string;
 
   /* Organization Register of Associations and Foundations Number */
