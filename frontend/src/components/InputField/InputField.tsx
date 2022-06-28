@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
-const InputField = (props: { config: InputFieldConfig }) => {
+const InputField = (props: { config: Partial<InputFieldConfig> }) => {
   return (
     <div className="relative">
-      <label htmlFor="email" className="block text-base font-medium text-gray-700">
-        {props.config.label}
-      </label>
+      {props.config.label && (
+        <label htmlFor="email" className="block text-base font-medium text-gray-700">
+          {props.config.label}
+        </label>
+      )}
 
       <div className="mt-1 relative rounded-md">
         {props.config.addOn && props.config.addOn()}

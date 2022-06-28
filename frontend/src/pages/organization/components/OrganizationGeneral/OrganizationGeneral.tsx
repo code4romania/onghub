@@ -4,6 +4,7 @@ import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { Controller, useForm } from 'react-hook-form';
 import InputField from '../../../../components/InputField/InputField';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
+import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 
 const OrganizationGeneral = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -13,15 +14,12 @@ const OrganizationGeneral = () => {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm({ mode: 'onChange', reValidateMode: 'onChange' });
 
   const handleSave = () => {
     setEditMode((mode) => !mode);
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
@@ -43,28 +41,16 @@ const OrganizationGeneral = () => {
         <div className="flex flex-col gap-y-4 w-full">
           <span className="font-bold text-default-gray-800">General</span>
           <Controller
-            name="username"
-            rules={{
-              required: {
-                value: true,
-                message: 'this is required',
-              },
-              minLength: {
-                value: 2,
-                message: 'length is required',
-              },
-            }}
+            name={OrganizationGeneralConfig.name.key}
+            rules={OrganizationGeneralConfig.name.rules}
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
                 <InputField
                   config={{
-                    placeholder: '',
-                    helperText: 'Denumirea oficiala, conform cu Registrul ONG',
-                    name: 'name',
-                    label: 'Denumirea organizatiei*',
-                    error: errors['username']?.message,
-                    type: 'text',
+                    ...OrganizationGeneralConfig.name.config,
+                    name: OrganizationGeneralConfig.name.key,
+                    error: errors[OrganizationGeneralConfig?.name?.key]?.message,
                     defaultValue: value,
                     onChange: onChange,
                   }}
