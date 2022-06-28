@@ -1,9 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsString } from 'class-validator';
 
 export class Investor {
-  @ApiProperty()
+  @IsString()
   name: string;
 
-  @ApiProperty()
+  @IsArray()
   years: number[];
 }

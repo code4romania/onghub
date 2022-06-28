@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEmail,
@@ -16,88 +15,54 @@ import {
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
 export class CreateOrganizationGeneralDto {
-  @ApiProperty({
-    description: 'Organization name',
-    maxLength: 100,
-    required: true,
-  })
+  /* Organization name */
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   name: string;
 
-  @ApiProperty({
-    description: 'Organization alias',
-    maxLength: 50,
-  })
+  /* Organization alias */
   @IsString()
   @IsNotEmpty()
   @MaxLength(50)
   alias: string;
 
-  @ApiProperty({
-    description: 'Organization type',
-    enum: OrganizationType,
-    enumName: 'OrganizationType',
-  })
+  /* Organization type */
   @IsEnum(OrganizationType)
   type: OrganizationType;
 
-  @ApiProperty({
-    description: 'Organization email',
-    maxLength: 50,
-  })
+  /* Organization email */
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(50)
   email: string;
 
-  @ApiProperty({
-    description: 'Organization year created',
-    minimum: 1900,
-    maximum: 2022,
-  })
+  /* Organization year created */
   @Min(1900)
   @Max(2022)
   @IsNumber()
   yearCreated: number;
 
-  @ApiProperty({
-    description: 'Organization CUI/CIF',
-    maxLength: 12,
-    minLength: 2,
-  })
+  /* Organization CUI/CIF */
   @IsString()
   @MaxLength(12)
   @MinLength(2)
   cui: string;
 
-  @ApiProperty({
-    description: 'Organization Register of Associations and Foundations Number',
-    maxLength: 12,
-    minLength: 2,
-  })
+  /* Organization Register of Associations and Foundations Number */
   @IsString()
   @MaxLength(12)
   @MinLength(2)
   rafNumber: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization short description',
-    maxLength: 250,
-    minLength: 200,
-  })
+  /* Organization short description */
   @IsString()
   @IsOptional()
   @MinLength(200)
   @MaxLength(250)
   shortDescription?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization long description',
-    maxLength: 300,
-    minLength: 250,
-  })
+  /* Organization long description */
   @IsString()
   @IsOptional()
   @MinLength(250)
@@ -105,99 +70,70 @@ export class CreateOrganizationGeneralDto {
   description?: string;
 
   // TODO: this should be removed once we have the attachment table
-  @ApiProperty({
-    description: 'Organization logo/link',
-  })
+  /* Organization logo/link */
   @IsString()
   logo: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization website',
-  })
+  /* Organization website */
   @IsString()
   @IsOptional()
   website?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization facbook',
-  })
+  /* Organization facebook */
   @IsString()
   @IsOptional()
   facebook?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization instagram',
-  })
+  /* Organization instagram */
   @IsString()
   @IsOptional()
   instagram?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization twitter',
-  })
+  /* Organization twitter */
   @IsString()
   @IsOptional()
   twitter?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization linkedin',
-  })
+  /* Organization linkedin */
   @IsString()
   @IsOptional()
   linkedin?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization tiktok',
-  })
+  /* Organization tiktok */
   @IsString()
   @IsOptional()
   tiktok?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation website',
-  })
+  /* Organization donation website */
   @IsString()
   @IsOptional()
   donationWebsite?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation redirect link',
-  })
+  /* Organization donation redirect link */
   @IsString()
   @IsOptional()
   redirectLink?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation sms number',
-  })
+  /* Organization donation sms number */
   @IsString()
   @IsOptional()
-  donationSMS: string;
+  donationSMS?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation keyword',
-  })
+  /* Organization donation keyword */
   @IsString()
   @IsOptional()
-  donationKeyword: string;
+  donationKeyword?: string;
 
-  @ApiProperty({
-    description: 'Organization contact person',
-    type: () => CreateContactDto,
-  })
+  /* Organization contact person */
   @Type(() => CreateContactDto)
   @ValidateNested()
   contact: CreateContactDto;
 
-  @ApiProperty({
-    description: 'Organization county id',
-  })
+  /* Organization county id */
   @IsNumber()
   countyId: number;
 
-  @ApiProperty({
-    description: 'Organization city id',
-  })
+  /* Organization city id */
   @IsNumber()
   cityId: number;
 }
