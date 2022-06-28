@@ -9,7 +9,7 @@ import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity';
 import OrganizationData from '../../pages/organization/components/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial';
-import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral';
+import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
 import Users from '../../pages/users/Users';
