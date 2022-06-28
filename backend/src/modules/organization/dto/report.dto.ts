@@ -1,4 +1,4 @@
-import { IsNumber, IsString, Matches, Max, Min } from 'class-validator';
+import { IsNumber, IsString, Matches, Max } from 'class-validator';
 
 export class Report {
   @IsString()
@@ -6,7 +6,6 @@ export class Report {
   link: string;
 
   @IsNumber()
-  @Min(1900)
-  @Max(2022)
+  @Max(new Date().getFullYear())
   year: number;
 }

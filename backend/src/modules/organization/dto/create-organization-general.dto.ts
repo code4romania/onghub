@@ -42,8 +42,7 @@ export class CreateOrganizationGeneralDto {
   email: string;
 
   /* Organization year created */
-  @Min(1900)
-  @Max(2022)
+  @Max(new Date().getFullYear())
   @IsNumber()
   @Length(4, 4)
   yearCreated: number;
