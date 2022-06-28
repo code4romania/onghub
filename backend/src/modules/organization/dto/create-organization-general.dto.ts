@@ -51,7 +51,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization CUI/CIF */
   @IsString()
   @Length(2, 12)
-  @Matches(/(([A-Z]{2})?\d+)|([JBC]\d{2}\/\d+\/\d{4})/)
+  @Matches(/((RO)?\d+)/)
   // TODO: fix length and cif starting with lower case letters
   cui: string;
 
