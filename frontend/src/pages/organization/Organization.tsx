@@ -33,7 +33,7 @@ const Organization = () => {
       </p>
       <div className="pb-6 flex">
         <nav
-          className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:space-x-4 sm:flex-row cursor-pointer select-none"
+          className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
         >
           {ORGANIZATION_TABS.map((tab) => (
@@ -44,7 +44,7 @@ const Organization = () => {
                 selectedTab === tab.id
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab ',
+                'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
               )}
             >
               {tab.name}

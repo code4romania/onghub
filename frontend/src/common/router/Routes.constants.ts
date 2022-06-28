@@ -1,10 +1,10 @@
 import {
   TemplateIcon,
-  SunIcon,
   UserGroupIcon,
   ViewGridAddIcon,
   CollectionIcon,
 } from '@heroicons/react/outline';
+import { SunIcon } from '@heroicons/react/solid';
 
 export const NAVIGATION_ROUTES = [
   { id: 0, name: 'Dashboard', href: '', icon: TemplateIcon },
