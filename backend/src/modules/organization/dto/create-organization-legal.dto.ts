@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  Matches,
+} from 'class-validator';
 import { Person } from 'src/modules/organization/dto/person.dto';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 
@@ -24,5 +30,6 @@ export class CreateOrganizationLegalDto {
   /* Organization statute link */
   @IsOptional()
   @IsString()
+  @Matches(/^(https?:\/\/)/)
   organizationStatute?: string;
 }

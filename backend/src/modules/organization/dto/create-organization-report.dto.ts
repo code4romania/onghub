@@ -1,13 +1,22 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
-import { Investor } from './inverstor.dto';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  Length,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { Investor } from './investor.dto';
 import { Report } from './report.dto';
 
 export class CreateOrganizationReportDto {
   @IsNumber()
+  @Length(1, 5)
   numberOfVolunteers: number;
 
   @IsNumber()
+  @Length(1, 3)
   numberOfContractors: number;
 
   @IsOptional()

@@ -2,20 +2,21 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  Length,
   MaxLength,
-  MinLength,
+  Matches,
 } from 'class-validator';
 
 export class CreateContactDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @Length(10, 100)
+  @Matches(/^[a-zA-Z-]*$/)
   fullName: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(15)
-  @MinLength(10)
+  @Length(10, 10)
   phone: string;
 
   @IsEmail()

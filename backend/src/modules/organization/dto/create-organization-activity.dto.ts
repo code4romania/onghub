@@ -5,6 +5,8 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Length,
+  Matches,
   MaxLength,
 } from 'class-validator';
 
@@ -13,6 +15,8 @@ export class CreateOrganizationActivityDto {
   isPartOfFederation: boolean;
 
   @IsArray()
+  @Length(3, 100, { each: true })
+  @Matches(/^[a-zA-Z-]*$/, { each: true })
   federations: string[];
 
   @IsBoolean()
@@ -20,7 +24,7 @@ export class CreateOrganizationActivityDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @Length(3, 100)
   internationalOrganizationName: string;
 
   @IsBoolean()
@@ -36,7 +40,6 @@ export class CreateOrganizationActivityDto {
   hasBranches: boolean;
 
   @IsOptional()
-  @IsNumber()
   @IsArray()
   branches?: number[];
 

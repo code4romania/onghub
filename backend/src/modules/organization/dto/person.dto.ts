@@ -1,9 +1,10 @@
-import { IsString } from 'class-validator';
+import { IsAlpha, IsString, Matches } from 'class-validator';
 
 export class Person {
   @IsString()
+  @Matches(/^[a-zA-Z-]*$/)
   fullName: string;
 
-  @IsString()
+  @IsAlpha()
   role: string;
 }

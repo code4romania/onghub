@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, OneToOne } from 'typeorm';
-import { Investor } from '../dto/inverstor.dto';
+import { Investor } from '../dto/investor.dto';
 import { Report } from '../dto/report.dto';
 import { Organization } from './organization.entity';
 
