@@ -1,7 +1,7 @@
 export enum CommonErrorCodes {
-  BULLBOARD_001 = 'BULLBOARD_001',
+  E_BULLBOARD_001 = 'BULLBOARD_001',
 }
 
 export const CommonErrorMessages: Record<CommonErrorCodes, string> = {
-  [CommonErrorCodes.BULLBOARD_001]: 'BullBoard could not be initiated',
+  [CommonErrorCodes.E_BULLBOARD_001]: 'BullBoard could not be initiated',
 };

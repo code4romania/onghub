@@ -5,9 +5,12 @@ import { createBullBoard } from '@bull-board/api';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
 import { Logger } from 'nestjs-pino';
-import { CommonErrorMessages } from 'src/common/constants/error-common.constants';
+import {
+  CommonErrorCodes,
+  CommonErrorMessages,
+} from 'src/common/constants/error-common.constants';
 
-export function createQueueMonitoring(app: INestApplication): ExpressAdapter {
+export function createQueueMonitoring(app: INestApplication) {
   try {
     const serverAdapter = new ExpressAdapter();
     serverAdapter.setBasePath('/admin/queues');
@@ -24,6 +27,8 @@ export function createQueueMonitoring(app: INestApplication): ExpressAdapter {
 
     return serverAdapter;
   } catch (err) {
-    app.get(Logger).log(CommonErrorMessages.BULLBOARD_001);
+    app
+      .get(Logger)
+      .log(CommonErrorMessages.BULLBOARD_001, CommonErrorCodes.E_BULLBOARD_001);
   }
 }
