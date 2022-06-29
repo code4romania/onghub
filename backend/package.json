@@ -55,8 +55,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "swagger-ui-express": "^4.4.0",
-    "typeorm": "^0.3.6",
-    "validator": "^13.7.0"
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",
