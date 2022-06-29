@@ -6,17 +6,18 @@ import {
   MaxLength,
   Matches,
 } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateContactDto {
   @IsString()
   @IsNotEmpty()
   @Length(10, 100)
-  @Matches(/^[a-zA-Z-]*$/)
+  @Matches(REGEX.NAME)
   fullName: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(10, 10)
+  @Matches(REGEX.PHONE)
   phone: string;
 
   @IsEmail()

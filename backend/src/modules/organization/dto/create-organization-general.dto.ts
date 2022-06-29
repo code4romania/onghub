@@ -11,17 +11,19 @@ import {
   Matches,
   Max,
   MaxLength,
-  Min,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { REGEX } from 'src/common/constants/patterns.constant';
+
 export class CreateOrganizationGeneralDto {
-  /* Organization name */
+  /* 
+  Organization name 
+  */
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[a-zA-Z-]*$/)
+  @Matches(REGEX.NAME)
   @Length(3, 100)
   name: string;
 
@@ -47,30 +49,36 @@ export class CreateOrganizationGeneralDto {
   @Length(4, 4)
   yearCreated: number;
 
-  /* Organization CUI/CIF */
+  /* 
+  Organization CUI/CIF 
+  @example RO1112345
+  */
   @IsString()
   @Length(2, 12)
-  @Matches(/((RO)?\d+)/)
+  @Matches(REGEX.CUI)
   cui: string;
 
-  /* Organization Register of Associations and Foundations Number */
+  /* 
+  Organization Register of Associations and Foundations Number 
+  @example 1249/A/2020
+  */
   @IsString()
   @Length(10, 12)
-  @Matches(/^[a-zA-Z0-9/]*$/)
+  @Matches(REGEX.RAF)
   rafNumber: string;
 
   /* Organization short description */
   @IsString()
   @IsOptional()
   @Length(200, 250)
-  @Matches(/^[a-zA-Z.]*$/)
+  @Matches(REGEX.DESCRIPTION)
   shortDescription?: string;
 
   /* Organization long description */
   @IsString()
   @IsOptional()
   @Length(250, 500)
-  @Matches(/^[a-zA-Z.]*$/)
+  @Matches(REGEX.DESCRIPTION)
   description?: string;
 
   // TODO: this should be removed once we have the attachment table
@@ -78,52 +86,76 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   logo: string;
 
-  /* Organization website */
+  /* 
+  Organization website 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   website?: string;
 
-  /* Organization facebook */
+  /* 
+  Organization facebook 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   facebook?: string;
 
-  /* Organization instagram */
+  /* 
+  Organization instagram 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   instagram?: string;
 
-  /* Organization twitter */
+  /* 
+  Organization twitter 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   twitter?: string;
 
-  /* Organization linkedin */
+  /* 
+  Organization linkedin 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   linkedin?: string;
 
-  /* Organization tiktok */
+  /* 
+  Organization tiktok 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   tiktok?: string;
 
-  /* Organization donation website */
+  /* 
+  Organization donation website 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   donationWebsite?: string;
 
-  /* Organization donation redirect link */
+  /* 
+  Organization donation redirect link 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   redirectLink?: string;
 
   /* Organization donation sms number */

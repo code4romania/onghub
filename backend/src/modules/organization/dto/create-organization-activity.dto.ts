@@ -7,16 +7,20 @@ import {
   IsString,
   Length,
   Matches,
-  MaxLength,
 } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateOrganizationActivityDto {
   @IsBoolean()
   isPartOfFederation: boolean;
 
+  /* 
+  
+  @example ["Google", "Google-Google", "Google Google"] 
+  */
   @IsArray()
   @Length(3, 100, { each: true })
-  @Matches(/^[a-zA-Z-]*$/, { each: true })
+  @Matches(REGEX.NAME, { each: true })
   federations: string[];
 
   @IsBoolean()

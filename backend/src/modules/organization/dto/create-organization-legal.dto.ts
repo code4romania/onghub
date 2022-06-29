@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 import { Person } from 'src/modules/organization/dto/person.dto';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateOrganizationLegalDto {
   /* Organization legal representative */
@@ -27,9 +28,12 @@ export class CreateOrganizationLegalDto {
   @Type(() => Person)
   others?: Person[];
 
-  /* Organization statute link */
+  /* 
+  Organization statute link
+  @example "http://www.google.com"
+  */
   @IsOptional()
   @IsString()
-  @Matches(/^(https?:\/\/)/)
+  @Matches(REGEX.LINK)
   organizationStatute?: string;
 }

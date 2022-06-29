@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsOptional,
   Length,
-  MaxLength,
   ValidateNested,
 } from 'class-validator';
 import { Investor } from './investor.dto';
