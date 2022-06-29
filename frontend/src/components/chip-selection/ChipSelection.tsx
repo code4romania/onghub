@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import CheckIcon from '@heroicons/react/solid/CheckIcon';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { ChipItem } from '../../common/interfaces/chip-item.interface';
 
 interface ChipSelectionProps {
   title: string;
-  error: string;
   helperText: string;
   values: ChipItem[];
   readonly?: boolean;
+  error?: string;
   defaultItems?: number[];
   onItemsChange: (items: number[]) => void;
 }
@@ -17,11 +18,6 @@ interface ChipProps {
   selected?: boolean;
   readonly?: boolean;
   onClick: (itemId: number) => void;
-}
-
-interface ChipItem {
-  id: number;
-  name: string;
 }
 
 const Chip = ({ item, selected, readonly, onClick }: ChipProps) => (
@@ -65,8 +61,8 @@ const ChipSelection = ({
   };
 
   return (
-    <div className="w-[500px]">
-      <div className="font-normal text-base text-gray-700">{title}</div>
+    <div>
+      <div className="form-item-label">{title}</div>
       <div className="py-2 flex gap-x-2 gap-y-2 flex-wrap">
         {values.map((item) => (
           <Chip
@@ -78,7 +74,9 @@ const ChipSelection = ({
           />
         ))}
       </div>
-      <div className={classNames(error ? 'text-red-500' : 'text-gray-500', 'text-sm font-normal')}>
+      <div
+        className={classNames(error ? 'text-red-500' : 'text-gray-500', 'form-item-helper-text')}
+      >
         {error || helperText}
       </div>
     </div>
