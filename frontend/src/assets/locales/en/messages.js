@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:{"menu.collapse":"Colapse Menu","menu.info":"Informations"}};

@@ -1,0 +1,12 @@
+{
+  "menu.collapse": {
+    "translation": "Restrange meniul",
+    "origin": [["components/menu/Menu.tsx", 104]],
+    "extractedComments": []
+  },
+  "menu.info": {
+    "translation": "Informatii",
+    "origin": [["components/menu/Menu.tsx", 82]],
+    "extractedComments": []
+  }
+}
