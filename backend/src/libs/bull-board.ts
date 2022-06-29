@@ -4,6 +4,8 @@ import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
+import { Logger } from 'nestjs-pino';
+import { CommonErrorMessages } from 'src/common/constants/error-common.constants';
 
 export function createQueueMonitoring(app: INestApplication): ExpressAdapter {
   try {
@@ -22,6 +24,6 @@ export function createQueueMonitoring(app: INestApplication): ExpressAdapter {
 
     return serverAdapter;
   } catch (err) {
-    console.log(err);
+    app.get(Logger).log(CommonErrorMessages.BULLBOARD_001);
   }
 }
