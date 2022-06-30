@@ -3,7 +3,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
-const InputField = (props: { config: Partial<InputFieldConfig> }) => {
+const InputField = (props: { config: Partial<InputFieldConfig>; readonly: boolean }) => {
   return (
     <div className="relative">
       {props.config.label && (
@@ -14,21 +14,24 @@ const InputField = (props: { config: Partial<InputFieldConfig> }) => {
 
       <div className="mt-1 relative rounded-md">
         {props.config.addOn && props.config.addOn()}
-        <input
-          type={props.config.type}
-          name={props.config.name}
-          onChange={props.config.onChange}
-          className={classNames(
-            props.config.error
-              ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
-              : 'focus:ring-indigo-500 focus:border-indigo-500',
-            props.config.addOn ? 'pl-14' : 'pl-4',
-            'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md',
-          )}
-          placeholder={props.config.placeholder}
-          defaultValue={props.config.defaultValue}
-          aria-invalid={props.config.error ? 'true' : 'false'}
-        />
+        {props.readonly && <span>{props.config.defaultValue}</span>}
+        {!props.readonly && (
+          <input
+            type={props.config.type}
+            name={props.config.name}
+            onChange={props.config.onChange}
+            className={classNames(
+              props.config.error
+                ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
+                : 'focus:ring-indigo-500 focus:border-indigo-500',
+              props.config.addOn ? 'pl-14' : 'pl-4',
+              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md',
+            )}
+            placeholder={props.config.placeholder}
+            defaultValue={props.config.defaultValue}
+            aria-invalid={props.config.error ? 'true' : 'false'}
+          />
+        )}
         {props.config.error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />

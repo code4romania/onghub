@@ -5,9 +5,10 @@ import { Controller, useForm } from 'react-hook-form';
 import InputField from '../../../../components/InputField/InputField';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
+import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 
 const OrganizationGeneral = () => {
-  const [isEditMode, setEditMode] = useState(false);
+  const [readonly, setReadonly] = useState(true);
 
   // React Hook Form
   const {
@@ -17,8 +18,9 @@ const OrganizationGeneral = () => {
     reset,
   } = useForm({ mode: 'onChange', reValidateMode: 'onChange' });
 
-  const handleSave = () => {
-    setEditMode((mode) => !mode);
+  const handleSave = (data: any) => {
+    console.log(data);
+    setReadonly((mode) => !mode);
   };
 
   return (
@@ -28,11 +30,11 @@ const OrganizationGeneral = () => {
 
         <button
           type="button"
-          className={classNames(isEditMode ? 'save-button' : 'edit-button')}
-          onClick={handleSave}
+          className={classNames(readonly ? 'edit-button' : 'save-button')}
+          onClick={handleSubmit(handleSave)}
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
+          {readonly ? 'Editeaza' : 'Salveaza modificari'}
         </button>
       </div>
 
@@ -40,24 +42,42 @@ const OrganizationGeneral = () => {
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-y-4 w-full">
           <span className="font-bold text-default-gray-800">General</span>
-          <Controller
-            name={OrganizationGeneralConfig.name.key}
-            rules={OrganizationGeneralConfig.name.rules}
+
+          <RadioGroup
             control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <InputField
-                  config={{
-                    ...OrganizationGeneralConfig.name.config,
-                    name: OrganizationGeneralConfig.name.key,
-                    error: errors[OrganizationGeneralConfig?.name?.key]?.message,
-                    defaultValue: value,
-                    onChange: onChange,
-                  }}
-                />
-              );
+            errors={errors['decide']}
+            readonly={readonly}
+            config={{
+              key: 'decide',
+              label: 'tip organizatie',
+              rules: {
+                required: {
+                  value: true,
+                  message: 'Organization Name is required.',
+                },
+              },
+              radioConfigs: [
+                {
+                  type: 'radio',
+                  name: 'decide',
+                  value: 'no',
+                  label: 'Denumirea organizatiei*',
+                },
+                {
+                  type: 'radio',
+                  name: 'decide',
+                  value: 'yes',
+                  label: 'Denumirea organizatiei*',
+                },
+              ],
             }}
           />
+          {/* <ContactForm
+            control={control}
+            errors={errors}
+            readonly={readonly}
+            configs={[OrganizationGeneralConfig.contact_name, OrganizationGeneralConfig.email]}
+          /> */}
         </div>
         <div className="w-full flex flex-col items-center justify-center">
           <div className="rounded-full border-2 border-gray-100 h-80 w-80 relative flex items-center justify-center">
