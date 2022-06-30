@@ -1,9 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsAlpha, IsString, Matches } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class Person {
-  @ApiProperty()
+  @IsString()
+  @Matches(REGEX.NAME)
   fullName: string;
 
-  @ApiProperty()
+  @IsAlpha()
   role: string;
 }
