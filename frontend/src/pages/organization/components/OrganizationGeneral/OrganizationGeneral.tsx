@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ExclamationCircleIcon, PencilIcon } from '@heroicons/react/solid';
+import React, { useState } from 'react';
+import { PencilIcon } from '@heroicons/react/solid';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
-import { Controller, useForm } from 'react-hook-form';
-import InputField from '../../../../components/InputField/InputField';
-import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
-import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
-import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
-import Select from '../../../../components/Select/Select';
+import { useForm } from 'react-hook-form';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -43,38 +38,6 @@ const OrganizationGeneral = () => {
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-y-4 w-full">
           <span className="font-bold text-default-gray-800">General</span>
-
-          <Controller
-            key={'index'}
-            name={'1'}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Select
-                onChange={onChange}
-                selected={value}
-                label={'label'}
-                collection={[
-                  { id: 1, name: 'Wade Cooper' },
-                  { id: 2, name: 'Arlene Mccoy' },
-                  { id: 3, name: 'Devon Webb' },
-                  { id: 4, name: 'Tom Cook' },
-                  { id: 5, name: 'Tanya Fox' },
-                  { id: 6, name: 'Hellen Schmidt' },
-                  { id: 7, name: 'Caroline Schultz' },
-                  { id: 8, name: 'Mason Heaney' },
-                  { id: 9, name: 'Claudie Smitham' },
-                  { id: 10, name: 'Emil Schaefer' },
-                ]}
-                displayedAttribute={'name'}
-              />
-            )}
-          />
-          {/* <ContactForm
-            control={control}
-            errors={errors}
-            readonly={readonly}
-            configs={[OrganizationGeneralConfig.contact_name, OrganizationGeneralConfig.email]}
-          /> */}
         </div>
         <div className="w-full flex flex-col items-center justify-center">
           <div className="rounded-full border-2 border-gray-100 h-80 w-80 relative flex items-center justify-center">
