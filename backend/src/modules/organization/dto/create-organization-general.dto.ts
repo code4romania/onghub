@@ -1,203 +1,185 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  IsAlpha,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  Length,
+  Matches,
   Max,
   MaxLength,
-  Min,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { REGEX } from 'src/common/constants/patterns.constant';
+
 export class CreateOrganizationGeneralDto {
-  @ApiProperty({
-    description: 'Organization name',
-    maxLength: 100,
-    required: true,
-  })
+  /* 
+  Organization name 
+  */
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @Matches(REGEX.NAME)
+  @Length(3, 100)
   name: string;
 
-  @ApiProperty({
-    description: 'Organization alias',
-    maxLength: 50,
-  })
-  @IsString()
+  /* Organization alias */
+  @IsAlpha()
   @IsNotEmpty()
-  @MaxLength(50)
+  @Length(3, 100)
   alias: string;
 
-  @ApiProperty({
-    description: 'Organization type',
-    enum: OrganizationType,
-    enumName: 'OrganizationType',
-  })
+  /* Organization type */
   @IsEnum(OrganizationType)
   type: OrganizationType;
 
-  @ApiProperty({
-    description: 'Organization email',
-    maxLength: 50,
-  })
+  /* Organization email */
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(50)
   email: string;
 
-  @ApiProperty({
-    description: 'Organization year created',
-    minimum: 1900,
-    maximum: 2022,
-  })
-  @Min(1900)
-  @Max(2022)
+  /* Organization year created */
+  @Max(new Date().getFullYear())
   @IsNumber()
+  @Length(4, 4)
   yearCreated: number;
 
-  @ApiProperty({
-    description: 'Organization CUI/CIF',
-    maxLength: 12,
-    minLength: 2,
-  })
+  /* 
+  Organization CUI/CIF 
+  @example RO1112345
+  */
   @IsString()
-  @MaxLength(12)
-  @MinLength(2)
+  @Length(2, 12)
+  @Matches(REGEX.CUI)
   cui: string;
 
-  @ApiProperty({
-    description: 'Organization Register of Associations and Foundations Number',
-    maxLength: 12,
-    minLength: 2,
-  })
+  /* 
+  Organization Register of Associations and Foundations Number 
+  @example 1249/A/2020
+  */
   @IsString()
-  @MaxLength(12)
-  @MinLength(2)
+  @Length(10, 12)
+  @Matches(REGEX.RAF)
   rafNumber: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization short description',
-    maxLength: 250,
-    minLength: 200,
-  })
+  /* Organization short description */
   @IsString()
   @IsOptional()
-  @MinLength(200)
-  @MaxLength(250)
+  @Length(200, 250)
+  @Matches(REGEX.DESCRIPTION)
   shortDescription?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization long description',
-    maxLength: 300,
-    minLength: 250,
-  })
+  /* Organization long description */
   @IsString()
   @IsOptional()
-  @MinLength(250)
-  @MaxLength(500)
+  @Length(250, 500)
+  @Matches(REGEX.DESCRIPTION)
   description?: string;
 
   // TODO: this should be removed once we have the attachment table
-  @ApiProperty({
-    description: 'Organization logo/link',
-  })
+  /* Organization logo/link */
   @IsString()
   logo: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization website',
-  })
+  /* 
+  Organization website 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   website?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization facbook',
-  })
+  /* 
+  Organization facebook 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   facebook?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization instagram',
-  })
+  /* 
+  Organization instagram 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   instagram?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization twitter',
-  })
+  /* 
+  Organization twitter 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   twitter?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization linkedin',
-  })
+  /* 
+  Organization linkedin 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   linkedin?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization tiktok',
-  })
+  /* 
+  Organization tiktok 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   tiktok?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation website',
-  })
+  /* 
+  Organization donation website 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   donationWebsite?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation redirect link',
-  })
+  /* 
+  Organization donation redirect link 
+  @example http://www.google.com
+  */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.LINK)
   redirectLink?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation sms number',
-  })
+  /* Organization donation sms number */
   @IsString()
   @IsOptional()
-  donationSMS: string;
+  @Length(4, 4)
+  donationSMS?: string;
 
-  @ApiPropertyOptional({
-    description: 'Organization donation keyword',
-  })
-  @IsString()
+  /* Organization donation keyword */
+  @IsAlpha()
   @IsOptional()
-  donationKeyword: string;
+  @Length(10, 10)
+  donationKeyword?: string;
 
-  @ApiProperty({
-    description: 'Organization contact person',
-    type: () => CreateContactDto,
-  })
+  /* Organization contact person */
   @Type(() => CreateContactDto)
   @ValidateNested()
   contact: CreateContactDto;
 
-  @ApiProperty({
-    description: 'Organization county id',
-  })
+  /* Organization county id */
   @IsNumber()
   countyId: number;
 
-  @ApiProperty({
-    description: 'Organization city id',
-  })
+  /* Organization city id */
   @IsNumber()
   cityId: number;
 }

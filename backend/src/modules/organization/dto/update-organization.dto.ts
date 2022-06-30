@@ -1,4 +1,3 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateOrganizationActivityDto } from './update-organization-activity.dto';
@@ -8,45 +7,33 @@ import { UpdateOrganizationLegalDto } from './update-organization-legal.dto';
 import { UpdateOrganizationReportDto } from './update-organization-report.dto';
 
 export class UpdateOrganizationDto {
-  @ApiPropertyOptional({
-    description: 'Organization General',
-  })
+  /* Organization General */
   @IsOptional()
   @Type(() => UpdateOrganizationGeneralDto)
   @ValidateNested()
-  general: UpdateOrganizationGeneralDto;
+  general?: UpdateOrganizationGeneralDto;
 
-  @ApiPropertyOptional({
-    description: 'Organization Activity',
-  })
+  /* Organization Activity */
   @IsOptional()
   @Type(() => UpdateOrganizationActivityDto)
   @ValidateNested()
-  activity: UpdateOrganizationActivityDto;
+  activity?: UpdateOrganizationActivityDto;
 
-  @ApiPropertyOptional({
-    description: 'Organization Legal',
-  })
+  /* Organization Legal */
   @IsOptional()
   @Type(() => UpdateOrganizationLegalDto)
   @ValidateNested()
-  legal: UpdateOrganizationLegalDto;
+  legal?: UpdateOrganizationLegalDto;
 
-  @ApiPropertyOptional({
-    description: 'Organization Financial',
-    type: () => UpdateOrganizationFinancialDto,
-  })
+  /* Organization Financial */
   @IsOptional()
   @Type(() => UpdateOrganizationFinancialDto)
   @ValidateNested()
-  financial: UpdateOrganizationFinancialDto;
+  financial?: UpdateOrganizationFinancialDto;
 
-  @ApiPropertyOptional({
-    description: 'Organization Report',
-    type: () => UpdateOrganizationReportDto,
-  })
+  /* Organization Report */
   @IsOptional()
   @Type(() => UpdateOrganizationReportDto)
   @ValidateNested()
-  report: UpdateOrganizationReportDto;
+  report?: UpdateOrganizationReportDto;
 }

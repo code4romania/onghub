@@ -1,16 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsNumber, Length } from 'class-validator';
 
 export class CreateOrganizationFinancialDto {
-  @ApiProperty()
   @IsNumber()
+  @Length(1, 10)
   numberOfEmployees: number;
 
-  @ApiProperty()
   @IsNumber()
+  @Length(1, 10)
   totalIncome: number;
 
-  @ApiProperty()
   @IsNumber()
+  @Length(1, 10)
   totalExpenses: number;
 }
