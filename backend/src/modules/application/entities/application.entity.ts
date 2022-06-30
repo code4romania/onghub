@@ -22,7 +22,10 @@ export class Application extends BaseEntity {
     { cascade: true },
   )
   @JoinColumn({ name: 'application_type_id' })
-  applicationType: ApplicationType;
+  type: ApplicationType;
+
+  @Column({ type: 'jsonb', name: 'steps' })
+  steps: string[];
 
   @Column({ type: 'text', name: 'short_description' })
   short_description: string;
