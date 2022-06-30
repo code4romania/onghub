@@ -3,10 +3,9 @@ import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
 import {
-  HTTP_ERRORS_MESSAGES,
-  ERROR_CODES,
-} from 'src/modules/organization/constants/errors.constants';
-import { UpdateApplicationDto } from '../dto/update-application.dto';
+  APPLICATION_HTTP_ERRORS_MESSAGES,
+  APPLICATION_ERROR_CODES,
+} from '../constants/application-error.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -30,8 +29,8 @@ export class ApplicationService {
 
     if (!application) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.APPLICATION,
-        errorCode: ERROR_CODES.APP001,
+        message: APPLICATION_HTTP_ERRORS_MESSAGES.APPLICATION,
+        errorCode: APPLICATION_ERROR_CODES.APP001,
       });
     }
 

@@ -31,7 +31,7 @@ export class CreateApplicationDto {
   @IsNotEmpty()
   @Length(200, 250)
   @Matches(REGEX.DESCRIPTION)
-  short_description: string;
+  shortDescription: string;
 
   @IsString()
   @IsNotEmpty()
@@ -42,7 +42,7 @@ export class CreateApplicationDto {
   @IsString()
   @IsNotEmpty()
   @Matches(REGEX.LINK)
-  login_link: string;
+  loginLink: string;
 
   @IsString()
   @IsNotEmpty()

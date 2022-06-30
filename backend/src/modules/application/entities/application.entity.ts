@@ -28,13 +28,13 @@ export class Application extends BaseEntity {
   steps: string[];
 
   @Column({ type: 'text', name: 'short_description' })
-  short_description: string;
+  shortDescription: string;
 
   @Column({ type: 'text', name: 'description' })
   description: string;
 
   @Column({ type: 'text', name: 'login_link' })
-  login_link: string;
+  loginLink: string;
 
   @Column({ type: 'text', name: 'video_link' })
   video: string;
