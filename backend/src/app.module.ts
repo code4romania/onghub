@@ -13,6 +13,7 @@ import { CacheProviderModule } from './providers/cache/cache-provider.module';
 import { DatabaseProviderModule } from './providers/database/database-provider.module';
 import { SharedModule } from './shared/shared.module';
 import { QueueProviderModule } from './providers/queue/queue-provider.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { QueueProviderModule } from './providers/queue/queue-provider.module';
     OrganizationModule,
     MailModule,
     SharedModule,
+    UserModule,
   ],
   providers: [
     {
