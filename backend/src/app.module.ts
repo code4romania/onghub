@@ -14,6 +14,7 @@ import { DatabaseProviderModule } from './providers/database/database-provider.m
 import { SharedModule } from './shared/shared.module';
 import { QueueProviderModule } from './providers/queue/queue-provider.module';
 import { ApplicationModule } from './modules/application/application.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ApplicationModule } from './modules/application/application.module';
     MailModule,
     SharedModule,
     ApplicationModule,
+    UserModule,
   ],
   providers: [
     {
