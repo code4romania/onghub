@@ -1,4 +1,4 @@
-import { IInputConfig } from '../../interfaces/InputConfig.interface';
+import { IInputConfig } from '../../../../components/InputField/InputConfig.interface';
 
 export const OrganizationGeneralConfig: Record<string, IInputConfig> = {
   name: {

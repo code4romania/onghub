@@ -1,4 +1,4 @@
-import { RadioButtonConfig } from './../../../components/RadioButton/RadioButtonConfig.interface';
+import { RadioButtonConfig } from '../RadioButton/RadioButtonConfig.interface';
 
 export interface IRadioGroupConfig {
   key: string;

@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RadioButtonConfig } from './RadioButtonConfig.interface';
 
 const RadioButton = (props: { config: RadioButtonConfig; checked: boolean }) => {
-  useEffect(() => {
-    console.log(props.config.value);
-  }, [props.config.value]);
-
   return (
     <div key={props.config.name} className="flex items-center">
       <input
+        type="radio"
         id={props.config.value}
         name={props.config.name}
-        type={props.config.type}
         value={props.config.value}
         checked={props.checked}
         onChange={props.config.onChange}

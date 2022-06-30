@@ -6,6 +6,7 @@ import InputField from '../../../../components/InputField/InputField';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
+import Select from '../../../../components/Select/Select';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -43,34 +44,30 @@ const OrganizationGeneral = () => {
         <div className="flex flex-col gap-y-4 w-full">
           <span className="font-bold text-default-gray-800">General</span>
 
-          <RadioGroup
+          <Controller
+            key={'index'}
+            name={'1'}
             control={control}
-            errors={errors['decide']}
-            readonly={readonly}
-            config={{
-              key: 'decide',
-              label: 'tip organizatie',
-              rules: {
-                required: {
-                  value: true,
-                  message: 'Organization Name is required.',
-                },
-              },
-              radioConfigs: [
-                {
-                  type: 'radio',
-                  name: 'decide',
-                  value: 'no',
-                  label: 'Denumirea organizatiei*',
-                },
-                {
-                  type: 'radio',
-                  name: 'decide',
-                  value: 'yes',
-                  label: 'Denumirea organizatiei*',
-                },
-              ],
-            }}
+            render={({ field: { onChange, value } }) => (
+              <Select
+                onChange={onChange}
+                selected={value}
+                label={'label'}
+                collection={[
+                  { id: 1, name: 'Wade Cooper' },
+                  { id: 2, name: 'Arlene Mccoy' },
+                  { id: 3, name: 'Devon Webb' },
+                  { id: 4, name: 'Tom Cook' },
+                  { id: 5, name: 'Tanya Fox' },
+                  { id: 6, name: 'Hellen Schmidt' },
+                  { id: 7, name: 'Caroline Schultz' },
+                  { id: 8, name: 'Mason Heaney' },
+                  { id: 9, name: 'Claudie Smitham' },
+                  { id: 10, name: 'Emil Schaefer' },
+                ]}
+                displayedAttribute={'name'}
+              />
+            )}
           />
           {/* <ContactForm
             control={control}

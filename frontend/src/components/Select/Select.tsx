@@ -7,9 +7,9 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 
 const Select = (props: {
   label: string;
-  selected: any;
   collection: any[];
   displayedAttribute: string;
+  selected: any;
   onChange: any;
 }) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import InputField from '../InputField/InputField';
 import { Controller } from 'react-hook-form';
-import { IInputConfig } from '../../pages/organization/interfaces/InputConfig.interface';
+import { IInputConfig } from '../InputField/InputConfig.interface';
 
 const ContactForm = (props: {
   control: any;

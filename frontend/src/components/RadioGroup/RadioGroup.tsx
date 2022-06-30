@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { IRadioGroupConfig } from '../../pages/organization/interfaces/RadioGroupConfig.interface';
+import { IRadioGroupConfig } from './RadioGroupConfig.interface';
 import RadioButton from '../RadioButton/RadioButton';
 
 const RadioGroup = (props: {
