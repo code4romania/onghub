@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
+import { createQueueMonitoring } from 'src/libs/bull-board';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -25,6 +26,8 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new GlobalExceptionFilter());
+
+  app.use('/admin/queues', createQueueMonitoring(app).getRouter());
 
   // Create swagger module only local or development
   if (!(process.env.NODE_ENV === Environment.Production)) {

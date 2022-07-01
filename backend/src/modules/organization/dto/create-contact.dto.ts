@@ -1,27 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  Length,
   MaxLength,
-  MinLength,
+  Matches,
 } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateContactDto {
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @Length(10, 100)
+  @Matches(REGEX.NAME)
   fullName: string;
 
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(15)
-  @MinLength(10)
+  @Matches(REGEX.PHONE)
   phone: string;
 
-  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(50)

@@ -1,9 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString, Matches, Max } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class Report {
-  @ApiProperty()
+  @IsString()
+  @Matches(REGEX.LINK)
   link: string;
 
-  @ApiProperty()
+  @IsNumber()
+  @Max(new Date().getFullYear())
   year: number;
 }

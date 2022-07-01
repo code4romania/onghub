@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsBoolean,
@@ -6,59 +5,54 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  MaxLength,
+  Length,
+  Matches,
 } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateOrganizationActivityDto {
-  @ApiProperty()
   @IsBoolean()
   isPartOfFederation: boolean;
 
-  @ApiProperty()
+  /* 
+  
+  @example ["Google", "Google-Google", "Google Google"] 
+  */
   @IsArray()
+  @Length(3, 100, { each: true })
+  @Matches(REGEX.NAME, { each: true })
   federations: string[];
 
-  @ApiProperty()
   @IsBoolean()
   isPartOfInternationalOrganization: boolean;
 
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @Length(3, 100)
   internationalOrganizationName: string;
 
-  @ApiProperty()
   @IsBoolean()
   isSocialServiceViable: boolean;
 
-  @ApiProperty()
   @IsBoolean()
   offersGrants: boolean;
 
-  @ApiProperty()
   @IsBoolean()
   isPublicIntrestOrganization: boolean;
 
-  @ApiProperty()
   @IsBoolean()
   hasBranches: boolean;
 
-  @ApiPropertyOptional()
   @IsOptional()
-  @IsNumber()
   @IsArray()
   branches?: number[];
 
-  @ApiProperty()
   @IsNumber()
   areaId: number;
 
-  @ApiProperty()
   @IsArray()
   domains: number[];
 
-  @ApiProperty()
   @IsArray()
   cities: number[];
 }
