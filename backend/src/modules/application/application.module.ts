@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationController } from './application.controller';
-import { ApplicationType } from './entities/application-type.entity';
 import { Application } from './entities/application.entity';
 import { ApplicationRepository } from './repositories/application.repository';
-import { ApplicationTypeService } from './services/application-type.service';
 import { ApplicationService } from './services/application.service';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application, ApplicationType])],
+  imports: [TypeOrmModule.forFeature([Application]), SharedModule],
   controllers: [ApplicationController],
-  providers: [
-    ApplicationService,
-    ApplicationRepository,
-    ApplicationTypeService,
-  ],
+  providers: [ApplicationService, ApplicationRepository],
 })
 export class ApplicationModule {}

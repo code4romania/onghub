@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { ApplicationType } from './application-type.entity';
+import { ApplicationType } from '../../../shared/entities/application-type.entity';
 
 @Entity()
 export class Application extends BaseEntity {

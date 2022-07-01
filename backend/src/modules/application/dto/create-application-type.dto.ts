@@ -1,10 +1,9 @@
-import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
-import { REGEX } from 'src/common/constants/patterns.constant';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { BaseEntity } from 'typeorm';
+import { ApplicationTypes } from '../enums/application-type.enum';
 
 export class CreateApplicationTypeDto {
-  @IsString()
+  @IsEnum(ApplicationTypes)
   @IsNotEmpty()
-  @Length(3, 100)
-  @Matches(REGEX.NAME)
-  name: string;
+  name: ApplicationTypes;
 }

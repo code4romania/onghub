@@ -14,10 +14,8 @@ export class ApplicationService {
   public async create(
     createApplicationDto: CreateApplicationDto,
   ): Promise<Application> {
-    const { type, ...createApplicationData } = createApplicationDto;
     return this.applicationRepository.save({
-      type,
-      ...createApplicationData,
+      ...createApplicationDto,
     });
   }
 
