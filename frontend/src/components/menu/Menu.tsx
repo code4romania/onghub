@@ -8,6 +8,7 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NAVIGATION_ROUTES } from '../../common/router/Routes.constants';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { Trans } from '@lingui/react';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              {'Informatii'}
+              <Trans id="menu.info" />
             </span>
           </a>
           <a
@@ -96,7 +97,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              {'Restrange meniu'}
+              <Trans id="menu.collapse" />
             </span>
           </a>
         </div>
