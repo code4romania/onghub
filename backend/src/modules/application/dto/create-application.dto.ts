@@ -1,13 +1,12 @@
-import { Type } from 'class-transformer';
 import {
-  ValidateNested,
   IsString,
   IsNotEmpty,
   Matches,
   Length,
   IsArray,
+  IsEnum,
+  IsNumber,
 } from 'class-validator';
-import { CreateApplicationTypeDto } from './create-application-type.dto';
 import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateApplicationDto {
@@ -17,9 +16,8 @@ export class CreateApplicationDto {
   @Length(3, 100)
   name: string;
 
-  @Type(() => CreateApplicationTypeDto)
-  @ValidateNested()
-  type: CreateApplicationTypeDto;
+  @IsNumber()
+  typeId: number;
 
   @IsArray()
   @IsNotEmpty()

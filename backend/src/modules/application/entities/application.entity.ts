@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { ApplicationType } from '../../../shared/entities/application-type.entity';
 
 @Entity()
@@ -12,16 +12,16 @@ export class Application extends BaseEntity {
   @Column({
     type: 'integer',
     nullable: true,
-    name: 'application_type_id',
+    name: 'type_id',
   })
-  applicationTypeId: number;
+  typeId: number;
 
-  @OneToOne(
+  @ManyToOne(
     () => ApplicationType,
     (applicationType) => applicationType.application,
     { cascade: true },
   )
-  @JoinColumn({ name: 'application_type_id' })
+  @JoinColumn({ name: 'type_id' })
   type: ApplicationType;
 
   @Column({ type: 'jsonb', name: 'steps' })

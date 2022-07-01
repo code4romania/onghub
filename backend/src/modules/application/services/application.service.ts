@@ -6,16 +6,25 @@ import {
   APPLICATION_HTTP_ERRORS_MESSAGES,
   APPLICATION_ERROR_CODES,
 } from '../constants/application-error.constants';
+import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly applicationRepository: ApplicationRepository) {}
+  constructor(
+    private readonly applicationRepository: ApplicationRepository,
+    private readonly nomenclaturesService: NomenclaturesService,
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
   ): Promise<Application> {
+    const type = await this.nomenclaturesService.getAppType({
+      where: { id: createApplicationDto.typeId },
+    });
+
     return this.applicationRepository.save({
       ...createApplicationDto,
+      type,
     });
   }
 

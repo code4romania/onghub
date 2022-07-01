@@ -1,14 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { PartialType } from '@nestjs/swagger';
 import { CreateApplicationDto } from './create-application.dto';
-import { UpdateApplicationTypeDto } from './update-application-type.dto';
 
-export class UpdateApplicationDto extends PartialType(
-  OmitType(CreateApplicationDto, ['type']),
-) {
-  @IsOptional()
-  @Type(() => UpdateApplicationTypeDto)
-  @ValidateNested()
-  type?: UpdateApplicationTypeDto;
-}
+export class UpdateApplicationDto extends PartialType(CreateApplicationDto) {}

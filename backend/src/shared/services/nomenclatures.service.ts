@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { City, Domain } from 'src/shared/entities';
-import { FindManyOptions, Repository, FindOneOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { ApplicationType } from '../entities/application-type.entity';
 
 @Injectable()
@@ -24,6 +24,6 @@ export class NomenclaturesService {
   }
 
   public getAppType(conditions: FindOneOptions<ApplicationType>) {
-    return this.applicationTypeRepository.find(conditions);
+    return this.applicationTypeRepository.findOne(conditions);
   }
 }
