@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { UpdateResult } from 'typeorm';
+import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserFilterDto } from '../dto/user-filter.dto';
+import { User } from '../entities/user.entity';
 import { Role } from '../enums/role.enum';
 import { UserRepository } from '../repositories/user.repository';
 
@@ -11,7 +16,7 @@ export class UserService {
   /**
    * Create new employee
    */
-  public async create(createUserDto: CreateUserDto) {
+  public async create(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.userRepository.save({
       ...createUserDto,
       role: Role.EMPLOYEE,
@@ -22,16 +27,19 @@ export class UserService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  public async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult> {
+    return this.userRepository.update({ id }, updateUserDto);
+  }
+
+  public async findAll(options: UserFilterDto): Promise<Pagination<User>> {
+    return this.userRepository.getManyPaginated(USER_FILTERS_CONFIG, options);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
   }
 
   remove(id: number) {
