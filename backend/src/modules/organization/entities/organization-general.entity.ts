@@ -21,6 +21,9 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'email' })
   email: string;
 
+  @Column({ type: 'text', name: 'phone' })
+  phone: string;
+
   @Column({ type: 'integer', name: 'year_created' })
   yearCreated: number;
 

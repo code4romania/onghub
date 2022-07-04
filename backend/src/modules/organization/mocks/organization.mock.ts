@@ -5,6 +5,7 @@ export const OrganizationGeneralMock = {
   alias: 'OrgTest',
   type: OrganizationType.ASSOCIATION,
   email: 'organization12@email.com',
+  phone: '1234567890',
   yearCreated: 2022,
   cui: '1234566123',
   rafNumber: 'ABCD12345123',

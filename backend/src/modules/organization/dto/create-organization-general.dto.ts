@@ -43,6 +43,12 @@ export class CreateOrganizationGeneralDto {
   @MaxLength(50)
   email: string;
 
+  /* Organization phone */
+  @IsString()
+  @IsNotEmpty()
+  @Matches(REGEX.PHONE)
+  phone: string;
+
   /* Organization year created */
   @Max(new Date().getFullYear())
   @IsNumber()
