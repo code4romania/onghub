@@ -48,7 +48,7 @@ export class ApplicationService {
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
-  ): Promise<any> {
+  ): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },
     });
