@@ -7,6 +7,7 @@ import {
   APPLICATION_ERROR_CODES,
 } from '../constants/application-error.constants';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
+import { UpdateApplicationDto } from '../dto/update-application.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -42,5 +43,26 @@ export class ApplicationService {
     }
 
     return application;
+  }
+
+  public async update(
+    id: number,
+    updateApplicationDto: UpdateApplicationDto,
+  ): Promise<Application> {
+    const application = await this.applicationRepository.get({
+      where: { id },
+    });
+
+    if (!application) {
+      throw new NotFoundException({
+        message: APPLICATION_HTTP_ERRORS_MESSAGES.APPLICATION,
+        errorCode: APPLICATION_ERROR_CODES.APP002,
+      });
+    }
+
+    return this.applicationRepository.save({
+      id,
+      ...updateApplicationDto,
+    });
   }
 }

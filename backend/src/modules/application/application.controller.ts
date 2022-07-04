@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { CreateApplicationDto } from './dto/create-application.dto';
+import { UpdateApplicationDto } from './dto/update-application.dto';
 import { Application } from './entities/application.entity';
 import { ApplicationService } from './services/application.service';
 
@@ -19,5 +20,14 @@ export class ApplicationController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Application> {
     return this.applicationService.findOne(+id);
+  }
+
+  @ApiBody({ type: UpdateApplicationDto })
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateApplicationDto: UpdateApplicationDto,
+  ) {
+    return this.applicationService.update(+id, updateApplicationDto);
   }
 }
