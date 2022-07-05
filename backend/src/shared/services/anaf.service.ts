@@ -19,8 +19,6 @@ export class AnafService {
       return null;
     }
 
-    companyCUI = companyCUI.replace('RO', '');
-
     const currentDate: string = new Date().toISOString().split('T')[0];
 
     const payload: IAnafRequest = {
