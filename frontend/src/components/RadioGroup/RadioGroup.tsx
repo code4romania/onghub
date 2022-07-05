@@ -37,6 +37,11 @@ const RadioGroup = (props: {
           }}
         />
       )}
+      {!props.errors && (
+        <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+          {props.config.helperText}
+        </p>
+      )}
       {!props.readonly && props.errors && (
         <p className="mt-1 text-sm text-red-600" id="email-error">
           {props.errors.message}

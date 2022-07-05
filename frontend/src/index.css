@@ -40,3 +40,11 @@
     @apply inline-flex items-center px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-yellow-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
   }
 }
+
+@layer utilities {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

@@ -13,7 +13,7 @@ const InputField = (props: { config: Partial<InputFieldConfig>; readonly: boolea
       )}
 
       <div className="mt-1 relative rounded-md">
-        {props.config.addOn && props.config.addOn()}
+        {!props.readonly && props.config.addOn && props.config.addOn()}
         {props.readonly && <span>{props.config.defaultValue}</span>}
         {!props.readonly && (
           <input

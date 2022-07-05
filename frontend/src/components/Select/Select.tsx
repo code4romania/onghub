@@ -11,11 +11,10 @@ const Select = (props: {
     collection: any[];
     displayedAttribute: string;
   };
-  selected: any;
+  selected?: any;
   readonly: boolean;
   onChange: any;
 }) => {
-  console.log(props.config);
   return (
     <div className="relative w-full">
       <Listbox value={props.selected} onChange={props.onChange}>

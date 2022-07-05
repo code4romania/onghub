@@ -3,7 +3,7 @@
 import { ChangeEventHandler } from 'react';
 
 export interface InputFieldConfig {
-  type: 'text' | 'password' | 'number' | undefined;
+  type: 'text' | 'password' | 'number' | 'tel' | undefined;
   label: string | undefined;
   name: string | undefined;
   placeholder?: string;
