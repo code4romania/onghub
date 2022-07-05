@@ -3,7 +3,8 @@ import {
   IsArray,
   IsNumber,
   IsOptional,
-  Length,
+  Max,
+  Min,
   ValidateNested,
 } from 'class-validator';
 import { Investor } from './investor.dto';
@@ -11,11 +12,13 @@ import { Report } from './report.dto';
 
 export class CreateOrganizationReportDto {
   @IsNumber()
-  @Length(1, 5)
+  @Min(0)
+  @Max(99999)
   numberOfVolunteers: number;
 
   @IsNumber()
-  @Length(1, 3)
+  @Min(0)
+  @Max(999)
   numberOfContractors: number;
 
   @IsOptional()

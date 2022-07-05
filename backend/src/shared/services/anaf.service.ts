@@ -12,7 +12,9 @@ import { map, catchError } from 'rxjs/operators';
 @Injectable()
 export class AnafService {
   private readonly logger = new Logger(AnafService.name);
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) {
+    this.check();
+  }
 
   public async checkCompany(companyCUI: string): Promise<IAnafCompany> {
     if (!companyCUI || companyCUI.length < 6) {
@@ -45,5 +47,9 @@ export class AnafService {
     } else {
       return company;
     }
+  }
+
+  async check() {
+    console.log(await this.checkCompany('RO12750278'));
   }
 }

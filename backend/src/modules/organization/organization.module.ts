@@ -8,7 +8,6 @@ import {
   OrganizationLegal,
   Contact,
   OrganizationFinancial,
-  BalanceSheet,
   OrganizationReport,
 } from './entities';
 import {
@@ -33,7 +32,6 @@ import { OrganizationReportService } from './services/organization-report.servic
   imports: [
     TypeOrmModule.forFeature([
       Contact,
-      BalanceSheet,
       Organization,
       OrganizationGeneral,
       OrganizationActivity,

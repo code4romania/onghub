@@ -1,7 +1,10 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
-import { BalanceSheet } from './balance-sheet.entity';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { Organization } from './organization.entity';
+import { Income } from '../dto/income.dto';
+import { Expense } from '../dto/expense.dto';
+import { FinancialType } from '../enums/organization-financial-type.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 
 @Entity()
 export class OrganizationFinancial extends BaseEntity {
@@ -11,18 +14,21 @@ export class OrganizationFinancial extends BaseEntity {
   )
   organization: Organization;
 
+  @Column({ type: 'enum', enum: FinancialType, name: 'financial_type' })
+  type: FinancialType;
+
   @Column({ type: 'integer', name: 'number_of_employees', default: 0 })
   numberOfEmployees: number;
 
-  @Column({ type: 'float', name: 'total_income', default: 0 })
-  totalIncome: number;
+  @Column({ type: 'integer', name: 'year' })
+  year: number;
 
-  @Column({ type: 'float', name: 'total_expenses', default: 0 })
-  totalExpenses: number;
+  @Column({ type: 'integer', name: 'total' })
+  total: number;
 
-  @OneToMany(
-    (type) => BalanceSheet,
-    (balanceSheet) => balanceSheet.organizationFinancial,
-  )
-  balanceSheets: BalanceSheet[];
+  @Column({ type: 'enum', enum: CompletionStatus, name: 'completion_status' })
+  status: CompletionStatus;
+
+  @Column({ type: 'jsonb', name: 'data', nullable: true })
+  data: Income | Expense;
 }

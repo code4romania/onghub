@@ -46,7 +46,6 @@ export class CreateOrganizationGeneralDto {
   /* Organization year created */
   @Max(new Date().getFullYear())
   @IsNumber()
-  @Length(4, 4)
   yearCreated: number;
 
   /* 
