@@ -26,7 +26,12 @@ export class OrganizationFinancial extends BaseEntity {
   @Column({ type: 'integer', name: 'total' })
   total: number;
 
-  @Column({ type: 'enum', enum: CompletionStatus, name: 'completion_status' })
+  @Column({
+    type: 'enum',
+    enum: CompletionStatus,
+    name: 'completion_status',
+    default: CompletionStatus.NOT_COMPLETED,
+  })
   status: CompletionStatus;
 
   @Column({ type: 'jsonb', name: 'data', nullable: true })

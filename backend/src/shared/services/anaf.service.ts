@@ -1,13 +1,8 @@
-import {
-  IAnafCompany,
-  IAnafHttpResponse,
-  IAnafRequest,
-} from '../interfaces/anaf.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ANAF_URL } from 'src/common/constants/anaf.constants';
-import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { lastValueFrom, of } from 'rxjs';
+import { map, catchError, find } from 'rxjs/operators';
 
 @Injectable()
 export class AnafService {
@@ -16,40 +11,48 @@ export class AnafService {
     this.check();
   }
 
-  public async checkCompany(companyCUI: string): Promise<IAnafCompany> {
+  public async checkCompany(companyCUI: string, year: number): Promise<any> {
     if (!companyCUI || companyCUI.length < 6) {
       return null;
     }
 
     companyCUI = companyCUI.replace('RO', '');
 
-    const currentDate: string = new Date().toISOString().split('T')[0];
+    //const currentDate: string = new Date().toISOString().split('T')[0];
 
-    const payload: IAnafRequest = {
-      cui: companyCUI,
-      data: currentDate,
+    const companyData = {
+      income: '',
+      expense: '',
+      employees: '',
     };
 
-    const company: IAnafCompany | null = await this.httpService
-      .post<IAnafHttpResponse>(ANAF_URL, [payload])
+    const company = this.httpService
+      .get(ANAF_URL + `?an=${year}&cui=${companyCUI}`)
       .pipe(
-        map((res) => res.data?.found[0]),
+        map((res) =>
+          res.data?.i.find((obj) => {
+            obj.indicator === 'I38';
+            obj.indicator === 'I40';
+            obj.indicator === 'I46';
+          }),
+        ),
         catchError((err) => {
           this.logger.error('ANAF error');
           return of(null);
         }),
-      )
-      .toPromise();
+      );
+
+    //companyData.income = company.
 
     // check if either the company or its name is empty string (due to invalid CUI)
-    if (!company || !company.denumire.length) {
+    if (!company) {
       return null;
     } else {
-      return company;
+      return lastValueFrom(company);
     }
   }
 
   async check() {
-    console.log(await this.checkCompany('RO12750278'));
+    console.log(await this.checkCompany('36528296', 2021));
   }
 }
