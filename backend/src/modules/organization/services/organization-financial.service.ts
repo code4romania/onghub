@@ -13,11 +13,11 @@ export class OrganizationFinancialService {
     id: number,
     updateOrganizationFinancialDto: UpdateOrganizationFinancialDto,
   ) {
-    return this.organizationFinancialRepository.update(
-      { id },
-      {
-        ...updateOrganizationFinancialDto,
-      },
-    );
+    // return this.organizationFinancialRepository.update(
+    //   { id },
+    //   {
+    //     ...updateOrganizationFinancialDto,
+    //   },
+    // );
   }
 }

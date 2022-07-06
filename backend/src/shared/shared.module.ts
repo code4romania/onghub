@@ -15,6 +15,6 @@ import { HttpModule } from '@nestjs/axios';
   ],
   controllers: [SharedController, NomenclaturesController],
   providers: [NomenclaturesService, AnafService],
-  exports: [NomenclaturesService],
+  exports: [NomenclaturesService, AnafService],
 })
 export class SharedModule {}

@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Organization } from './organization.entity';
 import { Income } from '../dto/income.dto';
 import { Expense } from '../dto/expense.dto';
@@ -8,7 +8,7 @@ import { CompletionStatus } from '../enums/organization-financial-completion.enu
 
 @Entity()
 export class OrganizationFinancial extends BaseEntity {
-  @OneToOne(
+  @ManyToOne(
     () => Organization,
     (organization) => organization.organizationFinancial,
   )
