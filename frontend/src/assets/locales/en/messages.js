@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"menu.collapse":"Colapse Menu","menu.info":"Informations"}};
+/*eslint-disable*/module.exports={messages:{"menu.collapse":"Colapse Menu","menu.info":"Informations","pagination.rangeSeparatorText":"din","pagination.rowsPerPageText":"Randuri pe pagina","table.empty":"table.empty"}};

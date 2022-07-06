@@ -1,12 +1,54 @@
 {
   "menu.collapse": {
     "translation": "Colapse Menu",
-    "origin": [["components/menu/Menu.tsx", 104]],
+    "origin": [
+      [
+        "components/menu/Menu.tsx",
+        100
+      ]
+    ],
     "extractedComments": []
   },
   "menu.info": {
     "translation": "Informations",
-    "origin": [["components/menu/Menu.tsx", 82]],
+    "origin": [
+      [
+        "components/menu/Menu.tsx",
+        78
+      ]
+    ],
+    "extractedComments": []
+  },
+  "pagination.rangeSeparatorText": {
+    "translation": "din",
+    "origin": [
+      [
+        "components/data-table/DataTableComponent.tsx",
+        36
+      ]
+    ],
+    "extractedComments": [],
+    "obsolete": true
+  },
+  "pagination.rowsPerPageText": {
+    "translation": "Randuri pe pagina",
+    "origin": [
+      [
+        "components/data-table/DataTableComponent.tsx",
+        35
+      ]
+    ],
+    "extractedComments": [],
+    "obsolete": true
+  },
+  "table.empty": {
+    "translation": "",
+    "origin": [
+      [
+        "components/data-table/EmptyContent.tsx",
+        7
+      ]
+    ],
     "extractedComments": []
   }
 }

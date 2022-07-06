@@ -28,6 +28,10 @@
 }
 
 @layer components {
+  .rdt_TableCellw {
+    @apply bg-gray-50 text-green-400;
+  }
+
   .main-menu-item {
     @apply h-10 text-gray-50 hover:bg-menu-green/[0.15]  hover:text-green flex items-center px-0 py-2 font-medium rounded-md;
   }
@@ -55,4 +59,24 @@
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+/* data table overrides */
+.rdt_TableHeadRow > .rdt_TableCol {
+  @apply bg-gray-50 text-sm font-semibold text-gray-900 border-gray-300;
+}
+
+.rdt_TableHeadRow > .rdt_TableCol > div {
+  @apply py-3.5 pl-2 pr-3;
+}
+
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
+  @apply whitespace-nowrap py-3.5 pl-2 pr-2 text-sm font-medium text-gray-900 sm:pl-2;
+}
+
+.rdt_TableCol_Sortable svg {
+  @apply ml-1;
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
 }

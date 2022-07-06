@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"menu.collapse":"Restrange meniul","menu.info":"Informatii"}};
+/*eslint-disable*/module.exports={messages:{"menu.collapse":"Restrange meniul","menu.info":"Informatii","pagination.rangeSeparatorText":"din","pagination.rowsPerPageText":"Randuri pe pagina","table.empty":"Nu exista date in tabel"}};
