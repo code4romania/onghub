@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ANAF_URL } from 'src/common/constants/anaf.constants';
 import { lastValueFrom, of } from 'rxjs';
-import { map, catchError, find } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AnafService {
@@ -44,18 +44,17 @@ export class AnafService {
     };
 
     const income = anafData.find((obj) => {
-      return obj.indicator === 'I14';
+      return obj.indicator === 'I38';
     });
-    console.log(income);
     companyData.income = income['val_indicator'];
 
     const expense = anafData.find((obj) => {
-      return obj.indicator === 'I15';
+      return obj.indicator === 'I40';
     });
     companyData.expense = expense['val_indicator'];
 
     const employees = anafData.find((obj) => {
-      return obj.indicator === 'I20';
+      return obj.indicator === 'I46';
     });
     companyData.employees = employees['val_indicator'];
 
