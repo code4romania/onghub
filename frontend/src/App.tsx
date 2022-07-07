@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import Router from './common/router/Router';
 import { AuthContext } from './contexts/AuthContext';
@@ -12,6 +13,8 @@ i18n.load({
 });
 i18n.activate('ro');
 
+const queryClient = new QueryClient();
+
 const App = () => {
   const [authState, setAuthState] = useState({
     isAuthenticated: true,
@@ -19,11 +22,17 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={{ ...authState, setAuthState }}>
+<<<<<<< Updated upstream
       <LocaleProvider>
         <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
           <Router />
         </I18nProvider>
       </LocaleProvider>
+=======
+      <QueryClientProvider client={queryClient}>
+        <Router />
+      </QueryClientProvider>
+>>>>>>> Stashed changes
     </AuthContext.Provider>
   );
 };

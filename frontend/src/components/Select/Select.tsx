@@ -12,6 +12,7 @@ const Select = (props: {
     displayedAttribute: string;
   };
   selected?: any;
+  error?: string | any;
   readonly: boolean;
   onChange: any;
 }) => {
@@ -25,14 +26,19 @@ const Select = (props: {
             </Listbox.Label>
             {props.readonly && (
               <span className="text-normal font-normal text-gray-900">
-                {props.selected && props.selected[props.config.displayedAttribute]}
+                {props.selected &&
+                  (props.config.displayedAttribute
+                    ? props.selected[props.config.displayedAttribute]
+                    : props.selected)}
               </span>
             )}
             {!props.readonly && (
               <div className=" relative">
                 <Listbox.Button className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                   <span className="block truncate">
-                    {props.selected?.[props.config.displayedAttribute] || ''}
+                    {(props.config.displayedAttribute && props.selected
+                      ? props.selected[props.config.displayedAttribute]
+                      : props.selected) || ''}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -47,9 +53,9 @@ const Select = (props: {
                   leaveTo="opacity-0"
                 >
                   <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                    {props.config.collection.map((item) => (
+                    {props.config.collection.map((item, index) => (
                       <Listbox.Option
-                        key={item.id}
+                        key={index}
                         className={({ active }) =>
                           classNames(
                             active ? 'text-white bg-blue-500' : 'text-gray-900',
@@ -66,7 +72,9 @@ const Select = (props: {
                                 'block truncate',
                               )}
                             >
-                              {item[props.config.displayedAttribute]}
+                              {props.config.displayedAttribute
+                                ? item[props.config.displayedAttribute]
+                                : item}
                             </span>
 
                             {selected ? (
@@ -90,6 +98,11 @@ const Select = (props: {
           </>
         )}
       </Listbox>
+      {props.error && (
+        <p className="mt-1 text-sm text-red-600" id="email-error">
+          {props.error}
+        </p>
+      )}
     </div>
   );
 };

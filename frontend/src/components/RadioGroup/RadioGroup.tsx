@@ -13,15 +13,20 @@ const RadioGroup = (props: {
   return (
     <div>
       <span className="flex text-normal text-gray-700 font-normal mb-2">{props.config.label}</span>
-      {!props.readonly && (
-        <Controller
-          name={props.config.key}
-          rules={props.config.rules}
-          control={props.control}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <fieldset className="flex flex-col gap-y-4 gap-x-4">
-                {props.config.radioConfigs.map((radioConfig, index) => (
+      <Controller
+        name={props.config.key}
+        rules={props.config.rules}
+        control={props.control}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <fieldset className="flex flex-col gap-y-4 gap-x-4">
+              {props.readonly && (
+                <span>
+                  {props.config.radioConfigs.find((item) => item.value === value)?.label || ''}
+                </span>
+              )}
+              {!props.readonly &&
+                props.config.radioConfigs.map((radioConfig, index) => (
                   <RadioButton
                     config={{
                       ...radioConfig,
@@ -32,11 +37,10 @@ const RadioGroup = (props: {
                     key={index}
                   />
                 ))}
-              </fieldset>
-            );
-          }}
-        />
-      )}
+            </fieldset>
+          );
+        }}
+      />
       {!props.errors && (
         <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
           {props.config.helperText}
