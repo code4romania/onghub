@@ -16,8 +16,6 @@ export class AnafService {
 
     companyCUI = companyCUI.replace('RO', '');
 
-    //const currentDate = new Date().getFullYear();
-
     const company = this.httpService
       .get(ANAF_URL + `?an=${year}&cui=${companyCUI}`)
       .pipe(
