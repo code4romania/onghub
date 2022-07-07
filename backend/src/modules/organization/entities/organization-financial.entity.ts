@@ -17,14 +17,19 @@ export class OrganizationFinancial extends BaseEntity {
   @Column({ type: 'enum', enum: FinancialType, name: 'financial_type' })
   type: FinancialType;
 
-  @Column({ type: 'integer', name: 'number_of_employees', default: 0 })
-  numberOfEmployees: number;
+  @Column({
+    type: 'integer',
+    name: 'number_of_employees',
+    default: 0,
+    nullable: true,
+  })
+  numberOfEmployees?: number;
 
   @Column({ type: 'integer', name: 'year' })
   year: number;
 
-  @Column({ type: 'integer', name: 'total' })
-  total: number;
+  @Column({ type: 'integer', name: 'total', nullable: true })
+  total?: number;
 
   @Column({
     type: 'enum',
@@ -35,5 +40,5 @@ export class OrganizationFinancial extends BaseEntity {
   status: CompletionStatus;
 
   @Column({ type: 'jsonb', name: 'data', nullable: true })
-  data: Income | Expense;
+  data?: Income | Expense;
 }

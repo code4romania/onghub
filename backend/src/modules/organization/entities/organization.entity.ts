@@ -73,13 +73,13 @@ export class Organization extends BaseEntity {
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
 
-  @Exclude()
-  @Column({
-    type: 'jsonb',
-    nullable: true,
-    name: 'organization_financial_ids',
-  })
-  organizationFinancialId: number[];
+  // @Exclude()
+  // @Column({
+  //   type: 'jsonb',
+  //   nullable: true,
+  //   name: 'organization_financial_ids',
+  // })
+  // organizationFinancialId: number[];
 
   @OneToMany(
     () => OrganizationFinancial,
@@ -87,7 +87,7 @@ export class Organization extends BaseEntity {
     { cascade: true },
   )
   @JoinColumn({ name: 'organization_financial_id' })
-  organizationFinancial: OrganizationFinancial;
+  organizationFinancial: OrganizationFinancial[];
 
   @Exclude()
   @Column({

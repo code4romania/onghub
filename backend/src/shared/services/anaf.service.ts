@@ -44,17 +44,18 @@ export class AnafService {
     };
 
     const income = anafData.find((obj) => {
-      return obj.indicator === 'I38';
+      return obj.indicator === 'I14';
     });
+    console.log(income);
     companyData.income = income['val_indicator'];
 
     const expense = anafData.find((obj) => {
-      return obj.indicator === 'I40';
+      return obj.indicator === 'I15';
     });
     companyData.expense = expense['val_indicator'];
 
     const employees = anafData.find((obj) => {
-      return obj.indicator === 'I46';
+      return obj.indicator === 'I20';
     });
     companyData.employees = employees['val_indicator'];
 

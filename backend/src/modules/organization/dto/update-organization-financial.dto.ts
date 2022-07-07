@@ -7,5 +7,9 @@ export class UpdateOrganizationFinancialDto extends PartialType(
 ) {
   @IsNumber()
   @IsOptional()
-  organizationFinancialId: number;
+  id: number;
+
+  @IsNumber()
+  @IsOptional()
+  generalId: number;
 }

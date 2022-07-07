@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AnafService } from 'src/shared/services';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
@@ -15,9 +14,6 @@ import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
-import { FinancialType } from '../enums/organization-financial-type.enum';
-import { Income } from '../dto/income.dto';
-import { Expense } from '../dto/expense.dto';
 
 @Injectable()
 export class OrganizationService {
@@ -29,7 +25,6 @@ export class OrganizationService {
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
-    private readonly anafService: AnafService,
   ) {}
 
   public async create(
@@ -43,27 +38,7 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.cities) },
     });
 
-    const currentYear = new Date().getFullYear();
-
-    const anafData = await this.anafService.processAnafData(
-      createOrganizationDto.general.cui,
-      currentYear,
-    );
-    let totalMoney: number;
-    let employees: number;
-    let dataType: Income | Expense;
-    if (anafData === null) {
-      totalMoney = -1;
-      employees = -1;
-    } else if (createOrganizationDto.financial.type === FinancialType.EXPENSE) {
-      totalMoney = anafData.expense;
-      dataType = createOrganizationDto.financial.expense;
-      employees = anafData.employees;
-    } else {
-      totalMoney = anafData.income;
-      dataType = createOrganizationDto.financial.income;
-      employees = anafData.employees;
-    }
+    const currentYear = new Date().getFullYear() - 1;
 
     // create the parent entry with default values
     return this.organizationRepository.save({
@@ -78,13 +53,15 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial: {
-        type: createOrganizationDto.financial.type,
-        numberOfEmployees: employees,
-        total: totalMoney,
-        year: currentYear,
-        data: dataType,
-      },
+      organizationFinancial: [
+        {
+          type: createOrganizationDto.financial.type,
+          //numberOfEmployees: null,
+          //total: null,
+          year: currentYear,
+          //data: null,
+        },
+      ],
       organizationReport: {
         ...createOrganizationDto.report,
       },
@@ -161,10 +138,11 @@ export class OrganizationService {
       );
     }
 
-    // if (updateOrganizationDto.financial) {
-    //   const anafData = await this.anafService.processAnafData(organization.organizationGeneral.cui, new Date().getFullYear());
-    //   this.organizationFinancialService
-    // }
+    if (updateOrganizationDto.financial) {
+      return this.organizationFinancialService.update(
+        updateOrganizationDto.financial,
+      );
+    }
 
     if (updateOrganizationDto.report) {
       return this.organizationReportService.update(
