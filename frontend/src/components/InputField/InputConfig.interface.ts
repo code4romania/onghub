@@ -1,4 +1,4 @@
-import { InputFieldConfig } from '../../../components/InputField/InputFieldConfig.interface';
+import { InputFieldConfig } from './InputFieldConfig.interface';
 
 export interface IInputConfig {
   key: string;
