@@ -73,14 +73,6 @@ export class Organization extends BaseEntity {
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
 
-  // @Exclude()
-  // @Column({
-  //   type: 'jsonb',
-  //   nullable: true,
-  //   name: 'organization_financial_ids',
-  // })
-  // organizationFinancialId: number[];
-
   @OneToMany(
     () => OrganizationFinancial,
     (organizationFinancial) => organizationFinancial.organization,

@@ -38,7 +38,7 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.cities) },
     });
 
-    const currentYear = new Date().getFullYear() - 1;
+    const previousYear = new Date().getFullYear() - 1;
 
     // create the parent entry with default values
     return this.organizationRepository.save({
@@ -55,11 +55,12 @@ export class OrganizationService {
       },
       organizationFinancial: [
         {
-          type: createOrganizationDto.financial.type,
-          //numberOfEmployees: null,
-          //total: null,
-          year: currentYear,
-          //data: null,
+          type: createOrganizationDto.financial[0].type,
+          year: previousYear,
+        },
+        {
+          type: createOrganizationDto.financial[1].type,
+          year: previousYear,
         },
       ],
       organizationReport: {
