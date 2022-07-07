@@ -28,10 +28,6 @@
 }
 
 @layer components {
-  .rdt_TableCellw {
-    @apply bg-gray-50 text-green-400;
-  }
-
   .main-menu-item {
     @apply h-10 text-gray-50 hover:bg-menu-green/[0.15]  hover:text-green flex items-center px-0 py-2 font-medium rounded-md;
   }
@@ -61,9 +57,15 @@
   }
 }
 
+/* Overrride default overflow for datatables to allow popovers */
+.gelpCx {
+  overflow-x: initial !important;
+  overflow-y: initial !important;
+}
+
 /* data table overrides */
 .rdt_TableHeadRow > .rdt_TableCol {
-  @apply bg-gray-50 text-sm font-semibold text-gray-900 border-gray-300;
+  @apply bg-gray-50 text-sm font-titilliumBold text-gray-900 border-gray-300;
 }
 
 .rdt_TableHeadRow > .rdt_TableCol > div {
@@ -71,7 +73,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-nowrap py-3.5 pl-2 pr-2 text-sm font-medium text-gray-900 sm:pl-2;
+  @apply whitespace-nowrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
 }
 
 .rdt_TableCol_Sortable svg {

@@ -1,4 +1,34 @@
 {
+  "employees": {
+    "translation": "Angajati",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        21
+      ]
+    ],
+    "extractedComments": []
+  },
+  "expense": {
+    "translation": "Raportare Venituri",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        13
+      ]
+    ],
+    "extractedComments": []
+  },
+  "income": {
+    "translation": "Raportare Cheltuieli",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        11
+      ]
+    ],
+    "extractedComments": []
+  },
   "menu.collapse": {
     "translation": "Restrange meniul",
     "origin": [["components/menu/Menu.tsx", 100]],
@@ -21,9 +51,87 @@
     "extractedComments": [],
     "obsolete": true
   },
+  "reports": {
+    "translation": "Raportare",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        8
+      ]
+    ],
+    "extractedComments": []
+  },
+  "status": {
+    "translation": "Status",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        33
+      ]
+    ],
+    "extractedComments": []
+  },
   "table.empty": {
     "translation": "Nu exista date in tabel",
     "origin": [["components/data-table/EmptyContent.tsx", 7]],
+    "extractedComments": []
+  },
+  "total": {
+    "translation": "Suma",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        25
+      ]
+    ],
+    "extractedComments": []
+  },
+  "updateOn": {
+    "translation": "Ultima actualizare",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        29
+      ]
+    ],
+    "extractedComments": []
+  },
+  "year": {
+    "translation": "An",
+    "origin": [
+      [
+        "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
+        17
+      ]
+    ],
+    "extractedComments": []
+  },
+  "view": {
+    "translation": "Vizualizeaza",
+    "origin": [
+      ["pages/organization/components/OrganizationFinancial/OrganizationFinancial.tsx", 17]
+    ],
+    "extractedComments": []
+  },
+  "edit": {
+    "translation": "Editeaza",
+    "origin": [
+      ["pages/organization/components/OrganizationFinancial/OrganizationFinancial.tsx", 17]
+    ],
+    "extractedComments": []
+  },
+  "completed": {
+    "translation": "Completat",
+    "origin": [
+      ["pages/organization/components/OrganizationFinancial/OrganizationFinancial.tsx", 17]
+    ],
+    "extractedComments": []
+  },
+  "notCompleted": {
+    "translation": "Necompletat",
+    "origin": [
+      ["pages/organization/components/OrganizationFinancial/OrganizationFinancial.tsx", 17]
+    ],
     "extractedComments": []
   }
 }
