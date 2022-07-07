@@ -22,17 +22,13 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={{ ...authState, setAuthState }}>
-<<<<<<< Updated upstream
-      <LocaleProvider>
-        <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-          <Router />
-        </I18nProvider>
-      </LocaleProvider>
-=======
       <QueryClientProvider client={queryClient}>
-        <Router />
+        <LocaleProvider>
+          <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+            <Router />
+          </I18nProvider>
+        </LocaleProvider>
       </QueryClientProvider>
->>>>>>> Stashed changes
     </AuthContext.Provider>
   );
 };
