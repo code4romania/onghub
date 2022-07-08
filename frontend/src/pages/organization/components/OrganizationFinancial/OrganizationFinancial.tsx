@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
@@ -9,6 +9,7 @@ import {
 } from './OrganizationFinancial.interface';
 import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableHeaders';
 import { EyeIcon, PencilIcon } from '@heroicons/react/outline';
+import ExpenseReportModal from './components/ExpenseReportModal';
 
 const data = [
   {
@@ -32,6 +33,9 @@ const data = [
 ];
 
 const OrganizationFinancial = () => {
+  const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
+  const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
+
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
     const menuItems = [
       {
@@ -56,10 +60,12 @@ const OrganizationFinancial = () => {
 
   const onEdit = (rowId: number) => {
     console.log('rowId', rowId);
+    setIsExpenseReportModalOpen(true);
   };
 
   const onView = (rowId: number) => {
     console.log('rowId', rowId);
+    setIsExpenseReportModalOpen(true);
   };
 
   return (
@@ -75,6 +81,10 @@ const OrganizationFinancial = () => {
           data={data}
         />
       </div>
+      <ExpenseReportModal
+        open={isExpenseReportModalOpen}
+        onClose={() => setIsExpenseReportModalOpen(false)}
+      />
     </div>
   );
 };

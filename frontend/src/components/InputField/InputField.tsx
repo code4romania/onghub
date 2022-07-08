@@ -3,7 +3,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
-const InputField = (props: { config: Partial<InputFieldConfig>; readonly: boolean }) => {
+const InputField = (props: { config: Partial<InputFieldConfig>; readonly?: boolean }) => {
   return (
     <div className="relative w-full">
       {props.config.label && (
