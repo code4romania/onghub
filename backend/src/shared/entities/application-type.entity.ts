@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Application } from '../../modules/application/entities/application.entity';
 
 @Entity({ name: '_application_type' })

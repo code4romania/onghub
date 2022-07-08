@@ -29,4 +29,9 @@ export class NomenclaturesController {
   getDomains() {
     return this.nomenclaturesService.getDomains({});
   }
+
+  @Get('regions')
+  getRegions() {
+    return this.nomenclaturesService.getRegions({});
+  }
 }
