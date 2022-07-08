@@ -1,5 +1,5 @@
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
-import { OrganizationTypeEnum } from './../../enums/OrganizationType.enum';
+import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/OrganizationType.enum';
 
 export const OrganizationGeneralConfig: Record<string, any> = {
   name: {
@@ -60,12 +60,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     helperText: 'De exemplu lorem impsum. Help text',
     radioConfigs: [
       {
-        label: 'Asociatie',
+        label: OrganizationTypeNaming[OrganizationTypeEnum.ASSOCIATION],
         name: 'type',
         value: OrganizationTypeEnum.ASSOCIATION,
       },
       {
-        label: 'Fundatie',
+        label: OrganizationTypeNaming[OrganizationTypeEnum.FOUNDATION],
         name: 'type',
         value: OrganizationTypeEnum.FOUNDATION,
       },
@@ -128,12 +128,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Anul infiintarii*',
-      collection: [
-        { id: 1, year: 2019 },
-        { id: 2, year: 2020 },
-        { id: 3, year: 2022 },
-      ],
-      displayedAttribute: 'year',
+      collection: [2019, 2020, 2021, 2022],
+      displayedAttribute: '',
     },
   },
   cui: {
@@ -271,7 +267,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
   },
   contact_name: {
-    key: 'contact.name',
+    key: 'contact.fullName',
     rules: {
       required: {
         value: true,
@@ -282,8 +278,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Contact name has a maximum length of 100 characters.',
       },
       minLength: {
-        value: 10,
-        message: 'Contact Name has a minimum length of 10 characters.',
+        value: 1,
+        message: 'Contact Name has a minimum length of 1 characters.',
       },
     },
     config: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PencilIcon } from '@heroicons/react/solid';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { Controller, useForm } from 'react-hook-form';
@@ -7,11 +7,16 @@ import InputField from '../../../../components/InputField/InputField';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
-import { read } from 'fs';
 import Textarea from '../../../../components/Textarea/Textarea';
+import { useMutation, useQuery } from 'react-query';
+import { getOrganization, patchOrganization } from '../../../../services/Organization.service';
+import { getCities, getCounties } from '../../../../services/Nomenclatures.service';
 
 const OrganizationGeneral = () => {
-  const [readonly, setReadonly] = useState(false);
+  const [readonly, setReadonly] = useState(true);
+  const [id] = useState(1);
+  const [county, setCounty] = useState<any>();
+  const [city, setCity] = useState<any>();
 
   // React Hook Form
   const {
@@ -19,11 +24,51 @@ const OrganizationGeneral = () => {
     control,
     formState: { errors },
     reset,
-  } = useForm({ mode: 'onChange', reValidateMode: 'onChange' });
+    setValue,
+  } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  // React Query
+  const { data: organization } = useQuery(['organization', id], () => getOrganization(id));
+  const { data: counties } = useQuery(['counties'], () => getCounties());
+  const { data: cities } = useQuery(['cities', county], () => county && getCities(county.id), {
+    enabled: !!county,
+  });
+  const mutation = useMutation((update: any) => patchOrganization(id, update));
+
+  useEffect(() => {
+    if (organization) {
+      reset({ ...organization?.organizationGeneral });
+      setCounty(organization.organizationGeneral.county);
+      setCity(organization.organizationGeneral.city);
+    }
+  }, [organization]);
+
+  useEffect(() => {
+    if (county && !readonly) {
+      setValue('city', null);
+    }
+  }, [cities]);
+
+  const startEdit = () => {
+    setReadonly(false);
+  };
 
   const handleSave = (data: any) => {
-    setReadonly((mode) => !mode);
-    console.log(data);
+    setReadonly(true);
+
+    const organizationGeneral = {
+      ...data,
+      countyId: data.county.id,
+      cityId: data.city.id,
+    };
+
+    delete organizationGeneral.county;
+    delete organizationGeneral.city;
+
+    mutation.mutate({ organizationGeneral: organizationGeneral });
   };
 
   return (
@@ -34,7 +79,7 @@ const OrganizationGeneral = () => {
         <button
           type="button"
           className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={handleSubmit(handleSave)}
+          onClick={readonly ? startEdit : handleSubmit(handleSave)}
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {readonly ? 'Editeaza' : 'Salveaza modificari'}
@@ -44,163 +89,105 @@ const OrganizationGeneral = () => {
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
-          <span className="font-bold test-xl text-default-gray-900">Date generale</span>
-          <form className="space-y-4 gap-y-4 w-2/3">
-            <Controller
-              key={OrganizationGeneralConfig.name.key}
-              name={OrganizationGeneralConfig.name.key}
-              rules={OrganizationGeneralConfig.name.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.name.config,
-                      name: OrganizationGeneralConfig.name.key,
-                      error: errors[OrganizationGeneralConfig.name.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.alias.key}
-              name={OrganizationGeneralConfig.alias.key}
-              rules={OrganizationGeneralConfig.alias.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.alias.config,
-                      name: OrganizationGeneralConfig.alias.key,
-                      error: errors[OrganizationGeneralConfig.alias.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <RadioGroup
-              control={control}
-              readonly={readonly}
-              errors={errors[OrganizationGeneralConfig.type.key]}
-              config={OrganizationGeneralConfig.type}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.email.key}
-              name={OrganizationGeneralConfig.email.key}
-              rules={OrganizationGeneralConfig.email.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.email.config,
-                      name: OrganizationGeneralConfig.email.key,
-                      error: errors[OrganizationGeneralConfig.email.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.phone.key}
-              name={OrganizationGeneralConfig.phone.key}
-              rules={OrganizationGeneralConfig.phone.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.phone.config,
-                      name: OrganizationGeneralConfig.phone.key,
-                      error: errors[OrganizationGeneralConfig.phone.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.yearCreated.key}
-              name={OrganizationGeneralConfig.yearCreated.key}
-              rules={OrganizationGeneralConfig.yearCreated.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <Select
-                    config={{
-                      ...OrganizationGeneralConfig.yearCreated.config,
-                    }}
-                    selected={value}
-                    onChange={onChange}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.cui.key}
-              name={OrganizationGeneralConfig.cui.key}
-              rules={OrganizationGeneralConfig.cui.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.cui.config,
-                      name: OrganizationGeneralConfig.cui.key,
-                      error: errors[OrganizationGeneralConfig.cui.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.rafNumber.key}
-              name={OrganizationGeneralConfig.rafNumber.key}
-              rules={OrganizationGeneralConfig.rafNumber.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationGeneralConfig.rafNumber.config,
-                      name: OrganizationGeneralConfig.rafNumber.key,
-                      error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <div className="flex gap-4">
+          <span className="font-bold text-xl text-default-gray-900">Date generale</span>
+          <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
+            <div className="flex flex-col gap-4">
               <Controller
-                key={OrganizationGeneralConfig.city.key}
-                name={OrganizationGeneralConfig.city.key}
-                rules={OrganizationGeneralConfig.city.rules}
+                key={OrganizationGeneralConfig.name.key}
+                name={OrganizationGeneralConfig.name.key}
+                rules={OrganizationGeneralConfig.name.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.name.config,
+                        name: OrganizationGeneralConfig.name.key,
+                        error: errors[OrganizationGeneralConfig.name.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.alias.key}
+                name={OrganizationGeneralConfig.alias.key}
+                rules={OrganizationGeneralConfig.alias.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.alias.config,
+                        name: OrganizationGeneralConfig.alias.key,
+                        error: errors[OrganizationGeneralConfig.alias.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <RadioGroup
+                control={control}
+                readonly={readonly}
+                errors={errors[OrganizationGeneralConfig.type.key]}
+                config={OrganizationGeneralConfig.type}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.email.key}
+                name={OrganizationGeneralConfig.email.key}
+                rules={OrganizationGeneralConfig.email.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.email.config,
+                        name: OrganizationGeneralConfig.email.key,
+                        error: errors[OrganizationGeneralConfig.email.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.phone.key}
+                name={OrganizationGeneralConfig.phone.key}
+                rules={OrganizationGeneralConfig.phone.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.phone.config,
+                        name: OrganizationGeneralConfig.phone.key,
+                        error: errors[OrganizationGeneralConfig.phone.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.yearCreated.key}
+                name={OrganizationGeneralConfig.yearCreated.key}
+                rules={OrganizationGeneralConfig.yearCreated.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <Select
                       config={{
-                        ...OrganizationGeneralConfig.city.config,
+                        ...OrganizationGeneralConfig.yearCreated.config,
                       }}
                       selected={value}
                       onChange={onChange}
@@ -210,94 +197,162 @@ const OrganizationGeneral = () => {
                 }}
               />
               <Controller
-                key={OrganizationGeneralConfig.county.key}
-                name={OrganizationGeneralConfig.county.key}
-                rules={OrganizationGeneralConfig.county.rules}
+                key={OrganizationGeneralConfig.cui.key}
+                name={OrganizationGeneralConfig.cui.key}
+                rules={OrganizationGeneralConfig.cui.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <Select
+                    <InputField
                       config={{
-                        ...OrganizationGeneralConfig.county.config,
+                        ...OrganizationGeneralConfig.cui.config,
+                        name: OrganizationGeneralConfig.cui.key,
+                        error: errors[OrganizationGeneralConfig.cui.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
                       }}
-                      selected={value}
-                      onChange={onChange}
                       readonly={readonly}
                     />
                   );
                 }}
               />
-            </div>
-            <Controller
-              key={OrganizationGeneralConfig.shortDescription.key}
-              name={OrganizationGeneralConfig.shortDescription.key}
-              rules={OrganizationGeneralConfig.shortDescription.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <Textarea
-                    config={{
-                      ...OrganizationGeneralConfig.shortDescription.config,
-                      name: OrganizationGeneralConfig.shortDescription.key,
-                      error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-            <Controller
-              key={OrganizationGeneralConfig.description.key}
-              name={OrganizationGeneralConfig.description.key}
-              rules={OrganizationGeneralConfig.description.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <Textarea
-                    config={{
-                      ...OrganizationGeneralConfig.description.config,
-                      name: OrganizationGeneralConfig.description.key,
-                      error: errors[OrganizationGeneralConfig.description.key]?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-
-            {/*  Logo */}
-            <div className="sm:col-span-6 gap-4 flex flex-col">
-              <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-                Logo organizatie
-              </label>
-              <div className="mt-1 flex items-center">
-                <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                  <svg
-                    className="h-full w-full text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </span>
-                <button
-                  type="button"
-                  className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Incarca logo
-                </button>
+              <Controller
+                key={OrganizationGeneralConfig.rafNumber.key}
+                name={OrganizationGeneralConfig.rafNumber.key}
+                rules={OrganizationGeneralConfig.rafNumber.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.rafNumber.config,
+                        name: OrganizationGeneralConfig.rafNumber.key,
+                        error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <div className="flex gap-4">
+                <Controller
+                  key={OrganizationGeneralConfig.county.key}
+                  name={OrganizationGeneralConfig.county.key}
+                  rules={OrganizationGeneralConfig.county.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <Select
+                        config={{
+                          ...OrganizationGeneralConfig.county.config,
+                          collection: counties,
+                          displayedAttribute: 'name',
+                        }}
+                        error={errors[OrganizationGeneralConfig.county.key]?.message}
+                        selected={value}
+                        onChange={(e: any) => {
+                          onChange(e);
+                          setCounty(e);
+                        }}
+                        readonly={readonly}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  key={OrganizationGeneralConfig.city.key}
+                  name={OrganizationGeneralConfig.city.key}
+                  rules={OrganizationGeneralConfig.city.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <Select
+                        config={{
+                          ...OrganizationGeneralConfig.city.config,
+                          collection: cities || [],
+                          displayedAttribute: 'name',
+                        }}
+                        error={errors[OrganizationGeneralConfig.city.key]?.message}
+                        selected={value}
+                        onChange={onChange}
+                        readonly={readonly}
+                      />
+                    );
+                  }}
+                />
               </div>
-              <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
-              </p>
-            </div>
-            {/* End Logo */}
+              <Controller
+                key={OrganizationGeneralConfig.shortDescription.key}
+                name={OrganizationGeneralConfig.shortDescription.key}
+                rules={OrganizationGeneralConfig.shortDescription.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Textarea
+                      config={{
+                        ...OrganizationGeneralConfig.shortDescription.config,
+                        name: OrganizationGeneralConfig.shortDescription.key,
+                        error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.description.key}
+                name={OrganizationGeneralConfig.description.key}
+                rules={OrganizationGeneralConfig.description.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Textarea
+                      config={{
+                        ...OrganizationGeneralConfig.description.config,
+                        name: OrganizationGeneralConfig.description.key,
+                        error: errors[OrganizationGeneralConfig.description.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
 
-            <div className="">
+              {/*  Logo */}
+              <div className="sm:col-span-6 gap-4 flex flex-col">
+                <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
+                  Logo organizatie
+                </label>
+                <div className="mt-1 flex items-center">
+                  <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
+                    <svg
+                      className="h-full w-full text-gray-300"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </span>
+                  <button
+                    type="button"
+                    className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Incarca logo
+                  </button>
+                </div>
+                <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                  Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                </p>
+              </div>
+              {/* End Logo */}
+            </div>
+            <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">
                 Persoana de contact in relatia cu ONGHub
               </span>
@@ -315,7 +370,7 @@ const OrganizationGeneral = () => {
                 ]}
               />
             </div>
-            <div>
+            <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">Comunicare si social media</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 This information will be displayed publicly so be careful what you share.
@@ -443,7 +498,7 @@ const OrganizationGeneral = () => {
                 />
               </div>
             </div>
-            <div>
+            <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">Fundraising</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 This information will be displayed publicly so be careful what you share.
