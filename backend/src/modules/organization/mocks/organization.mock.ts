@@ -1,4 +1,6 @@
 import { OrganizationType } from '../enums/organization-type.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import { FinancialType } from '../enums/organization-financial-type.enum';
 
 export const OrganizationGeneralMock = {
   name: 'OrganizationTest12',
@@ -42,7 +44,7 @@ export const OrganizationActivityMock = {
   isPublicIntrestOrganization: true,
   hasBranches: true,
   branches: [1, 2],
-  areaId: 2,
+  areaId: null,
   domains: [1, 2],
   cities: [2, 3],
 };
@@ -64,9 +66,21 @@ export const OrganizationLegalMock = {
 };
 
 export const OrganizationFinancialMock = {
+  type: FinancialType.INCOME,
   numberOfEmployees: 0,
-  totalIncome: 0,
-  totalExpenses: 0,
+  year: 2021,
+  total: 10000,
+  status: CompletionStatus.COMPLETED,
+  data: {
+    membershipFeeIncome: 10,
+    donationsIncome: 11,
+    twoPercentIncome: 12,
+    sponsorshipIncome: 13,
+    economicActivityIncome: 14,
+    otherIncome: 15,
+    financialIncome: 16,
+    netSalaries: 20,
+  },
 };
 
 export const OrganizationReportMock = {

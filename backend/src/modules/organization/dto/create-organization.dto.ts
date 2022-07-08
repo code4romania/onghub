@@ -24,7 +24,7 @@ export class CreateOrganizationDto {
   /* Organization Financial */
   @Type(() => CreateOrganizationFinancialDto)
   @ValidateNested()
-  financial: CreateOrganizationFinancialDto;
+  financial: CreateOrganizationFinancialDto[];
 
   /* Organization Report */
   @Type(() => CreateOrganizationReportDto)
