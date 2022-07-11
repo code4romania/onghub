@@ -38,14 +38,14 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   {
     id: 'total',
     name: <Trans id="total" />,
-    selector: (row: IOrganizationFinancial) => formatCurrency(row.total),
+    selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
     grow: 0.5,
   },
   {
     id: 'updatedOn',
     name: <Trans id="updateOn" />,
-    selector: (row: IOrganizationFinancial) => formatDate(row.updatedOn),
+    selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn),
     sortable: true,
     grow: 1,
   },

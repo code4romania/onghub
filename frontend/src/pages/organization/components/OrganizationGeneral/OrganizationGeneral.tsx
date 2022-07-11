@@ -14,7 +14,7 @@ import { getCities, getCounties } from '../../../../services/Nomenclatures.servi
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
-  const [id] = useState(1);
+  const [id] = useState(10);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
 

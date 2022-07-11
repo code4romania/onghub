@@ -1,11 +1,14 @@
+import { Expense } from './interfaces/Expense';
+import { Income } from './interfaces/Income';
+
 export enum FinancialType {
-  EXPENSE = 'EXPENSE',
-  INCOME = 'INCOME',
+  EXPENSE = 'Expense',
+  INCOME = 'Income',
 }
 
 export enum CompletionStatus {
-  COMPLETED = 'COMPLETED',
-  NOT_COMPLETED = 'NOT_COMPLETED',
+  COMPLETED = 'Completed',
+  NOT_COMPLETED = 'Not Completed',
 }
 
 export interface IOrganizationFinancial {
@@ -15,5 +18,6 @@ export interface IOrganizationFinancial {
   year: number;
   total: number;
   updatedOn: Date;
+  data: Partial<Income> | Partial<Expense> | null;
   status: CompletionStatus;
 }

@@ -1,35 +1,47 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import ReportTableRow from './ReportTableRow';
 import { Controller, useForm } from 'react-hook-form';
 import { IncomeReportConfig } from './IncomeReportConfig';
+import { ReportModalProps } from './ReportModalProps.interface';
+import { Income } from '../interfaces/Income';
 
-interface IncomeReportModalProps {
-  open: boolean;
-  onClose: () => void;
-}
+const IncomeReportModal = ({
+  onClose,
+  readonly,
+  year,
+  total = 0,
+  defaultValue,
+  onSave,
+}: ReportModalProps) => {
+  const [totalDefalcat, setTotalDefalcat] = useState<number>(0);
+  const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
 
-const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
-  const {
-    control,
-    formState: { errors },
-    getValues,
-  } = useForm({
+  // form state
+  const { control, reset, getValues } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
+  // init form values
   useEffect(() => {
-    console.log('errors', errors);
-  }, [errors]);
+    if (defaultValue) {
+      reset({ ...defaultValue });
+      recalculate(defaultValue as Partial<Income>);
+    }
+  }, [defaultValue]);
 
-  const onSave = (data: any) => {
-    console.log('data', data);
+  const recalculate = (values: Partial<Income>) => {
+    const newTotal = Object.values(values).reduce(
+      (prev: number, current: number) => (prev += +current || 0),
+      0,
+    );
+    setTotalDefalcat(newTotal);
   };
 
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => onClose()}>
         <Transition.Child
           as={Fragment}
@@ -68,7 +80,7 @@ const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      Raportare Cheltuieli 2021
+                      {`Raportare Cheltuieli ${year}`}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
@@ -80,9 +92,9 @@ const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
                   </div>
                 </div>
                 <div className="mt-6 flex flex-row-reverse">
-                  <span className="text-xl text-gray-900 font-bold leading-6">9500 RON</span>
+                  <span className="text-xl text-gray-900 font-bold leading-6">{`${total} RON`}</span>
                   <span className="text-xl text-gray-400 font-normal leading-6 px-3">
-                    Total cheltuieli
+                    Total Venituri
                   </span>
                 </div>
                 <p className="mt-4 text-base leading-4 font-normal text-gray-400 text-right">
@@ -96,7 +108,7 @@ const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
                           scope="col"
                           className="py-3.5 pl-4 pr-3 text-left font-titilliumBold text-sm font-bold text-gray-800 sm:pl-6"
                         >
-                          Categorie Cheltuieli
+                          Categorie Venituri
                         </th>
                         <th
                           scope="col"
@@ -123,8 +135,9 @@ const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
                                   name: IncomeReportConfig[name].key,
                                   defaultValue: value,
                                   onChange: onChange,
+                                  onBlur: () => recalculate(getValues() as Income),
                                 }}
-                                readonly={false}
+                                readonly={readonly}
                               />
                             );
                           }}
@@ -135,30 +148,52 @@ const IncomeReportModal = ({ open, onClose }: IncomeReportModalProps) => {
                           Total Defalcat
                         </td>
                         <td className="whitespace-nowrap py-4 px-3 text-base font-bold ">
-                          9300 <span className="font-medium text-red-600">(200 RON nealocati)</span>
+                          {`${totalDefalcat} `}
+                          {totalDefalcat !== total && (
+                            <span className="font-medium text-red-600">
+                              {total > totalDefalcat
+                                ? `(${total - totalDefalcat} RON nealocati)`
+                                : `(${totalDefalcat - total} RON surplus)`}
+                            </span>
+                          )}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </form>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                  <button
-                    type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => {
-                      onSave(getValues());
-                      onClose();
-                    }}
-                  >
-                    Deactivate
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                    onClick={() => onClose()}
-                  >
-                    Anuleaza Modificari
-                  </button>
+                  {!isReadonly && (
+                    <>
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => {
+                          onSave(getValues() as Income);
+                          onClose();
+                        }}
+                      >
+                        Salveaza
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => onClose()}
+                      >
+                        Anuleaza Modificari
+                      </button>
+                    </>
+                  )}
+                  {isReadonly && (
+                    <button
+                      type="button"
+                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={() => {
+                        setIsReadonly(false);
+                      }}
+                    >
+                      Editeaza
+                    </button>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

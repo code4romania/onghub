@@ -10,7 +10,7 @@
     "extractedComments": []
   },
   "expense": {
-    "translation": "Raportare Venituri",
+    "translation": "Raportare Cheltuieli",
     "origin": [
       [
         "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",
@@ -20,7 +20,7 @@
     "extractedComments": []
   },
   "income": {
-    "translation": "Raportare Cheltuieli",
+    "translation": "Raportare Venituri",
     "origin": [
       [
         "pages/organization/components/OrganizationFinancial/OrganizationFinancialTableHeaders.tsx",

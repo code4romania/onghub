@@ -7,15 +7,15 @@ import { Trans } from '@lingui/react';
 interface MenuItem {
   name: string;
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
-  onClick: (rowId: number) => void;
+  onClick: (row: any) => void;
 }
 
 interface MenuProps {
-  id: number;
+  row: any;
   menuItems: MenuItem[];
 }
 
-const PopoverMenu = ({ id, menuItems }: MenuProps) => {
+const PopoverMenu = ({ row, menuItems }: MenuProps) => {
   return (
     <Popover className="relative">
       {({ open, close }) => (
@@ -51,7 +51,7 @@ const PopoverMenu = ({ id, menuItems }: MenuProps) => {
                       key={item.name}
                       className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                       onClick={() => {
-                        item.onClick(id);
+                        item.onClick(row);
                         close();
                       }}
                     >
