@@ -22,38 +22,16 @@ export class NomenclaturesService {
     return this.citiesRepository.find(conditions);
   }
 
-  public async getCitiesFiltered(
-    citySearchDto: CitySearchDto,
-  ): Promise<City[]> {
-    // const query = this.citiesRepository
-    //   .createQueryBuilder('city')
-    //   .select([
-    //     `city.id AS "id"`,
-    //     `city.name AS "name"`,
-    //     `city.deletedOn AS "deletedOn"`,
-    //     `city.createdOn AS "createdOn"`,
-    //     `city.updatedOn AS "updatedOn"`,
-    //   ])
-    //   .leftJoinAndSelect('city.county', 'county');
-
-    // const parsedSearch = citySearchDto.search.trim().split("'").join('');
-    // let searchString = '';
-    // searchString += `LOWER(city.name) like LOWER('%${parsedSearch}')`;
-
-    // const response = query.getMany();
-    // return response;
-
-    //const searchString = citySearchDto.search + '%';
-    // const query = this.citiesRepository.query(
-    //   `SELECT * FROM _city LEFT JOIN _county ON county_id = _county.id WHERE _city.name ILIKE 'bucu%' LIMIT 5`,
-    // );
-
-    // return query;
-
+  public searchCities(citySearchDto: CitySearchDto) {
     return this.citiesRepository
-      .createQueryBuilder('city')
-      .innerJoinAndSelect('city.county', 'county', 'county.id=city.county_id')
-      .where(`city.name ILIKE :search`, { search: citySearchDto.search })
+      .createQueryBuilder('_city')
+      .innerJoinAndSelect(
+        '_city.county',
+        '_county',
+        '_city.county_id=_county.id',
+      )
+      .where('_city.name ilike :name', { name: `%${citySearchDto.search}%` })
+      .limit(5)
       .getMany();
   }
 

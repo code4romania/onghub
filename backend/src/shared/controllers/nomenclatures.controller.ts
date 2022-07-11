@@ -21,9 +21,9 @@ export class NomenclaturesController {
     });
   }
 
-  @Get('cities/filtered')
-  getCitiesFiltered(@Query() citySearchDto: CitySearchDto) {
-    return this.nomenclaturesService.getCitiesFiltered(citySearchDto);
+  @Get('cities/search')
+  searchCities(@Query() citySearchDto: CitySearchDto) {
+    return this.nomenclaturesService.searchCities(citySearchDto);
   }
 
   @Get('counties')
