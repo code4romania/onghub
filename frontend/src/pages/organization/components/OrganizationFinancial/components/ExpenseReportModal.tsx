@@ -131,10 +131,12 @@ const ExpenseReportModal = ({ open, onClose }: ExpenseReportModalProps) => {
                         />
                       ))}
                       <tr>
-                        <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-normal text-gray-900 sm:pl-6">
+                        <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-bold text-gray-700 sm:pl-6">
                           Total Defalcat
                         </td>
-                        <td className="whitespace-nowrap py-4 px-3">9300(200 RON nealocati)</td>
+                        <td className="whitespace-nowrap py-4 px-3 text-base font-bold ">
+                          9300 <span className="font-medium text-red-600">(200 RON nealocati)</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -142,7 +144,7 @@ const ExpenseReportModal = ({ open, onClose }: ExpenseReportModalProps) => {
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {
                       onSave(getValues());
                       onClose();
@@ -155,7 +157,7 @@ const ExpenseReportModal = ({ open, onClose }: ExpenseReportModalProps) => {
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                     onClick={() => onClose()}
                   >
-                    Cancel
+                    Anuleaza Modificari
                   </button>
                 </div>
               </Dialog.Panel>
