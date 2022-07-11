@@ -47,8 +47,8 @@ export class CreateOrganizationActivityDto {
   @IsArray()
   branches?: number[];
 
-  @IsNumber()
-  areaId: number;
+  // @IsNumber()
+  // areaId: number;
 
   @IsArray()
   domains: number[];

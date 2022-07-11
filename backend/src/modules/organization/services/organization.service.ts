@@ -38,6 +38,8 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.cities) },
     });
 
+    const previousYear = new Date().getFullYear() - 1;
+
     // create the parent entry with default values
     return this.organizationRepository.save({
       organizationGeneral: {
@@ -51,9 +53,16 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial: {
-        ...createOrganizationDto.financial,
-      },
+      organizationFinancial: [
+        {
+          type: createOrganizationDto.financial[0].type,
+          year: previousYear,
+        },
+        {
+          type: createOrganizationDto.financial[1].type,
+          year: previousYear,
+        },
+      ],
       organizationReport: {
         ...createOrganizationDto.report,
       },
@@ -76,7 +85,6 @@ export class OrganizationService {
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
         'organizationFinancial',
-        'organizationFinancial.balanceSheets',
         'organizationReport',
       ],
     });
@@ -133,7 +141,6 @@ export class OrganizationService {
 
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
-        organization.organizationFinancialId,
         updateOrganizationDto.financial,
       );
     }

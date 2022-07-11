@@ -8,7 +8,6 @@ import {
   OrganizationLegal,
   Contact,
   OrganizationFinancial,
-  BalanceSheet,
   OrganizationReport,
 } from './entities';
 import {
@@ -28,12 +27,12 @@ import {
   OrganizationService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Contact,
-      BalanceSheet,
       Organization,
       OrganizationGeneral,
       OrganizationActivity,
@@ -41,6 +40,7 @@ import { OrganizationReportService } from './services/organization-report.servic
       OrganizationFinancial,
       OrganizationReport,
     ]),
+    SharedModule,
   ],
   controllers: [OrganizationController],
   providers: [
