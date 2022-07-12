@@ -8,9 +8,10 @@ import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
-import { useMutation, useQuery } from 'react-query';
-import { getOrganization, patchOrganization } from '../../../../services/Organization.service';
+import { useQuery } from 'react-query';
 import { getCities, getCounties } from '../../../../services/Nomenclatures.service';
+import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useSelectedOrganization } from '../../../../store/selectors';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -31,20 +32,21 @@ const OrganizationGeneral = () => {
   });
 
   // React Query
-  const { data: organization } = useQuery(['organization', id], () => getOrganization(id));
+  const { organizationGeneral } = useSelectedOrganization();
+  const { mutate } = useOrganizationMutation();
+
   const { data: counties } = useQuery(['counties'], () => getCounties());
   const { data: cities } = useQuery(['cities', county], () => county && getCities(county.id), {
     enabled: !!county,
   });
-  const mutation = useMutation((update: any) => patchOrganization(id, update));
 
   useEffect(() => {
-    if (organization) {
-      reset({ ...organization?.organizationGeneral });
-      setCounty(organization.organizationGeneral.county);
-      setCity(organization.organizationGeneral.city);
+    if (organizationGeneral) {
+      reset({ ...organizationGeneral });
+      setCounty(organizationGeneral.county);
+      setCity(organizationGeneral.city);
     }
-  }, [organization]);
+  }, [organizationGeneral]);
 
   useEffect(() => {
     if (county && !readonly) {
@@ -68,7 +70,7 @@ const OrganizationGeneral = () => {
     delete organizationGeneral.county;
     delete organizationGeneral.city;
 
-    mutation.mutate({ organizationGeneral: organizationGeneral });
+    mutate({ id: 11, organization: { general: organizationGeneral } });
   };
 
   return (

@@ -7,7 +7,10 @@ import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableH
 import { EyeIcon, PencilIcon } from '@heroicons/react/outline';
 import ExpenseReportModal from './components/ExpenseReportModal';
 import { useMutation, useQuery } from 'react-query';
-import { getOrganization, patchOrganization } from '../../../../services/Organization.service';
+import {
+  getOrganization,
+  patchOrganization,
+} from '../../../../services/organization/Organization.service';
 import IncomeReportModal from './components/IncomeReportModal';
 import { Expense } from './interfaces/Expense';
 import { Income } from './interfaces/Income';
