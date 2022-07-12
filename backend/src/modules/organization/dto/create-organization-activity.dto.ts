@@ -18,14 +18,14 @@ export class CreateOrganizationActivityDto {
 
   @IsArray()
   @IsOptional()
-  federations: number[];
+  federations?: number[];
 
   @IsBoolean()
   isPartOfCoalition: boolean;
 
   @IsArray()
   @IsOptional()
-  coalitions: number[];
+  coalitions?: number[];
 
   @IsBoolean()
   isPartOfInternationalOrganization: boolean;

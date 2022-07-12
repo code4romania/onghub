@@ -61,6 +61,7 @@ export class OrganizationActivityService {
           where: { id: In(regions) },
         });
       }
+      updateOrganizationData['regions'] = regionsData;
     }
 
     if (cities) {

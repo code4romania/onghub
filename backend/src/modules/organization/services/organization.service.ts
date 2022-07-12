@@ -36,11 +36,11 @@ export class OrganizationService {
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
     const federations = await this.nomenclaturesService.getFederations({
-      where: { name: In(createOrganizationDto.activity.federations) },
+      where: { id: In(createOrganizationDto.activity.federations) },
     });
 
     const coalitions = await this.nomenclaturesService.getCoalitions({
-      where: { name: In(createOrganizationDto.activity.coalitions) },
+      where: { id: In(createOrganizationDto.activity.coalitions) },
     });
 
     const domains = await this.nomenclaturesService.getDomains({
@@ -84,11 +84,11 @@ export class OrganizationService {
       },
       organizationActivity: {
         ...createOrganizationDto.activity,
-        federations,
-        coalitions,
         domains,
         regions,
         cities,
+        federations,
+        coalitions,
       },
       organizationLegal: {
         ...createOrganizationDto.legal,
