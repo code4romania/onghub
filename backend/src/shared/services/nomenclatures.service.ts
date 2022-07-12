@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { City, County, Domain } from 'src/shared/entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { CitySearchDto } from '../dto/city-search.dto';
 import { ApplicationType } from '../entities/application-type.entity';
 
 @Injectable()
@@ -19,6 +20,19 @@ export class NomenclaturesService {
 
   public getCities(conditions: FindManyOptions<City>) {
     return this.citiesRepository.find(conditions);
+  }
+
+  public searchCities(citySearchDto: CitySearchDto) {
+    return this.citiesRepository
+      .createQueryBuilder('_city')
+      .innerJoinAndSelect(
+        '_city.county',
+        '_county',
+        '_city.county_id=_county.id',
+      )
+      .where('_city.name ilike :name', { name: `%${citySearchDto.search}%` })
+      .limit(5)
+      .getMany();
   }
 
   public getCounties(conditions: FindManyOptions<County>) {
