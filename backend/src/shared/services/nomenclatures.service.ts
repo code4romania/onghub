@@ -24,17 +24,28 @@ export class NomenclaturesService {
     return this.citiesRepository.find(conditions);
   }
 
-  public searchCities(citySearchDto: CitySearchDto) {
-    return this.citiesRepository
+  public getCitiesSearch(citySearchDto: CitySearchDto) {
+    const query = this.citiesRepository
       .createQueryBuilder('_city')
       .innerJoinAndSelect(
         '_city.county',
         '_county',
         '_city.county_id=_county.id',
       )
-      .where('_city.name ilike :name', { name: `%${citySearchDto.search}%` })
-      .limit(5)
-      .getMany();
+      .where('_city.county_id = :county', {
+        county: citySearchDto.countyId,
+      });
+
+    if (citySearchDto.search) {
+      return query
+        .andWhere('_city.name ilike :name', {
+          name: `%${citySearchDto.search}%`,
+        })
+        .limit(5)
+        .getMany();
+    } else {
+      return query.getMany();
+    }
   }
 
   public getCounties(conditions: FindManyOptions<County>) {
