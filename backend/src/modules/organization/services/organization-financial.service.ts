@@ -74,7 +74,7 @@ export class OrganizationFinancialService {
     if (frontMoney !== totalMoney) {
       throw new NotFoundException({
         message: HTTP_ERRORS_MESSAGES.FINANCIAL,
-        errorCode: ERROR_CODES.FIN001,
+        errorCode: ERROR_CODES.ORG005,
       });
     }
 

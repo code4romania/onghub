@@ -15,7 +15,7 @@ export class OrganizationActivityService {
     id: number,
     updateOrganizationActivityDto: UpdateOrganizationActivityDto,
   ) {
-    const { domains, cities, ...updateOrganizationData } =
+    const { domains, regions, cities, ...updateOrganizationData } =
       updateOrganizationActivityDto;
 
     if (domains) {
@@ -26,6 +26,15 @@ export class OrganizationActivityService {
         });
       }
       updateOrganizationData['domains'] = domainsData;
+    }
+
+    if (regions) {
+      let regionsData = [];
+      if (regions.length > 0) {
+        regionsData = await this.nomenclaturesService.getRegions({
+          where: { id: In(regions) },
+        });
+      }
     }
 
     if (cities) {

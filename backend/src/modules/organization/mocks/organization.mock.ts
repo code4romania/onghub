@@ -1,3 +1,4 @@
+import { Area } from '../enums/organization-area.enum';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
@@ -35,6 +36,7 @@ export const OrganizationGeneralMock = {
 };
 
 export const OrganizationActivityMock = {
+  area: Area.LOCAL,
   isPartOfFederation: true,
   federations: ['FFS', 'FAAF'],
   isPartOfInternationalOrganization: true,
@@ -44,8 +46,8 @@ export const OrganizationActivityMock = {
   isPublicIntrestOrganization: true,
   hasBranches: true,
   branches: [1, 2],
-  areaId: null,
   domains: [1, 2],
+  regions: [1],
   cities: [2, 3],
 };
 
