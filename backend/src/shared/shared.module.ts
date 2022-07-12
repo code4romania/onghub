@@ -16,6 +16,6 @@ import { Region } from './entities/region.entity';
   ],
   controllers: [SharedController, NomenclaturesController],
   providers: [NomenclaturesService, AnafService],
-  exports: [NomenclaturesService],
+  exports: [NomenclaturesService, AnafService],
 })
 export class SharedModule {}

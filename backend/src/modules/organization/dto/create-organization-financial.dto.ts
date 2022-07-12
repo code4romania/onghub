@@ -1,15 +1,18 @@
-import { IsNumber, Length } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { Income } from './income.dto';
+import { Expense } from './expense.dto';
+import { FinancialType } from '../enums/organization-financial-type.enum';
+import { Type } from 'class-transformer';
 
 export class CreateOrganizationFinancialDto {
-  @IsNumber()
-  //@Length(1, 10)
-  numberOfEmployees: number;
+  @IsEnum(FinancialType)
+  type: FinancialType;
 
-  @IsNumber()
-  //@Length(1, 10)
-  totalIncome: number;
+  @Type(() => Income)
+  @IsOptional()
+  income?: Income;
 
-  @IsNumber()
-  //@Length(1, 10)
-  totalExpenses: number;
+  @Type(() => Expense)
+  @IsOptional()
+  expense?: Expense;
 }
