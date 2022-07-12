@@ -4,6 +4,8 @@ import { City, County, Domain, Region } from 'src/shared/entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { ApplicationType } from '../entities/application-type.entity';
+import { Coalition } from '../entities/coalition.entity';
+import { Federation } from '../entities/federation.entity';
 
 @Injectable()
 export class NomenclaturesService {
@@ -18,6 +20,10 @@ export class NomenclaturesService {
     private readonly applicationTypeRepository: Repository<ApplicationType>,
     @InjectRepository(Region)
     private readonly regionsRepository: Repository<Region>,
+    @InjectRepository(Federation)
+    private readonly federationsRepository: Repository<Federation>,
+    @InjectRepository(Coalition)
+    private readonly coalitionsRepository: Repository<Coalition>,
   ) {}
 
   public getCities(conditions: FindManyOptions<City>) {
@@ -51,5 +57,13 @@ export class NomenclaturesService {
 
   public getRegions(conditions: FindManyOptions<Region>) {
     return this.regionsRepository.find(conditions);
+  }
+
+  public getFederations(conditions: FindManyOptions<Federation>) {
+    return this.federationsRepository.find(conditions);
+  }
+
+  public getCoalitions(conditions: FindManyOptions<Coalition>) {
+    return this.coalitionsRepository.find(conditions);
   }
 }

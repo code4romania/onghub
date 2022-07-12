@@ -4,6 +4,8 @@ import { Organization } from './organization.entity';
 import { City, Domain } from 'src/shared/entities';
 import { Area } from '../enums/organization-area.enum';
 import { Region } from 'src/shared/entities/region.entity';
+import { Federation } from 'src/shared/entities/federation.entity';
+import { Coalition } from 'src/shared/entities/coalition.entity';
 
 @Entity()
 export class OrganizationActivity extends BaseEntity {
@@ -13,8 +15,30 @@ export class OrganizationActivity extends BaseEntity {
   @Column({ type: 'boolean', name: 'is_part_of_federation', default: false })
   isPartOfFederation: boolean;
 
-  @Column({ type: 'jsonb', name: 'federations' })
-  federations: string[];
+  @ManyToMany(() => Federation, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_federations',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'federation_id', referencedColumnName: 'id' },
+  })
+  federations: Federation[];
+
+  @Column({ type: 'boolean', name: 'is_part_of_coalition', default: false })
+  isPartOfCoalition: boolean;
+
+  @ManyToMany(() => Coalition, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_coalitions',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'coalition_id', referencedColumnName: 'id' },
+  })
+  coalitions: Coalition[];
 
   @Column({
     type: 'boolean',

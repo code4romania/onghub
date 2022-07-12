@@ -35,6 +35,14 @@ export class OrganizationService {
   public async create(
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
+    const federations = await this.nomenclaturesService.getFederations({
+      where: { name: In(createOrganizationDto.activity.federations) },
+    });
+
+    const coalitions = await this.nomenclaturesService.getCoalitions({
+      where: { name: In(createOrganizationDto.activity.coalitions) },
+    });
+
     const domains = await this.nomenclaturesService.getDomains({
       where: { id: In(createOrganizationDto.activity.domains) },
     });
@@ -67,6 +75,8 @@ export class OrganizationService {
       });
     }
 
+    const previousYear = new Date().getFullYear() - 1;
+
     // create the parent entry with default values
     return this.organizationRepository.save({
       organizationGeneral: {
@@ -74,6 +84,8 @@ export class OrganizationService {
       },
       organizationActivity: {
         ...createOrganizationDto.activity,
+        federations,
+        coalitions,
         domains,
         regions,
         cities,
