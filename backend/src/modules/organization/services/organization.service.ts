@@ -67,6 +67,8 @@ export class OrganizationService {
       });
     }
 
+    const previousYear = new Date().getFullYear() - 1;
+
     // create the parent entry with default values
     return this.organizationRepository.save({
       organizationGeneral: {
