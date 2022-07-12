@@ -43,8 +43,6 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.regions) },
     });
 
-    console.log(regions);
-
     if (
       createOrganizationDto.activity.area === Area.REGIONAL &&
       regions.length === 0
