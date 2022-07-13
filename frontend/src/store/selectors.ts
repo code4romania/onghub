@@ -1,6 +1,2 @@
-import useStore from './store';
-
-export const useSelectedOrganization = () => {
-  const organizationGeneral = useStore((state) => state.organizationGeneral);
-  return { organizationGeneral };
-};
+export * from './organization/organization.selectors';
+export * from './nomenclature/nomenclature.selectors';

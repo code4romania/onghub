@@ -8,16 +8,21 @@ import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
-import { useQuery } from 'react-query';
-import { getCities, getCounties } from '../../../../services/Nomenclatures.service';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
+import { useNomenclature } from '../../../../store/selectors';
+import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
   const [id] = useState(10);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
+  const { cities, counties } = useNomenclature();
+  const { organizationGeneral } = useSelectedOrganization();
+  const { mutate } = useOrganizationMutation();
+  // queries
+  useCitiesQuery(county?.id);
 
   // React Hook Form
   const {
@@ -29,15 +34,6 @@ const OrganizationGeneral = () => {
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
-  });
-
-  // React Query
-  const { organizationGeneral } = useSelectedOrganization();
-  const { mutate } = useOrganizationMutation();
-
-  const { data: counties } = useQuery(['counties'], () => getCounties());
-  const { data: cities } = useQuery(['cities', county], () => county && getCities(county.id), {
-    enabled: !!county,
   });
 
   useEffect(() => {
