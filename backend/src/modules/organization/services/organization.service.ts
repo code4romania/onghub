@@ -38,6 +38,14 @@ export class OrganizationService {
   public async create(
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
+    const federations = await this.nomenclaturesService.getFederations({
+      where: { id: In(createOrganizationDto.activity.federations) },
+    });
+
+    const coalitions = await this.nomenclaturesService.getCoalitions({
+      where: { id: In(createOrganizationDto.activity.coalitions) },
+    });
+
     const domains = await this.nomenclaturesService.getDomains({
       where: { id: In(createOrganizationDto.activity.domains) },
     });
@@ -70,6 +78,7 @@ export class OrganizationService {
       });
     }
 
+    const previousYear = new Date().getFullYear() - 1;
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
@@ -86,6 +95,8 @@ export class OrganizationService {
         domains,
         regions,
         cities,
+        federations,
+        coalitions,
       },
       organizationLegal: {
         ...createOrganizationDto.legal,
