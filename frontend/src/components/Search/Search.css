@@ -1,0 +1,42 @@
+.reactselect__control {
+  border-radius: 6px !important;
+}
+
+.reactselect__value-container {
+}
+
+.reactselect__multi-value {
+  background-color: #eff0f3 !important;
+  padding: 6px 12px !important;
+  border-radius: 100px !important;
+  display: flex;
+  align-items: center;
+}
+
+.reactselect__multi-value__label {
+  font-size: 0.875rem !important;
+  padding: 0 !important;
+  font-weight: bold !important;
+}
+
+.reactselect__input-container input[type='text']:focus {
+  box-shadow: none !important;
+}
+
+.reactselect__multi-value__remove {
+  border-radius: 25px !important;
+  background: #a6aab7;
+  padding: 4px !important;
+  margin-left: 6px;
+}
+
+.reactselect__multi-value__remove:hover {
+  background-color: #374159 !important;
+}
+
+.reactselect__multi-value__remove > svg {
+  color: #eff0f3;
+  font-size: 1rem;
+  width: 16px;
+  height: 16px;
+}
