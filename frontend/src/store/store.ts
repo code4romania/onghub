@@ -3,15 +3,19 @@ import { City } from '../common/interfaces/city.interface';
 import { County } from '../common/interfaces/county.interface';
 import { IOrganizationFinancial } from '../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../pages/organization/interfaces/OrganizationGeneral.interface';
+import { IOrganizationReport } from '../pages/organization/interfaces/OrganizationReport.interface';
 import { nomenclatureSlice } from './nomenclature/nomenclature.slice';
 import { organizationFinancialSlice } from './organization/organization-financial.slice';
 import { organizationGeneralSlice } from './organization/organization-general.slice';
+import { organizationReportsSlice } from './organization/organization-reports.slice';
 
 interface OrganizationState {
   organizationGeneral: IOrganizationGeneral | null;
   organizationFinancial: IOrganizationFinancial[];
+  organizationReport: IOrganizationReport | null;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
   setOrganizationFinancial: (organizationFinancial: IOrganizationFinancial[]) => void;
+  setOrganizationReport: (organizationReport: IOrganizationReport) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -23,6 +27,7 @@ interface NomenclatureState {
 const useStore = create<OrganizationState & NomenclatureState>()((set) => ({
   ...organizationGeneralSlice(set),
   ...organizationFinancialSlice(set),
+  ...organizationReportsSlice(set),
   ...nomenclatureSlice(set),
 }));
 

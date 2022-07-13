@@ -8,6 +8,7 @@ interface MenuItem {
   name: string;
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   onClick: (row: any) => void;
+  isRemove?: boolean;
 }
 
 interface MenuProps {
@@ -56,11 +57,19 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                       }}
                     >
                       <item.icon
-                        className="flex-shrink-0 h-5 w-5 text-indigo-600"
+                        className={classNames(
+                          item.isRemove ? 'text-red-600' : 'text-indigo-600',
+                          'flex-shrink-0 h-5 w-5',
+                        )}
                         aria-hidden="true"
                       />
                       <div className="ml-2.5">
-                        <p className="text-xm font-normal text-gray-900">
+                        <p
+                          className={classNames(
+                            item.isRemove ? 'text-red-600' : 'text-gray-900',
+                            'text-xm font-normal',
+                          )}
+                        >
                           <Trans id={item.name} />
                         </p>
                       </div>

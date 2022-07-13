@@ -7,7 +7,7 @@ import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity';
-import OrganizationData from '../../pages/organization/components/OrganizationData';
+import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
 import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal';
