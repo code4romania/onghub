@@ -131,7 +131,6 @@ export class OrganizationService {
         'organizationActivity.regions',
         'organizationActivity.cities',
         'organizationLegal',
-        //'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
