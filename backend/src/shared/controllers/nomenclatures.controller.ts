@@ -9,7 +9,7 @@ import {
 import { CitySearchDto } from '../dto/city-search.dto';
 import { NomenclaturesService } from '../services';
 
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(CacheInterceptor, ClassSerializerInterceptor)
 @Controller('nomenclatures')
 export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
