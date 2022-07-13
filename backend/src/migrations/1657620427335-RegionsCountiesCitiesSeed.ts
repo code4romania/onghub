@@ -1,10 +1,20 @@
-import { County, City } from 'src/shared/entities';
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { CITIES } from './seed/city.seed';
+import { Region, County, City } from 'src/shared/entities';
+import { REGIONS } from './seed/regions.seed';
 import { COUNTIES } from './seed/counties.sees';
+import { CITIES } from './seed/city.seed';
 
-export class CitiesCountiesSeed1656251105434 implements MigrationInterface {
+export class RegionsCountiesCitiesSeed1657620427335
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.manager
+      .createQueryBuilder()
+      .insert()
+      .into(Region)
+      .values(REGIONS)
+      .execute();
+
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
@@ -44,6 +54,11 @@ export class CitiesCountiesSeed1656251105434 implements MigrationInterface {
       .createQueryBuilder()
       .delete()
       .from(County)
+      .execute();
+    await queryRunner.manager
+      .createQueryBuilder()
+      .delete()
+      .from(Region)
       .execute();
   }
 }
