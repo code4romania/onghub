@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/ui-react": "^3.1.0",
     "@headlessui/react": "^1.6.5",
     "@heroicons/react": "^1.0.6",
     "@lingui/core": "^3.14.0",
@@ -15,6 +16,7 @@
     "@types/node": "^16.11.41",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "aws-amplify": "^4.3.27",
     "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
