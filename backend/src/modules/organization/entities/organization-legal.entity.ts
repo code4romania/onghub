@@ -1,13 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 import { Organization } from './organization.entity';
 import { Person } from 'src/modules/organization/dto/person.dto';
 import { Contact } from './contact.entity';
@@ -18,8 +11,7 @@ export class OrganizationLegal extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'legal_reprezentative_id' })
   legalReprezentativeId: number;
 
-  @OneToOne((type) => Contact, { cascade: true })
-  @JoinColumn({ name: 'legal_reprezentative_id' })
+  @Column({ type: 'jsonb', name: 'legal_representative' })
   legalReprezentative: Contact;
 
   @OneToOne(
@@ -28,14 +20,8 @@ export class OrganizationLegal extends BaseEntity {
   )
   organization: Organization;
 
-  @ManyToMany(() => Contact, { cascade: true })
-  @JoinTable({
-    name: 'legal_to_contacts',
-    joinColumn: {
-      name: 'organization_legal_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: { name: 'contact_id', referencedColumnName: 'id' },
+  @OneToMany(() => Contact, (contact) => contact.organizationLegal, {
+    cascade: true,
   })
   directors: Contact[];
 

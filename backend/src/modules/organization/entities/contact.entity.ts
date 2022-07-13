@@ -1,5 +1,5 @@
 import { OrganizationLegal } from 'src/modules/organization/entities';
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../common/base/base-entity.class';
 
 @Entity({ name: '_contact' })
@@ -13,9 +13,9 @@ export class Contact extends BaseEntity {
   @Column({ type: 'text', name: 'phone' })
   phone: string;
 
-  @ManyToMany(
-    (type) => OrganizationLegal,
+  @ManyToOne(
+    () => OrganizationLegal,
     (organizationLegal) => organizationLegal.directors,
   )
-  organizationLegal: OrganizationLegal[];
+  organizationLegal: OrganizationLegal;
 }

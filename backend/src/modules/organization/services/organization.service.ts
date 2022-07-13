@@ -67,6 +67,13 @@ export class OrganizationService {
       });
     }
 
+    if (createOrganizationDto.legal.directors.length < 3) {
+      throw new NotAcceptableException({
+        message: HTTP_ERRORS_MESSAGES.DIRECTORS,
+        errorCode: ERROR_CODES.ORG006,
+      });
+    }
+
     const previousYear = new Date().getFullYear() - 1;
 
     // create the parent entry with default values
@@ -109,9 +116,10 @@ export class OrganizationService {
         'organizationGeneral.contact',
         'organizationActivity',
         'organizationActivity.domains',
+        'organizationActivity.regions',
         'organizationActivity.cities',
         'organizationLegal',
-        'organizationLegal.legalReprezentative',
+        //'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
@@ -162,6 +170,12 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.legal) {
+      if (updateOrganizationDto.legal.directors.length < 3) {
+        throw new NotAcceptableException({
+          message: HTTP_ERRORS_MESSAGES.DIRECTORS,
+          errorCode: ERROR_CODES.ORG007,
+        });
+      }
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
