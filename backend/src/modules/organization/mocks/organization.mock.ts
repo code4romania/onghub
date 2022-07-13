@@ -72,6 +72,8 @@ export const OrganizationReportMock = {
   numberOfContractors: 0,
 };
 
+export const OrganizationFinancialMock = [{}];
+
 export const CityMock = {};
 
 export const CountyMock = {};

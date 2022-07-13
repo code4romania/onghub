@@ -14,6 +14,7 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
 import {
   OrganizationActivityMock,
+  OrganizationFinancialMock,
   OrganizationGeneralMock,
   OrganizationLegalMock,
   OrganizationReportMock,
@@ -36,6 +37,7 @@ export class OrganizationController {
       activity: OrganizationActivityMock,
       legal: OrganizationLegalMock,
       report: OrganizationReportMock,
+      financial: OrganizationFinancialMock,
     });
   }
 
