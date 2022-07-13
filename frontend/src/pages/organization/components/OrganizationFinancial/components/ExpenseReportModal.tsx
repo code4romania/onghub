@@ -4,8 +4,8 @@ import { XIcon } from '@heroicons/react/outline';
 import { ExpenseReportConfig } from './ExpenseReportConfig';
 import ReportTableRow from './ReportTableRow';
 import { Controller, useForm } from 'react-hook-form';
-import { Expense } from '../interfaces/Expense';
-import { ReportModalProps } from './ReportModalProps.interface';
+import { Expense } from '../../../interfaces/Expense.interface';
+import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
 
 const ExpenseReportModal = ({
   onClose,

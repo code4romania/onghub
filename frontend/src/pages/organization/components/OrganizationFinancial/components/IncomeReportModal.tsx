@@ -4,8 +4,8 @@ import { XIcon } from '@heroicons/react/outline';
 import ReportTableRow from './ReportTableRow';
 import { Controller, useForm } from 'react-hook-form';
 import { IncomeReportConfig } from './IncomeReportConfig';
-import { ReportModalProps } from './ReportModalProps.interface';
-import { Income } from '../interfaces/Income';
+import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
+import { Income } from '../../../interfaces/Income.interface';
 
 const IncomeReportModal = ({
   onClose,

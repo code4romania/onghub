@@ -1,38 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
-import { FinancialType, IOrganizationFinancial } from './OrganizationFinancial.interface';
+import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.interface';
 import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableHeaders';
 import { EyeIcon, PencilIcon } from '@heroicons/react/outline';
 import ExpenseReportModal from './components/ExpenseReportModal';
-import { useMutation, useQuery } from 'react-query';
-import {
-  getOrganization,
-  patchOrganization,
-} from '../../../../services/organization/Organization.service';
 import IncomeReportModal from './components/IncomeReportModal';
-import { Expense } from './interfaces/Expense';
-import { Income } from './interfaces/Income';
+import { Expense } from '../../interfaces/Expense.interface';
+import { Income } from '../../interfaces/Income.interface';
+import { useSelectedOrganization } from '../../../../store/selectors';
+import { FinancialType } from '../../enums/FinancialType.enum';
+import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
-  const [organizationFinancial, setOrganizationFinancial] = useState<IOrganizationFinancial[]>([]);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
-  const id = 10;
-  const queryProps = useQuery(['organization', id], () => getOrganization(id));
-  const mutationProps = useMutation(
-    (update: { financial: { id: number; data: Partial<Expense | Income> } }) =>
-      patchOrganization(id, update),
-  );
-
-  useEffect(() => {
-    if (queryProps.data) {
-      setOrganizationFinancial(queryProps.data.organizationFinancial);
-    }
-  }, [queryProps.data]);
+  const { organizationFinancial } = useSelectedOrganization();
+  const { mutate, isLoading } = useOrganizationMutation();
 
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
     const menuItems = [
@@ -77,10 +64,13 @@ const OrganizationFinancial = () => {
   };
 
   const onSave = (data: Partial<Expense | Income>) => {
-    mutationProps.mutate({
-      financial: {
-        id: selectedReport?.id as number,
-        data,
+    mutate({
+      id: 11,
+      organization: {
+        financial: {
+          id: selectedReport?.id as number,
+          data,
+        },
       },
     });
   };
@@ -101,7 +91,7 @@ const OrganizationFinancial = () => {
         <DataTableComponent
           columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
           data={organizationFinancial}
-          loading={queryProps.isLoading || mutationProps.isLoading}
+          loading={isLoading}
         />
       </div>
       {isExpenseReportModalOpen && (

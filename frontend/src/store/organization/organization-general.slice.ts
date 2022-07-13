@@ -1,9 +1,9 @@
-import { OrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
+import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const organizationGeneralSlice = (set: any) => ({
   organizationGeneral: null,
-  setOrganizationGeneral: (organizationGeneral: OrganizationGeneral) => {
+  setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => {
     set({ organizationGeneral });
   },
 });

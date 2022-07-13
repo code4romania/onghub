@@ -1,5 +1,5 @@
-import { Expense } from '../interfaces/Expense';
-import { Income } from '../interfaces/Income';
+import { Expense } from './Expense.interface';
+import { Income } from './Income.interface';
 
 export interface ReportModalProps {
   onClose: () => void;

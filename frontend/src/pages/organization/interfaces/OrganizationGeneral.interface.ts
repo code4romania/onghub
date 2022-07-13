@@ -4,7 +4,7 @@ import { County } from '../../../common/interfaces/county.interface';
 import { OrganizationTypeEnum } from '../enums/OrganizationType.enum';
 import { Contact } from './Contact.interface';
 
-export interface OrganizationGeneral extends BaseEntity {
+export interface IOrganizationGeneral extends BaseEntity {
   id: number;
   name: string;
   alias: string;

@@ -1,13 +1,11 @@
 import React from 'react';
 import { Trans } from '@lingui/react';
 import { TableColumn } from 'react-data-table-component';
-import {
-  CompletionStatus,
-  FinancialType,
-  IOrganizationFinancial,
-} from './OrganizationFinancial.interface';
+import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.interface';
 import { formatCurrency, formatDate } from '../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
+import { FinancialType } from '../../enums/FinancialType.enum';
+import { CompletionStatus } from '../../enums/CompletionStatus.enum';
 
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
   {
@@ -45,7 +43,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   {
     id: 'updatedOn',
     name: <Trans id="updateOn" />,
-    selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn),
+    selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn as string),
     sortable: true,
     grow: 1,
   },
