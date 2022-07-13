@@ -1,15 +1,11 @@
-import { PartialType, OmitType } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
-import { CreateOrganizationFinancialDto } from './create-organization-financial.dto';
+import { IsNumber, IsObject } from 'class-validator';
+import { Income } from './income.dto';
+import { Expense } from './expense.dto';
 
-export class UpdateOrganizationFinancialDto extends PartialType(
-  OmitType(CreateOrganizationFinancialDto, ['type']),
-) {
+export class UpdateOrganizationFinancialDto {
   @IsNumber()
-  @IsOptional()
   id: number;
 
-  @IsNumber()
-  @IsOptional()
-  generalId: number;
+  @IsObject()
+  data: Income | Expense;
 }

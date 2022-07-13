@@ -1,4 +1,4 @@
-import API from './API';
+import API from '../API';
 
 export const getCounties = (): Promise<any> => {
   return API.get(`https://onghub-api.wearetribus.com/nomenclatures/counties`).then(

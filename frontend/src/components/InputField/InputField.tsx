@@ -3,7 +3,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
-const InputField = (props: { config: Partial<InputFieldConfig>; readonly: boolean }) => {
+const InputField = (props: { config: Partial<InputFieldConfig>; readonly?: boolean }) => {
   return (
     <div className="relative w-full">
       {props.config.label && (
@@ -14,12 +14,13 @@ const InputField = (props: { config: Partial<InputFieldConfig>; readonly: boolea
 
       <div className="mt-1 relative rounded-md">
         {!props.readonly && props.config.addOn && props.config.addOn()}
-        {props.readonly && <span>{props.config.defaultValue}</span>}
+        {props.readonly && <span>{props.config.defaultValue || '-'}</span>}
         {!props.readonly && (
           <input
             type={props.config.type}
             name={props.config.name}
             onChange={props.config.onChange}
+            onBlur={props.config.onBlur}
             className={classNames(
               props.config.error
                 ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '

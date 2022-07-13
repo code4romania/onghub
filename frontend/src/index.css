@@ -56,3 +56,29 @@
     margin: 0;
   }
 }
+
+/* Overrride default overflow for datatables to allow popovers */
+.gelpCx {
+  overflow-x: initial !important;
+  overflow-y: initial !important;
+}
+
+/* data table overrides */
+.rdt_TableHeadRow > .rdt_TableCol {
+  @apply bg-gray-50 text-sm font-titilliumBold text-gray-900 border-gray-300;
+}
+
+.rdt_TableHeadRow > .rdt_TableCol > div {
+  @apply py-3.5 pl-2 pr-3;
+}
+
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
+  @apply whitespace-nowrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
+}
+
+.rdt_TableCol_Sortable svg {
+  @apply ml-1;
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+}

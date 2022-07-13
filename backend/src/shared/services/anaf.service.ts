@@ -4,6 +4,12 @@ import { ANAF_URL } from 'src/common/constants/anaf.constants';
 import { lastValueFrom, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+interface FinancialInformation {
+  numberOfEmployees: number;
+  totalIncome: number;
+  totalExpense: number;
+}
+
 @Injectable()
 export class AnafService {
   private readonly logger = new Logger(AnafService.name);
@@ -29,33 +35,29 @@ export class AnafService {
     return lastValueFrom(company);
   }
 
-  public async processAnafData(cui: string, year: number) {
+  public async getFinancialInformation(
+    cui: string,
+    year: number,
+  ): Promise<FinancialInformation> {
     const anafData = await this.getAnafData(cui, year);
     if (anafData.length === 0) {
       return null;
     }
 
-    let companyData = {
-      income: null,
-      expense: null,
-      employees: null,
-    };
-
     const income = anafData.find((obj) => {
       return obj.indicator === 'I38';
     });
-    companyData.income = income['val_indicator'];
-
     const expense = anafData.find((obj) => {
       return obj.indicator === 'I40';
     });
-    companyData.expense = expense['val_indicator'];
-
     const employees = anafData.find((obj) => {
       return obj.indicator === 'I46';
     });
-    companyData.employees = employees['val_indicator'];
 
-    return companyData;
+    return {
+      numberOfEmployees: employees['val_indicator'],
+      totalExpense: expense['val_indicator'],
+      totalIncome: income['val_indicator'],
+    };
   }
 }

@@ -27,7 +27,6 @@ import {
   OrganizationService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
-import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
   imports: [
@@ -40,7 +39,6 @@ import { SharedModule } from 'src/shared/shared.module';
       OrganizationFinancial,
       OrganizationReport,
     ]),
-    SharedModule,
   ],
   controllers: [OrganizationController],
   providers: [

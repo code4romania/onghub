@@ -1,8 +1,9 @@
 import {
   Injectable,
-  NotAcceptableException,
   NotFoundException,
+  NotAcceptableException,
 } from '@nestjs/common';
+import { AnafService } from 'src/shared/services';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
@@ -14,6 +15,7 @@ import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { Area } from '../enums/organization-area.enum';
+import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -30,6 +32,7 @@ export class OrganizationService {
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
+    private readonly anafService: AnafService,
   ) {}
 
   public async create(
@@ -67,7 +70,11 @@ export class OrganizationService {
       });
     }
 
-    const previousYear = new Date().getFullYear() - 1;
+    // get anaf data
+    const financialInformation = await this.anafService.getFinancialInformation(
+      createOrganizationDto.general.cui,
+      new Date().getFullYear() - 1,
+    );
 
     // create the parent entry with default values
     return this.organizationRepository.save({
@@ -85,12 +92,16 @@ export class OrganizationService {
       },
       organizationFinancial: [
         {
-          type: createOrganizationDto.financial[0].type,
-          year: previousYear,
+          type: FinancialType.EXPENSE,
+          year: new Date().getFullYear() - 1,
+          total: financialInformation.totalExpense,
+          numberOfEmployees: financialInformation.numberOfEmployees,
         },
         {
-          type: createOrganizationDto.financial[1].type,
-          year: previousYear,
+          type: FinancialType.INCOME,
+          year: new Date().getFullYear() - 1,
+          total: financialInformation.totalIncome,
+          numberOfEmployees: financialInformation.numberOfEmployees,
         },
       ],
       organizationReport: {
