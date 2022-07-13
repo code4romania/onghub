@@ -21,15 +21,14 @@ export class OrganizationFinancial extends BaseEntity {
     type: 'integer',
     name: 'number_of_employees',
     default: 0,
-    nullable: true,
   })
-  numberOfEmployees?: number;
+  numberOfEmployees: number;
 
   @Column({ type: 'integer', name: 'year' })
   year: number;
 
-  @Column({ type: 'integer', name: 'total', nullable: true })
-  total?: number;
+  @Column({ type: 'integer', name: 'total', default: 0 })
+  total: number;
 
   @Column({
     type: 'enum',

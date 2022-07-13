@@ -15,15 +15,8 @@ export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
 
   @Get('cities')
-  getCities(@Query('countyId') countyId: number) {
-    return this.nomenclaturesService.getCities({
-      where: { countyId },
-    });
-  }
-
-  @Get('cities/search')
-  searchCities(@Query() citySearchDto: CitySearchDto) {
-    return this.nomenclaturesService.searchCities(citySearchDto);
+  getCities(@Query() citySearchDto: CitySearchDto) {
+    return this.nomenclaturesService.getCitiesSearch(citySearchDto);
   }
 
   @Get('counties')

@@ -10,7 +10,7 @@ export const OrganizationGeneralMock = {
   email: 'organization12@email.com',
   phone: '1234567890',
   yearCreated: 2022,
-  cui: '1234566123',
+  cui: '21786190',
   rafNumber: 'ABCD12345123',
   shortDescription: 'Lorem Ipsum etc',
   description:
@@ -65,24 +65,6 @@ export const OrganizationLegalMock = {
     },
   ],
   others: [{ fullName: 'Test me', role: 'admin' }],
-};
-
-export const OrganizationFinancialMock = {
-  type: FinancialType.INCOME,
-  numberOfEmployees: 0,
-  year: 2021,
-  total: 10000,
-  status: CompletionStatus.COMPLETED,
-  data: {
-    membershipFeeIncome: 10,
-    donationsIncome: 11,
-    twoPercentIncome: 12,
-    sponsorshipIncome: 13,
-    economicActivityIncome: 14,
-    otherIncome: 15,
-    financialIncome: 16,
-    netSalaries: 20,
-  },
 };
 
 export const OrganizationReportMock = {

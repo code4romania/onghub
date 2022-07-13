@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { useOrganizationQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from './interfaces/Tabs.interface';
 
@@ -9,6 +11,12 @@ const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+
+  // TODO: Load nomenclature data on app init
+  useCountiesQuery();
+
+  // load organization data
+  useOrganizationQuery(11);
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
