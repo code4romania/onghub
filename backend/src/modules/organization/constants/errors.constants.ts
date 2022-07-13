@@ -1,9 +1,9 @@
 export const HTTP_ERRORS_MESSAGES = {
   ORGANIZATION: 'Organization not found',
-  FINANCIAL: 'Incoming data not corresponding with data from ANAF',
   REGION: 'Missing region(s)',
   LOCAL: 'Missing city/cities',
   DIRECTORS: 'You need at least 3 directors',
+  ANAF_ERROR: 'Incoming data not corresponding with data from ANAF',
 };
 
 export const ERROR_CODES = {
@@ -14,4 +14,5 @@ export const ERROR_CODES = {
   ORG005: 'ORG005',
   ORG006: 'ORG006',
   ORG007: 'ORG007',
+  ANAF001: 'ANAF001',
 };

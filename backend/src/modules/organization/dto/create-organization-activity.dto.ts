@@ -19,7 +19,6 @@ export class CreateOrganizationActivityDto {
   isPartOfFederation: boolean;
 
   /* 
-  
   @example ["Google", "Google-Google", "Google Google"] 
   */
   @IsArray()
