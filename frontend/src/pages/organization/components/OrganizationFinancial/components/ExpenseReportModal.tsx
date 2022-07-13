@@ -6,6 +6,7 @@ import ReportTableRow from './ReportTableRow';
 import { Controller, useForm } from 'react-hook-form';
 import { Expense } from '../../../interfaces/Expense.interface';
 import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 const ExpenseReportModal = ({
   onClose,
@@ -97,9 +98,15 @@ const ExpenseReportModal = ({
                     Total cheltuieli
                   </span>
                 </div>
-                <p className="mt-4 text-base leading-4 font-normal text-gray-400 text-right">
+                <a
+                  href="https://www.anaf.ro/anaf/internet/ANAF/servicii_online/servicii_web_anaf"
+                  target="_blank"
+                  className="mt-4 text-base leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
+                  rel="noreferrer"
+                >
+                  <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
                   *suma preluata automat din raportarea ANAF
-                </p>
+                </a>
                 <form>
                   <table className="min-w-full divide-y divide-gray-300 mt-8">
                     <thead className="bg-gray-100">

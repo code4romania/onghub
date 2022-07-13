@@ -88,11 +88,13 @@ const OrganizationFinancial = () => {
             Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
           </p>
         </div>
-        <DataTableComponent
-          columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
-          data={organizationFinancial}
-          loading={isLoading}
-        />
+        <div className="overflow-x-auto">
+          <DataTableComponent
+            columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
+            data={organizationFinancial}
+            loading={isLoading}
+          />
+        </div>
       </div>
       {isExpenseReportModalOpen && (
         <ExpenseReportModal

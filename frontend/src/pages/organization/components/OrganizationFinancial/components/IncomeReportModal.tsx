@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { IncomeReportConfig } from './IncomeReportConfig';
 import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
 import { Income } from '../../../interfaces/Income.interface';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 const IncomeReportModal = ({
   onClose,
@@ -97,10 +98,16 @@ const IncomeReportModal = ({
                     Total Venituri
                   </span>
                 </div>
-                <p className="mt-4 text-base leading-4 font-normal text-gray-400 text-right">
+                <a
+                  href="https://www.anaf.ro/anaf/internet/ANAF/servicii_online/servicii_web_anaf"
+                  target="_blank"
+                  className="mt-4 text-base leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
+                  rel="noreferrer"
+                >
+                  <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
                   *suma preluata automat din raportarea ANAF
-                </p>
-                <form>
+                </a>
+                <form className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300 mt-8">
                     <thead className="bg-gray-100">
                       <tr>
