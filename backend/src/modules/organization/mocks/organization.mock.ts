@@ -38,7 +38,9 @@ export const OrganizationGeneralMock = {
 export const OrganizationActivityMock = {
   area: Area.LOCAL,
   isPartOfFederation: true,
-  federations: ['FFS', 'FAAF'],
+  federations: [1, 2],
+  isPartOfCoalition: true,
+  coalitions: [1, 3],
   isPartOfInternationalOrganization: true,
   internationalOrganizationName: 'International Org',
   isSocialServiceViable: true,
