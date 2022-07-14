@@ -1,0 +1,67 @@
+export const DirectorConfig: Record<string, any> = {
+  fullName: {
+    key: 'fullName',
+    rules: {
+      required: {
+        value: true,
+        message: 'Director Name is required.',
+      },
+      maxLength: {
+        value: 100,
+        message: 'Director name has a maximum length of 100 characters.',
+      },
+      minLength: {
+        value: 1,
+        message: 'Director Name has a minimum length of 1 characters.',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Nume si prenume*',
+      helperText: '',
+      placeholder: 'John Doe',
+    },
+  },
+  email: {
+    key: 'email',
+    rules: {
+      required: {
+        value: true,
+        message: 'Director Email is required.',
+      },
+      maxLength: {
+        value: 50,
+        message: 'Director Email has a maximum length of 50 characters.',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Email*',
+      helperText: '',
+      placeholder: 'example@email.com',
+    },
+  },
+  phone: {
+    key: 'phone',
+    rules: {
+      required: {
+        value: true,
+        message: 'Director Name is required.',
+      },
+      maxLength: {
+        value: 10,
+        message: 'Director phone has a maximum length of 10 characters.',
+      },
+      minLength: {
+        value: 10,
+        message: 'Director phone has a minimum length of 10 characters.',
+      },
+    },
+    config: {
+      type: 'tel',
+      label: 'Telefon',
+      helperText: '',
+      placeholder: '0721111111',
+    },
+  },
+};

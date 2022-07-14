@@ -12,6 +12,7 @@ import { useOrganizationMutation } from '../../../../services/organization/Organ
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
+import SectionHeader from '../../../../components/section-header/SectionHeader';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -87,7 +88,10 @@ const OrganizationGeneral = () => {
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
-          <span className="font-bold text-xl text-default-gray-900">Date generale</span>
+          <SectionHeader
+            title="Date generale"
+            subTitle="This information will be displayed publicly so be careful what you share"
+          />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller

@@ -1,0 +1,245 @@
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react';
+import { TableColumn } from 'react-data-table-component';
+import { useForm } from 'react-hook-form';
+import { classNames } from '../../../../common/helpers/tailwind.helper';
+import { Person } from '../../../../common/interfaces/person.interface';
+import ContactForm from '../../../../components/Contact/Contact';
+import DataTableComponent from '../../../../components/data-table/DataTableComponent';
+import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import SectionHeader from '../../../../components/section-header/SectionHeader';
+import { useSelectedOrganization } from '../../../../store/selectors';
+import { Contact } from '../../interfaces/Contact.interface';
+import DirectorModal from './components/DirectorModal';
+import OtherModal from './components/OtherModal';
+import { DirectorsTableHeaders } from './DirectorsTable.headers';
+import { OrganizationLegalConfig } from './OrganizationLegalConfig';
+import { OthersTableHeaders } from './OthersTable.headers';
+
+const OrganizationLegal = () => {
+  const [isEditMode, setEditMode] = useState(false);
+  const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
+  const [others, setOthers] = useState<Partial<Person>[]>([]);
+
+  const [isDirectorModalOpen, setIsDirectorModalOpen] = useState<boolean>(false);
+  const [selectedDirector, setSelectedDirector] = useState<Partial<Contact> | null>(null);
+  const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
+  const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
+
+  const { organizationLegal } = useSelectedOrganization();
+
+  // React Hook Form
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  useEffect(() => {
+    if (organizationLegal) {
+      reset({ ...{ legalReprezentative: organizationLegal.legalReprezentative } });
+      setOthers(organizationLegal.others);
+      setDirectors(organizationLegal.directors);
+    }
+  }, [organizationLegal]);
+
+  const buildDirectorActionColumn = (): TableColumn<Contact> => {
+    const menuItems = [
+      {
+        name: 'edit',
+        icon: PencilIcon,
+        onClick: onEditDirector,
+      },
+      {
+        name: 'Elimina date',
+        icon: TrashIcon,
+        onClick: onDeleteDirector,
+        isRemove: true,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: Contact) => <PopoverMenu row={row} menuItems={menuItems} />,
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
+  const buildOtherActionColumn = (): TableColumn<Person> => {
+    const menuItems = [
+      {
+        name: 'edit',
+        icon: PencilIcon,
+        onClick: onEditOther,
+      },
+      {
+        name: 'Elimina date',
+        icon: TrashIcon,
+        onClick: onDeleteOther,
+        isRemove: true,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: Person) => <PopoverMenu row={row} menuItems={menuItems} />,
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
+  const onEditDirector = (row: Contact) => {
+    setSelectedDirector(row);
+    setIsDirectorModalOpen(true);
+  };
+
+  const onDeleteDirector = (row: Contact) => {
+    console.log('row', row);
+  };
+
+  const onEditOther = (row: Person) => {
+    setSelectedOther(row);
+    setIsOtherModalOpen(true);
+  };
+
+  const onDeleteOther = (row: Person) => {
+    console.log('row', row);
+  };
+
+  const handleSave = () => {
+    setEditMode((mode) => !mode);
+  };
+
+  const onAddOther = () => {
+    console.log('on add other');
+  };
+
+  const onUploadFile = () => {
+    console.log('on upload file');
+  };
+
+  const onAddDirector = (contact: Partial<Contact>) => {
+    setDirectors([...directors, contact]);
+    setIsDirectorModalOpen(false);
+  };
+
+  const onUpdateDirector = (contact: Partial<Contact>) => {
+    setDirectors([
+      ...directors.filter((director: Partial<Contact>) => director.id !== contact?.id),
+      contact,
+    ]);
+    setSelectedDirector(null);
+    setIsDirectorModalOpen(false);
+  };
+
+  return (
+    <div className="w-full bg-white shadow rounded-lg">
+      <div className="p-5 sm:p-10 flex justify-between">
+        <span className="font-titilliumBold text-xl text-gray-800">Informatii Legale</span>
+
+        <button
+          type="button"
+          className={classNames(isEditMode ? 'save-button' : 'edit-button')}
+          onClick={handleSave}
+        >
+          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+          {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
+        </button>
+      </div>
+
+      <div className="w-full border-t border-gray-300" />
+      <div className="p-5 sm:p-10">
+        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/3">
+          <section className="flex flex-col gap-6 w-full">
+            <SectionHeader
+              title="Reprezentant Legal al organizatiet"
+              subTitle="This information will be displayed publicly so be careful what you share"
+            />
+            <form className="space-y-8">
+              <ContactForm
+                className="flex-row gap-x-6"
+                control={control}
+                errors={errors}
+                readonly={!isEditMode}
+                configs={[
+                  OrganizationLegalConfig.legal_reprezentative_name,
+                  OrganizationLegalConfig.legal_reprezentative_email,
+                  OrganizationLegalConfig.legal_reprezentative_phone,
+                ]}
+              />
+            </form>
+          </section>
+          <section className="flex flex-col gap-6 w-full pt-8">
+            <SectionHeader
+              title="Consiliul director al organizatiei"
+              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
+            />
+            <DataTableComponent
+              columns={[...DirectorsTableHeaders, buildDirectorActionColumn()]}
+              data={directors}
+            />
+            <button
+              type="button"
+              className="add-button max-w-[12rem]"
+              onClick={setIsDirectorModalOpen.bind(null, true)}
+            >
+              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Adauga un membru
+            </button>
+          </section>
+          <section className="flex flex-col gap-6 w-full pt-8">
+            <SectionHeader
+              title="Alte persoane relevante in organizatie"
+              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
+            />
+            <DataTableComponent
+              columns={[...OthersTableHeaders, buildOtherActionColumn()]}
+              data={others}
+            />
+            <button type="button" className="add-button max-w-[12rem]" onClick={onAddOther}>
+              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Adauga un membru
+            </button>
+          </section>
+          <section className="flex flex-col gap-6 w-full pt-8">
+            <SectionHeader
+              title="Statutul organizatiei"
+              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
+            />
+            <div className="flex flex-col gap-y-4">
+              <h3>Document</h3>
+              <button type="button" className="add-button max-w-[8rem]" onClick={onUploadFile}>
+                Incarca fisier
+              </button>
+            </div>
+          </section>
+          {isDirectorModalOpen && (
+            <DirectorModal
+              isEdit={selectedDirector !== null}
+              defaultValue={selectedDirector || {}}
+              onSave={selectedDirector !== null ? onUpdateDirector : onAddDirector}
+              onClose={() => {
+                setIsDirectorModalOpen(false);
+                setSelectedDirector(null);
+              }}
+            />
+          )}
+          {isOtherModalOpen && selectedOther && (
+            <OtherModal
+              defaultValue={selectedOther || {}}
+              onSave={onAddDirector}
+              onClose={() => setIsDirectorModalOpen(false)}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrganizationLegal;

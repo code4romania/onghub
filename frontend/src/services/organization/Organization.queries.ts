@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
+import { IOrganizationLegal } from '../../pages/organization/interfaces/OrganizationLegal.interface';
 import { IOrganizationReport } from '../../pages/organization/interfaces/OrganizationReport.interface';
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
@@ -16,15 +17,22 @@ interface OrganizationPayload {
 }
 
 export const useOrganizationQuery = (id: number) => {
-  const { setOrganizationGeneral, setOrganizationFinancial, setOrganizationReport } = useStore();
+  const {
+    setOrganizationGeneral,
+    setOrganizationFinancial,
+    setOrganizationReport,
+    setOrganizationLegal,
+  } = useStore();
   return useQuery(['organization', id], () => getOrganization(id), {
     onSuccess: (data: {
       organizationGeneral: IOrganizationGeneral;
       organizationFinancial: IOrganizationFinancial[];
       organizationReport: IOrganizationReport;
+      organizationLegal: IOrganizationLegal;
     }) => {
       setOrganizationGeneral(data.organizationGeneral);
       setOrganizationFinancial(data.organizationFinancial);
+      setOrganizationLegal(data.organizationLegal);
       setOrganizationReport({
         id: 1,
         reports: [

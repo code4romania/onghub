@@ -10,7 +10,7 @@ import OrganizationActivity from '../../pages/organization/components/Organizati
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
 import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
-import OrganizationLegal from '../../pages/organization/components/OrganizationLegal';
+import OrganizationLegal from '../../pages/organization/components/OrganizationLegal/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
