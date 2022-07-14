@@ -5,6 +5,7 @@ import { formatDate } from '../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
 import { CompletionStatus } from '../../enums/CompletionStatus.enum';
 import { Report } from '../../interfaces/Report.interface';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 export const ReportsTableHeaders: TableColumn<Report>[] = [
   {
@@ -31,7 +32,20 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   {
     id: 'report',
     name: 'Raport Activitate',
-    selector: (row: Report) => row.report || 'Nu este disponibil',
+    cell: (row: Report) =>
+      row.report ? (
+        <a
+          className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
+          target="_blank"
+          href={row.report as string}
+          rel="noreferrer"
+        >
+          {`Report${row.year}`}
+          <ExternalLinkIcon className="w-4 h-4" />
+        </a>
+      ) : (
+        'Nu este disponibil'
+      ),
     grow: 4,
     sortable: true,
   },

@@ -58,7 +58,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                     >
                       <item.icon
                         className={classNames(
-                          item.isRemove ? 'text-red-600' : 'text-indigo-600',
+                          item.isRemove ? 'text-red-600' : 'text-gray-900',
                           'flex-shrink-0 h-5 w-5',
                         )}
                         aria-hidden="true"

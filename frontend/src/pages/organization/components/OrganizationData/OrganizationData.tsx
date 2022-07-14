@@ -11,34 +11,11 @@ import { Investor } from '../../interfaces/Investor.interface';
 import { Partner } from '../../interfaces/Partner.interface';
 import { InvestorsTableHeaders } from './InvestorTable.headers';
 import ReportSummaryModal from './components/ReportSummaryModal';
-
-interface CardTableProps {
-  title: string;
-  children?: JSX.Element;
-}
-
-const CardTable = ({ title, children }: CardTableProps) => {
-  return (
-    <div className="w-full bg-white shadow rounded-lg">
-      <div className="p-5 sm:p-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">{title}</span>
-      </div>
-
-      <div className="w-full border-t border-gray-300" />
-      <div className="md:py-5 md:px-10 sm:p-10">
-        <div className="pt-1 pb-6">
-          <p className="text-base font-normal text-gray-900">
-            Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
-          </p>
-        </div>
-        <div>{children}</div>
-      </div>
-    </div>
-  );
-};
+import CardPanel from '../../../../components/card-panel/CardPanel';
 
 const OrganizationData = () => {
   const [isActivitySummartModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const { organizationReport } = useSelectedOrganization();
 
   const buildReportActionColumn = (): TableColumn<Report> => {
@@ -93,8 +70,12 @@ const OrganizationData = () => {
   };
 
   const onEditReport = (row: Report) => {
-    console.log('edit row');
+    setSelectedReport(row);
     setIsActivitySummaryModalOpen(true);
+  };
+
+  const onSaveReport = (data: Partial<Report>) => {
+    console.log('on save report', data);
   };
 
   const onDeleteReport = (row: Report) => {
@@ -115,27 +96,68 @@ const OrganizationData = () => {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <CardTable title="Sumar">
-        <DataTableComponent
-          columns={[...ReportsTableHeaders, buildReportActionColumn()]}
-          data={organizationReport?.reports || []}
-        />
-      </CardTable>
-      <CardTable title="Parteneri">
-        <DataTableComponent
-          columns={[...PartnerTableHeaders, buildPartnersInvestorsActionColumn()]}
-          data={organizationReport?.partners || []}
-        />
-      </CardTable>
-      <CardTable title="Finantatori">
-        <DataTableComponent
-          columns={[...InvestorsTableHeaders, buildPartnersInvestorsActionColumn()]}
-          data={organizationReport?.inverstors || []}
-        />
-      </CardTable>
-      {isActivitySummartModalOpen && (
+      <CardPanel title="Sumar">
+        <>
+          <div className="pt-1 pb-6">
+            <p className="text-base font-normal text-gray-900">
+              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+            </p>
+          </div>
+          <DataTableComponent
+            columns={[...ReportsTableHeaders, buildReportActionColumn()]}
+            data={organizationReport?.reports || []}
+          />
+        </>
+      </CardPanel>
+      <CardPanel title="Parteneri">
+        <>
+          <div className="pt-1 pb-6">
+            <p className="text-base font-normal text-gray-900 flex">
+              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+              <a
+                href="http://test.com"
+                target="_blank"
+                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
+                rel="noreferrer"
+              >
+                <DownloadIcon className="w-5 h-5" />
+                Descarca model de tabel parteneri
+              </a>
+            </p>
+          </div>
+          <DataTableComponent
+            columns={[...PartnerTableHeaders, buildPartnersInvestorsActionColumn()]}
+            data={organizationReport?.partners || []}
+          />
+        </>
+      </CardPanel>
+      <CardPanel title="Finantatori">
+        <>
+          <div className="pt-1 pb-6">
+            <p className="text-base font-normal text-gray-900 flex">
+              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+              <a
+                href="http://test.com"
+                target="_blank"
+                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
+                rel="noreferrer"
+              >
+                <DownloadIcon className="w-5 h-5" />
+                Descarca model de tabel parteneri
+              </a>
+            </p>
+          </div>
+          <DataTableComponent
+            columns={[...InvestorsTableHeaders, buildPartnersInvestorsActionColumn()]}
+            data={organizationReport?.inverstors || []}
+          />
+        </>
+      </CardPanel>
+      {isActivitySummartModalOpen && selectedReport && (
         <ReportSummaryModal
           onClose={() => setIsActivitySummaryModalOpen(false)}
+          defaultValue={selectedReport}
+          onSave={onSaveReport}
           year={new Date().getFullYear()}
         />
       )}

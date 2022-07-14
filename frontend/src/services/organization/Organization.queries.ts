@@ -30,11 +30,11 @@ export const useOrganizationQuery = (id: number) => {
         reports: [
           {
             id: 1,
-            numberOfContractors: null,
-            numberOfVolunteers: null,
-            report: null,
+            numberOfContractors: 10,
+            numberOfVolunteers: 20,
+            report: 'https://www.clickdimensions.com/links/TestPDFfile.pdf',
             year: 2022,
-            status: CompletionStatus.NOT_COMPLETED,
+            status: CompletionStatus.COMPLETED,
             updatedOn: new Date().toISOString(),
           },
           {

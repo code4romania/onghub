@@ -4,28 +4,29 @@ import { XIcon } from '@heroicons/react/outline';
 import { Controller, useForm } from 'react-hook-form';
 import InputField from '../../../../../components/InputField/InputField';
 import { ReportSummaryConfig } from './ReportSummayConfig';
+import { Report } from '../../../interfaces/Report.interface';
 
-const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: any) => {
-  // form
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+interface ReportSummaryModalProps {
+  year: number;
+  defaultValue: Partial<Report>;
+  onClose: () => void;
+  onSave: (data: Partial<Report>) => void;
+}
+
+const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSummaryModalProps) => {
+  const { control, reset, getValues } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
-  // init form values
   useEffect(() => {
     if (defaultValue) {
       reset({ ...defaultValue });
     }
   }, [defaultValue]);
 
-  const handleSave = (data: any) => {
-    onClose();
+  const handleSave = () => {
+    onSave(getValues());
   };
 
   return (
@@ -91,7 +92,6 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: any) => {
                           config={{
                             ...ReportSummaryConfig.numberOfVolunteers.config,
                             name: ReportSummaryConfig.numberOfVolunteers.key,
-                            error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -110,7 +110,6 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: any) => {
                           config={{
                             ...ReportSummaryConfig.numberOfContractors.config,
                             name: ReportSummaryConfig.numberOfContractors.key,
-                            error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -129,7 +128,6 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: any) => {
                           config={{
                             ...ReportSummaryConfig.report.config,
                             name: ReportSummaryConfig.report.key,
-                            error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -142,9 +140,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: any) => {
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => {
-                      handleSubmit(handleSave);
-                    }}
+                    onClick={handleSave}
                   >
                     Salveaza
                   </button>
