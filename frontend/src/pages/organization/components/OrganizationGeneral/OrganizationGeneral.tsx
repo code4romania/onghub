@@ -33,7 +33,7 @@ const OrganizationGeneral = () => {
   // React Query
   const { data: organization } = useQuery(['organization', id], () => getOrganization(id));
   const { data: counties } = useQuery(['counties'], () => getCounties());
-  const { data: cities } = useQuery(['cities', county], () => county && getCities(county.id), {
+  const { data: cities } = useQuery(['cities', county], () => county && getCities('', county.id), {
     enabled: !!county,
   });
   const mutation = useMutation((update: any) => patchOrganization(id, update));

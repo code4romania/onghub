@@ -20,7 +20,7 @@ interface ChipProps {
   onClick: (itemId: number) => void;
 }
 
-const Chip = ({ item, selected, readonly, onClick }: ChipProps) => (
+export const Chip = ({ item, selected, readonly, onClick }: ChipProps) => (
   <span
     className={classNames(
       selected ? 'font-semibold bg-green-50' : 'font-normal bg-gray-100',

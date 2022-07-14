@@ -2,12 +2,14 @@ import { PencilIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ChipSelection from '../../../../components/chip-selection/ChipSelection';
-import { OrganizationActivityConfig } from './OrganizationActivityConfig';
+import { OrganizationActivityConfig, ORGANIZATION_AREA_ENUM } from './OrganizationActivityConfig';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { OrganizationGeneralConfig } from '../OrganizationGeneral/OrganizationGeneralConfig';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
-import Search from '../../../../components/Search/Search';
-import ServerSelect from '../../../../components/Search/Search';
+import Search from '../../../../components/server-select/ServerSelect';
+import ServerSelect from '../../../../components/server-select/ServerSelect';
+import { getCities } from '../../../../services/Nomenclatures.service';
+import Select from '../../../../components/Select/Select';
 
 const OrganizationActivity = () => {
   const [readonly, setReadonly] = useState(false);
@@ -17,25 +19,40 @@ const OrganizationActivity = () => {
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
-  const first = useWatch({ name: 'isPartOfFederation', control });
+  const area = watch('area');
 
   const handleSave = (data: any) => {
-    console.log(first);
-    console.log(data);
+    console.log(area);
+    // console.log(data);
   };
 
   const startEdit = () => {
     setReadonly(false);
   };
 
-  useEffect(() => {
-    console.log(first);
-  }, [first]);
+  const citiesSearchMap = (item: any) => ({
+    value: item.id,
+    label: `${item.name}, jud. ${item.county.name}`,
+  });
+
+  const regions = (item: any) => ({
+    value: item.id,
+    label: `${item.name}`,
+  });
+
+  const loadOptionsRegionsSerch = async (searchWord: string) => {
+    return getCities(searchWord, 28).then((res) => res.map(citiesSearchMap));
+  };
+
+  const loadOptionsCitiesSerch = async (searchWord: string) => {
+    return getCities(searchWord, 28).then((res) => res.map(citiesSearchMap));
+  };
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
@@ -45,7 +62,7 @@ const OrganizationActivity = () => {
         <button
           type="button"
           className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
+          onClick={readonly ? startEdit : handleSave}
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {readonly ? 'Editeaza' : 'Salveaza modificari'}
@@ -54,13 +71,6 @@ const OrganizationActivity = () => {
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
-        <ServerSelect
-          defaultInputValue={''}
-          isMulti={true}
-          isClearable={false}
-          placeholder={''}
-          onChange={(e: any) => console.log(e)}
-        />
         <div className="flex flex-col gap-4 ">
           <div>
             <span className="text-xl font-bold text-gray-900">Domenii si acoperire geografica</span>
@@ -90,6 +100,50 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.area.key]}
             config={OrganizationActivityConfig.area}
           />
+          {area == 1 && (
+            <Controller
+              key={OrganizationGeneralConfig.name.key}
+              name={OrganizationGeneralConfig.name.key}
+              rules={OrganizationGeneralConfig.name.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <ServerSelect
+                    value={value}
+                    label="Mentioneaza federatii*"
+                    isMulti={true}
+                    isClearable={false}
+                    placeholder={''}
+                    helperText={'Lorem ipsum. Alege din listă sau adaugă valoare.'}
+                    error={errors[OrganizationGeneralConfig.name.key]?.message as string}
+                    onChange={onChange}
+                    loadOptions={loadOptionsCitiesSerch}
+                    readonly={readonly}
+                  />
+                );
+              }}
+            />
+          )}
+          {area == 2 && (
+            <Controller
+              key={OrganizationGeneralConfig.yearCreated.key}
+              name={OrganizationGeneralConfig.yearCreated.key}
+              rules={OrganizationGeneralConfig.yearCreated.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <Select
+                    config={{
+                      ...OrganizationGeneralConfig.yearCreated.config,
+                    }}
+                    selected={value}
+                    onChange={onChange}
+                    readonly={readonly}
+                  />
+                );
+              }}
+            />
+          )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>

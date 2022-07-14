@@ -1,3 +1,29 @@
+export enum ORGANIZATION_AREA_ENUM {
+  LOCAL = 'Local',
+  REGIONAL = 'Regional',
+  NATIONAL = 'National',
+  INTERNATIONAl = 'International',
+}
+
+export const ORGANIZATION_AREAS = [
+  {
+    label: ORGANIZATION_AREA_ENUM.LOCAL,
+    value: '1',
+  },
+  {
+    label: ORGANIZATION_AREA_ENUM.REGIONAL,
+    value: '2',
+  },
+  {
+    label: ORGANIZATION_AREA_ENUM.NATIONAL,
+    value: '3',
+  },
+  {
+    label: ORGANIZATION_AREA_ENUM.INTERNATIONAl,
+    value: '4',
+  },
+];
+
 export const OrganizationActivityConfig: Record<string, any> = {
   domains: {
     key: 'domains',
@@ -27,28 +53,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
       },
     },
     helperText: 'Lorem ipsum. Alege din lista sau adauga valoare.',
-    radioConfigs: [
-      {
-        label: 'National',
-        name: 'area',
-        value: '1',
-      },
-      {
-        label: 'Regional',
-        name: 'area',
-        value: '2',
-      },
-      {
-        label: 'Local',
-        name: 'area',
-        value: '3',
-      },
-      {
-        label: 'International',
-        name: 'area',
-        value: '4',
-      },
-    ],
+    radioConfigs: [...ORGANIZATION_AREAS.map((item) => ({ ...item, name: 'area' }))],
   },
   isPartOfFederation: {
     key: 'isPartOfFederation',
