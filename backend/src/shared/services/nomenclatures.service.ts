@@ -51,20 +51,31 @@ export class NomenclaturesService {
         '_city.county',
         '_county',
         '_city.county_id=_county.id',
-      )
-      .where('_city.county_id = :county', {
-        county: citySearchDto.countyId,
-      });
+      );
 
-    if (citySearchDto.search) {
+    if (citySearchDto.search && citySearchDto.countyId) {
       return query
+        .where('_city.county_id = :county', {
+          county: citySearchDto.countyId,
+        })
         .andWhere('_city.name ilike :name', {
           name: `%${citySearchDto.search}%`,
         })
         .limit(5)
         .getMany();
+    } else if (citySearchDto.countyId) {
+      return query
+        .where('_city.county_id = :county', {
+          county: citySearchDto.countyId,
+        })
+        .getMany();
     } else {
-      return query.getMany();
+      return query
+        .where('_city.name ilike :name', {
+          name: `%${citySearchDto.search}%`,
+        })
+        .limit(5)
+        .getMany();
     }
   }
 
