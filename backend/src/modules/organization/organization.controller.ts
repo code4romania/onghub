@@ -26,17 +26,19 @@ import { OrganizationService } from './services/organization.service';
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
-  // @ApiBody({ type: CreateOrganizationDto })
+  @ApiBody({ type: CreateOrganizationDto })
   @Post()
-  create(): Promise<Organization> {
+  create(
+    @Body() createOrganizationDto: CreateOrganizationDto,
+  ): Promise<Organization> {
     // @Body() createOrganizationDto: CreateOrganizationDto,
-    // return this.organizationService.create(createOrganizationDto);
-    return this.organizationService.create({
-      general: OrganizationGeneralMock,
-      activity: OrganizationActivityMock,
-      legal: OrganizationLegalMock,
-      report: OrganizationReportMock,
-    });
+    return this.organizationService.create(createOrganizationDto);
+    // return this.organizationService.create({
+    //   general: OrganizationGeneralMock,
+    //   activity: OrganizationActivityMock,
+    //   legal: OrganizationLegalMock,
+    //   report: OrganizationReportMock,
+    // });
   }
 
   @Get(':id')

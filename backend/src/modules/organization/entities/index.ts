@@ -5,3 +5,6 @@ export * from './organization-financial.entity';
 export * from './organization-report.entity';
 export * from './organization.entity';
 export * from './contact.entity';
+export * from './report.entity';
+export * from './partner.entity';
+export * from './investor.entity';

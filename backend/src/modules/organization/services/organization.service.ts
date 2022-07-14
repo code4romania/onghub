@@ -15,6 +15,7 @@ import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { Area } from '../enums/organization-area.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -79,6 +80,8 @@ export class OrganizationService {
     }
 
     const previousYear = new Date().getFullYear() - 1;
+    const currentYear = new Date().getFullYear();
+    const reportStatus = CompletionStatus.NOT_COMPLETED;
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
@@ -116,7 +119,29 @@ export class OrganizationService {
         },
       ],
       organizationReport: {
-        ...createOrganizationDto.report,
+        reports: [
+          {
+            report: '',
+            numberOfVolunteers: 0,
+            numberOfContractors: 0,
+            year: currentYear,
+            status: reportStatus,
+          },
+        ],
+        partners: [
+          {
+            year: currentYear,
+            numberOfPartners: 0,
+            status: reportStatus,
+          },
+        ],
+        investors: [
+          {
+            year: currentYear,
+            numberOfInvestors: 0,
+            status: reportStatus,
+          },
+        ],
       },
     });
   }
@@ -130,6 +155,8 @@ export class OrganizationService {
         'organizationGeneral.county',
         'organizationGeneral.contact',
         'organizationActivity',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
         'organizationActivity.domains',
         'organizationActivity.cities',
         'organizationLegal',
@@ -137,6 +164,9 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
       ],
     });
 

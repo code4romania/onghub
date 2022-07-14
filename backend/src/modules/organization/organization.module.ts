@@ -9,6 +9,9 @@ import {
   Contact,
   OrganizationFinancial,
   OrganizationReport,
+  Report,
+  Partner,
+  Investor,
 } from './entities';
 import {
   OrganizationActivityRepository,
@@ -38,6 +41,9 @@ import { OrganizationReportService } from './services/organization-report.servic
       OrganizationLegal,
       OrganizationFinancial,
       OrganizationReport,
+      Report,
+      Partner,
+      Investor,
     ]),
   ],
   controllers: [OrganizationController],
