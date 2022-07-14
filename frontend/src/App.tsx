@@ -7,6 +7,22 @@ import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { messages as messagesRo } from './assets/locales/ro/messages';
 import { LocaleProvider } from './contexts/LocaleContext';
+import { Amplify, Auth } from 'aws-amplify';
+
+Amplify.configure({
+  Auth: {
+    region: 'eu-central-1',
+    userPoolId: 'eu-central-1_TwmnT1UC2',
+    userPoolWebClientId: '400vdublp0f6ln8ijerca34324',
+  },
+  oauth: {
+    domain: 'onghub2.auth.eu-central-1.amazoncognito.com',
+    scope: ['email', 'profile', 'openid'],
+    redirectSignIn: 'http://localhost:3000/',
+    redirectSignOut: 'http://localhost:3000/',
+    responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
+  },
+});
 
 i18n.load({
   ro: messagesRo,
@@ -17,7 +33,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [authState, setAuthState] = useState({
-    isAuthenticated: true,
+    isAuthenticated: false,
   });
 
   return (
