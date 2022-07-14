@@ -15,8 +15,34 @@ export class OrganizationActivityService {
     id: number,
     updateOrganizationActivityDto: UpdateOrganizationActivityDto,
   ) {
-    const { domains, regions, cities, ...updateOrganizationData } =
-      updateOrganizationActivityDto;
+    const {
+      federations,
+      coalitions,
+      domains,
+      regions,
+      cities,
+      ...updateOrganizationData
+    } = updateOrganizationActivityDto;
+
+    if (federations) {
+      let federationsData = [];
+      if (federations.length > 0) {
+        federationsData = await this.nomenclaturesService.getFederations({
+          where: { id: In(federations) },
+        });
+      }
+      updateOrganizationData['federations'] = federationsData;
+    }
+
+    if (coalitions) {
+      let coalitionsData = [];
+      if (coalitions.length > 0) {
+        coalitionsData = await this.nomenclaturesService.getCoalitions({
+          where: { id: In(coalitions) },
+        });
+      }
+      updateOrganizationData['coalitions'] = coalitionsData;
+    }
 
     if (domains) {
       let domainsData = [];
@@ -35,6 +61,7 @@ export class OrganizationActivityService {
           where: { id: In(regions) },
         });
       }
+      updateOrganizationData['regions'] = regionsData;
     }
 
     if (cities) {
