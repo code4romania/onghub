@@ -52,13 +52,9 @@
     ]
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@babel/core": "^7.18.5",
     "@types/debounce-promise": "^3.1.4",
-=======
-    "@babel/core": "^7.18.6",
     "@lingui/cli": "^3.14.0",
->>>>>>> develop
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "autoprefixer": "^10.4.7",
