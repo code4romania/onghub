@@ -11,5 +11,6 @@ export interface InputFieldConfig {
   defaultValue?: string;
   error?: string | any;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: ChangeEventHandler<HTMLInputElement>;
   addOn?: Function;
 }

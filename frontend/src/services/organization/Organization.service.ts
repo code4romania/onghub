@@ -1,4 +1,4 @@
-import API from './API';
+import API from '../API';
 
 export const getOrganization = (id: number): Promise<any> => {
   return API.get(`https://onghub-api.wearetribus.com/organization/${id}`).then((res) => res.data);

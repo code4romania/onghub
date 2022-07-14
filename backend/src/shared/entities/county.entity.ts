@@ -5,11 +5,14 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { City } from './city.entity';
+import { Region } from './region.entity';
 
 @Entity({ name: '_county' })
 export class County {
@@ -21,6 +24,18 @@ export class County {
 
   @Column({ type: 'text', name: 'abbreviation' })
   abbreviation: string;
+
+  @Column({
+    type: 'integer',
+    nullable: true,
+    name: 'region_id',
+  })
+  regionId: number;
+
+  @ManyToOne(() => Region, (region) => region.counties, { cascade: true })
+  @JoinColumn({ name: 'region_id' })
+  @Index()
+  region: Region;
 
   @OneToMany(() => City, (city) => city.county)
   cities: City[];

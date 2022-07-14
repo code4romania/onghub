@@ -1,4 +1,7 @@
+import { Area } from '../enums/organization-area.enum';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import { FinancialType } from '../enums/organization-financial-type.enum';
 
 export const OrganizationGeneralMock = {
   name: 'OrganizationTest12',
@@ -7,7 +10,7 @@ export const OrganizationGeneralMock = {
   email: 'organization12@email.com',
   phone: '1234567890',
   yearCreated: 2022,
-  cui: '1234566123',
+  cui: '21786190',
   rafNumber: 'ABCD12345123',
   shortDescription: 'Lorem Ipsum etc',
   description:
@@ -33,8 +36,11 @@ export const OrganizationGeneralMock = {
 };
 
 export const OrganizationActivityMock = {
+  area: Area.LOCAL,
   isPartOfFederation: true,
-  federations: ['FFS', 'FAAF'],
+  federations: [1, 2],
+  isPartOfCoalition: true,
+  coalitions: [1, 3],
   isPartOfInternationalOrganization: true,
   internationalOrganizationName: 'International Org',
   isSocialServiceViable: true,
@@ -42,8 +48,8 @@ export const OrganizationActivityMock = {
   isPublicIntrestOrganization: true,
   hasBranches: true,
   branches: [1, 2],
-  areaId: 2,
   domains: [1, 2],
+  regions: [1],
   cities: [2, 3],
 };
 
@@ -61,12 +67,6 @@ export const OrganizationLegalMock = {
     },
   ],
   others: [{ fullName: 'Test me', role: 'admin' }],
-};
-
-export const OrganizationFinancialMock = {
-  numberOfEmployees: 0,
-  totalIncome: 0,
-  totalExpenses: 0,
 };
 
 export const OrganizationReportMock = {

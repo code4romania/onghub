@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationActivity } from './organization-activity.entity';
 import { OrganizationFinancial } from './organization-financial.entity';
@@ -73,21 +73,13 @@ export class Organization extends BaseEntity {
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
 
-  @Exclude()
-  @Column({
-    type: 'integer',
-    nullable: true,
-    name: 'organization_financial_id',
-  })
-  organizationFinancialId: number;
-
-  @OneToOne(
+  @OneToMany(
     () => OrganizationFinancial,
     (organizationFinancial) => organizationFinancial.organization,
     { cascade: true },
   )
   @JoinColumn({ name: 'organization_financial_id' })
-  organizationFinancial: OrganizationFinancial;
+  organizationFinancial: OrganizationFinancial[];
 
   @Exclude()
   @Column({

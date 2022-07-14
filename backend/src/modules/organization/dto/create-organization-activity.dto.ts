@@ -1,27 +1,31 @@
 import {
   IsArray,
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   Length,
-  Matches,
 } from 'class-validator';
-import { REGEX } from 'src/common/constants/patterns.constant';
+import { Area } from '../enums/organization-area.enum';
 
 export class CreateOrganizationActivityDto {
+  @IsEnum(Area)
+  area: Area;
+
   @IsBoolean()
   isPartOfFederation: boolean;
 
-  /* 
-  
-  @example ["Google", "Google-Google", "Google Google"] 
-  */
   @IsArray()
-  @Length(3, 100, { each: true })
-  @Matches(REGEX.NAME, { each: true })
-  federations: string[];
+  @IsOptional()
+  federations?: number[];
+
+  @IsBoolean()
+  isPartOfCoalition: boolean;
+
+  @IsArray()
+  @IsOptional()
+  coalitions?: number[];
 
   @IsBoolean()
   isPartOfInternationalOrganization: boolean;
@@ -47,12 +51,14 @@ export class CreateOrganizationActivityDto {
   @IsArray()
   branches?: number[];
 
-  @IsNumber()
-  areaId: number;
-
   @IsArray()
   domains: number[];
 
   @IsArray()
-  cities: number[];
+  @IsOptional()
+  regions?: number[];
+
+  @IsArray()
+  @IsOptional()
+  cities?: number[];
 }

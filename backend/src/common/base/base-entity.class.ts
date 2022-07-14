@@ -23,11 +23,9 @@ export abstract class BaseEntity {
   @CreateDateColumn({ name: 'created_on', type: 'timestamp with time zone' })
   createdOn: Date;
 
-  @Exclude()
   @UpdateDateColumn({
     name: 'updated_on',
     type: 'timestamp with time zone',
-    select: false,
   })
   updatedOn: Date;
 }

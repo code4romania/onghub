@@ -1,25 +1,44 @@
-import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Area } from 'src/shared/entities/area.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm';
 import { Organization } from './organization.entity';
 import { City, Domain } from 'src/shared/entities';
+import { Area } from '../enums/organization-area.enum';
+import { Region } from 'src/shared/entities/region.entity';
+import { Federation } from 'src/shared/entities/federation.entity';
+import { Coalition } from 'src/shared/entities/coalition.entity';
 
 @Entity()
 export class OrganizationActivity extends BaseEntity {
+  @Column({ type: 'enum', enum: Area, name: 'area' })
+  area: Area;
+
   @Column({ type: 'boolean', name: 'is_part_of_federation', default: false })
   isPartOfFederation: boolean;
 
-  @Column({ type: 'jsonb', name: 'federations' })
-  federations: string[];
+  @ManyToMany(() => Federation, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_federations',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'federation_id', referencedColumnName: 'id' },
+  })
+  federations: Federation[];
+
+  @Column({ type: 'boolean', name: 'is_part_of_coalition', default: false })
+  isPartOfCoalition: boolean;
+
+  @ManyToMany(() => Coalition, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_coalitions',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'coalition_id', referencedColumnName: 'id' },
+  })
+  coalitions: Coalition[];
 
   @Column({
     type: 'boolean',
@@ -48,19 +67,22 @@ export class OrganizationActivity extends BaseEntity {
   @Column({ type: 'jsonb', name: 'branches', nullable: true })
   branches: number[];
 
-  @Exclude()
-  @Column({ type: 'integer', nullable: true, name: 'area_id' })
-  areaId: number;
-
-  @ManyToOne((type) => Area)
-  @JoinColumn({ name: 'area_id' })
-  area: Area;
-
   @OneToOne(
     () => Organization,
     (organization) => organization.organizationGeneral,
   )
   organization: Organization;
+
+  @ManyToMany(() => Region, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_region',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'region_id', referencedColumnName: 'id' },
+  })
+  regions: Region[];
 
   @ManyToMany(() => City, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  NotAcceptableException,
+} from '@nestjs/common';
+import { AnafService } from 'src/shared/services';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
@@ -9,6 +14,8 @@ import {
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
+import { Area } from '../enums/organization-area.enum';
+import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -25,18 +32,58 @@ export class OrganizationService {
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
+    private readonly anafService: AnafService,
   ) {}
 
   public async create(
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
+    const federations = await this.nomenclaturesService.getFederations({
+      where: { id: In(createOrganizationDto.activity.federations) },
+    });
+
+    const coalitions = await this.nomenclaturesService.getCoalitions({
+      where: { id: In(createOrganizationDto.activity.coalitions) },
+    });
+
     const domains = await this.nomenclaturesService.getDomains({
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
+    const regions = await this.nomenclaturesService.getRegions({
+      where: { id: In(createOrganizationDto.activity.regions) },
+    });
+
+    if (
+      createOrganizationDto.activity.area === Area.REGIONAL &&
+      regions.length === 0
+    ) {
+      throw new NotAcceptableException({
+        message: HTTP_ERRORS_MESSAGES.REGION,
+        errorCode: ERROR_CODES.ORG003,
+      });
+    }
+
     const cities = await this.nomenclaturesService.getCities({
       where: { id: In(createOrganizationDto.activity.cities) },
     });
+
+    if (
+      createOrganizationDto.activity.area === Area.LOCAL &&
+      cities.length === 0
+    ) {
+      throw new NotAcceptableException({
+        message: HTTP_ERRORS_MESSAGES.LOCAL,
+        errorCode: ERROR_CODES.ORG004,
+      });
+    }
+
+    const previousYear = new Date().getFullYear() - 1;
+    // get anaf data
+    const financialInformation = await this.anafService.getFinancialInformation(
+      createOrganizationDto.general.cui,
+      new Date().getFullYear() - 1,
+    );
 
     // create the parent entry with default values
     return this.organizationRepository.save({
@@ -46,14 +93,28 @@ export class OrganizationService {
       organizationActivity: {
         ...createOrganizationDto.activity,
         domains,
+        regions,
         cities,
+        federations,
+        coalitions,
       },
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial: {
-        ...createOrganizationDto.financial,
-      },
+      organizationFinancial: [
+        {
+          type: FinancialType.EXPENSE,
+          year: new Date().getFullYear() - 1,
+          total: financialInformation.totalExpense,
+          numberOfEmployees: financialInformation.numberOfEmployees,
+        },
+        {
+          type: FinancialType.INCOME,
+          year: new Date().getFullYear() - 1,
+          total: financialInformation.totalIncome,
+          numberOfEmployees: financialInformation.numberOfEmployees,
+        },
+      ],
       organizationReport: {
         ...createOrganizationDto.report,
       },
@@ -69,14 +130,12 @@ export class OrganizationService {
         'organizationGeneral.county',
         'organizationGeneral.contact',
         'organizationActivity',
-        'organizationActivity.area',
         'organizationActivity.domains',
         'organizationActivity.cities',
         'organizationLegal',
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
         'organizationFinancial',
-        'organizationFinancial.balanceSheets',
         'organizationReport',
       ],
     });
@@ -133,7 +192,6 @@ export class OrganizationService {
 
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
-        organization.organizationFinancialId,
         updateOrganizationDto.financial,
       );
     }

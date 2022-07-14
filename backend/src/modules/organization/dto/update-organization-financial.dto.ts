@@ -1,6 +1,11 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateOrganizationFinancialDto } from './create-organization-financial.dto';
+import { IsNumber, IsObject } from 'class-validator';
+import { Income } from './income.dto';
+import { Expense } from './expense.dto';
 
-export class UpdateOrganizationFinancialDto extends PartialType(
-  CreateOrganizationFinancialDto,
-) {}
+export class UpdateOrganizationFinancialDto {
+  @IsNumber()
+  id: number;
+
+  @IsObject()
+  data: Income | Expense;
+}

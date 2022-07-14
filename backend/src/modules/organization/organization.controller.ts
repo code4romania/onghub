@@ -14,7 +14,6 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
 import {
   OrganizationActivityMock,
-  OrganizationFinancialMock,
   OrganizationGeneralMock,
   OrganizationLegalMock,
   OrganizationReportMock,
@@ -29,14 +28,13 @@ export class OrganizationController {
 
   // @ApiBody({ type: CreateOrganizationDto })
   @Post()
-  // @Body() createOrganizationDto: CreateOrganizationDto,
   create(): Promise<Organization> {
+    // @Body() createOrganizationDto: CreateOrganizationDto,
     // return this.organizationService.create(createOrganizationDto);
     return this.organizationService.create({
       general: OrganizationGeneralMock,
       activity: OrganizationActivityMock,
       legal: OrganizationLegalMock,
-      financial: OrganizationFinancialMock,
       report: OrganizationReportMock,
     });
   }

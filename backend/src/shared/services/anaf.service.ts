@@ -1,47 +1,63 @@
-import {
-  IAnafCompany,
-  IAnafHttpResponse,
-  IAnafRequest,
-} from '../interfaces/anaf.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ANAF_URL } from 'src/common/constants/anaf.constants';
-import { of } from 'rxjs';
+import { lastValueFrom, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+
+interface FinancialInformation {
+  numberOfEmployees: number;
+  totalIncome: number;
+  totalExpense: number;
+}
 
 @Injectable()
 export class AnafService {
   private readonly logger = new Logger(AnafService.name);
   constructor(private readonly httpService: HttpService) {}
 
-  public async checkCompany(companyCUI: string): Promise<IAnafCompany> {
+  public async getAnafData(companyCUI: string, year: number): Promise<any> {
     if (!companyCUI || companyCUI.length < 6) {
       return null;
     }
 
-    const currentDate: string = new Date().toISOString().split('T')[0];
+    companyCUI = companyCUI.replace('RO', '');
 
-    const payload: IAnafRequest = {
-      cui: companyCUI,
-      data: currentDate,
-    };
-
-    const company: IAnafCompany | null = await this.httpService
-      .post<IAnafHttpResponse>(ANAF_URL, [payload])
+    const company = this.httpService
+      .get(ANAF_URL + `?an=${year}&cui=${companyCUI}`)
       .pipe(
-        map((res) => res.data?.found[0]),
+        map((res) => res.data.i),
         catchError((err) => {
           this.logger.error('ANAF error');
           return of(null);
         }),
-      )
-      .toPromise();
+      );
 
-    // check if either the company or its name is empty string (due to invalid CUI)
-    if (!company || !company.denumire.length) {
+    return lastValueFrom(company);
+  }
+
+  public async getFinancialInformation(
+    cui: string,
+    year: number,
+  ): Promise<FinancialInformation> {
+    const anafData = await this.getAnafData(cui, year);
+    if (anafData.length === 0) {
       return null;
-    } else {
-      return company;
     }
+
+    const income = anafData.find((obj) => {
+      return obj.indicator === 'I38';
+    });
+    const expense = anafData.find((obj) => {
+      return obj.indicator === 'I40';
+    });
+    const employees = anafData.find((obj) => {
+      return obj.indicator === 'I46';
+    });
+
+    return {
+      numberOfEmployees: employees['val_indicator'],
+      totalExpense: expense['val_indicator'],
+      totalIncome: income['val_indicator'],
+    };
   }
 }

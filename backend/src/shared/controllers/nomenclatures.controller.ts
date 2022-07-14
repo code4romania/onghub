@@ -6,6 +6,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
+import { CitySearchDto } from '../dto/city-search.dto';
 import { NomenclaturesService } from '../services';
 
 @UseInterceptors(CacheInterceptor, ClassSerializerInterceptor)
@@ -14,14 +15,22 @@ export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
 
   @Get('cities')
-  getCities(@Query('countyId') countyId: number) {
-    return this.nomenclaturesService.getCities({
-      where: { countyId },
-    });
+  getCities(@Query() citySearchDto: CitySearchDto) {
+    return this.nomenclaturesService.getCitiesSearch(citySearchDto);
   }
 
   @Get('counties')
   getCounties() {
     return this.nomenclaturesService.getCounties({});
+  }
+
+  @Get('domains')
+  getDomains() {
+    return this.nomenclaturesService.getDomains({});
+  }
+
+  @Get('regions')
+  getRegions() {
+    return this.nomenclaturesService.getRegions({});
   }
 }

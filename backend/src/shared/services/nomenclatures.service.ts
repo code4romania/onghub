@@ -1,8 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { City, County, Domain } from 'src/shared/entities';
+import { City, County, Domain, Region } from 'src/shared/entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { CitySearchDto } from '../dto/city-search.dto';
 import { ApplicationType } from '../entities/application-type.entity';
+import {
+  NOMENCLATURE_ERROR_MESSAGES,
+  NOMENCLATURE_ERROR_CODES,
+} from '../constants/nomenclature-error.constants';
+import { Coalition } from '../entities/coalition.entity';
+import { Federation } from '../entities/federation.entity';
 
 @Injectable()
 export class NomenclaturesService {
@@ -15,10 +22,61 @@ export class NomenclaturesService {
     private readonly domainsRepository: Repository<Domain>,
     @InjectRepository(ApplicationType)
     private readonly applicationTypeRepository: Repository<ApplicationType>,
+    @InjectRepository(Region)
+    private readonly regionsRepository: Repository<Region>,
+    @InjectRepository(Federation)
+    private readonly federationsRepository: Repository<Federation>,
+    @InjectRepository(Coalition)
+    private readonly coalitionsRepository: Repository<Coalition>,
   ) {}
 
   public getCities(conditions: FindManyOptions<City>) {
     return this.citiesRepository.find(conditions);
+  }
+
+  public getCitiesSearch(citySearchDto: CitySearchDto) {
+    if (
+      citySearchDto.countyId === undefined &&
+      citySearchDto.search === undefined
+    ) {
+      throw new NotAcceptableException({
+        message: NOMENCLATURE_ERROR_MESSAGES.CITY,
+        errorCode: NOMENCLATURE_ERROR_CODES.NOM001,
+      });
+    }
+
+    const query = this.citiesRepository
+      .createQueryBuilder('_city')
+      .innerJoinAndSelect(
+        '_city.county',
+        '_county',
+        '_city.county_id=_county.id',
+      );
+
+    if (citySearchDto.search && citySearchDto.countyId) {
+      return query
+        .where('_city.county_id = :county', {
+          county: citySearchDto.countyId,
+        })
+        .andWhere('_city.name ilike :name', {
+          name: `%${citySearchDto.search}%`,
+        })
+        .limit(5)
+        .getMany();
+    } else if (citySearchDto.countyId) {
+      return query
+        .where('_city.county_id = :county', {
+          county: citySearchDto.countyId,
+        })
+        .getMany();
+    } else {
+      return query
+        .where('_city.name ilike :name', {
+          name: `%${citySearchDto.search}%`,
+        })
+        .limit(5)
+        .getMany();
+    }
   }
 
   public getCounties(conditions: FindManyOptions<County>) {
@@ -31,5 +89,17 @@ export class NomenclaturesService {
 
   public getAppType(conditions: FindOneOptions<ApplicationType>) {
     return this.applicationTypeRepository.findOne(conditions);
+  }
+
+  public getRegions(conditions: FindManyOptions<Region>) {
+    return this.regionsRepository.find(conditions);
+  }
+
+  public getFederations(conditions: FindManyOptions<Federation>) {
+    return this.federationsRepository.find(conditions);
+  }
+
+  public getCoalitions(conditions: FindManyOptions<Coalition>) {
+    return this.coalitionsRepository.find(conditions);
   }
 }
