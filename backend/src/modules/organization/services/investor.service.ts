@@ -19,6 +19,13 @@ export class InvestorService {
     return this.investorRepository.find(conditions);
   }
 
+  update(id: number, data: Partial<Investor>) {
+    return this.investorRepository.save({
+      id,
+      ...data,
+    });
+  }
+
   delete(id: number) {
     return this.investorRepository.save({
       id,

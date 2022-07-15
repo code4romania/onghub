@@ -19,6 +19,13 @@ export class PartnerService {
     return this.partnerRepository.find(conditions);
   }
 
+  update(id: number, data: Partial<Partner>) {
+    return this.partnerRepository.save({
+      id,
+      ...data,
+    });
+  }
+
   delete(id: number) {
     return this.partnerRepository.save({
       id,

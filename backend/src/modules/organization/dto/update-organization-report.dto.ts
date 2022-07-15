@@ -1,22 +1,27 @@
 import { Type } from 'class-transformer';
-import { IsOptional, ValidateNested } from 'class-validator';
+import { IsNumber, IsOptional, Max, ValidateNested } from 'class-validator';
 import { UpdateInvestorDto } from './update-investor.dto';
 import { UpdatePartnerDto } from './update-partner.dto';
 import { UpdateReportDto } from './update-report.dto';
 
 export class UpdateOrganizationReportDto {
+  @IsNumber()
+  @IsOptional()
+  @Max(new Date().getFullYear())
+  year?: number;
+
   @IsOptional()
   @Type(() => UpdateReportDto)
   @ValidateNested()
-  reports?: UpdateReportDto[];
+  report?: UpdateReportDto;
 
   @IsOptional()
   @Type(() => UpdatePartnerDto)
   @ValidateNested()
-  partners?: UpdatePartnerDto[];
+  partner?: UpdatePartnerDto;
 
   @IsOptional()
   @Type(() => UpdateInvestorDto)
   @ValidateNested()
-  investors?: UpdateInvestorDto[];
+  investor?: UpdateInvestorDto;
 }

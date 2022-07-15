@@ -22,8 +22,4 @@ export class UpdateReportDto {
   @IsNumber()
   @IsNotEmpty()
   numberOfContractors: number;
-
-  @IsEnum(CompletionStatus)
-  @IsOptional()
-  status?: CompletionStatus;
 }

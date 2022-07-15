@@ -8,8 +8,4 @@ export class UpdatePartnerDto {
   @IsNumber()
   @IsNotEmpty()
   numberOfPartners: number;
-
-  @IsEnum(CompletionStatus)
-  @IsOptional()
-  status?: CompletionStatus;
 }

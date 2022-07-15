@@ -8,8 +8,4 @@ export class UpdateInvestorDto {
   @IsNumber()
   @IsNotEmpty()
   numberOfInvestors: number;
-
-  @IsEnum(CompletionStatus)
-  @IsOptional()
-  status?: CompletionStatus;
 }

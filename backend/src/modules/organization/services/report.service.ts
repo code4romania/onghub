@@ -19,6 +19,13 @@ export class ReportService {
     return this.reportRepository.find(conditions);
   }
 
+  update(id: number, data: Partial<Report>) {
+    return this.reportRepository.save({
+      id,
+      ...data,
+    });
+  }
+
   delete(id: number) {
     return this.reportRepository.save({
       id,
