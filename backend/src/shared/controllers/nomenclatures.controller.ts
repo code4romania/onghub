@@ -33,4 +33,14 @@ export class NomenclaturesController {
   getRegions() {
     return this.nomenclaturesService.getRegions({});
   }
+
+  @Get('federations')
+  getFederations() {
+    return this.nomenclaturesService.getFederations({});
+  }
+
+  @Get('coalitions')
+  getCoalitions() {
+    return this.nomenclaturesService.getCoalitions({});
+  }
 }

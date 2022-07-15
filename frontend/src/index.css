@@ -36,6 +36,10 @@
     @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
   }
 
+  .add-button {
+    @apply inline-flex items-center px-4 py-2 border border-solid border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
   .edit-button {
     @apply inline-flex items-center px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-yellow-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
   }
