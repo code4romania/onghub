@@ -2,22 +2,23 @@ import React, { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { useForm } from 'react-hook-form';
-import { Contact } from '../../../interfaces/Contact.interface';
-import { DirectorConfig } from './DirectorConfig';
 import ContactForm from '../../../../../components/Contact/Contact';
+import { Person } from '../../../../../common/interfaces/person.interface';
+import { OtherConfig } from './OtherConfig';
 
 interface OtherModalProps {
-  defaultValue: Partial<Contact>;
+  defaultValue: Partial<Person>;
+  isEdit?: boolean;
   onClose: () => void;
-  onSave: (data: Partial<Contact>) => void;
+  onSave: (data: Partial<Person>) => void;
 }
 
-const OtherModal = ({ onClose, defaultValue, onSave }: OtherModalProps) => {
+const OtherModal = ({ onClose, defaultValue, isEdit, onSave }: OtherModalProps) => {
   const {
+    handleSubmit,
     control,
     reset,
     formState: { errors },
-    getValues,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -28,10 +29,6 @@ const OtherModal = ({ onClose, defaultValue, onSave }: OtherModalProps) => {
       reset({ ...defaultValue });
     }
   }, [defaultValue]);
-
-  const handleSave = () => {
-    onSave(getValues());
-  };
 
   return (
     <Transition.Root show={true} as={Fragment}>
@@ -73,7 +70,7 @@ const OtherModal = ({ onClose, defaultValue, onSave }: OtherModalProps) => {
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      Adaugare membru confiliu director
+                      Editare alt membru
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
@@ -88,24 +85,37 @@ const OtherModal = ({ onClose, defaultValue, onSave }: OtherModalProps) => {
                     control={control}
                     errors={errors}
                     readonly={false}
-                    configs={[DirectorConfig.fullName, DirectorConfig.email, DirectorConfig.phone]}
+                    configs={[OtherConfig.fullName, OtherConfig.role]}
                   />
                 </form>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                  <button
-                    type="button"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleSave}
-                  >
-                    Salveaza
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                    onClick={() => onClose()}
-                  >
-                    Anuleaza Modificari
-                  </button>
+                  {isEdit && (
+                    <>
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => handleSubmit(onSave)}
+                      >
+                        Salveaza
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => onClose()}
+                      >
+                        Anuleaza Modificari
+                      </button>
+                    </>
+                  )}
+                  {!isEdit && (
+                    <button
+                      type="button"
+                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={handleSubmit(onSave)}
+                    >
+                      Adauga
+                    </button>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

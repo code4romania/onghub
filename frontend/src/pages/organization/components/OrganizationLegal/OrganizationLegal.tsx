@@ -115,10 +115,6 @@ const OrganizationLegal = () => {
     setEditMode((mode) => !mode);
   };
 
-  const onAddOther = () => {
-    console.log('on add other');
-  };
-
   const onUploadFile = () => {
     console.log('on upload file');
   };
@@ -135,6 +131,20 @@ const OrganizationLegal = () => {
     ]);
     setSelectedDirector(null);
     setIsDirectorModalOpen(false);
+  };
+
+  const onAddOther = (other: Partial<Person>) => {
+    setOthers([...others, other]);
+    setIsOtherModalOpen(false);
+  };
+
+  const onUpdateOther = (other: Partial<Person>) => {
+    setOthers([
+      ...directors.filter((other: Partial<Person>) => other.fullName !== other?.fullName),
+      other,
+    ]);
+    setSelectedOther(null);
+    setIsOtherModalOpen(false);
   };
 
   return (
@@ -154,7 +164,7 @@ const OrganizationLegal = () => {
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10">
-        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/3">
+        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title="Reprezentant Legal al organizatiet"
@@ -201,7 +211,11 @@ const OrganizationLegal = () => {
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
             />
-            <button type="button" className="add-button max-w-[12rem]" onClick={onAddOther}>
+            <button
+              type="button"
+              className="add-button max-w-[12rem]"
+              onClick={setIsOtherModalOpen.bind(null, true)}
+            >
               <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
               Adauga un membru
             </button>
@@ -229,11 +243,15 @@ const OrganizationLegal = () => {
               }}
             />
           )}
-          {isOtherModalOpen && selectedOther && (
+          {isOtherModalOpen && (
             <OtherModal
+              isEdit={selectedOther !== null}
               defaultValue={selectedOther || {}}
-              onSave={onAddDirector}
-              onClose={() => setIsDirectorModalOpen(false)}
+              onSave={selectedOther !== null ? onUpdateOther : onAddOther}
+              onClose={() => {
+                setIsOtherModalOpen(false);
+                setSelectedOther(null);
+              }}
             />
           )}
         </div>
