@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { Investor } from '../entities';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 
 @Injectable()
 export class InvestorService {
@@ -16,5 +17,13 @@ export class InvestorService {
 
   getMany(conditions: FindManyOptions<Investor>) {
     return this.investorRepository.find(conditions);
+  }
+
+  delete(id: number) {
+    return this.investorRepository.save({
+      id,
+      numberOfInvestors: 0,
+      status: CompletionStatus.NOT_COMPLETED,
+    });
   }
 }

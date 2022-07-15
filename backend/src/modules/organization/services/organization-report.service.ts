@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
 import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
 import { OrganizationReportRepository } from '../repositories';
 

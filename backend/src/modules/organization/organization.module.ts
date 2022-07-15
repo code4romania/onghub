@@ -28,6 +28,9 @@ import {
   OrganizationGeneralService,
   OrganizationLegalService,
   OrganizationService,
+  ReportService,
+  PartnerService,
+  InvestorService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 
@@ -61,6 +64,9 @@ import { OrganizationReportService } from './services/organization-report.servic
     OrganizationFinancialService,
     OrganizationReportRepository,
     OrganizationReportService,
+    ReportService,
+    PartnerService,
+    InvestorService,
   ],
 })
 export class OrganizationModule {}

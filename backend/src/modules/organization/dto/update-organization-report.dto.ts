@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateInvestorDto } from './update-investor.dto';
-import { UpdatepartnerDto } from './update-partner.dto';
+import { UpdatePartnerDto } from './update-partner.dto';
 import { UpdateReportDto } from './update-report.dto';
 
 export class UpdateOrganizationReportDto {
@@ -11,9 +11,9 @@ export class UpdateOrganizationReportDto {
   reports?: UpdateReportDto[];
 
   @IsOptional()
-  @Type(() => UpdatepartnerDto)
+  @Type(() => UpdatePartnerDto)
   @ValidateNested()
-  partners?: UpdatepartnerDto[];
+  partners?: UpdatePartnerDto[];
 
   @IsOptional()
   @Type(() => UpdateInvestorDto)
