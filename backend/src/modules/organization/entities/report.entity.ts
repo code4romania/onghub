@@ -17,7 +17,12 @@ export class Report extends BaseEntity {
   @Column({ type: 'integer', name: 'year' })
   year: number;
 
-  @Column({ type: 'enum', enum: CompletionStatus, name: 'status' })
+  @Column({
+    type: 'enum',
+    enum: CompletionStatus,
+    name: 'status',
+    default: CompletionStatus.NOT_COMPLETED,
+  })
   status: CompletionStatus;
 
   @ManyToOne(
