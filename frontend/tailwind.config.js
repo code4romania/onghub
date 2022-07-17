@@ -92,6 +92,7 @@ module.exports = {
       'default-gray': colors.gray,
       indigo: {
         500: '#5243EA',
+        600: '#4F46E5',
       },
     },
     extend: {
