@@ -15,6 +15,7 @@ const Select = (props: {
   error?: string | any;
   readonly: boolean;
   onChange: any;
+  multi?: boolean;
 }) => {
   return (
     <div className="relative w-full">

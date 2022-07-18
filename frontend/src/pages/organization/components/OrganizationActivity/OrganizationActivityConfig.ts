@@ -36,11 +36,6 @@ export const OrganizationActivityConfig: Record<string, any> = {
     config: {
       title: 'Domenii de activitate*',
       helperText: 'Minim 1 domeniu de activitate.',
-      values: [
-        { id: 1, name: 'Educatie' },
-        { id: 2, name: 'Mediu' },
-        { id: 3, name: 'Social' },
-      ],
     },
   },
   area: {
@@ -54,6 +49,33 @@ export const OrganizationActivityConfig: Record<string, any> = {
     },
     helperText: 'Lorem ipsum. Alege din lista sau adauga valoare.',
     radioConfigs: [...ORGANIZATION_AREAS.map((item) => ({ ...item, name: 'area' }))],
+  },
+  cities: {
+    key: 'cities',
+    label: 'Localitati in care activeaza organizatia',
+    rules: {
+      required: {
+        value: 'true',
+        message: 'Field is required.',
+      },
+    },
+    helperText: 'Cauta in lista',
+  },
+  regions: {
+    key: 'regions',
+    rules: {
+      required: {
+        value: true,
+        message: 'Regions is required.',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Regiuni in care activeaza organizatia*',
+      collection: [],
+      helperText: 'Lorem ipsum. Alege din lista sau adauga valoare.',
+      displayedAttribute: 'name',
+    },
   },
   isPartOfFederation: {
     key: 'isPartOfFederation',
@@ -77,6 +99,59 @@ export const OrganizationActivityConfig: Record<string, any> = {
         value: 'false',
       },
     ],
+  },
+  federations: {
+    key: 'federations',
+    rules: {
+      required: {
+        value: true,
+        message: 'federations is required.',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Mentioneaza federatii*',
+      collection: [],
+      displayedAttribute: 'abbreviation',
+    },
+  },
+  isPartOfCoalition: {
+    key: 'isPartOfCoalition',
+    label: 'Organizatia apartine de una sau mai multe coalitii?*',
+    rules: {
+      required: {
+        value: 'true',
+        message: 'Field is required.',
+      },
+    },
+    helperText: 'De exemplu, lorem ipsum. Help text. Help text',
+    radioConfigs: [
+      {
+        label: 'Da',
+        name: 'isPartOfCoalition',
+        value: 'true',
+      },
+      {
+        label: 'Nu',
+        name: 'isPartOfCoalition',
+        value: 'false',
+      },
+    ],
+  },
+  coalitions: {
+    key: 'coalitions',
+    rules: {
+      required: {
+        value: true,
+        message: 'coalitions is required.',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Mentioneaza coalitii*',
+      collection: [],
+      displayedAttribute: 'abbreviation',
+    },
   },
   isPartOfInternationalOrganization: {
     key: 'isPartOfInternationalOrganization',
@@ -126,6 +201,17 @@ export const OrganizationActivityConfig: Record<string, any> = {
     ],
   },
 
+  branches: {
+    key: 'branches',
+    label: 'Localitati in care organizatia are filiale sau sucursale*',
+    rules: {
+      required: {
+        value: 'true',
+        message: 'Field is required.',
+      },
+    },
+    helperText: 'Cauta in lista',
+  },
   isSocialServiceViable: {
     key: 'isSocialServiceViable',
     label: 'Esti ONG acreditat pentru servicii sociale?*',

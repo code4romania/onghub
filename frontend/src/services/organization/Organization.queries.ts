@@ -14,14 +14,16 @@ interface OrganizationPayload {
 }
 
 export const useOrganizationQuery = (id: number) => {
-  const { setOrganizationGeneral, setOrganizationFinancial } = useStore();
+  const { setOrganizationGeneral, setOrganizationFinancial, setOrganizationActivity } = useStore();
   return useQuery(['organization', id], () => getOrganization(id), {
     onSuccess: (data: {
       organizationGeneral: IOrganizationGeneral;
       organizationFinancial: IOrganizationFinancial[];
+      organizationActivity: any;
     }) => {
       setOrganizationGeneral(data.organizationGeneral);
       setOrganizationFinancial(data.organizationFinancial);
+      setOrganizationActivity(data.organizationActivity);
     },
   });
 };
