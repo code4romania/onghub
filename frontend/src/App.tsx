@@ -22,6 +22,12 @@ Amplify.configure({
     redirectSignOut: 'http://localhost:3000/',
     responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
   },
+  cookieStorage: {
+    domain: 'localhost',
+    secure: false,
+    path: '/',
+    expires: 365,
+  },
 });
 
 i18n.load({
