@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Auth, Hub } from 'aws-amplify';
 import { CognitoUser } from '@aws-amplify/auth';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const SMS_MFA = ({ onSubmit }: any) => {
   const submitSMS = () => {
@@ -74,31 +75,28 @@ const CONFIRM_NEW_PASS_MFA = ({ onSubmit }: any) => {
 
 const Login = () => {
   const [user, setUser] = useState<CognitoUser>();
+  const { setAuthState } = useAuthContext();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const currentSession = await Auth.currentSession();
-        const currentAuthUser = await Auth.currentAuthenticatedUser();
-        const currentUserInfo = await Auth.currentUserInfo();
+    if (!user) {
+      return;
+    }
 
-        console.log(currentSession);
-        console.log(currentAuthUser);
-        console.log(currentUserInfo);
-
-        setSignInUserSession(currentSession);
-      } catch (err) {
-        setSignInUserSession(undefined);
-      }
-    })();
+    if (user && !user?.challengeName) {
+      console.log(user);
+      setAuthState({ isAuthenticated: true });
+    } else {
+      console.log('CHALLANGE');
+    }
   }, [user]);
 
   useEffect(() => {
     Hub.listen('auth', ({ payload: { event, data } }) => {
+      console.log('Auth Event', event);
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
-          console.log('Authenticated...');
+          console.log('Authenticated...', data);
           break;
         case 'signIn_failure':
         case 'cognitoHostedUI_failure':
@@ -131,7 +129,6 @@ const Login = () => {
   const [signInUserSession, setSignInUserSession] = useState<any>(null);
 
   async function confirmSignInSMS(user: any, code: any, mfaType: any) {
-    // console.log(user, code, mfaType);
     const userAuth: CognitoUser = await Auth.confirmSignIn(user, code, mfaType);
     console.log(userAuth);
     const session = userAuth.getSignInUserSession();
@@ -150,39 +147,15 @@ const Login = () => {
     try {
       const username = document.getElementById('email') as HTMLInputElement;
       const password = document.getElementById('password') as HTMLInputElement;
-      console.log(username.value, password.value);
       const user = await Auth.signIn(username?.value, password?.value);
-      console.log(user);
       setUser(user);
     } catch (error) {
       console.log('error signing in', error);
     }
   }
 
-  async function logout() {
-    await Auth.signOut();
-    setUser(undefined);
-  }
-
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <img
-          className="mx-auto h-12 w-auto"
-          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-          alt="Workflow"
-        />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{' '}
-          <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-            start your 14-day free trial
-          </a>
-        </p>
-      </div>
-
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {user && user?.challengeName === 'SMS_MFA' && !signInUserSession && (
@@ -266,17 +239,6 @@ const Login = () => {
               </button>
             </div>
           )}
-
-          {signInUserSession && (
-            <button
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              onClick={(e) => logout()}
-            >
-              Logout
-            </button>
-          )}
-
-          {signInUserSession && `IM LOGGED IN WITH TOKEN`}
         </div>
       </div>
     </div>

@@ -8,6 +8,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { createQueueMonitoring } from 'src/libs/bull-board';
 
+global['fetch'] = require('node-fetch');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.use(helmet());

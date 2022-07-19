@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import Router from './common/router/Router';
@@ -36,8 +36,26 @@ const App = () => {
     isAuthenticated: false,
   });
 
+  const logout: any = async () => {
+    await Auth.signOut();
+    setAuthState({ isAuthenticated: false });
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        setAuthState({ isAuthenticated: true });
+        console.log(user);
+      } catch (error) {
+        console.log(error);
+        // setAuthState({ isAuthenticated: false });
+      }
+    })();
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ ...authState, setAuthState }}>
+    <AuthContext.Provider value={{ ...authState, setAuthState, logout }}>
       <QueryClientProvider client={queryClient}>
         <LocaleProvider>
           <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
