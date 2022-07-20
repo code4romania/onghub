@@ -1,28 +1,9 @@
-export enum ORGANIZATION_AREA_ENUM {
+export enum OrganizationAreaEnum {
   LOCAL = 'Local',
   REGIONAL = 'Regional',
   NATIONAL = 'National',
   INTERNATIONAl = 'International',
 }
-
-export const ORGANIZATION_AREAS = [
-  {
-    label: ORGANIZATION_AREA_ENUM.LOCAL,
-    value: '1',
-  },
-  {
-    label: ORGANIZATION_AREA_ENUM.REGIONAL,
-    value: '2',
-  },
-  {
-    label: ORGANIZATION_AREA_ENUM.NATIONAL,
-    value: '3',
-  },
-  {
-    label: ORGANIZATION_AREA_ENUM.INTERNATIONAl,
-    value: '4',
-  },
-];
 
 export const OrganizationActivityConfig: Record<string, any> = {
   domains: {
@@ -48,7 +29,13 @@ export const OrganizationActivityConfig: Record<string, any> = {
       },
     },
     helperText: 'Lorem ipsum. Alege din lista sau adauga valoare.',
-    radioConfigs: [...ORGANIZATION_AREAS.map((item) => ({ ...item, name: 'area' }))],
+    radioConfigs: [
+      ...Object.values(OrganizationAreaEnum).map((item) => ({
+        label: item,
+        value: item,
+        name: 'area',
+      })),
+    ],
   },
   cities: {
     key: 'cities',

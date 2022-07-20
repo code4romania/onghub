@@ -55,6 +55,7 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
+    console.log(errors);
     setReadonly(true);
 
     const organizationGeneral = {
@@ -77,7 +78,7 @@ const OrganizationGeneral = () => {
         <button
           type="button"
           className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
+          onClick={readonly ? startEdit : handleSave}
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {readonly ? 'Editeaza' : 'Salveaza modificari'}

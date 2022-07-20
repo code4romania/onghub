@@ -7,7 +7,6 @@ export const getCounties = (): Promise<any> => {
 };
 
 export const getCities = (searchTerm: string, countyId?: number): Promise<any> => {
-  console.log(countyId);
   let queryParams = '';
   if (searchTerm) {
     queryParams = queryParams.concat(`search=${searchTerm}&`);
@@ -16,7 +15,6 @@ export const getCities = (searchTerm: string, countyId?: number): Promise<any> =
     queryParams = queryParams.concat(`countyId=${countyId}`);
   }
 
-  console.log(queryParams);
   return API.get(`https://onghub-api.wearetribus.com/nomenclatures/cities?${queryParams}`).then(
     (res) => res.data,
   );

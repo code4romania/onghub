@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
+import { IOrganizationActivityPayload } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
 import { useSelectedOrganization } from '../../store/selectors';
@@ -9,6 +10,7 @@ interface OrganizationPayload {
   id: number;
   organization: {
     general?: IOrganizationGeneral;
+    activity?: Partial<IOrganizationActivityPayload>;
     financial?: Partial<IOrganizationFinancial>;
   };
 }

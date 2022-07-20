@@ -4,12 +4,25 @@ import { Controller } from 'react-hook-form';
 import { IRadioGroupConfig } from './RadioGroupConfig.interface';
 import RadioButton from '../RadioButton/RadioButton';
 
+const str2bool = (value: string) => {
+  if (value && typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
+  return value;
+};
+
 const RadioGroup = (props: {
   control: any;
   errors: any;
   readonly: boolean;
   config: IRadioGroupConfig;
 }) => {
+  const onChangef = (e: any) => {
+    const checkBoolean = str2bool(e.target.value);
+    return { ...e, taget: { value: checkBoolean } };
+  };
+
   return (
     <div>
       <span className="flex text-normal text-gray-700 font-normal mb-2">{props.config.label}</span>
@@ -22,7 +35,9 @@ const RadioGroup = (props: {
             <fieldset className="flex flex-col gap-y-4 gap-x-4">
               {props.readonly && (
                 <span>
-                  {props.config.radioConfigs.find((item) => item.value === value)?.label || ''}
+                  {props.config.radioConfigs.find(
+                    (item) => str2bool(item.value) === str2bool(value),
+                  )?.label || ''}
                 </span>
               )}
               {!props.readonly &&
@@ -31,9 +46,9 @@ const RadioGroup = (props: {
                     config={{
                       ...radioConfig,
                       name: props.config.key,
-                      onChange: onChange,
+                      onChange: (e) => onChange(onChangef(e)),
                     }}
-                    checked={radioConfig.value === value}
+                    checked={str2bool(radioConfig.value) === str2bool(value)}
                     key={index}
                   />
                 ))}

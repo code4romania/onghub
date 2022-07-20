@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import InputField from '../InputField/InputField';
 import { Controller } from 'react-hook-form';

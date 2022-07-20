@@ -1,3 +1,9 @@
+import {
+  CUI_REGEX,
+  DESCRIPTION_REGEX,
+  NAME_REGEX,
+} from './../../../../common/helpers/format.helper';
+import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/OrganizationType.enum';
 
@@ -105,6 +111,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 10,
         message: 'Phone has a maximum length of 10 characters.',
       },
+      pattern: {
+        value: PHONE_REGEX,
+        message: 'Invalid phone format',
+      },
     },
     config: {
       type: 'tel',
@@ -146,6 +156,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       minLength: {
         value: 2,
         message: 'Organization CUI has a maximum length of 2 characters.',
+      },
+      pattern: {
+        value: CUI_REGEX,
+        message: 'CUI format is invalid.',
       },
     },
     config: {
@@ -233,6 +247,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 200,
         message: 'Short description has a minimum length of 200 characters.',
       },
+      pattern: {
+        value: DESCRIPTION_REGEX,
+        message: 'Short description is invalid',
+      },
     },
     config: {
       type: 'text',
@@ -257,6 +275,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 250,
         message: 'Description has a minimum length of 250 characters.',
       },
+      pattern: {
+        value: DESCRIPTION_REGEX,
+        message: 'Short description is invalid',
+      },
     },
     config: {
       type: 'text',
@@ -280,6 +302,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       minLength: {
         value: 1,
         message: 'Contact Name has a minimum length of 1 characters.',
+      },
+      pattern: {
+        value: NAME_REGEX,
+        message: 'Contact name is invalid',
       },
     },
     config: {
@@ -338,6 +364,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: true,
         message: 'Website is required.',
       },
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
     },
     config: {
       type: 'text',
@@ -353,6 +383,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       required: {
         value: true,
         message: 'Facebook is required.',
+      },
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
       },
     },
     config: {
@@ -370,6 +404,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: true,
         message: 'Instagram is required.',
       },
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
     },
     config: {
       type: 'text',
@@ -381,7 +419,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   twitter: {
     key: 'twitter',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Twitter',
@@ -392,7 +435,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   linkedin: {
     key: 'linkedin',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Linkedin',
@@ -403,7 +451,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   tiktok: {
     key: 'tiktok',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Tiktok',
@@ -414,7 +467,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   donationWebsite: {
     key: 'donationWebsite',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Pagina de donatii',
@@ -425,7 +483,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   redirectLink: {
     key: 'redirectLink',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Link catre contul de Redirectioneaza',
@@ -436,24 +499,36 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   donationSMS: {
     key: 'donationSMS',
-    rules: {},
+    rules: {
+      minLength: {
+        value: 4,
+        message: 'Length of the Donation SMS must be of maximum 4 characters.',
+      },
+      maxLength: {
+        value: 4,
+        message: 'Length of the Donation SMS must be of maximum 4 characters.',
+      },
+    },
     config: {
       type: 'text',
       label: 'Donatii prin SMS',
       helperText: 'Numarul la care se trimite SMS pentru a dona.',
       placeholder: '',
-      addOn: InputFieldHttpAddon,
     },
   },
   donationKeyword: {
     key: 'donationKeyword',
-    rules: {},
+    rules: {
+      maxLength: {
+        value: 10,
+        message: 'Maximum length of the donation keyword is 10 characters.',
+      },
+    },
     config: {
       type: 'text',
       label: 'Cuvant cheie SMS',
       helperText: 'Textul care se trimite prin SMS pentru a dona',
       placeholder: '',
-      addOn: InputFieldHttpAddon,
     },
   },
 };

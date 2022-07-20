@@ -2,13 +2,11 @@ import { PencilIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ChipSelection from '../../../../components/chip-selection/ChipSelection';
-import { OrganizationActivityConfig, ORGANIZATION_AREA_ENUM } from './OrganizationActivityConfig';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { OrganizationActivityConfig, OrganizationAreaEnum } from './OrganizationActivityConfig';
+import { Controller, useForm } from 'react-hook-form';
 import { OrganizationGeneralConfig } from '../OrganizationGeneral/OrganizationGeneralConfig';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
-import Search from '../../../../components/server-select/ServerSelect';
 import ServerSelect from '../../../../components/server-select/ServerSelect';
-import Select from '../../../../components/Select/Select';
 import { getCities } from '../../../../services/nomenclature/Nomenclatures.service';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import {
@@ -19,13 +17,14 @@ import {
 } from '../../../../services/nomenclature/Nomenclature.queries';
 import InputField from '../../../../components/InputField/InputField';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import MultiSelect from '../../../../components/multi-select/MultiSelect';
 
 const OrganizationActivity = () => {
   const { organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
   const { mutate } = useOrganizationMutation();
 
-  const [readonly, setReadonly] = useState(false);
+  const [readonly, setReadonly] = useState(true);
   const {
     handleSubmit,
     control,
@@ -39,38 +38,63 @@ const OrganizationActivity = () => {
   });
 
   //queries
-
   useDomainsQuery();
   useRegionsQuery();
   useFederationsQuery();
   useCoalitionsQuery();
 
+  // watchers
   const area = watch('area');
   const isPartOfFederation = watch('isPartOfFederation');
   const isPartOfCoalition = watch('isPartOfCoalition');
   const isPartOfInternationalOrganization = watch('isPartOfInternationalOrganization');
   const hasBranches = watch('hasBranches');
 
+  // submit
   const handleSave = (data: any) => {
+    console.log(data);
     setReadonly(true);
 
-    const organizationActivity = {
+    // data mappings for backend payload
+    const activity = {
       ...data,
-      branches: [...data.branches.map((item: any) => item.value)],
-      cities: [...data.cities.map((item: any) => item.value)],
-      coalitions: [data.coalitions.id],
-      federations: [data.federations.id],
+      branches: data.branches ? [...data.branches.map((item: any) => item.value)] : [],
+      cities: data.cities ? [...data.cities.map((item: any) => item.value)] : [],
+      regions: data.regions ? [...data.regions.map((item: any) => item.value)] : [],
+      coalitions: data.coalitions ? [...data.coalitions.map((item: any) => item.value)] : [],
+      federations: data.federations ? [...data.federations.map((item: any) => item.value)] : [],
     };
 
-    mutate({ id: 3, organization: { general: organizationActivity } });
+    mutate({ id: 3, organization: { activity } });
   };
+
+  // load initial values
+  useEffect(() => {
+    if (organizationActivity) {
+      const domains = organizationActivity.domains?.map((item: any) => item.id);
+      const cities = organizationActivity.cities?.length
+        ? [...organizationActivity.cities.map(citiesSearchMap)]
+        : [];
+      const branches = organizationActivity.branches?.length
+        ? [...organizationActivity.branches.map(citiesSearchMap)]
+        : [];
+      const regions = organizationActivity.regions?.length
+        ? [...organizationActivity.regions.map(regionsMap)]
+        : [];
+      reset({ ...organizationActivity, domains, cities, branches, regions });
+    }
+  }, [organizationActivity]);
+
+  // edit mode
   const startEdit = () => {
     setReadonly(false);
   };
 
+  // data mappers
   const citiesSearchMap = (item: any) => ({
-    value: item.id,
-    label: `${item.name}, jud. ${item.county.name}`,
+    value: item?.id,
+    // label: `${item.name}, jud. ${item.county.name}`,
+    label: `${item?.name}`,
   });
 
   const regionsMap = (item: any) => ({
@@ -78,12 +102,8 @@ const OrganizationActivity = () => {
     label: `${item.name}`,
   });
 
-  const loadOptionsRegionsSerch = async (searchWord: string) => {
-    return getCities(searchWord, 28).then((res: any[]) => res.map(citiesSearchMap));
-  };
-
   const loadOptionsCitiesSerch = async (searchWord: string) => {
-    return getCities(searchWord, 28).then((res: any[]) => res.map(citiesSearchMap));
+    return getCities(searchWord).then((res: any[]) => res.map(citiesSearchMap));
   };
 
   return (
@@ -123,6 +143,7 @@ const OrganizationActivity = () => {
                   defaultItems={value}
                   error={errors[OrganizationActivityConfig.domains.key]?.message?.toString()}
                   onItemsChange={onChange}
+                  readonly={readonly}
                 ></ChipSelection>
               );
             }}
@@ -133,7 +154,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.area.key]}
             config={OrganizationActivityConfig.area}
           />
-          {area == 1 && (
+          {area == OrganizationAreaEnum.LOCAL && (
             <Controller
               key={OrganizationActivityConfig.cities.key}
               name={OrganizationActivityConfig.cities.key}
@@ -157,7 +178,7 @@ const OrganizationActivity = () => {
               }}
             />
           )}
-          {area == 2 && (
+          {area == OrganizationAreaEnum.REGIONAL && (
             <Controller
               key={OrganizationActivityConfig.regions.key}
               name={OrganizationActivityConfig.regions.key}
@@ -165,14 +186,14 @@ const OrganizationActivity = () => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <Select
-                    config={{
-                      ...OrganizationActivityConfig.regions.config,
-                      collection: regions,
-                      displayedAttribute: 'name',
-                    }}
-                    selected={value}
+                  <MultiSelect
+                    value={value}
+                    label={OrganizationActivityConfig.regions.config.label}
+                    isClearable={false}
+                    helperText={OrganizationActivityConfig.regions.config.helperText}
+                    error={errors[OrganizationActivityConfig.regions.key]?.message?.toString()}
                     onChange={onChange}
+                    options={[...regions.map(regionsMap)]}
                     readonly={readonly}
                   />
                 );
@@ -193,7 +214,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
             config={OrganizationActivityConfig.isPartOfFederation}
           />
-          {isPartOfFederation == 'true' && (
+          {isPartOfFederation === 'true' && (
             <Controller
               key={OrganizationActivityConfig.federations.key}
               name={OrganizationActivityConfig.federations.key}
@@ -201,13 +222,14 @@ const OrganizationActivity = () => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <Select
-                    config={{
-                      ...OrganizationActivityConfig.federations.config,
-                      collection: federations,
-                    }}
-                    selected={value}
+                  <MultiSelect
+                    value={value}
+                    label={OrganizationActivityConfig.federations.config.label}
+                    isClearable={false}
+                    helperText={OrganizationActivityConfig.federations.config.helperText}
+                    error={errors[OrganizationActivityConfig.federations.key]?.message?.toString()}
                     onChange={onChange}
+                    options={[...federations.map(regionsMap)]}
                     readonly={readonly}
                   />
                 );
@@ -228,13 +250,14 @@ const OrganizationActivity = () => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <Select
-                    config={{
-                      ...OrganizationActivityConfig.coalitions.config,
-                      collection: coalitions,
-                    }}
-                    selected={value}
+                  <MultiSelect
+                    value={value}
+                    label={OrganizationActivityConfig.coalitions.config.label}
+                    isClearable={false}
+                    helperText={OrganizationActivityConfig.coalitions.config.helperText}
+                    error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
                     onChange={onChange}
+                    options={[...coalitions.map(regionsMap)]}
                     readonly={readonly}
                   />
                 );
@@ -285,7 +308,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.hasBranches.key]}
             config={OrganizationActivityConfig.hasBranches}
           />
-          {hasBranches == 'true' && (
+          {hasBranches === 'true' && (
             <Controller
               key={OrganizationActivityConfig.branches.key}
               name={OrganizationActivityConfig.branches.key}
