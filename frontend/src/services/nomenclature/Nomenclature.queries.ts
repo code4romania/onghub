@@ -16,7 +16,6 @@ import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
 
 export const useCitiesQuery = (countyId: number) => {
-  console.log(countyId);
   const { setCities } = useStore();
   return useQuery(['cities', countyId], () => getCities('', countyId), {
     onSuccess: (data: City[]) => {

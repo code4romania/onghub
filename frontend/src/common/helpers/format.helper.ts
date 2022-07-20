@@ -12,4 +12,8 @@ export const URL_REGEX =
 export const PHONE_REGEX = /0\d{9}/;
 export const CUI_REGEX = /((RO)?\d+)/;
 export const NAME_REGEX = /^[a-zA-Z-\s]*$/;
+export const ALPHANUMERIC_REGEX = /^[a-zA-Z0-9-\s]*$/;
 export const DESCRIPTION_REGEX = /^(.|\s)*[a-zA-Z]+(.|\s)*$/;
+export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
+
+export const NUMERIC_REGEX = /^[0-9]*$/;

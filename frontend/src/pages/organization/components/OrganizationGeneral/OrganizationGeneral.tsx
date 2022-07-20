@@ -56,7 +56,8 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    console.log(errors);
+    // console.log(errors);
+    // console.log(data);
     setReadonly(true);
 
     const organizationGeneral = {
@@ -68,8 +69,12 @@ const OrganizationGeneral = () => {
     delete organizationGeneral.county;
     delete organizationGeneral.city;
 
-    mutate({ id: 3, organization: { general: organizationGeneral } });
+    mutate({ id: 1, organization: { general: organizationGeneral } });
   };
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
@@ -79,7 +84,7 @@ const OrganizationGeneral = () => {
         <button
           type="button"
           className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSave}
+          onClick={readonly ? startEdit : handleSubmit(handleSave)}
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {readonly ? 'Editeaza' : 'Salveaza modificari'}

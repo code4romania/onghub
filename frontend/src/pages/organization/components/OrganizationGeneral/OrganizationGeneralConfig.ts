@@ -1,7 +1,10 @@
 import {
+  ALPHANUMERIC_REGEX,
   CUI_REGEX,
   DESCRIPTION_REGEX,
   NAME_REGEX,
+  NUMERIC_REGEX,
+  RAF_NUMBER_REGEX,
 } from './../../../../common/helpers/format.helper';
 import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
@@ -22,6 +25,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       minLength: {
         value: 3,
         message: 'Organization Name has a minimum length of 3 characters.',
+      },
+      pattern: {
+        value: ALPHANUMERIC_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {
@@ -186,6 +193,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message:
           'Organization Register of asociations and Foundations Number has a maximum length of 10 characters.',
       },
+      pattern: {
+        value: RAF_NUMBER_REGEX,
+        message: 'Invalid format',
+      },
     },
     config: {
       type: 'text',
@@ -244,8 +255,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Short description has a maximum length of 250 characters.',
       },
       minLength: {
-        value: 200,
-        message: 'Short description has a minimum length of 200 characters.',
+        value: 50,
+        message: 'Short description has a minimum length of 50 characters.',
       },
       pattern: {
         value: DESCRIPTION_REGEX,
@@ -268,16 +279,16 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Description is required.',
       },
       maxLength: {
-        value: 500,
-        message: 'Description has a maximum length of 500 characters.',
+        value: 700,
+        message: 'Description has a maximum length of 700 characters.',
       },
       minLength: {
-        value: 250,
-        message: 'Description has a minimum length of 250 characters.',
+        value: 200,
+        message: 'Description has a minimum length of 200 characters.',
       },
       pattern: {
         value: DESCRIPTION_REGEX,
-        message: 'Short description is invalid',
+        message: 'Description is invalid',
       },
     },
     config: {
@@ -300,8 +311,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Contact name has a maximum length of 100 characters.',
       },
       minLength: {
-        value: 1,
-        message: 'Contact Name has a minimum length of 1 characters.',
+        value: 5,
+        message: 'Contact Name has a minimum length of 5 characters.',
       },
       pattern: {
         value: NAME_REGEX,
@@ -339,7 +350,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Contact Name is required.',
+        message: 'Contact Phone is required.',
       },
       maxLength: {
         value: 10,
@@ -348,6 +359,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       minLength: {
         value: 10,
         message: 'Contact phone has a minimum length of 10 characters.',
+      },
+      pattern: {
+        value: PHONE_REGEX,
+        message: 'Invalid phone format',
       },
     },
     config: {
@@ -400,10 +415,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   instagram: {
     key: 'instagram',
     rules: {
-      required: {
-        value: true,
-        message: 'Instagram is required.',
-      },
       pattern: {
         value: URL_REGEX,
         message: 'URL format must be valid',
@@ -508,6 +519,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 4,
         message: 'Length of the Donation SMS must be of maximum 4 characters.',
       },
+      pattern: {
+        value: NUMERIC_REGEX,
+        message: 'Invalid format',
+      },
     },
     config: {
       type: 'text',
@@ -522,6 +537,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       maxLength: {
         value: 10,
         message: 'Maximum length of the donation keyword is 10 characters.',
+      },
+      pattern: {
+        value: ALPHANUMERIC_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {
