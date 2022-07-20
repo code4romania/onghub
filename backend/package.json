@@ -29,6 +29,7 @@
     "schema:sync": "npm run typeorm -- schema:sync"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.131.0",
     "@bull-board/api": "^4.0.0",
     "@bull-board/express": "^4.0.0",
     "@nestjs-modules/mailer": "^1.7.1",

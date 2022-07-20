@@ -9,5 +9,6 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [PassportModule.register({ defaultStrategy: 'jwt' })],
   controllers: [AuthController],
   providers: [AuthConfig, AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthenticationModule {}

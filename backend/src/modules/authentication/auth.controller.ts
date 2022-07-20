@@ -9,7 +9,6 @@ export class AuthController {
   @Get('imloggedin')
   @UseGuards(AuthGuard('jwt'))
   async imloggedin(@Request() req) {
-    // console.log(req);
     return 'OK';
   }
 }
