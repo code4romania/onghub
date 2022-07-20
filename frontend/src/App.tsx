@@ -8,7 +8,6 @@ import { I18nProvider } from '@lingui/react';
 import { messages as messagesRo } from './assets/locales/ro/messages';
 import { LocaleProvider } from './contexts/LocaleContext';
 import { Amplify, Auth } from 'aws-amplify';
-import { Cache } from 'aws-amplify';
 
 Amplify.configure({
   Auth: {
