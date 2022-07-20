@@ -17,8 +17,11 @@ API.interceptors.request.use(async (request) => {
     request.headers = {};
   }
 
-  if (user?.signInUserSession) {
-    request.headers.Authorization = `Bearer ${user.signInUserSession.accessToken.jwtToken}`;
+  if (user?.getSignInUserSession()) {
+    request.headers.Authorization = `Bearer ${user
+      .getSignInUserSession()
+      .getAccessToken()
+      .getJwtToken()}`;
   }
 
   return request;
