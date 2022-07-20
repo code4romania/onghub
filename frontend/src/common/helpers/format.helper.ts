@@ -17,3 +17,28 @@ export const DESCRIPTION_REGEX = /^(.|\s)*[a-zA-Z]+(.|\s)*$/;
 export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
 
 export const NUMERIC_REGEX = /^[0-9]*$/;
+
+// Flattens the nested objects to key_value
+export const flatten = (x: any, result: any, prefix?: any) => {
+  if (typeof x === 'object' && !Array.isArray(x) && x !== null) {
+    Object.keys(x).forEach((key) => {
+      flatten(x[key], result, prefix ? prefix + '_' + key : key);
+    });
+  } else {
+    result[prefix] = x;
+  }
+  return result;
+};
+
+// export const unflatten = (data: any) => {
+//   const result = {};
+//   for (const i in data) {
+//     const keys = i.split('_');
+//     keys.reduce((r: any, e: any, j: any) => {
+//       return (
+//         r[e] || (r[e] = isNaN(Number(keys[j + 1])) ? (keys.length - 1 == j ? data[i] : {}) : [])
+//       );
+//     }, result);
+//   }
+//   return result;
+// };

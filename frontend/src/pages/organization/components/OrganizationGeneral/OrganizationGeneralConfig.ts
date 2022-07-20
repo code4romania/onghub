@@ -300,7 +300,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
   },
   contact_name: {
-    key: 'contact.fullName',
+    key: 'contact_fullName',
     rules: {
       required: {
         value: true,
@@ -327,7 +327,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
   },
   contact_email: {
-    key: 'contact.email',
+    key: 'contact_email',
     rules: {
       required: {
         value: true,
@@ -346,7 +346,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
   },
   contact_phone: {
-    key: 'contact.phone',
+    key: 'contact_phone',
     rules: {
       required: {
         value: true,

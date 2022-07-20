@@ -13,6 +13,7 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
+import { flatten } from '../../../../common/helpers/format.helper';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -39,7 +40,8 @@ const OrganizationGeneral = () => {
 
   useEffect(() => {
     if (organizationGeneral) {
-      reset({ ...organizationGeneral });
+      const contact = flatten(organizationGeneral.contact, {}, 'contact');
+      reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
     }
@@ -56,12 +58,17 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    // console.log(errors);
-    // console.log(data);
     setReadonly(true);
+    const contact = {
+      ...data.contact,
+      fullName: data.contact_fullName,
+      phone: data.contact_phone,
+      email: data.contact_email,
+    };
 
     const organizationGeneral = {
       ...data,
+      contact,
       countyId: data.county.id,
       cityId: data.city.id,
     };
@@ -71,10 +78,6 @@ const OrganizationGeneral = () => {
 
     mutate({ id: 1, organization: { general: organizationGeneral } });
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
