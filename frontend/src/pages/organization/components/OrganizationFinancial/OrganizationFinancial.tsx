@@ -12,6 +12,7 @@ import { Income } from '../../interfaces/Income.interface';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { FinancialType } from '../../enums/FinancialType.enum';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import CardPanel from '../../../../components/card-panel/CardPanel';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
@@ -76,47 +77,40 @@ const OrganizationFinancial = () => {
   };
 
   return (
-    <div className="w-full bg-white shadow rounded-lg">
-      <div className="p-5 sm:p-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">Date Financiare</span>
-      </div>
-
-      <div className="w-full border-t border-gray-300" />
-      <div className="md:py-5 md:px-10 sm:p-10">
+    <CardPanel title="Date Financiare">
+      <>
         <div className="pt-1 pb-6">
           <p className="text-base font-normal text-gray-900">
             Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
           </p>
         </div>
-        <div className="overflow-x-auto">
-          <DataTableComponent
-            columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
-            data={organizationFinancial}
-            loading={isLoading}
+        <DataTableComponent
+          columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
+          data={organizationFinancial}
+          loading={isLoading}
+        />
+        {isExpenseReportModalOpen && (
+          <ExpenseReportModal
+            onClose={() => setIsExpenseReportModalOpen(false)}
+            readonly={isReadonly}
+            year={selectedReport?.year}
+            total={selectedReport?.total}
+            defaultValue={selectedReport?.data}
+            onSave={onSave}
           />
-        </div>
-      </div>
-      {isExpenseReportModalOpen && (
-        <ExpenseReportModal
-          onClose={() => setIsExpenseReportModalOpen(false)}
-          readonly={isReadonly}
-          year={selectedReport?.year}
-          total={selectedReport?.total}
-          defaultValue={selectedReport?.data}
-          onSave={onSave}
-        />
-      )}
-      {isIncomeReportModalOpen && (
-        <IncomeReportModal
-          onClose={() => setIsIncomeReportModalOpen(false)}
-          readonly={isReadonly}
-          year={selectedReport?.year}
-          total={selectedReport?.total}
-          defaultValue={selectedReport?.data}
-          onSave={onSave}
-        />
-      )}
-    </div>
+        )}
+        {isIncomeReportModalOpen && (
+          <IncomeReportModal
+            onClose={() => setIsIncomeReportModalOpen(false)}
+            readonly={isReadonly}
+            year={selectedReport?.year}
+            total={selectedReport?.total}
+            defaultValue={selectedReport?.data}
+            onSave={onSave}
+          />
+        )}
+      </>
+    </CardPanel>
   );
 };
 
