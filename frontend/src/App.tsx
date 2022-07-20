@@ -8,6 +8,7 @@ import { I18nProvider } from '@lingui/react';
 import { messages as messagesRo } from './assets/locales/ro/messages';
 import { LocaleProvider } from './contexts/LocaleContext';
 import { Amplify, Auth } from 'aws-amplify';
+import { Cache } from 'aws-amplify';
 
 Amplify.configure({
   Auth: {
@@ -22,12 +23,12 @@ Amplify.configure({
     redirectSignOut: 'http://localhost:3000/',
     responseType: 'code', // or 'token', note that REFRESH token will only be generated when the responseType is code
   },
-  cookieStorage: {
-    domain: 'localhost',
-    secure: false,
-    path: '/',
-    expires: 365,
-  },
+  // cookieStorage: {
+  //   domain: 'localhost',
+  //   secure: false,
+  //   path: '/',
+  //   expires: 365,
+  // },
 });
 
 i18n.load({
@@ -53,9 +54,9 @@ const App = () => {
         const user = await Auth.currentAuthenticatedUser();
         setAuthState({ isAuthenticated: true });
         console.log(user);
+        // #TODO Set user in store
       } catch (error) {
         console.log(error);
-        // setAuthState({ isAuthenticated: false });
       }
     })();
   }, []);
