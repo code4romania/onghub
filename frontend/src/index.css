@@ -86,3 +86,15 @@
   width: 14px !important;
   height: 14px !important;
 }
+
+.Toastify__toast {
+  @apply font-roboto !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-green-500 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-red-500 !important;
+}

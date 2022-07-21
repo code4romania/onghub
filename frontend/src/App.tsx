@@ -7,6 +7,9 @@ import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { messages as messagesRo } from './assets/locales/ro/messages';
 import { LocaleProvider } from './contexts/LocaleContext';
+import { toast, ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 i18n.load({
   ro: messagesRo,
@@ -25,6 +28,13 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <LocaleProvider>
           <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+            <ToastContainer
+              position={toast.POSITION.TOP_RIGHT}
+              autoClose={30000}
+              limit={3}
+              closeOnClick
+              rtl={false}
+            />
             <Router />
           </I18nProvider>
         </LocaleProvider>
