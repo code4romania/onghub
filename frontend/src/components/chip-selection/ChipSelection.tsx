@@ -47,7 +47,7 @@ const ChipSelection = ({
   const [selectedItems, setSelectedItems] = useState<number[]>(defaultItems);
 
   useEffect(() => {
-    if (!selectedItems.length) {
+    if (!selectedItems.length && defaultItems.length) {
       setSelectedItems(defaultItems);
     }
   }, [defaultItems]);

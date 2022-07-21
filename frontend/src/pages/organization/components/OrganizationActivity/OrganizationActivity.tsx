@@ -65,11 +65,12 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map((item: any) => item.value)] : [],
     };
 
-    mutate({ id: 3, organization: { activity } });
+    mutate({ id: 1, organization: { activity } });
   };
 
   // load initial values
   useEffect(() => {
+    console.log(organizationActivity);
     if (organizationActivity) {
       const domains = organizationActivity.domains?.map((item: any) => item.id);
       const cities = organizationActivity.cities?.length
@@ -214,7 +215,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
             config={OrganizationActivityConfig.isPartOfFederation}
           />
-          {isPartOfFederation === 'true' && (
+          {(isPartOfFederation === 'true' || isPartOfFederation === true) && (
             <Controller
               key={OrganizationActivityConfig.federations.key}
               name={OrganizationActivityConfig.federations.key}
@@ -242,7 +243,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.isPartOfCoalition.key]}
             config={OrganizationActivityConfig.isPartOfCoalition}
           />
-          {isPartOfCoalition == 'true' && (
+          {(isPartOfCoalition == 'true' || isPartOfCoalition === true) && (
             <Controller
               key={OrganizationActivityConfig.coalitions.key}
               name={OrganizationActivityConfig.coalitions.key}
@@ -272,7 +273,8 @@ const OrganizationActivity = () => {
             config={OrganizationActivityConfig.isPartOfInternationalOrganization}
           />
 
-          {isPartOfInternationalOrganization == 'true' && (
+          {(isPartOfInternationalOrganization == 'true' ||
+            isPartOfInternationalOrganization === true) && (
             <Controller
               key={OrganizationGeneralConfig.website.key}
               name={OrganizationGeneralConfig.website.key}
@@ -308,7 +310,7 @@ const OrganizationActivity = () => {
             errors={errors[OrganizationActivityConfig.hasBranches.key]}
             config={OrganizationActivityConfig.hasBranches}
           />
-          {hasBranches === 'true' && (
+          {(hasBranches === 'true' || hasBranches === true) && (
             <Controller
               key={OrganizationActivityConfig.branches.key}
               name={OrganizationActivityConfig.branches.key}

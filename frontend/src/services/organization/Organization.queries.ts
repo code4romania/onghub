@@ -35,6 +35,7 @@ export const useOrganizationQuery = (id: number) => {
       organizationLegal: IOrganizationLegal;
     }) => {
       setOrganizationGeneral(data.organizationGeneral);
+      setOrganizationActivity(data.organizationActivity);
       setOrganizationFinancial(data.organizationFinancial);
       setOrganizationLegal(data.organizationLegal);
       setOrganizationReport({
