@@ -1,3 +1,5 @@
+import { ALPHANUMERIC_REGEX } from '../../../../common/helpers/format.helper';
+
 export enum OrganizationAreaEnum {
   LOCAL = 'Local',
   REGIONAL = 'Regional',
@@ -162,6 +164,33 @@ export const OrganizationActivityConfig: Record<string, any> = {
         value: 'false',
       },
     ],
+  },
+  internationalOrganizationName: {
+    key: 'internationalOrganizationName',
+    rules: {
+      required: {
+        value: true,
+        message: 'Organization Name is required.',
+      },
+      maxLength: {
+        value: 100,
+        message: 'Organization Name has a maximum length of 100 characters.',
+      },
+      minLength: {
+        value: 3,
+        message: 'Organization Name has a minimum length of 3 characters.',
+      },
+      pattern: {
+        value: ALPHANUMERIC_REGEX,
+        message: 'Invalid format',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Denumirea organizatiei*',
+      helperText: 'Denumirea oficiala, conform cu Registrul ONG',
+      placeholder: '',
+    },
   },
 
   hasBranches: {
