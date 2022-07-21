@@ -18,6 +18,11 @@ import {
 import InputField from '../../../../components/InputField/InputField';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
+import {
+  mapCitiesToSelect,
+  mapNameToSelect,
+  mapSelectToValue,
+} from '../../../../common/helpers/format.helper';
 
 const OrganizationActivity = () => {
   const { organizationActivity } = useSelectedOrganization();
@@ -52,17 +57,16 @@ const OrganizationActivity = () => {
 
   // submit
   const handleSave = (data: any) => {
-    console.log(data);
     setReadonly(true);
 
     // data mappings for backend payload
     const activity = {
       ...data,
-      branches: data.branches ? [...data.branches.map((item: any) => item.value)] : [],
-      cities: data.cities ? [...data.cities.map((item: any) => item.value)] : [],
-      regions: data.regions ? [...data.regions.map((item: any) => item.value)] : [],
-      coalitions: data.coalitions ? [...data.coalitions.map((item: any) => item.value)] : [],
-      federations: data.federations ? [...data.federations.map((item: any) => item.value)] : [],
+      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
+      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
+      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
+      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
+      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
     mutate({ id: 1, organization: { activity } });
@@ -73,13 +77,13 @@ const OrganizationActivity = () => {
     if (organizationActivity) {
       const domains = organizationActivity.domains?.map((item: any) => item.id);
       const cities = organizationActivity.cities?.length
-        ? [...organizationActivity.cities.map(citiesSearchMap)]
+        ? [...organizationActivity.cities.map(mapCitiesToSelect)]
         : [];
       const branches = organizationActivity.branches?.length
-        ? [...organizationActivity.branches.map(citiesSearchMap)]
+        ? [...organizationActivity.branches.map(mapCitiesToSelect)]
         : [];
       const regions = organizationActivity.regions?.length
-        ? [...organizationActivity.regions.map(regionsMap)]
+        ? [...organizationActivity.regions.map(mapNameToSelect)]
         : [];
       reset({ ...organizationActivity, domains, cities, branches, regions });
     }
@@ -90,20 +94,8 @@ const OrganizationActivity = () => {
     setReadonly(false);
   };
 
-  // data mappers
-  const citiesSearchMap = (item: any) => ({
-    value: item?.id,
-    // label: `${item.name}, jud. ${item.county.name}`,
-    label: `${item?.name}`,
-  });
-
-  const regionsMap = (item: any) => ({
-    value: item.id,
-    label: `${item.name}`,
-  });
-
   const loadOptionsCitiesSerch = async (searchWord: string) => {
-    return getCities(searchWord).then((res: any[]) => res.map(citiesSearchMap));
+    return getCities(searchWord).then((res: any[]) => res.map(mapCitiesToSelect));
   };
 
   return (
@@ -193,7 +185,7 @@ const OrganizationActivity = () => {
                     helperText={OrganizationActivityConfig.regions.config.helperText}
                     error={errors[OrganizationActivityConfig.regions.key]?.message?.toString()}
                     onChange={onChange}
-                    options={[...regions.map(regionsMap)]}
+                    options={[...regions.map(mapNameToSelect)]}
                     readonly={readonly}
                   />
                 );
@@ -229,7 +221,7 @@ const OrganizationActivity = () => {
                     helperText={OrganizationActivityConfig.federations.config.helperText}
                     error={errors[OrganizationActivityConfig.federations.key]?.message?.toString()}
                     onChange={onChange}
-                    options={[...federations.map(regionsMap)]}
+                    options={[...federations.map(mapNameToSelect)]}
                     readonly={readonly}
                   />
                 );
@@ -257,7 +249,7 @@ const OrganizationActivity = () => {
                     helperText={OrganizationActivityConfig.coalitions.config.helperText}
                     error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
                     onChange={onChange}
-                    options={[...coalitions.map(regionsMap)]}
+                    options={[...coalitions.map(mapNameToSelect)]}
                     readonly={readonly}
                   />
                 );
@@ -275,17 +267,19 @@ const OrganizationActivity = () => {
           {(isPartOfInternationalOrganization == 'true' ||
             isPartOfInternationalOrganization === true) && (
             <Controller
-              key={OrganizationGeneralConfig.website.key}
-              name={OrganizationGeneralConfig.website.key}
-              rules={OrganizationGeneralConfig.website.rules}
+              key={OrganizationActivityConfig.internationalOrganizationName.key}
+              name={OrganizationActivityConfig.internationalOrganizationName.key}
+              rules={OrganizationActivityConfig.internationalOrganizationName.rules}
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
                   <InputField
                     config={{
-                      ...OrganizationGeneralConfig.website.config,
-                      name: OrganizationGeneralConfig.website.key,
-                      error: errors[OrganizationGeneralConfig.website.key]?.message,
+                      ...OrganizationActivityConfig.internationalOrganizationName.config,
+                      name: OrganizationActivityConfig.internationalOrganizationName.key,
+                      error:
+                        errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                          ?.message,
                       defaultValue: value,
                       onChange: onChange,
                     }}

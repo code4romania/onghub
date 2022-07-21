@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import currency from 'currency.js';
 import { format } from 'date-fns';
 
@@ -42,3 +43,19 @@ export const flatten = (x: any, result: any, prefix?: any) => {
 //   }
 //   return result;
 // };
+
+export interface ISelectData {
+  value: any;
+  label: string;
+}
+
+export const mapSelectToValue = (item: any) => item.value;
+export const mapNameToSelect = (item: any): ISelectData => ({
+  value: item.id,
+  label: item.name,
+});
+export const mapCitiesToSelect = (item: any): ISelectData => ({
+  value: item?.id,
+  // label: `${item.name}, jud. ${item.county.name}`,
+  label: `${item?.name}`,
+});

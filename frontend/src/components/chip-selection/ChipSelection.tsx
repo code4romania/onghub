@@ -57,13 +57,14 @@ const ChipSelection = ({
   };
 
   const onChipItemClick = (itemId: number) => {
+    let selected = [];
     if (selectedItems.findIndex((id) => id === itemId) >= 0) {
-      setSelectedItems(selectedItems.filter((id) => id !== itemId));
+      selected = selectedItems.filter((id) => id !== itemId);
     } else {
-      setSelectedItems([...selectedItems, itemId]);
+      selected = [...selectedItems, itemId];
     }
-
-    onItemsChange(selectedItems);
+    setSelectedItems(selected);
+    onItemsChange(selected);
   };
 
   return (
