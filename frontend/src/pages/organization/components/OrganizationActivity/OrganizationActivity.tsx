@@ -65,7 +65,7 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map((item: any) => item.value)] : [],
     };
 
-    mutate({ id: 1, organization: { activity } });
+    mutate({ id: 3, organization: { activity } });
   };
 
   // load initial values
