@@ -46,7 +46,11 @@ export class OrganizationActivity extends BaseEntity {
   })
   isPartOfInternationalOrganization: boolean;
 
-  @Column({ type: 'varchar', name: 'international_organization_name' })
+  @Column({
+    type: 'varchar',
+    name: 'international_organization_name',
+    nullable: true,
+  })
   internationalOrganizationName: string;
 
   @Column({ type: 'boolean', name: 'is_social_service_viable' })
