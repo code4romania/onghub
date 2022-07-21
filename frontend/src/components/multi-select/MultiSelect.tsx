@@ -28,7 +28,6 @@ const MultiSelect = ({
   readonly,
   options,
 }: MultiSelectConfig) => {
-  console.log(value);
   return (
     <div>
       {label && (

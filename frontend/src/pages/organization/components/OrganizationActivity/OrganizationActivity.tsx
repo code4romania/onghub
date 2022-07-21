@@ -65,12 +65,11 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map((item: any) => item.value)] : [],
     };
 
-    mutate({ id: 3, organization: { activity } });
+    mutate({ id: 1, organization: { activity } });
   };
 
   // load initial values
   useEffect(() => {
-    console.log(organizationActivity);
     if (organizationActivity) {
       const domains = organizationActivity.domains?.map((item: any) => item.id);
       const cities = organizationActivity.cities?.length

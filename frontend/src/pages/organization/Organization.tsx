@@ -16,7 +16,7 @@ const Organization = () => {
   useCountiesQuery();
 
   // load organization data
-  useOrganizationQuery(3);
+  useOrganizationQuery(1);
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
