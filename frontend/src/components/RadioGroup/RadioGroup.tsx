@@ -3,14 +3,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { IRadioGroupConfig } from './RadioGroupConfig.interface';
 import RadioButton from '../RadioButton/RadioButton';
-
-const str2bool = (value: string) => {
-  if (value && typeof value === 'string') {
-    if (value.toLowerCase() === 'true') return true;
-    if (value.toLowerCase() === 'false') return false;
-  }
-  return value;
-};
+import { str2bool } from '../../common/helpers/format.helper';
 
 const RadioGroup = (props: {
   control: any;
@@ -18,11 +11,6 @@ const RadioGroup = (props: {
   readonly: boolean;
   config: IRadioGroupConfig;
 }) => {
-  const onChangef = (e: any) => {
-    const checkBoolean = str2bool(e.target.value);
-    return { ...e, taget: { value: checkBoolean } };
-  };
-
   return (
     <div>
       <span className="flex text-normal text-gray-700 font-normal mb-2">{props.config.label}</span>
@@ -46,7 +34,7 @@ const RadioGroup = (props: {
                     config={{
                       ...radioConfig,
                       name: props.config.key,
-                      onChange: (e) => onChange(onChangef(e)),
+                      onChange: onChange,
                     }}
                     checked={str2bool(radioConfig.value) === str2bool(value)}
                     key={index}

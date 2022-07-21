@@ -37,11 +37,11 @@ const MultiSelect = ({
       )}
       {readonly && (
         <div className="py-2 flex gap-x-2 gap-y-2 flex-wrap">
-          {value?.map((item) => (
+          {value?.map((item, index) => (
             <Chip
-              key={item.value}
+              key={index}
               item={{ id: item.value, name: item.label }}
-              readonly={readonly}
+              readonly={true}
               selected={false}
               onClick={() => {}}
             />

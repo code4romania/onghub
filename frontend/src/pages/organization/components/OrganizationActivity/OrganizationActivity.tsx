@@ -20,8 +20,11 @@ import { useOrganizationMutation } from '../../../../services/organization/Organ
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
   mapCitiesToSelect,
+  mapGroupsToSelect,
   mapNameToSelect,
   mapSelectToValue,
+  mapToId,
+  str2bool,
 } from '../../../../common/helpers/format.helper';
 
 const OrganizationActivity = () => {
@@ -35,7 +38,6 @@ const OrganizationActivity = () => {
     control,
     formState: { errors },
     reset,
-    setValue,
     watch,
   } = useForm({
     mode: 'onChange',
@@ -58,10 +60,16 @@ const OrganizationActivity = () => {
   // submit
   const handleSave = (data: any) => {
     setReadonly(true);
-
     // data mappings for backend payload
     const activity = {
       ...data,
+      isPartOfFederation: str2bool(data.isPartOfFederation),
+      isPartOfCoalition: str2bool(data.isPartOfCoalition),
+      isPartOfInternationalOrganization: str2bool(data.isPartOfInternationalOrganization),
+      isSocialServiceViable: str2bool(data.isSocialServiceViable),
+      offersGrants: str2bool(data.offersGrants),
+      isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
+
       branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
       cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
       regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
@@ -75,7 +83,7 @@ const OrganizationActivity = () => {
   // load initial values
   useEffect(() => {
     if (organizationActivity) {
-      const domains = organizationActivity.domains?.map((item: any) => item.id);
+      const domains = organizationActivity.domains?.map(mapToId);
       const cities = organizationActivity.cities?.length
         ? [...organizationActivity.cities.map(mapCitiesToSelect)]
         : [];
@@ -85,7 +93,21 @@ const OrganizationActivity = () => {
       const regions = organizationActivity.regions?.length
         ? [...organizationActivity.regions.map(mapNameToSelect)]
         : [];
-      reset({ ...organizationActivity, domains, cities, branches, regions });
+      const federations = organizationActivity.federations?.length
+        ? [...organizationActivity.federations.map(mapGroupsToSelect)]
+        : [];
+      const coalitions = organizationActivity.coalitions?.length
+        ? [...organizationActivity.coalitions.map(mapGroupsToSelect)]
+        : [];
+      reset({
+        ...organizationActivity,
+        domains,
+        cities,
+        branches,
+        regions,
+        federations,
+        coalitions,
+      });
     }
   }, [organizationActivity]);
 
@@ -221,7 +243,7 @@ const OrganizationActivity = () => {
                     helperText={OrganizationActivityConfig.federations.config.helperText}
                     error={errors[OrganizationActivityConfig.federations.key]?.message?.toString()}
                     onChange={onChange}
-                    options={[...federations.map(mapNameToSelect)]}
+                    options={[...federations.map(mapGroupsToSelect)]}
                     readonly={readonly}
                   />
                 );
@@ -249,7 +271,7 @@ const OrganizationActivity = () => {
                     helperText={OrganizationActivityConfig.coalitions.config.helperText}
                     error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
                     onChange={onChange}
-                    options={[...coalitions.map(mapNameToSelect)]}
+                    options={[...coalitions.map(mapGroupsToSelect)]}
                     readonly={readonly}
                   />
                 );

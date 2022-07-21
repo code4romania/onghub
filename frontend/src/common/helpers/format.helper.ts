@@ -49,13 +49,36 @@ export interface ISelectData {
   label: string;
 }
 
+export const mapToId = (item: any) => item.id;
 export const mapSelectToValue = (item: any) => item.value;
 export const mapNameToSelect = (item: any): ISelectData => ({
   value: item.id,
   label: item.name,
 });
+
+// Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,
   // label: `${item.name}, jud. ${item.county.name}`,
   label: `${item?.name}`,
 });
+
+// Federations and Coalitions
+export const mapGroupsToSelect = (item: any): ISelectData => ({
+  value: item.id,
+  label: item.abbreviation,
+});
+
+export const str2bool = (value: string) => {
+  if (value && typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true;
+    if (value.toLowerCase() === 'false') return false;
+  }
+  return value;
+};
+
+export const str2boolObject = (item: any) => {
+  Object.keys(item).forEach((key) => {
+    item[key] = str2bool(item[key]);
+  });
+};
