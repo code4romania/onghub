@@ -14,6 +14,7 @@ import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { flatten } from '../../../../common/helpers/format.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -22,7 +23,7 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const { cities, counties } = useNomenclature();
   const { organizationGeneral } = useSelectedOrganization();
-  const { mutate } = useOrganizationMutation();
+  const { mutate, error } = useOrganizationMutation();
   // queries
   useCitiesQuery(county?.id);
 
@@ -52,6 +53,12 @@ const OrganizationGeneral = () => {
       setValue('city', null);
     }
   }, [cities]);
+
+  useEffect(() => {
+    if (error) {
+      useErrorToast('Could not save organization');
+    }
+  }, [error]);
 
   const startEdit = () => {
     setReadonly(false);
