@@ -64,8 +64,16 @@ export class OrganizationActivity extends BaseEntity {
   @Column({ type: 'boolean', name: 'has_branches' })
   hasBranches: boolean;
 
-  @Column({ type: 'jsonb', name: 'branches', nullable: true })
-  branches: number[];
+  @ManyToMany(() => City, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'activity_to_branches',
+    joinColumn: {
+      name: 'organization_activity_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'city_id', referencedColumnName: 'id' },
+  })
+  branches: City[];
 
   @OneToOne(
     () => Organization,

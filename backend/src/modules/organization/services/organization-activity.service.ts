@@ -21,6 +21,7 @@ export class OrganizationActivityService {
       domains,
       regions,
       cities,
+      branches,
       ...updateOrganizationData
     } = updateOrganizationActivityDto;
 
@@ -74,9 +75,24 @@ export class OrganizationActivityService {
       updateOrganizationData['cities'] = citiesData;
     }
 
-    return this.organizationActivityRepository.save({
+    if (branches) {
+      let branchesData = [];
+      if (branches.length > 0) {
+        branchesData = await this.nomenclaturesService.getCities({
+          where: { id: In(branches) },
+        });
+      }
+      updateOrganizationData['branches'] = branchesData;
+    }
+
+    await this.organizationActivityRepository.save({
       id,
       ...updateOrganizationData,
+    });
+
+    return this.organizationActivityRepository.get({
+      where: { id },
+      relations: ['branches', 'domains', 'cities', 'federations', 'coalitions'],
     });
   }
 }

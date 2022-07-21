@@ -54,6 +54,13 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.regions) },
     });
 
+    let branches = [];
+    if (createOrganizationDto.activity.branches?.length > 0) {
+      branches = await this.nomenclaturesService.getCities({
+        where: { id: In(createOrganizationDto.activity.branches) },
+      });
+    }
+
     if (
       createOrganizationDto.activity.area === Area.REGIONAL &&
       regions.length === 0
@@ -77,8 +84,6 @@ export class OrganizationService {
         errorCode: ERROR_CODES.ORG004,
       });
     }
-
-    const previousYear = new Date().getFullYear() - 1;
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
@@ -97,6 +102,7 @@ export class OrganizationService {
         cities,
         federations,
         coalitions,
+        branches,
       },
       organizationLegal: {
         ...createOrganizationDto.legal,
@@ -132,6 +138,9 @@ export class OrganizationService {
         'organizationActivity',
         'organizationActivity.domains',
         'organizationActivity.cities',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
+        'organizationActivity.branches',
         'organizationLegal',
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
