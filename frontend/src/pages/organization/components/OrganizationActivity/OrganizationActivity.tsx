@@ -26,11 +26,12 @@ import {
   mapToId,
   str2bool,
 } from '../../../../common/helpers/format.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationActivity = () => {
   const { organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
-  const { mutate } = useOrganizationMutation();
+  const { mutate, error } = useOrganizationMutation();
 
   const [readonly, setReadonly] = useState(true);
   const {
@@ -77,7 +78,7 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({ id: 1, organization: { activity } });
+    mutate({ id: 3, organization: { activity } });
   };
 
   // load initial values
@@ -110,6 +111,12 @@ const OrganizationActivity = () => {
       });
     }
   }, [organizationActivity]);
+
+  useEffect(() => {
+    if (error) {
+      useErrorToast('Could not save organization');
+    }
+  }, [error]);
 
   // edit mode
   const startEdit = () => {

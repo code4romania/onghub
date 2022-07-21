@@ -83,7 +83,7 @@ const OrganizationGeneral = () => {
     delete organizationGeneral.county;
     delete organizationGeneral.city;
 
-    mutate({ id: 1, organization: { general: organizationGeneral } });
+    mutate({ id: 3, organization: { general: organizationGeneral } });
   };
 
   return (
