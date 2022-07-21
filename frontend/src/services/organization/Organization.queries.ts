@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
+import { IOrganizationActivityPayload } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
@@ -12,6 +13,7 @@ interface OrganizationPayload {
   id: number;
   organization: {
     general?: IOrganizationGeneral;
+    activity?: Partial<IOrganizationActivityPayload>;
     financial?: Partial<IOrganizationFinancial>;
   };
 }
@@ -19,6 +21,7 @@ interface OrganizationPayload {
 export const useOrganizationQuery = (id: number) => {
   const {
     setOrganizationGeneral,
+    setOrganizationActivity,
     setOrganizationFinancial,
     setOrganizationReport,
     setOrganizationLegal,
@@ -26,11 +29,13 @@ export const useOrganizationQuery = (id: number) => {
   return useQuery(['organization', id], () => getOrganization(id), {
     onSuccess: (data: {
       organizationGeneral: IOrganizationGeneral;
+      organizationActivity: any;
       organizationFinancial: IOrganizationFinancial[];
       organizationReport: IOrganizationReport;
       organizationLegal: IOrganizationLegal;
     }) => {
       setOrganizationGeneral(data.organizationGeneral);
+      setOrganizationActivity(data.organizationActivity);
       setOrganizationFinancial(data.organizationFinancial);
       setOrganizationLegal(data.organizationLegal);
       setOrganizationReport({

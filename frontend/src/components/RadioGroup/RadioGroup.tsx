@@ -3,6 +3,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { IRadioGroupConfig } from './RadioGroupConfig.interface';
 import RadioButton from '../RadioButton/RadioButton';
+import { str2bool } from '../../common/helpers/format.helper';
 
 const RadioGroup = (props: {
   control: any;
@@ -22,7 +23,9 @@ const RadioGroup = (props: {
             <fieldset className="flex flex-col gap-y-4 gap-x-4">
               {props.readonly && (
                 <span>
-                  {props.config.radioConfigs.find((item) => item.value === value)?.label || ''}
+                  {props.config.radioConfigs.find(
+                    (item) => str2bool(item.value) === str2bool(value),
+                  )?.label || ''}
                 </span>
               )}
               {!props.readonly &&
@@ -33,7 +36,7 @@ const RadioGroup = (props: {
                       name: props.config.key,
                       onChange: onChange,
                     }}
-                    checked={radioConfig.value === value}
+                    checked={str2bool(radioConfig.value) === str2bool(value)}
                     key={index}
                   />
                 ))}

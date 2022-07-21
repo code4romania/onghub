@@ -27,4 +27,6 @@ API.interceptors.request.use(async (request) => {
   return request;
 });
 
+export const API_URL = 'http://localhost:3001';
+
 export default API;

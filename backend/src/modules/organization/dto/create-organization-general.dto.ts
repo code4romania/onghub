@@ -23,7 +23,7 @@ export class CreateOrganizationGeneralDto {
   */
   @IsString()
   @IsNotEmpty()
-  @Matches(REGEX.NAME)
+  @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 100)
   name: string;
 
@@ -74,15 +74,13 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization short description */
   @IsString()
-  @IsOptional()
-  @Length(200, 250)
+  @Length(50, 250)
   @Matches(REGEX.DESCRIPTION)
   shortDescription?: string;
 
   /* Organization long description */
   @IsString()
-  @IsOptional()
-  @Length(250, 500)
+  @Length(200, 700)
   @Matches(REGEX.DESCRIPTION)
   description?: string;
 
@@ -96,7 +94,6 @@ export class CreateOrganizationGeneralDto {
   @example http://www.google.com
   */
   @IsString()
-  @IsOptional()
   @Matches(REGEX.LINK)
   website?: string;
 
@@ -105,7 +102,6 @@ export class CreateOrganizationGeneralDto {
   @example http://www.google.com
   */
   @IsString()
-  @IsOptional()
   @Matches(REGEX.LINK)
   facebook?: string;
 
@@ -166,13 +162,14 @@ export class CreateOrganizationGeneralDto {
   /* Organization donation sms number */
   @IsString()
   @IsOptional()
+  @Matches(REGEX.NUMERIC)
   @Length(4, 4)
   donationSMS?: string;
 
   /* Organization donation keyword */
-  @IsAlpha()
   @IsOptional()
-  @Length(10, 10)
+  @MaxLength(10)
+  @Matches(REGEX.ALPHANUMERIC)
   donationKeyword?: string;
 
   /* Organization contact person */

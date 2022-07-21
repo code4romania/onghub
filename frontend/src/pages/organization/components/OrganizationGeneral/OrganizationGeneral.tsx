@@ -13,6 +13,8 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
+import { flatten } from '../../../../common/helpers/format.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -21,7 +23,7 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const { cities, counties } = useNomenclature();
   const { organizationGeneral } = useSelectedOrganization();
-  const { mutate } = useOrganizationMutation();
+  const { mutate, error } = useOrganizationMutation();
   // queries
   useCitiesQuery(county?.id);
 
@@ -39,7 +41,8 @@ const OrganizationGeneral = () => {
 
   useEffect(() => {
     if (organizationGeneral) {
-      reset({ ...organizationGeneral });
+      const contact = flatten(organizationGeneral.contact, {}, 'contact');
+      reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
     }
@@ -51,15 +54,28 @@ const OrganizationGeneral = () => {
     }
   }, [cities]);
 
+  useEffect(() => {
+    if (error) {
+      useErrorToast('Could not save organization');
+    }
+  }, [error]);
+
   const startEdit = () => {
     setReadonly(false);
   };
 
   const handleSave = (data: any) => {
     setReadonly(true);
+    const contact = {
+      ...data.contact,
+      fullName: data.contact_fullName,
+      phone: data.contact_phone,
+      email: data.contact_email,
+    };
 
     const organizationGeneral = {
       ...data,
+      contact,
       countyId: data.county.id,
       cityId: data.city.id,
     };
@@ -67,7 +83,7 @@ const OrganizationGeneral = () => {
     delete organizationGeneral.county;
     delete organizationGeneral.city;
 
-    mutate({ id: 11, organization: { general: organizationGeneral } });
+    mutate({ id: 1, organization: { general: organizationGeneral } });
   };
 
   return (

@@ -23,9 +23,14 @@ export class OrganizationGeneralService {
       updateOrganizationData['contact'] = { ...contactEntity, ...contact };
     }
 
-    return this.organizationGeneralRepository.save({
+    await this.organizationGeneralRepository.save({
       id,
       ...updateOrganizationData,
+    });
+
+    return this.organizationGeneralRepository.get({
+      where: { id },
+      relations: ['city', 'county'],
     });
   }
 }
