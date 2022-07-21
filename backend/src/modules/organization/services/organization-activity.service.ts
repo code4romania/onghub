@@ -1,7 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from '../constants/errors.constants';
 import { UpdateOrganizationActivityDto } from '../dto/update-organization-activity.dto';
+import { Area } from '../enums/organization-area.enum';
 import { OrganizationActivityRepository } from '../repositories';
 
 @Injectable()
@@ -25,65 +30,123 @@ export class OrganizationActivityService {
       ...updateOrganizationData
     } = updateOrganizationActivityDto;
 
-    if (federations) {
-      let federationsData = [];
-      if (federations.length > 0) {
-        federationsData = await this.nomenclaturesService.getFederations({
-          where: { id: In(federations) },
-        });
-      }
-      updateOrganizationData['federations'] = federationsData;
-    }
-
-    if (coalitions) {
-      let coalitionsData = [];
-      if (coalitions.length > 0) {
-        coalitionsData = await this.nomenclaturesService.getCoalitions({
-          where: { id: In(coalitions) },
-        });
-      }
-      updateOrganizationData['coalitions'] = coalitionsData;
-    }
-
     if (domains) {
-      let domainsData = [];
-      if (domains.length > 0) {
-        domainsData = await this.nomenclaturesService.getDomains({
-          where: { id: In(domains) },
-        });
-      }
-      updateOrganizationData['domains'] = domainsData;
+      const updatedDomains = await this.nomenclaturesService.getDomains({
+        where: { id: In(domains) },
+      });
+      updateOrganizationData['domains'] = updatedDomains;
     }
 
-    if (regions) {
-      let regionsData = [];
-      if (regions.length > 0) {
-        regionsData = await this.nomenclaturesService.getRegions({
-          where: { id: In(regions) },
-        });
-      }
-      updateOrganizationData['regions'] = regionsData;
+    if (
+      updateOrganizationActivityDto.area === Area.LOCAL &&
+      !updateOrganizationActivityDto.cities
+    ) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.LOCAL,
+        errorCode: ERROR_CODES.ORG004,
+      });
     }
 
-    if (cities) {
-      let citiesData = [];
-      if (cities.length > 0) {
-        citiesData = await this.nomenclaturesService.getCities({
-          where: { id: In(cities) },
-        });
-      }
-      updateOrganizationData['cities'] = citiesData;
+    if (
+      updateOrganizationActivityDto.area === Area.REGIONAL &&
+      !updateOrganizationActivityDto.regions
+    ) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.REGION,
+        errorCode: ERROR_CODES.ORG003,
+      });
     }
 
-    if (branches) {
-      let branchesData = [];
-      if (branches.length > 0) {
-        branchesData = await this.nomenclaturesService.getCities({
-          where: { id: In(branches) },
+    if (updateOrganizationActivityDto.area === Area.LOCAL) {
+      const updateCities = await this.nomenclaturesService.getCities({
+        where: { id: In(cities) },
+      });
+
+      updateOrganizationData['cities'] = updateCities;
+      updateOrganizationData['regions'] = [];
+    }
+
+    if (updateOrganizationActivityDto.area === Area.REGIONAL) {
+      const updatedRegions = await this.nomenclaturesService.getRegions({
+        where: { id: In(regions) },
+      });
+
+      updateOrganizationData['cities'] = [];
+      updateOrganizationData['regions'] = updatedRegions;
+    }
+
+    if (
+      updateOrganizationActivityDto.area === Area.INTERNATIONAL ||
+      updateOrganizationActivityDto.area === Area.NATIONAL
+    ) {
+      updateOrganizationData['cities'] = [];
+      updateOrganizationData['regions'] = [];
+    }
+
+    if (updateOrganizationActivityDto.isPartOfFederation === true) {
+      if (!updateOrganizationActivityDto.federations) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_FEDERATIONS,
+          errorCode: ERROR_CODES.ORG005,
         });
       }
-      updateOrganizationData['branches'] = branchesData;
+
+      const updatedFederations = await this.nomenclaturesService.getFederations(
+        {
+          where: { id: In(federations) },
+        },
+      );
+      updateOrganizationData['federations'] = updatedFederations;
+    } else if (updateOrganizationActivityDto.isPartOfFederation === false) {
+      updateOrganizationData['federations'] = [];
     }
+
+    if (updateOrganizationActivityDto.isPartOfCoalition === true) {
+      if (!updateOrganizationActivityDto.coalitions) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_COALITIONS,
+          errorCode: ERROR_CODES.ORG006,
+        });
+      }
+
+      const updateCoalitions = await this.nomenclaturesService.getCoalitions({
+        where: { id: In(coalitions) },
+      });
+      updateOrganizationData['coalitions'] = updateCoalitions;
+    } else if (updateOrganizationActivityDto.isPartOfCoalition === false) {
+      updateOrganizationData['coalitions'] = [];
+    }
+
+    if (updateOrganizationActivityDto.hasBranches === true) {
+      if (!updateOrganizationActivityDto.branches) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
+          errorCode: ERROR_CODES.ORG007,
+        });
+      }
+
+      const updatedBranches = await this.nomenclaturesService.getCities({
+        where: { id: In(branches) },
+      });
+      updateOrganizationData['branches'] = updatedBranches;
+    } else if (updateOrganizationActivityDto.hasBranches === false) {
+      updateOrganizationData['branches'] = [];
+    }
+
+    if (
+      !updateOrganizationActivityDto.internationalOrganizationName &&
+      updateOrganizationActivityDto.isPartOfInternationalOrganization
+    ) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.MISSING_INTERNATIONAL_ORGANIZATION,
+        errorCode: ERROR_CODES.ORG008,
+      });
+    }
+
+    updateOrganizationData['internationalOrganizationName'] =
+      updateOrganizationActivityDto.isPartOfInternationalOrganization
+        ? updateOrganizationActivityDto.internationalOrganizationName
+        : null;
 
     await this.organizationActivityRepository.save({
       id,
@@ -92,7 +155,14 @@ export class OrganizationActivityService {
 
     return this.organizationActivityRepository.get({
       where: { id },
-      relations: ['branches', 'domains', 'cities', 'federations', 'coalitions'],
+      relations: [
+        'branches',
+        'domains',
+        'cities',
+        'federations',
+        'coalitions',
+        'regions',
+      ],
     });
   }
 }

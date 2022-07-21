@@ -1,4 +1,5 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -18,6 +19,7 @@ export class CreateOrganizationActivityDto {
   isPartOfFederation: boolean;
 
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   federations?: number[];
 
@@ -25,6 +27,7 @@ export class CreateOrganizationActivityDto {
   isPartOfCoalition: boolean;
 
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   coalitions?: number[];
 
@@ -50,17 +53,21 @@ export class CreateOrganizationActivityDto {
   hasBranches: boolean;
 
   @IsOptional()
+  @ArrayNotEmpty()
   @IsArray()
   branches?: number[];
 
   @IsArray()
+  @ArrayNotEmpty()
   domains: number[];
 
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   regions?: number[];
 
   @IsArray()
+  @ArrayNotEmpty()
   @IsOptional()
   cities?: number[];
 }
