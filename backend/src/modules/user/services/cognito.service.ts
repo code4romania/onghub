@@ -1,51 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
+  AdminCreateUserCommandOutput,
   AdminDisableUserCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { AuthConfig } from './auth.config';
+import { CognitoConfig } from 'src/common/config/cognito.config';
+import { ICreateCognitoUser } from '../models/create-cognito-user.interface';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 @Injectable()
-export class AuthService {
+export class CognitoUserService {
   cognitoProvider: CognitoIdentityProviderClient;
-  constructor(private authConfig: AuthConfig) {
+  constructor() {
     this.cognitoProvider = new CognitoIdentityProviderClient({
-      region: this.authConfig.region,
+      region: CognitoConfig.region,
     });
   }
 
-  async createUser(fullName: string, email: string, phoneNumber: string) {
+  async createUser({ name, email, phone }: CreateUserDto): Promise<string> {
     const createUserCommand = new AdminCreateUserCommand({
-      UserPoolId: this.authConfig.userPoolId,
+      UserPoolId: CognitoConfig.userPoolId,
       Username: email,
       DesiredDeliveryMediums: [DeliveryMediumType.EMAIL],
       UserAttributes: [
         {
           Name: 'phone_number',
-          Value: phoneNumber,
+          Value: phone,
         },
         {
           Name: 'name',
-          Value: fullName,
+          Value: name,
         },
       ],
     });
 
     try {
-      const data = await this.cognitoProvider.send(createUserCommand);
-      console.log(data);
-      return data;
+      const data: AdminCreateUserCommandOutput =
+        await this.cognitoProvider.send(createUserCommand);
+      return data.User.Username;
     } catch (error) {
       console.log(error);
-      return error;
+      throw error;
     }
   }
 
   async disableUser(username: string) {
     const disableUserCommand = new AdminDisableUserCommand({
-      UserPoolId: this.authConfig.userPoolId,
+      UserPoolId: CognitoConfig.userPoolId,
       Username: username,
     });
 
