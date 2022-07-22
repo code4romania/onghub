@@ -58,6 +58,13 @@ export class OrganizationService {
       });
     }
 
+    if (createOrganizationDto.legal.directors.length < 3) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
+        errorCode: ERROR_CODES.ORG009,
+      });
+    }
+
     let cities = [];
     if (createOrganizationDto.activity.area === Area.LOCAL) {
       cities = await this.nomenclaturesService.getCities({

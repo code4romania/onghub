@@ -30,7 +30,7 @@ export class OrganizationGeneralService {
 
     return this.organizationGeneralRepository.get({
       where: { id },
-      relations: ['city', 'county'],
+      relations: ['city', 'county', 'contact'],
     });
   }
 }

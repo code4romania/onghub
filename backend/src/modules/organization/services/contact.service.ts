@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, FindOptionsWhere } from 'typeorm';
 import { Contact } from '../entities';
+import { ContactRepository } from '../repositories';
 
 @Injectable()
 export class ContactService {
-  constructor(
-    @InjectRepository(Contact)
-    private readonly contactRepository: Repository<Contact>,
-  ) {}
+  constructor(private readonly contactRepository: ContactRepository) {}
 
   get(conditions: FindOneOptions<Contact>) {
-    return this.contactRepository.findOne(conditions);
+    return this.contactRepository.get(conditions);
   }
 
   getMany(conditions: FindManyOptions<Contact>) {
-    return this.contactRepository.find(conditions);
+    return this.contactRepository.getMany(conditions);
+  }
+
+  delete(findCriteria: FindOptionsWhere<Contact>) {
+    return this.contactRepository.remove(findCriteria);
   }
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from 'react-query';
-import { IOrganizationActivityPayload } from '../../pages/organization/interfaces/OrganizationActivity.interface';
+import { IOrganizationActivity } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
@@ -8,13 +8,21 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import { getOrganization, patchOrganization } from './Organization.service';
+import { Contact } from '../../pages/organization/interfaces/Contact.interface';
+import { Person } from '../../common/interfaces/person.interface';
 
 interface OrganizationPayload {
   id: number;
   organization: {
     general?: IOrganizationGeneral;
-    activity?: Partial<IOrganizationActivityPayload>;
+    activity?: Partial<IOrganizationActivity>;
     financial?: Partial<IOrganizationFinancial>;
+    legal?: {
+      legalReprezentative?: Partial<Contact>;
+      directors?: Partial<Contact>[];
+      directorsDeleted?: number[];
+      others?: Partial<Person>[];
+    };
   };
 }
 
@@ -29,7 +37,7 @@ export const useOrganizationQuery = (id: number) => {
   return useQuery(['organization', id], () => getOrganization(id), {
     onSuccess: (data: {
       organizationGeneral: IOrganizationGeneral;
-      organizationActivity: any;
+      organizationActivity: IOrganizationActivity;
       organizationFinancial: IOrganizationFinancial[];
       organizationReport: IOrganizationReport;
       organizationLegal: IOrganizationLegal;
@@ -98,17 +106,32 @@ export const useOrganizationQuery = (id: number) => {
 };
 
 export const useOrganizationMutation = () => {
-  const { setOrganizationGeneral, setOrganizationFinancial } = useStore();
+  const {
+    setOrganizationGeneral,
+    setOrganizationFinancial,
+    setOrganizationLegal,
+    setOrganizationActivity,
+  } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
     ({ id, organization }: OrganizationPayload) => patchOrganization(id, organization),
     {
       onSuccess: (
-        data: IOrganizationGeneral | IOrganizationFinancial,
+        data:
+          | IOrganizationGeneral
+          | IOrganizationActivity
+          | IOrganizationFinancial
+          | IOrganizationLegal,
         { organization }: OrganizationPayload,
       ) => {
         if (organization.general) {
           setOrganizationGeneral(data as IOrganizationGeneral);
+        }
+        if (organization.activity) {
+          setOrganizationActivity(data as IOrganizationActivity);
+        }
+        if (organization.legal) {
+          setOrganizationLegal(data as IOrganizationLegal);
         }
         if (organization.financial) {
           setOrganizationFinancial([

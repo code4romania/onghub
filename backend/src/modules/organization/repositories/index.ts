@@ -4,3 +4,4 @@ export * from './organization-legal.repository';
 export * from './organization-financial.repository';
 export * from './organization-report.repository';
 export * from './organization.repository';
+export * from './contact.repository';

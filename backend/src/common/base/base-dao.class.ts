@@ -55,6 +55,10 @@ export abstract class BaseDAO<T> {
     return this.repository.softDelete(findCriteria);
   }
 
+  remove(findCriteria: FindOptionsWhere<T>) {
+    return this.repository.delete(findCriteria);
+  }
+
   public async getManyPaginated(
     config: IPaginationConfig,
     options: BaseFilterDto,

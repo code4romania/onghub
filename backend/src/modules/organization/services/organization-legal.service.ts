@@ -1,20 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from '../constants/errors.constants';
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
 import { OrganizationLegalRepository } from '../repositories';
+import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationLegalService {
   constructor(
     private readonly organizationLegalRepostory: OrganizationLegalRepository,
+    private readonly contactService: ContactService,
   ) {}
 
   public async update(
     id: number,
     updateOrganizationLegalDto: UpdateOrganizationLegalDto,
   ) {
-    return this.organizationLegalRepostory.save({
+    const { directorsDeleted, ...organizationLegalData } =
+      updateOrganizationLegalDto;
+
+    if (updateOrganizationLegalDto.directors.length < 3) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
+        errorCode: ERROR_CODES.ORG009,
+      });
+    }
+
+    if (directorsDeleted?.length > 0) {
+      await this.contactService.delete({ id: In(directorsDeleted) });
+    }
+
+    await this.organizationLegalRepostory.save({
       id,
-      ...updateOrganizationLegalDto,
+      ...organizationLegalData,
+    });
+
+    return this.organizationLegalRepostory.get({
+      where: { id },
+      relations: ['directors', 'legalReprezentative'],
     });
   }
 }
