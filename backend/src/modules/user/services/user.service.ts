@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { Organization } from 'src/modules/organization/entities';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -56,8 +57,11 @@ export class UserService {
     return this.userRepository.getManyPaginated(USER_FILTERS_CONFIG, options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findByCognitoId(cognitoId: string) {
+    return this.userRepository.get({
+      where: { cognitoId },
+      relations: ['organization'],
+    });
   }
 
   remove(id: number) {

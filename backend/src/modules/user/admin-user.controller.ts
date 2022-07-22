@@ -10,7 +10,6 @@ export class AdminUserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('')
-  @UseGuards(AuthGuard('jwt'))
   async create(@Body() body: CreateUserDto) {
     return this.userService.create({
       email: body.email,

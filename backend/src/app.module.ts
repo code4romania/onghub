@@ -16,6 +16,7 @@ import { QueueProviderModule } from './providers/queue/queue-provider.module';
 import { ApplicationModule } from './modules/application/application.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthenticationModule } from './modules/authentication/auth.module';
+import { JwtAuthGuard } from './modules/authentication/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -43,6 +44,11 @@ import { AuthenticationModule } from './modules/authentication/auth.module';
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuardByIP,
+    },
+    {
+      // Global guard for all routes, doesn't require @UseGuards() in each Controller https://docs.nestjs.com/security/authentication#enable-authentication-globally
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })
