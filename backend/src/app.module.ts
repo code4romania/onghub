@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { QueueProviderModule } from './providers/queue/queue-provider.module';
 import { ApplicationModule } from './modules/application/application.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthenticationModule } from './modules/authentication/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserModule } from './modules/user/user.module';
     SharedModule,
     ApplicationModule,
     UserModule,
+    AuthenticationModule,
   ],
   providers: [
     {

@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
@@ -8,30 +12,44 @@ import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../entities/user.entity';
 import { Role } from '../enums/role.enum';
 import { UserRepository } from '../repositories/user.repository';
+import { CognitoUserService } from './cognito.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly cognitoService: CognitoUserService,
+  ) {}
 
-  /**
-   * Create new employee
-   */
+  /*
+      Rules:
+        1. Employee must be linked with an organization
+  */
   public async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.userRepository.save({
-      ...createUserDto,
-      role: Role.EMPLOYEE,
-    });
-
-    //TODO: send user invite
-
-    return user;
+    try {
+      // TODO 1. Validate DTO
+      // TODO 1.1. Check the organizationId exists
+      // ====================================
+      // 2. Create user in Cognito
+      const cognitoId = await this.cognitoService.createUser(createUserDto);
+      // 3. Create user in database
+      const user = await this.userRepository.save({
+        ...createUserDto,
+        cognitoId,
+        role: Role.EMPLOYEE,
+      });
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   public async update(
     id: number,
     updateUserDto: UpdateUserDto,
-  ): Promise<UpdateResult> {
-    return this.userRepository.update({ id }, updateUserDto);
+  ): Promise<UpdateResult | any> {
+    return 'Update the UserDTO with the possible updates or create multiple DTOs.';
+    // return this.userRepository.update({ id }, updateUserDto);
   }
 
   public async findAll(options: UserFilterDto): Promise<Pagination<User>> {
