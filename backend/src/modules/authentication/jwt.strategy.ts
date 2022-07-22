@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   public async validate(token: { username: string }) {
     console.log(token);
-    const user = this.userService.findByCognitoId(token.username);
+    const user = await this.userService.findByCognitoId(token.username);
     return user;
   }
 }
