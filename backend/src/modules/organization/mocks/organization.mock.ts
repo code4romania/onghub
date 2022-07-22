@@ -61,9 +61,19 @@ export const OrganizationLegalMock = {
   },
   directors: [
     {
-      fullName: 'Florian1234',
+      fullName: 'Florian',
       email: 'floria1234n@email.com',
-      phone: '1234567890',
+      phone: '0765151515',
+    },
+    {
+      fullName: 'Florian',
+      email: 'floria12345n@email.com',
+      phone: '0765151515',
+    },
+    {
+      fullName: 'Florian',
+      email: 'floria123456n@email.com',
+      phone: '0765151515',
     },
   ],
   others: [{ fullName: 'Test me', role: 'admin' }],

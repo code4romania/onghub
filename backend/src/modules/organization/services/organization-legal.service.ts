@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from '../constants/errors.constants';
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
 import { OrganizationLegalRepository } from '../repositories';
 import { ContactService } from './contact.service';
@@ -17,6 +21,13 @@ export class OrganizationLegalService {
   ) {
     const { directorsDeleted, ...organizationLegalData } =
       updateOrganizationLegalDto;
+
+    if (updateOrganizationLegalDto.directors.length < 3) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
+        errorCode: ERROR_CODES.ORG009,
+      });
+    }
 
     if (directorsDeleted?.length > 0) {
       await this.contactService.delete({ id: In(directorsDeleted) });

@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
+import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
 import React, { useState, useEffect } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
@@ -193,6 +193,10 @@ const OrganizationLegal = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSave = (data: any) => {
+    if (directors.length < 3) {
+      return;
+    }
+
     const legalReprezentative = {
       id: data.legalReprezentative_id,
       fullName: data.legalReprezentative_fullName,
@@ -259,6 +263,21 @@ const OrganizationLegal = () => {
               title="Consiliul director al organizatiei"
               subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
             />
+            {isEditMode && directors.length < 3 && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      Este obligatoriu sa adaugi cel putin 3 membri ai consiliului director pentru a
+                      continua
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            )}
             <DataTableComponent
               columns={[...DirectorsTableHeaders, buildDirectorActionColumn()]}
               data={directors}
