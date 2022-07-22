@@ -61,7 +61,7 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave }: OtherModalProps) 
                   <button
                     type="button"
                     className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={() => onClose()}
+                    onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
@@ -70,7 +70,9 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave }: OtherModalProps) 
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      Editare alt membru
+                      {isEdit
+                        ? 'Editare alta persoana relevanta in organizatie'
+                        : 'Adaugare alta persoana relevanta in organizatie'}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
@@ -94,14 +96,14 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave }: OtherModalProps) 
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => handleSubmit(onSave)}
+                        onClick={handleSubmit(onSave)}
                       >
                         Salveaza
                       </button>
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-                        onClick={() => onClose()}
+                        onClick={onClose}
                       >
                         Anuleaza Modificari
                       </button>

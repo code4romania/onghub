@@ -1,3 +1,5 @@
+import { NAME_REGEX } from '../../../../../common/helpers/format.helper';
+
 export const OtherConfig: Record<string, any> = {
   fullName: {
     key: 'fullName',
@@ -11,8 +13,12 @@ export const OtherConfig: Record<string, any> = {
         message: 'Name has a maximum length of 100 characters.',
       },
       minLength: {
-        value: 1,
-        message: 'Name has a minimum length of 1 characters.',
+        value: 5,
+        message: 'Name has a minimum length of 5 characters.',
+      },
+      pattern: {
+        value: NAME_REGEX,
+        message: 'Name is invalid',
       },
     },
     config: {
@@ -32,6 +38,14 @@ export const OtherConfig: Record<string, any> = {
       maxLength: {
         value: 50,
         message: 'Role has a maximum length of 50 characters.',
+      },
+      minLength: {
+        value: 3,
+        message: 'Role has a minimum length of 3 characters.',
+      },
+      pattern: {
+        value: NAME_REGEX,
+        message: 'Role is invalid',
       },
     },
     config: {

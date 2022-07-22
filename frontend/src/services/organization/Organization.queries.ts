@@ -9,6 +9,7 @@ import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import { getOrganization, patchOrganization } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
+import { Person } from '../../common/interfaces/person.interface';
 
 interface OrganizationPayload {
   id: number;
@@ -20,6 +21,7 @@ interface OrganizationPayload {
       legalReprezentative?: Partial<Contact>;
       directors?: Partial<Contact>[];
       directorsDeleted?: number[];
+      others?: Partial<Person>[];
     };
   };
 }

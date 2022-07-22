@@ -18,19 +18,22 @@ import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 import { flatten } from '../../../../common/helpers/format.helper';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
+  const [isDirectorModalOpen, setIsDirectorModalOpen] = useState<boolean>(false);
+  const [isDeleteDirectorModalOpen, setIsDeleteDirectorModalOpen] = useState<boolean>(false);
+  const [selectedDirector, setSelectedDirector] = useState<Partial<Contact> | null>(null);
   // others
   const [others, setOthers] = useState<Partial<Person>[]>([]);
-  const [isDirectorModalOpen, setIsDirectorModalOpen] = useState<boolean>(false);
-  const [selectedDirector, setSelectedDirector] = useState<Partial<Contact> | null>(null);
   const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
+  const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
-
+  // queries
   const { organizationLegal } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
 
@@ -72,7 +75,7 @@ const OrganizationLegal = () => {
       {
         name: 'Elimina date',
         icon: TrashIcon,
-        onClick: onDeleteDirector,
+        onClick: onOpenDeleteDirectorModal,
         isRemove: true,
       },
     ];
@@ -96,7 +99,7 @@ const OrganizationLegal = () => {
       {
         name: 'Elimina date',
         icon: TrashIcon,
-        onClick: onDeleteOther,
+        onClick: onOpenDeleteOtherModal,
         isRemove: true,
       },
     ];
@@ -133,19 +136,25 @@ const OrganizationLegal = () => {
     setIsDirectorModalOpen(false);
   };
 
-  const onDeleteDirector = (row: Contact) => {
-    if (row.id) {
-      setDirectorsDeleted([...directorsDeleted, row.id]);
+  const onOpenDeleteDirectorModal = (row: Contact) => {
+    setSelectedDirector(row);
+    setIsDeleteDirectorModalOpen(true);
+  };
+
+  const onDeleteDirector = () => {
+    if (selectedDirector?.id) {
+      setDirectorsDeleted([...directorsDeleted, selectedDirector.id]);
     }
     const filteredDirectors = directors.filter(
       (director: Partial<Contact>) =>
         !(
-          director.fullName === row?.fullName &&
-          director.email === row?.email &&
-          director.phone === row?.phone
+          director.fullName === selectedDirector?.fullName &&
+          director.email === selectedDirector?.email &&
+          director.phone === selectedDirector?.phone
         ),
     );
     setDirectors(filteredDirectors);
+    setIsDeleteDirectorModalOpen(false);
   };
 
   const onEditOther = (row: Person) => {
@@ -153,10 +162,36 @@ const OrganizationLegal = () => {
     setIsOtherModalOpen(true);
   };
 
-  const onDeleteOther = (row: Person) => {
-    console.log('row', row);
+  const onOpenDeleteOtherModal = (row: Person) => {
+    setSelectedOther(row);
+    setIsDeleteOtherModalOpen(true);
   };
 
+  const onAddOther = (other: Partial<Person>) => {
+    setOthers([...others, other]);
+    setIsOtherModalOpen(false);
+  };
+
+  const onUpdateOther = (person: Partial<Person>) => {
+    const filteredOthers = others.filter(
+      (other: Partial<Person>) =>
+        !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
+    );
+    setOthers([...filteredOthers, person]);
+    setSelectedOther(null);
+    setIsOtherModalOpen(false);
+  };
+
+  const onDeleteOther = () => {
+    const filteredOthers = others.filter(
+      (other: Partial<Person>) =>
+        !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
+    );
+    setOthers(filteredOthers);
+    setIsDeleteOtherModalOpen(false);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSave = (data: any) => {
     const legalReprezentative = {
       id: data.legalReprezentative_id,
@@ -167,7 +202,7 @@ const OrganizationLegal = () => {
 
     mutate({
       id: 1,
-      organization: { legal: { legalReprezentative, directors, directorsDeleted } },
+      organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 
     setEditMode(false);
@@ -175,20 +210,6 @@ const OrganizationLegal = () => {
 
   const onUploadFile = () => {
     console.log('on upload file');
-  };
-
-  const onAddOther = (other: Partial<Person>) => {
-    setOthers([...others, other]);
-    setIsOtherModalOpen(false);
-  };
-
-  const onUpdateOther = (other: Partial<Person>) => {
-    setOthers([
-      ...directors.filter((other: Partial<Person>) => other.fullName !== other?.fullName),
-      other,
-    ]);
-    setSelectedOther(null);
-    setIsOtherModalOpen(false);
   };
 
   return (
@@ -305,6 +326,18 @@ const OrganizationLegal = () => {
                 setIsOtherModalOpen(false);
                 setSelectedOther(null);
               }}
+            />
+          )}
+          {isDeleteDirectorModalOpen && (
+            <DeleteRowConfirmationModal
+              onClose={setIsDeleteDirectorModalOpen.bind(null, false)}
+              onConfirm={onDeleteDirector}
+            />
+          )}
+          {isDeleteOtheModalOpen && (
+            <DeleteRowConfirmationModal
+              onClose={setIsDeleteOtherModalOpen.bind(null, false)}
+              onConfirm={onDeleteOther}
             />
           )}
         </div>
