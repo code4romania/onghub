@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { Contact } from '../../interfaces/Contact.interface';
+import { Contact } from '../../../interfaces/Contact.interface';
 
 export const DirectorsTableHeaders: TableColumn<Contact>[] = [
   {

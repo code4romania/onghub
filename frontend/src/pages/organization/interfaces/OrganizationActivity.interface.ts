@@ -1,7 +1,7 @@
 import { OrganizationAreaEnum } from './../components/OrganizationActivity/OrganizationActivityConfig';
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 
-export interface IOrganizationActivityPayload extends BaseEntity {
+export interface IOrganizationActivity extends BaseEntity {
   area: OrganizationAreaEnum;
   isPartOfFederation: boolean;
   federations: number[];

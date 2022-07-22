@@ -12,9 +12,14 @@ export class OrganizationLegalService {
     id: number,
     updateOrganizationLegalDto: UpdateOrganizationLegalDto,
   ) {
-    return this.organizationLegalRepostory.save({
+    await this.organizationLegalRepostory.save({
       id,
       ...updateOrganizationLegalDto,
+    });
+
+    return this.organizationLegalRepostory.get({
+      where: { id },
+      relations: ['directors', 'legalReprezentative'],
     });
   }
 }

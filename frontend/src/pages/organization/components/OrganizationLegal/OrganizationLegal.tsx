@@ -12,9 +12,12 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { Contact } from '../../interfaces/Contact.interface';
 import DirectorModal from './components/DirectorModal';
 import OtherModal from './components/OtherModal';
-import { DirectorsTableHeaders } from './DirectorsTable.headers';
+import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
 import { OrganizationLegalConfig } from './OrganizationLegalConfig';
-import { OthersTableHeaders } from './OthersTable.headers';
+import { OthersTableHeaders } from './table-headers/OthersTable.headers';
+import { flatten } from '../../../../common/helpers/format.helper';
+import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -27,6 +30,7 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
 
   const { organizationLegal } = useSelectedOrganization();
+  const { mutate, error } = useOrganizationMutation();
 
   // React Hook Form
   const {
@@ -41,11 +45,20 @@ const OrganizationLegal = () => {
 
   useEffect(() => {
     if (organizationLegal) {
-      reset({ ...{ legalReprezentative: organizationLegal.legalReprezentative } });
+      const legalReprezentative = flatten(
+        organizationLegal.legalReprezentative,
+        {},
+        'legalReprezentative',
+      );
+      reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
     }
   }, [organizationLegal]);
+
+  useEffect(() => {
+    if (error) useErrorToast('Error while saving organization');
+  }, [error]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
@@ -111,8 +124,17 @@ const OrganizationLegal = () => {
     console.log('row', row);
   };
 
-  const handleSave = () => {
-    setEditMode((mode) => !mode);
+  const handleSave = (data: any) => {
+    const legalReprezentative = {
+      id: data.legalReprezentative_id,
+      fullName: data.legalReprezentative_fullName,
+      phone: data.legalReprezentative_phone,
+      email: data.legalReprezentative_email,
+    };
+
+    mutate({ id: 1, organization: { legal: { legalReprezentative } } });
+
+    setEditMode(false);
   };
 
   const onUploadFile = () => {
@@ -151,11 +173,16 @@ const OrganizationLegal = () => {
     <div className="w-full bg-white shadow rounded-lg">
       <div className="p-5 sm:p-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Informatii Legale</span>
-
         <button
           type="button"
           className={classNames(isEditMode ? 'save-button' : 'edit-button')}
-          onClick={handleSave}
+          onClick={
+            !isEditMode
+              ? setEditMode.bind(null, true)
+              : () => {
+                  handleSubmit(handleSave)();
+                }
+          }
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
@@ -167,7 +194,7 @@ const OrganizationLegal = () => {
         <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
-              title="Reprezentant Legal al organizatiet"
+              title="Reprezentant Legal al organizatiei"
               subTitle="This information will be displayed publicly so be careful what you share"
             />
             <form className="space-y-8">
