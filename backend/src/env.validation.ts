@@ -53,6 +53,18 @@ class EnvironmentVariables {
 
   @IsNumber()
   CACHE_TTL: number;
+
+  @IsString()
+  COGNITO_USER_POOL_ID: string;
+  @IsString()
+  COGNITO_CLIENT_ID: string;
+  @IsString()
+  COGNITO_REGION: string;
+
+  @IsString()
+  AWS_ACCESS_KEY_ID: string;
+  @IsString()
+  AWS_SECRET_ACCESS_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {
