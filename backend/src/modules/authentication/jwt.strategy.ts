@@ -3,10 +3,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { passportJwtSecret } from 'jwks-rsa';
 import { CognitoConfig } from 'src/common/config/cognito.config';
+import { UserService } from '../user/services/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private userService: UserService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -22,8 +23,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public async validate(payload: any) {
-    console.log(payload);
-    return payload;
+  public async validate(token: { username: string }) {
+    console.log(token);
+    const user = this.userService.findByCognitoId(token.username);
+    return user;
   }
 }

@@ -1,28 +1,22 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
-  Query,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from './enums/role.enum';
-import { Pagination } from 'nestjs-typeorm-paginate';
 import { User } from './entities/user.entity';
-import { UserFilterDto } from './dto/user-filter.dto';
+import { ExtractUser } from './decorators/user.decorator';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('')
+  profile(@ExtractUser() user: User) {
+    return user;
+  }
 
   // @Roles(...[Role.EMPLOYEE, Role.ADMIN])
   // @Post()
