@@ -21,9 +21,18 @@ export class UserService {
     private readonly cognitoService: CognitoUserService,
   ) {}
 
+  /*
+      Rules:
+        1. Employee must be linked with an organization
+  */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
+      // TODO 1. Validate DTO
+      // TODO 1.1. Check the organizationId exists
+      // ====================================
+      // 2. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
+      // 3. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
         cognitoId,

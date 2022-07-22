@@ -7,7 +7,6 @@ import {
   DeliveryMediumType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
-import { ICreateCognitoUser } from '../models/create-cognito-user.interface';
 import { CreateUserDto } from '../dto/create-user.dto';
 
 @Injectable()
