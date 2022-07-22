@@ -1,3 +1,5 @@
+import { NAME_REGEX, PHONE_REGEX } from '../../../../../common/helpers/format.helper';
+
 export const DirectorConfig: Record<string, any> = {
   fullName: {
     key: 'fullName',
@@ -11,8 +13,12 @@ export const DirectorConfig: Record<string, any> = {
         message: 'Director name has a maximum length of 100 characters.',
       },
       minLength: {
-        value: 1,
-        message: 'Director Name has a minimum length of 1 characters.',
+        value: 5,
+        message: 'Director name has a minimum length of 5 characters.',
+      },
+      pattern: {
+        value: NAME_REGEX,
+        message: 'Director name is invalid',
       },
     },
     config: {
@@ -55,6 +61,10 @@ export const DirectorConfig: Record<string, any> = {
       minLength: {
         value: 10,
         message: 'Director phone has a minimum length of 10 characters.',
+      },
+      pattern: {
+        value: PHONE_REGEX,
+        message: 'Invalid phone format',
       },
     },
     config: {

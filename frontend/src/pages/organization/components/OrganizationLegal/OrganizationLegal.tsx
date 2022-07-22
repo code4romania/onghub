@@ -21,9 +21,11 @@ import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
+  // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
+  const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
+  // others
   const [others, setOthers] = useState<Partial<Person>[]>([]);
-
   const [isDirectorModalOpen, setIsDirectorModalOpen] = useState<boolean>(false);
   const [selectedDirector, setSelectedDirector] = useState<Partial<Contact> | null>(null);
   const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
@@ -77,7 +79,8 @@ const OrganizationLegal = () => {
 
     return {
       name: '',
-      cell: (row: Contact) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Contact) =>
+        isEditMode ? <PopoverMenu row={row} menuItems={menuItems} /> : <></>,
       width: '50px',
       allowOverflow: true,
     };
@@ -100,10 +103,15 @@ const OrganizationLegal = () => {
 
     return {
       name: '',
-      cell: (row: Person) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Person) => (isEditMode ? <PopoverMenu row={row} menuItems={menuItems} /> : <></>),
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  const onAddDirector = (contact: Partial<Contact>) => {
+    setDirectors([...directors, contact]);
+    setIsDirectorModalOpen(false);
   };
 
   const onEditDirector = (row: Contact) => {
@@ -111,8 +119,33 @@ const OrganizationLegal = () => {
     setIsDirectorModalOpen(true);
   };
 
+  const onUpdateDirector = (contact: Partial<Contact>) => {
+    const filteredDirectors = directors.filter(
+      (director: Partial<Contact>) =>
+        !(
+          director.fullName === selectedDirector?.fullName &&
+          director.email === selectedDirector?.email &&
+          director.phone === selectedDirector?.phone
+        ),
+    );
+    setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
+    setSelectedDirector(null);
+    setIsDirectorModalOpen(false);
+  };
+
   const onDeleteDirector = (row: Contact) => {
-    console.log('row', row);
+    if (row.id) {
+      setDirectorsDeleted([...directorsDeleted, row.id]);
+    }
+    const filteredDirectors = directors.filter(
+      (director: Partial<Contact>) =>
+        !(
+          director.fullName === row?.fullName &&
+          director.email === row?.email &&
+          director.phone === row?.phone
+        ),
+    );
+    setDirectors(filteredDirectors);
   };
 
   const onEditOther = (row: Person) => {
@@ -132,27 +165,16 @@ const OrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    mutate({ id: 1, organization: { legal: { legalReprezentative } } });
+    mutate({
+      id: 1,
+      organization: { legal: { legalReprezentative, directors, directorsDeleted } },
+    });
 
     setEditMode(false);
   };
 
   const onUploadFile = () => {
     console.log('on upload file');
-  };
-
-  const onAddDirector = (contact: Partial<Contact>) => {
-    setDirectors([...directors, contact]);
-    setIsDirectorModalOpen(false);
-  };
-
-  const onUpdateDirector = (contact: Partial<Contact>) => {
-    setDirectors([
-      ...directors.filter((director: Partial<Contact>) => director.id !== contact?.id),
-      contact,
-    ]);
-    setSelectedDirector(null);
-    setIsDirectorModalOpen(false);
   };
 
   const onAddOther = (other: Partial<Person>) => {
@@ -220,14 +242,16 @@ const OrganizationLegal = () => {
               columns={[...DirectorsTableHeaders, buildDirectorActionColumn()]}
               data={directors}
             />
-            <button
-              type="button"
-              className="add-button max-w-[12rem]"
-              onClick={setIsDirectorModalOpen.bind(null, true)}
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Adauga un membru
-            </button>
+            {isEditMode && (
+              <button
+                type="button"
+                className="add-button max-w-[12rem]"
+                onClick={setIsDirectorModalOpen.bind(null, true)}
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                Adauga un membru
+              </button>
+            )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader
@@ -238,14 +262,16 @@ const OrganizationLegal = () => {
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
             />
-            <button
-              type="button"
-              className="add-button max-w-[12rem]"
-              onClick={setIsOtherModalOpen.bind(null, true)}
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Adauga un membru
-            </button>
+            {isEditMode && (
+              <button
+                type="button"
+                className="add-button max-w-[12rem]"
+                onClick={setIsOtherModalOpen.bind(null, true)}
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                Adauga un membru
+              </button>
+            )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader

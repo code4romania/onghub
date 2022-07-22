@@ -8,6 +8,7 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import { getOrganization, patchOrganization } from './Organization.service';
+import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 
 interface OrganizationPayload {
   id: number;
@@ -15,7 +16,11 @@ interface OrganizationPayload {
     general?: IOrganizationGeneral;
     activity?: Partial<IOrganizationActivity>;
     financial?: Partial<IOrganizationFinancial>;
-    legal?: Partial<IOrganizationLegal>;
+    legal?: {
+      legalReprezentative?: Partial<Contact>;
+      directors?: Partial<Contact>[];
+      directorsDeleted?: number[];
+    };
   };
 }
 
