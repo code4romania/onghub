@@ -1,7 +1,5 @@
 import { Area } from '../enums/organization-area.enum';
 import { OrganizationType } from '../enums/organization-type.enum';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
-import { FinancialType } from '../enums/organization-financial-type.enum';
 
 export const OrganizationGeneralMock = {
   name: 'OrganizationTest12',

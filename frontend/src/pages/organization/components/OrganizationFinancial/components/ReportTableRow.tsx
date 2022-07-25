@@ -14,7 +14,14 @@ const ReportTableRow = ({ label, config, readonly }: ReportTableRowProps) => {
     <tr key={label}>
       <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-normal text-gray-900 sm:pl-6 flex">
         {label}
-        <QuestionMarkCircleIcon className="w-5 h-5 ml-2 mt-0.5 text-gray-400 cursor-pointer" />
+        <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+          <span className="sr-only">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae
+            nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum
+            aliquam accusantium est totam sint hic similique!
+          </span>
+          <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
+        </a>
       </td>
       <td className="whitespace-nowrap py-4 px-3">
         <InputField config={config} readonly={readonly} />
