@@ -1,29 +1,33 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToOne } from 'typeorm';
-import { Investor } from '../dto/investor.dto';
-import { Report } from '../dto/report.dto';
+import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Investor } from './investor.entity';
 import { Organization } from './organization.entity';
+import { Partner } from './partner.entity';
+import { Report } from './report.entity';
 
 @Entity()
 export class OrganizationReport extends BaseEntity {
-  @Column({ type: 'integer', name: 'number_of_volunteers', default: 0 })
-  numberOfVolunteers: number;
-
-  @Column({ type: 'integer', name: 'number_of_contractors', default: 0 })
-  numberOfContractors: number;
-
-  @Column({ type: 'jsonb', name: 'reports', nullable: true })
-  reports: Report[];
-
-  @Column({ type: 'jsonb', name: 'donors', nullable: true })
-  donors: Investor[];
-
-  @Column({ type: 'jsonb', name: 'partners', nullable: true })
-  partners: Investor[];
-
   @OneToOne(
     () => Organization,
     (organization) => organization.organizationReport,
   )
   organization: Organization;
+
+  @OneToMany(() => Report, (report) => report.organizationReport, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'report_id' })
+  reports: Report[];
+
+  @OneToMany(() => Partner, (partner) => partner.organizationReport, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'partner_id' })
+  partners: Partner[];
+
+  @OneToMany(() => Investor, (investor) => investor.organizationReport, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'investor_id' })
+  investors: Investor[];
 }

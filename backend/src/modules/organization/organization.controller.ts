@@ -16,7 +16,6 @@ import {
   OrganizationActivityMock,
   OrganizationGeneralMock,
   OrganizationLegalMock,
-  OrganizationReportMock,
 } from './mocks/organization.mock';
 import { OrganizationService } from './services/organization.service';
 
@@ -28,14 +27,13 @@ export class OrganizationController {
 
   // @ApiBody({ type: CreateOrganizationDto })
   @Post()
-  create(): Promise<Organization> {
-    // @Body() createOrganizationDto: CreateOrganizationDto,
+  create(): // @Body() createOrganizationDto: CreateOrganizationDto,
+  Promise<Organization> {
     // return this.organizationService.create(createOrganizationDto);
     return this.organizationService.create({
       general: OrganizationGeneralMock,
       activity: OrganizationActivityMock,
       legal: OrganizationLegalMock,
-      report: OrganizationReportMock,
     });
   }
 
