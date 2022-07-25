@@ -19,11 +19,20 @@ const Menu = () => {
   useEffect(() => {
     if (location) {
       const exists = NAVIGATION_ROUTES.find(
-        (navigationItem) => navigationItem.href === location.pathname.split('/')[1],
+        (navigationItem) => navigationItem.href == location.pathname.split('/')[1],
       );
-      setCurrentMenuItemId(exists?.id || 0);
+      setCurrentMenuItemId(exists ? exists.id : -1);
     }
   }, []);
+
+  useEffect(() => {
+    if (location) {
+      const exists = NAVIGATION_ROUTES.find(
+        (navigationItem) => navigationItem.href == location.pathname.split('/')[1],
+      );
+      setCurrentMenuItemId(exists ? exists.id : -1);
+    }
+  }, [location.pathname]);
 
   const handleMenuItemClick = (item: any) => {
     setCurrentMenuItemId(item.id);
