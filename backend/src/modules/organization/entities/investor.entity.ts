@@ -8,7 +8,7 @@ export class Investor extends BaseEntity {
   @Column({ type: 'integer', name: 'year' })
   year: number;
 
-  @Column({ type: 'integer', name: 'number_of_investors' })
+  @Column({ type: 'integer', name: 'number_of_investors', nullable: true })
   numberOfInvestors: number;
 
   @Column({

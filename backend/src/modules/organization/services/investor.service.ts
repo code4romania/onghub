@@ -29,7 +29,7 @@ export class InvestorService {
   delete(id: number) {
     return this.investorRepository.save({
       id,
-      numberOfInvestors: 0,
+      numberOfInvestors: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
   }

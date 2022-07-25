@@ -16,7 +16,6 @@ export class OrganizationReportService {
   ) {}
 
   public async update(
-    orgReportId: number,
     updateOrganizationReportDto: UpdateOrganizationReportDto,
   ) {
     if (updateOrganizationReportDto.report) {
@@ -56,5 +55,11 @@ export class OrganizationReportService {
       this.organizationReportRepository.save({ id });
       return this.investorService.update(id, data);
     }
+  }
+
+  public async delete(reportId: number, partnerId: number, investorId: number) {
+    this.investorService.delete(investorId);
+    this.partnerService.delete(partnerId);
+    this.reportService.delete(reportId);
   }
 }

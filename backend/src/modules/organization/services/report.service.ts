@@ -29,9 +29,9 @@ export class ReportService {
   delete(id: number) {
     return this.reportRepository.save({
       id,
-      report: '',
-      numberOfVolunteers: 0,
-      numberOfContractors: 0,
+      report: null,
+      numberOfVolunteers: null,
+      numberOfContractors: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
   }

@@ -29,7 +29,7 @@ export class PartnerService {
   delete(id: number) {
     return this.partnerRepository.save({
       id,
-      numberOfPartners: 0,
+      numberOfPartners: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
   }

@@ -5,13 +5,13 @@ import { OrganizationReport } from './organization-report.entity';
 
 @Entity('_report')
 export class Report extends BaseEntity {
-  @Column({ type: 'text', name: 'report' })
+  @Column({ type: 'text', name: 'report', nullable: true })
   report: string;
 
-  @Column({ type: 'integer', name: 'number_of_volunteers' })
+  @Column({ type: 'integer', name: 'number_of_volunteers', nullable: true })
   numberOfVolunteers: number;
 
-  @Column({ type: 'integer', name: 'number_of_contractors' })
+  @Column({ type: 'integer', name: 'number_of_contractors', nullable: true })
   numberOfContractors: number;
 
   @Column({ type: 'integer', name: 'year' })

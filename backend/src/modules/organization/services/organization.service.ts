@@ -80,9 +80,6 @@ export class OrganizationService {
       });
     }
 
-    const previousYear = new Date().getFullYear() - 1;
-    const currentYear = new Date().getFullYear();
-    const reportStatus = CompletionStatus.NOT_COMPLETED;
     let federations = [];
     if (createOrganizationDto.activity.isPartOfFederation) {
       if (!createOrganizationDto.activity.federations) {
@@ -112,6 +109,7 @@ export class OrganizationService {
     }
 
     let branches = [];
+    console.log(createOrganizationDto.activity.branches);
     if (createOrganizationDto.activity.hasBranches) {
       if (createOrganizationDto.activity.branches) {
         throw new BadRequestException({
@@ -169,25 +167,25 @@ export class OrganizationService {
       organizationReport: {
         reports: [
           {
-            report: '',
+            report: null,
             numberOfVolunteers: 0,
             numberOfContractors: 0,
-            year: currentYear,
-            status: reportStatus,
+            year: new Date().getFullYear(),
+            status: CompletionStatus.NOT_COMPLETED,
           },
         ],
         partners: [
           {
-            year: currentYear,
+            year: new Date().getFullYear(),
             numberOfPartners: 0,
-            status: reportStatus,
+            status: CompletionStatus.NOT_COMPLETED,
           },
         ],
         investors: [
           {
-            year: currentYear,
+            year: new Date().getFullYear(),
             numberOfInvestors: 0,
-            status: reportStatus,
+            status: CompletionStatus.NOT_COMPLETED,
           },
         ],
       },
@@ -280,7 +278,6 @@ export class OrganizationService {
 
     if (updateOrganizationDto.report) {
       return this.organizationReportService.update(
-        organization.organizationReportId,
         updateOrganizationDto.report,
       );
     }
