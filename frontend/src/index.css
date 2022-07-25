@@ -33,7 +33,7 @@
   }
 
   .save-button {
-    @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+    @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
   }
 
   .add-button {
@@ -85,4 +85,16 @@
   font-size: 14px !important;
   width: 14px !important;
   height: 14px !important;
+}
+
+.Toastify__toast {
+  @apply font-roboto !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-green-500 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-red-500 !important;
 }

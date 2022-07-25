@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { Person } from '../../../../common/interfaces/person.interface';
+import { Person } from '../../../../../common/interfaces/person.interface';
 
 export const OthersTableHeaders: TableColumn<Person>[] = [
   {

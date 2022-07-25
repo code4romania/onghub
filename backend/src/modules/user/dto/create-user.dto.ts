@@ -1,6 +1,8 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsNumber,
+  IsOptional,
   IsString,
   Length,
   Matches,
@@ -24,4 +26,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Matches(REGEX.PHONE)
   phone: string;
+
+  @IsNumber()
+  organizationId: number;
 }

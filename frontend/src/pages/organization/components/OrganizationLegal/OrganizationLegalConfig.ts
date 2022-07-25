@@ -1,18 +1,24 @@
+import { NAME_REGEX, PHONE_REGEX } from '../../../../common/helpers/format.helper';
+
 export const OrganizationLegalConfig: Record<string, any> = {
   legal_reprezentative_name: {
-    key: 'legalReprezentative.fullName',
+    key: 'legalReprezentative_fullName',
     rules: {
       required: {
         value: true,
-        message: 'Legal Representative Name is required.',
+        message: 'Legal Representative name is required.',
       },
       maxLength: {
         value: 100,
         message: 'Legal Representative name has a maximum length of 100 characters.',
       },
       minLength: {
-        value: 1,
-        message: 'Legal Representative Name has a minimum length of 1 characters.',
+        value: 5,
+        message: 'Legal Representative name has a minimum length of 5 characters.',
+      },
+      pattern: {
+        value: NAME_REGEX,
+        message: 'Legal Representative name is invalid',
       },
     },
     config: {
@@ -23,7 +29,7 @@ export const OrganizationLegalConfig: Record<string, any> = {
     },
   },
   legal_reprezentative_email: {
-    key: 'legalReprezentative.email',
+    key: 'legalReprezentative_email',
     rules: {
       required: {
         value: true,
@@ -42,11 +48,11 @@ export const OrganizationLegalConfig: Record<string, any> = {
     },
   },
   legal_reprezentative_phone: {
-    key: 'legalReprezentative.phone',
+    key: 'legalReprezentative_phone',
     rules: {
       required: {
         value: true,
-        message: 'Legal Representative Name is required.',
+        message: 'Legal Representative Phone is required.',
       },
       maxLength: {
         value: 10,
@@ -55,6 +61,10 @@ export const OrganizationLegalConfig: Record<string, any> = {
       minLength: {
         value: 10,
         message: 'Legal Representative phone has a minimum length of 10 characters.',
+      },
+      pattern: {
+        value: PHONE_REGEX,
+        message: 'Invalid phone format',
       },
     },
     config: {

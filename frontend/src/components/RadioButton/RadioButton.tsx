@@ -6,7 +6,7 @@ const RadioButton = (props: { config: RadioButtonConfig; checked: boolean }) => 
     <div key={props.config.name} className="flex items-center">
       <input
         type="radio"
-        id={props.config.value}
+        id={props.config.name + props.config.value}
         name={props.config.name}
         value={props.config.value}
         checked={props.checked}
@@ -14,7 +14,7 @@ const RadioButton = (props: { config: RadioButtonConfig; checked: boolean }) => 
         className="focus:ring-green h-4 w-4 text-green border-gray-300"
       />
       <label
-        htmlFor={props.config.value}
+        htmlFor={props.config.name + props.config.value}
         className="ml-2 block text-normal font-medium text-gray-800"
       >
         {props.config.label}

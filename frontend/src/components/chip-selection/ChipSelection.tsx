@@ -9,7 +9,7 @@ interface ChipSelectionProps {
   values: ChipItem[];
   readonly?: boolean;
   error?: string;
-  defaultItems?: number[];
+  defaultItems: number[];
   onItemsChange: (items: number[]) => void;
 }
 
@@ -20,44 +20,51 @@ interface ChipProps {
   onClick: (itemId: number) => void;
 }
 
-const Chip = ({ item, selected, readonly, onClick }: ChipProps) => (
-  <span
-    className={classNames(
-      selected ? 'font-semibold bg-green-50' : 'font-normal bg-gray-100',
-      'h-9 inline-flex items-center px-5 py-2.5 rounded-full  text-sm  text-gray-800 cursor-pointer',
-    )}
-    onClick={() => !readonly && onClick(item.id)}
-  >
-    {item.name}
-    {selected && <CheckIcon className="w-5 h-5 ml-2.5 text-green" />}
-  </span>
-);
+export const Chip = ({ item, selected, readonly, onClick }: ChipProps) => {
+  return (
+    <span
+      className={classNames(
+        selected ? 'font-semibold bg-green-50' : 'font-normal bg-gray-100',
+        'h-9 inline-flex items-center px-5 py-2.5 rounded-full  text-sm  text-gray-800 cursor-pointer',
+      )}
+      onClick={() => !readonly && onClick(item.id)}
+    >
+      {item.name}
+      {selected && <CheckIcon className="w-5 h-5 ml-2.5 text-green" />}
+    </span>
+  );
+};
 
 const ChipSelection = ({
   title,
   helperText,
-  defaultItems,
+  defaultItems = [],
   onItemsChange,
   values,
   error,
   readonly,
 }: ChipSelectionProps) => {
-  const [selectedItems, setSelectedItems] = useState<number[]>(defaultItems || []);
+  const [selectedItems, setSelectedItems] = useState<number[]>(defaultItems);
 
   useEffect(() => {
-    onItemsChange(selectedItems);
-  }, [selectedItems]);
+    if (!selectedItems.length && defaultItems.length) {
+      setSelectedItems(defaultItems);
+    }
+  }, [defaultItems]);
 
   const isSelected = (itemId: number): boolean => {
     return selectedItems.findIndex((id) => id === itemId) >= 0;
   };
 
   const onChipItemClick = (itemId: number) => {
+    let selected = [];
     if (selectedItems.findIndex((id) => id === itemId) >= 0) {
-      setSelectedItems(selectedItems.filter((id) => id !== itemId));
+      selected = selectedItems.filter((id) => id !== itemId);
     } else {
-      setSelectedItems([...selectedItems, itemId]);
+      selected = [...selectedItems, itemId];
     }
+    setSelectedItems(selected);
+    onItemsChange(selected);
   };
 
   return (

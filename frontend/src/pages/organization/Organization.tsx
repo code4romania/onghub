@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { useErrorToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useOrganizationQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
@@ -16,7 +17,7 @@ const Organization = () => {
   useCountiesQuery();
 
   // load organization data
-  useOrganizationQuery(3);
+  const { error } = useOrganizationQuery(3);
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -26,6 +27,10 @@ const Organization = () => {
       setSelectedTab(found.id);
     }
   }, []);
+
+  useEffect(() => {
+    if (error) useErrorToast('Could not load Organization');
+  }, [error]);
 
   const onTabClick = (tab: IPageTab) => {
     setSelectedTab(tab.id);

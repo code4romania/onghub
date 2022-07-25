@@ -66,7 +66,7 @@ const OrganizationFinancial = () => {
 
   const onSave = (data: Partial<Expense | Income>) => {
     mutate({
-      id: 11,
+      id: 3,
       organization: {
         financial: {
           id: selectedReport?.id as number,

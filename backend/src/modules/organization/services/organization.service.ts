@@ -1,7 +1,7 @@
 import {
   Injectable,
   NotFoundException,
-  NotAcceptableException,
+  BadRequestException,
 } from '@nestjs/common';
 import { AnafService } from 'src/shared/services';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -39,49 +39,96 @@ export class OrganizationService {
   public async create(
     createOrganizationDto: CreateOrganizationDto,
   ): Promise<Organization> {
-    const federations = await this.nomenclaturesService.getFederations({
-      where: { id: In(createOrganizationDto.activity.federations) },
-    });
-
-    const coalitions = await this.nomenclaturesService.getCoalitions({
-      where: { id: In(createOrganizationDto.activity.coalitions) },
-    });
-
-    const domains = await this.nomenclaturesService.getDomains({
-      where: { id: In(createOrganizationDto.activity.domains) },
-    });
-
-    const regions = await this.nomenclaturesService.getRegions({
-      where: { id: In(createOrganizationDto.activity.regions) },
-    });
+    if (
+      createOrganizationDto.activity.area === Area.LOCAL &&
+      !createOrganizationDto.activity.cities
+    ) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.LOCAL,
+        errorCode: ERROR_CODES.ORG004,
+      });
+    }
 
     if (
       createOrganizationDto.activity.area === Area.REGIONAL &&
-      regions.length === 0
+      !createOrganizationDto.activity.regions
     ) {
-      throw new NotAcceptableException({
+      throw new BadRequestException({
         message: HTTP_ERRORS_MESSAGES.REGION,
         errorCode: ERROR_CODES.ORG003,
       });
     }
 
-    const cities = await this.nomenclaturesService.getCities({
-      where: { id: In(createOrganizationDto.activity.cities) },
-    });
+    if (createOrganizationDto.legal.directors.length < 3) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
+        errorCode: ERROR_CODES.ORG009,
+      });
+    }
 
-    if (
-      createOrganizationDto.activity.area === Area.LOCAL &&
-      cities.length === 0
-    ) {
-      throw new NotAcceptableException({
-        message: HTTP_ERRORS_MESSAGES.LOCAL,
-        errorCode: ERROR_CODES.ORG004,
+    let cities = [];
+    if (createOrganizationDto.activity.area === Area.LOCAL) {
+      cities = await this.nomenclaturesService.getCities({
+        where: { id: In(createOrganizationDto.activity.cities) },
+      });
+    }
+
+    let regions = [];
+    if (createOrganizationDto.activity.area === Area.REGIONAL) {
+      regions = await this.nomenclaturesService.getRegions({
+        where: { id: In(createOrganizationDto.activity.regions) },
       });
     }
 
     const previousYear = new Date().getFullYear() - 1;
     const currentYear = new Date().getFullYear();
     const reportStatus = CompletionStatus.NOT_COMPLETED;
+    let federations = [];
+    if (createOrganizationDto.activity.isPartOfFederation) {
+      if (!createOrganizationDto.activity.federations) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_FEDERATIONS,
+          errorCode: ERROR_CODES.ORG005,
+        });
+      }
+
+      federations = await this.nomenclaturesService.getFederations({
+        where: { id: In(createOrganizationDto.activity.federations) },
+      });
+    }
+
+    let coalitions = [];
+    if (createOrganizationDto.activity.isPartOfCoalition) {
+      if (!createOrganizationDto.activity.coalitions) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_COALITIONS,
+          errorCode: ERROR_CODES.ORG006,
+        });
+      }
+
+      coalitions = await this.nomenclaturesService.getCoalitions({
+        where: { id: In(createOrganizationDto.activity.coalitions) },
+      });
+    }
+
+    let branches = [];
+    if (createOrganizationDto.activity.hasBranches) {
+      if (createOrganizationDto.activity.branches) {
+        throw new BadRequestException({
+          message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
+          errorCode: ERROR_CODES.ORG007,
+        });
+      }
+
+      branches = await this.nomenclaturesService.getCities({
+        where: { id: In(createOrganizationDto.activity.branches) },
+      });
+    }
+
+    const domains = await this.nomenclaturesService.getDomains({
+      where: { id: In(createOrganizationDto.activity.domains) },
+    });
+
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
@@ -100,6 +147,7 @@ export class OrganizationService {
         cities,
         federations,
         coalitions,
+        branches,
       },
       organizationLegal: {
         ...createOrganizationDto.legal,
@@ -159,6 +207,10 @@ export class OrganizationService {
         'organizationActivity.coalitions',
         'organizationActivity.domains',
         'organizationActivity.cities',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
+        'organizationActivity.branches',
+        'organizationActivity.regions',
         'organizationLegal',
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',

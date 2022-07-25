@@ -1,4 +1,4 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/solid';
+import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
 import React, { useState, useEffect } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
@@ -12,21 +12,30 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { Contact } from '../../interfaces/Contact.interface';
 import DirectorModal from './components/DirectorModal';
 import OtherModal from './components/OtherModal';
-import { DirectorsTableHeaders } from './DirectorsTable.headers';
+import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
 import { OrganizationLegalConfig } from './OrganizationLegalConfig';
-import { OthersTableHeaders } from './OthersTable.headers';
+import { OthersTableHeaders } from './table-headers/OthersTable.headers';
+import { flatten } from '../../../../common/helpers/format.helper';
+import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useErrorToast } from '../../../../common/hooks/useToast';
+import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
+  // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
-  const [others, setOthers] = useState<Partial<Person>[]>([]);
-
+  const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
   const [isDirectorModalOpen, setIsDirectorModalOpen] = useState<boolean>(false);
+  const [isDeleteDirectorModalOpen, setIsDeleteDirectorModalOpen] = useState<boolean>(false);
   const [selectedDirector, setSelectedDirector] = useState<Partial<Contact> | null>(null);
+  // others
+  const [others, setOthers] = useState<Partial<Person>[]>([]);
   const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
+  const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
-
+  // queries
   const { organizationLegal } = useSelectedOrganization();
+  const { mutate, error } = useOrganizationMutation();
 
   // React Hook Form
   const {
@@ -41,11 +50,20 @@ const OrganizationLegal = () => {
 
   useEffect(() => {
     if (organizationLegal) {
-      reset({ ...{ legalReprezentative: organizationLegal.legalReprezentative } });
+      const legalReprezentative = flatten(
+        organizationLegal.legalReprezentative,
+        {},
+        'legalReprezentative',
+      );
+      reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
     }
   }, [organizationLegal]);
+
+  useEffect(() => {
+    if (error) useErrorToast('Error while saving organization');
+  }, [error]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
@@ -57,14 +75,15 @@ const OrganizationLegal = () => {
       {
         name: 'Elimina date',
         icon: TrashIcon,
-        onClick: onDeleteDirector,
+        onClick: onOpenDeleteDirectorModal,
         isRemove: true,
       },
     ];
 
     return {
       name: '',
-      cell: (row: Contact) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Contact) =>
+        isEditMode ? <PopoverMenu row={row} menuItems={menuItems} /> : <></>,
       width: '50px',
       allowOverflow: true,
     };
@@ -80,43 +99,17 @@ const OrganizationLegal = () => {
       {
         name: 'Elimina date',
         icon: TrashIcon,
-        onClick: onDeleteOther,
+        onClick: onOpenDeleteOtherModal,
         isRemove: true,
       },
     ];
 
     return {
       name: '',
-      cell: (row: Person) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Person) => (isEditMode ? <PopoverMenu row={row} menuItems={menuItems} /> : <></>),
       width: '50px',
       allowOverflow: true,
     };
-  };
-
-  const onEditDirector = (row: Contact) => {
-    setSelectedDirector(row);
-    setIsDirectorModalOpen(true);
-  };
-
-  const onDeleteDirector = (row: Contact) => {
-    console.log('row', row);
-  };
-
-  const onEditOther = (row: Person) => {
-    setSelectedOther(row);
-    setIsOtherModalOpen(true);
-  };
-
-  const onDeleteOther = (row: Person) => {
-    console.log('row', row);
-  };
-
-  const handleSave = () => {
-    setEditMode((mode) => !mode);
-  };
-
-  const onUploadFile = () => {
-    console.log('on upload file');
   };
 
   const onAddDirector = (contact: Partial<Contact>) => {
@@ -124,13 +117,54 @@ const OrganizationLegal = () => {
     setIsDirectorModalOpen(false);
   };
 
+  const onEditDirector = (row: Contact) => {
+    setSelectedDirector(row);
+    setIsDirectorModalOpen(true);
+  };
+
   const onUpdateDirector = (contact: Partial<Contact>) => {
-    setDirectors([
-      ...directors.filter((director: Partial<Contact>) => director.id !== contact?.id),
-      contact,
-    ]);
+    const filteredDirectors = directors.filter(
+      (director: Partial<Contact>) =>
+        !(
+          director.fullName === selectedDirector?.fullName &&
+          director.email === selectedDirector?.email &&
+          director.phone === selectedDirector?.phone
+        ),
+    );
+    setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
     setSelectedDirector(null);
     setIsDirectorModalOpen(false);
+  };
+
+  const onOpenDeleteDirectorModal = (row: Contact) => {
+    setSelectedDirector(row);
+    setIsDeleteDirectorModalOpen(true);
+  };
+
+  const onDeleteDirector = () => {
+    if (selectedDirector?.id) {
+      setDirectorsDeleted([...directorsDeleted, selectedDirector.id]);
+    }
+    const filteredDirectors = directors.filter(
+      (director: Partial<Contact>) =>
+        !(
+          director.fullName === selectedDirector?.fullName &&
+          director.email === selectedDirector?.email &&
+          director.phone === selectedDirector?.phone
+        ),
+    );
+    setDirectors(filteredDirectors);
+    setIsDeleteDirectorModalOpen(false);
+  };
+
+  const onEditOther = (row: Person) => {
+    setSelectedOther(row);
+    setIsOtherModalOpen(true);
+  };
+
+  const onOpenDeleteOtherModal = (row: Person) => {
+    setSelectedOther(row);
+    setIsDeleteOtherModalOpen(true);
   };
 
   const onAddOther = (other: Partial<Person>) => {
@@ -138,24 +172,64 @@ const OrganizationLegal = () => {
     setIsOtherModalOpen(false);
   };
 
-  const onUpdateOther = (other: Partial<Person>) => {
-    setOthers([
-      ...directors.filter((other: Partial<Person>) => other.fullName !== other?.fullName),
-      other,
-    ]);
+  const onUpdateOther = (person: Partial<Person>) => {
+    const filteredOthers = others.filter(
+      (other: Partial<Person>) =>
+        !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
+    );
+    setOthers([...filteredOthers, person]);
     setSelectedOther(null);
     setIsOtherModalOpen(false);
+  };
+
+  const onDeleteOther = () => {
+    const filteredOthers = others.filter(
+      (other: Partial<Person>) =>
+        !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
+    );
+    setOthers(filteredOthers);
+    setIsDeleteOtherModalOpen(false);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSave = (data: any) => {
+    if (directors.length < 3) {
+      return;
+    }
+
+    const legalReprezentative = {
+      id: data.legalReprezentative_id,
+      fullName: data.legalReprezentative_fullName,
+      phone: data.legalReprezentative_phone,
+      email: data.legalReprezentative_email,
+    };
+
+    mutate({
+      id: 1,
+      organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
+    });
+
+    setEditMode(false);
+  };
+
+  const onUploadFile = () => {
+    console.log('on upload file');
   };
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="p-5 sm:p-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Informatii Legale</span>
-
         <button
           type="button"
           className={classNames(isEditMode ? 'save-button' : 'edit-button')}
-          onClick={handleSave}
+          onClick={
+            !isEditMode
+              ? setEditMode.bind(null, true)
+              : () => {
+                  handleSubmit(handleSave)();
+                }
+          }
         >
           <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
           {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
@@ -167,7 +241,7 @@ const OrganizationLegal = () => {
         <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
-              title="Reprezentant Legal al organizatiet"
+              title="Reprezentant Legal al organizatiei"
               subTitle="This information will be displayed publicly so be careful what you share"
             />
             <form className="space-y-8">
@@ -189,18 +263,35 @@ const OrganizationLegal = () => {
               title="Consiliul director al organizatiei"
               subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
             />
+            {isEditMode && directors.length < 3 && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      Este obligatoriu sa adaugi cel putin 3 membri ai consiliului director pentru a
+                      continua
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            )}
             <DataTableComponent
               columns={[...DirectorsTableHeaders, buildDirectorActionColumn()]}
               data={directors}
             />
-            <button
-              type="button"
-              className="add-button max-w-[12rem]"
-              onClick={setIsDirectorModalOpen.bind(null, true)}
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Adauga un membru
-            </button>
+            {isEditMode && (
+              <button
+                type="button"
+                className="add-button max-w-[12rem]"
+                onClick={setIsDirectorModalOpen.bind(null, true)}
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                Adauga un membru
+              </button>
+            )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader
@@ -211,14 +302,16 @@ const OrganizationLegal = () => {
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
             />
-            <button
-              type="button"
-              className="add-button max-w-[12rem]"
-              onClick={setIsOtherModalOpen.bind(null, true)}
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-              Adauga un membru
-            </button>
+            {isEditMode && (
+              <button
+                type="button"
+                className="add-button max-w-[12rem]"
+                onClick={setIsOtherModalOpen.bind(null, true)}
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                Adauga un membru
+              </button>
+            )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader
@@ -252,6 +345,18 @@ const OrganizationLegal = () => {
                 setIsOtherModalOpen(false);
                 setSelectedOther(null);
               }}
+            />
+          )}
+          {isDeleteDirectorModalOpen && (
+            <DeleteRowConfirmationModal
+              onClose={setIsDeleteDirectorModalOpen.bind(null, false)}
+              onConfirm={onDeleteDirector}
+            />
+          )}
+          {isDeleteOtheModalOpen && (
+            <DeleteRowConfirmationModal
+              onClose={setIsDeleteOtherModalOpen.bind(null, false)}
+              onConfirm={onDeleteOther}
             />
           )}
         </div>
