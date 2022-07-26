@@ -2,6 +2,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -52,8 +53,12 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.CREATE,
-        errorCode: USER_ERROR_CODES.USR_002,
+        message: USER_ERROR_MESSAGES.CREATE_LOCAL,
+        errorCode: USER_ERROR_CODES.USR_001,
+      });
+      throw new InternalServerErrorException({
+        message: USER_ERROR_MESSAGES.CREATE_LOCAL,
+        errorCode: USER_ERROR_CODES.USR_001,
       });
     }
   }
@@ -93,8 +98,12 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.USER,
-        errorCode: USER_ERROR_CODES.USR_001,
+        message: USER_ERROR_MESSAGES.RESTRICT,
+        errorCode: USER_ERROR_CODES.USR_005,
+      });
+      throw new NotFoundException({
+        message: USER_ERROR_MESSAGES.RESTRICT,
+        errorCode: USER_ERROR_CODES.USR_005,
       });
     }
   }
@@ -109,8 +118,12 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.USER,
-        errorCode: USER_ERROR_CODES.USR_001,
+        message: USER_ERROR_MESSAGES.RESTORE,
+        errorCode: USER_ERROR_CODES.USR_006,
+      });
+      throw new NotFoundException({
+        message: USER_ERROR_MESSAGES.RESTORE,
+        errorCode: USER_ERROR_CODES.USR_006,
       });
     }
   }

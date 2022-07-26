@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
@@ -49,7 +53,11 @@ export class CognitoUserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.CREATE,
+        message: USER_ERROR_MESSAGES.CREATE_COGNITO,
+        errorCode: USER_ERROR_CODES.USR_002,
+      });
+      throw new InternalServerErrorException({
+        message: USER_ERROR_MESSAGES.CREATE_COGNITO,
         errorCode: USER_ERROR_CODES.USR_002,
       });
     }
@@ -67,8 +75,12 @@ export class CognitoUserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.USER,
-        errorCode: USER_ERROR_CODES.USR_001,
+        message: USER_ERROR_MESSAGES.DISABLE,
+        errorCode: USER_ERROR_CODES.USR_003,
+      });
+      throw new NotFoundException({
+        message: USER_ERROR_MESSAGES.DISABLE,
+        errorCode: USER_ERROR_CODES.USR_003,
       });
     }
   }
@@ -85,8 +97,12 @@ export class CognitoUserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.USER,
-        errorCode: USER_ERROR_CODES.USR_001,
+        message: USER_ERROR_MESSAGES.SIGN_OUT,
+        errorCode: USER_ERROR_CODES.USR_004,
+      });
+      throw new NotFoundException({
+        message: USER_ERROR_MESSAGES.SIGN_OUT,
+        errorCode: USER_ERROR_CODES.USR_004,
       });
     }
   }
