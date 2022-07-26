@@ -36,9 +36,10 @@ const App = () => {
     (async () => {
       try {
         const user = await Auth.currentAuthenticatedUser();
+        // #TODO Get user from backend based on user.username (+ check status - deny access if disabled)
+        // #TODO Set user in store
         setAuthState({ isAuthenticated: true });
         console.log(user);
-        // #TODO Set user in store
       } catch (error) {
         console.log(error);
       }

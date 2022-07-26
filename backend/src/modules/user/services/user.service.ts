@@ -8,10 +8,13 @@ import { Organization } from 'src/modules/organization/entities';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { ActivateUserDto } from '../dto/restore-user.dto';
+import { RestrictUserDto } from '../dto/restrict-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../entities/user.entity';
 import { Role } from '../enums/role.enum';
+import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
 
@@ -66,5 +69,33 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async restrictAccess(restrictUserDto: RestrictUserDto) {
+    try {
+      // 1. Update user status to 'restricted'
+      await this.userRepository.update(
+        { cognitoId: restrictUserDto.cognitoId },
+        { status: UserStatus.RESTRICTED },
+      );
+      // 2. Sign out and revoke access tokens from cognito
+      await this.cognitoService.globalSignOut(restrictUserDto.cognitoId);
+    } catch (error) {
+      console.log(error);
+      throw error; //TODO add error code handling
+    }
+  }
+
+  async restoreAccess(activateUserDto: ActivateUserDto) {
+    try {
+      // 1. Update user status to 'restricted'
+      await this.userRepository.update(
+        { cognitoId: activateUserDto.cognitoId },
+        { status: UserStatus.ACTIVE },
+      );
+    } catch (error) {
+      console.log(error);
+      throw error; //TODO add error code handling
+    }
   }
 }

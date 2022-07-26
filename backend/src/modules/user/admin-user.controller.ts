@@ -1,7 +1,14 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Role } from './enums/role.enum';
+import { ActivateUserDto } from './dto/restore-user.dto';
+import { RestrictUserDto } from './dto/restrict-user.dto';
 import { UserService } from './services/user.service';
 
 @Controller('user')
@@ -9,6 +16,7 @@ import { UserService } from './services/user.service';
 export class AdminUserController {
   constructor(private readonly userService: UserService) {}
 
+  // TODO: restrict to be called only by Admin/Super-Admin
   @Post('')
   async create(@Body() body: CreateUserDto) {
     return this.userService.create({
@@ -17,5 +25,17 @@ export class AdminUserController {
       phone: body.phone,
       organizationId: body.organizationId,
     });
+  }
+
+  // TODO: restrict to be called only by Admin/Super-Admin
+  @Patch(':cognitoId/restrict')
+  restrict(@Param() restrictUserDto: RestrictUserDto) {
+    return this.userService.restrictAccess(restrictUserDto);
+  }
+
+  // TODO: restrict to be called only by Admin/Super-Admin
+  @Patch(':cognitoId/activate')
+  restore(@Param() activateUserDto: ActivateUserDto) {
+    return this.userService.restoreAccess(activateUserDto);
   }
 }

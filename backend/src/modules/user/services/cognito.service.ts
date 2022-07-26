@@ -3,8 +3,10 @@ import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
   AdminDisableUserCommand,
+  AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
+  RevokeTokenCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -53,10 +55,22 @@ export class CognitoUserService {
 
     try {
       const data = await this.cognitoProvider.send(disableUserCommand);
-      console.log(data);
       return data;
     } catch (error) {
-      console.log(error);
+      return error;
+    }
+  }
+
+  async globalSignOut(username: string) {
+    const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Username: username,
+    });
+
+    try {
+      const data = await this.cognitoProvider.send(revokeTokenCommand);
+      return data;
+    } catch (error) {
       return error;
     }
   }

@@ -1,0 +1,24 @@
+{
+    "version": "1",
+    "region": "eu-central-1",
+    "userPoolId": "eu-central-1_TwmnT1UC2",
+    "userName": "2b0f20b7-9469-4bc6-bd55-c03d93c38b41",
+    "callerContext": {
+        "awsSdkVersion": "aws-sdk-unknown-unknown",
+        "clientId": "400vdublp0f6ln8ijerca34324"
+    },
+    "triggerSource": "PreAuthentication_Authentication",
+    "request": {
+        "userAttributes": {
+            "sub": "2b0f20b7-9469-4bc6-bd55-c03d93c38b41",
+            "cognito:user_status": "CONFIRMED",
+            "email_verified": "true",
+            "phone_number_verified": "true",
+            "phone_number": "+40763764310",
+            "email": "dragos.strat@wearetribus.com"
+        },
+        "validationData": null,
+        "userNotFound": false
+    },
+    "response": {}
+}
