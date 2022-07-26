@@ -15,6 +15,7 @@ import { Coalition } from '../common/interfaces/coalitions.interface';
 import { Federation } from '../common/interfaces/federations.interface';
 import { organizationLegalSlice } from './organization/organization-legal.slice';
 import { organizationReportsSlice } from './organization/organization-reports.slice';
+import { userSlice } from './user/User.slice';
 
 interface OrganizationState {
   organizationGeneral: IOrganizationGeneral | null;
@@ -43,13 +44,19 @@ interface NomenclatureState {
   setCoalitions: (coaltions: Coalition[]) => void;
 }
 
-const useStore = create<OrganizationState & NomenclatureState>()((set: any) => ({
+interface UserState {
+  user: any;
+  setUser: (user: any) => void;
+}
+
+const useStore = create<OrganizationState & NomenclatureState & UserState>()((set: any) => ({
   ...organizationGeneralSlice(set),
   ...organizationFinancialSlice(set),
   ...organizationActivitySlice(set),
   ...organizationReportsSlice(set),
   ...organizationLegalSlice(set),
   ...nomenclatureSlice(set),
+  ...userSlice(set),
 }));
 
 export default useStore;
