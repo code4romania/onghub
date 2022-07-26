@@ -10,11 +10,16 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
+import {
+  USER_ERROR_MESSAGES,
+  USER_ERROR_CODES,
+} from '../constants/user-error.constants';
+import { PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class CognitoUserService {
   cognitoProvider: CognitoIdentityProviderClient;
-  constructor() {
+  constructor(private readonly pinoLogger: PinoLogger) {
     this.cognitoProvider = new CognitoIdentityProviderClient({
       region: CognitoConfig.region,
     });
@@ -42,8 +47,11 @@ export class CognitoUserService {
         await this.cognitoProvider.send(createUserCommand);
       return data.User.Username;
     } catch (error) {
-      console.log(error);
-      throw error;
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.CREATE,
+        errorCode: USER_ERROR_CODES.USR_002,
+      });
     }
   }
 
@@ -57,7 +65,11 @@ export class CognitoUserService {
       const data = await this.cognitoProvider.send(disableUserCommand);
       return data;
     } catch (error) {
-      return error;
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.USER,
+        errorCode: USER_ERROR_CODES.USR_001,
+      });
     }
   }
 
@@ -71,7 +83,11 @@ export class CognitoUserService {
       const data = await this.cognitoProvider.send(revokeTokenCommand);
       return data;
     } catch (error) {
-      return error;
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.USER,
+        errorCode: USER_ERROR_CODES.USR_001,
+      });
     }
   }
 }

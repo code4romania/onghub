@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Organization } from 'src/modules/organization/entities';
 import { UpdateResult } from 'typeorm';
@@ -17,12 +18,17 @@ import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
+import {
+  USER_ERROR_MESSAGES,
+  USER_ERROR_CODES,
+} from '../constants/user-error.constants';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    private readonly pinoLogger: PinoLogger,
   ) {}
 
   /*
@@ -44,7 +50,11 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      throw new InternalServerErrorException(error);
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.CREATE,
+        errorCode: USER_ERROR_CODES.USR_002,
+      });
     }
   }
 
@@ -81,8 +91,11 @@ export class UserService {
       // 2. Sign out and revoke access tokens from cognito
       await this.cognitoService.globalSignOut(restrictUserDto.cognitoId);
     } catch (error) {
-      console.log(error);
-      throw error; //TODO add error code handling
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.USER,
+        errorCode: USER_ERROR_CODES.USR_001,
+      });
     }
   }
 
@@ -94,8 +107,11 @@ export class UserService {
         { status: UserStatus.ACTIVE },
       );
     } catch (error) {
-      console.log(error);
-      throw error; //TODO add error code handling
+      this.pinoLogger.error({
+        error: { error },
+        message: USER_ERROR_MESSAGES.USER,
+        errorCode: USER_ERROR_CODES.USR_001,
+      });
     }
   }
 }
