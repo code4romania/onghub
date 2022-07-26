@@ -7,6 +7,7 @@ import { IncomeReportConfig } from './IncomeReportConfig';
 import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
 import { Income } from '../../../interfaces/Income.interface';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { useSelectedOrganization } from '../../../../../store/selectors';
 
 const IncomeReportModal = ({
   onClose,
@@ -18,6 +19,8 @@ const IncomeReportModal = ({
 }: ReportModalProps) => {
   const [totalDefalcat, setTotalDefalcat] = useState<number>(0);
   const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
+
+  const { organizationGeneral } = useSelectedOrganization();
 
   // form state
   const { control, reset, getValues } = useForm({
@@ -99,7 +102,7 @@ const IncomeReportModal = ({
                   </span>
                 </div>
                 <a
-                  href="https://www.anaf.ro/anaf/internet/ANAF/servicii_online/servicii_web_anaf"
+                  href={`https://webservicesp.anaf.ro/bilant?an=${year}&cui=${organizationGeneral?.cui}`}
                   target="_blank"
                   className="mt-4 text-base leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
                   rel="noreferrer"
