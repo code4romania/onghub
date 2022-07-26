@@ -1,4 +1,3 @@
-import { PencilIcon } from '@heroicons/react/outline';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../../common/helpers/tailwind.helper';
