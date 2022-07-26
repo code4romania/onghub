@@ -6,9 +6,10 @@ import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 import { AdminUserController } from './admin-user.controller';
 import { CognitoUserService } from './services/cognito.service';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), OrganizationModule],
   controllers: [UserController, AdminUserController],
   providers: [UserRepository, UserService, CognitoUserService],
   exports: [UserService],

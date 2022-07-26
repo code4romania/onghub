@@ -1,10 +1,14 @@
 import {
-  HttpException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { Organization } from 'src/modules/organization/entities';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from 'src/modules/organization/constants/errors.constants';
+import { OrganizationRepository } from 'src/modules/organization/repositories';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -20,6 +24,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    private readonly organizationRepository: OrganizationRepository,
   ) {}
 
   /*
@@ -29,7 +34,16 @@ export class UserService {
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       // TODO 1. Validate DTO
-      // TODO 1.1. Check the organizationId exists
+      // 1.1. Check the organizationId exists
+      const organization = await this.organizationRepository.get({
+        where: { id: createUserDto.organizationId },
+      });
+      if (!organization) {
+        throw new NotFoundException({
+          message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+          errorCode: ERROR_CODES.ORG001,
+        });
+      }
       // ====================================
       // 2. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
