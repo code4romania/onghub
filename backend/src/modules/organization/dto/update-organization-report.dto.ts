@@ -1,8 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, Max, ValidateNested } from 'class-validator';
-import { UpdateInvestorDto } from './update-investor.dto';
-import { UpdatePartnerDto } from './update-partner.dto';
-import { UpdateReportDto } from './update-report.dto';
+import { Report } from '../entities';
 
 export class UpdateOrganizationReportDto {
   @IsNumber()
@@ -11,17 +9,7 @@ export class UpdateOrganizationReportDto {
   year?: number;
 
   @IsOptional()
-  @Type(() => UpdateReportDto)
+  @Type(() => Report)
   @ValidateNested()
-  report?: UpdateReportDto;
-
-  @IsOptional()
-  @Type(() => UpdatePartnerDto)
-  @ValidateNested()
-  partner?: UpdatePartnerDto;
-
-  @IsOptional()
-  @Type(() => UpdateInvestorDto)
-  @ValidateNested()
-  investor?: UpdateInvestorDto;
+  report?: Partial<Report>;
 }

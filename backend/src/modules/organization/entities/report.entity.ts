@@ -3,18 +3,28 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationReport } from './organization-report.entity';
 
-@Entity('_report')
+@Entity('report')
 export class Report extends BaseEntity {
   @Column({ type: 'text', name: 'report', nullable: true })
   report: string;
 
-  @Column({ type: 'integer', name: 'number_of_volunteers', nullable: true })
+  @Column({
+    type: 'integer',
+    name: 'number_of_volunteers',
+    nullable: true,
+    default: 0,
+  })
   numberOfVolunteers: number;
 
-  @Column({ type: 'integer', name: 'number_of_contractors', nullable: true })
+  @Column({
+    type: 'integer',
+    name: 'number_of_contractors',
+    nullable: true,
+    default: 0,
+  })
   numberOfContractors: number;
 
-  @Column({ type: 'integer', name: 'year' })
+  @Column({ type: 'integer', name: 'year', default: new Date().getFullYear() })
   year: number;
 
   @Column({

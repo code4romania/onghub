@@ -3,12 +3,17 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationReport } from './organization-report.entity';
 
-@Entity('_investor')
+@Entity('investor')
 export class Investor extends BaseEntity {
-  @Column({ type: 'integer', name: 'year' })
+  @Column({ type: 'integer', name: 'year', default: new Date().getFullYear() })
   year: number;
 
-  @Column({ type: 'integer', name: 'number_of_investors', nullable: true })
+  @Column({
+    type: 'integer',
+    name: 'number_of_investors',
+    nullable: true,
+    default: 0,
+  })
   numberOfInvestors: number;
 
   @Column({

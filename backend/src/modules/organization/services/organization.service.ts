@@ -13,9 +13,8 @@ import {
 } from '../constants/errors.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
+import { Investor, Organization, Partner, Report } from '../entities';
 import { Area } from '../enums/organization-area.enum';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -109,7 +108,6 @@ export class OrganizationService {
     }
 
     let branches = [];
-    console.log(createOrganizationDto.activity.branches);
     if (createOrganizationDto.activity.hasBranches) {
       if (createOrganizationDto.activity.branches) {
         throw new BadRequestException({
@@ -165,29 +163,9 @@ export class OrganizationService {
         },
       ],
       organizationReport: {
-        reports: [
-          {
-            report: null,
-            numberOfVolunteers: 0,
-            numberOfContractors: 0,
-            year: new Date().getFullYear(),
-            status: CompletionStatus.NOT_COMPLETED,
-          },
-        ],
-        partners: [
-          {
-            year: new Date().getFullYear(),
-            numberOfPartners: 0,
-            status: CompletionStatus.NOT_COMPLETED,
-          },
-        ],
-        investors: [
-          {
-            year: new Date().getFullYear(),
-            numberOfInvestors: 0,
-            status: CompletionStatus.NOT_COMPLETED,
-          },
-        ],
+        reports: [new Report()],
+        partners: [new Partner()],
+        investors: [new Investor()],
       },
     });
   }
@@ -273,12 +251,6 @@ export class OrganizationService {
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
         updateOrganizationDto.financial,
-      );
-    }
-
-    if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
-        updateOrganizationDto.report,
       );
     }
 

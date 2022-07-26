@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
-import { OrganizationReportRepository } from '../repositories';
 import { InvestorService } from './investor.service';
 import { PartnerService } from './partner.service';
 import { ReportService } from './report.service';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import { OrganizationReportRepository } from '../repositories';
 
 @Injectable()
 export class OrganizationReportService {
@@ -23,7 +23,6 @@ export class OrganizationReportService {
       const partner = await this.partnerService.get({
         where: { year: updateOrganizationReportDto.year },
       });
-      console.log(partner);
       const investor = await this.investorService.get({
         where: { year: updateOrganizationReportDto.year },
       });
@@ -37,29 +36,19 @@ export class OrganizationReportService {
       this.organizationReportRepository.save({ id });
       return this.reportService.update(id, data);
     }
-    if (updateOrganizationReportDto.partner) {
-      const { id, ...data } = updateOrganizationReportDto.partner;
-      data['status'] = CompletionStatus.COMPLETED;
-      if (data.numberOfPartners === null) {
-        data['status'] = CompletionStatus.NOT_COMPLETED;
-      }
-      this.organizationReportRepository.save({ id });
-      return this.partnerService.update(id, data);
-    }
-    if (updateOrganizationReportDto.investor) {
-      const { id, ...data } = updateOrganizationReportDto.investor;
-      data['status'] = CompletionStatus.COMPLETED;
-      if (data.numberOfInvestors === null) {
-        data['status'] = CompletionStatus.NOT_COMPLETED;
-      }
-      this.organizationReportRepository.save({ id });
-      return this.investorService.update(id, data);
-    }
   }
 
   public async delete(reportId: number, partnerId: number, investorId: number) {
-    this.investorService.delete(investorId);
-    this.partnerService.delete(partnerId);
-    this.reportService.delete(reportId);
+    if (investorId) {
+      this.investorService.delete(investorId);
+    }
+
+    if (partnerId) {
+      this.partnerService.delete(partnerId);
+    }
+
+    if (reportId) {
+      this.reportService.delete(reportId);
+    }
   }
 }
