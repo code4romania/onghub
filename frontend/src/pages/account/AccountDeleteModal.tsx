@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-interface DeleteRowConfirmationModalProps {
+interface AccountDeleteModalProps {
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const AccountDeleteModal = ({ onClose, onConfirm }: DeleteRowConfirmationModalProps) => {
+const AccountDeleteModal = ({ onClose, onConfirm }: AccountDeleteModalProps) => {
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
