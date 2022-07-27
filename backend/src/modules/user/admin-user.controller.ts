@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ActivateUserDto } from './dto/restore-user.dto';
 import { RestrictUserDto } from './dto/restrict-user.dto';
@@ -17,6 +18,7 @@ export class AdminUserController {
   constructor(private readonly userService: UserService) {}
 
   // TODO: restrict to be called only by Admin/Super-Admin
+  @ApiBody({ type: CreateUserDto })
   @Post('')
   async create(@Body() body: CreateUserDto) {
     return this.userService.create({
