@@ -1,12 +1,6 @@
-import {
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { Organization } from 'src/modules/organization/entities';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -19,10 +13,7 @@ import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
-import {
-  USER_ERROR_MESSAGES,
-  USER_ERROR_CODES,
-} from '../constants/user-error.constants';
+import { USER_ERRORS } from '../constants/user-error.constants';
 
 @Injectable()
 export class UserService {
@@ -53,12 +44,11 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.CREATE_LOCAL,
-        errorCode: USER_ERROR_CODES.USR_001,
+        ...USER_ERRORS.CREATE,
       });
       throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.CREATE_LOCAL,
-        errorCode: USER_ERROR_CODES.USR_001,
+        ...USER_ERRORS.CREATE,
+        error,
       });
     }
   }
@@ -98,12 +88,11 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.RESTRICT,
-        errorCode: USER_ERROR_CODES.USR_005,
+        ...USER_ERRORS.RESTRICT,
       });
       throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.RESTRICT,
-        errorCode: USER_ERROR_CODES.USR_005,
+        ...USER_ERRORS.RESTRICT,
+        error,
       });
     }
   }
@@ -118,12 +107,11 @@ export class UserService {
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
-        message: USER_ERROR_MESSAGES.RESTORE,
-        errorCode: USER_ERROR_CODES.USR_006,
+        ...USER_ERRORS.RESTORE,
       });
       throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.RESTORE,
-        errorCode: USER_ERROR_CODES.USR_006,
+        ...USER_ERRORS.RESTORE,
+        error,
       });
     }
   }

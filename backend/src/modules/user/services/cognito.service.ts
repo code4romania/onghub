@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
@@ -10,20 +6,14 @@ import {
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
-  RevokeTokenCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
-import {
-  USER_ERROR_MESSAGES,
-  USER_ERROR_CODES,
-} from '../constants/user-error.constants';
-import { PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class CognitoUserService {
   cognitoProvider: CognitoIdentityProviderClient;
-  constructor(private readonly pinoLogger: PinoLogger) {
+  constructor() {
     this.cognitoProvider = new CognitoIdentityProviderClient({
       region: CognitoConfig.region,
     });
@@ -46,21 +36,10 @@ export class CognitoUserService {
       ],
     });
 
-    try {
-      const data: AdminCreateUserCommandOutput =
-        await this.cognitoProvider.send(createUserCommand);
-      return data.User.Username;
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        message: USER_ERROR_MESSAGES.CREATE_COGNITO,
-        errorCode: USER_ERROR_CODES.USR_002,
-      });
-      throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.CREATE_COGNITO,
-        errorCode: USER_ERROR_CODES.USR_002,
-      });
-    }
+    const data: AdminCreateUserCommandOutput = await this.cognitoProvider.send(
+      createUserCommand,
+    );
+    return data.User.Username;
   }
 
   async disableUser(username: string) {
@@ -69,20 +48,8 @@ export class CognitoUserService {
       Username: username,
     });
 
-    try {
-      const data = await this.cognitoProvider.send(disableUserCommand);
-      return data;
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        message: USER_ERROR_MESSAGES.DISABLE,
-        errorCode: USER_ERROR_CODES.USR_003,
-      });
-      throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.DISABLE,
-        errorCode: USER_ERROR_CODES.USR_003,
-      });
-    }
+    const data = await this.cognitoProvider.send(disableUserCommand);
+    return data;
   }
 
   async globalSignOut(username: string) {
@@ -91,19 +58,7 @@ export class CognitoUserService {
       Username: username,
     });
 
-    try {
-      const data = await this.cognitoProvider.send(revokeTokenCommand);
-      return data;
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        message: USER_ERROR_MESSAGES.SIGN_OUT,
-        errorCode: USER_ERROR_CODES.USR_004,
-      });
-      throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.SIGN_OUT,
-        errorCode: USER_ERROR_CODES.USR_004,
-      });
-    }
+    const data = await this.cognitoProvider.send(revokeTokenCommand);
+    return data;
   }
 }
