@@ -8,6 +8,7 @@ export const HTTP_ERRORS_MESSAGES = {
   MISSING_INTERNATIONAL_ORGANIZATION: 'Missing International Organization',
   MINIMUM_DIRECTORS: 'Minimum 3 directors',
   ANAF_ERROR: 'Incoming data not corresponding with data from ANAF',
+  UPLOAD_FILES: 'Error while uploading the files',
 };
 
 export const ERROR_CODES = {
@@ -20,5 +21,6 @@ export const ERROR_CODES = {
   ORG007: 'ORG007',
   ORG008: 'ORG008',
   ORG009: 'ORG009',
+  ORG010: 'ORG010',
   ANAF001: 'ANAF001',
 };

@@ -20,11 +20,11 @@ export class UpdateOrganizationLegalDto {
   @IsOptional()
   @Type(() => UpsertContactDto)
   @ValidateNested()
-  directors: UpsertContactDto[];
+  directors?: UpsertContactDto[];
 
   @IsOptional()
   @IsArray()
-  directorsDeleted: number[];
+  directorsDeleted?: number[];
 
   @IsOptional()
   @IsArray()

@@ -82,3 +82,7 @@ export const str2boolObject = (item: any) => {
     item[key] = str2bool(item[key]);
   });
 };
+
+export const fileToURL = (file: File | null) => {
+  return file ? URL.createObjectURL(file) : null;
+};

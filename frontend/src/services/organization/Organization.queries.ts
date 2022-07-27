@@ -7,7 +7,11 @@ import { IOrganizationLegal } from '../../pages/organization/interfaces/Organiza
 import { IOrganizationReport } from '../../pages/organization/interfaces/OrganizationReport.interface';
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
-import { getOrganization, patchOrganization } from './Organization.service';
+import {
+  getOrganization,
+  patchOrganization,
+  uploadOrganizationFiles,
+} from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
 
@@ -141,5 +145,11 @@ export const useOrganizationMutation = () => {
         }
       },
     },
+  );
+};
+
+export const useUploadOrganizationFilesMutation = () => {
+  return useMutation(({ id, data }: { id: number; data: FormData }) =>
+    uploadOrganizationFiles(id, data),
   );
 };
