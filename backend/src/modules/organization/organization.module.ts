@@ -58,6 +58,6 @@ import { OrganizationReportService } from './services/organization-report.servic
     OrganizationReportRepository,
     OrganizationReportService,
   ],
-  exports: [OrganizationRepository],
+  exports: [OrganizationService],
 })
 export class OrganizationModule {}

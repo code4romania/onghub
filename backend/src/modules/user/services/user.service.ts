@@ -8,7 +8,7 @@ import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
 } from 'src/modules/organization/constants/errors.constants';
-import { OrganizationRepository } from 'src/modules/organization/repositories';
+import { OrganizationService } from 'src/modules/organization/services';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -24,7 +24,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
-    private readonly organizationRepository: OrganizationRepository,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   /*
@@ -35,9 +35,9 @@ export class UserService {
     try {
       // TODO 1. Validate DTO
       // 1.1. Check the organizationId exists
-      const organization = await this.organizationRepository.get({
-        where: { id: createUserDto.organizationId },
-      });
+      const organization = await this.organizationService.findOne(
+        createUserDto.organizationId,
+      );
       if (!organization) {
         throw new NotFoundException({
           message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
