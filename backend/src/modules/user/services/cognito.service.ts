@@ -63,28 +63,6 @@ export class CognitoUserService {
     }
   }
 
-  async disableUser(username: string) {
-    const disableUserCommand = new AdminDisableUserCommand({
-      UserPoolId: CognitoConfig.userPoolId,
-      Username: username,
-    });
-
-    try {
-      const data = await this.cognitoProvider.send(disableUserCommand);
-      return data;
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        message: USER_ERROR_MESSAGES.DISABLE,
-        errorCode: USER_ERROR_CODES.USR_003,
-      });
-      throw new InternalServerErrorException({
-        message: USER_ERROR_MESSAGES.DISABLE,
-        errorCode: USER_ERROR_CODES.USR_003,
-      });
-    }
-  }
-
   async globalSignOut(username: string) {
     const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
       UserPoolId: CognitoConfig.userPoolId,
