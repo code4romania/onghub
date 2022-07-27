@@ -4,6 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { AnafService } from 'src/shared/services';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
@@ -11,11 +12,13 @@ import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
 } from '../constants/errors.constants';
+import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
+import { OrganizationFiles } from '../models/organization-files.interface';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -33,6 +36,7 @@ export class OrganizationService {
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
@@ -255,5 +259,61 @@ export class OrganizationService {
     }
 
     return null;
+  }
+
+  public async upload(
+    organizationId: string,
+    files: OrganizationFiles,
+  ): Promise<{ logo: string; organizationStatute: string }> {
+    const response = {
+      logo: null,
+      organizationStatute: null,
+    };
+
+    try {
+      if (files.logo) {
+        response.logo = await this.uploadFilesToBucket(
+          `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
+          files.logo,
+        );
+
+        await this.organizationGeneralService.update(+organizationId, {
+          logo: response.logo,
+        });
+      }
+
+      if (files.organizationStatute) {
+        response.organizationStatute = await this.uploadFilesToBucket(
+          `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+          files.organizationStatute,
+        );
+
+        await this.organizationLegalService.update(+organizationId, {
+          organizationStatute: response.organizationStatute,
+        });
+      }
+
+      return response;
+    } catch (error) {
+      throw new BadRequestException({
+        message: HTTP_ERRORS_MESSAGES.UPLOAD_FILES,
+        errorCode: ERROR_CODES.ORG010,
+        error: error,
+      });
+    }
+  }
+
+  private async uploadFilesToBucket(
+    path: string,
+    files: Express.Multer.File[],
+  ): Promise<string> {
+    // delete old file from aws
+    await this.fileManagerService.deleteFiles([path]);
+
+    // upload new file
+    const uploadedFile = await this.fileManagerService.uploadFiles(path, files);
+
+    // generate public link to file
+    return this.fileManagerService.generatePresignedURL(uploadedFile[0]);
   }
 }
