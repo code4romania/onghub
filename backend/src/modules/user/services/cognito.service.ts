@@ -78,7 +78,7 @@ export class CognitoUserService {
         message: USER_ERROR_MESSAGES.DISABLE,
         errorCode: USER_ERROR_CODES.USR_003,
       });
-      throw new NotFoundException({
+      throw new InternalServerErrorException({
         message: USER_ERROR_MESSAGES.DISABLE,
         errorCode: USER_ERROR_CODES.USR_003,
       });
@@ -100,7 +100,7 @@ export class CognitoUserService {
         message: USER_ERROR_MESSAGES.SIGN_OUT,
         errorCode: USER_ERROR_CODES.USR_004,
       });
-      throw new NotFoundException({
+      throw new InternalServerErrorException({
         message: USER_ERROR_MESSAGES.SIGN_OUT,
         errorCode: USER_ERROR_CODES.USR_004,
       });

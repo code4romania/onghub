@@ -101,7 +101,7 @@ export class UserService {
         message: USER_ERROR_MESSAGES.RESTRICT,
         errorCode: USER_ERROR_CODES.USR_005,
       });
-      throw new NotFoundException({
+      throw new InternalServerErrorException({
         message: USER_ERROR_MESSAGES.RESTRICT,
         errorCode: USER_ERROR_CODES.USR_005,
       });
@@ -121,7 +121,7 @@ export class UserService {
         message: USER_ERROR_MESSAGES.RESTORE,
         errorCode: USER_ERROR_CODES.USR_006,
       });
-      throw new NotFoundException({
+      throw new InternalServerErrorException({
         message: USER_ERROR_MESSAGES.RESTORE,
         errorCode: USER_ERROR_CODES.USR_006,
       });
