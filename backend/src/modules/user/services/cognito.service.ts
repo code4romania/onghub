@@ -42,16 +42,6 @@ export class CognitoUserService {
     return data.User.Username;
   }
 
-  async disableUser(username: string) {
-    const disableUserCommand = new AdminDisableUserCommand({
-      UserPoolId: CognitoConfig.userPoolId,
-      Username: username,
-    });
-
-    const data = await this.cognitoProvider.send(disableUserCommand);
-    return data;
-  }
-
   async globalSignOut(username: string) {
     const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
       UserPoolId: CognitoConfig.userPoolId,
