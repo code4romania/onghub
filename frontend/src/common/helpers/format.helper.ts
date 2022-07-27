@@ -82,3 +82,11 @@ export const str2boolObject = (item: any) => {
     item[key] = str2bool(item[key]);
   });
 };
+
+export const emptyStringToNull = (obj: any): any => {
+  let newObj = {};
+  Object.keys(obj).forEach((key: any) => {
+    newObj = { ...newObj, [key]: obj[key] || null };
+  });
+  return newObj;
+};
