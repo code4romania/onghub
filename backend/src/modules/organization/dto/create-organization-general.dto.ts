@@ -75,13 +75,11 @@ export class CreateOrganizationGeneralDto {
   /* Organization short description */
   @IsString()
   @Length(50, 250)
-  @Matches(REGEX.DESCRIPTION)
   shortDescription?: string;
 
   /* Organization long description */
   @IsString()
   @Length(200, 700)
-  @Matches(REGEX.DESCRIPTION)
   description?: string;
 
   // TODO: this should be removed once we have the attachment table
