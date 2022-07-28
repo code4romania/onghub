@@ -5,6 +5,7 @@ import {
   NUMERIC_REGEX,
   RAF_NUMBER_REGEX,
   rangeOfYears,
+  EMAIL_REGEX,
 } from './../../../../common/helpers/format.helper';
 import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
@@ -53,6 +54,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 3,
         message: 'Organization Name has a minimum length of 3 characters.',
       },
+      pattern: {
+        value: ALPHANUMERIC_REGEX,
+        message: 'Invalid format',
+      },
     },
     config: {
       type: 'text',
@@ -82,6 +87,11 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         name: 'type',
         value: OrganizationTypeEnum.FOUNDATION,
       },
+      {
+        label: OrganizationTypeNaming[OrganizationTypeEnum.FEDERATION],
+        name: 'type',
+        value: OrganizationTypeEnum.FEDERATION,
+      },
     ],
   },
   email: {
@@ -94,6 +104,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       maxLength: {
         value: 50,
         message: 'Email has a maximum length of 50 characters.',
+      },
+      pattern: {
+        value: EMAIL_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {
@@ -318,6 +332,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       maxLength: {
         value: 50,
         message: 'Contact Email has a maximum length of 50 characters.',
+      },
+      pattern: {
+        value: EMAIL_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {

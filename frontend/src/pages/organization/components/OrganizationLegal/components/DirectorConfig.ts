@@ -1,4 +1,4 @@
-import { NAME_REGEX, PHONE_REGEX } from '../../../../../common/helpers/format.helper';
+import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../../common/helpers/format.helper';
 
 export const DirectorConfig: Record<string, any> = {
   fullName: {
@@ -38,6 +38,10 @@ export const DirectorConfig: Record<string, any> = {
       maxLength: {
         value: 50,
         message: 'Director Email has a maximum length of 50 characters.',
+      },
+      pattern: {
+        value: EMAIL_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {

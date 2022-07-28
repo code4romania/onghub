@@ -1,4 +1,4 @@
-import { NAME_REGEX, PHONE_REGEX } from '../../../../common/helpers/format.helper';
+import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../common/helpers/format.helper';
 
 export const OrganizationLegalConfig: Record<string, any> = {
   legal_reprezentative_name: {
@@ -38,6 +38,10 @@ export const OrganizationLegalConfig: Record<string, any> = {
       maxLength: {
         value: 50,
         message: 'Legal Representative Email has a maximum length of 50 characters.',
+      },
+      pattern: {
+        value: EMAIL_REGEX,
+        message: 'Invalid format',
       },
     },
     config: {
