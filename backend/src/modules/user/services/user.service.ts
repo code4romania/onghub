@@ -77,47 +77,49 @@ export class UserService {
   }
 
   async restrictAccess(cognitoIds: RestrictUserDto[]) {
-    try {
-      Promise.all(
-        cognitoIds.map(async (item) => {
-          await this.userRepository.update(
-            { cognitoId: item.cognitoId },
-            { status: UserStatus.RESTRICTED },
-          );
-          await this.cognitoService.globalSignOut(item.cognitoId);
-        }),
-      );
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        ...USER_ERRORS.RESTRICT_BULK,
-      });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.RESTRICT_BULK,
-        error,
-      });
+    const updated = [],
+      failed = [];
+    for (let i = 0; i < cognitoIds.length; i++) {
+      const id = cognitoIds[i].cognitoId;
+      try {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.RESTRICTED },
+        );
+        await this.cognitoService.globalSignOut(id);
+        updated.push(id);
+      } catch (error) {
+        this.pinoLogger.error({
+          error: { error },
+          ...USER_ERRORS.RESTRICT,
+          cognitoId: id,
+        });
+        failed.push({ cognitoId: id, error });
+      }
     }
+    return { updated, failed };
   }
 
   async restoreAccess(cognitoIds: ActivateUserDto[]) {
-    try {
-      Promise.all(
-        cognitoIds.map(async (item) => {
-          await this.userRepository.update(
-            { cognitoId: item.cognitoId },
-            { status: UserStatus.ACTIVE },
-          );
-        }),
-      );
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        ...USER_ERRORS.RESTORE_BULK,
-      });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.RESTORE_BULK,
-        error,
-      });
+    const updated = [],
+      failed = [];
+    for (let i = 0; i < cognitoIds.length; i++) {
+      const id = cognitoIds[i].cognitoId;
+      try {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.ACTIVE },
+        );
+        updated.push(id);
+      } catch (error) {
+        this.pinoLogger.error({
+          error: { error },
+          ...USER_ERRORS.RESTORE,
+          cognitoId: id,
+        });
+        failed.push({ cognitoId: id, error });
+      }
     }
+    return { updated, failed };
   }
 }

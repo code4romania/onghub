@@ -1,11 +1,19 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Param,
+  ParseArrayPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ActivateUserDto } from './dto/restore-user.dto';
 import { RestrictUserDto } from './dto/restrict-user.dto';
 import { UserService } from './services/user.service';
 
 @Controller('user')
+@ApiBearerAuth()
 // TODO: add permissions for Admin (SuperAdmin and Admin)
 export class AdminUserController {
   constructor(private readonly userService: UserService) {}
@@ -23,16 +31,22 @@ export class AdminUserController {
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin
-  @ApiBody({ type: RestrictUserDto })
-  @Patch(':restrict')
-  restrictBulk(@Body() cognitoIds: RestrictUserDto[]) {
+  @ApiBody({ type: RestrictUserDto, isArray: true })
+  @Patch('restrict')
+  restrict(
+    @Body(new ParseArrayPipe({ items: RestrictUserDto }))
+    cognitoIds: RestrictUserDto[],
+  ) {
     return this.userService.restrictAccess(cognitoIds);
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin
-  @ApiBody({ type: ActivateUserDto })
-  @Patch(':activate_multiple')
-  restoreBulk(@Body() cognitoIds: ActivateUserDto[]) {
+  @ApiBody({ type: ActivateUserDto, isArray: true })
+  @Patch('activate')
+  restore(
+    @Body(new ParseArrayPipe({ items: ActivateUserDto }))
+    cognitoIds: ActivateUserDto[],
+  ) {
     return this.userService.restoreAccess(cognitoIds);
   }
 }
