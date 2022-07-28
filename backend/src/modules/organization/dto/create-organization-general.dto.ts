@@ -167,7 +167,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization donation keyword */
   @IsOptional()
   @MaxLength(10)
-  @Matches(REGEX.ALPHANUMERIC)
+  @Matches(REGEX.NAME)
   donationKeyword?: string;
 
   /* Organization contact person */
