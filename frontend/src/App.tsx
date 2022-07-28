@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import Router from './common/router/Router';
-import { AuthContext } from './contexts/AuthContext';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { messages as messagesRo } from './assets/locales/ro/messages';
 import { LocaleProvider } from './contexts/LocaleContext';
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import { AMPLIFY_CONFIG } from './common/config/amplify.config';
 import { toast, ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import AuthProvider from './AuthProvider';
 
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
@@ -23,32 +23,9 @@ i18n.activate('ro');
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [authState, setAuthState] = useState({
-    isAuthenticated: false,
-  });
-
-  const logout: any = async () => {
-    await Auth.signOut();
-    setAuthState({ isAuthenticated: false });
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser();
-        // #TODO Get user from backend based on user.username (+ check status - deny access if disabled)
-        // #TODO Set user in store
-        setAuthState({ isAuthenticated: true });
-        console.log(user);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ ...authState, setAuthState, logout }}>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <LocaleProvider>
           <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
             <ToastContainer
@@ -61,8 +38,8 @@ const App = () => {
             <Router />
           </I18nProvider>
         </LocaleProvider>
-      </QueryClientProvider>
-    </AuthContext.Provider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 
