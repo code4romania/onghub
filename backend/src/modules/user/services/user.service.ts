@@ -76,36 +76,17 @@ export class UserService {
     return `This action removes a #${id} user`;
   }
 
-  async restrictAccess(restrictUserDto: RestrictUserDto) {
+  async restrictAccess(cognitoIds: RestrictUserDto[]) {
     try {
-      // 1. Update user status to 'restricted'
-      await this.userRepository.update(
-        { cognitoId: restrictUserDto.cognitoId },
-        { status: UserStatus.RESTRICTED },
+      Promise.all(
+        cognitoIds.map(async (item) => {
+          await this.userRepository.update(
+            { cognitoId: item.cognitoId },
+            { status: UserStatus.RESTRICTED },
+          );
+          await this.cognitoService.globalSignOut(item.cognitoId);
+        }),
       );
-      // 2. Sign out and revoke access tokens from cognito
-      await this.cognitoService.globalSignOut(restrictUserDto.cognitoId);
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        ...USER_ERRORS.RESTRICT,
-      });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.RESTRICT,
-        error,
-      });
-    }
-  }
-
-  restrictAccessBulk(cognitoIds: string[]) {
-    try {
-      cognitoIds.forEach(async (id) => {
-        await this.userRepository.update(
-          { cognitoId: id },
-          { status: UserStatus.RESTRICTED },
-        );
-        await this.cognitoService.globalSignOut(id);
-      });
     } catch (error) {
       this.pinoLogger.error({
         error: { error },
@@ -118,33 +99,16 @@ export class UserService {
     }
   }
 
-  async restoreAccess(activateUserDto: ActivateUserDto) {
+  async restoreAccess(cognitoIds: ActivateUserDto[]) {
     try {
-      // 1. Update user status to 'restricted'
-      await this.userRepository.update(
-        { cognitoId: activateUserDto.cognitoId },
-        { status: UserStatus.ACTIVE },
+      Promise.all(
+        cognitoIds.map(async (item) => {
+          await this.userRepository.update(
+            { cognitoId: item.cognitoId },
+            { status: UserStatus.ACTIVE },
+          );
+        }),
       );
-    } catch (error) {
-      this.pinoLogger.error({
-        error: { error },
-        ...USER_ERRORS.RESTORE,
-      });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.RESTORE,
-        error,
-      });
-    }
-  }
-
-  restoreAccessBulk(cognitoIds: string[]) {
-    try {
-      cognitoIds.forEach(async (id) => {
-        await this.userRepository.update(
-          { cognitoId: id },
-          { status: UserStatus.ACTIVE },
-        );
-      });
     } catch (error) {
       this.pinoLogger.error({
         error: { error },

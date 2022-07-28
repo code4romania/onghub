@@ -23,24 +23,16 @@ export class AdminUserController {
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin
-  @Patch(':cognitoId/restrict')
-  restrict(@Param() restrictUserDto: RestrictUserDto) {
-    return this.userService.restrictAccess(restrictUserDto);
-  }
-
-  @Patch(':restrict_multiple')
-  restrictBulk(@Param() cognitoIds: string[]) {
-    return this.userService.restrictAccessBulk(cognitoIds);
+  @ApiBody({ type: RestrictUserDto })
+  @Patch(':restrict')
+  restrictBulk(@Body() cognitoIds: RestrictUserDto[]) {
+    return this.userService.restrictAccess(cognitoIds);
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin
-  @Patch(':cognitoId/activate')
-  restore(@Param() activateUserDto: ActivateUserDto) {
-    return this.userService.restoreAccess(activateUserDto);
-  }
-
+  @ApiBody({ type: ActivateUserDto })
   @Patch(':activate_multiple')
-  restoreBulk(@Param() cognitoIds: string[]) {
-    return this.userService.restoreAccessBulk(cognitoIds);
+  restoreBulk(@Body() cognitoIds: ActivateUserDto[]) {
+    return this.userService.restoreAccess(cognitoIds);
   }
 }
