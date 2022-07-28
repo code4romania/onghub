@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -39,8 +41,7 @@ export class UserService {
   */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // TODO 1. Validate DTO
-      // 1.1. Check the organizationId exists
+      // 1. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
       // ====================================
       // 2. Create user in Cognito
@@ -57,10 +58,18 @@ export class UserService {
         error: { error },
         ...USER_ERRORS.CREATE,
       });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.CREATE,
-        error,
-      });
+
+      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+        throw new BadRequestException({
+          ...USER_ERRORS.CREATE_WRONG_ORG,
+          error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          ...USER_ERRORS.CREATE,
+          error,
+        });
+      }
     }
   }
 
