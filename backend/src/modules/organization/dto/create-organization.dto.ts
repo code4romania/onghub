@@ -3,7 +3,6 @@ import { ValidateNested } from 'class-validator';
 import { CreateOrganizationActivityDto } from './create-organization-activity.dto';
 import { CreateOrganizationGeneralDto } from './create-organization-general.dto';
 import { CreateOrganizationLegalDto } from './create-organization-legal.dto';
-import { CreateOrganizationReportDto } from './create-organization-report.dto';
 export class CreateOrganizationDto {
   /* Organization General */
   @Type(() => CreateOrganizationGeneralDto)
@@ -19,9 +18,4 @@ export class CreateOrganizationDto {
   @Type(() => CreateOrganizationLegalDto)
   @ValidateNested()
   legal: CreateOrganizationLegalDto;
-
-  /* Organization Report */
-  @Type(() => CreateOrganizationReportDto)
-  @ValidateNested()
-  report: CreateOrganizationReportDto;
 }

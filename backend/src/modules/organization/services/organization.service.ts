@@ -13,7 +13,7 @@ import {
 } from '../constants/errors.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
+import { Investor, Organization, Partner, Report } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -163,7 +163,9 @@ export class OrganizationService {
         },
       ],
       organizationReport: {
-        ...createOrganizationDto.report,
+        reports: [new Report()],
+        partners: [new Partner()],
+        investors: [new Investor()],
       },
     });
   }
@@ -177,6 +179,8 @@ export class OrganizationService {
         'organizationGeneral.county',
         'organizationGeneral.contact',
         'organizationActivity',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
         'organizationActivity.domains',
         'organizationActivity.cities',
         'organizationActivity.federations',
@@ -188,6 +192,9 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
       ],
     });
 
@@ -244,13 +251,6 @@ export class OrganizationService {
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
         updateOrganizationDto.financial,
-      );
-    }
-
-    if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
-        organization.organizationReportId,
-        updateOrganizationDto.report,
       );
     }
 
