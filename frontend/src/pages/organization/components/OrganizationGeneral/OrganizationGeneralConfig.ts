@@ -4,6 +4,7 @@ import {
   NAME_REGEX,
   NUMERIC_REGEX,
   RAF_NUMBER_REGEX,
+  rangeOfYears,
 } from './../../../../common/helpers/format.helper';
 import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
@@ -144,7 +145,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Anul infiintarii*',
-      collection: [2019, 2020, 2021, 2022],
+      collection: rangeOfYears(1800),
       displayedAttribute: '',
     },
   },
@@ -180,17 +181,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Organization Register of asociations and Foundations Number is required.',
+        message: 'Organization Register of associations and Foundations Number is required.',
       },
       maxLength: {
-        value: 12,
+        value: 20,
         message:
-          'Organization Register of asociations and Foundations Number has a maximum length of 12 characters.',
-      },
-      minLength: {
-        value: 10,
-        message:
-          'Organization Register of asociations and Foundations Number has a maximum length of 10 characters.',
+          'Organization Register of associations and Foundations Number has a maximum length of 20 characters.',
       },
       pattern: {
         value: RAF_NUMBER_REGEX,
@@ -234,11 +230,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Judet*',
-      collection: [
-        { id: 1, year: 2019 },
-        { id: 2, year: 2020 },
-        { id: 3, year: 2022 },
-      ],
       displayedAttribute: 'year',
     },
   },

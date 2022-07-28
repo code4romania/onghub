@@ -10,8 +10,9 @@ export const formatDate = (value: Date | string): string => format(new Date(valu
 export const URL_REGEX =
   /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-\\._~:/?#[\]@!\\$&'\\(\\)\\*\\+,;=.]+$/g;
 
-export const PHONE_REGEX = /0\d{9}/;
-export const CUI_REGEX = /((RO)?\d+)/;
+export const PHONE_REGEX =
+  /^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\\-)?([0-9]{3}(\s|\.|\\-|)){2}$/;
+export const CUI_REGEX = /(RO)?\d+$/;
 export const NAME_REGEX = /^[a-zA-Z-\s]*$/;
 export const ALPHANUMERIC_REGEX = /^[a-zA-Z0-9-\s]*$/;
 export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
@@ -88,4 +89,12 @@ export const emptyStringToNull = (obj: any): any => {
     newObj = { ...newObj, [key]: obj[key] || null };
   });
   return newObj;
+};
+
+// Returns an array of years.
+export const rangeOfYears = (start: number, end?: number) => {
+  end = end || new Date().getFullYear();
+  return Array(end - start + 1)
+    .fill(start)
+    .map((year, index) => year + index);
 };
