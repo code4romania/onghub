@@ -1,6 +1,17 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PinoLogger } from 'nestjs-pino';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from 'src/modules/organization/constants/errors.constants';
+import { OrganizationService } from 'src/modules/organization/services';
+import { PinoLogger } from 'nestjs-pino';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -20,6 +31,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    private readonly organizationService: OrganizationService,
     private readonly pinoLogger: PinoLogger,
   ) {}
 
@@ -29,8 +41,8 @@ export class UserService {
   */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // TODO 1. Validate DTO
-      // TODO 1.1. Check the organizationId exists
+      // 1. Check the organizationId exists
+      await this.organizationService.findOne(createUserDto.organizationId);
       // ====================================
       // 2. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
@@ -46,10 +58,18 @@ export class UserService {
         error: { error },
         ...USER_ERRORS.CREATE,
       });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.CREATE,
-        error,
-      });
+
+      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+        throw new BadRequestException({
+          ...USER_ERRORS.CREATE_WRONG_ORG,
+          error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          ...USER_ERRORS.CREATE,
+          error,
+        });
+      }
     }
   }
 
