@@ -1,25 +1,26 @@
-import {
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { PinoLogger } from 'nestjs-pino';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { Organization } from 'src/modules/organization/entities';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { ActivateUserDto } from '../dto/restore-user.dto';
+import { RestrictUserDto } from '../dto/restrict-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../entities/user.entity';
 import { Role } from '../enums/role.enum';
+import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
+import { USER_ERRORS } from '../constants/user-error.constants';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    private readonly pinoLogger: PinoLogger,
   ) {}
 
   /*
@@ -41,7 +42,14 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      throw new InternalServerErrorException(error);
+      this.pinoLogger.error({
+        error: { error },
+        ...USER_ERRORS.CREATE,
+      });
+      throw new InternalServerErrorException({
+        ...USER_ERRORS.CREATE,
+        error,
+      });
     }
   }
 
@@ -66,5 +74,52 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async restrictAccess(cognitoIds: RestrictUserDto[]) {
+    const updated = [],
+      failed = [];
+    for (let i = 0; i < cognitoIds.length; i++) {
+      const id = cognitoIds[i].cognitoId;
+      try {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.RESTRICTED },
+        );
+        await this.cognitoService.globalSignOut(id);
+        updated.push(id);
+      } catch (error) {
+        this.pinoLogger.error({
+          error: { error },
+          ...USER_ERRORS.RESTRICT,
+          cognitoId: id,
+        });
+        failed.push({ cognitoId: id, error });
+      }
+    }
+    return { updated, failed };
+  }
+
+  async restoreAccess(cognitoIds: ActivateUserDto[]) {
+    const updated = [],
+      failed = [];
+    for (let i = 0; i < cognitoIds.length; i++) {
+      const id = cognitoIds[i].cognitoId;
+      try {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.ACTIVE },
+        );
+        updated.push(id);
+      } catch (error) {
+        this.pinoLogger.error({
+          error: { error },
+          ...USER_ERRORS.RESTORE,
+          cognitoId: id,
+        });
+        failed.push({ cognitoId: id, error });
+      }
+    }
+    return { updated, failed };
   }
 }
