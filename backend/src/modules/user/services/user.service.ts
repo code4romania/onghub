@@ -97,6 +97,27 @@ export class UserService {
     }
   }
 
+  restrictAccessBulk(cognitoIds: string[]) {
+    try {
+      cognitoIds.forEach(async (id) => {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.RESTRICTED },
+        );
+        await this.cognitoService.globalSignOut(id);
+      });
+    } catch (error) {
+      this.pinoLogger.error({
+        error: { error },
+        ...USER_ERRORS.RESTRICT_BULK,
+      });
+      throw new InternalServerErrorException({
+        ...USER_ERRORS.RESTRICT_BULK,
+        error,
+      });
+    }
+  }
+
   async restoreAccess(activateUserDto: ActivateUserDto) {
     try {
       // 1. Update user status to 'restricted'
@@ -111,6 +132,26 @@ export class UserService {
       });
       throw new InternalServerErrorException({
         ...USER_ERRORS.RESTORE,
+        error,
+      });
+    }
+  }
+
+  restoreAccessBulk(cognitoIds: string[]) {
+    try {
+      cognitoIds.forEach(async (id) => {
+        await this.userRepository.update(
+          { cognitoId: id },
+          { status: UserStatus.ACTIVE },
+        );
+      });
+    } catch (error) {
+      this.pinoLogger.error({
+        error: { error },
+        ...USER_ERRORS.RESTORE_BULK,
+      });
+      throw new InternalServerErrorException({
+        ...USER_ERRORS.RESTORE_BULK,
         error,
       });
     }

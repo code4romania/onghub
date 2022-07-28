@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ActivateUserDto } from './dto/restore-user.dto';
@@ -35,9 +28,19 @@ export class AdminUserController {
     return this.userService.restrictAccess(restrictUserDto);
   }
 
+  @Patch(':restrict_multiple')
+  restrictBulk(@Param() cognitoIds: string[]) {
+    return this.userService.restrictAccessBulk(cognitoIds);
+  }
+
   // TODO: restrict to be called only by Admin/Super-Admin
   @Patch(':cognitoId/activate')
   restore(@Param() activateUserDto: ActivateUserDto) {
     return this.userService.restoreAccess(activateUserDto);
+  }
+
+  @Patch(':activate_multiple')
+  restoreBulk(@Param() cognitoIds: string[]) {
+    return this.userService.restoreAccessBulk(cognitoIds);
   }
 }
