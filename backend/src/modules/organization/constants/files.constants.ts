@@ -1,7 +1,7 @@
 export const ORGANIZATION_FILES_DIR = {
-  LOGO: 'logo/',
-  STATUTE: 'statute/',
-  REPORTS: 'reports/',
-  PARTNERS: 'partners/',
-  INVESTORS: 'investors/',
+  LOGO: 'logo',
+  STATUTE: 'statute',
+  REPORTS: 'reports',
+  PARTNERS: 'partners',
+  INVESTORS: 'investors',
 };

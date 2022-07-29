@@ -22,7 +22,7 @@ export class OrganizationLegalService {
     const { directorsDeleted, ...organizationLegalData } =
       updateOrganizationLegalDto;
 
-    if (updateOrganizationLegalDto.directors.length < 3) {
+    if (updateOrganizationLegalDto?.directors?.length < 3) {
       throw new BadRequestException({
         message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
         errorCode: ERROR_CODES.ORG009,
