@@ -15,7 +15,7 @@ import {
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Investor, Organization, Partner, Report } from '../entities';
+import { Organization } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationFiles } from '../models/organization-files.interface';
@@ -167,9 +167,9 @@ export class OrganizationService {
         },
       ],
       organizationReport: {
-        reports: [new Report()],
-        partners: [new Partner()],
-        investors: [new Investor()],
+        reports: [{}],
+        partners: [{}],
+        investors: [{}],
       },
     });
   }
@@ -255,6 +255,13 @@ export class OrganizationService {
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
         updateOrganizationDto.financial,
+      );
+    }
+
+    if (updateOrganizationDto.report) {
+      return this.organizationReportService.update(
+        organization.organizationReportId,
+        updateOrganizationDto.report,
       );
     }
 

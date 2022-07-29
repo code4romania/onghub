@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
 import { InvestorService } from './investor.service';
 import { PartnerService } from './partner.service';
 import { ReportService } from './report.service';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import {
+  ERROR_CODES,
+  HTTP_ERRORS_MESSAGES,
+} from '../constants/errors.constants';
 import { OrganizationReportRepository } from '../repositories';
 
 @Injectable()
@@ -16,26 +20,35 @@ export class OrganizationReportService {
   ) {}
 
   public async update(
+    id: number,
     updateOrganizationReportDto: UpdateOrganizationReportDto,
   ) {
-    if (updateOrganizationReportDto.report) {
-      const { id, ...data } = updateOrganizationReportDto.report;
-      const partner = await this.partnerService.get({
-        where: { year: updateOrganizationReportDto.year },
+    const { reportId, numberOfContractors, numberOfVolunteers, report } =
+      updateOrganizationReportDto;
+    const reportSummary = await this.reportService.get({
+      where: { id: reportId },
+    });
+
+    if (!reportSummary) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.REPORT_NOT_FOUND,
+        errorCode: ERROR_CODES.ORG011,
       });
-      const investor = await this.investorService.get({
-        where: { year: updateOrganizationReportDto.year },
-      });
-      data['status'] = CompletionStatus.COMPLETED;
-      if (
-        data.numberOfContractors !== investor.numberOfInvestors ||
-        data.numberOfVolunteers !== partner.numberOfPartners
-      ) {
-        data['status'] = CompletionStatus.NOT_COMPLETED;
-      }
-      this.organizationReportRepository.save({ id });
-      return this.reportService.update(id, data);
     }
+
+    await this.reportService.update(reportId, {
+      status: report
+        ? CompletionStatus.COMPLETED
+        : CompletionStatus.NOT_COMPLETED,
+      numberOfContractors: numberOfContractors ?? null,
+      numberOfVolunteers: numberOfVolunteers ?? null,
+      report: report || null,
+    });
+
+    return this.organizationReportRepository.get({
+      where: { id },
+      relations: ['reports', 'partners', 'investors'],
+    });
   }
 
   public async delete(reportId: number, partnerId: number, investorId: number) {

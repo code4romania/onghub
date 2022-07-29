@@ -10,7 +10,11 @@ interface ReportSummaryModalProps {
   year: number;
   defaultValue: Partial<Report>;
   onClose: () => void;
-  onSave: (data: Partial<Report>) => void;
+  onSave: (data: {
+    report: string;
+    numberOfContractors: number;
+    numberOfVolunteers: number;
+  }) => void;
 }
 
 const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSummaryModalProps) => {
@@ -26,7 +30,9 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
   }, [defaultValue]);
 
   const handleSave = () => {
-    onSave(getValues());
+    onSave(
+      getValues() as { report: string; numberOfContractors: number; numberOfVolunteers: number },
+    );
   };
 
   return (

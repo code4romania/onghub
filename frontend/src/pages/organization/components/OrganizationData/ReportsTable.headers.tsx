@@ -18,14 +18,14 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   {
     id: 'numberOfVolunteers',
     name: 'Voluntari',
-    selector: (row: Report) => row.numberOfVolunteers || 'N/A',
+    selector: (row: Report) => row.numberOfVolunteers ?? 'N/A',
     grow: 1,
     sortable: true,
   },
   {
     id: 'numberOfContractors',
     name: 'Contractori',
-    selector: (row: Report) => row.numberOfContractors || 'N/A',
+    selector: (row: Report) => row.numberOfContractors ?? 'N/A',
     grow: 1,
     sortable: true,
   },
@@ -36,9 +36,9 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       row.report ? (
         <a
           className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
-          target="_blank"
           href={row.report as string}
           rel="noreferrer"
+          download
         >
           {`Report${row.year}`}
           <ExternalLinkIcon className="w-4 h-4" />

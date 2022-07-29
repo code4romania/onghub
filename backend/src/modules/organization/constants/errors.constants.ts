@@ -9,6 +9,7 @@ export const HTTP_ERRORS_MESSAGES = {
   MINIMUM_DIRECTORS: 'Minimum 3 directors',
   ANAF_ERROR: 'Incoming data not corresponding with data from ANAF',
   UPLOAD_FILES: 'Error while uploading the files',
+  REPORT_NOT_FOUND: 'Report not found',
 };
 
 export const ERROR_CODES = {
@@ -22,5 +23,6 @@ export const ERROR_CODES = {
   ORG008: 'ORG008',
   ORG009: 'ORG009',
   ORG010: 'ORG010',
+  ORG011: 'ORG011',
   ANAF001: 'ANAF001',
 };

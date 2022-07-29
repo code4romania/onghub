@@ -13,6 +13,8 @@ import { InvestorsTableHeaders } from './InvestorTable.headers';
 import ReportSummaryModal from './components/ReportSummaryModal';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import { getInvestorsTemplate, getPartnersTemplate } from '../../../../services/files/File.service';
+import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationData = () => {
   const [isActivitySummartModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
@@ -20,10 +22,15 @@ const OrganizationData = () => {
   const { organizationReport } = useSelectedOrganization();
   const [investorsLink, setInvestorsLink] = useState<string>('');
   const [partnersLink, setPartnersLink] = useState<string>('');
+  const { mutate, error, isLoading } = useOrganizationMutation();
 
   useEffect(() => {
     initTemplateData();
   }, []);
+
+  useEffect(() => {
+    if (error) useErrorToast('Could not load open data');
+  }, [error]);
 
   const initTemplateData = async () => {
     setInvestorsLink(await getInvestorsTemplate());
@@ -86,12 +93,32 @@ const OrganizationData = () => {
     setIsActivitySummaryModalOpen(true);
   };
 
-  const onSaveReport = (data: Partial<Report>) => {
-    console.log('on save report', data);
+  const onSaveReport = (data: {
+    report: string;
+    numberOfContractors: number;
+    numberOfVolunteers: number;
+  }) => {
+    setIsActivitySummaryModalOpen(false);
+    mutate({
+      id: 2,
+      organization: {
+        report: {
+          reportId: selectedReport?.id as number,
+          ...data,
+        },
+      },
+    });
   };
 
   const onDeleteReport = (row: Report) => {
-    console.log('report row delete', row);
+    mutate({
+      id: 2,
+      organization: {
+        report: {
+          reportId: row.id,
+        },
+      },
+    });
   };
 
   const onDeletePartner = (row: Partner) => {
@@ -118,6 +145,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...ReportsTableHeaders, buildReportActionColumn()]}
             data={organizationReport?.reports || []}
+            loading={isLoading}
           />
         </>
       </CardPanel>
@@ -159,16 +187,16 @@ const OrganizationData = () => {
           </div>
           <DataTableComponent
             columns={[...InvestorsTableHeaders, buildPartnersInvestorsActionColumn()]}
-            data={organizationReport?.inverstors || []}
+            data={organizationReport?.investors || []}
           />
         </>
       </CardPanel>
       {isActivitySummartModalOpen && selectedReport && (
         <ReportSummaryModal
-          onClose={() => setIsActivitySummaryModalOpen(false)}
+          onClose={setIsActivitySummaryModalOpen.bind(null, false)}
           defaultValue={selectedReport}
           onSave={onSaveReport}
-          year={new Date().getFullYear()}
+          year={selectedReport.year}
         />
       )}
     </div>
