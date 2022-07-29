@@ -10,14 +10,17 @@ export const formatDate = (value: Date | string): string => format(new Date(valu
 export const URL_REGEX =
   /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-\\._~:/?#[\]@!\\$&'\\(\\)\\*\\+,;=.]+$/g;
 
-export const PHONE_REGEX = /0\d{9}/;
-export const CUI_REGEX = /((RO)?\d+)/;
-export const NAME_REGEX = /^[a-zA-Z-\s]*$/;
-export const ALPHANUMERIC_REGEX = /^[a-zA-Z0-9-\s]*$/;
-export const DESCRIPTION_REGEX = /^(.|\s)*[a-zA-Z]+(.|\s)*$/;
+export const PHONE_REGEX =
+  /^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\\-)?([0-9]{3}(\s|\.|\\-|)){2}$/;
+export const CUI_REGEX = /(RO)?\d+$/;
+export const NAME_REGEX = /^(?!.*[ ]{2})[a-zA-Z-\săîâșțĂÎÂȘȚ]*$/;
+export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ"]*$/;
 export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
 
-export const NUMERIC_REGEX = /^[0-9]*$/;
+export const NUMERIC_REGEX = /^\d*$/;
+
+export const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 // Flattens the nested objects to key_value
 export const flatten = (x: any, result: any, prefix?: any) => {
