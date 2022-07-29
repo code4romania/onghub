@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { PencilIcon, TrashIcon, DownloadIcon, UploadIcon } from '@heroicons/react/outline';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
@@ -12,11 +12,23 @@ import { Partner } from '../../interfaces/Partner.interface';
 import { InvestorsTableHeaders } from './InvestorTable.headers';
 import ReportSummaryModal from './components/ReportSummaryModal';
 import CardPanel from '../../../../components/card-panel/CardPanel';
+import { getInvestorsTemplate, getPartnersTemplate } from '../../../../services/files/File.service';
 
 const OrganizationData = () => {
   const [isActivitySummartModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const { organizationReport } = useSelectedOrganization();
+  const [investorsLink, setInvestorsLink] = useState<string>('');
+  const [partnersLink, setPartnersLink] = useState<string>('');
+
+  useEffect(() => {
+    initTemplateData();
+  }, []);
+
+  const initTemplateData = async () => {
+    setInvestorsLink(await getInvestorsTemplate());
+    setPartnersLink(await getPartnersTemplate());
+  };
 
   const buildReportActionColumn = (): TableColumn<Report> => {
     const menuItems = [
@@ -115,10 +127,9 @@ const OrganizationData = () => {
             <p className="text-base font-normal text-gray-900 flex">
               Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
               <a
-                href="http://test.com"
-                target="_blank"
+                href={partnersLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
-                rel="noreferrer"
+                download
               >
                 <DownloadIcon className="w-5 h-5" />
                 Descarca model de tabel parteneri
@@ -137,13 +148,12 @@ const OrganizationData = () => {
             <p className="text-base font-normal text-gray-900 flex">
               Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
               <a
-                href="http://test.com"
-                target="_blank"
+                href={investorsLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
-                rel="noreferrer"
+                download
               >
                 <DownloadIcon className="w-5 h-5" />
-                Descarca model de tabel parteneri
+                Descarca model de tabel finantatori
               </a>
             </p>
           </div>

@@ -26,6 +26,7 @@ interface OrganizationPayload {
       directors?: Partial<Contact>[];
       directorsDeleted?: number[];
       others?: Partial<Person>[];
+      organizationStatute?: string | null;
     };
   };
 }

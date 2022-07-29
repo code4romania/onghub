@@ -1,15 +1,11 @@
-import {
-  CacheInterceptor,
-  Controller,
-  Get,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
-import { NomenclaturesService } from '../services';
+import { Public } from 'src/common/decorators/public.decorator';
+import { FileManagerService } from '../services/file-manager.service';
 
 @Controller('')
 export class SharedController {
-  constructor() {}
+  constructor(private readonly fileManagerService: FileManagerService) {}
 
   @SkipThrottle()
   @Get('health')
@@ -20,5 +16,21 @@ export class SharedController {
   @Get('version')
   version() {
     return 'v0.0.2';
+  }
+
+  @Public()
+  @Get('public/partners')
+  partners() {
+    return this.fileManagerService.generatePresignedURL(
+      'static/Lista_parteneri_2021.xlsx',
+    );
+  }
+
+  @Public()
+  @Get('public/investors')
+  investors() {
+    return this.fileManagerService.generatePresignedURL(
+      'static/Lista_finantatori_2021.xlsx',
+    );
   }
 }
