@@ -107,7 +107,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is inavalid',
+        message: 'Email format is invalid',
       },
     },
     config: {
