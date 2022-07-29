@@ -129,7 +129,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Phone has a minimum length of 10 characters.',
       },
       maxLength: {
-        value: 10,
+        value: 12,
         message: 'Phone has a maximum length of 10 characters.',
       },
       pattern: {
