@@ -205,7 +205,7 @@ const OrganizationLegal = () => {
     };
 
     mutate({
-      id: 1,
+      id: 3,
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 

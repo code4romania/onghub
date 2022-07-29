@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
@@ -13,6 +13,7 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { FinancialType } from '../../enums/FinancialType.enum';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import CardPanel from '../../../../components/card-panel/CardPanel';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
@@ -20,7 +21,11 @@ const OrganizationFinancial = () => {
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
   const { organizationFinancial } = useSelectedOrganization();
-  const { mutate, isLoading } = useOrganizationMutation();
+  const { mutate, isLoading, error } = useOrganizationMutation();
+
+  useEffect(() => {
+    if (error) useErrorToast('Error while saving financial data');
+  }, [error]);
 
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
     const menuItems = [
