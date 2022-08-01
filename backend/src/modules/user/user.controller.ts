@@ -3,10 +3,13 @@ import {
   Get,
   ClassSerializerInterceptor,
   UseInterceptors,
+  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
 import { ExtractUser } from './decorators/user.decorator';
+import { AllowedStatuses } from 'src/common/decorators/user-status.decorator';
+import { UserStatus } from './enums/user-status.enum';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -14,6 +17,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('')
+  @AllowedStatuses(UserStatus.RESTRICTED)
   profile(@ExtractUser() user: User) {
     return user;
   }

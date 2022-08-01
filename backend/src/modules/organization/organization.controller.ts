@@ -8,7 +8,11 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { ApiBody, ApiTooManyRequestsResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiTooManyRequestsResponse,
+} from '@nestjs/swagger';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
@@ -16,26 +20,25 @@ import {
   OrganizationActivityMock,
   OrganizationGeneralMock,
   OrganizationLegalMock,
-  OrganizationReportMock,
 } from './mocks/organization.mock';
 import { OrganizationService } from './services/organization.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiBearerAuth()
 @Controller('organization')
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
   // @ApiBody({ type: CreateOrganizationDto })
   @Post()
-  create(): Promise<Organization> {
-    // @Body() createOrganizationDto: CreateOrganizationDto,
+  create(): // @Body() createOrganizationDto: CreateOrganizationDto,
+  Promise<Organization> {
     // return this.organizationService.create(createOrganizationDto);
     return this.organizationService.create({
       general: OrganizationGeneralMock,
       activity: OrganizationActivityMock,
       legal: OrganizationLegalMock,
-      report: OrganizationReportMock,
     });
   }
 

@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Menu from '../components/menu/Menu';
 
-// Compoment that serves as the layout for the app. Everything will be rendered with an header and an side menu.
+// Compoment that serves as the layout for the app. Everything will be rendered with a header and a side menu.
 const Layout = () => {
   return (
     <div className="w-screen h-screen max-w-full ">

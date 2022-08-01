@@ -56,11 +56,11 @@ export const DirectorConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Director Name is required.',
+        message: 'Director Phone is required.',
       },
       maxLength: {
-        value: 10,
-        message: 'Director phone has a maximum length of 10 characters.',
+        value: 12,
+        message: 'Director phone has a maximum length of 12 characters.',
       },
       minLength: {
         value: 10,
