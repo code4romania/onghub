@@ -41,7 +41,7 @@ export const DirectorConfig: Record<string, any> = {
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Invalid format',
+        message: 'Email format is invalid',
       },
     },
     config: {
