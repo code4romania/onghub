@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import AppStore from '../../pages/apps-store/AppStore';
+import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
+import CreateOrganizationActivity from '../../pages/create-organziation/CreateOrganizationActivity';
+import CreateOrganizationGeneral from '../../pages/create-organziation/CreateOrganizationGeneral';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
@@ -26,6 +29,10 @@ const Router = () => {
           path="/login"
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
+        <Route path="new" element={<CreateOrganization />}>
+          <Route path="general" element={<CreateOrganizationGeneral />} />
+          <Route path="activity" element={<CreateOrganizationActivity />} />
+        </Route>
         <Route
           path="/"
           element={

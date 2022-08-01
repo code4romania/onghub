@@ -5,7 +5,7 @@ import profile from './../../assets/images/profile.svg';
 import { useAuthContext } from '../../contexts/AuthContext';
 
 const Header = () => {
-  const { logout } = useAuthContext();
+  const { logout, isAuthenticated } = useAuthContext();
 
   return (
     <header className="bg-white">
@@ -14,13 +14,15 @@ const Header = () => {
           <div className="flex items-center">
             <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
           </div>
-          <div className="flex space-x-4 items-center">
-            <span>Ana Popescu</span>
-            <button type="button" className="save-button" onClick={() => logout()}>
-              Logout
-            </button>
-            <img className="w-10 h-10" src={profile} alt="Profile photo" />
-          </div>
+          {isAuthenticated && (
+            <div className="flex space-x-4 items-center">
+              <span>Ana Popescu</span>
+              <button type="button" className="save-button" onClick={() => logout()}>
+                Logout
+              </button>
+              <img className="w-10 h-10" src={profile} alt="Profile photo" />
+            </div>
+          )}
         </div>
       </nav>
     </header>
