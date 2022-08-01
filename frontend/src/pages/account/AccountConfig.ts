@@ -1,3 +1,5 @@
+import { PASSWORD_REGEX } from '../../common/helpers/format.helper';
+
 export const AccountConfig: Record<string, any> = {
   oldPassword: {
     key: 'oldPassword',
@@ -7,8 +9,7 @@ export const AccountConfig: Record<string, any> = {
         message: 'Old password is required.',
       },
       pattern: {
-        value:
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/,
+        value: PASSWORD_REGEX,
         message: 'Password is invalid',
       },
     },
@@ -27,8 +28,7 @@ export const AccountConfig: Record<string, any> = {
         message: 'New password is required.',
       },
       pattern: {
-        value:
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/,
+        value: PASSWORD_REGEX,
         message:
           'Password is invalid. It must have at least 8 characters, a special character (?, = *, etc.), a lowercase letter, an uppercase letter, and a number.',
       },
@@ -48,8 +48,7 @@ export const AccountConfig: Record<string, any> = {
         message: 'New password is required.',
       },
       pattern: {
-        value:
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/,
+        value: PASSWORD_REGEX,
         message:
           'Password is invalid. It must have at least 8 characters, a special character (?, = *, etc.), a lowercase letter, an uppercase letter, and a number.',
       },

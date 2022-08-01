@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useUserQuery } from './services/user/User.queries';
 import LoadingContent from './components/data-table/LoadingContent';
+import { useNavigate } from 'react-router-dom';
 
 const Loading = () => {
   return (
@@ -19,7 +20,7 @@ const AuthProvider = ({ children }: any) => {
   });
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
-  const { refetch: refetchUserProfile } = useUserQuery({ enabled: false });
+  const { refetch: refetchUserProfile, error: fetchUserError } = useUserQuery({ enabled: false });
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,11 +37,17 @@ const AuthProvider = ({ children }: any) => {
         await refetchUserProfile();
         setIsLoading(false);
       } catch (error) {
-        console.error(error);
         setIsLoading(false);
+        logout();
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (fetchUserError) {
+      logout();
+    }
+  }, [fetchUserError]);
 
   return (
     <AuthContext.Provider value={{ ...authState, setAuthState, logout }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import InputField from '../../components/InputField/InputField';
@@ -6,9 +6,13 @@ import { AccountConfig } from './AccountConfig';
 import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import AccountDeleteModal from './AccountDeleteModal';
+import { useUserMutation } from '../../services/user/User.queries';
+import { LogoutIcon } from '@heroicons/react/solid';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
+  const { logout } = useAuthContext();
   const {
     handleSubmit,
     control,
@@ -21,6 +25,11 @@ const Account = () => {
     reValidateMode: 'onChange',
   });
   const [isAccountDeleteModalOpen, setAccountDeleteModal] = useState(false);
+  const { mutate: deleteUser, error: deleteUserError } = useUserMutation();
+
+  useEffect(() => {
+    useErrorToast((deleteUserError as any)?.response?.data?.message);
+  }, [deleteUserError]);
 
   const newPassword = watch('newPassword');
 
@@ -40,6 +49,12 @@ const Account = () => {
       .catch((err) => {
         useErrorToast(err.message);
       });
+  };
+
+  const handleUserDelete = () => {
+    setAccountDeleteModal(false);
+    deleteUser();
+    logout();
   };
 
   return (
@@ -193,10 +208,7 @@ const Account = () => {
           onClose={() => {
             setAccountDeleteModal(false);
           }}
-          onConfirm={() => {
-            setAccountDeleteModal(false);
-            alert('Not implemented yet.');
-          }}
+          onConfirm={handleUserDelete}
         />
       )}
     </div>
