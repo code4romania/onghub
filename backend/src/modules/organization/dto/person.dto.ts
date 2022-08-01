@@ -14,7 +14,6 @@ export class Person {
   @Matches(REGEX.NAME)
   fullName: string;
 
-  @IsAlpha()
   @MinLength(3)
   @MaxLength(100)
   @Matches(REGEX.NAME)

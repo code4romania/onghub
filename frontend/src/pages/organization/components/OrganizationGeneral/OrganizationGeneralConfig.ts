@@ -1,7 +1,6 @@
 import {
   ALPHANUMERIC_REGEX,
   CUI_REGEX,
-  DESCRIPTION_REGEX,
   NAME_REGEX,
   NUMERIC_REGEX,
   RAF_NUMBER_REGEX,
@@ -258,10 +257,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 50,
         message: 'Short description has a minimum length of 50 characters.',
       },
-      pattern: {
-        value: DESCRIPTION_REGEX,
-        message: 'Short description is invalid',
-      },
     },
     config: {
       type: 'text',
@@ -285,10 +280,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       minLength: {
         value: 200,
         message: 'Description has a minimum length of 200 characters.',
-      },
-      pattern: {
-        value: DESCRIPTION_REGEX,
-        message: 'Description is invalid',
       },
     },
     config: {
