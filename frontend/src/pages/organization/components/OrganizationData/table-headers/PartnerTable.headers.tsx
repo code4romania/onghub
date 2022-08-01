@@ -1,36 +1,36 @@
 import React from 'react';
 import { Trans } from '@lingui/react';
 import { TableColumn } from 'react-data-table-component';
-import { formatDate } from '../../../../common/helpers/format.helper';
-import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
-import { CompletionStatus } from '../../enums/CompletionStatus.enum';
-import { Investor } from '../../interfaces/Investor.interface';
+import { formatDate } from '../../../../../common/helpers/format.helper';
+import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
+import { CompletionStatus } from '../../../enums/CompletionStatus.enum';
+import { Partner } from '../../../interfaces/Partner.interface';
 
-export const InvestorsTableHeaders: TableColumn<Investor>[] = [
+export const PartnerTableHeaders: TableColumn<Partner>[] = [
   {
     id: 'name',
-    name: 'Lista finantatori',
-    selector: (row: Investor) => `Finantatori ${row.year}`,
+    name: 'Lista parteneri',
+    selector: (row: Partner) => `Parteneri ${row.year}`,
     grow: 4,
   },
   {
     id: 'year',
     name: 'An',
-    selector: (row: Investor) => row.year,
+    selector: (row: Partner) => row.year,
     grow: 1,
     sortable: true,
   },
   {
-    id: 'numberOfInvestors',
+    id: 'numberOfPartners',
     name: 'Numar parteneri',
-    selector: (row: Investor) => row.numberOfInvestors || 'N/A',
+    selector: (row: Partner) => row.numberOfPartners || 'N/A',
     grow: 1.5,
     sortable: true,
   },
   {
     id: 'status',
     name: <Trans id="status" />,
-    cell: (row: Investor) => (
+    cell: (row: Partner) => (
       <StatusBadge
         status={
           row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
@@ -45,7 +45,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
   {
     id: 'updatedOn',
     name: <Trans id="updateOn" />,
-    selector: (row: Investor) => formatDate(row?.updatedOn as string),
+    selector: (row: Partner) => formatDate(row?.updatedOn as string),
     sortable: true,
     grow: 1,
   },

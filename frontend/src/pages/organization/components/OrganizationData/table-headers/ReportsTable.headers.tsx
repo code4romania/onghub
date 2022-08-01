@@ -1,10 +1,10 @@
 import React from 'react';
 import { Trans } from '@lingui/react';
 import { TableColumn } from 'react-data-table-component';
-import { formatDate } from '../../../../common/helpers/format.helper';
-import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
-import { CompletionStatus } from '../../enums/CompletionStatus.enum';
-import { Report } from '../../interfaces/Report.interface';
+import { formatDate } from '../../../../../common/helpers/format.helper';
+import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
+import { CompletionStatus } from '../../../enums/CompletionStatus.enum';
+import { Report } from '../../../interfaces/Report.interface';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 export const ReportsTableHeaders: TableColumn<Report>[] = [
@@ -36,9 +36,9 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       row.report ? (
         <a
           className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
-          href={row.report as string}
+          href={row.report || ''}
+          target="_blank"
           rel="noreferrer"
-          download
         >
           {`Report${row.year}`}
           <ExternalLinkIcon className="w-4 h-4" />

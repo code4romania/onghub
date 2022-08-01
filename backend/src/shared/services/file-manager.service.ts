@@ -44,6 +44,7 @@ export class FileManagerService {
   public async uploadFiles(
     path: string,
     files: Express.Multer.File[],
+    fileName?: string,
   ): Promise<string[]> {
     this.logger.log(`Preparing to upload ${files.length} files...`);
 
@@ -71,7 +72,7 @@ export class FileManagerService {
     const params: FileUploadParams[] = files.map((file) => ({
       Body: file.buffer,
       Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
-      Key: `${path}/${uuid()}-${file.originalname}`,
+      Key: `${path}/${uuid()}-${fileName || file.originalname}`,
     }));
 
     // Prepare upload

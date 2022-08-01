@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   UploadedFiles,
+  Delete,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
@@ -50,6 +51,40 @@ export class OrganizationController {
   }
 
   @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
+  @Post(':id/partners/:partnerId')
+  uploadPartnerList(
+    @Param('id') id: string,
+    @Param('partnerId') partnerId: string,
+    @Body() body: { numberOfPartners: number },
+    @UploadedFiles() files: { partners: Express.Multer.File[] },
+  ): Promise<any> {
+    return this.organizationService.uploadPartners(
+      +id,
+      +partnerId,
+      +body.numberOfPartners,
+      files.partners,
+    );
+  }
+
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
+  @Post(':id/investors/:investorId')
+  uploadInvestorList(
+    @Param('id') id: string,
+    @Param('investorId') investorId: string,
+    @Body() body: { numberOfInvestors: number },
+    @UploadedFiles() files: { investors: Express.Multer.File[] },
+  ): Promise<any> {
+    return this.organizationService.uploadInvestors(
+      +id,
+      +investorId,
+      +body.numberOfInvestors,
+      files.investors,
+    );
+  }
+
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'logo', maxCount: 1 },
@@ -62,5 +97,13 @@ export class OrganizationController {
     @UploadedFiles() files: OrganizationFiles,
   ): Promise<any> {
     return this.organizationService.upload(id, files);
+  }
+
+  @Delete(':id/investors/:investorId')
+  deleteInvestors(
+    @Param('id') id: string,
+    @Param('investorId') investorId: string,
+  ) {
+    return this.organizationService.deleteInvestor(+id, +investorId);
   }
 }

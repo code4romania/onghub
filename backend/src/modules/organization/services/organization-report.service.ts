@@ -9,6 +9,7 @@ import {
   HTTP_ERRORS_MESSAGES,
 } from '../constants/errors.constants';
 import { OrganizationReportRepository } from '../repositories';
+import { Investor, Partner } from '../entities';
 
 @Injectable()
 export class OrganizationReportService {
@@ -51,6 +52,36 @@ export class OrganizationReportService {
     });
   }
 
+  public async updatePartner(
+    partnerId: number,
+    numberOfPartners?: number,
+    link?: string,
+  ): Promise<Partner> {
+    return this.partnerService.update(partnerId, {
+      numberOfPartners: numberOfPartners ?? null,
+      status: numberOfPartners
+        ? CompletionStatus.COMPLETED
+        : CompletionStatus.NOT_COMPLETED,
+      link: link || null,
+    });
+  }
+
+  public async updateInvestor(
+    investorId: number,
+    numberOfInvestors?: number,
+    path?: string,
+    link?: string,
+  ): Promise<Investor> {
+    return this.investorService.update(investorId, {
+      numberOfInvestors: numberOfInvestors ?? null,
+      status: numberOfInvestors
+        ? CompletionStatus.COMPLETED
+        : CompletionStatus.NOT_COMPLETED,
+      path: path || null,
+      link: link || null,
+    });
+  }
+
   public async delete(reportId: number, partnerId: number, investorId: number) {
     if (investorId) {
       this.investorService.delete(investorId);
@@ -63,5 +94,9 @@ export class OrganizationReportService {
     if (reportId) {
       this.reportService.delete(reportId);
     }
+  }
+
+  public async getInvestor(id: number) {
+    return this.investorService.get({ where: { id } });
   }
 }

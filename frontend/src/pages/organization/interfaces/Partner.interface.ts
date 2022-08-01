@@ -5,4 +5,5 @@ export interface Partner extends BaseEntity {
   year: number;
   numberOfPartners: number | null;
   status: CompletionStatus;
+  link: string | null;
 }

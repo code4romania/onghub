@@ -8,7 +8,10 @@ interface MenuItem {
   name: string;
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   onClick: (row: any) => void;
+  downloadProp?: string;
   isRemove?: boolean;
+  isUpload?: boolean;
+  isDownload?: boolean;
 }
 
 interface MenuProps {
@@ -48,32 +51,75 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="relative grid gap-4 bg-white py-4 px-5">
                   {menuItems.map((item) => (
-                    <a
-                      key={item.name}
-                      className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
-                      onClick={() => {
-                        item.onClick(row);
-                        close();
-                      }}
-                    >
-                      <item.icon
-                        className={classNames(
-                          item.isRemove ? 'text-red-600' : 'text-gray-900',
-                          'flex-shrink-0 h-5 w-5',
-                        )}
-                        aria-hidden="true"
-                      />
-                      <div className="ml-2.5">
-                        <p
-                          className={classNames(
-                            item.isRemove ? 'text-red-600' : 'text-gray-900',
-                            'text-xm font-normal',
-                          )}
+                    <div key={item.name}>
+                      {item.isDownload && (
+                        <a
+                          href={row[item.downloadProp || '']}
+                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                          onClick={() => {
+                            item.onClick(row);
+                            close();
+                          }}
+                          download
                         >
-                          <Trans id={item.name} />
-                        </p>
-                      </div>
-                    </a>
+                          <item.icon
+                            className="text-gray-900 flex-shrink-0 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                          <div className="ml-2.5">
+                            <label className="text-gray-900 text-xm font-normal">
+                              <Trans id={item.name} />
+                            </label>
+                          </div>
+                        </a>
+                      )}
+                      {item.isUpload && (
+                        <a
+                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                          onClick={() => {
+                            item.onClick(row);
+                            close();
+                          }}
+                        >
+                          <item.icon
+                            className="text-gray-900 flex-shrink-0 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                          <div className="ml-2.5">
+                            <label htmlFor="upload" className="text-gray-900 text-xm font-normal">
+                              <Trans id={item.name} />
+                            </label>
+                          </div>
+                        </a>
+                      )}
+                      {!item.isDownload && !item.isUpload && (
+                        <a
+                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                          onClick={() => {
+                            item.onClick(row);
+                            close();
+                          }}
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.isRemove ? 'text-red-600' : 'text-gray-900',
+                              'flex-shrink-0 h-5 w-5',
+                            )}
+                            aria-hidden="true"
+                          />
+                          <div className="ml-2.5">
+                            <label
+                              className={classNames(
+                                item.isRemove ? 'text-red-600' : 'text-gray-900',
+                                'text-xm font-normal',
+                              )}
+                            >
+                              <Trans id={item.name} />
+                            </label>
+                          </div>
+                        </a>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>

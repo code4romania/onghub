@@ -7,9 +7,12 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
+  deleteInvestors,
   getOrganization,
   patchOrganization,
+  uploadInvestors,
   uploadOrganizationFiles,
+  uploadPartners,
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
@@ -108,5 +111,40 @@ export const useOrganizationMutation = () => {
 export const useUploadOrganizationFilesMutation = () => {
   return useMutation(({ id, data }: { id: number; data: FormData }) =>
     uploadOrganizationFiles(id, data),
+  );
+};
+
+export const useUploadPartnersList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, partnerId, data }: { id: number; partnerId: number; data: FormData }) =>
+      uploadPartners(id, partnerId, data),
+    {
+      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
+        setOrganizationReport(data.organizationReport),
+    },
+  );
+};
+
+export const useUploadInvestorsList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, investorId, data }: { id: number; investorId: number; data: FormData }) =>
+      uploadInvestors(id, investorId, data),
+    {
+      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
+        setOrganizationReport(data.organizationReport),
+    },
+  );
+};
+
+export const useDeleteInvestorsList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),
+    {
+      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
+        setOrganizationReport(data.organizationReport),
+    },
   );
 };

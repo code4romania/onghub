@@ -271,10 +271,17 @@ export class OrganizationService {
   public async upload(
     organizationId: string,
     files: OrganizationFiles,
-  ): Promise<{ logo: string; organizationStatute: string }> {
+  ): Promise<{
+    logo: string;
+    organizationStatute: string;
+    investors: string;
+    partners: string;
+  }> {
     const response = {
       logo: null,
       organizationStatute: null,
+      investors: null,
+      partners: null,
     };
 
     try {
@@ -310,15 +317,113 @@ export class OrganizationService {
     }
   }
 
+  public async uploadPartners(
+    organizationId: number,
+    partnerId: number,
+    numberOfPartners: number,
+    files: Express.Multer.File[],
+  ): Promise<Organization> {
+    await this.fileManagerService.deleteFiles([`partners_list.xlxs`]);
+
+    const link = await this.uploadFilesToBucket(
+      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
+      files,
+      'partners_list.xlsx',
+    );
+
+    await this.organizationReportService.updatePartner(
+      partnerId,
+      numberOfPartners,
+      link,
+    );
+
+    return this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: [
+        'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
+      ],
+    });
+  }
+
+  public async uploadInvestors(
+    organizationId: number,
+    investorId: number,
+    numberOfInvestors: number,
+    files: Express.Multer.File[],
+  ): Promise<Organization> {
+    const investor = await this.organizationReportService.getInvestor(
+      investorId,
+    );
+
+    if (investor.path) {
+      await this.fileManagerService.deleteFiles([investor.path]);
+    }
+
+    const uploadedFile = await this.fileManagerService.uploadFiles(
+      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
+      files,
+      'investors_list.xlsx',
+    );
+
+    const link = await this.fileManagerService.generatePresignedURL(
+      uploadedFile[0],
+    );
+
+    await this.organizationReportService.updateInvestor(
+      investorId,
+      numberOfInvestors,
+      uploadedFile[0],
+      link,
+    );
+
+    return this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: [
+        'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
+      ],
+    });
+  }
+
+  public async deleteInvestor(organizationId: number, investorId: number) {
+    const investor = await this.organizationReportService.getInvestor(
+      investorId,
+    );
+
+    // delete file from aws
+    if (investor?.path) {
+      await this.fileManagerService.deleteFiles([investor.path]);
+    }
+
+    await this.organizationReportService.updateInvestor(investorId);
+
+    return this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: [
+        'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
+      ],
+    });
+  }
+
   private async uploadFilesToBucket(
     path: string,
     files: Express.Multer.File[],
+    fileName?: string,
   ): Promise<string> {
-    // delete old file from aws
-    await this.fileManagerService.deleteFiles([path]);
-
     // upload new file
-    const uploadedFile = await this.fileManagerService.uploadFiles(path, files);
+    const uploadedFile = await this.fileManagerService.uploadFiles(
+      path,
+      files,
+      fileName,
+    );
 
     // generate public link to file
     return this.fileManagerService.generatePresignedURL(uploadedFile[0]);
