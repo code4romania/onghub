@@ -4,7 +4,6 @@ import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ChipSelection from '../../../../components/chip-selection/ChipSelection';
 import { OrganizationActivityConfig, OrganizationAreaEnum } from './OrganizationActivityConfig';
 import { Controller, useForm } from 'react-hook-form';
-import { OrganizationGeneralConfig } from '../OrganizationGeneral/OrganizationGeneralConfig';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import ServerSelect from '../../../../components/server-select/ServerSelect';
 import { getCities } from '../../../../services/nomenclature/Nomenclatures.service';
@@ -19,6 +18,7 @@ import InputField from '../../../../components/InputField/InputField';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
+  emptyArrayToNull,
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
@@ -78,7 +78,7 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({ id: 3, organization: { activity } });
+    mutate({ id: 3, organization: { activity: emptyArrayToNull(activity) } });
   };
 
   // load initial values
