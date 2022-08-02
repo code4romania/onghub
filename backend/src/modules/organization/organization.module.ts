@@ -15,6 +15,7 @@ import {
 } from './entities';
 import {
   ContactRepository,
+  InvestorRepository,
   OrganizationActivityRepository,
   OrganizationFinancialRepository,
   OrganizationGeneralRepository,
@@ -60,6 +61,7 @@ import { OrganizationReportService } from './services/organization-report.servic
     OrganizationActivityRepository,
     OrganizationLegalRepository,
     PartnerRepository,
+    InvestorRepository,
     ContactRepository,
     OrganizationLegalService,
     OrganizationFinancialRepository,
