@@ -1,17 +1,12 @@
 import {
   BadRequestException,
-  HttpException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
+  Logger,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import {
-  ERROR_CODES,
-  HTTP_ERRORS_MESSAGES,
-} from 'src/modules/organization/constants/errors.constants';
+import { ERROR_CODES } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { PinoLogger } from 'nestjs-pino';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -28,11 +23,11 @@ import { USER_ERRORS } from '../constants/user-error.constants';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
-    private readonly pinoLogger: PinoLogger,
   ) {}
 
   /*
@@ -54,7 +49,7 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      this.pinoLogger.error({
+      this.logger.error({
         error: { error },
         ...USER_ERRORS.CREATE,
       });
@@ -109,7 +104,7 @@ export class UserService {
         await this.cognitoService.globalSignOut(id);
         updated.push(id);
       } catch (error) {
-        this.pinoLogger.error({
+        this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTRICT,
           cognitoId: id,
@@ -132,7 +127,7 @@ export class UserService {
         );
         updated.push(id);
       } catch (error) {
-        this.pinoLogger.error({
+        this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTORE,
           cognitoId: id,
