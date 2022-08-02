@@ -154,6 +154,7 @@ const OrganizationLegal = () => {
         ),
     );
     setDirectors(filteredDirectors);
+    setSelectedDirector(null);
     setIsDeleteDirectorModalOpen(false);
   };
 
@@ -188,6 +189,7 @@ const OrganizationLegal = () => {
         !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
     );
     setOthers(filteredOthers);
+    setSelectedOther(null);
     setIsDeleteOtherModalOpen(false);
   };
 
@@ -349,13 +351,19 @@ const OrganizationLegal = () => {
           )}
           {isDeleteDirectorModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteDirectorModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteDirectorModalOpen(false);
+                setSelectedDirector(null);
+              }}
               onConfirm={onDeleteDirector}
             />
           )}
           {isDeleteOtheModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteOtherModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteOtherModalOpen(false);
+                setSelectedOther(null);
+              }}
               onConfirm={onDeleteOther}
             />
           )}
