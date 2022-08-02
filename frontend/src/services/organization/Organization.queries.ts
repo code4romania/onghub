@@ -121,8 +121,7 @@ export const useUploadPartnersList = () => {
     ({ id, partnerId, data }: { id: number; partnerId: number; data: FormData }) =>
       uploadPartners(id, partnerId, data),
     {
-      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
-        setOrganizationReport(data.organizationReport),
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
 };
@@ -133,8 +132,7 @@ export const useUploadInvestorsList = () => {
     ({ id, investorId, data }: { id: number; investorId: number; data: FormData }) =>
       uploadInvestors(id, investorId, data),
     {
-      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
-        setOrganizationReport(data.organizationReport),
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
 };
@@ -144,8 +142,7 @@ export const useDeletePartnerMutation = () => {
   return useMutation(
     ({ id, partnerId }: { id: number; partnerId: number }) => deletePartners(id, partnerId),
     {
-      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
-        setOrganizationReport(data.organizationReport),
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
 };
@@ -155,8 +152,7 @@ export const useDeleteInvestorMutation = () => {
   return useMutation(
     ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),
     {
-      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
-        setOrganizationReport(data.organizationReport),
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
 };

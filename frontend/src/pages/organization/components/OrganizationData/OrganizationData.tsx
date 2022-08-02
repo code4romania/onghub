@@ -200,18 +200,28 @@ const OrganizationData = () => {
 
   const uploadPartnersList = async (partnerId: number, file: File) => {
     const rows = await readXlsxFile(file);
+    if (rows.length <= 2) {
+      useErrorToast('The file you uploaded contains no data!');
+      return;
+    }
+
     const data = new FormData();
     data.append('partners', file);
-    data.append('numberOfPartners', rows.length.toString());
+    data.append('numberOfPartners', (rows.length - 2).toString());
     uploadPartnersMutation.mutate({ id: 2, partnerId, data });
     setSelectedPartner(null);
   };
 
   const uploadInvestorsList = async (investorId: number, file: File) => {
     const rows = await readXlsxFile(file);
+    if (rows.length <= 2) {
+      useErrorToast('The file you uploaded contains no data!');
+      return;
+    }
+
     const data = new FormData();
     data.append('investors', file);
-    data.append('numberOfInvestors', rows.length.toString());
+    data.append('numberOfInvestors', (rows.length - 2).toString());
     uploadInvestorsMutation.mutate({ id: 2, investorId, data });
     setSelectedInvestor(null);
   };

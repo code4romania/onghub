@@ -6,5 +6,5 @@ export const ORGANIZATION_FILES_DIR = {
   INVESTORS: 'investors',
 };
 
-export const PARTNER_LIST = 'partners_list.xlxs';
-export const INVESTOR_LIST = 'partners_list.xlxs';
+export const PARTNER_LIST = 'partners_list.xlsx';
+export const INVESTOR_LIST = 'partners_list.xlsx';
