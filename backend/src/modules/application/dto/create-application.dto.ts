@@ -22,19 +22,16 @@ export class CreateApplicationDto {
   @IsArray()
   @IsNotEmpty()
   @Length(10, 100, { each: true })
-  @Matches(REGEX.DESCRIPTION, { each: true })
   steps: string[];
 
   @IsString()
   @IsNotEmpty()
   @Length(200, 250)
-  @Matches(REGEX.DESCRIPTION)
   shortDescription: string;
 
   @IsString()
   @IsNotEmpty()
   @Length(200, 250)
-  @Matches(REGEX.DESCRIPTION)
   description: string;
 
   @IsString()

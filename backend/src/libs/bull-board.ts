@@ -1,10 +1,9 @@
 import { ExpressAdapter } from '@bull-board/express';
-import { INestApplication } from '@nestjs/common';
+import { Logger, INestApplication } from '@nestjs/common';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
-import { Logger } from 'nestjs-pino';
 import {
   CommonErrorCodes,
   CommonErrorMessages,

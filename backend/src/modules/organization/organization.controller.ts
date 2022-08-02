@@ -14,6 +14,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   ApiBody,
   ApiConsumes,
+  ApiBearerAuth,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -24,6 +25,7 @@ import { OrganizationService } from './services/organization.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
+@ApiBearerAuth()
 @Controller('organization')
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}

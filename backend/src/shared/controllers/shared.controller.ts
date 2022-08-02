@@ -3,6 +3,7 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { FileManagerService } from '../services/file-manager.service';
 
+@Public()
 @Controller('')
 export class SharedController {
   constructor(private readonly fileManagerService: FileManagerService) {}

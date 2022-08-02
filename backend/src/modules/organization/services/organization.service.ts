@@ -196,9 +196,6 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
-        'organizationReport.reports',
-        'organizationReport.partners',
-        'organizationReport.investors',
       ],
     });
 

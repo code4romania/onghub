@@ -6,9 +6,11 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
+import { Public } from 'src/common/decorators/public.decorator';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { NomenclaturesService } from '../services';
 
+@Public()
 @UseInterceptors(CacheInterceptor, ClassSerializerInterceptor)
 @Controller('nomenclatures')
 export class NomenclaturesController {

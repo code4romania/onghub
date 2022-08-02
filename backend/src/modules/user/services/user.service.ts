@@ -1,6 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PinoLogger } from 'nestjs-pino';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ERROR_CODES } from 'src/modules/organization/constants/errors.constants';
+import { OrganizationService } from 'src/modules/organization/services';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -17,10 +23,11 @@ import { USER_ERRORS } from '../constants/user-error.constants';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
-    private readonly pinoLogger: PinoLogger,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   /*
@@ -29,8 +36,8 @@ export class UserService {
   */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // TODO 1. Validate DTO
-      // TODO 1.1. Check the organizationId exists
+      // 1. Check the organizationId exists
+      await this.organizationService.findOne(createUserDto.organizationId);
       // ====================================
       // 2. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
@@ -42,14 +49,22 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      this.pinoLogger.error({
+      this.logger.error({
         error: { error },
         ...USER_ERRORS.CREATE,
       });
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.CREATE,
-        error,
-      });
+
+      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+        throw new BadRequestException({
+          ...USER_ERRORS.CREATE_WRONG_ORG,
+          error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          ...USER_ERRORS.CREATE,
+          error,
+        });
+      }
     }
   }
 
@@ -89,7 +104,7 @@ export class UserService {
         await this.cognitoService.globalSignOut(id);
         updated.push(id);
       } catch (error) {
-        this.pinoLogger.error({
+        this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTRICT,
           cognitoId: id,
@@ -112,7 +127,7 @@ export class UserService {
         );
         updated.push(id);
       } catch (error) {
-        this.pinoLogger.error({
+        this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTORE,
           cognitoId: id,

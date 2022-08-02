@@ -16,7 +16,7 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
+import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationGeneral = () => {
@@ -109,14 +109,16 @@ const OrganizationGeneral = () => {
           onSettled: (data: { logo: string }) => {
             mutate({
               id: 1,
-              organization: { general: { ...organizationGeneral, logo: data?.logo || null } },
+              organization: {
+                general: emptyStringToNull({ ...organizationGeneral, logo: data?.logo || null }),
+              },
             });
           },
         },
       );
       setFile(null);
     } else {
-      mutate({ id: 1, organization: { general: organizationGeneral } });
+      mutate({ id: 3, organization: { general: emptyStringToNull(organizationGeneral) } });
     }
   };
 
