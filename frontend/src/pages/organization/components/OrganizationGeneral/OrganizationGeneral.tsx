@@ -104,7 +104,7 @@ const OrganizationGeneral = () => {
       const data = new FormData();
       data.append('logo', file);
       filesMutation.mutate(
-        { id: 3, data },
+        { id: 1, data },
         {
           onSettled: (data: { logo: string }) => {
             mutate({
@@ -116,7 +116,7 @@ const OrganizationGeneral = () => {
       );
       setFile(null);
     } else {
-      mutate({ id: 3, organization: { general: organizationGeneral } });
+      mutate({ id: 1, organization: { general: organizationGeneral } });
     }
   };
 

@@ -8,6 +8,7 @@ import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
   deleteInvestors,
+  deletePartners,
   getOrganization,
   patchOrganization,
   uploadInvestors,
@@ -138,7 +139,18 @@ export const useUploadInvestorsList = () => {
   );
 };
 
-export const useDeleteInvestorsList = () => {
+export const useDeletePartnerMutation = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, partnerId }: { id: number; partnerId: number }) => deletePartners(id, partnerId),
+    {
+      onSuccess: (data: { organizationReport: IOrganizationReport }) =>
+        setOrganizationReport(data.organizationReport),
+    },
+  );
+};
+
+export const useDeleteInvestorMutation = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
     ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),

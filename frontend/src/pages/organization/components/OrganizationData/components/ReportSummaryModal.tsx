@@ -10,15 +10,11 @@ interface ReportSummaryModalProps {
   year: number;
   defaultValue: Partial<Report>;
   onClose: () => void;
-  onSave: (data: {
-    report: string;
-    numberOfContractors: number;
-    numberOfVolunteers: number;
-  }) => void;
+  onSave: (data: any) => void;
 }
 
 const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSummaryModalProps) => {
-  const { control, reset, getValues } = useForm({
+  const { control, reset, handleSubmit } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -28,12 +24,6 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
       reset({ ...defaultValue });
     }
   }, [defaultValue]);
-
-  const handleSave = () => {
-    onSave(
-      getValues() as { report: string; numberOfContractors: number; numberOfVolunteers: number },
-    );
-  };
 
   return (
     <Transition.Root show={true} as={Fragment}>
@@ -146,7 +136,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleSave}
+                    onClick={handleSubmit(onSave)}
                   >
                     Salveaza
                   </button>

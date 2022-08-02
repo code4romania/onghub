@@ -26,6 +26,10 @@ export const uploadInvestors = (id: number, investorId: number, files: FormData)
   }).then((res) => res.data);
 };
 
+export const deletePartners = (id: number, partnerId: number): Promise<any> => {
+  return API.delete(`/organization/${id}/partners/${partnerId}`).then((res) => res.data);
+};
+
 export const deleteInvestors = (id: number, investorId: number): Promise<any> => {
   return API.delete(`/organization/${id}/investors/${investorId}`).then((res) => res.data);
 };

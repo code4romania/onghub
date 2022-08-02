@@ -15,7 +15,7 @@ import {
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
+import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationFiles } from '../models/organization-files.interface';
@@ -274,14 +274,10 @@ export class OrganizationService {
   ): Promise<{
     logo: string;
     organizationStatute: string;
-    investors: string;
-    partners: string;
   }> {
     const response = {
       logo: null,
       organizationStatute: null,
-      investors: null,
-      partners: null,
     };
 
     try {
@@ -322,30 +318,28 @@ export class OrganizationService {
     partnerId: number,
     numberOfPartners: number,
     files: Express.Multer.File[],
-  ): Promise<Organization> {
-    await this.fileManagerService.deleteFiles([`partners_list.xlxs`]);
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
 
-    const link = await this.uploadFilesToBucket(
-      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
-      files,
-      'partners_list.xlsx',
-    );
+    if (!organization) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG002,
+      });
+    }
 
     await this.organizationReportService.updatePartner(
       partnerId,
       numberOfPartners,
-      link,
+      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
+      files,
     );
 
-    return this.organizationRepository.get({
-      where: { id: organizationId },
-      relations: [
-        'organizationReport',
-        'organizationReport.reports',
-        'organizationReport.partners',
-        'organizationReport.investors',
-      ],
-    });
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
   }
 
   public async uploadInvestors(
@@ -353,64 +347,72 @@ export class OrganizationService {
     investorId: number,
     numberOfInvestors: number,
     files: Express.Multer.File[],
-  ): Promise<Organization> {
-    const investor = await this.organizationReportService.getInvestor(
-      investorId,
-    );
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
 
-    if (investor.path) {
-      await this.fileManagerService.deleteFiles([investor.path]);
+    if (!organization) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG002,
+      });
     }
-
-    const uploadedFile = await this.fileManagerService.uploadFiles(
-      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
-      files,
-      'investors_list.xlsx',
-    );
-
-    const link = await this.fileManagerService.generatePresignedURL(
-      uploadedFile[0],
-    );
 
     await this.organizationReportService.updateInvestor(
       investorId,
       numberOfInvestors,
-      uploadedFile[0],
-      link,
+      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
+      files,
     );
 
-    return this.organizationRepository.get({
-      where: { id: organizationId },
-      relations: [
-        'organizationReport',
-        'organizationReport.reports',
-        'organizationReport.partners',
-        'organizationReport.investors',
-      ],
-    });
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
   }
 
-  public async deleteInvestor(organizationId: number, investorId: number) {
-    const investor = await this.organizationReportService.getInvestor(
-      investorId,
-    );
+  public async deletePartner(
+    organizationId: number,
+    partnerId: number,
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
 
-    // delete file from aws
-    if (investor?.path) {
-      await this.fileManagerService.deleteFiles([investor.path]);
+    if (!organization) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG002,
+      });
     }
 
-    await this.organizationReportService.updateInvestor(investorId);
+    await this.organizationReportService.deletePartner(partnerId);
 
-    return this.organizationRepository.get({
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
+  }
+
+  public async deleteInvestor(
+    organizationId: number,
+    investorId: number,
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
       where: { id: organizationId },
-      relations: [
-        'organizationReport',
-        'organizationReport.reports',
-        'organizationReport.partners',
-        'organizationReport.investors',
-      ],
     });
+
+    if (!organization) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
+        errorCode: ERROR_CODES.ORG002,
+      });
+    }
+
+    await this.organizationReportService.deleteInvestor(investorId);
+
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
   }
 
   private async uploadFilesToBucket(

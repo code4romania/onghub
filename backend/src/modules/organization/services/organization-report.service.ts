@@ -1,29 +1,41 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
-import { InvestorService } from './investor.service';
-import { PartnerService } from './partner.service';
 import { ReportService } from './report.service';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import {
   ERROR_CODES,
   HTTP_ERRORS_MESSAGES,
 } from '../constants/errors.constants';
-import { OrganizationReportRepository } from '../repositories';
-import { Investor, Partner } from '../entities';
+import {
+  InvestorRepository,
+  OrganizationReportRepository,
+  PartnerRepository,
+} from '../repositories';
+import { OrganizationReport } from '../entities';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { INVESTOR_LIST, PARTNER_LIST } from '../constants/files.constants';
 
 @Injectable()
 export class OrganizationReportService {
   constructor(
     private readonly organizationReportRepository: OrganizationReportRepository,
+    private readonly partnerRepository: PartnerRepository,
+    private readonly investorRepository: InvestorRepository,
     private readonly reportService: ReportService,
-    private readonly partnerService: PartnerService,
-    private readonly investorService: InvestorService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
+
+  public async findOne(id: number): Promise<OrganizationReport> {
+    return this.organizationReportRepository.get({
+      where: { id },
+      relations: ['reports', 'partners', 'investors'],
+    });
+  }
 
   public async update(
     id: number,
     updateOrganizationReportDto: UpdateOrganizationReportDto,
-  ) {
+  ): Promise<OrganizationReport> {
     const { reportId, numberOfContractors, numberOfVolunteers, report } =
       updateOrganizationReportDto;
     const reportSummary = await this.reportService.get({
@@ -46,57 +58,138 @@ export class OrganizationReportService {
       report: report || null,
     });
 
-    return this.organizationReportRepository.get({
-      where: { id },
-      relations: ['reports', 'partners', 'investors'],
-    });
+    return this.findOne(id);
   }
 
   public async updatePartner(
     partnerId: number,
-    numberOfPartners?: number,
-    link?: string,
-  ): Promise<Partner> {
-    return this.partnerService.update(partnerId, {
-      numberOfPartners: numberOfPartners ?? null,
-      status: numberOfPartners
-        ? CompletionStatus.COMPLETED
-        : CompletionStatus.NOT_COMPLETED,
-      link: link || null,
+    numberOfPartners: number,
+    directoryPath: string,
+    files: Express.Multer.File[],
+  ): Promise<void> {
+    const partner = await this.partnerRepository.get({
+      where: { id: partnerId },
+    });
+
+    if (!partner) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.PARTNER,
+        errorCode: ERROR_CODES.ORG012,
+      });
+    }
+
+    if (partner.path) {
+      await this.fileManagerService.deleteFiles([partner.path]);
+    }
+
+    const uploadedFile = await this.fileManagerService.uploadFiles(
+      directoryPath,
+      files,
+      `${partner.year}_${PARTNER_LIST}`,
+    );
+
+    // generate public link to file
+    const link = await this.fileManagerService.generatePresignedURL(
+      uploadedFile[0],
+    );
+
+    await this.partnerRepository.save({
+      ...partner,
+      path: uploadedFile[0],
+      numberOfPartners,
+      link,
+      status: CompletionStatus.COMPLETED,
     });
   }
 
   public async updateInvestor(
     investorId: number,
-    numberOfInvestors?: number,
-    path?: string,
-    link?: string,
-  ): Promise<Investor> {
-    return this.investorService.update(investorId, {
-      numberOfInvestors: numberOfInvestors ?? null,
-      status: numberOfInvestors
-        ? CompletionStatus.COMPLETED
-        : CompletionStatus.NOT_COMPLETED,
-      path: path || null,
-      link: link || null,
+    numberOfInvestors: number,
+    directoryPath: string,
+    files: Express.Multer.File[],
+  ): Promise<void> {
+    const investor = await this.investorRepository.get({
+      where: { id: investorId },
+    });
+
+    if (!investor) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.INVESTOR,
+        errorCode: ERROR_CODES.ORG013,
+      });
+    }
+
+    if (investor.path) {
+      await this.fileManagerService.deleteFiles([investor.path]);
+    }
+
+    const uploadedFile = await this.fileManagerService.uploadFiles(
+      directoryPath,
+      files,
+      `${investor.year}_${INVESTOR_LIST}`,
+    );
+
+    // generate public link to file
+    const link = await this.fileManagerService.generatePresignedURL(
+      uploadedFile[0],
+    );
+
+    await this.investorRepository.save({
+      ...investor,
+      path: uploadedFile[0],
+      numberOfInvestors,
+      link,
+      status: CompletionStatus.COMPLETED,
     });
   }
 
-  public async delete(reportId: number, partnerId: number, investorId: number) {
-    if (investorId) {
-      this.investorService.delete(investorId);
+  public async deletePartner(partnerId: number): Promise<void> {
+    const partner = await this.partnerRepository.get({
+      where: { id: partnerId },
+    });
+
+    if (!partner) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.PARTNER,
+        errorCode: ERROR_CODES.ORG012,
+      });
     }
 
-    if (partnerId) {
-      this.partnerService.delete(partnerId);
+    if (partner.path) {
+      await this.fileManagerService.deleteFiles([partner.path]);
     }
 
-    if (reportId) {
-      this.reportService.delete(reportId);
-    }
+    await this.partnerRepository.save({
+      ...partner,
+      path: null,
+      numberOfPartners: null,
+      link: null,
+      status: CompletionStatus.NOT_COMPLETED,
+    });
   }
 
-  public async getInvestor(id: number) {
-    return this.investorService.get({ where: { id } });
+  public async deleteInvestor(investorId: number): Promise<void> {
+    const investor = await this.investorRepository.get({
+      where: { id: investorId },
+    });
+
+    if (!investor) {
+      throw new NotFoundException({
+        message: HTTP_ERRORS_MESSAGES.INVESTOR,
+        errorCode: ERROR_CODES.ORG013,
+      });
+    }
+
+    if (investor.path) {
+      await this.fileManagerService.deleteFiles([investor.path]);
+    }
+
+    await this.investorRepository.save({
+      ...investor,
+      path: null,
+      numberOfInvestors: null,
+      link: null,
+      status: CompletionStatus.NOT_COMPLETED,
+    });
   }
 }

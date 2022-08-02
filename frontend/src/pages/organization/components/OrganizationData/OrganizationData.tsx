@@ -14,7 +14,8 @@ import ReportSummaryModal from './components/ReportSummaryModal';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import { getInvestorsTemplate, getPartnersTemplate } from '../../../../services/files/File.service';
 import {
-  useDeleteInvestorsList,
+  useDeleteInvestorMutation,
+  useDeletePartnerMutation,
   useOrganizationMutation,
   useUploadInvestorsList,
   useUploadPartnersList,
@@ -23,25 +24,40 @@ import { useErrorToast } from '../../../../common/hooks/useToast';
 import readXlsxFile from 'read-excel-file';
 
 const OrganizationData = () => {
-  const [isActivitySummartModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
+  // static links for partners and investors tables
+  const [investorsLink, setInvestorsLink] = useState<string>('');
+  const [partnersLink, setPartnersLink] = useState<string>('');
+
+  const [isActivitySummaryModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
-  const [investorsLink, setInvestorsLink] = useState<string>('');
-  const [partnersLink, setPartnersLink] = useState<string>('');
+
   const { organizationReport } = useSelectedOrganization();
-  const { mutate, error, isLoading } = useOrganizationMutation();
-  const partnersMutation = useUploadPartnersList();
-  const investorsMutation = useUploadInvestorsList();
-  const deleteInvestorMutation = useDeleteInvestorsList();
+  const reportSummaryMutation = useOrganizationMutation();
+  const uploadPartnersMutation = useUploadPartnersList();
+  const uploadInvestorsMutation = useUploadInvestorsList();
+  const deleteInvestorMutation = useDeleteInvestorMutation();
+  const deletePartnerMutation = useDeletePartnerMutation();
 
   useEffect(() => {
     initTemplateData();
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast('Could not load open data');
-  }, [error]);
+    if (
+      reportSummaryMutation.error ||
+      uploadPartnersMutation.error ||
+      uploadInvestorsMutation.error ||
+      deleteInvestorMutation.error
+    )
+      useErrorToast('Could not load open data');
+  }, [
+    reportSummaryMutation.error,
+    uploadPartnersMutation.error,
+    uploadInvestorsMutation.error,
+    deleteInvestorMutation.error,
+  ]);
 
   const initTemplateData = async () => {
     setInvestorsLink(await getInvestorsTemplate());
@@ -51,7 +67,7 @@ const OrganizationData = () => {
   const buildReportActionColumn = (): TableColumn<Report> => {
     const menuItems = [
       {
-        name: 'edit',
+        name: 'Editeaza',
         icon: PencilIcon,
         onClick: onEditReport,
       },
@@ -76,14 +92,14 @@ const OrganizationData = () => {
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
-        onClick: onSelectPartnerRow,
+        onClick: setSelectedPartner,
         downloadProp: 'link',
         isDownload: true,
       },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
-        onClick: onSelectPartnerRow,
+        onClick: setSelectedPartner,
         isUpload: true,
       },
       {
@@ -107,14 +123,14 @@ const OrganizationData = () => {
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
-        onClick: onSelectInvestorRow,
+        onClick: setSelectedInvestor,
         downloadProp: 'link',
         isDownload: true,
       },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
-        onClick: onSelectInvestorRow,
+        onClick: setSelectedInvestor,
         isUpload: true,
       },
       {
@@ -138,25 +154,24 @@ const OrganizationData = () => {
     setIsActivitySummaryModalOpen(true);
   };
 
-  const onSaveReport = (data: {
-    report: string;
-    numberOfContractors: number;
-    numberOfVolunteers: number;
-  }) => {
+  const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
-    mutate({
+    setSelectedReport(null);
+    reportSummaryMutation.mutate({
       id: 2,
       organization: {
         report: {
-          reportId: selectedReport?.id as number,
-          ...data,
+          reportId: data.id,
+          numberOfContractors: data.numberOfContractors ?? undefined,
+          numberOfVolunteers: data.numberOfVolunteers ?? undefined,
+          report: data.report || undefined,
         },
       },
     });
   };
 
   const onDeleteReport = (row: Report) => {
-    mutate({
+    reportSummaryMutation.mutate({
       id: 2,
       organization: {
         report: {
@@ -166,54 +181,38 @@ const OrganizationData = () => {
     });
   };
 
-  const onSelectPartnerRow = (row: Partner) => {
-    setSelectedPartner(row);
-  };
-
   const onDeletePartner = (row: Partner) => {
-    console.log('on delete partner', row);
-  };
-
-  const onSelectInvestorRow = (row: Investor) => {
-    setSelectedInvestor(row);
+    deletePartnerMutation.mutate({ id: 2, partnerId: row.id });
   };
 
   const onDeleteInvestor = (row: Investor) => {
     deleteInvestorMutation.mutate({ id: 2, investorId: row.id });
   };
 
-  const onChangeFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadNewList = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      if (selectedPartner) {
-        const rows = await readXlsxFile(event.target.files[0]);
-        const numberOfPartners = rows.length > 2 ? rows.length - 2 : 0;
+      if (selectedPartner) uploadPartnersList(selectedPartner.id, event.target.files[0]);
 
-        if (numberOfPartners === 0) {
-          return;
-        }
-
-        const data = new FormData();
-        data.append('partners', event.target.files[0]);
-        data.append('numberOfPartners', numberOfPartners.toString());
-        partnersMutation.mutate({ id: 2, partnerId: selectedPartner.id, data });
-      }
-
-      if (selectedInvestor) {
-        const rows = await readXlsxFile(event.target.files[0]);
-        const numberOfInvestors = rows.length > 2 ? rows.length - 2 : 0;
-
-        if (numberOfInvestors === 0) {
-          return;
-        }
-
-        const data = new FormData();
-        data.append('investors', event.target.files[0]);
-        data.append('numberOfInvestors', numberOfInvestors.toString());
-        investorsMutation.mutate({ id: 2, investorId: selectedInvestor.id, data });
-      }
+      if (selectedInvestor) uploadInvestorsList(selectedInvestor.id, event.target.files[0]);
     }
     event.target.value = '';
+  };
+
+  const uploadPartnersList = async (partnerId: number, file: File) => {
+    const rows = await readXlsxFile(file);
+    const data = new FormData();
+    data.append('partners', file);
+    data.append('numberOfPartners', rows.length.toString());
+    uploadPartnersMutation.mutate({ id: 2, partnerId, data });
     setSelectedPartner(null);
+  };
+
+  const uploadInvestorsList = async (investorId: number, file: File) => {
+    const rows = await readXlsxFile(file);
+    const data = new FormData();
+    data.append('investors', file);
+    data.append('numberOfInvestors', rows.length.toString());
+    uploadInvestorsMutation.mutate({ id: 2, investorId, data });
     setSelectedInvestor(null);
   };
 
@@ -229,7 +228,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...ReportsTableHeaders, buildReportActionColumn()]}
             data={organizationReport?.reports || []}
-            loading={isLoading}
+            loading={reportSummaryMutation.isLoading}
           />
         </>
       </CardPanel>
@@ -251,7 +250,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...PartnerTableHeaders, buildPartnersActionColumn()]}
             data={organizationReport?.partners || []}
-            loading={partnersMutation.isLoading}
+            loading={uploadPartnersMutation.isLoading || deletePartnerMutation.isLoading}
           />
         </>
       </CardPanel>
@@ -273,12 +272,19 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...InvestorsTableHeaders, buildInvestorsActionColumn()]}
             data={organizationReport?.investors || []}
-            loading={investorsMutation.isLoading || deleteInvestorMutation.isLoading}
+            loading={uploadInvestorsMutation.isLoading || deleteInvestorMutation.isLoading}
           />
         </>
       </CardPanel>
-      <input className="w-0 h-0" id="upload" name="upload" type="file" onChange={onChangeFile} />
-      {isActivitySummartModalOpen && selectedReport && (
+      <input
+        className="w-0 h-0"
+        id="upload"
+        name="upload"
+        type="file"
+        accept=".xls,.xlsx"
+        onChange={onUploadNewList}
+      />
+      {isActivitySummaryModalOpen && selectedReport && (
         <ReportSummaryModal
           onClose={setIsActivitySummaryModalOpen.bind(null, false)}
           defaultValue={selectedReport}

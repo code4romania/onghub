@@ -1,5 +1,7 @@
 export const HTTP_ERRORS_MESSAGES = {
   ORGANIZATION: 'Organization not found',
+  PARTNER: 'Partner not found',
+  INVESTOR: 'Investor not found',
   REGION: 'Missing region(s)',
   LOCAL: 'Missing city/cities',
   MISSING_FEDERATIONS: 'Missing federations',
@@ -24,5 +26,7 @@ export const ERROR_CODES = {
   ORG009: 'ORG009',
   ORG010: 'ORG010',
   ORG011: 'ORG011',
+  ORG012: 'ORG012',
+  ORG013: 'ORG013',
   ANAF001: 'ANAF001',
 };

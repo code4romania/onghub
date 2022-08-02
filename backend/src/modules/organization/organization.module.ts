@@ -21,6 +21,7 @@ import {
   OrganizationLegalRepository,
   OrganizationReportRepository,
   OrganizationRepository,
+  PartnerRepository,
 } from './repositories';
 import {
   ContactService,
@@ -30,8 +31,6 @@ import {
   OrganizationLegalService,
   OrganizationService,
   ReportService,
-  PartnerService,
-  InvestorService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 
@@ -60,6 +59,7 @@ import { OrganizationReportService } from './services/organization-report.servic
     OrganizationActivityService,
     OrganizationActivityRepository,
     OrganizationLegalRepository,
+    PartnerRepository,
     ContactRepository,
     OrganizationLegalService,
     OrganizationFinancialRepository,
@@ -67,8 +67,6 @@ import { OrganizationReportService } from './services/organization-report.servic
     OrganizationReportRepository,
     OrganizationReportService,
     ReportService,
-    PartnerService,
-    InvestorService,
   ],
 })
 export class OrganizationModule {}

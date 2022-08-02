@@ -51,6 +51,21 @@ export class OrganizationController {
   }
 
   @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
+  @Post(':id/upload')
+  upload(
+    @Param('id') id: string,
+    @UploadedFiles() files: OrganizationFiles,
+  ): Promise<any> {
+    return this.organizationService.upload(id, files);
+  }
+
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
   @Post(':id/partners/:partnerId')
   uploadPartnerList(
@@ -84,19 +99,12 @@ export class OrganizationController {
     );
   }
 
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'logo', maxCount: 1 },
-      { name: 'organizationStatute', maxCount: 1 },
-    ]),
-  )
-  @Post(':id/upload')
-  upload(
+  @Delete(':id/partners/:partnerId')
+  deletePartner(
     @Param('id') id: string,
-    @UploadedFiles() files: OrganizationFiles,
-  ): Promise<any> {
-    return this.organizationService.upload(id, files);
+    @Param('partnerId') partnerId: string,
+  ) {
+    return this.organizationService.deletePartner(+id, +partnerId);
   }
 
   @Delete(':id/investors/:investorId')
