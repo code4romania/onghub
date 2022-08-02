@@ -5,8 +5,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
+import { Public } from 'src/common/decorators/public.decorator';
 import { NomenclaturesService } from '../services';
 
+@Public()
 @Controller('')
 export class SharedController {
   constructor() {}

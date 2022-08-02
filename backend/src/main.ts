@@ -35,6 +35,7 @@ async function bootstrap() {
       .setTitle('ONG Hub backend')
       .setDescription('ONG Hub backend')
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);

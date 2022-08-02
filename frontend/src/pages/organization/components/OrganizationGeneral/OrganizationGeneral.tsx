@@ -13,7 +13,7 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { flatten } from '../../../../common/helpers/format.helper';
+import { emptyStringToNull, flatten } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationGeneral = () => {
@@ -83,7 +83,7 @@ const OrganizationGeneral = () => {
     delete organizationGeneral.county;
     delete organizationGeneral.city;
 
-    mutate({ id: 3, organization: { general: organizationGeneral } });
+    mutate({ id: 3, organization: { general: emptyStringToNull(organizationGeneral) } });
   };
 
   return (
