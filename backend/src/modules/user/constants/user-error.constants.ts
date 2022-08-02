@@ -15,4 +15,12 @@ export const USER_ERRORS = {
     message: 'Could not restore user access',
     errorCode: 'USR_004',
   },
+  USER_EXISTS: {
+    message: 'User already exists',
+    errorCode: 'USR_005',
+  },
+  USER_MISSING: {
+    message: 'User could not be found',
+    errorCode: 'USR_006',
+  },
 };

@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ERROR_CODES } from 'src/modules/organization/constants/errors.constants';
@@ -36,12 +37,16 @@ export class UserService {
   */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // 1. Check the organizationId exists
+      // 1. Check if user already exists
+      const userFound = await this.findByCognitoId(createUserDto.email);
+      if (userFound) {
+        throw new InternalServerErrorException(USER_ERRORS.USER_EXISTS);
+      }
+      // 2. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
-      // ====================================
-      // 2. Create user in Cognito
+      // 3. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
-      // 3. Create user in database
+      // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
         cognitoId,
@@ -54,7 +59,12 @@ export class UserService {
         ...USER_ERRORS.CREATE,
       });
 
-      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+      if (error?.response?.errorCode == USER_ERRORS.USER_EXISTS.errorCode) {
+        throw new InternalServerErrorException({
+          ...USER_ERRORS.USER_EXISTS,
+          error,
+        });
+      } else if (error?.response?.errorCode == ERROR_CODES.ORG001) {
         throw new BadRequestException({
           ...USER_ERRORS.CREATE_WRONG_ORG,
           error,
@@ -80,11 +90,17 @@ export class UserService {
     return this.userRepository.getManyPaginated(USER_FILTERS_CONFIG, options);
   }
 
-  findByCognitoId(cognitoId: string) {
-    return this.userRepository.get({
+  async findByCognitoId(cognitoId: string) {
+    const user = await this.userRepository.get({
       where: { cognitoId },
       relations: ['organization'],
     });
+
+    if (!user) {
+      throw new NotFoundException(USER_ERRORS.USER_MISSING);
+    }
+
+    return user;
   }
 
   remove(id: number) {
