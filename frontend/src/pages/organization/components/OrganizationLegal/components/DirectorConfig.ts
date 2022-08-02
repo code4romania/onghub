@@ -59,12 +59,12 @@ export const DirectorConfig: Record<string, any> = {
         message: 'Director Phone is required.',
       },
       maxLength: {
-        value: 12,
-        message: 'Director phone has a maximum length of 12 characters.',
+        value: 15,
+        message: 'Director phone has a maximum length of 15 characters.',
       },
       minLength: {
-        value: 10,
-        message: 'Director phone has a minimum length of 10 characters.',
+        value: 12,
+        message: 'Director phone has a minimum length of 12 characters.',
       },
       pattern: {
         value: PHONE_REGEX,
