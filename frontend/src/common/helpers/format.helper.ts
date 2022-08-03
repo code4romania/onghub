@@ -11,11 +11,11 @@ export const URL_REGEX =
   /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-\\._~:/?#[\]@!\\$&'\\(\\)\\*\\+,;=.]+$/g;
 
 export const PHONE_REGEX =
-  /^(\+40)(\s|\.|-)?(7[0-8]{1}[0-9]{1}|2[0-9]{2}|3[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
-export const CUI_REGEX = /(RO)?\d+$/;
+  /^(\+4|)?(\s|\.|-)?(07[0-8]{1}[0-9]{1}|2[0-9]{2}|3[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
+export const CUI_REGEX = /^(RO|)?[\d]*$/;
 export const NAME_REGEX = /^(?!.*[ ]{2})[a-zA-Z-\săîâșțĂÎÂȘȚ]*$/;
 export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ"]*$/;
-export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
+export const RAF_NUMBER_REGEX = /^[a-zA-Z\d/]*$/;
 
 export const NUMERIC_REGEX = /^\d*$/;
 
