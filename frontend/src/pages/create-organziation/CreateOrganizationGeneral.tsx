@@ -10,14 +10,16 @@ import { useNomenclature, useSelectedOrganization } from '../../store/selectors'
 import { OrganizationGeneralConfig } from '../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
 import Select from '../../components/Select/Select';
 import RadioGroup from '../../components/RadioGroup/RadioGroup';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
   const { cities, counties } = useNomenclature();
-  const { organizationGeneral } = useSelectedOrganization();
+
+  const [organization, setOrganization] = useOutletContext<any>();
+
   // queries
   useCitiesQuery(county?.id);
 
@@ -36,13 +38,13 @@ const CreateOrganizationGeneral = () => {
   });
 
   useEffect(() => {
-    if (organizationGeneral) {
-      const contact = flatten(organizationGeneral.contact, {}, 'contact');
-      reset({ ...organizationGeneral, ...contact });
-      setCounty(organizationGeneral.county);
-      setCity(organizationGeneral.city);
+    if (organization && organization.general) {
+      const contact = flatten(organization.general.contact, {}, 'contact');
+      reset({ ...organization.general, ...contact });
+      setCounty(organization.general.county);
+      setCity(organization.general.city);
     }
-  }, [organizationGeneral]);
+  }, [organization]);
 
   useEffect(() => {
     if (county && !readonly) {
@@ -51,7 +53,6 @@ const CreateOrganizationGeneral = () => {
   }, [cities]);
 
   const handleSave = (data: any) => {
-    console.log('here');
     const contact = {
       ...data.contact,
       fullName: data.contact_fullName,
@@ -62,12 +63,9 @@ const CreateOrganizationGeneral = () => {
     const organizationGeneral = {
       ...data,
       contact,
-      countyId: data.county.id,
-      cityId: data.city.id,
     };
 
-    delete organizationGeneral.county;
-    delete organizationGeneral.city;
+    setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
 
     navigate('/new/activity');
   };
@@ -585,7 +583,7 @@ const CreateOrganizationGeneral = () => {
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => handleSubmit(handleSave)}
+            onClick={handleSubmit(handleSave)}
           >
             Mai departe
           </button>

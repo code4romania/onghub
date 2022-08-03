@@ -6,6 +6,7 @@ import AppStore from '../../pages/apps-store/AppStore';
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import CreateOrganizationActivity from '../../pages/create-organziation/CreateOrganizationActivity';
 import CreateOrganizationGeneral from '../../pages/create-organziation/CreateOrganizationGeneral';
+import CreateOrganizationLegal from '../../pages/create-organziation/CreateOrganizationLegal';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
@@ -32,6 +33,7 @@ const Router = () => {
         <Route path="new" element={<CreateOrganization />}>
           <Route path="general" element={<CreateOrganizationGeneral />} />
           <Route path="activity" element={<CreateOrganizationActivity />} />
+          <Route path="legal" element={<CreateOrganizationLegal />} />
         </Route>
         <Route
           path="/"

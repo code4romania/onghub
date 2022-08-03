@@ -1,7 +1,7 @@
 import { PencilIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   str2bool,
   mapSelectToValue,
@@ -30,11 +30,12 @@ import {
   OrganizationActivityConfig,
   OrganizationAreaEnum,
 } from '../organization/components/OrganizationActivity/OrganizationActivityConfig';
+import { CREATE_FLOW_URL } from './CreateOrganization.constant';
 
 const CreateOrganizationActivity = () => {
-  const { organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
-  const { mutate, error } = useOrganizationMutation();
+
+  const [organization, setOrganization] = useOutletContext<any>();
 
   const navigate = useNavigate();
 
@@ -74,53 +75,21 @@ const CreateOrganizationActivity = () => {
       isSocialServiceViable: str2bool(data.isSocialServiceViable),
       offersGrants: str2bool(data.offersGrants),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
-
-      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
-      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
-      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
-      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
-      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({ id: 3, organization: { activity } });
+    setOrganization((org: any) => ({ ...org, activity }));
+
+    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
   };
 
   // load initial values
   useEffect(() => {
-    if (organizationActivity) {
-      const domains = organizationActivity.domains?.map(mapToId);
-      const cities = organizationActivity.cities?.length
-        ? [...organizationActivity.cities.map(mapCitiesToSelect)]
-        : [];
-      const branches = organizationActivity.branches?.length
-        ? [...organizationActivity.branches.map(mapCitiesToSelect)]
-        : [];
-      const regions = organizationActivity.regions?.length
-        ? [...organizationActivity.regions.map(mapNameToSelect)]
-        : [];
-      const federations = organizationActivity.federations?.length
-        ? [...organizationActivity.federations.map(mapGroupsToSelect)]
-        : [];
-      const coalitions = organizationActivity.coalitions?.length
-        ? [...organizationActivity.coalitions.map(mapGroupsToSelect)]
-        : [];
+    if (organization && organization.activity) {
       reset({
-        ...organizationActivity,
-        domains,
-        cities,
-        branches,
-        regions,
-        federations,
-        coalitions,
+        ...organization.activity,
       });
     }
-  }, [organizationActivity]);
-
-  useEffect(() => {
-    if (error) {
-      useErrorToast('Could not save organization');
-    }
-  }, [error]);
+  }, [organization]);
 
   const loadOptionsCitiesSerch = async (searchWord: string) => {
     return getCities(searchWord).then((res: any[]) => res.map(mapCitiesToSelect));
@@ -373,14 +342,14 @@ const CreateOrganizationActivity = () => {
           <button
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
-            onClick={() => handleSubmit(handleSave)}
+            onClick={handleSubmit(handleSave)}
           >
             Mai departe
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => navigate('/new/general')}
+            onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}
           >
             Inapoi
           </button>
