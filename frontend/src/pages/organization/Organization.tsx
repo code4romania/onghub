@@ -5,6 +5,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useOrganizationQuery } from '../../services/organization/Organization.queries';
+import { useSelectedOrganization } from '../../store/selectors';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from './interfaces/Tabs.interface';
 
@@ -12,12 +13,13 @@ const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { organization } = useSelectedOrganization();
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
 
   // load organization data
-  const { error } = useOrganizationQuery(3);
+  const { error } = useOrganizationQuery(organization?.id as number);
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(

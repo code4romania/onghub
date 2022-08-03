@@ -34,7 +34,7 @@ const OrganizationLegal = () => {
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
-  const { organizationLegal } = useSelectedOrganization();
+  const { organizationLegal, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
 
   // React Hook Form
@@ -205,7 +205,7 @@ const OrganizationLegal = () => {
     };
 
     mutate({
-      id: 3,
+      id: organization?.id as number,
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 

@@ -102,6 +102,7 @@ export const useOrganizationQuery = (id: number) => {
         ],
       });
     },
+    enabled: !!id,
   });
 };
 
