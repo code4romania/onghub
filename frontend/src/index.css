@@ -62,7 +62,7 @@
 }
 
 /* Overrride default overflow for datatables to allow popovers */
-.gelpCx {
+.rdt_TableWrapper div {
   overflow-x: initial !important;
   overflow-y: initial !important;
 }

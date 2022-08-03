@@ -20,7 +20,7 @@ const OrganizationFinancial = () => {
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
-  const { organizationFinancial } = useSelectedOrganization();
+  const { organizationFinancial, organization } = useSelectedOrganization();
   const { mutate, isLoading, error } = useOrganizationMutation();
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const OrganizationFinancial = () => {
 
   const onSave = (data: Partial<Expense | Income>) => {
     mutate({
-      id: 3,
+      id: organization?.id as number,
       organization: {
         financial: {
           id: selectedReport?.id as number,
