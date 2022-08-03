@@ -21,6 +21,7 @@ import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
+import { validatePhone } from 'src/common/helpers/validate-phone';
 
 @Injectable()
 export class OrganizationService {
@@ -130,6 +131,13 @@ export class OrganizationService {
       createOrganizationDto.general.cui,
       new Date().getFullYear() - 1,
     );
+
+    createOrganizationDto.general.phone = validatePhone(createOrganizationDto.general.phone);
+    createOrganizationDto.general.contact.phone = validatePhone(createOrganizationDto.general.contact.phone);
+    createOrganizationDto.legal.legalReprezentative.phone = validatePhone(createOrganizationDto.legal.legalReprezentative.phone);
+    createOrganizationDto.legal.directors.map((director) => {
+      director.phone = validatePhone(director.phone);
+    })
 
     // create the parent entry with default values
     return this.organizationRepository.save({

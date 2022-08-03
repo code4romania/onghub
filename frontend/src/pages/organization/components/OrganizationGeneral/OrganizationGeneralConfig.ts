@@ -125,8 +125,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Phone is required.',
       },
       minLength: {
-        value: 12,
-        message: 'Phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Phone has a minimum length of 10 characters.',
       },
       maxLength: {
         value: 15,
@@ -357,8 +357,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Contact phone has a maximum length of 15 characters.',
       },
       minLength: {
-        value: 12,
-        message: 'Contact phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Contact phone has a minimum length of 10 characters.',
       },
       pattern: {
         value: PHONE_REGEX,

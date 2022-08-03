@@ -4,10 +4,7 @@ import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { Queue } from 'bull';
-import {
-  CommonErrorCodes,
-  CommonErrorMessages,
-} from 'src/common/constants/error-common.constants';
+import { COMMON_ERRORS } from 'src/common/constants/error-common.constants';
 
 export function createQueueMonitoring(app: INestApplication) {
   try {
@@ -28,6 +25,6 @@ export function createQueueMonitoring(app: INestApplication) {
   } catch (err) {
     app
       .get(Logger)
-      .log(CommonErrorMessages.BULLBOARD_001, CommonErrorCodes.E_BULLBOARD_001);
+      .log(COMMON_ERRORS.BULLBOARD.message, COMMON_ERRORS.BULLBOARD.errorCode);
   }
 }
