@@ -5,6 +5,7 @@ import { AuthContext } from './contexts/AuthContext';
 import { useUserQuery } from './services/user/User.queries';
 import LoadingContent from './components/data-table/LoadingContent';
 import { useNavigate } from 'react-router-dom';
+import { useErrorToast } from './common/hooks/useToast';
 
 const Loading = () => {
   return (
@@ -33,13 +34,18 @@ const AuthProvider = ({ children }: any) => {
     (async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        setAuthState({ isAuthenticated: true });
-        await refetchUserProfile();
-        setIsLoading(false);
+        const {data: profile} = await refetchUserProfile();
+        if (profile.status === 'active'){
+          setAuthState({ isAuthenticated: true });
+        } else {
+          throw Error(); // TODO: Better error handling.
+        }
       } catch (error) {
-        setIsLoading(false);
         logout();
       }
+       finally {
+        setIsLoading(false);
+       }
     })();
   }, []);
 

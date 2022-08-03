@@ -25,7 +25,7 @@ const Account = () => {
     reValidateMode: 'onChange',
   });
   const [isAccountDeleteModalOpen, setAccountDeleteModal] = useState(false);
-  const { mutate: deleteUser, error: deleteUserError } = useUserMutation();
+  const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
@@ -47,13 +47,14 @@ const Account = () => {
         useSuccessToast('Password has been changed successfully.');
       })
       .catch((err) => {
+        // TODO: Better error handling
         useErrorToast(err.message);
       });
   };
 
-  const handleUserDelete = () => {
+  const handleUserDelete = async () => {
     setAccountDeleteModal(false);
-    deleteUser();
+    await deleteUser();
     logout();
   };
 
