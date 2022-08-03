@@ -61,7 +61,7 @@ export class OrganizationController {
   )
   @Post(':id/upload')
   upload(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @UploadedFiles() files: OrganizationFiles,
   ): Promise<any> {
     return this.organizationService.upload(id, files);
@@ -101,6 +101,7 @@ export class OrganizationController {
     );
   }
 
+  @ApiConsumes('multipart/form-data')
   @Delete(':id/partners/:partnerId')
   deletePartner(
     @Param('id') id: string,

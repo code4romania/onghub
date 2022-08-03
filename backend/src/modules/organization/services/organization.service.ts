@@ -255,41 +255,65 @@ export class OrganizationService {
   }
 
   public async upload(
-    organizationId: string,
+    organizationId: number,
     files: OrganizationFiles,
-  ): Promise<{
-    logo: string;
-    organizationStatute: string;
-  }> {
-    const response = {
-      logo: null,
-      organizationStatute: null,
-    };
-
+  ): Promise<Organization> {
     try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationGeneral', 'organizationLegal'],
+      });
+
+      if (!organization) {
+        throw new NotFoundException({
+          ...ORGANIZATION_ERRORS.GET,
+        });
+      }
+
       if (files.logo) {
-        response.logo = await this.uploadFilesToBucket(
+        if (organization.organizationGeneral.logo) {
+          await this.fileManagerService.deleteFiles([
+            organization.organizationGeneral.logo,
+          ]);
+        }
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
           files.logo,
         );
 
-        await this.organizationGeneralService.update(+organizationId, {
-          logo: response.logo,
-        });
+        await this.organizationGeneralService.update(
+          organization.organizationGeneral.id,
+          {
+            logo: uploadedFile[0],
+          },
+        );
       }
 
       if (files.organizationStatute) {
-        response.organizationStatute = await this.uploadFilesToBucket(
+        if (organization.organizationLegal.organizationStatute) {
+          await this.fileManagerService.deleteFiles([
+            organization.organizationLegal.organizationStatute,
+          ]);
+        }
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
           files.organizationStatute,
         );
 
-        await this.organizationLegalService.update(+organizationId, {
-          organizationStatute: response.organizationStatute,
-        });
+        await this.organizationLegalService.update(
+          organization.organizationLegal.id,
+          {
+            organizationStatute: uploadedFile[0],
+          },
+        );
       }
 
-      return response;
+      return this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationGeneral', 'organizationLegal'],
+      });
     } catch (error) {
       throw new BadRequestException({
         ...ORGANIZATION_ERRORS.UPLOAD,
@@ -394,21 +418,5 @@ export class OrganizationService {
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
-  }
-
-  private async uploadFilesToBucket(
-    path: string,
-    files: Express.Multer.File[],
-    fileName?: string,
-  ): Promise<string> {
-    // upload new file
-    const uploadedFile = await this.fileManagerService.uploadFiles(
-      path,
-      files,
-      fileName,
-    );
-
-    // generate public link to file
-    return this.fileManagerService.generatePresignedURL(uploadedFile[0]);
   }
 }

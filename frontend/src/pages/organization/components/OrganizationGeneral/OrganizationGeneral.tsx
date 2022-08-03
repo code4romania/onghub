@@ -18,12 +18,14 @@ import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.q
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import { getPublicFileUrl } from '../../../../services/files/File.service';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
   const { organizationGeneral, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
@@ -49,6 +51,7 @@ const OrganizationGeneral = () => {
       reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
+      if (organizationGeneral.logo) requestLogoUrl(organizationGeneral.logo);
     }
   }, [organizationGeneral]);
 
@@ -67,6 +70,15 @@ const OrganizationGeneral = () => {
       useErrorToast('Could not update logo');
     }
   }, [error, filesMutation.error]);
+
+  const requestLogoUrl = async (logoPath: string) => {
+    try {
+      const logoUrl = await getPublicFileUrl(logoPath);
+      setLogo(logoUrl);
+    } catch (error) {
+      useErrorToast('Could not load logo image');
+    }
+  };
 
   const startEdit = () => {
     setReadonly(false);
@@ -99,6 +111,7 @@ const OrganizationGeneral = () => {
 
     delete organizationGeneral.county;
     delete organizationGeneral.city;
+    delete organizationGeneral.logo;
 
     if (file) {
       const data = new FormData();
@@ -106,12 +119,10 @@ const OrganizationGeneral = () => {
       filesMutation.mutate(
         { id: organization?.id as number, data },
         {
-          onSettled: (data: { logo: string }) => {
+          onSettled: () => {
             mutate({
               id: organization?.id as number,
-              organization: {
-                general: emptyStringToNull({ ...organizationGeneral, logo: data?.logo || null }),
-              },
+              organization: { general: emptyStringToNull(organizationGeneral) },
             });
           },
         },
@@ -389,7 +400,7 @@ const OrganizationGeneral = () => {
 
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    {!file && !organizationGeneral?.logo ? (
+                    {!file && !logo ? (
                       <svg
                         className="h-full w-full text-gray-300"
                         fill="currentColor"
@@ -398,10 +409,7 @@ const OrganizationGeneral = () => {
                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
                     ) : (
-                      <img
-                        src={fileToURL(file) || organizationGeneral?.logo}
-                        className="h-20 w-80"
-                      />
+                      <img src={fileToURL(file) || (logo as string)} className="h-20 w-80" />
                     )}
                   </span>
                   {!readonly && (

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { FileManagerService } from '../services/file-manager.service';
@@ -33,5 +33,11 @@ export class SharedController {
     return this.fileManagerService.generatePresignedURL(
       'static/Lista_finantatori_2021.xlsx',
     );
+  }
+
+  @Public()
+  @Get('file')
+  getFile(@Query('path') path: string): Promise<string> {
+    return this.fileManagerService.generatePresignedURL(path);
   }
 }
