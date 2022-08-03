@@ -26,7 +26,7 @@ const Header = () => {
               <div>
                 <Menu.Button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                   <span className="font-titilliumBold text-gray-900 text-base tracking-wide">
-                    {user.name || ''}
+                    {user?.name || ''}
                   </span>
                   <img className="w-10 h-10" src={profile} alt="Profile photo" />
                 </Menu.Button>

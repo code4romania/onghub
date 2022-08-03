@@ -6,6 +6,7 @@ import { useUserQuery } from './services/user/User.queries';
 import LoadingContent from './components/data-table/LoadingContent';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast } from './common/hooks/useToast';
+import { UserStatus } from './pages/users/enums/UserStatus.enum';
 
 const Loading = () => {
   return (
@@ -35,7 +36,7 @@ const AuthProvider = ({ children }: any) => {
       try {
         await Auth.currentAuthenticatedUser();
         const {data: profile} = await refetchUserProfile();
-        if (profile.status === 'active'){
+        if (profile.status === UserStatus.ACTIVE){
           setAuthState({ isAuthenticated: true });
         } else {
           throw Error(); // TODO: Better error handling.

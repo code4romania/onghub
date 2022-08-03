@@ -9,6 +9,7 @@ import AccountDeleteModal from './AccountDeleteModal';
 import { useUserMutation } from '../../services/user/User.queries';
 import { LogoutIcon } from '@heroicons/react/solid';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useUser } from '../../store/user/User.selectors';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -26,6 +27,7 @@ const Account = () => {
   });
   const [isAccountDeleteModalOpen, setAccountDeleteModal] = useState(false);
   const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
+  const {user} = useUser();
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
@@ -117,15 +119,11 @@ const Account = () => {
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">Nume</span>
-                <span className="text-gray-800 font-titilliumBold">Asociatia ZEN (Admin ONG)</span>
+                <span className="text-gray-800 font-titilliumBold">{user?.name})</span>
               </div>
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">E-mail cont</span>
-                <span className="text-gray-800 font-titilliumBold">adminong@ong.ro</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <span className="text-gray-700">Parola</span>
-                <span className="text-gray-800 font-titilliumBold">*******</span>
+                <span className="text-gray-800 font-titilliumBold">{user?.email} </span>
               </div>
             </div>
           </div>
