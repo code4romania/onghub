@@ -8,10 +8,7 @@ import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import {
-  ERROR_CODES,
-  HTTP_ERRORS_MESSAGES,
-} from '../constants/errors.constants';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
@@ -47,8 +44,7 @@ export class OrganizationService {
       !createOrganizationDto.activity.cities
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.LOCAL,
-        errorCode: ERROR_CODES.ORG004,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.LOCAL,
       });
     }
 
@@ -57,15 +53,13 @@ export class OrganizationService {
       !createOrganizationDto.activity.regions
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.REGION,
-        errorCode: ERROR_CODES.ORG003,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.REGION,
       });
     }
 
     if (createOrganizationDto.legal.directors.length < 3) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
-        errorCode: ERROR_CODES.ORG009,
+        ...ORGANIZATION_ERRORS.CREATE_LEGAL.DIRECTORS_MIN,
       });
     }
 
@@ -87,8 +81,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.isPartOfFederation) {
       if (!createOrganizationDto.activity.federations) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_FEDERATIONS,
-          errorCode: ERROR_CODES.ORG005,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.FEDERATION,
         });
       }
 
@@ -101,8 +94,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.isPartOfCoalition) {
       if (!createOrganizationDto.activity.coalitions) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_COALITIONS,
-          errorCode: ERROR_CODES.ORG006,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.COALITION,
         });
       }
 
@@ -115,8 +107,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.hasBranches) {
       if (createOrganizationDto.activity.branches) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
-          errorCode: ERROR_CODES.ORG007,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
       }
 
@@ -201,8 +192,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG001,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -223,8 +213,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -303,9 +292,8 @@ export class OrganizationService {
       return response;
     } catch (error) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.UPLOAD_FILES,
-        errorCode: ERROR_CODES.ORG010,
-        error: error,
+        ...ORGANIZATION_ERRORS.UPLOAD,
+        error: { error },
       });
     }
   }
@@ -322,8 +310,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -351,8 +338,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -378,8 +364,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -400,8 +385,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 

@@ -1,10 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationFinancialDto } from '../dto/update-organization-financial.dto';
 import { OrganizationFinancialRepository } from '../repositories';
-import {
-  HTTP_ERRORS_MESSAGES,
-  ERROR_CODES,
-} from '../constants/errors.constants';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 
 @Injectable()
@@ -28,8 +25,7 @@ export class OrganizationFinancialService {
 
     if (!organizationFinancial) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ANAF_ERROR,
-        errorCode: ERROR_CODES.ANAF001,
+        ...ORGANIZATION_ERRORS.ANAF,
       });
     }
 

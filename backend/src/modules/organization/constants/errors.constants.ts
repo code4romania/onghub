@@ -1,32 +1,64 @@
-export const HTTP_ERRORS_MESSAGES = {
-  ORGANIZATION: 'Organization not found',
-  PARTNER: 'Partner not found',
-  INVESTOR: 'Investor not found',
-  REGION: 'Missing region(s)',
-  LOCAL: 'Missing city/cities',
-  MISSING_FEDERATIONS: 'Missing federations',
-  MISSING_COALITIONS: 'Missing coalitions',
-  MISSING_BRANCHES: 'Missing branches',
-  MISSING_INTERNATIONAL_ORGANIZATION: 'Missing International Organization',
-  MINIMUM_DIRECTORS: 'Minimum 3 directors',
-  ANAF_ERROR: 'Incoming data not corresponding with data from ANAF',
-  UPLOAD_FILES: 'Error while uploading the files',
-  REPORT_NOT_FOUND: 'Report not found',
+export const ORGANIZATION_ERRORS = {
+  GET: {
+    message: 'Organization not found',
+    errorCode: 'ORG_001',
+  },
+  CREATE_ACTIVITY: {
+    REGION: {
+      message: 'Missing region(s)',
+      errorCode: 'ORG_002',
+    },
+    LOCAL: {
+      message: 'Missing city/cities',
+      errorCode: 'ORG_003',
+    },
+    FEDERATION: {
+      message: 'Missing federations',
+      errorCode: 'ORG_004',
+    },
+    COALITION: {
+      message: 'Missing coalitions',
+      errorCode: 'ORG_005',
+    },
+    BRANCH: {
+      message: 'Missing branches',
+      errorCode: 'ORG_006',
+    },
+    INTERNATION_ORGANIZATION: {
+      message: 'Missing international organization',
+      errorCode: 'ORG_007',
+    },
+  },
+  CREATE_LEGAL: {
+    DIRECTORS_MIN: {
+      message: 'Minimum 3 directors',
+      errorCode: 'ORG_008',
+    },
+  },
+  ANAF: {
+    message: 'Incoming data not corresponding with data from ANAF',
+    errorCode: 'ORG_009',
+  },
+  UPLOAD: {
+    message: 'Error while uploading the files',
+    errorCode: 'ORG_010',
+  },
+  GET_REPORT: {
+    message: 'Report not found',
+    errorCode: 'ORG_011',
+  },
 };
 
-export const ERROR_CODES = {
-  ORG001: 'ORG001',
-  ORG002: 'ORG002',
-  ORG003: 'ORG003',
-  ORG004: 'ORG004',
-  ORG005: 'ORG005',
-  ORG006: 'ORG006',
-  ORG007: 'ORG007',
-  ORG008: 'ORG008',
-  ORG009: 'ORG009',
-  ORG010: 'ORG010',
-  ORG011: 'ORG011',
-  ORG012: 'ORG012',
-  ORG013: 'ORG013',
-  ANAF001: 'ANAF001',
+export const PARTNER_ERRORS = {
+  GET: {
+    message: 'Partner not found',
+    errorCode: 'PRT_001',
+  },
+};
+
+export const INVESTOR_ERRORS = {
+  GET: {
+    message: 'Investor not found',
+    errorCode: 'INV_001',
+  },
 };

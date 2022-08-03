@@ -1,10 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
-import {
-  ERROR_CODES,
-  HTTP_ERRORS_MESSAGES,
-} from '../constants/errors.constants';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationActivityDto } from '../dto/update-organization-activity.dto';
 import { Area } from '../enums/organization-area.enum';
 import { OrganizationActivityRepository } from '../repositories';
@@ -42,8 +39,7 @@ export class OrganizationActivityService {
       !updateOrganizationActivityDto.cities
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.LOCAL,
-        errorCode: ERROR_CODES.ORG004,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.LOCAL,
       });
     }
 
@@ -52,8 +48,7 @@ export class OrganizationActivityService {
       !updateOrganizationActivityDto.regions
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.REGION,
-        errorCode: ERROR_CODES.ORG003,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.REGION,
       });
     }
 
@@ -86,8 +81,7 @@ export class OrganizationActivityService {
     if (updateOrganizationActivityDto.isPartOfFederation === true) {
       if (!updateOrganizationActivityDto.federations) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_FEDERATIONS,
-          errorCode: ERROR_CODES.ORG005,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.FEDERATION,
         });
       }
 
@@ -104,8 +98,7 @@ export class OrganizationActivityService {
     if (updateOrganizationActivityDto.isPartOfCoalition === true) {
       if (!updateOrganizationActivityDto.coalitions) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_COALITIONS,
-          errorCode: ERROR_CODES.ORG006,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.COALITION,
         });
       }
 
@@ -120,8 +113,7 @@ export class OrganizationActivityService {
     if (updateOrganizationActivityDto.hasBranches === true) {
       if (!updateOrganizationActivityDto.branches) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
-          errorCode: ERROR_CODES.ORG007,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
       }
 
@@ -138,8 +130,7 @@ export class OrganizationActivityService {
       updateOrganizationActivityDto.isPartOfInternationalOrganization
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.MISSING_INTERNATIONAL_ORGANIZATION,
-        errorCode: ERROR_CODES.ORG008,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.INTERNATION_ORGANIZATION,
       });
     }
 

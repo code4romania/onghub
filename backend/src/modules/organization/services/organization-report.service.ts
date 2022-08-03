@@ -3,8 +3,9 @@ import { UpdateOrganizationReportDto } from '../dto/update-organization-report.d
 import { ReportService } from './report.service';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import {
-  ERROR_CODES,
-  HTTP_ERRORS_MESSAGES,
+  ORGANIZATION_ERRORS,
+  PARTNER_ERRORS,
+  INVESTOR_ERRORS,
 } from '../constants/errors.constants';
 import {
   InvestorRepository,
@@ -44,8 +45,7 @@ export class OrganizationReportService {
 
     if (!reportSummary) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.REPORT_NOT_FOUND,
-        errorCode: ERROR_CODES.ORG011,
+        ...ORGANIZATION_ERRORS.GET_REPORT,
       });
     }
 
@@ -73,8 +73,7 @@ export class OrganizationReportService {
 
     if (!partner) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.PARTNER,
-        errorCode: ERROR_CODES.ORG012,
+        ...PARTNER_ERRORS.GET,
       });
     }
 
@@ -114,8 +113,7 @@ export class OrganizationReportService {
 
     if (!investor) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.INVESTOR,
-        errorCode: ERROR_CODES.ORG013,
+        ...INVESTOR_ERRORS.GET,
       });
     }
 
@@ -150,8 +148,7 @@ export class OrganizationReportService {
 
     if (!partner) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.PARTNER,
-        errorCode: ERROR_CODES.ORG012,
+        ...PARTNER_ERRORS.GET,
       });
     }
 
@@ -175,8 +172,7 @@ export class OrganizationReportService {
 
     if (!investor) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.INVESTOR,
-        errorCode: ERROR_CODES.ORG013,
+        ...INVESTOR_ERRORS.GET,
       });
     }
 
