@@ -11,6 +11,7 @@ import { OrganizationGeneralConfig } from '../organization/components/Organizati
 import Select from '../../components/Select/Select';
 import RadioGroup from '../../components/RadioGroup/RadioGroup';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { CREATE_FLOW_URL } from './CreateOrganization.constant';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -67,7 +68,7 @@ const CreateOrganizationGeneral = () => {
 
     setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
 
-    navigate('/new/activity');
+    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
   };
 
   return (
