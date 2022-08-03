@@ -25,7 +25,7 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
   const { cities, counties } = useNomenclature();
-  const { organizationGeneral } = useSelectedOrganization();
+  const { organizationGeneral, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
   const filesMutation = useUploadOrganizationFilesMutation();
   // queries
@@ -104,11 +104,11 @@ const OrganizationGeneral = () => {
       const data = new FormData();
       data.append('logo', file);
       filesMutation.mutate(
-        { id: 1, data },
+        { id: organization?.id as number, data },
         {
           onSettled: (data: { logo: string }) => {
             mutate({
-              id: 1,
+              id: organization?.id as number,
               organization: {
                 general: emptyStringToNull({ ...organizationGeneral, logo: data?.logo || null }),
               },
@@ -118,7 +118,10 @@ const OrganizationGeneral = () => {
       );
       setFile(null);
     } else {
-      mutate({ id: 3, organization: { general: emptyStringToNull(organizationGeneral) } });
+      mutate({
+        id: organization?.id as number,
+        organization: { general: emptyStringToNull(organizationGeneral) },
+      });
     }
   };
 

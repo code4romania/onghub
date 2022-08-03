@@ -29,7 +29,7 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 
 const OrganizationActivity = () => {
-  const { organizationActivity } = useSelectedOrganization();
+  const { organizationActivity, organization } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
   const { mutate, error } = useOrganizationMutation();
 
@@ -78,7 +78,10 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({ id: 3, organization: { activity: emptyArrayToNull(activity) } });
+    mutate({
+      id: organization?.id as number,
+      organization: { activity: emptyArrayToNull(activity) },
+    });
   };
 
   // load initial values

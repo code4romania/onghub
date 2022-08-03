@@ -6,7 +6,9 @@ export const useSelectedOrganization = () => {
   const organizationActivity = useStore((state) => state.organizationActivity);
   const organizationReport = useStore((state) => state.organizationReport);
   const organizationLegal = useStore((state) => state.organizationLegal);
+  const organization = useStore((state) => state.organization);
   return {
+    organization,
     organizationGeneral,
     organizationActivity,
     organizationFinancial,

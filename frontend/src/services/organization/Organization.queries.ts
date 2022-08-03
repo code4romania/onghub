@@ -62,6 +62,7 @@ export const useOrganizationQuery = (id: number) => {
       setOrganizationLegal(data.organizationLegal);
       setOrganizationReport(data.organizationReport);
     },
+    enabled: !!id,
   });
 };
 

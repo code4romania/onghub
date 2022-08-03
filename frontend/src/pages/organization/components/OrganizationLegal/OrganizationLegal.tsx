@@ -38,7 +38,7 @@ const OrganizationLegal = () => {
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
-  const { organizationLegal } = useSelectedOrganization();
+  const { organizationLegal, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
   const filesMutation = useUploadOrganizationFilesMutation();
 
@@ -159,6 +159,7 @@ const OrganizationLegal = () => {
         ),
     );
     setDirectors(filteredDirectors);
+    setSelectedDirector(null);
     setIsDeleteDirectorModalOpen(false);
   };
 
@@ -193,6 +194,7 @@ const OrganizationLegal = () => {
         !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
     );
     setOthers(filteredOthers);
+    setSelectedOther(null);
     setIsDeleteOtherModalOpen(false);
   };
 
@@ -210,7 +212,7 @@ const OrganizationLegal = () => {
     };
 
     mutate({
-      id: 3,
+      id: organization?.id as number,
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 
@@ -419,13 +421,19 @@ const OrganizationLegal = () => {
           )}
           {isDeleteDirectorModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteDirectorModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteDirectorModalOpen(false);
+                setSelectedDirector(null);
+              }}
               onConfirm={onDeleteDirector}
             />
           )}
           {isDeleteOtheModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteOtherModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteOtherModalOpen(false);
+                setSelectedOther(null);
+              }}
               onConfirm={onDeleteOther}
             />
           )}
