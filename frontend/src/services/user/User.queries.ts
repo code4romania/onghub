@@ -3,10 +3,12 @@ import { useQuery } from 'react-query';
 import useStore from '../../store/store';
 
 export const useUserQuery = (queryOptions?: any) => {
-  const { setUser } = useStore();
+  const { setUser, setOrganization } = useStore();
   return useQuery('user', () => getUser(), {
     onSuccess: (data: any) => {
-      setUser(data);
+      const { organization, ...user } = data;
+      setUser(user);
+      setOrganization(organization);
     },
     ...queryOptions,
   });

@@ -1,7 +1,8 @@
-export const userSlice = (set: any) => ({
-  user: {},
+import { IUser } from '../../pages/users/interfaces/User.interface';
 
-  setUser: (user: any) => {
+export const userSlice = (set: any) => ({
+  user: null,
+  setUser: (user: IUser) => {
     set({ user });
   },
 });
