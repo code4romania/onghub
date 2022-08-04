@@ -7,7 +7,6 @@ import {
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
 import { OrganizationLegalRepository } from '../repositories';
 import { ContactService } from './contact.service';
-import { validatePhone } from 'src/common/helpers/validate-phone';
 
 @Injectable()
 export class OrganizationLegalService {
@@ -33,17 +32,6 @@ export class OrganizationLegalService {
     if (directorsDeleted?.length > 0) {
       await this.contactService.delete({ id: In(directorsDeleted) });
     }
-    
-    if (organizationLegalData.legalReprezentative) {
-      if (organizationLegalData.legalReprezentative.phone) {
-        organizationLegalData.legalReprezentative.phone = validatePhone(organizationLegalData.legalReprezentative.phone);
-      }
-    }
-    organizationLegalData?.directors?.map((director) => {
-      if (director.phone) {
-        director.phone = validatePhone(director.phone);
-      }
-    })
 
     await this.organizationLegalRepostory.save({
       id,

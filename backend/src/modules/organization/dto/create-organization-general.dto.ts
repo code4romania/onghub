@@ -16,6 +16,7 @@ import {
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -46,7 +47,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization phone */
   @IsString()
   @IsNotEmpty()
-  @Matches(REGEX.PHONE)
+  @IsValidPhone()
   phone: string;
 
   /* Organization year created */

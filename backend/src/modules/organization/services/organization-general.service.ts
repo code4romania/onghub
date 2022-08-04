@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 import { ContactService } from './contact.service';
-import { validatePhone } from 'src/common/helpers/validate-phone';
 
 @Injectable()
 export class OrganizationGeneralService {
@@ -17,14 +16,7 @@ export class OrganizationGeneralService {
   ) {
     const { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
 
-    if (updateOrganizationData.phone) {
-      updateOrganizationData.phone = validatePhone(updateOrganizationData.phone);
-    }
-
     if (contact) {
-      if (contact.phone) {
-        contact.phone = validatePhone(contact.phone);
-      }
       const contactEntity = await this.contactService.get({
         where: { id: contact.id },
       });
