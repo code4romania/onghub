@@ -8,7 +8,6 @@ interface MenuItem {
   name: string;
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   onClick: (row: any) => void;
-  downloadProp?: string;
   isRemove?: boolean;
   isUpload?: boolean;
   isDownload?: boolean;
@@ -54,13 +53,11 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                     <div key={item.name}>
                       {item.isDownload && (
                         <a
-                          href={row[item.downloadProp || '']}
                           className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
                             item.onClick(row);
                             close();
                           }}
-                          download
                         >
                           <item.icon
                             className="text-gray-900 flex-shrink-0 h-5 w-5"
