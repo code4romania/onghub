@@ -36,7 +36,12 @@ const DataTableComponent = ({
   const { i18n } = useLingui();
 
   return (
-    <div className={classNames(!loading && data.length > 0 ? 'border-b border-gray-200' : '')}>
+    <div
+      className={classNames(
+        !loading && data.length > 0 ? 'border-b border-gray-200' : '',
+        'rdt_TableWrapper',
+      )}
+    >
       <DataTable
         noHeader
         columns={columns}

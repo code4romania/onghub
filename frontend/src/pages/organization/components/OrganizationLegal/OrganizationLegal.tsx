@@ -16,12 +16,18 @@ import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
 import { OrganizationLegalConfig } from './OrganizationLegalConfig';
 import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 import { flatten } from '../../../../common/helpers/format.helper';
-import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
+import {
+  useOrganizationMutation,
+  useUploadOrganizationFilesMutation,
+} from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
+import { getPublicFileUrl } from '../../../../services/files/File.service';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
+  const [organizationStatute, setOrganizationStatute] = useState<string | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -34,8 +40,9 @@ const OrganizationLegal = () => {
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
-  const { organizationLegal } = useSelectedOrganization();
+  const { organizationLegal, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
+  const filesMutation = useUploadOrganizationFilesMutation();
 
   // React Hook Form
   const {
@@ -58,6 +65,8 @@ const OrganizationLegal = () => {
       reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
+      if (organizationLegal.organizationStatute)
+        requestOrganizationStatuteUrl(organizationLegal.organizationStatute);
     }
   }, [organizationLegal]);
 
@@ -154,6 +163,7 @@ const OrganizationLegal = () => {
         ),
     );
     setDirectors(filteredDirectors);
+    setSelectedDirector(null);
     setIsDeleteDirectorModalOpen(false);
   };
 
@@ -188,6 +198,7 @@ const OrganizationLegal = () => {
         !(other.fullName === selectedOther?.fullName && other.role === selectedOther?.role),
     );
     setOthers(filteredOthers);
+    setSelectedOther(null);
     setIsDeleteOtherModalOpen(false);
   };
 
@@ -205,15 +216,46 @@ const OrganizationLegal = () => {
     };
 
     mutate({
-      id: 3,
+      id: organization?.id as number,
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 
     setEditMode(false);
   };
 
-  const onUploadFile = () => {
-    console.log('on upload file');
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const data = new FormData();
+      data.append('organizationStatute', file);
+      filesMutation.mutate({ id: organization?.id as number, data });
+      event.target.value = '';
+    } else {
+      event.target.value = '';
+    }
+  };
+
+  const onRemoveOrganizationStatute = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    mutate({
+      id: organization?.id as number,
+      organization: {
+        legal: {
+          organizationStatute: null,
+        },
+      },
+    });
+    setOrganizationStatute(null);
+  };
+
+  const requestOrganizationStatuteUrl = async (path: string) => {
+    try {
+      const orgStatuteUrl = await getPublicFileUrl(path);
+      setOrganizationStatute(orgStatuteUrl);
+    } catch (error) {
+      useErrorToast('Could not load organization statute');
+    }
   };
 
   return (
@@ -320,9 +362,41 @@ const OrganizationLegal = () => {
             />
             <div className="flex flex-col gap-y-4">
               <h3>Document</h3>
-              <button type="button" className="add-button max-w-[8rem]" onClick={onUploadFile}>
-                Incarca fisier
-              </button>
+              {isEditMode &&
+                organizationLegal?.organizationStatute === null &&
+                organizationStatute === null && (
+                  <>
+                    <label
+                      htmlFor="uploadPhoto"
+                      className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Incarca fisier
+                    </label>
+                    <input
+                      className="h-0 w-0"
+                      name="uploadPhoto"
+                      id="uploadPhoto"
+                      type="file"
+                      onChange={onChangeFile}
+                    />
+                  </>
+                )}
+              {(organizationLegal?.organizationStatute || organizationStatute) && (
+                <a
+                  href={organizationLegal?.organizationStatute}
+                  download
+                  className="text-indigo-600 font-medium text-sm flex items-center"
+                >
+                  <PaperClipIcon className=" w-4 h-4 text-gray-600" />
+                  Statut_Organizatie
+                  {isEditMode && (
+                    <XIcon
+                      className="ml-2 w-4 h-4 text-gray-600"
+                      onClick={onRemoveOrganizationStatute}
+                    />
+                  )}
+                </a>
+              )}
             </div>
           </section>
           {isDirectorModalOpen && (
@@ -349,13 +423,19 @@ const OrganizationLegal = () => {
           )}
           {isDeleteDirectorModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteDirectorModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteDirectorModalOpen(false);
+                setSelectedDirector(null);
+              }}
               onConfirm={onDeleteDirector}
             />
           )}
           {isDeleteOtheModalOpen && (
             <DeleteRowConfirmationModal
-              onClose={setIsDeleteOtherModalOpen.bind(null, false)}
+              onClose={() => {
+                setIsDeleteOtherModalOpen(false);
+                setSelectedOther(null);
+              }}
               onConfirm={onDeleteOther}
             />
           )}

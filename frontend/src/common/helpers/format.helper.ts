@@ -7,15 +7,18 @@ export const formatCurrency = (value: number | string): string =>
 
 export const formatDate = (value: Date | string): string => format(new Date(value), 'd/L/y');
 
+export const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/;
+
 export const URL_REGEX =
   /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\\.-]+)+[\w\-\\._~:/?#[\]@!\\$&'\\(\\)\\*\\+,;=.]+$/g;
 
 export const PHONE_REGEX =
-  /^(\+40)(\s|\.|-)?(7[0-8]{1}[0-9]{1}|2[0-9]{2}|3[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
-export const CUI_REGEX = /(RO)?\d+$/;
+  /^(\+4|)?(\s|\.|-)?(07[0-8]{1}[0-9]{1}|2[0-9]{2}|3[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
+export const CUI_REGEX = /^(RO|)?[\d]*$/;
 export const NAME_REGEX = /^(?!.*[ ]{2})[a-zA-Z-\săîâșțĂÎÂȘȚ]*$/;
 export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ"]*$/;
-export const RAF_NUMBER_REGEX = /^[a-zA-Z0-9/]*$/;
+export const RAF_NUMBER_REGEX = /^[a-zA-Z\d/]*$/;
 
 export const NUMERIC_REGEX = /^\d*$/;
 
@@ -86,10 +89,25 @@ export const str2boolObject = (item: any) => {
   });
 };
 
+export const fileToURL = (file: File | null) => {
+  return file ? URL.createObjectURL(file) : null;
+};
+
 export const emptyStringToNull = (obj: any): any => {
   let newObj = {};
   Object.keys(obj).forEach((key: any) => {
     newObj = { ...newObj, [key]: obj[key] === '' ? null : obj[key] };
+  });
+  return newObj;
+};
+
+export const emptyArrayToNull = (obj: any): any => {
+  let newObj = {};
+  Object.keys(obj).forEach((key: any) => {
+    newObj = {
+      ...newObj,
+      [key]: Array.isArray(obj[key]) && obj[key].length === 0 ? null : obj[key],
+    };
   });
   return newObj;
 };

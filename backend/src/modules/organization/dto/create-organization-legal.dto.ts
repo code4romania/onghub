@@ -27,13 +27,4 @@ export class CreateOrganizationLegalDto {
   @ValidateNested()
   @Type(() => Person)
   others?: Person[];
-
-  /* 
-  Organization statute link
-  @example "http://www.google.com"
-  */
-  @IsOptional()
-  @IsString()
-  @Matches(REGEX.LINK)
-  organizationStatute?: string;
 }

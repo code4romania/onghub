@@ -16,14 +16,19 @@ import { Federation } from '../common/interfaces/federations.interface';
 import { organizationLegalSlice } from './organization/organization-legal.slice';
 import { organizationReportsSlice } from './organization/organization-reports.slice';
 import { userSlice } from './user/User.slice';
+import { IUser } from '../pages/users/interfaces/User.interface';
+import { IOrganization } from '../pages/organization/interfaces/Organization.interface';
+import { organizationSlice } from './organization/organization.slice';
 
 interface OrganizationState {
+  organization: IOrganization | null;
   organizationGeneral: IOrganizationGeneral | null;
   organizationFinancial: IOrganizationFinancial[];
   organizationActivity: any;
-  setOrganizationActivity: (organizationActivity: any) => void;
   organizationReport: IOrganizationReport | null;
   organizationLegal: IOrganizationLegal | null;
+  setOrganization: (organization: IOrganization) => void;
+  setOrganizationActivity: (organizationActivity: any) => void;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
   setOrganizationFinancial: (organizationFinancial: IOrganizationFinancial[]) => void;
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
@@ -45,11 +50,12 @@ interface NomenclatureState {
 }
 
 interface UserState {
-  user: any;
-  setUser: (user: any) => void;
+  user: IUser | null;
+  setUser: (user: IUser | null) => void;
 }
 
 const useStore = create<OrganizationState & NomenclatureState & UserState>()((set: any) => ({
+  ...organizationSlice(set),
   ...organizationGeneralSlice(set),
   ...organizationFinancialSlice(set),
   ...organizationActivitySlice(set),
