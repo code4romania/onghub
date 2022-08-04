@@ -4,13 +4,16 @@ import {
   ClassSerializerInterceptor,
   UseInterceptors,
   SetMetadata,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
 import { ExtractUser } from './decorators/user.decorator';
 import { AllowedStatuses } from 'src/common/decorators/user-status.decorator';
 import { UserStatus } from './enums/user-status.enum';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
@@ -20,6 +23,11 @@ export class UserController {
   @AllowedStatuses(UserStatus.RESTRICTED)
   profile(@ExtractUser() user: User) {
     return user;
+  }
+
+  @Delete()
+  remove(@ExtractUser() user: User) {
+    return this.userService.remove(user);
   }
 
   // @Roles(...[Role.EMPLOYEE, Role.ADMIN])
@@ -42,10 +50,5 @@ export class UserController {
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.userService.findOne(+id);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
   // }
 }

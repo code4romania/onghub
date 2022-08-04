@@ -21,6 +21,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     let message = (exception as any).message;
     let code = 'HttpException';
+    let error = {};
 
     Logger.error(
       message,
@@ -33,6 +34,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = (exception as HttpException).getStatus();
       message = (exception as HttpException).getResponse()['message'];
+      code = (exception as HttpException).getResponse()['errorCode'];
+      error = (exception as HttpException).getResponse();
     } else if (exception instanceof TypeORMError) {
       status = HttpStatus.UNPROCESSABLE_ENTITY;
       message = (exception as TypeORMError).message;
@@ -41,8 +44,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
-    response
-      .status(status)
-      .json(GlobalResponseError(status, message, code, request));
+    const responseToUser = GlobalResponseError(
+      status,
+      message,
+      code,
+      request,
+      error,
+    );
+
+    response.status(status).json(responseToUser);
   }
 }
