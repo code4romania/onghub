@@ -15,7 +15,6 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
-import { OrganizationFiles } from '../models/organization-files.interface';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -259,18 +258,18 @@ export class OrganizationService {
     logo: Express.Multer.File[],
     organizationStatute: Express.Multer.File[],
   ): Promise<Organization> {
-    try {
-      const organization = await this.organizationRepository.get({
-        where: { id: organizationId },
-        relations: ['organizationGeneral', 'organizationLegal'],
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: ['organizationGeneral', 'organizationLegal'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
       });
+    }
 
-      if (!organization) {
-        throw new NotFoundException({
-          ...ORGANIZATION_ERRORS.GET,
-        });
-      }
-
+    try {
       if (logo) {
         if (organization.organizationGeneral.logo) {
           await this.fileManagerService.deleteFiles([

@@ -20,8 +20,12 @@ import {
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
-import { OrganizationFiles } from './models/organization-files.interface';
 import { OrganizationService } from './services/organization.service';
+import {
+  INVESTOR_UPLOAD_SCHEMA,
+  PARTNER_UPLOAD_SCHEMA,
+  ORGANIZATION_UPLOAD_SCHEMA,
+} from './constants/open-api.schema';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -60,93 +64,48 @@ export class OrganizationController {
     ]),
   )
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        logo: {
-          type: 'array',
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-        organizationStatute: {
-          type: 'array',
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    },
+    schema: ORGANIZATION_UPLOAD_SCHEMA,
   })
   @Post(':id/upload')
   upload(
     @Param('id') id: number,
-    @UploadedFiles() logo: Express.Multer.File[],
-    @UploadedFiles() organizationStatute: Express.Multer.File[],
+    @UploadedFiles()
+    files: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
   ): Promise<any> {
-    return this.organizationService.upload(id, logo, organizationStatute);
+    return this.organizationService.upload(
+      id,
+      files.logo,
+      files.organizationStatute,
+    );
   }
 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        body: {
-          type: 'object',
-          properties: {
-            numberOfPartners: { type: 'integer' },
-          },
-        },
-        files: {
-          type: 'array',
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    },
+    schema: PARTNER_UPLOAD_SCHEMA,
   })
   @Post(':id/partners/:partnerId')
   uploadPartnerList(
     @Param('id') id: string,
     @Param('partnerId') partnerId: string,
     @Body() body: { numberOfPartners: number },
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: { partners: Express.Multer.File[] },
   ): Promise<any> {
     return this.organizationService.uploadPartners(
       +id,
       +partnerId,
       +body.numberOfPartners,
-      files,
+      files.partners,
     );
   }
 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        body: {
-          type: 'object',
-          properties: {
-            numberOfInvestors: { type: 'integer' },
-          },
-        },
-        files: {
-          type: 'array',
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
-        },
-      },
-    },
+    schema: INVESTOR_UPLOAD_SCHEMA,
   })
   @Post(':id/investors/:investorId')
   uploadInvestorList(
