@@ -2,25 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import { CheckCircleIcon } from '@heroicons/react/solid';
+import ProgressSteps from './components/ProgressSteps';
+import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { IOrganizationActivity } from '../organization/interfaces/OrganizationActivity.interface';
-import { IOrganizationGeneral } from '../organization/interfaces/OrganizationGeneral.interface';
-import { IOrganizationLegal } from '../organization/interfaces/OrganizationLegal.interface';
-import ProgressSteps from './ProgressSteps';
 
 const CreateOrganization = () => {
-  const [organization, setOrganization] = useState<{
-    general: IOrganizationGeneral | null;
-    activity: IOrganizationActivity | null;
-    legal: IOrganizationLegal | null;
-  }>({ general: null, activity: null, legal: null });
+  const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
+    user: null,
+    general: null,
+    activity: null,
+    legal: null,
+  });
 
-  const [finished, setFinished] = useState(true);
+  const [finished, setFinished] = useState(false);
 
   useCountiesQuery();
 
   useEffect(() => {
-    if (organization && organization.general && organization.activity && organization.legal) {
+    if (
+      organization &&
+      organization.user &&
+      organization.general &&
+      organization.activity &&
+      organization.legal
+    ) {
       setFinished(true);
     }
   }, [organization]);
@@ -30,7 +35,7 @@ const CreateOrganization = () => {
       <Header />
       <div className="flex p-6">
         <div className="content overflow-scroll w-full pl-6 flex flex-col gap-4">
-          <ProgressSteps />
+          <ProgressSteps disabled={finished} />
           {!finished && <Outlet context={[organization, setOrganization]} />}
           {finished && (
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">

@@ -3,10 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import AppStore from '../../pages/apps-store/AppStore';
+import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
+import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
+import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
+import CreateOrganizationUser from '../../pages/create-organziation/components/CreateOrganizationUser';
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
-import CreateOrganizationActivity from '../../pages/create-organziation/CreateOrganizationActivity';
-import CreateOrganizationGeneral from '../../pages/create-organziation/CreateOrganizationGeneral';
-import CreateOrganizationLegal from '../../pages/create-organziation/CreateOrganizationLegal';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
@@ -31,6 +32,7 @@ const Router = () => {
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
         <Route path="new" element={<CreateOrganization />}>
+          <Route path="account" element={<CreateOrganizationUser />} />
           <Route path="general" element={<CreateOrganizationGeneral />} />
           <Route path="activity" element={<CreateOrganizationActivity />} />
           <Route path="legal" element={<CreateOrganizationLegal />} />

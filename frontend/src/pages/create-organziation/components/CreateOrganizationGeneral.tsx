@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { flatten } from '../../common/helpers/format.helper';
-import ContactForm from '../../components/Contact/Contact';
-import InputField from '../../components/InputField/InputField';
-import SectionHeader from '../../components/section-header/SectionHeader';
-import Textarea from '../../components/Textarea/Textarea';
-import { useCitiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { useNomenclature, useSelectedOrganization } from '../../store/selectors';
-import { OrganizationGeneralConfig } from '../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
-import Select from '../../components/Select/Select';
-import RadioGroup from '../../components/RadioGroup/RadioGroup';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { CREATE_FLOW_URL } from './CreateOrganization.constant';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { flatten } from '../../../common/helpers/format.helper';
+import ContactForm from '../../../components/Contact/Contact';
+import InputField from '../../../components/InputField/InputField';
+import RadioGroup from '../../../components/RadioGroup/RadioGroup';
+import SectionHeader from '../../../components/section-header/SectionHeader';
+import Select from '../../../components/Select/Select';
+import Textarea from '../../../components/Textarea/Textarea';
+import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useNomenclature } from '../../../store/selectors';
+import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
+import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -591,7 +591,7 @@ const CreateOrganizationGeneral = () => {
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
-            onClick={() => alert('not implemented')}
+            onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}
           >
             Inapoi
           </button>

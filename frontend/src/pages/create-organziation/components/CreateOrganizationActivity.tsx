@@ -1,36 +1,30 @@
-import { PencilIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   str2bool,
-  mapSelectToValue,
-  mapToId,
   mapCitiesToSelect,
   mapNameToSelect,
   mapGroupsToSelect,
-} from '../../common/helpers/format.helper';
-import { classNames } from '../../common/helpers/tailwind.helper';
-import { useErrorToast } from '../../common/hooks/useToast';
-import ChipSelection from '../../components/chip-selection/ChipSelection';
-import InputField from '../../components/InputField/InputField';
-import MultiSelect from '../../components/multi-select/MultiSelect';
-import RadioGroup from '../../components/RadioGroup/RadioGroup';
-import ServerSelect from '../../components/server-select/ServerSelect';
+} from '../../../common/helpers/format.helper';
+import ChipSelection from '../../../components/chip-selection/ChipSelection';
+import InputField from '../../../components/InputField/InputField';
+import MultiSelect from '../../../components/multi-select/MultiSelect';
+import RadioGroup from '../../../components/RadioGroup/RadioGroup';
+import ServerSelect from '../../../components/server-select/ServerSelect';
 import {
   useDomainsQuery,
   useRegionsQuery,
   useFederationsQuery,
   useCoalitionsQuery,
-} from '../../services/nomenclature/Nomenclature.queries';
-import { getCities } from '../../services/nomenclature/Nomenclatures.service';
-import { useOrganizationMutation } from '../../services/organization/Organization.queries';
-import { useSelectedOrganization, useNomenclature } from '../../store/selectors';
+} from '../../../services/nomenclature/Nomenclature.queries';
+import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
+import { useNomenclature } from '../../../store/selectors';
 import {
   OrganizationActivityConfig,
   OrganizationAreaEnum,
-} from '../organization/components/OrganizationActivity/OrganizationActivityConfig';
-import { CREATE_FLOW_URL } from './CreateOrganization.constant';
+} from '../../organization/components/OrganizationActivity/OrganizationActivityConfig';
+import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();

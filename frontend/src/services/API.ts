@@ -10,6 +10,11 @@ const API = axios.create({
 });
 
 API.interceptors.request.use(async (request) => {
+  // If the request had a "public" header that is "true" it will not add the bearer token since the endpoint is a public one
+  if (request.headers?.public) {
+    return request;
+  }
+
   // add auth header with jwt if account is logged in and request is to the api url
   const user = await Auth.currentAuthenticatedUser();
 
