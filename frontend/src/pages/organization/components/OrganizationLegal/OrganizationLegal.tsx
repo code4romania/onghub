@@ -23,9 +23,11 @@ import {
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
+import { getPublicFileUrl } from '../../../../services/files/File.service';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
+  const [organizationStatute, setOrganizationStatute] = useState<string | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -63,6 +65,8 @@ const OrganizationLegal = () => {
       reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
+      if (organizationLegal.organizationStatute)
+        requestOrganizationStatuteUrl(organizationLegal.organizationStatute);
     }
   }, [organizationLegal]);
 
@@ -224,21 +228,7 @@ const OrganizationLegal = () => {
       const file = event.target.files[0];
       const data = new FormData();
       data.append('organizationStatute', file);
-      filesMutation.mutate(
-        { id: 1, data },
-        {
-          onSettled: (data: { organizationStatute: string }) => {
-            mutate({
-              id: 1,
-              organization: {
-                legal: {
-                  organizationStatute: data?.organizationStatute || null,
-                },
-              },
-            });
-          },
-        },
-      );
+      filesMutation.mutate({ id: organization?.id as number, data });
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -249,13 +239,23 @@ const OrganizationLegal = () => {
     event.stopPropagation();
     event.preventDefault();
     mutate({
-      id: 1,
+      id: organization?.id as number,
       organization: {
         legal: {
           organizationStatute: null,
         },
       },
     });
+    setOrganizationStatute(null);
+  };
+
+  const requestOrganizationStatuteUrl = async (path: string) => {
+    try {
+      const orgStatuteUrl = await getPublicFileUrl(path);
+      setOrganizationStatute(orgStatuteUrl);
+    } catch (error) {
+      useErrorToast('Could not load organization statute');
+    }
   };
 
   return (
@@ -362,26 +362,28 @@ const OrganizationLegal = () => {
             />
             <div className="flex flex-col gap-y-4">
               <h3>Document</h3>
-              {isEditMode && organizationLegal?.organizationStatute === null && (
-                <>
-                  <label
-                    htmlFor="uploadPhoto"
-                    className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Incarca fisier
-                  </label>
-                  <input
-                    className="h-0 w-0"
-                    name="uploadPhoto"
-                    id="uploadPhoto"
-                    type="file"
-                    onChange={onChangeFile}
-                  />
-                </>
-              )}
-              {organizationLegal?.organizationStatute && (
+              {isEditMode &&
+                organizationLegal?.organizationStatute === null &&
+                organizationStatute === null && (
+                  <>
+                    <label
+                      htmlFor="uploadPhoto"
+                      className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Incarca fisier
+                    </label>
+                    <input
+                      className="h-0 w-0"
+                      name="uploadPhoto"
+                      id="uploadPhoto"
+                      type="file"
+                      onChange={onChangeFile}
+                    />
+                  </>
+                )}
+              {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
-                  href={organizationLegal.organizationStatute}
+                  href={organizationLegal?.organizationStatute}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >

@@ -6,5 +6,5 @@ export interface IOrganizationLegal extends BaseEntity {
   legalReprezentative: Contact;
   directors: Contact[];
   others: Person[];
-  organizationStatute: string;
+  organizationStatute?: string;
 }

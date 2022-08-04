@@ -16,7 +16,7 @@ export interface IOrganizationGeneral extends BaseEntity {
   rafNumber: string;
   shortDescription: string;
   description: string;
-  logo: string;
+  logo?: string;
   website: string;
   facebook: string;
   instagram: string;

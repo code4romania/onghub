@@ -47,6 +47,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Report not found',
     errorCode: 'ORG_011',
   },
+  GET_LEGAL: {
+    message: 'Organization Legal not found',
+    errorCode: 'ORG_012',
+  },
 };
 
 export const PARTNER_ERRORS = {
