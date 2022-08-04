@@ -75,6 +75,7 @@ export class OrganizationReportService {
       where: { id: partnerId },
     });
 
+    // TODO: Upgrade this to a service
     if (!partner) {
       throw new NotFoundException({
         ...PARTNER_ERRORS.GET,
@@ -109,6 +110,7 @@ export class OrganizationReportService {
       where: { id: investorId },
     });
 
+    // TODO: Upgrade this to a service
     if (!investor) {
       throw new NotFoundException({
         ...INVESTOR_ERRORS.GET,
@@ -138,6 +140,7 @@ export class OrganizationReportService {
       where: { id: partnerId },
     });
 
+    // TODO: Upgrade this to a service
     if (!partner) {
       throw new NotFoundException({
         ...PARTNER_ERRORS.GET,
@@ -161,6 +164,7 @@ export class OrganizationReportService {
       where: { id: investorId },
     });
 
+    // TODO: Upgrade this to a service
     if (!investor) {
       throw new NotFoundException({
         ...INVESTOR_ERRORS.GET,

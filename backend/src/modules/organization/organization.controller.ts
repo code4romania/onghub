@@ -101,7 +101,6 @@ export class OrganizationController {
     );
   }
 
-  @ApiConsumes('multipart/form-data')
   @Delete(':id/partners/:partnerId')
   deletePartner(
     @Param('id') id: string,

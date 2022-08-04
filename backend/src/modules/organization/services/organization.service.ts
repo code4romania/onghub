@@ -261,18 +261,18 @@ export class OrganizationService {
     organizationId: number,
     files: OrganizationFiles,
   ): Promise<Organization> {
-    try {
-      const organization = await this.organizationRepository.get({
-        where: { id: organizationId },
-        relations: ['organizationGeneral', 'organizationLegal'],
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: ['organizationGeneral', 'organizationLegal'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
       });
+    }
 
-      if (!organization) {
-        throw new NotFoundException({
-          ...ORGANIZATION_ERRORS.GET,
-        });
-      }
-
+    try {
       if (files.logo) {
         if (organization.organizationGeneral.logo) {
           await this.fileManagerService.deleteFiles([
