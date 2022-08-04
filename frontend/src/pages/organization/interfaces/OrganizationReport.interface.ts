@@ -6,5 +6,5 @@ import { Report } from './Report.interface';
 export interface IOrganizationReport extends BaseEntity {
   reports: Report[];
   partners: Partner[];
-  inverstors: Investor[];
+  investors: Investor[];
 }

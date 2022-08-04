@@ -82,7 +82,6 @@ export class CreateOrganizationGeneralDto {
   @Length(200, 700)
   description?: string;
 
-  // TODO: this should be removed once we have the attachment table
   /* Organization logo/link */
   @IsString()
   logo: string;

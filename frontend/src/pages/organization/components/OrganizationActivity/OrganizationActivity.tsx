@@ -18,6 +18,7 @@ import InputField from '../../../../components/InputField/InputField';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
+  emptyArrayToNull,
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
@@ -77,7 +78,10 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({ id: organization?.id as number, organization: { activity } });
+    mutate({
+      id: organization?.id as number,
+      organization: { activity: emptyArrayToNull(activity) },
+    });
   };
 
   // load initial values

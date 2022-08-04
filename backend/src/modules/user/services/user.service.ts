@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ERROR_CODES } from 'src/modules/organization/constants/errors.constants';
+import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
@@ -68,7 +68,7 @@ export class UserService {
         ...USER_ERRORS.CREATE,
       });
 
-      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+      if (error?.response?.errorCode == ORGANIZATION_ERRORS.GET.errorCode) {
         throw new BadRequestException({
           ...USER_ERRORS.CREATE_WRONG_ORG,
           error,

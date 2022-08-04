@@ -5,4 +5,5 @@ export interface Investor extends BaseEntity {
   year: number;
   numberOfInvestors: number | null;
   status: CompletionStatus;
+  path: string | null;
 }
