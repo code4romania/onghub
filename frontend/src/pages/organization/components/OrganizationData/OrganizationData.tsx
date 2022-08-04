@@ -12,7 +12,11 @@ import { Partner } from '../../interfaces/Partner.interface';
 import { InvestorsTableHeaders } from './table-headers/InvestorTable.headers';
 import ReportSummaryModal from './components/ReportSummaryModal';
 import CardPanel from '../../../../components/card-panel/CardPanel';
-import { getInvestorsTemplate, getPartnersTemplate } from '../../../../services/files/File.service';
+import {
+  getInvestorsTemplate,
+  getPartnersTemplate,
+  getPublicFileUrl,
+} from '../../../../services/files/File.service';
 import {
   useDeleteInvestorMutation,
   useDeletePartnerMutation,
@@ -22,6 +26,7 @@ import {
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import readXlsxFile from 'read-excel-file';
+import { triggerDownload } from '../../../../common/helpers/utils.helper';
 
 const OrganizationData = () => {
   // static links for partners and investors tables
@@ -33,7 +38,7 @@ const OrganizationData = () => {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
 
-  const { organizationReport } = useSelectedOrganization();
+  const { organizationReport, organization } = useSelectedOrganization();
   const reportSummaryMutation = useOrganizationMutation();
   const uploadPartnersMutation = useUploadPartnersList();
   const uploadInvestorsMutation = useUploadInvestorsList();
@@ -92,8 +97,7 @@ const OrganizationData = () => {
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
-        onClick: setSelectedPartner,
-        downloadProp: 'link',
+        onClick: onDownloadFile,
         isDownload: true,
       },
       {
@@ -123,8 +127,7 @@ const OrganizationData = () => {
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
-        onClick: setSelectedInvestor,
-        downloadProp: 'link',
+        onClick: onDownloadFile,
         isDownload: true,
       },
       {
@@ -158,7 +161,7 @@ const OrganizationData = () => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
     reportSummaryMutation.mutate({
-      id: 2,
+      id: organization?.id as number,
       organization: {
         report: {
           reportId: data.id,
@@ -172,7 +175,7 @@ const OrganizationData = () => {
 
   const onDeleteReport = (row: Report) => {
     reportSummaryMutation.mutate({
-      id: 2,
+      id: organization?.id as number,
       organization: {
         report: {
           reportId: row.id,
@@ -181,12 +184,25 @@ const OrganizationData = () => {
     });
   };
 
+  const onDownloadFile = async (row: Partner | Investor) => {
+    try {
+      if (row.path) {
+        const url = await getPublicFileUrl(row.path);
+        triggerDownload(url);
+      } else {
+        useErrorToast('No file uploaded');
+      }
+    } catch (error) {
+      useErrorToast('Could not download file');
+    }
+  };
+
   const onDeletePartner = (row: Partner) => {
-    deletePartnerMutation.mutate({ id: 2, partnerId: row.id });
+    deletePartnerMutation.mutate({ id: organization?.id as number, partnerId: row.id });
   };
 
   const onDeleteInvestor = (row: Investor) => {
-    deleteInvestorMutation.mutate({ id: 2, investorId: row.id });
+    deleteInvestorMutation.mutate({ id: organization?.id as number, investorId: row.id });
   };
 
   const onUploadNewList = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +224,7 @@ const OrganizationData = () => {
     const data = new FormData();
     data.append('partners', file);
     data.append('numberOfPartners', (rows.length - 2).toString());
-    uploadPartnersMutation.mutate({ id: 2, partnerId, data });
+    uploadPartnersMutation.mutate({ id: organization?.id as number, partnerId, data });
     setSelectedPartner(null);
   };
 
@@ -222,7 +238,7 @@ const OrganizationData = () => {
     const data = new FormData();
     data.append('investors', file);
     data.append('numberOfInvestors', (rows.length - 2).toString());
-    uploadInvestorsMutation.mutate({ id: 2, investorId, data });
+    uploadInvestorsMutation.mutate({ id: organization?.id as number, investorId, data });
     setSelectedInvestor(null);
   };
 

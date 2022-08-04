@@ -14,7 +14,11 @@ import {
 } from '../repositories';
 import { OrganizationReport } from '../entities';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
-import { INVESTOR_LIST, PARTNER_LIST } from '../constants/files.constants';
+import {
+  INVESTOR_LIST,
+  ORGANIZATION_FILES_DIR,
+  PARTNER_LIST,
+} from '../constants/files.constants';
 
 @Injectable()
 export class OrganizationReportService {
@@ -64,13 +68,14 @@ export class OrganizationReportService {
   public async updatePartner(
     partnerId: number,
     numberOfPartners: number,
-    directoryPath: string,
+    organizationId: number,
     files: Express.Multer.File[],
   ): Promise<void> {
     const partner = await this.partnerRepository.get({
       where: { id: partnerId },
     });
 
+    // TODO: Upgrade this to a service
     if (!partner) {
       throw new NotFoundException({
         ...PARTNER_ERRORS.GET,
@@ -82,21 +87,15 @@ export class OrganizationReportService {
     }
 
     const uploadedFile = await this.fileManagerService.uploadFiles(
-      directoryPath,
+      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
       files,
       `${partner.year}_${PARTNER_LIST}`,
-    );
-
-    // generate public link to file
-    const link = await this.fileManagerService.generatePresignedURL(
-      uploadedFile[0],
     );
 
     await this.partnerRepository.save({
       ...partner,
       path: uploadedFile[0],
       numberOfPartners,
-      link,
       status: CompletionStatus.COMPLETED,
     });
   }
@@ -104,13 +103,14 @@ export class OrganizationReportService {
   public async updateInvestor(
     investorId: number,
     numberOfInvestors: number,
-    directoryPath: string,
+    organizationId: number,
     files: Express.Multer.File[],
   ): Promise<void> {
     const investor = await this.investorRepository.get({
       where: { id: investorId },
     });
 
+    // TODO: Upgrade this to a service
     if (!investor) {
       throw new NotFoundException({
         ...INVESTOR_ERRORS.GET,
@@ -122,21 +122,15 @@ export class OrganizationReportService {
     }
 
     const uploadedFile = await this.fileManagerService.uploadFiles(
-      directoryPath,
+      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
       files,
       `${investor.year}_${INVESTOR_LIST}`,
-    );
-
-    // generate public link to file
-    const link = await this.fileManagerService.generatePresignedURL(
-      uploadedFile[0],
     );
 
     await this.investorRepository.save({
       ...investor,
       path: uploadedFile[0],
       numberOfInvestors,
-      link,
       status: CompletionStatus.COMPLETED,
     });
   }
@@ -146,6 +140,7 @@ export class OrganizationReportService {
       where: { id: partnerId },
     });
 
+    // TODO: Upgrade this to a service
     if (!partner) {
       throw new NotFoundException({
         ...PARTNER_ERRORS.GET,
@@ -160,7 +155,6 @@ export class OrganizationReportService {
       ...partner,
       path: null,
       numberOfPartners: null,
-      link: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
   }
@@ -170,6 +164,7 @@ export class OrganizationReportService {
       where: { id: investorId },
     });
 
+    // TODO: Upgrade this to a service
     if (!investor) {
       throw new NotFoundException({
         ...INVESTOR_ERRORS.GET,
@@ -184,7 +179,6 @@ export class OrganizationReportService {
       ...investor,
       path: null,
       numberOfInvestors: null,
-      link: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
   }

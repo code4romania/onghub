@@ -59,7 +59,7 @@ export class CreateOrganizationGeneralDto {
   @example RO1112345
   */
   @IsString()
-  @Length(2, 12)
+  @MaxLength(12)
   @Matches(REGEX.CUI)
   cui: string;
 
@@ -68,7 +68,7 @@ export class CreateOrganizationGeneralDto {
   @example 1249/A/2020
   */
   @IsString()
-  @Length(10, 12)
+  @MaxLength(20)
   @Matches(REGEX.RAF)
   rafNumber: string;
 

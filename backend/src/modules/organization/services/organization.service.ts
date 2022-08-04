@@ -186,6 +186,9 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
       ],
     });
 
@@ -341,7 +344,7 @@ export class OrganizationService {
     await this.organizationReportService.updatePartner(
       partnerId,
       numberOfPartners,
-      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
+      organizationId,
       files,
     );
 
@@ -369,7 +372,7 @@ export class OrganizationService {
     await this.organizationReportService.updateInvestor(
       investorId,
       numberOfInvestors,
-      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
+      organizationId,
       files,
     );
 

@@ -15,4 +15,16 @@ export const USER_ERRORS = {
     message: 'Could not restore user access',
     errorCode: 'USR_004',
   },
+  REMOVE: {
+    message: 'Could not remove user',
+    errorCode: 'USR_005',
+  },
+  REMOVE_SUPERADMIN: {
+    message: 'SuperAdmin account cannot be deleted',
+    errorCode: 'USR_006',
+  },
+  GET: {
+    message: 'User not found',
+    errorCode: 'USR_007',
+  },
 };
