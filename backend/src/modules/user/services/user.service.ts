@@ -53,9 +53,9 @@ export class UserService {
     try {
       // 1. Check if user already exists
       const userFound = await this.findByCognitoId(createUserDto.email);
-      // if (userFound) {
-      //   throw new InternalServerErrorException(USER_ERRORS.USER_EXISTS);
-      // }
+      if (userFound) {
+        throw new InternalServerErrorException(USER_ERRORS.GET);
+      }
       // 2. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
       // 3. Create user in Cognito
@@ -68,21 +68,27 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...USER_ERRORS.CREATE,
-      });
-
-      if (error?.response?.errorCode == ORGANIZATION_ERRORS.GET.errorCode) {
-        throw new BadRequestException({
-          ...USER_ERRORS.CREATE_WRONG_ORG,
-          error,
-        });
-      } else {
-        throw new InternalServerErrorException({
-          ...USER_ERRORS.CREATE,
-          error,
-        });
+      switch (error) {
+        case ORGANIZATION_ERRORS.GET.errorCode: {
+          this.logger.error({
+            error: { error },
+            ...USER_ERRORS.CREATE_WRONG_ORG,
+          });
+          throw new BadRequestException({
+            ...USER_ERRORS.CREATE_WRONG_ORG,
+            error,
+          });
+        }
+        case USER_ERRORS.CREATE.errorCode: {
+          this.logger.error({
+            error: { error },
+            ...USER_ERRORS.CREATE,
+          });
+          throw new InternalServerErrorException({
+            ...USER_ERRORS.CREATE,
+            error,
+          });
+        }
       }
     }
   }
