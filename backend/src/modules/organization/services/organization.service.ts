@@ -256,7 +256,8 @@ export class OrganizationService {
 
   public async upload(
     organizationId: number,
-    files: OrganizationFiles,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
   ): Promise<Organization> {
     try {
       const organization = await this.organizationRepository.get({
@@ -270,7 +271,7 @@ export class OrganizationService {
         });
       }
 
-      if (files.logo) {
+      if (logo) {
         if (organization.organizationGeneral.logo) {
           await this.fileManagerService.deleteFiles([
             organization.organizationGeneral.logo,
@@ -279,7 +280,7 @@ export class OrganizationService {
 
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
-          files.logo,
+          logo,
         );
 
         await this.organizationGeneralService.update(
@@ -290,7 +291,7 @@ export class OrganizationService {
         );
       }
 
-      if (files.organizationStatute) {
+      if (organizationStatute) {
         if (organization.organizationLegal.organizationStatute) {
           await this.fileManagerService.deleteFiles([
             organization.organizationLegal.organizationStatute,
@@ -299,7 +300,7 @@ export class OrganizationService {
 
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
-          files.organizationStatute,
+          organizationStatute,
         );
 
         await this.organizationLegalService.update(

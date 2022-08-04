@@ -59,33 +59,95 @@ export class OrganizationController {
       { name: 'organizationStatute', maxCount: 1 },
     ]),
   )
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        logo: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+        organizationStatute: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
   @Post(':id/upload')
   upload(
     @Param('id') id: number,
-    @UploadedFiles() files: OrganizationFiles,
+    @UploadedFiles() logo: Express.Multer.File[],
+    @UploadedFiles() organizationStatute: Express.Multer.File[],
   ): Promise<any> {
-    return this.organizationService.upload(id, files);
+    return this.organizationService.upload(id, logo, organizationStatute);
   }
 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        body: {
+          type: 'object',
+          properties: {
+            numberOfPartners: { type: 'integer' },
+          },
+        },
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
   @Post(':id/partners/:partnerId')
   uploadPartnerList(
     @Param('id') id: string,
     @Param('partnerId') partnerId: string,
     @Body() body: { numberOfPartners: number },
-    @UploadedFiles() files: { partners: Express.Multer.File[] },
+    @UploadedFiles() files: Express.Multer.File[],
   ): Promise<any> {
     return this.organizationService.uploadPartners(
       +id,
       +partnerId,
       +body.numberOfPartners,
-      files.partners,
+      files,
     );
   }
 
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        body: {
+          type: 'object',
+          properties: {
+            numberOfInvestors: { type: 'integer' },
+          },
+        },
+        files: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
+  })
   @Post(':id/investors/:investorId')
   uploadInvestorList(
     @Param('id') id: string,
