@@ -7,3 +7,7 @@ export const getOrganization = (id: number): Promise<any> => {
 export const patchOrganization = (id: number, update: any): Promise<any> => {
   return API.patch(`/organization/${id}`, { ...update }).then((res) => res.data);
 };
+
+export const createOrganization = (payload: any): Promise<any> => {
+  return API.post(`organization`, payload, { headers: { public: true } }).then((res) => res.data);
+};

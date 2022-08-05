@@ -5,6 +5,8 @@ import { CheckCircleIcon } from '@heroicons/react/solid';
 import ProgressSteps from './components/ProgressSteps';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { createOrganization } from '../../services/organization/Organization.service';
+import { mapSelectToValue } from '../../common/helpers/format.helper';
 
 const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
@@ -26,7 +28,37 @@ const CreateOrganization = () => {
       organization.activity &&
       organization.legal
     ) {
-      setFinished(true);
+      setFinished(false);
+      createOrganization({
+        contact: { ...organization.user, organizationId: -1 },
+        general: {
+          ...organization.general,
+          logo: '',
+          countyId: organization.general.county.id,
+          cityId: organization.general.city.id,
+        },
+        activity: {
+          ...organization.activity,
+          branches: organization.activity.branches
+            ? [...organization.activity.branches.map(mapSelectToValue)]
+            : [],
+          cities: organization.activity.cities
+            ? [...organization.activity.cities.map(mapSelectToValue)]
+            : [],
+          regions: organization.activity.regions
+            ? [...organization.activity.regions.map(mapSelectToValue)]
+            : [],
+          coalitions: organization.activity.coalitions
+            ? [...organization.activity.coalitions.map(mapSelectToValue)]
+            : [],
+          federations: organization.activity.federations
+            ? [...organization.activity.federations.map(mapSelectToValue)]
+            : [],
+        },
+        legal: organization.legal,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     }
   }, [organization]);
 

@@ -2,7 +2,11 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
+import { User } from 'src/modules/user/entities/user.entity';
+import { UserService } from 'src/modules/user/services/user.service';
 import { AnafService } from 'src/shared/services';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
@@ -33,11 +37,13 @@ export class OrganizationService {
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
   ) {}
 
   public async create(
     createOrganizationDto: CreateOrganizationDto,
-  ): Promise<Organization> {
+  ): Promise<{ user: User; organization: Organization }> {
     if (
       createOrganizationDto.activity.area === Area.LOCAL &&
       !createOrganizationDto.activity.cities
@@ -58,7 +64,7 @@ export class OrganizationService {
       });
     }
 
-    if (createOrganizationDto.legal.directors.length < 3) {
+    if (createOrganizationDto.legal.directors?.length < 3) {
       throw new BadRequestException({
         message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
         errorCode: ERROR_CODES.ORG009,
@@ -109,7 +115,7 @@ export class OrganizationService {
 
     let branches = [];
     if (createOrganizationDto.activity.hasBranches) {
-      if (createOrganizationDto.activity.branches) {
+      if (!createOrganizationDto.activity.branches) {
         throw new BadRequestException({
           message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
           errorCode: ERROR_CODES.ORG007,
@@ -132,7 +138,7 @@ export class OrganizationService {
     );
 
     // create the parent entry with default values
-    return this.organizationRepository.save({
+    const organization = await this.organizationRepository.save({
       organizationGeneral: {
         ...createOrganizationDto.general,
       },
@@ -152,14 +158,14 @@ export class OrganizationService {
         {
           type: FinancialType.EXPENSE,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalExpense,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalExpense,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
         {
           type: FinancialType.INCOME,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalIncome,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalIncome,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
       ],
       organizationReport: {
@@ -168,6 +174,13 @@ export class OrganizationService {
         investors: [new Investor()],
       },
     });
+
+    const user = await this.userService.createAdminProfile({
+      ...createOrganizationDto.contact,
+      organizationId: organization.id,
+    });
+
+    return { user, organization };
   }
 
   public async findOne(id: number): Promise<Organization> {

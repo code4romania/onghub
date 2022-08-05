@@ -57,7 +57,9 @@ export default function ProgressSteps({ disabled }: { disabled: boolean }) {
       for (let i = 0; i < index; i++) {
         steps_copy[i].status = PROGRESS_STEP_TYPE.COMPLETE;
       }
-      steps_copy[index].status = PROGRESS_STEP_TYPE.CURRENT;
+      if (index > -1) {
+        steps_copy[index].status = PROGRESS_STEP_TYPE.CURRENT;
+      }
       setSteps([...steps_copy]);
     }
   }, [location]);

@@ -34,9 +34,9 @@ const AuthProvider = ({ children }: any) => {
         await Auth.currentAuthenticatedUser();
         setAuthState({ isAuthenticated: true });
         await refetchUserProfile();
-        setIsLoading(false);
       } catch (error) {
         console.error(error);
+      } finally {
         setIsLoading(false);
       }
     })();

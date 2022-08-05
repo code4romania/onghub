@@ -32,6 +32,7 @@ const Router = () => {
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
         <Route path="new" element={<CreateOrganization />}>
+          <Route index element={<Navigate to={'/new/account'}></Navigate>} />
           <Route path="account" element={<CreateOrganizationUser />} />
           <Route path="general" element={<CreateOrganizationGeneral />} />
           <Route path="activity" element={<CreateOrganizationActivity />} />

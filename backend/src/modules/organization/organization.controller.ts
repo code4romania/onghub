@@ -13,6 +13,8 @@ import {
   ApiBody,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
+import { User } from '../user/entities/user.entity';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
@@ -30,16 +32,13 @@ import { OrganizationService } from './services/organization.service';
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
-  // @ApiBody({ type: CreateOrganizationDto })
+  @Public()
+  @ApiBody({ type: CreateOrganizationDto })
   @Post()
-  create(): // @Body() createOrganizationDto: CreateOrganizationDto,
-  Promise<Organization> {
-    // return this.organizationService.create(createOrganizationDto);
-    return this.organizationService.create({
-      general: OrganizationGeneralMock,
-      activity: OrganizationActivityMock,
-      legal: OrganizationLegalMock,
-    });
+  create(
+    @Body() createOrganizationDto: CreateOrganizationDto,
+  ): Promise<{ user: User; organization: Organization }> {
+    return this.organizationService.create(createOrganizationDto);
   }
 
   @Get(':id')

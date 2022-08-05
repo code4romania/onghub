@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -27,6 +29,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    @Inject(forwardRef(() => OrganizationService))
     private readonly organizationService: OrganizationService,
   ) {}
 
@@ -46,6 +49,42 @@ export class UserService {
         ...createUserDto,
         cognitoId,
         role: Role.EMPLOYEE,
+      });
+      return user;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.CREATE,
+      });
+
+      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+        throw new BadRequestException({
+          ...USER_ERRORS.CREATE_WRONG_ORG,
+          error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          ...USER_ERRORS.CREATE,
+          error,
+        });
+      }
+    }
+  }
+
+  /*
+      Rules:
+        1. Employee must be linked with an organization
+  */
+  public async createAdminProfile(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      // 1. Check the organizationId exists
+      await this.organizationService.findOne(createUserDto.organizationId);
+      // ====================================
+      // 2. Create user in Cognito
+      // 3. Create user in database
+      const user = await this.userRepository.save({
+        ...createUserDto,
+        role: Role.ADMIN,
       });
       return user;
     } catch (error) {
