@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ERROR_CODES } from 'src/modules/organization/constants/errors.constants';
+import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
@@ -30,6 +30,20 @@ export class UserService {
     private readonly organizationService: OrganizationService,
   ) {}
 
+  public async getById(id: number = null): Promise<User> {
+    if (!id) {
+      throw new NotFoundException({ ...USER_ERRORS.GET, id });
+    }
+
+    // 1. Get the user by id
+    const user = await this.userRepository.get({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException({ ...USER_ERRORS.GET, id });
+    }
+
+    return user;
+  }
   /*
       Rules:
         1. Employee must be linked with an organization
@@ -54,7 +68,7 @@ export class UserService {
         ...USER_ERRORS.CREATE,
       });
 
-      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
+      if (error?.response?.errorCode == ORGANIZATION_ERRORS.GET.errorCode) {
         throw new BadRequestException({
           ...USER_ERRORS.CREATE_WRONG_ORG,
           error,
@@ -87,52 +101,77 @@ export class UserService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(user: User): Promise<string> {
+    // Prevent SuperAdmin deletion
+    if (user.role === Role.SUPER_ADMIN) {
+      throw new InternalServerErrorException(USER_ERRORS.REMOVE_SUPERADMIN);
+    }
+
+    try {
+      await this.userRepository.delete({ cognitoId: user.cognitoId });
+      await this.cognitoService.deleteUser(user.cognitoId);
+      return user.cognitoId;
+    } catch (error) {
+      this.pinoLogger.error({
+        error: { error },
+        ...USER_ERRORS.REMOVE,
+        cognitoId: user.cognitoId,
+      });
+      throw new InternalServerErrorException({
+        ...USER_ERRORS.REMOVE,
+        error,
+      });
+    }
   }
 
-  async restrictAccess(cognitoIds: RestrictUserDto[]) {
+  async removeById(id: number): Promise<string> {
+    // 1. Get the user by id
+    const user = await this.getById(id);
+
+    return this.remove(user);
+  }
+
+  async restrictAccess(ids: number[]) {
     const updated = [],
       failed = [];
-    for (let i = 0; i < cognitoIds.length; i++) {
-      const id = cognitoIds[i].cognitoId;
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i];
       try {
+        const user = await this.getById(id);
         await this.userRepository.update(
-          { cognitoId: id },
+          { id },
           { status: UserStatus.RESTRICTED },
         );
-        await this.cognitoService.globalSignOut(id);
+        await this.cognitoService.globalSignOut(user.cognitoId);
         updated.push(id);
       } catch (error) {
         this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTRICT,
-          cognitoId: id,
+          id,
         });
-        failed.push({ cognitoId: id, error });
+        failed.push({ id, error });
       }
     }
     return { updated, failed };
   }
 
-  async restoreAccess(cognitoIds: ActivateUserDto[]) {
+  async restoreAccess(ids: number[]) {
     const updated = [],
       failed = [];
-    for (let i = 0; i < cognitoIds.length; i++) {
-      const id = cognitoIds[i].cognitoId;
+    for (let i = 0; i < ids.length; i++) {
+      const id = ids[i];
       try {
-        await this.userRepository.update(
-          { cognitoId: id },
-          { status: UserStatus.ACTIVE },
-        );
+        const user = await this.getById(id);
+        await this.userRepository.update({ id }, { status: UserStatus.ACTIVE });
         updated.push(id);
       } catch (error) {
         this.logger.error({
           error: { error },
           ...USER_ERRORS.RESTORE,
-          cognitoId: id,
+          id,
         });
-        failed.push({ cognitoId: id, error });
+        failed.push({ id, error });
       }
     }
     return { updated, failed };

@@ -4,10 +4,7 @@ import { City, County, Domain, Region } from 'src/shared/entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { ApplicationType } from '../entities/application-type.entity';
-import {
-  NOMENCLATURE_ERROR_MESSAGES,
-  NOMENCLATURE_ERROR_CODES,
-} from '../constants/nomenclature-error.constants';
+import { NOMENCLATURE_ERRORS } from '../constants/nomenclature-error.constants';
 import { Coalition } from '../entities/coalition.entity';
 import { Federation } from '../entities/federation.entity';
 
@@ -40,8 +37,7 @@ export class NomenclaturesService {
       citySearchDto.search === undefined
     ) {
       throw new NotAcceptableException({
-        message: NOMENCLATURE_ERROR_MESSAGES.CITY,
-        errorCode: NOMENCLATURE_ERROR_CODES.NOM001,
+        ...NOMENCLATURE_ERRORS.CITY_QUERY,
       });
     }
 

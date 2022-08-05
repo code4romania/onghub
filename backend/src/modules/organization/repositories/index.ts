@@ -5,3 +5,5 @@ export * from './organization-financial.repository';
 export * from './organization-report.repository';
 export * from './organization.repository';
 export * from './contact.repository';
+export * from './partner.repository';
+export * from './investor.repository';

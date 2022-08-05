@@ -65,6 +65,8 @@ class EnvironmentVariables {
   AWS_ACCESS_KEY_ID: string;
   @IsString()
   AWS_SECRET_ACCESS_KEY: string;
+  @IsString()
+  AWS_S3_BUCKET_NAME: string;
 }
 
 export function validate(config: Record<string, unknown>) {

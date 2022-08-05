@@ -51,7 +51,7 @@ interface NomenclatureState {
 
 interface UserState {
   user: IUser | null;
-  setUser: (user: IUser) => void;
+  setUser: (user: IUser | null) => void;
 }
 
 const useStore = create<OrganizationState & NomenclatureState & UserState>()((set: any) => ({

@@ -8,21 +8,28 @@ import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
-import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import {
+  useOrganizationMutation,
+  useUploadOrganizationFilesMutation,
+} from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { emptyStringToNull, flatten } from '../../../../common/helpers/format.helper';
+import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import { getPublicFileUrl } from '../../../../services/files/File.service';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
+  const [file, setFile] = useState<File | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
   const { organizationGeneral, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
+  const filesMutation = useUploadOrganizationFilesMutation();
   // queries
   useCitiesQuery(county?.id);
 
@@ -44,6 +51,7 @@ const OrganizationGeneral = () => {
       reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
+      if (organizationGeneral.logo) requestLogoUrl(organizationGeneral.logo);
     }
   }, [organizationGeneral]);
 
@@ -57,10 +65,32 @@ const OrganizationGeneral = () => {
     if (error) {
       useErrorToast('Could not save organization');
     }
-  }, [error]);
+
+    if (filesMutation.error) {
+      useErrorToast('Could not update logo');
+    }
+  }, [error, filesMutation.error]);
+
+  const requestLogoUrl = async (logoPath: string) => {
+    try {
+      const logoUrl = await getPublicFileUrl(logoPath);
+      setLogo(logoUrl);
+    } catch (error) {
+      useErrorToast('Could not load logo image');
+    }
+  };
 
   const startEdit = () => {
     setReadonly(false);
+  };
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+      event.target.value = '';
+    } else {
+      event.target.value = '';
+    }
   };
 
   const handleSave = (data: any) => {
@@ -81,11 +111,29 @@ const OrganizationGeneral = () => {
 
     delete organizationGeneral.county;
     delete organizationGeneral.city;
+    delete organizationGeneral.logo;
 
-    mutate({
-      id: organization?.id as number,
-      organization: { general: emptyStringToNull(organizationGeneral) },
-    });
+    if (file) {
+      const data = new FormData();
+      data.append('logo', file);
+      filesMutation.mutate(
+        { id: organization?.id as number, data },
+        {
+          onSettled: () => {
+            mutate({
+              id: organization?.id as number,
+              organization: { general: emptyStringToNull(organizationGeneral) },
+            });
+          },
+        },
+      );
+      setFile(null);
+    } else {
+      mutate({
+        id: organization?.id as number,
+        organization: { general: emptyStringToNull(organizationGeneral) },
+      });
+    }
   };
 
   return (
@@ -349,22 +397,38 @@ const OrganizationGeneral = () => {
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
                   Logo organizatie
                 </label>
+
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    <svg
-                      className="h-full w-full text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                    {!file && !logo ? (
+                      <svg
+                        className="h-full w-full text-gray-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    ) : (
+                      <img src={fileToURL(file) || (logo as string)} className="h-20 w-80" />
+                    )}
                   </span>
-                  <button
-                    type="button"
-                    className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Incarca logo
-                  </button>
+                  {!readonly && (
+                    <>
+                      <label
+                        htmlFor="uploadPhoto"
+                        className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Incarca logo
+                      </label>
+                      <input
+                        className="h-0 w-0"
+                        name="uploadPhoto"
+                        id="uploadPhoto"
+                        type="file"
+                        onChange={onChangeFile}
+                      />
+                    </>
+                  )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
                   Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.

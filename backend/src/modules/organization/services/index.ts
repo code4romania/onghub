@@ -5,5 +5,3 @@ export * from './organization-financial.service';
 export * from './organization.service';
 export * from './contact.service';
 export * from './report.service';
-export * from './partner.service';
-export * from './investor.service';
