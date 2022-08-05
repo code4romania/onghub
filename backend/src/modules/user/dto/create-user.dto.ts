@@ -2,7 +2,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   Length,
   Matches,
@@ -13,7 +12,7 @@ import { REGEX } from 'src/common/constants/patterns.constant';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @Length(10, 100)
+  @Length(5, 100)
   @Matches(REGEX.NAME)
   name: string;
 
