@@ -8,7 +8,6 @@ import {
 import { formatNumber } from 'libphonenumber-js';
 
 @ValidatorConstraint({ name: 'IsValidPhone', async: true })
-@Injectable()
 export class ValidatePhoneRule implements ValidatorConstraintInterface {
   constructor() {}
 

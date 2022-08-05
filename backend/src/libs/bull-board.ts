@@ -23,8 +23,6 @@ export function createQueueMonitoring(app: INestApplication) {
 
     return serverAdapter;
   } catch (err) {
-    app
-      .get(Logger)
-      .log(COMMON_ERRORS.BULLBOARD.message, COMMON_ERRORS.BULLBOARD.errorCode);
+    app.get(Logger).log(COMMON_ERRORS.BULLBOARD, 'createQueueMonitoring');
   }
 }
