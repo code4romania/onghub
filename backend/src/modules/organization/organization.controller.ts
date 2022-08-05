@@ -16,6 +16,7 @@ import {
   ApiConsumes,
   ApiBearerAuth,
   ApiTooManyRequestsResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
@@ -38,6 +39,7 @@ export class OrganizationController {
     return this.organizationService.create(createOrganizationDto);
   }
 
+  @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findOne(+id);
@@ -101,6 +103,8 @@ export class OrganizationController {
     );
   }
 
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'partnerId', type: String })
   @Delete(':id/partners/:partnerId')
   deletePartner(
     @Param('id') id: string,
@@ -109,6 +113,8 @@ export class OrganizationController {
     return this.organizationService.deletePartner(+id, +partnerId);
   }
 
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'investorId', type: String })
   @Delete(':id/investors/:investorId')
   deleteInvestors(
     @Param('id') id: string,

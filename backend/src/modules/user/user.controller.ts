@@ -3,7 +3,6 @@ import {
   Get,
   ClassSerializerInterceptor,
   UseInterceptors,
-  SetMetadata,
   Delete,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';

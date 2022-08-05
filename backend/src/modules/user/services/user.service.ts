@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
@@ -10,8 +11,6 @@ import { OrganizationService } from 'src/modules/organization/services';
 import { UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { ActivateUserDto } from '../dto/restore-user.dto';
-import { RestrictUserDto } from '../dto/restrict-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
 import { User } from '../entities/user.entity';
@@ -112,7 +111,7 @@ export class UserService {
       await this.cognitoService.deleteUser(user.cognitoId);
       return user.cognitoId;
     } catch (error) {
-      this.pinoLogger.error({
+      this.logger.error({
         error: { error },
         ...USER_ERRORS.REMOVE,
         cognitoId: user.cognitoId,
