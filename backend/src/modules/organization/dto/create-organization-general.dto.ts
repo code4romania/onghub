@@ -16,6 +16,7 @@ import {
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -46,7 +47,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization phone */
   @IsString()
   @IsNotEmpty()
-  @Matches(REGEX.PHONE)
+  @IsValidPhone()
   phone: string;
 
   /* Organization year created */
@@ -59,7 +60,7 @@ export class CreateOrganizationGeneralDto {
   @example RO1112345
   */
   @IsString()
-  @Length(2, 12)
+  @MaxLength(12)
   @Matches(REGEX.CUI)
   cui: string;
 
@@ -68,7 +69,7 @@ export class CreateOrganizationGeneralDto {
   @example 1249/A/2020
   */
   @IsString()
-  @Length(10, 12)
+  @MaxLength(20)
   @Matches(REGEX.RAF)
   rafNumber: string;
 
@@ -82,7 +83,6 @@ export class CreateOrganizationGeneralDto {
   @Length(200, 700)
   description?: string;
 
-  // TODO: this should be removed once we have the attachment table
   /* Organization logo/link */
   @IsString()
   logo: string;

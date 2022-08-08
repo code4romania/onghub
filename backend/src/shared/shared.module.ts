@@ -9,6 +9,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Region } from './entities/region.entity';
 import { Federation } from './entities/federation.entity';
 import { Coalition } from './entities/coalition.entity';
+import { FileManagerService } from './services/file-manager.service';
 
 @Global()
 @Module({
@@ -25,7 +26,7 @@ import { Coalition } from './entities/coalition.entity';
     HttpModule,
   ],
   controllers: [SharedController, NomenclaturesController],
-  providers: [NomenclaturesService, AnafService],
-  exports: [NomenclaturesService, AnafService],
+  providers: [NomenclaturesService, AnafService, FileManagerService],
+  exports: [NomenclaturesService, AnafService, FileManagerService],
 })
 export class SharedModule {}

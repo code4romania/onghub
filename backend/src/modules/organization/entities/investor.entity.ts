@@ -24,6 +24,9 @@ export class Investor extends BaseEntity {
   })
   status: CompletionStatus;
 
+  @Column({ type: 'text', name: 'path', nullable: true })
+  path: string;
+
   @ManyToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.investors,

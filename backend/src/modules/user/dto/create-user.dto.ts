@@ -9,6 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 
 export class CreateUserDto {
   @IsString()
@@ -24,7 +25,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @Matches(REGEX.PHONE)
+  @IsValidPhone()
   phone: string;
 
   @IsNumber()

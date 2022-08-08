@@ -8,16 +8,15 @@ import {
 import { User } from 'src/modules/user/entities/user.entity';
 import { UserService } from 'src/modules/user/services/user.service';
 import { AnafService } from 'src/shared/services';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import {
-  ERROR_CODES,
-  HTTP_ERRORS_MESSAGES,
-} from '../constants/errors.constants';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Investor, Organization, Partner, Report } from '../entities';
+import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -39,6 +38,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
@@ -49,8 +49,7 @@ export class OrganizationService {
       !createOrganizationDto.activity.cities
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.LOCAL,
-        errorCode: ERROR_CODES.ORG004,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.LOCAL,
       });
     }
 
@@ -59,15 +58,13 @@ export class OrganizationService {
       !createOrganizationDto.activity.regions
     ) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.REGION,
-        errorCode: ERROR_CODES.ORG003,
+        ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.REGION,
       });
     }
 
     if (createOrganizationDto.legal.directors?.length < 3) {
       throw new BadRequestException({
-        message: HTTP_ERRORS_MESSAGES.MINIMUM_DIRECTORS,
-        errorCode: ERROR_CODES.ORG009,
+        ...ORGANIZATION_ERRORS.CREATE_LEGAL.DIRECTORS_MIN,
       });
     }
 
@@ -89,8 +86,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.isPartOfFederation) {
       if (!createOrganizationDto.activity.federations) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_FEDERATIONS,
-          errorCode: ERROR_CODES.ORG005,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.FEDERATION,
         });
       }
 
@@ -103,8 +99,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.isPartOfCoalition) {
       if (!createOrganizationDto.activity.coalitions) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_COALITIONS,
-          errorCode: ERROR_CODES.ORG006,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.COALITION,
         });
       }
 
@@ -117,8 +112,7 @@ export class OrganizationService {
     if (createOrganizationDto.activity.hasBranches) {
       if (!createOrganizationDto.activity.branches) {
         throw new BadRequestException({
-          message: HTTP_ERRORS_MESSAGES.MISSING_BRANCHES,
-          errorCode: ERROR_CODES.ORG007,
+          ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
       }
 
@@ -169,9 +163,9 @@ export class OrganizationService {
         },
       ],
       organizationReport: {
-        reports: [new Report()],
-        partners: [new Partner()],
-        investors: [new Investor()],
+        reports: [{}],
+        partners: [{}],
+        investors: [{}],
       },
     });
 
@@ -205,13 +199,15 @@ export class OrganizationService {
         'organizationLegal.directors',
         'organizationFinancial',
         'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
       ],
     });
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG001,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -232,8 +228,7 @@ export class OrganizationService {
 
     if (!organization) {
       throw new NotFoundException({
-        message: HTTP_ERRORS_MESSAGES.ORGANIZATION,
-        errorCode: ERROR_CODES.ORG002,
+        ...ORGANIZATION_ERRORS.GET,
       });
     }
 
@@ -264,6 +259,180 @@ export class OrganizationService {
       );
     }
 
+    if (updateOrganizationDto.report) {
+      return this.organizationReportService.update(
+        organization.organizationReportId,
+        updateOrganizationDto.report,
+      );
+    }
+
     return null;
+  }
+
+  public async upload(
+    organizationId: number,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
+  ): Promise<Organization> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+      relations: ['organizationGeneral', 'organizationLegal'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    try {
+      if (logo) {
+        if (organization.organizationGeneral.logo) {
+          await this.fileManagerService.deleteFiles([
+            organization.organizationGeneral.logo,
+          ]);
+        }
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
+          logo,
+        );
+
+        await this.organizationGeneralService.update(
+          organization.organizationGeneral.id,
+          {
+            logo: uploadedFile[0],
+          },
+        );
+      }
+
+      if (organizationStatute) {
+        if (organization.organizationLegal.organizationStatute) {
+          await this.fileManagerService.deleteFiles([
+            organization.organizationLegal.organizationStatute,
+          ]);
+        }
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+          organizationStatute,
+        );
+
+        await this.organizationLegalService.update(
+          organization.organizationLegal.id,
+          {
+            organizationStatute: uploadedFile[0],
+          },
+        );
+      }
+
+      return this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationGeneral', 'organizationLegal'],
+      });
+    } catch (error) {
+      throw new BadRequestException({
+        ...ORGANIZATION_ERRORS.UPLOAD,
+        error: { error },
+      });
+    }
+  }
+
+  public async uploadPartners(
+    organizationId: number,
+    partnerId: number,
+    numberOfPartners: number,
+    files: Express.Multer.File[],
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    await this.organizationReportService.updatePartner(
+      partnerId,
+      numberOfPartners,
+      organizationId,
+      files,
+    );
+
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
+  }
+
+  public async uploadInvestors(
+    organizationId: number,
+    investorId: number,
+    numberOfInvestors: number,
+    files: Express.Multer.File[],
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    await this.organizationReportService.updateInvestor(
+      investorId,
+      numberOfInvestors,
+      organizationId,
+      files,
+    );
+
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
+  }
+
+  public async deletePartner(
+    organizationId: number,
+    partnerId: number,
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    await this.organizationReportService.deletePartner(partnerId);
+
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
+  }
+
+  public async deleteInvestor(
+    organizationId: number,
+    investorId: number,
+  ): Promise<OrganizationReport> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    await this.organizationReportService.deleteInvestor(investorId);
+
+    return this.organizationReportService.findOne(
+      organization.organizationReportId,
+    );
   }
 }

@@ -63,8 +63,8 @@ export const OrganizationLegalConfig: Record<string, any> = {
         message: 'Legal Representative phone has a maximum length of 15 characters.',
       },
       minLength: {
-        value: 12,
-        message: 'Legal Representative phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Legal Representative phone has a minimum length of 10 characters.',
       },
       pattern: {
         value: PHONE_REGEX,

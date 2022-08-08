@@ -1,15 +1,20 @@
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, Max, ValidateNested } from 'class-validator';
-import { Report } from '../entities';
+import { IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class UpdateOrganizationReportDto {
   @IsNumber()
-  @IsOptional()
-  @Max(new Date().getFullYear())
-  year?: number;
+  reportId: number;
 
+  @IsNumber()
   @IsOptional()
-  @Type(() => Report)
-  @ValidateNested()
-  report?: Partial<Report>;
+  numberOfVolunteers: number;
+
+  @IsNumber()
+  @IsOptional()
+  numberOfContractors: number;
+
+  @IsString()
+  @IsOptional()
+  @Matches(REGEX.LINK)
+  report: string;
 }

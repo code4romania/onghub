@@ -15,12 +15,14 @@ import {
 } from './entities';
 import {
   ContactRepository,
+  InvestorRepository,
   OrganizationActivityRepository,
   OrganizationFinancialRepository,
   OrganizationGeneralRepository,
   OrganizationLegalRepository,
   OrganizationReportRepository,
   OrganizationRepository,
+  PartnerRepository,
 } from './repositories';
 import {
   ContactService,
@@ -30,8 +32,6 @@ import {
   OrganizationLegalService,
   OrganizationService,
   ReportService,
-  PartnerService,
-  InvestorService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 import { UserModule } from '../user/user.module';
@@ -62,6 +62,8 @@ import { UserModule } from '../user/user.module';
     OrganizationActivityService,
     OrganizationActivityRepository,
     OrganizationLegalRepository,
+    PartnerRepository,
+    InvestorRepository,
     ContactRepository,
     OrganizationLegalService,
     OrganizationFinancialRepository,
@@ -69,8 +71,6 @@ import { UserModule } from '../user/user.module';
     OrganizationReportRepository,
     OrganizationReportService,
     ReportService,
-    PartnerService,
-    InvestorService,
   ],
   exports: [OrganizationService],
 })

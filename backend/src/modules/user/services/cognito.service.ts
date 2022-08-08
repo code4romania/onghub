@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
+  AdminDeleteUserCommand,
   AdminDisableUserCommand,
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
@@ -42,13 +43,22 @@ export class CognitoUserService {
     return data.User.Username;
   }
 
-  async globalSignOut(username: string) {
+  async globalSignOut(cognitoId: string) {
     const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
       UserPoolId: CognitoConfig.userPoolId,
-      Username: username,
+      Username: cognitoId,
     });
 
     const data = await this.cognitoProvider.send(revokeTokenCommand);
     return data;
+  }
+
+  async deleteUser(cognitoId: string) {
+    const deleteUserCommand = new AdminDeleteUserCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Username: cognitoId,
+    });
+
+    return this.cognitoProvider.send(deleteUserCommand);
   }
 }

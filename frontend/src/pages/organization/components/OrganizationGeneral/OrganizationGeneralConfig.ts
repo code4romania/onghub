@@ -125,8 +125,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Phone is required.',
       },
       minLength: {
-        value: 12,
-        message: 'Phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Phone has a minimum length of 10 characters.',
       },
       maxLength: {
         value: 15,
@@ -176,7 +176,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       },
       minLength: {
         value: 2,
-        message: 'Organization CUI has a maximum length of 2 characters.',
+        message: 'Organization CUI has a minimum length of 2 characters.',
       },
       pattern: {
         value: CUI_REGEX,
@@ -202,9 +202,14 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message:
           'Organization Register of associations and Foundations Number has a maximum length of 20 characters.',
       },
+      minLength: {
+        value: 8,
+        message:
+          'Organization Register of associations and Foundations Number has a minimum length of 8 characters.',
+      },
       pattern: {
         value: RAF_NUMBER_REGEX,
-        message: 'Invalid format',
+        message: 'RAF format is invalid',
       },
     },
     config: {
@@ -357,8 +362,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Contact phone has a maximum length of 15 characters.',
       },
       minLength: {
-        value: 12,
-        message: 'Contact phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Contact phone has a minimum length of 10 characters.',
       },
       pattern: {
         value: PHONE_REGEX,

@@ -1,13 +1,21 @@
 import { useMutation, useQuery } from 'react-query';
 import { IOrganizationActivity } from '../../pages/organization/interfaces/OrganizationActivity.interface';
-import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
 import { IOrganizationLegal } from '../../pages/organization/interfaces/OrganizationLegal.interface';
 import { IOrganizationReport } from '../../pages/organization/interfaces/OrganizationReport.interface';
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
-import { createOrganization, getOrganization, patchOrganization } from './Organization.service';
+import {
+  createOrganization,
+  deleteInvestors,
+  deletePartners,
+  getOrganization,
+  patchOrganization,
+  uploadInvestors,
+  uploadOrganizationFiles,
+  uploadPartners,
+} from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
 import { ICreateOrganizationPayload } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
@@ -23,6 +31,13 @@ interface OrganizationPayload {
       directors?: Partial<Contact>[];
       directorsDeleted?: number[];
       others?: Partial<Person>[];
+      organizationStatute?: string | null;
+    };
+    report?: {
+      reportId: number;
+      numberOfVolunteers?: number;
+      numberOfContractors?: number;
+      report?: string;
     };
   };
 }
@@ -47,61 +62,7 @@ export const useOrganizationQuery = (id: number) => {
       setOrganizationActivity(data.organizationActivity);
       setOrganizationFinancial(data.organizationFinancial);
       setOrganizationLegal(data.organizationLegal);
-      setOrganizationReport({
-        id: 1,
-        reports: [
-          {
-            id: 1,
-            numberOfContractors: 10,
-            numberOfVolunteers: 20,
-            report: 'https://www.clickdimensions.com/links/TestPDFfile.pdf',
-            year: 2022,
-            status: CompletionStatus.COMPLETED,
-            updatedOn: new Date().toISOString(),
-          },
-          {
-            id: 2,
-            numberOfContractors: null,
-            numberOfVolunteers: null,
-            report: null,
-            year: 2021,
-            status: CompletionStatus.NOT_COMPLETED,
-            updatedOn: new Date().toISOString(),
-          },
-        ],
-        partners: [
-          {
-            id: 1,
-            numberOfPartners: 12,
-            updatedOn: new Date().toISOString(),
-            year: 2022,
-            status: CompletionStatus.NOT_COMPLETED,
-          },
-          {
-            id: 2,
-            numberOfPartners: 21,
-            updatedOn: new Date().toISOString(),
-            year: 2021,
-            status: CompletionStatus.COMPLETED,
-          },
-        ],
-        inverstors: [
-          {
-            id: 1,
-            numberOfInvestors: 12,
-            updatedOn: new Date().toISOString(),
-            year: 2022,
-            status: CompletionStatus.NOT_COMPLETED,
-          },
-          {
-            id: 2,
-            numberOfInvestors: 21,
-            updatedOn: new Date().toISOString(),
-            year: 2021,
-            status: CompletionStatus.COMPLETED,
-          },
-        ],
-      });
+      setOrganizationReport(data.organizationReport);
     },
     enabled: !!id,
   });
@@ -113,6 +74,7 @@ export const useOrganizationMutation = () => {
     setOrganizationFinancial,
     setOrganizationLegal,
     setOrganizationActivity,
+    setOrganizationReport,
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
@@ -123,7 +85,8 @@ export const useOrganizationMutation = () => {
           | IOrganizationGeneral
           | IOrganizationActivity
           | IOrganizationFinancial
-          | IOrganizationLegal,
+          | IOrganizationLegal
+          | IOrganizationReport,
         { organization }: OrganizationPayload,
       ) => {
         if (organization.general) {
@@ -141,6 +104,9 @@ export const useOrganizationMutation = () => {
             data as IOrganizationFinancial,
           ]);
         }
+        if (organization.report) {
+          setOrganizationReport(data as IOrganizationReport);
+        }
       },
     },
   );
@@ -150,5 +116,72 @@ export const useCreateOrganizationMutation = (onSuccess: any, onError: any) => {
   return useMutation(
     (organization: ICreateOrganizationPayload) => createOrganization(organization),
     { onSuccess, onError },
+  );
+};
+
+export const useUploadOrganizationFilesMutation = () => {
+  const { setOrganizationGeneral, setOrganizationLegal, organizationGeneral, organizationLegal } =
+    useStore();
+  return useMutation(
+    ({ id, data }: { id: number; data: FormData }) => uploadOrganizationFiles(id, data),
+    {
+      onSuccess: (data: {
+        organizationGeneral: IOrganizationGeneral;
+        organizationLegal: IOrganizationLegal;
+      }) => {
+        if (organizationGeneral) {
+          setOrganizationGeneral({ ...organizationGeneral, logo: data.organizationGeneral.logo });
+        }
+
+        if (organizationLegal) {
+          setOrganizationLegal({
+            ...organizationLegal,
+            organizationStatute: data.organizationLegal?.organizationStatute,
+          });
+        }
+      },
+    },
+  );
+};
+
+export const useUploadPartnersList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, partnerId, data }: { id: number; partnerId: number; data: FormData }) =>
+      uploadPartners(id, partnerId, data),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+export const useUploadInvestorsList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, investorId, data }: { id: number; investorId: number; data: FormData }) =>
+      uploadInvestors(id, investorId, data),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+export const useDeletePartnerMutation = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, partnerId }: { id: number; partnerId: number }) => deletePartners(id, partnerId),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+export const useDeleteInvestorMutation = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
   );
 };
