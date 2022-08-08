@@ -59,6 +59,7 @@ export class UserService {
         ...createUserDto,
         cognitoId,
         role: Role.EMPLOYEE,
+        status: UserStatus.ACTIVE,
       });
       return user;
     } catch (error) {
