@@ -2,6 +2,7 @@ import {
   BadRequestException,
   forwardRef,
   Inject,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -52,34 +53,45 @@ export class UserService {
   */
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // 1. Check the organizationId exists
+      // 1. Check if user already exists
+      if (
+        await this.userRepository.get({ where: { email: createUserDto.email } })
+      ) {
+        throw new BadRequestException(USER_ERRORS.CREATE_ALREADY_EXISTS);
+      }
+      // 2. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
-      // ====================================
-      // 2. Create user in Cognito
+      // 3. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
-      // 3. Create user in database
+      // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
         cognitoId,
         role: Role.EMPLOYEE,
       });
       return user;
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...USER_ERRORS.CREATE,
-      });
-
-      if (error?.response?.errorCode == ORGANIZATION_ERRORS.GET.errorCode) {
-        throw new BadRequestException({
-          ...USER_ERRORS.CREATE_WRONG_ORG,
-          error,
-        });
-      } else {
-        throw new InternalServerErrorException({
-          ...USER_ERRORS.CREATE,
-          error,
-        });
+    } catch (error: HttpException | any) {
+      this.logger.error({ error: { error }, ...USER_ERRORS.CREATE });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        // 1. USR_002: The organization does not exist
+        case ORGANIZATION_ERRORS.GET.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.CREATE_WRONG_ORG,
+            error: err,
+          });
+        }
+        // 2. USR_008: There is already a user with the same email address
+        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+          throw error;
+        }
+        // 3. USR_001: Something unexpected happened
+        default: {
+          throw new InternalServerErrorException({
+            ...USER_ERRORS.CREATE,
+            error: err,
+          });
+        }
       }
     }
   }
@@ -101,21 +113,27 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...USER_ERRORS.CREATE,
-      });
-
-      if (error?.response?.errorCode == ERROR_CODES.ORG001) {
-        throw new BadRequestException({
-          ...USER_ERRORS.CREATE_WRONG_ORG,
-          error,
-        });
-      } else {
-        throw new InternalServerErrorException({
-          ...USER_ERRORS.CREATE,
-          error,
-        });
+      this.logger.error({ error: { error }, ...USER_ERRORS.CREATE });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        // 1. USR_002: The organization does not exist
+        case ORGANIZATION_ERRORS.GET.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.CREATE_WRONG_ORG,
+            error: err,
+          });
+        }
+        // 2. USR_008: There is already a user with the same email address
+        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+          throw error;
+        }
+        // 3. USR_001: Something unexpected happened
+        default: {
+          throw new InternalServerErrorException({
+            ...USER_ERRORS.CREATE,
+            error: err,
+          });
+        }
       }
     }
   }
