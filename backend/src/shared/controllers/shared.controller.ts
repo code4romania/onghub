@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { FileManagerService } from '../services/file-manager.service';
@@ -35,6 +36,7 @@ export class SharedController {
     );
   }
 
+  @ApiQuery({ name: 'path', type: String })
   @Public()
   @Get('file')
   getFile(@Query('path') path: string): Promise<string> {

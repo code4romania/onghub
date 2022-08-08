@@ -15,7 +15,6 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
-import { OrganizationFiles } from '../models/organization-files.interface';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -259,7 +258,8 @@ export class OrganizationService {
 
   public async upload(
     organizationId: number,
-    files: OrganizationFiles,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
   ): Promise<Organization> {
     const organization = await this.organizationRepository.get({
       where: { id: organizationId },
@@ -273,7 +273,7 @@ export class OrganizationService {
     }
 
     try {
-      if (files.logo) {
+      if (logo) {
         if (organization.organizationGeneral.logo) {
           await this.fileManagerService.deleteFiles([
             organization.organizationGeneral.logo,
@@ -282,7 +282,7 @@ export class OrganizationService {
 
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
-          files.logo,
+          logo,
         );
 
         await this.organizationGeneralService.update(
@@ -293,7 +293,7 @@ export class OrganizationService {
         );
       }
 
-      if (files.organizationStatute) {
+      if (organizationStatute) {
         if (organization.organizationLegal.organizationStatute) {
           await this.fileManagerService.deleteFiles([
             organization.organizationLegal.organizationStatute,
@@ -302,7 +302,7 @@ export class OrganizationService {
 
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
-          files.organizationStatute,
+          organizationStatute,
         );
 
         await this.organizationLegalService.update(

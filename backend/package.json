@@ -54,6 +54,7 @@
     "handlebars": "^4.7.7",
     "helmet": "^5.1.0",
     "jwks-rsa": "^2.1.4",
+    "libphonenumber-js": "^1.10.11",
     "nestjs-pino": "^3.1.1",
     "nestjs-typeorm-paginate": "^4.0.1",
     "nodemailer": "^6.7.5",
@@ -78,7 +79,6 @@
     "@types/cookie-parser": "^1.4.3",
     "@types/csurf": "^1.11.2",
     "@types/express": "^4.17.13",
-    "@types/helmet": "^4.0.0",
     "@types/jest": "27.4.1",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
@@ -116,7 +116,7 @@
     "testEnvironment": "node"
   },
   "engines": {
-    "node": "16.16.0",
+    "node": "16.15.1",
     "npm": "8.11.0"
   }
 }

@@ -383,7 +383,7 @@ const OrganizationLegal = () => {
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
-                  href={organizationLegal?.organizationStatute}
+                  href={organizationStatute || ''}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
