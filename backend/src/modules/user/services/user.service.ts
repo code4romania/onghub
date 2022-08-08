@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -52,9 +53,10 @@ export class UserService {
   public async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       // 1. Check if user already exists
-      const userFound = await this.findByCognitoId(createUserDto.email);
-      if (userFound) {
-        throw new InternalServerErrorException(USER_ERRORS.GET);
+      if (
+        await this.userRepository.get({ where: { email: createUserDto.email } })
+      ) {
+        throw new BadRequestException(USER_ERRORS.CREATE_ALREADY_EXISTS);
       }
       // 2. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
@@ -67,26 +69,26 @@ export class UserService {
         role: Role.EMPLOYEE,
       });
       return user;
-    } catch (error) {
-      switch (error) {
+    } catch (error: HttpException | any) {
+      this.logger.error({ error: { error }, ...USER_ERRORS.CREATE });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        // 1. USR_002: The organization does not exist
         case ORGANIZATION_ERRORS.GET.errorCode: {
-          this.logger.error({
-            error: { error },
-            ...USER_ERRORS.CREATE_WRONG_ORG,
-          });
           throw new BadRequestException({
             ...USER_ERRORS.CREATE_WRONG_ORG,
-            error,
+            error: err,
           });
         }
-        case USER_ERRORS.CREATE.errorCode: {
-          this.logger.error({
-            error: { error },
-            ...USER_ERRORS.CREATE,
-          });
+        // 2. USR_008: There is already a user with the same email address
+        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+          throw error;
+        }
+        // 3. USR_001: Something unexpected happened
+        default: {
           throw new InternalServerErrorException({
             ...USER_ERRORS.CREATE,
-            error,
+            error: err,
           });
         }
       }
@@ -105,13 +107,11 @@ export class UserService {
     return this.userRepository.getManyPaginated(USER_FILTERS_CONFIG, options);
   }
 
-  async findByCognitoId(cognitoId: string) {
-    const user = await this.userRepository.get({
+  findByCognitoId(cognitoId: string) {
+    return this.userRepository.get({
       where: { cognitoId },
       relations: ['organization'],
     });
-
-    return user;
   }
 
   async remove(user: User): Promise<string> {

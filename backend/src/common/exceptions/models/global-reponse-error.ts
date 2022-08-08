@@ -7,7 +7,7 @@ interface IResponseError {
   timestamp: string;
   path: string;
   method: string;
-  error: any;
+  stack: any;
 }
 
 export const GlobalResponseError: (
@@ -15,13 +15,13 @@ export const GlobalResponseError: (
   message: string,
   code: string,
   request: Request,
-  error: any,
+  stack: any,
 ) => IResponseError = (
   statusCode: number,
   message: string,
   code: string,
   request: Request,
-  error: any,
+  stack: any,
 ): IResponseError => {
   return {
     statusCode: statusCode,
@@ -30,6 +30,6 @@ export const GlobalResponseError: (
     timestamp: new Date().toISOString(),
     path: request.url,
     method: request.method,
-    error: error,
+    stack: stack,
   };
 };
