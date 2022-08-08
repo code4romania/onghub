@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
@@ -14,6 +14,7 @@ import OrganizationFinancial from '../../pages/organization/components/Organizat
 import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
+import UserCreate from '../../pages/users/components/UserCreate';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
 
@@ -44,7 +45,10 @@ const Router = () => {
             <Route path="financial" element={<OrganizationFinancial />} />
             <Route path="data" element={<OrganizationData />} />
           </Route>
-          <Route path="users" element={<Users />}></Route>
+          <Route path="users" element={<Outlet />}>
+            <Route index element={<Users />}></Route>
+            <Route path="add" element={<UserCreate />}></Route>
+          </Route>
           <Route path="apps" element={<Apps />}></Route>
           <Route path="store" element={<AppStore />}></Route>
           <Route path="account" element={<Account />} />
