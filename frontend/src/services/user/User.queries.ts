@@ -1,14 +1,14 @@
-import { createUser, deleteUser, getUser } from './User.service';
+import { createUser, deleteUser, getProfile } from './User.service';
 import { useMutation, useQuery } from 'react-query';
 import useStore from '../../store/store';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 
 export const useUserQuery = (queryOptions?: any) => {
-  const { setUser, setOrganization } = useStore();
-  return useQuery('user', () => getUser(), {
+  const { setProfile, setOrganization } = useStore();
+  return useQuery('user', () => getProfile(), {
     onSuccess: (data: any) => {
       const { organization, ...user } = data;
-      setUser(user);
+      setProfile(user);
       setOrganization(organization);
     },
     ...queryOptions,
@@ -20,10 +20,10 @@ export const useCreateUserMutation = () => {
 };
 
 export const useUserMutation = () => {
-  const { setUser } = useStore();
+  const { setProfile } = useStore();
   return useMutation(() => deleteUser(), {
     onSuccess: () => {
-      setUser(null);
+      setProfile(null);
     },
   });
 };

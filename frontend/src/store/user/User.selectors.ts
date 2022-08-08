@@ -1,6 +1,7 @@
 import useStore from '../store';
 
 export const useUser = () => {
-  const user = useStore((state) => state.user);
-  return { user };
+  const profile = useStore((state) => state.profile);
+  const users = useStore((state) => state.users);
+  return { profile, users };
 };

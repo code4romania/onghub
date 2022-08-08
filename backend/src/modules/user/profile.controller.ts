@@ -15,8 +15,8 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller('user')
-export class UserController {
+@Controller('profile')
+export class ProfileController {
   constructor(private readonly userService: UserService) {}
 
   @Get('')
