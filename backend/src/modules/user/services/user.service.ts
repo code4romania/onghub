@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
@@ -112,7 +113,7 @@ export class UserService {
       await this.cognitoService.deleteUser(user.cognitoId);
       return user.cognitoId;
     } catch (error) {
-      this.pinoLogger.error({
+      this.logger.error({
         error: { error },
         ...USER_ERRORS.REMOVE,
         cognitoId: user.cognitoId,
