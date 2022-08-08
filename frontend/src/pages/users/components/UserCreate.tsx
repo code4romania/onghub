@@ -54,27 +54,32 @@ const UserCreate = () => {
           loading={createUserMutation.isLoading}
           onSave={handleSubmit(onSubmit)}
         >
-          <form className="xl:w-1/2 flex gap-x-6 pb-20">
-            <div className="flex-1 flex flex-col gap-y-4">
-              <Controller
-                key={UserCreateConfig.name.key}
-                name={UserCreateConfig.name.key}
-                rules={UserCreateConfig.name.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...UserCreateConfig.name.config,
-                        name: UserCreateConfig.name.key,
-                        error: errors[UserCreateConfig.name?.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                      }}
-                    />
-                  );
-                }}
-              />
+          <form className="xl:w-1/2 flex flex-col gap-y-4 pb-20">
+            <div className="flex gap-x-6">
+              <div className="flex-1">
+                <Controller
+                  key={UserCreateConfig.name.key}
+                  name={UserCreateConfig.name.key}
+                  rules={UserCreateConfig.name.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <InputField
+                        config={{
+                          ...UserCreateConfig.name.config,
+                          name: UserCreateConfig.name.key,
+                          error: errors[UserCreateConfig.name?.key]?.message,
+                          defaultValue: value,
+                          onChange: onChange,
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </div>
+              <div className="flex-1" />
+            </div>
+            <div className="flex gap-x-6">
               <Controller
                 key={UserCreateConfig.email.key}
                 name={UserCreateConfig.email.key}
@@ -94,8 +99,6 @@ const UserCreate = () => {
                   );
                 }}
               />
-            </div>
-            <div className="flex-1 flex flex-col justify-end">
               <Controller
                 key={UserCreateConfig.phone.key}
                 name={UserCreateConfig.phone.key}
