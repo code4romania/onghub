@@ -6,8 +6,12 @@ export const createUser = async (payload: IUserPayload): Promise<IUser> => {
   return API.post(`/user`, payload).then((res) => res.data);
 };
 
-export const getUser = async (): Promise<IUser> => {
+export const getUsers = async (): Promise<any[]> => {
   return API.get(`/user`).then((res) => res.data);
+};
+
+export const getProfile = async (): Promise<IUser> => {
+  return API.get(`/profile`).then((res) => res.data);
 };
 
 export const deleteUser = async (): Promise<any> => {
