@@ -112,7 +112,7 @@ export const useOrganizationMutation = () => {
   );
 };
 
-export const useCreateOrganizationMutation = (onSuccess: any, onError: any) => {
+export const useCreateOrganizationMutation = (onSuccess?: any, onError?: any) => {
   return useMutation(
     (organization: ICreateOrganizationPayload) => createOrganization(organization),
     { onSuccess, onError },

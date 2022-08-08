@@ -68,6 +68,7 @@ const CreateOrganizationActivity = () => {
       isPartOfInternationalOrganization: str2bool(data.isPartOfInternationalOrganization),
       isSocialServiceViable: str2bool(data.isSocialServiceViable),
       offersGrants: str2bool(data.offersGrants),
+      hasBranches: str2bool(data.hasBranches),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
     };
 
