@@ -27,4 +27,8 @@ export const USER_ERRORS = {
     message: 'User not found',
     errorCode: 'USR_007',
   },
+  CREATE_ALREADY_EXISTS: {
+    message: 'User already exists and cannot be created',
+    errorCode: 'USR_008',
+  },
 };
