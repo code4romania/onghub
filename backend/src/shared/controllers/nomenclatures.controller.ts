@@ -12,12 +12,12 @@ import { CitySearchDto } from '../dto/city-search.dto';
 import { NomenclaturesService } from '../services';
 
 @Public()
-@UseInterceptors(CacheInterceptor, ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('nomenclatures')
 export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
 
-  @ApiQuery({ name: 'citySearchDto', type: CitySearchDto })
+  //@ApiQuery({ name: 'citySearchDto', type: CitySearchDto })
   @Get('cities')
   getCities(@Query() citySearchDto: CitySearchDto) {
     return this.nomenclaturesService.getCitiesSearch(citySearchDto);
