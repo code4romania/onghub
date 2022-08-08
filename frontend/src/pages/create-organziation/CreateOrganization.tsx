@@ -7,6 +7,7 @@ import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.inte
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { createOrganization } from '../../services/organization/Organization.service';
 import { mapSelectToValue } from '../../common/helpers/format.helper';
+import { createOrganizationDTOMapper } from './helper/CreateOrganization.helper';
 
 const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
@@ -29,33 +30,9 @@ const CreateOrganization = () => {
       organization.legal
     ) {
       setFinished(false);
+      const dto = createOrganizationDTOMapper(organization);
       createOrganization({
-        contact: { ...organization.user, organizationId: -1 },
-        general: {
-          ...organization.general,
-          logo: '',
-          countyId: organization.general.county.id,
-          cityId: organization.general.city.id,
-        },
-        activity: {
-          ...organization.activity,
-          branches: organization.activity.branches
-            ? [...organization.activity.branches.map(mapSelectToValue)]
-            : [],
-          cities: organization.activity.cities
-            ? [...organization.activity.cities.map(mapSelectToValue)]
-            : [],
-          regions: organization.activity.regions
-            ? [...organization.activity.regions.map(mapSelectToValue)]
-            : [],
-          coalitions: organization.activity.coalitions
-            ? [...organization.activity.coalitions.map(mapSelectToValue)]
-            : [],
-          federations: organization.activity.federations
-            ? [...organization.activity.federations.map(mapSelectToValue)]
-            : [],
-        },
-        legal: organization.legal,
+        ...dto,
       })
         .then((res) => console.log(res))
         .catch((err) => console.log(err));

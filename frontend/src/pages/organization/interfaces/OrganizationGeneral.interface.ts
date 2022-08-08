@@ -30,4 +30,6 @@ export interface IOrganizationGeneral extends BaseEntity {
   contact: Contact;
   city: City;
   county: County;
+  cityId?: number;
+  countyId?: number;
 }

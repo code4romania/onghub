@@ -6,6 +6,7 @@ interface ICreateOrganizationUser {
   name: string;
   phone: string;
   email: string;
+  organizationId?: number;
 }
 
 export interface ICreateOrganizationPayload {

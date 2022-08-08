@@ -7,9 +7,10 @@ import { IOrganizationLegal } from '../../pages/organization/interfaces/Organiza
 import { IOrganizationReport } from '../../pages/organization/interfaces/OrganizationReport.interface';
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
-import { getOrganization, patchOrganization } from './Organization.service';
+import { createOrganization, getOrganization, patchOrganization } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
+import { ICreateOrganizationPayload } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
 
 interface OrganizationPayload {
   id: number;
@@ -142,5 +143,12 @@ export const useOrganizationMutation = () => {
         }
       },
     },
+  );
+};
+
+export const useCreateOrganizationMutation = (onSuccess: any, onError: any) => {
+  return useMutation(
+    (organization: ICreateOrganizationPayload) => createOrganization(organization),
+    { onSuccess, onError },
   );
 };

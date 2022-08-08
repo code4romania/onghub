@@ -176,7 +176,7 @@ export class OrganizationService {
     });
 
     const user = await this.userService.createAdminProfile({
-      ...createOrganizationDto.contact,
+      ...createOrganizationDto.user,
       organizationId: organization.id,
     });
 

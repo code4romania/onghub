@@ -9,7 +9,7 @@ export class CreateOrganizationDto {
   /* Organization General */
   @Type(() => CreateUserDto)
   @ValidateNested()
-  contact: CreateUserDto;
+  user: CreateUserDto;
   /* Organization General */
   @Type(() => CreateOrganizationGeneralDto)
   @ValidateNested()
