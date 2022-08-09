@@ -23,7 +23,7 @@ export class AdminUserController {
   @ApiBody({ type: CreateUserDto })
   @Post('')
   async create(@Body() body: CreateUserDto) {
-    return this.userService.create({
+    return this.userService.createEmployee({
       email: body.email,
       name: body.name,
       phone: body.phone,

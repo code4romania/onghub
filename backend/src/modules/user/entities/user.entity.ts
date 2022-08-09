@@ -25,7 +25,7 @@ export class User extends BaseEntity {
     2. Creating a new user by the ONG Admin will create employee
 
   */
-  @Column({ type: 'enum', enum: Role, name: 'role' })
+  @Column({ type: 'enum', enum: Role, name: 'role', default: Role.EMPLOYEE })
   role: Role;
 
   @Column({

@@ -15,6 +15,7 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
+import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -421,5 +422,18 @@ export class OrganizationService {
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
+  }
+
+  /**
+   * Will update the status from PENDING to ACTIVE
+   *
+   * @throws Will throw error if the organization is already in ACTIVE state
+   * @param organizationId the ORG to be activated
+   */
+  public activate(organizationId: number) {
+    return this.organizationRepository.updateOne({
+      id: organizationId,
+      status: OrganizationStatus.ACTIVE,
+    });
   }
 }
