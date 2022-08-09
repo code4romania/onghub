@@ -5,10 +5,9 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { OrderDirection } from '../enums/order-direction.enum';
 
-export class BaseFilterDto implements IPaginationOptions {
+export class BaseFilterDto {
   @IsNumber()
   limit: number = 10;
 
