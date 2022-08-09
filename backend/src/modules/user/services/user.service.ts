@@ -78,7 +78,7 @@ export class UserService {
     const paginationOptions = {
       ...options,
       role: Role.EMPLOYEE,
-      status: UserStatus.PENDING,
+      status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
       organizationId,
     };
 
