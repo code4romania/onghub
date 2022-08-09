@@ -16,7 +16,7 @@ import { Role } from '../enums/role.enum';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @Length(10, 100)
+  @Length(5, 100)
   @Matches(REGEX.NAME)
   name: string;
 

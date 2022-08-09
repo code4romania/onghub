@@ -34,6 +34,20 @@ export class UserService {
   // ***************** PUBLIC METHODS ******************
   // ****************************************************
 
+  public async createAdmin(createUserDto: CreateUserDto) {
+    return this.create({
+      ...createUserDto,
+      role: Role.ADMIN,
+    });
+  }
+
+  public async createEmployee(createUserDto: CreateUserDto) {
+    return this.create({
+      ...createUserDto,
+      role: Role.EMPLOYEE,
+    });
+  }
+
   public async getById(id: number = null): Promise<User> {
     if (!id) {
       throw new NotFoundException({ ...USER_ERRORS.GET, id });
@@ -47,20 +61,6 @@ export class UserService {
     }
 
     return user;
-  }
-
-  public async createAdmin(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
-      role: Role.ADMIN,
-    });
-  }
-
-  public async createEmployee(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
-      role: Role.EMPLOYEE,
-    });
   }
 
   public async update(
@@ -176,6 +176,7 @@ export class UserService {
       // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
+        status: UserStatus.ACTIVE,
         cognitoId,
       });
       return user;

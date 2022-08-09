@@ -9,8 +9,6 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ActivateUserDto } from './dto/restore-user.dto';
-import { RestrictUserDto } from './dto/restrict-user.dto';
 import { UserService } from './services/user.service';
 
 @Controller('user')
