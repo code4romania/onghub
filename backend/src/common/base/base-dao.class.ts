@@ -78,19 +78,17 @@ export abstract class BaseDAO<T> {
       ...filters
     } = options;
 
-    // build select query
+    // select query
     const selectQuery = this.buildQueryObject(config.selectColumns);
-
     // relations
     const relationsQuery = this.buildQueryObject(config.relations);
-
     // filters (and where)
-    const whereQuery = [];
-    const filtersQuery: any = {};
+    const orWhereQuery = [];
+    const andWherQuery: any = {};
 
     // loop through filters
     for (const filter in filters) {
-      filtersQuery[filter] =
+      andWherQuery[filter] =
         typeof filters[filter] === 'object' && Array.isArray(filters[filter])
           ? In(filters[filter])
           : filters[filter];
@@ -98,18 +96,18 @@ export abstract class BaseDAO<T> {
 
     // handle range
     if (config.rangeColumn && start && end) {
-      filtersQuery[config.rangeColumn] = this.betweenDates(start, end);
+      andWherQuery[config.rangeColumn] = this.betweenDates(start, end);
     }
 
     // search query
     if (search) {
       const where = config.searchableColumns.map((column: string) => ({
-        ...filtersQuery,
+        ...andWherQuery,
         [column]: ILike(`%${search}%`),
       }));
-      whereQuery.push(...where);
+      orWhereQuery.push(...where);
     } else {
-      whereQuery.push(filtersQuery);
+      orWhereQuery.push(andWherQuery);
     }
 
     // order conditions
@@ -118,10 +116,11 @@ export abstract class BaseDAO<T> {
         options.orderDirection || OrderDirection.ASC,
     };
 
+    // full query
     const query: FindManyOptions<T> = {
       select: selectQuery,
       relations: relationsQuery,
-      where: whereQuery,
+      where: orWhereQuery,
       order: orderOptions,
       take: limit,
       skip: (page - 1) * limit,
@@ -130,6 +129,7 @@ export abstract class BaseDAO<T> {
     // [T[], totalItems]
     const response = await this.repository.findAndCount(query);
 
+    // query items + the pagination meta
     return {
       items: response[0],
       meta: {
