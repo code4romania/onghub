@@ -20,6 +20,7 @@ import { IUser } from '../pages/users/interfaces/User.interface';
 import { IOrganization } from '../pages/organization/interfaces/Organization.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { usersSlice } from './user/Users.slice';
+import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 
 interface OrganizationState {
   organization: IOrganization | null;
@@ -56,8 +57,8 @@ interface ProfileState {
 }
 
 interface UserState {
-  users: any[];
-  setUsers: (users: any[]) => void;
+  users: PaginatedEntity<IUser>;
+  setUsers: (users: PaginatedEntity<IUser>) => void;
 }
 
 const useStore = create<OrganizationState & NomenclatureState & UserState & ProfileState>()(
