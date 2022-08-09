@@ -56,7 +56,7 @@ export class RequestsService {
     return this.find(requestId);
   }
 
-  public async decline(requestId: number) {
+  public async reject(requestId: number) {
     // 1. Decline the request
     await this.requestRepository.update(
       { id: requestId },
