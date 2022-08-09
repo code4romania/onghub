@@ -2,7 +2,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
   Length,
   Matches,
@@ -14,7 +13,7 @@ import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @Length(10, 100)
+  @Length(5, 100)
   @Matches(REGEX.NAME)
   name: string;
 

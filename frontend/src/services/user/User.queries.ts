@@ -1,6 +1,7 @@
-import { deleteUser, getUser } from './User.service';
+import { createUser, deleteUser, getUser } from './User.service';
 import { useMutation, useQuery } from 'react-query';
 import useStore from '../../store/store';
+import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 
 export const useUserQuery = (queryOptions?: any) => {
   const { setUser, setOrganization } = useStore();
@@ -12,6 +13,10 @@ export const useUserQuery = (queryOptions?: any) => {
     },
     ...queryOptions,
   });
+};
+
+export const useCreateUserMutation = () => {
+  return useMutation((payload: IUserPayload) => createUser(payload));
 };
 
 export const useUserMutation = () => {
