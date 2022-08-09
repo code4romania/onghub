@@ -32,6 +32,7 @@ export const useUsersQuery = (
       onSuccess: (data: PaginatedEntity<IUser>) => {
         setUsers(data);
       },
+      enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
 };
