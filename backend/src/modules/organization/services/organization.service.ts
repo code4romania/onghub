@@ -165,7 +165,21 @@ export class OrganizationService {
     });
   }
 
-  public async findOne(id: number): Promise<Organization> {
+  public async find(id: number) {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
+  public async findWithRelations(id: number): Promise<Organization> {
     const organization = await this.organizationRepository.get({
       where: { id },
       relations: [
@@ -210,15 +224,7 @@ export class OrganizationService {
     id: number,
     updateOrganizationDto: UpdateOrganizationDto,
   ): Promise<any> {
-    const organization = await this.organizationRepository.get({
-      where: { id },
-    });
-
-    if (!organization) {
-      throw new NotFoundException({
-        ...ORGANIZATION_ERRORS.GET,
-      });
-    }
+    const organization = await this.find(id);
 
     if (updateOrganizationDto.general) {
       return this.organizationGeneralService.update(
@@ -430,7 +436,13 @@ export class OrganizationService {
    * @throws Will throw error if the organization is already in ACTIVE state
    * @param organizationId the ORG to be activated
    */
-  public activate(organizationId: number) {
+  public async activate(organizationId: number) {
+    const org = await this.find(organizationId);
+
+    if (org.status === OrganizationStatus.ACTIVE) {
+      throw new BadRequestException(ORGANIZATION_ERRORS.ACTIVATE);
+    }
+
     return this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.ACTIVE,

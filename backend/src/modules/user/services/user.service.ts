@@ -170,7 +170,9 @@ export class UserService {
         throw new BadRequestException(USER_ERRORS.CREATE_ALREADY_EXISTS);
       }
       // 2. Check the organizationId exists
-      await this.organizationService.findOne(createUserDto.organizationId);
+      await this.organizationService.findWithRelations(
+        createUserDto.organizationId,
+      );
       // 3. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
       // 4. Create user in database
