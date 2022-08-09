@@ -1,4 +1,4 @@
-import { IPageTab } from '../interfaces/Tabs.interface';
+import { IPageTab } from '../../../common/interfaces/tabs.interface';
 
 export const ORGANIZATION_TABS: IPageTab[] = [
   { id: 0, name: 'Date generale', href: '' },

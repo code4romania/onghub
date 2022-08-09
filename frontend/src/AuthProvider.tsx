@@ -2,10 +2,8 @@ import React from 'react';
 import { Auth } from 'aws-amplify';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
-import { useUserQuery } from './services/user/User.queries';
+import { useProfileQuery } from './services/user/User.queries';
 import LoadingContent from './components/data-table/LoadingContent';
-import { useNavigate } from 'react-router-dom';
-import { useErrorToast } from './common/hooks/useToast';
 import { UserStatus } from './pages/users/enums/UserStatus.enum';
 
 const Loading = () => {
@@ -22,7 +20,9 @@ const AuthProvider = ({ children }: any) => {
   });
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
-  const { refetch: refetchUserProfile, error: fetchUserError } = useUserQuery({ enabled: false });
+  const { refetch: refetchUserProfile, error: fetchUserError } = useProfileQuery({
+    enabled: false,
+  });
 
   const [isLoading, setIsLoading] = useState(true);
 
