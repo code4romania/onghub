@@ -1,4 +1,4 @@
-import { Between } from 'typeorm';
+import { Between, In } from 'typeorm';
 import { format } from 'date-fns';
 import {
   DeepPartial,
@@ -87,9 +87,13 @@ export abstract class BaseDAO<T> {
     // filters (and where)
     const whereQuery = [];
     const filtersQuery: any = {};
+
     // loop through filters
     for (const filter in filters) {
-      filtersQuery[filter] = filters[filter];
+      filtersQuery[filter] =
+        typeof filters[filter] === 'object' && Array.isArray(filters[filter])
+          ? In(filters[filter])
+          : filters[filter];
     }
 
     // handle range
