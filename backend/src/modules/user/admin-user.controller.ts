@@ -9,8 +9,6 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ActivateUserDto } from './dto/restore-user.dto';
-import { RestrictUserDto } from './dto/restrict-user.dto';
 import { UserService } from './services/user.service';
 
 @Controller('user')
@@ -23,7 +21,7 @@ export class AdminUserController {
   @ApiBody({ type: CreateUserDto })
   @Post('')
   async create(@Body() body: CreateUserDto) {
-    return this.userService.create({
+    return this.userService.createEmployee({
       email: body.email,
       name: body.name,
       phone: body.phone,

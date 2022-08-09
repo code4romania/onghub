@@ -51,6 +51,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Organization Legal not found',
     errorCode: 'ORG_012',
   },
+  ACTIVATE: {
+    message: 'Organization is already ACTIVE',
+    errorCode: 'ORG_013',
+  },
 };
 
 export const PARTNER_ERRORS = {

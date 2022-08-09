@@ -49,7 +49,7 @@ export class OrganizationController {
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
-    return this.organizationService.findOne(+id);
+    return this.organizationService.findWithRelations(+id);
   }
 
   @ApiBody({ type: UpdateOrganizationDto })

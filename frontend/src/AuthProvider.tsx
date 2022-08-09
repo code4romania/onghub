@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: any) => {
       try {
         await Auth.currentAuthenticatedUser();
         const { data: profile } = await refetchUserProfile();
-        if (profile.status === UserStatus.ACTIVE) {
+        if (profile?.status === UserStatus.ACTIVE) {
           setAuthState({ isAuthenticated: true });
         } else {
           throw Error(); // TODO: Better error handling.
