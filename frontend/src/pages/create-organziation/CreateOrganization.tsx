@@ -63,9 +63,10 @@ const CreateOrganization = () => {
     ) {
       setLoading(true);
       const dto = createOrganizationDTOMapper(organization);
-      const result = await mutateOrganization({
+      await mutateOrganization({
         ...dto,
       });
+      localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
       setLoading(false);
       setSuccess(true);
     }
@@ -87,9 +88,7 @@ const CreateOrganization = () => {
       <div className="flex p-6">
         <div className="content overflow-scroll w-full pl-6 flex flex-col gap-4">
           <ProgressSteps disabled={success} />
-          {!success && !error && (
-            <Outlet context={[organization, setOrganization, sendOrganization]} />
-          )}
+          {!success && !error && <Outlet context={[organization, setOrganization]} />}
           {success && (
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
               <div className="flex items-center justify-start pb-6 gap-4">

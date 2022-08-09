@@ -32,7 +32,7 @@ const CreateOrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
 
-  const [organization, setOrganization, sendOrganization] = useOutletContext<any>();
+  const [organization, setOrganization] = useOutletContext<any>();
 
   const navigate = useNavigate();
 
