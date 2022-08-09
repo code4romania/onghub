@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useOutletContext, useNavigate } from 'react-router-dom';
-import { flatten } from '../../../common/helpers/format.helper';
+import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import ContactForm from '../../../components/Contact/Contact';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -18,6 +18,7 @@ const CreateOrganizationGeneral = () => {
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
   const { cities, counties } = useNomenclature();
+  const [file, setFile] = useState<File | null>(null);
 
   const [organization, setOrganization] = useOutletContext<any>();
 
@@ -44,6 +45,8 @@ const CreateOrganizationGeneral = () => {
       reset({ ...organization.general, ...contact });
       setCounty(organization.general.county);
       setCity(organization.general.city);
+      console.log(organization.general.logo);
+      // setFile(organization.general.logo);
     }
   }, [organization]);
 
@@ -52,6 +55,15 @@ const CreateOrganizationGeneral = () => {
       setValue('city', null);
     }
   }, [cities]);
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+      event.target.value = '';
+    } else {
+      event.target.value = '';
+    }
+  };
 
   const handleSave = (data: any) => {
     const contact = {
@@ -64,6 +76,7 @@ const CreateOrganizationGeneral = () => {
     const organizationGeneral = {
       ...data,
       contact,
+      logo: file,
     };
 
     setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
@@ -321,20 +334,36 @@ const CreateOrganizationGeneral = () => {
                 </label>
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    <svg
-                      className="h-full w-full text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                    {!file ? (
+                      <svg
+                        className="h-full w-full text-gray-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    ) : (
+                      <img src={fileToURL(file) || ''} className="h-20 w-80" />
+                    )}
                   </span>
-                  <button
-                    type="button"
-                    className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Incarca logo
-                  </button>
+                  {!readonly && (
+                    <>
+                      <label
+                        htmlFor="uploadPhoto"
+                        className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Incarca logo
+                      </label>
+                      <input
+                        className="h-0 w-0"
+                        name="uploadPhoto"
+                        id="uploadPhoto"
+                        type="file"
+                        accept="image/png, image/jpeg, image/svg"
+                        onChange={onChangeFile}
+                      />
+                    </>
+                  )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
                   Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.

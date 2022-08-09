@@ -1,9 +1,16 @@
-import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
+import {
+  PaperClipIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+  XCircleIcon,
+  XIcon,
+} from '@heroicons/react/solid';
 import React, { useState, useEffect } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { flatten } from '../../../common/helpers/format.helper';
+import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import { Person } from '../../../common/interfaces/person.interface';
 import ContactForm from '../../../components/Contact/Contact';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
@@ -19,6 +26,7 @@ import { Contact } from '../../organization/interfaces/Contact.interface';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
+  const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -188,6 +196,20 @@ const CreateOrganizationLegal = () => {
     setIsDeleteOtherModalOpen(false);
   };
 
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setOrganizationStatute(file);
+    } else {
+      event.target.value = '';
+    }
+  };
+
+  const onRemoveOrganizationStatute = (e: any) => {
+    e.preventDefault();
+    setOrganizationStatute(null);
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSave = (data: any) => {
     if (directors.length < 3) {
@@ -203,7 +225,7 @@ const CreateOrganizationLegal = () => {
 
     setOrganization((org: any) => ({
       ...org,
-      legal: { legalReprezentative, directors, directorsDeleted, others },
+      legal: { legalReprezentative, directors, directorsDeleted, others, organizationStatute },
     }));
   };
 
@@ -296,9 +318,39 @@ const CreateOrganizationLegal = () => {
             />
             <div className="flex flex-col gap-y-4">
               <h3>Document</h3>
-              <button type="button" className="add-button max-w-[8rem]" onClick={onUploadFile}>
-                Incarca fisier
-              </button>
+              {isEditMode && organizationStatute === null && (
+                <>
+                  <label
+                    htmlFor="uploadPhoto"
+                    className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Incarca fisier
+                  </label>
+                  <input
+                    className="h-0 w-0"
+                    name="uploadPhoto"
+                    id="uploadPhoto"
+                    type="file"
+                    onChange={onChangeFile}
+                  />
+                </>
+              )}
+              {organizationStatute && (
+                <a
+                  href={fileToURL(organizationStatute) || ''}
+                  download
+                  className="text-indigo-600 font-medium text-sm flex items-center"
+                >
+                  <PaperClipIcon className=" w-4 h-4 text-gray-600" />
+                  Statut_Organizatie
+                  {isEditMode && (
+                    <XIcon
+                      className="ml-2 w-4 h-4 text-gray-600"
+                      onClick={onRemoveOrganizationStatute}
+                    />
+                  )}
+                </a>
+              )}
             </div>
           </section>
           {isDirectorModalOpen && (

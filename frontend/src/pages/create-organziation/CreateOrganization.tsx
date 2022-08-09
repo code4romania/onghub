@@ -7,9 +7,16 @@ import ProgressSteps from './components/ProgressSteps';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { createOrganizationDTOMapper } from './helper/CreateOrganization.helper';
-import { useCreateOrganizationMutation } from '../../services/organization/Organization.queries';
+import {
+  useCreateOrganizationMutation,
+  useUploadOrganizationFilesMutation,
+} from '../../services/organization/Organization.queries';
 import { Loading } from '../../components/loading/Loading';
-import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
+import {
+  CREATE_FILE_LOGO,
+  CREATE_FILE_STATUTE,
+  CREATE_LOCAL_STORAGE_KEY,
+} from './constants/CreateOrganization.constant';
 
 const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
@@ -20,6 +27,7 @@ const CreateOrganization = () => {
   });
 
   const { mutateAsync: mutateOrganization, error: mutationError } = useCreateOrganizationMutation();
+  const filesMutation = useUploadOrganizationFilesMutation();
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -47,11 +55,16 @@ const CreateOrganization = () => {
   }, [organization.legal]);
 
   useEffect(() => {
+    setLoading(false);
     if (mutationError) {
-      setLoading(false);
       setError(`${(mutationError as any)?.response?.data?.message}`);
     }
-  }, [mutationError]);
+
+    if (filesMutation.error) {
+      setLoading(false);
+      setError('Could not update logo');
+    }
+  }, [mutationError, filesMutation.error]);
 
   const sendOrganization = async () => {
     if (
@@ -63,9 +76,23 @@ const CreateOrganization = () => {
     ) {
       setLoading(true);
       const dto = createOrganizationDTOMapper(organization);
-      await mutateOrganization({
+
+      const saved = await mutateOrganization({
         ...dto,
       });
+
+      const data = new FormData();
+
+      if (organization.legal.organizationStatute) {
+        data.append(CREATE_FILE_STATUTE, organization.legal.organizationStatute);
+      }
+
+      if (organization.general.logo) {
+        data.append(CREATE_FILE_LOGO, organization.general.logo);
+      }
+
+      await filesMutation.mutateAsync({ id: saved.organization?.id as number, data });
+
       localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
       setLoading(false);
       setSuccess(true);

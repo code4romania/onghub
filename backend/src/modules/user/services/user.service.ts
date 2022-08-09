@@ -105,8 +105,7 @@ export class UserService {
       // 1. Check the organizationId exists
       await this.organizationService.findOne(createUserDto.organizationId);
       // ====================================
-      // 2. Create user in Cognito
-      // 3. Create user in database
+      // 2. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
         role: Role.ADMIN,

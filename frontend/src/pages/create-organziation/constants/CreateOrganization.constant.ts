@@ -7,3 +7,6 @@ export const CREATE_FLOW_URL = {
 };
 
 export const CREATE_LOCAL_STORAGE_KEY = 'ONGHUB_CREATE_ORGANIZATION_DATA';
+
+export const CREATE_FILE_LOGO = 'logo';
+export const CREATE_FILE_STATUTE = 'organizationStatute';
