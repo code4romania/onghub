@@ -7,7 +7,9 @@ import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
+import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import Select from '../../../../components/Select/Select';
 import { useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatus } from '../../enums/UserStatus.enum';
@@ -124,9 +126,32 @@ const UserList = () => {
     console.log('to be implemented');
   };
 
+  const onSearch = (searchWord: string) => {
+    console.log('search word', searchWord);
+  };
+
   return (
     <div>
-      <DataTableFilters />
+      <DataTableFilters onSearch={onSearch}>
+        <div className="flex gap-x-6">
+          <div className="flex-1">
+            <DateRangePicker />
+          </div>
+          <div className="flex-1">
+            <Select
+              config={{ label: 'Status', collection: ['1', '2', '3'], displayedAttribute: '' }}
+              onChange={(status: any) => console.log('change status', status)}
+            />
+          </div>
+          <div className="flex-1">
+            <Select
+              config={{ label: 'Status', collection: ['1', '2', '3'], displayedAttribute: '' }}
+              onChange={(status: any) => console.log('change status', status)}
+            />
+          </div>
+          <div className="flex-1"></div>
+        </div>
+      </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold text-xl">Utilizatori</p>
