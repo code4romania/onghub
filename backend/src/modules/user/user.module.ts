@@ -12,7 +12,7 @@ import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    forwardRef(() => OrganizationModule),
+    OrganizationModule,
     LoggerModule.forRoot(),
   ],
   controllers: [UserController, AdminUserController],

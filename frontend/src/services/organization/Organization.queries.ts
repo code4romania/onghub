@@ -17,7 +17,6 @@ import {
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
-import { ICreateOrganizationPayload } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
 
 interface OrganizationPayload {
   id: number;

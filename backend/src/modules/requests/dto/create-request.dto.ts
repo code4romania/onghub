@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
   Length,
   Matches,

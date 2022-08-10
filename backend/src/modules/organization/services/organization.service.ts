@@ -2,11 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  forwardRef,
-  Inject,
 } from '@nestjs/common';
-import { User } from 'src/modules/user/entities/user.entity';
-import { UserService } from 'src/modules/user/services/user.service';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';

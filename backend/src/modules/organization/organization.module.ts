@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { OrganizationController } from './organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
@@ -34,7 +34,6 @@ import {
   ReportService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
-import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [

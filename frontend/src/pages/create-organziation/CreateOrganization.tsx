@@ -8,11 +8,7 @@ import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.inte
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useUploadOrganizationFilesMutation } from '../../services/organization/Organization.queries';
 import { Loading } from '../../components/loading/Loading';
-import {
-  CREATE_FILE_LOGO,
-  CREATE_FILE_STATUTE,
-  CREATE_LOCAL_STORAGE_KEY,
-} from './constants/CreateOrganization.constant';
+import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
 import { useCreateRequestMutation } from '../../services/request/Request.queries';
 import { CreateRequestDTO } from '../../services/request/interfaces/Request.dto';
 import { createRequestDTOMapper } from './helper/CreateOrganization.helper';

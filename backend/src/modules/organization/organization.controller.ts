@@ -37,7 +37,6 @@ import {
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
-  @Public()
   @ApiBody({ type: CreateOrganizationDto })
   @Post()
   create(
