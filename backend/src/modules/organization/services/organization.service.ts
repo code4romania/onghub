@@ -37,14 +37,12 @@ export class OrganizationService {
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
-    @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService,
     private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
     createOrganizationDto: CreateOrganizationDto,
-  ): Promise<{ user: User; organization: Organization }> {
+  ): Promise<Organization> {
     if (
       createOrganizationDto.activity.area === Area.LOCAL &&
       !createOrganizationDto.activity.cities
@@ -133,7 +131,7 @@ export class OrganizationService {
     );
 
     // create the parent entry with default values
-    const organization = await this.organizationRepository.save({
+    return this.organizationRepository.save({
       organizationGeneral: {
         ...createOrganizationDto.general,
       },
@@ -169,13 +167,6 @@ export class OrganizationService {
         investors: [{}],
       },
     });
-
-    const user = await this.userService.createAdminProfile({
-      ...createOrganizationDto.user,
-      organizationId: organization.id,
-    });
-
-    return { user, organization };
   }
 
   public async find(id: number) {

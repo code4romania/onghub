@@ -7,7 +7,6 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
-  createOrganization,
   deleteInvestors,
   deletePartners,
   getOrganization,
@@ -109,13 +108,6 @@ export const useOrganizationMutation = () => {
         }
       },
     },
-  );
-};
-
-export const useCreateOrganizationMutation = (onSuccess?: any, onError?: any) => {
-  return useMutation(
-    (organization: ICreateOrganizationPayload) => createOrganization(organization),
-    { onSuccess, onError },
   );
 };
 

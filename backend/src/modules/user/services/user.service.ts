@@ -11,7 +11,7 @@ import {
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { UpdateResult } from 'typeorm';
+import { FindOneOptions, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -29,7 +29,6 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
-    @Inject(forwardRef(() => OrganizationService))
     private readonly organizationService: OrganizationService,
   ) {}
 
@@ -66,45 +65,8 @@ export class UserService {
     return user;
   }
 
-  /*
-      Rules:
-        1. Employee must be linked with an organization
-  */
-  public async createAdminProfile(createUserDto: CreateUserDto): Promise<User> {
-    try {
-      // 1. Check the organizationId exists
-      await this.organizationService.findOne(createUserDto.organizationId);
-      // ====================================
-      // 2. Create user in database
-      const user = await this.userRepository.save({
-        ...createUserDto,
-        role: Role.ADMIN,
-      });
-      return user;
-    } catch (error) {
-      this.logger.error({ error: { error }, ...USER_ERRORS.CREATE });
-      const err = error?.response;
-      switch (err?.errorCode) {
-        // 1. USR_002: The organization does not exist
-        case ORGANIZATION_ERRORS.GET.errorCode: {
-          throw new BadRequestException({
-            ...USER_ERRORS.CREATE_WRONG_ORG,
-            error: err,
-          });
-        }
-        // 2. USR_008: There is already a user with the same email address
-        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
-          throw error;
-        }
-        // 3. USR_001: Something unexpected happened
-        default: {
-          throw new InternalServerErrorException({
-            ...USER_ERRORS.CREATE,
-            error: err,
-          });
-        }
-      }
-    }
+  public async findOne(options: FindOneOptions): Promise<User> {
+    return this.userRepository.get(options);
   }
 
   public async update(

@@ -6,11 +6,10 @@ interface ICreateOrganizationUser {
   name: string;
   phone: string;
   email: string;
-  organizationId?: number;
 }
 
 export interface ICreateOrganizationPayload {
-  user: ICreateOrganizationUser | null;
+  admin: ICreateOrganizationUser | null;
   general: IOrganizationGeneral | null;
   activity: IOrganizationActivity | null;
   legal: IOrganizationLegal | null;

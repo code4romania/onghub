@@ -50,7 +50,6 @@ import { UserModule } from '../user/user.module';
       Partner,
       Investor,
     ]),
-    forwardRef(() => UserModule),
   ],
   controllers: [OrganizationController],
   providers: [

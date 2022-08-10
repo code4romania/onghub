@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UserService } from 'src/modules/user/services/user.service';
 import { CreateRequestDto } from '../dto/create-request.dto';
@@ -6,18 +6,61 @@ import { RequestRepository } from '../repositories/request.repository';
 import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Request } from '../entities/request.entity';
+import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
 
 @Injectable()
 export class RequestsService {
+  private readonly logger = new Logger(RequestsService.name);
   constructor(
     private requestRepository: RequestRepository,
     private organizationService: OrganizationService,
     private userService: UserService,
   ) {}
 
-  public create(createReqDto: CreateRequestDto) {
-    // TODO: validate DTO to have unique values for the admin (email, phone) using custom decorators (ask Cosmin)
-    return this.requestRepository.save(createReqDto);
+  public async create(createReqDto: CreateRequestDto) {
+    // Check if the admin email is not in the user table already (is unique).
+    const foundProfile = await this.userService.findOne({
+      where: { email: createReqDto.admin.email },
+    });
+
+    if (foundProfile) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.USER_EXISTS,
+      });
+    }
+
+    // Check if there isn't already a request made by the same user.
+    const foundRequest = await this.requestRepository.get({
+      where: [
+        { email: createReqDto.admin.email },
+        { phone: createReqDto.admin.phone },
+      ],
+    });
+
+    if (foundRequest) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+      });
+    }
+
+    try {
+      const organization = await this.organizationService.create(
+        createReqDto.organization,
+      );
+
+      return this.requestRepository.save({
+        name: createReqDto.admin.name,
+        email: createReqDto.admin.email,
+        phone: createReqDto.admin.phone,
+        organizationId: organization.id,
+      });
+    } catch (error) {
+      // TODO: Req Error Better Handling
+      this.logger.error({ error, payload: createReqDto });
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.REQ_GENERAL,
+      });
+    }
   }
 
   private find(id: number): Promise<Request> {

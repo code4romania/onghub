@@ -6,27 +6,26 @@ import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import ProgressSteps from './components/ProgressSteps';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { createOrganizationDTOMapper } from './helper/CreateOrganization.helper';
-import {
-  useCreateOrganizationMutation,
-  useUploadOrganizationFilesMutation,
-} from '../../services/organization/Organization.queries';
+import { useUploadOrganizationFilesMutation } from '../../services/organization/Organization.queries';
 import { Loading } from '../../components/loading/Loading';
 import {
   CREATE_FILE_LOGO,
   CREATE_FILE_STATUTE,
   CREATE_LOCAL_STORAGE_KEY,
 } from './constants/CreateOrganization.constant';
+import { useCreateRequestMutation } from '../../services/request/Request.queries';
+import { CreateRequestDTO } from '../../services/request/interfaces/Request.dto';
+import { createRequestDTOMapper } from './helper/CreateOrganization.helper';
 
 const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
-    user: null,
+    admin: null,
     general: null,
     activity: null,
     legal: null,
   });
 
-  const { mutateAsync: mutateOrganization, error: mutationError } = useCreateOrganizationMutation();
+  const { mutateAsync: mutateRequest, error: mutationError } = useCreateRequestMutation();
   const filesMutation = useUploadOrganizationFilesMutation();
 
   const [success, setSuccess] = useState(false);
@@ -69,29 +68,32 @@ const CreateOrganization = () => {
   const sendOrganization = async () => {
     if (
       organization &&
-      organization.user &&
+      organization.admin &&
       organization.general &&
       organization.activity &&
       organization.legal
     ) {
       setLoading(true);
-      const dto = createOrganizationDTOMapper(organization);
+      const dto: CreateRequestDTO = createRequestDTOMapper(organization);
 
-      const saved = await mutateOrganization({
+      const saved = await mutateRequest({
         ...dto,
       });
 
-      const data = new FormData();
+      // PENDING DECISION - PUBLIC ENDPOINT NEEDED
+      // Data uploading
+      // const data = new FormData();
 
-      if (organization.legal.organizationStatute) {
-        data.append(CREATE_FILE_STATUTE, organization.legal.organizationStatute);
-      }
+      // if (organization.legal.organizationStatute) {
+      //   data.append(CREATE_FILE_STATUTE, organization.legal.organizationStatute);
+      // }
 
-      if (organization.general.logo) {
-        data.append(CREATE_FILE_LOGO, organization.general.logo);
-      }
+      // if (organization.general.logo) {
+      //   data.append(CREATE_FILE_LOGO, organization.general.logo);
+      // }
 
-      await filesMutation.mutateAsync({ id: saved.organization?.id as number, data });
+      // await filesMutation.mutateAsync({ id: 13 as number, data });
+      // End Data uploading
 
       localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
       setLoading(false);

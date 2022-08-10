@@ -26,17 +26,17 @@ const CreateOrganizationUser = () => {
   });
 
   useEffect(() => {
-    if (organization && organization.user) {
-      reset({ ...organization.user });
+    if (organization && organization.admin) {
+      reset({ ...organization.admin });
     }
   }, [organization]);
 
   const handleSave = (data: any) => {
-    const user = {
+    const admin = {
       ...data,
     };
 
-    setOrganization((org: any) => ({ ...org, user }));
+    setOrganization((org: any) => ({ ...org, admin }));
 
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
   };

@@ -42,7 +42,7 @@ export class OrganizationController {
   @Post()
   create(
     @Body() createOrganizationDto: CreateOrganizationDto,
-  ): Promise<{ user: User; organization: Organization }> {
+  ): Promise<Organization> {
     return this.organizationService.create(createOrganizationDto);
   }
 
@@ -61,6 +61,7 @@ export class OrganizationController {
     return this.organizationService.update(+id, updateOrganizationDto);
   }
 
+  // @Public() -- NEEDED FOR CREATE FLOW
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
