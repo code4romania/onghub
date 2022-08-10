@@ -12,6 +12,7 @@ import {
   Report,
   Partner,
   Investor,
+  OrganizationHistory,
 } from './entities';
 import {
   ContactRepository,
@@ -48,6 +49,7 @@ import { OrganizationReportService } from './services/organization-report.servic
       Report,
       Partner,
       Investor,
+      OrganizationHistory,
     ]),
   ],
   controllers: [OrganizationController],

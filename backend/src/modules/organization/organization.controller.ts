@@ -143,4 +143,10 @@ export class OrganizationController {
   ) {
     return this.organizationService.deleteInvestor(+id, +investorId);
   }
+
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/activate')
+  activateOrganization(@Param('id') id: string) {
+    return this.organizationService.activate(+id);
+  }
 }
