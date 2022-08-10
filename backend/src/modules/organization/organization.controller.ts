@@ -35,6 +35,8 @@ import {
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
+  // TODO: Add permissions. Only SuperAdmin and Organization Admin (check the Admin is part of the organization is trying to alter)
+
   @ApiBody({ type: CreateOrganizationDto })
   @Post()
   create(
@@ -56,6 +58,12 @@ export class OrganizationController {
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
     return this.organizationService.update(+id, updateOrganizationDto);
+  }
+
+  @ApiParam({ name: 'id', type: Number })
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<number> {
+    return this.organizationService.delete(+id);
   }
 
   @ApiConsumes('multipart/form-data')

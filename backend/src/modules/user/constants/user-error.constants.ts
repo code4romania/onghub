@@ -31,4 +31,8 @@ export const USER_ERRORS = {
     message: 'User already exists and cannot be created',
     errorCode: 'USR_008',
   },
+  DELETE_ALL_FROM_ORG: {
+    message: 'Could not delete user from Cognito',
+    errorCode: 'USR_009',
+  },
 };

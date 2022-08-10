@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -25,9 +27,10 @@ import { USER_ERRORS } from '../constants/user-error.constants';
 export class UserService {
   private readonly logger = new Logger(UserService.name);
   constructor(
+    @Inject(forwardRef(() => OrganizationService)) // TODO: refactor to remove fwdRef
+    private readonly organizationService: OrganizationService,
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
-    private readonly organizationService: OrganizationService,
   ) {}
 
   // ****************************************************
@@ -158,6 +161,22 @@ export class UserService {
     return { updated, failed };
   }
 
+  async deleteAllFromOrganization(organizationId: number) {
+    const users = await this.userRepository.getMany({
+      where: { organizationId },
+    });
+
+    for (let i = 0; i < users.length; i++) {
+      try {
+        await this.cognitoService.globalSignOut(users[i]?.cognitoId);
+        await this.cognitoService.deleteUser(users[i]?.cognitoId);
+      } catch (err) {
+        this.logger.error({ ...USER_ERRORS.DELETE_ALL_FROM_ORG, error: err });
+      }
+    }
+    return this.userRepository.delete({ organizationId });
+  }
+
   // ****************************************************
   // ***************** PRIVATE METHODS ******************
   // ****************************************************
@@ -170,9 +189,7 @@ export class UserService {
         throw new BadRequestException(USER_ERRORS.CREATE_ALREADY_EXISTS);
       }
       // 2. Check the organizationId exists
-      await this.organizationService.findWithRelations(
-        createUserDto.organizationId,
-      );
+      await this.organizationService.find(createUserDto.organizationId);
       // 3. Create user in Cognito
       const cognitoId = await this.cognitoService.createUser(createUserDto);
       // 4. Create user in database

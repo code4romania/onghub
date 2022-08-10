@@ -2,7 +2,10 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
+import { UserService } from 'src/modules/user/services/user.service';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -25,6 +28,8 @@ import { OrganizationReportService } from './organization-report.service';
 @Injectable()
 export class OrganizationService {
   constructor(
+    @Inject(forwardRef(() => UserService)) // TODO: refactor to remove fwdRef
+    private readonly userService: UserService,
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
     private readonly organizationActivityService: OrganizationActivityService,
@@ -447,5 +452,17 @@ export class OrganizationService {
       id: organizationId,
       status: OrganizationStatus.ACTIVE,
     });
+  }
+
+  public async delete(organizationId: number) {
+    // 1. Soft delete organization
+    // TODO: CASCADE delete does not work this way. see https://github.com/typeorm/typeorm/issues/5877
+    await this.organizationRepository.delete({ id: organizationId });
+
+    // 2. Delete all users related to the organization
+    await this.userService.deleteAllFromOrganization(organizationId);
+
+    // 3. Done
+    return organizationId;
   }
 }

@@ -13,7 +13,7 @@ export class Organization extends BaseEntity {
   @Column({
     type: 'timestamp with time zone',
     name: 'synced_on',
-    default: new Date(),
+    default: new Date(), // TODO: this is not working as expected. It will be the addToDatabase date not the insert date
   })
   syncedOn: Date;
 
@@ -36,7 +36,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationGeneral,
     (organizationGeneral) => organizationGeneral.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_general_id' })
   organizationGeneral: OrganizationGeneral;
@@ -52,7 +52,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationActivity,
     (organizationActivity) => organizationActivity.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_activity_id' })
   organizationActivity: OrganizationActivity;
@@ -68,7 +68,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationLegal,
     (organizationLegal) => organizationLegal.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
@@ -76,7 +76,7 @@ export class Organization extends BaseEntity {
   @OneToMany(
     () => OrganizationFinancial,
     (organizationFinancial) => organizationFinancial.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_financial_id' })
   organizationFinancial: OrganizationFinancial[];
@@ -92,7 +92,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_report_id' })
   organizationReport: OrganizationReport;
