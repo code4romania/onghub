@@ -21,8 +21,16 @@ const CreateOrganization = () => {
     legal: null,
   });
 
-  const { mutateAsync: mutateRequest, error: mutationError } = useCreateRequestMutation();
-  const filesMutation = useUploadOrganizationFilesMutation();
+  const {
+    mutateAsync: mutateRequest,
+    error: requestError,
+    isLoading: requestLoading,
+  } = useCreateRequestMutation();
+  const {
+    mutate: filesMutation, // To be used for file uploading.
+    error: filesError,
+    isLoading: filesLoading,
+  } = useUploadOrganizationFilesMutation();
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -50,16 +58,22 @@ const CreateOrganization = () => {
   }, [organization.legal]);
 
   useEffect(() => {
-    setLoading(false);
-    if (mutationError) {
-      setError(`${(mutationError as any)?.response?.data?.message}`);
+    if (requestError) {
+      setError(`${(requestError as any)?.response?.data?.message}`);
     }
 
-    if (filesMutation.error) {
-      setLoading(false);
+    if (filesError) {
       setError('Could not update logo');
     }
-  }, [mutationError, filesMutation.error]);
+  }, [requestError, filesError]);
+
+  useEffect(() => {
+    if (requestLoading || filesLoading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [requestLoading, filesLoading]);
 
   const sendOrganization = async () => {
     if (
@@ -69,7 +83,6 @@ const CreateOrganization = () => {
       organization.activity &&
       organization.legal
     ) {
-      setLoading(true);
       const dto: CreateRequestDTO = createRequestDTOMapper(organization);
 
       const saved = await mutateRequest({
@@ -92,7 +105,6 @@ const CreateOrganization = () => {
       // End Data uploading
 
       localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
-      setLoading(false);
       setSuccess(true);
     }
   };
@@ -100,7 +112,6 @@ const CreateOrganization = () => {
   const reset = () => {
     setSuccess(false);
     setError('');
-    setLoading(false);
   };
 
   if (loading) {

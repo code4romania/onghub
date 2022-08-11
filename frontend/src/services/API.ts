@@ -10,23 +10,24 @@ const API = axios.create({
 });
 
 API.interceptors.request.use(async (request) => {
-  // If the request had a "public" header that is "true" it will not add the bearer token since the endpoint is a public one
-  if (request.headers?.public) {
-    return request;
-  }
-
   // add auth header with jwt if account is logged in and request is to the api url
-  const user = await Auth.currentAuthenticatedUser();
+  try {
+    const user = await Auth.currentAuthenticatedUser();
 
-  if (!request.headers) {
-    request.headers = {};
-  }
+    if (!request.headers) {
+      request.headers = {};
+    }
 
-  if (user?.getSignInUserSession()) {
-    request.headers.Authorization = `Bearer ${user
-      .getSignInUserSession()
-      .getAccessToken()
-      .getJwtToken()}`;
+    if (user?.getSignInUserSession()) {
+      request.headers.Authorization = `Bearer ${user
+        .getSignInUserSession()
+        .getAccessToken()
+        .getJwtToken()}`;
+    }
+  } catch (err) {
+    // User not authenticated. May be a public API.
+    // Catches "The user is not authenticated".
+    return request;
   }
 
   return request;

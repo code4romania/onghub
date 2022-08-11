@@ -5,12 +5,9 @@ export const REQUEST_ERRORS = {
       errorCode: 'REQ_001',
     },
     REQ_EXISTS: {
-      message: 'Request already made.',
+      message:
+        'There is already a pending request with the same admin email address.',
       errorCode: 'REQ_002',
-    },
-    REQ_GENERAL: {
-      message: 'Something went wrong with your request..',
-      errorCode: 'REQ_000',
     },
   },
 };

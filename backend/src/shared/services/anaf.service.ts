@@ -40,6 +40,11 @@ export class AnafService {
     year: number,
   ): Promise<FinancialInformation> {
     const anafData = await this.getAnafData(cui, year);
+
+    if (!anafData) {
+      return null;
+    }
+
     if (anafData && anafData.length === 0) {
       return null;
     }

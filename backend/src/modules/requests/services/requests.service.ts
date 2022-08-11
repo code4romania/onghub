@@ -32,8 +32,8 @@ export class RequestsService {
     // Check if there isn't already a request made by the same user.
     const foundRequest = await this.requestRepository.get({
       where: [
-        { email: createReqDto.admin.email },
-        { phone: createReqDto.admin.phone },
+        { email: createReqDto.admin.email, status: RequestStatus.PENDING },
+        { phone: createReqDto.admin.phone, status: RequestStatus.PENDING },
       ],
     });
 
@@ -55,11 +55,8 @@ export class RequestsService {
         organizationId: organization.id,
       });
     } catch (error) {
-      // TODO: Req Error Better Handling
       this.logger.error({ error, payload: createReqDto });
-      throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.REQ_GENERAL,
-      });
+      throw error;
     }
   }
 
