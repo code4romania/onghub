@@ -12,6 +12,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     key: 'domains',
     rules: {
       required: {
+        value: true,
         message: 'Field is required',
       },
     },
@@ -53,7 +54,8 @@ export const OrganizationActivityConfig: Record<string, any> = {
     key: 'regions',
     rules: {
       required: {
-        message: 'Regions is required.',
+        value: true,
+        message: 'Field is required.',
       },
     },
     config: {
@@ -69,7 +71,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: 'Organizatia apartine de una sau mai multe federatii?*',
     rules: {
       required: {
-        message: 'Fields is required.',
+        message: 'Field is required.',
       },
     },
     helperText: 'De exemplu, lorem ipsum. Help text. Help text',
@@ -90,7 +92,8 @@ export const OrganizationActivityConfig: Record<string, any> = {
     key: 'federations',
     rules: {
       required: {
-        message: 'federations is required.',
+        value: true,
+        message: 'Field is required.',
       },
     },
     config: {
@@ -126,7 +129,8 @@ export const OrganizationActivityConfig: Record<string, any> = {
     key: 'coalitions',
     rules: {
       required: {
-        message: 'coalitions is required.',
+        value: true,
+        message: 'Field is required.',
       },
     },
     config: {
@@ -162,7 +166,8 @@ export const OrganizationActivityConfig: Record<string, any> = {
     key: 'internationalOrganizationName',
     rules: {
       required: {
-        message: 'Organization Name is required.',
+        value: true,
+        message: 'Field is required.',
       },
       maxLength: {
         value: 100,
@@ -213,6 +218,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: 'Localitati in care organizatia are filiale sau sucursale*',
     rules: {
       required: {
+        value: true,
         message: 'Field is required.',
       },
     },
