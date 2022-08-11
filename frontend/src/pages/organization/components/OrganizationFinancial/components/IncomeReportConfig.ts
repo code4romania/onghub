@@ -1,3 +1,5 @@
+import { MAX_MONEY } from '../../../constants/values.constants';
+
 export const IncomeReportConfig: Record<string, any> = {
   membershipFeeIncome: {
     key: 'membershipFeeIncome',
@@ -7,7 +9,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Membership Fee Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Membership Fee Income has a limit of 1 billion.',
       },
     },
@@ -25,7 +27,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Donations Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Donations Income has a limit of 1 billion.',
       },
     },
@@ -43,7 +45,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: '2% Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: '2% Income has a limit of 1 billion.',
       },
     },
@@ -61,7 +63,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Sponsorship Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Sponsorship Income has a limit of 1 billion.',
       },
     },
@@ -79,7 +81,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Economic Activity Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Economic Activity Income has a limit of 1 billion.',
       },
     },
@@ -97,7 +99,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Other Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Other Income has a limit of 1 billion.',
       },
     },
@@ -115,7 +117,7 @@ export const IncomeReportConfig: Record<string, any> = {
         message: 'Financial Income cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Finacial Income has a limit of 1 billion.',
       },
     },

@@ -1,3 +1,5 @@
+import { MAX_MONEY } from '../../../constants/values.constants';
+
 export const ExpenseReportConfig: Record<string, any> = {
   netSalaries: {
     key: 'netSalaries',
@@ -7,7 +9,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Net Salaries cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Net Salaries has a limit of 1 billion.',
       },
     },
@@ -25,7 +27,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'CAS cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'CAS has a limit of 1 billion.',
       },
     },
@@ -43,7 +45,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Economic Activity Direct Expense cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Economic Activity Direct Expense has a limit of 1 billion.',
       },
     },
@@ -61,7 +63,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Administrative Expense cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Administrative Expense has a limit of 1 billion.',
       },
     },
@@ -79,7 +81,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Transport and Accommodation cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Transport and Accommodation has a limit of 1 billion.',
       },
     },
@@ -97,7 +99,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Catering cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Catering has a limit of 1 billion.',
       },
     },
@@ -115,7 +117,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Production cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Production has a limit of 1 billion.',
       },
     },
@@ -133,7 +135,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Software Services cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Software Services has a limit of 1 billion.',
       },
     },
@@ -151,7 +153,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Advertising cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Advertising has a limit of 1 billion.',
       },
     },
@@ -169,7 +171,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Other Taxes cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Other Taxes has a limit of 1 billion.',
       },
     },
@@ -187,7 +189,7 @@ export const ExpenseReportConfig: Record<string, any> = {
         message: 'Other Expense cannot have negative values',
       },
       max: {
-        value: 1000000000,
+        value: MAX_MONEY,
         message: 'Other Expense has a limit of 1 billion.',
       },
     },
