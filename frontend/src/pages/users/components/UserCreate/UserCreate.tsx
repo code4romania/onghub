@@ -1,12 +1,12 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
-import CardPanel from '../../../components/card-panel/CardPanel';
-import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
-import InputField from '../../../components/InputField/InputField';
-import { useCreateUserMutation } from '../../../services/user/User.queries';
-import { useSelectedOrganization } from '../../../store/selectors';
+import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
+import CardPanel from '../../../../components/card-panel/CardPanel';
+import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
+import InputField from '../../../../components/InputField/InputField';
+import { useCreateUserMutation } from '../../../../services/user/User.queries';
+import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserCreateConfig } from './UserCreateConfig';
 
 const UserCreate = () => {
@@ -30,7 +30,7 @@ const UserCreate = () => {
       {
         onSuccess: () => {
           useSuccessToast('User successfully created');
-          navigate(-1);
+          navigate('/users');
         },
         onError: (error: unknown) => {
           console.error(error);
@@ -45,7 +45,7 @@ const UserCreate = () => {
       title="Adauga Utilizator"
       subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
     disponibile."
-      goBack={navigate.bind(null, -1)}
+      goBack={() => navigate('/users')}
     >
       <div className="py-6 flex">
         <CardPanel

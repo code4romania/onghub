@@ -1,4 +1,4 @@
-import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../common/helpers/format.helper';
+import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../common/helpers/format.helper';
 
 export const UserCreateConfig: Record<string, any> = {
   name: {

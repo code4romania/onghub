@@ -15,10 +15,12 @@ import { Coalition } from '../common/interfaces/coalitions.interface';
 import { Federation } from '../common/interfaces/federations.interface';
 import { organizationLegalSlice } from './organization/organization-legal.slice';
 import { organizationReportsSlice } from './organization/organization-reports.slice';
-import { userSlice } from './user/User.slice';
+import { profileSlice } from './user/Profile.slice';
 import { IUser } from '../pages/users/interfaces/User.interface';
 import { IOrganization } from '../pages/organization/interfaces/Organization.interface';
 import { organizationSlice } from './organization/organization.slice';
+import { usersSlice } from './user/Users.slice';
+import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 
 interface OrganizationState {
   organization: IOrganization | null;
@@ -49,20 +51,28 @@ interface NomenclatureState {
   setCoalitions: (coaltions: Coalition[]) => void;
 }
 
-interface UserState {
-  user: IUser | null;
-  setUser: (user: IUser | null) => void;
+interface ProfileState {
+  profile: IUser | null;
+  setProfile: (user: IUser | null) => void;
 }
 
-const useStore = create<OrganizationState & NomenclatureState & UserState>()((set: any) => ({
-  ...organizationSlice(set),
-  ...organizationGeneralSlice(set),
-  ...organizationFinancialSlice(set),
-  ...organizationActivitySlice(set),
-  ...organizationReportsSlice(set),
-  ...organizationLegalSlice(set),
-  ...nomenclatureSlice(set),
-  ...userSlice(set),
-}));
+interface UserState {
+  users: PaginatedEntity<IUser>;
+  setUsers: (users: PaginatedEntity<IUser>) => void;
+}
+
+const useStore = create<OrganizationState & NomenclatureState & UserState & ProfileState>()(
+  (set: any) => ({
+    ...organizationSlice(set),
+    ...organizationGeneralSlice(set),
+    ...organizationFinancialSlice(set),
+    ...organizationActivitySlice(set),
+    ...organizationReportsSlice(set),
+    ...organizationLegalSlice(set),
+    ...nomenclatureSlice(set),
+    ...profileSlice(set),
+    ...usersSlice(set),
+  }),
+);
 
 export default useStore;

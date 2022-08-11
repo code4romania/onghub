@@ -22,7 +22,13 @@ const ExpenseReportModal = ({
   const { organizationGeneral } = useSelectedOrganization();
 
   // form
-  const { control, reset, getValues } = useForm({
+  const {
+    control,
+    reset,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -40,7 +46,7 @@ const ExpenseReportModal = ({
       (prev: number, current: number) => (prev += +current || 0),
       0,
     );
-    setTotalDefalcat(newTotal);
+    setTotalDefalcat(Math.round((newTotal + Number.EPSILON) * 100) / 100);
   };
 
   return (
@@ -142,6 +148,7 @@ const ExpenseReportModal = ({
                                 config={{
                                   ...config,
                                   name: ExpenseReportConfig[name].key,
+                                  error: errors[ExpenseReportConfig[name].key]?.message,
                                   defaultValue: value,
                                   onChange: onChange,
                                   onBlur: () => recalculate(getValues() as Expense),
@@ -176,10 +183,7 @@ const ExpenseReportModal = ({
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => {
-                          onSave(getValues() as Expense);
-                          onClose();
-                        }}
+                        onClick={handleSubmit(onSave)}
                       >
                         Salveaza
                       </button>

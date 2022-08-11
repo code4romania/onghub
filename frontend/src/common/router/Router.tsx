@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
@@ -13,13 +13,14 @@ import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity/OrganizationActivity';
-
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
 import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
-import UserCreate from '../../pages/users/components/UserCreate';
+import UserCreate from '../../pages/users/components/UserCreate/UserCreate';
+import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
+import UserList from '../../pages/users/components/UserList/UserList';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
 
@@ -57,10 +58,11 @@ const Router = () => {
             <Route path="financial" element={<OrganizationFinancial />} />
             <Route path="data" element={<OrganizationData />} />
           </Route>
-          <Route path="users" element={<Outlet />}>
-            <Route index element={<Users />}></Route>
-            <Route path="add" element={<UserCreate />}></Route>
+          <Route path="users" element={<Users />}>
+            <Route index element={<UserList />}></Route>
+            <Route path="invites" element={<UserInvites />}></Route>
           </Route>
+          <Route path="user" element={<UserCreate />}></Route>
           <Route path="apps" element={<Apps />}></Route>
           <Route path="store" element={<AppStore />}></Route>
           <Route path="account" element={<Account />} />

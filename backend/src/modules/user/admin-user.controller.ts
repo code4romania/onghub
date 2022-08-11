@@ -2,13 +2,19 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseArrayPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { ExtractUser } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserFilterDto } from './dto/user-filter.dto';
+import { User } from './entities/user.entity';
 import { UserService } from './services/user.service';
 
 @Controller('user')
@@ -27,6 +33,15 @@ export class AdminUserController {
       phone: body.phone,
       organizationId: body.organizationId,
     });
+  }
+
+  @ApiQuery({ type: () => UserFilterDto })
+  @Get('')
+  async getAll(
+    @ExtractUser() user: User,
+    @Query() filters: UserFilterDto,
+  ): Promise<Pagination<User>> {
+    return this.userService.findAll(user.organizationId, filters);
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin

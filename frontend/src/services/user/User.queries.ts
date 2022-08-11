@@ -1,18 +1,40 @@
-import { createUser, deleteUser, getUser } from './User.service';
+import { createUser, deleteUser, getProfile, getUsers } from './User.service';
 import { useMutation, useQuery } from 'react-query';
 import useStore from '../../store/store';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
+import { IUser } from '../../pages/users/interfaces/User.interface';
+import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { OrderDirection } from '../../common/enums/sort-direction.enum';
 
-export const useUserQuery = (queryOptions?: any) => {
-  const { setUser, setOrganization } = useStore();
-  return useQuery('user', () => getUser(), {
+export const useProfileQuery = (queryOptions?: any) => {
+  const { setProfile, setOrganization } = useStore();
+  return useQuery('profile', () => getProfile(), {
     onSuccess: (data: any) => {
       const { organization, ...user } = data;
-      setUser(user);
+      setProfile(user);
       setOrganization(organization);
     },
     ...queryOptions,
   });
+};
+
+export const useUsersQuery = (
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+) => {
+  const { setUsers } = useStore();
+  return useQuery(
+    ['users', limit, page, orderBy, orderDirection],
+    () => getUsers(limit, page, orderBy, orderDirection),
+    {
+      onSuccess: (data: PaginatedEntity<IUser>) => {
+        setUsers(data);
+      },
+      enabled: !!(limit && page && orderBy && orderDirection),
+    },
+  );
 };
 
 export const useCreateUserMutation = () => {
@@ -20,10 +42,10 @@ export const useCreateUserMutation = () => {
 };
 
 export const useUserMutation = () => {
-  const { setUser } = useStore();
+  const { setProfile } = useStore();
   return useMutation(() => deleteUser(), {
     onSuccess: () => {
-      setUser(null);
+      setProfile(null);
     },
   });
 };
