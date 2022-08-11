@@ -57,7 +57,7 @@ export class OrganizationService {
       });
     }
 
-    if (createOrganizationDto.legal.directors.length < 3) {
+    if (createOrganizationDto.legal.directors?.length < 3) {
       throw new BadRequestException({
         ...ORGANIZATION_ERRORS.CREATE_LEGAL.DIRECTORS_MIN,
       });
@@ -105,7 +105,7 @@ export class OrganizationService {
 
     let branches = [];
     if (createOrganizationDto.activity.hasBranches) {
-      if (createOrganizationDto.activity.branches) {
+      if (!createOrganizationDto.activity.branches) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
@@ -147,14 +147,14 @@ export class OrganizationService {
         {
           type: FinancialType.EXPENSE,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalExpense,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalExpense,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
         {
           type: FinancialType.INCOME,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalIncome,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalIncome,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
       ],
       organizationReport: {

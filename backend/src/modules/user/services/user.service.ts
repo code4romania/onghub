@@ -9,7 +9,7 @@ import {
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { UpdateResult } from 'typeorm';
+import { FindOneOptions, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -61,6 +61,10 @@ export class UserService {
     }
 
     return user;
+  }
+
+  public async findOne(options: FindOneOptions): Promise<User> {
+    return this.userRepository.get(options);
   }
 
   public async update(

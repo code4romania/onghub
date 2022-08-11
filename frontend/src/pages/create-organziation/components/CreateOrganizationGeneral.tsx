@@ -1,37 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { PencilIcon } from '@heroicons/react/solid';
-import { classNames } from '../../../../common/helpers/tailwind.helper';
-import { Controller, useForm } from 'react-hook-form';
-import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
-import InputField from '../../../../components/InputField/InputField';
-import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
-import Select from '../../../../components/Select/Select';
-import ContactForm from '../../../../components/Contact/Contact';
-import Textarea from '../../../../components/Textarea/Textarea';
-import {
-  useOrganizationMutation,
-  useUploadOrganizationFilesMutation,
-} from '../../../../services/organization/Organization.queries';
-import { useSelectedOrganization } from '../../../../store/selectors';
-import { useNomenclature } from '../../../../store/selectors';
-import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
-import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
-import { useErrorToast } from '../../../../common/hooks/useToast';
-import { getPublicFileUrl } from '../../../../services/files/File.service';
+import { useForm, Controller } from 'react-hook-form';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { fileToURL, flatten } from '../../../common/helpers/format.helper';
+import ContactForm from '../../../components/Contact/Contact';
+import InputField from '../../../components/InputField/InputField';
+import RadioGroup from '../../../components/RadioGroup/RadioGroup';
+import SectionHeader from '../../../components/section-header/SectionHeader';
+import Select from '../../../components/Select/Select';
+import Textarea from '../../../components/Textarea/Textarea';
+import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useNomenclature } from '../../../store/selectors';
+import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
+import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
 
-const OrganizationGeneral = () => {
-  const [readonly, setReadonly] = useState(true);
+const CreateOrganizationGeneral = () => {
+  const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
-  const [file, setFile] = useState<File | null>(null);
-  const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
-  const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate, error } = useOrganizationMutation();
-  const filesMutation = useUploadOrganizationFilesMutation();
+  const [file, setFile] = useState<File | null>(null);
+
+  const [organization, setOrganization] = useOutletContext<any>();
+
   // queries
   useCitiesQuery(county?.id);
+
+  const navigate = useNavigate();
 
   // React Hook Form
   const {
@@ -46,43 +40,21 @@ const OrganizationGeneral = () => {
   });
 
   useEffect(() => {
-    if (organizationGeneral) {
-      const contact = flatten(organizationGeneral.contact, {}, 'contact');
-      reset({ ...organizationGeneral, ...contact });
-      setCounty(organizationGeneral.county);
-      setCity(organizationGeneral.city);
-      if (organizationGeneral.logo) requestLogoUrl(organizationGeneral.logo);
+    if (organization && organization.general) {
+      const contact = flatten(organization.general.contact, {}, 'contact');
+      reset({ ...organization.general, ...contact });
+      setCounty(organization.general.county);
+      setCity(organization.general.city);
+      console.log(organization.general.logo);
+      // setFile(organization.general.logo);
     }
-  }, [organizationGeneral]);
+  }, [organization]);
 
   useEffect(() => {
     if (county && !readonly) {
       setValue('city', null);
     }
   }, [cities]);
-
-  useEffect(() => {
-    if (error) {
-      useErrorToast('Could not save organization');
-    }
-
-    if (filesMutation.error) {
-      useErrorToast('Could not update logo');
-    }
-  }, [error, filesMutation.error]);
-
-  const requestLogoUrl = async (logoPath: string) => {
-    try {
-      const logoUrl = await getPublicFileUrl(logoPath);
-      setLogo(logoUrl);
-    } catch (error) {
-      useErrorToast('Could not load logo image');
-    }
-  };
-
-  const startEdit = () => {
-    setReadonly(false);
-  };
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -94,7 +66,6 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    setReadonly(true);
     const contact = {
       ...data.contact,
       fullName: data.contact_fullName,
@@ -105,54 +76,18 @@ const OrganizationGeneral = () => {
     const organizationGeneral = {
       ...data,
       contact,
-      countyId: data.county.id,
-      cityId: data.city.id,
+      logo: file,
     };
 
-    delete organizationGeneral.county;
-    delete organizationGeneral.city;
-    delete organizationGeneral.logo;
+    setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
 
-    if (file) {
-      const data = new FormData();
-      data.append('logo', file);
-      filesMutation.mutate(
-        { id: organization?.id as number, data },
-        {
-          onSettled: () => {
-            mutate({
-              id: organization?.id as number,
-              organization: { general: emptyStringToNull(organizationGeneral) },
-            });
-          },
-        },
-      );
-      setFile(null);
-    } else {
-      mutate({
-        id: organization?.id as number,
-        organization: { general: emptyStringToNull(organizationGeneral) },
-      });
-    }
+    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
   };
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">Date generale</span>
-
-        <button
-          type="button"
-          className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
-        >
-          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {readonly ? 'Editeaza' : 'Salveaza modificari'}
-        </button>
-      </div>
-
-      <div className="w-full border-t border-gray-300" />
-      <div className="p-5 sm:p-10 flex">
+      <div className="w-full " />
+      <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
           <SectionHeader
             title="Date generale"
@@ -397,10 +332,9 @@ const OrganizationGeneral = () => {
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
                   Logo organizatie
                 </label>
-
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    {!file && !logo ? (
+                    {!file ? (
                       <svg
                         className="h-full w-full text-gray-300"
                         fill="currentColor"
@@ -409,7 +343,7 @@ const OrganizationGeneral = () => {
                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
                     ) : (
-                      <img src={fileToURL(file) || (logo as string)} className="h-20 w-80" />
+                      <img src={fileToURL(file) || ''} className="h-20 w-80" />
                     )}
                   </span>
                   {!readonly && (
@@ -675,9 +609,25 @@ const OrganizationGeneral = () => {
             </div>
           </form>
         </div>
+        <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
+          <button
+            type="button"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
+            onClick={handleSubmit(handleSave)}
+          >
+            Mai departe
+          </button>
+          <button
+            type="button"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}
+          >
+            Inapoi
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default OrganizationGeneral;
+export default CreateOrganizationGeneral;
