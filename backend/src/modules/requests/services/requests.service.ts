@@ -7,6 +7,8 @@ import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Request } from '../entities/request.entity';
 import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { REQUEST_FILTER_CONFIG } from '../constants/request-filters.config';
 
 @Injectable()
 export class RequestsService {
@@ -16,6 +18,17 @@ export class RequestsService {
     private organizationService: OrganizationService,
     private userService: UserService,
   ) {}
+
+  public async findAll(options: BaseFilterDto) {
+    const paginationOptions = {
+      ...options,
+    };
+
+    return this.requestRepository.getManyPaginated(
+      REQUEST_FILTER_CONFIG,
+      paginationOptions,
+    );
+  }
 
   public async create(createReqDto: CreateRequestDto) {
     // Check if the admin email is not in the user table already (is unique).

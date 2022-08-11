@@ -6,5 +6,5 @@ export const USER_FILTERS_CONFIG = {
   defaultSortBy: 'name',
   defaultOrderDirection: OrderDirection.ASC,
   relations: [],
-  rangeColumn: 'created_on',
+  rangeColumn: 'createdOn',
 };

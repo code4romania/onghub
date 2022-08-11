@@ -18,6 +18,7 @@ import OrganizationFinancial from '../../pages/organization/components/Organizat
 import OrganizationGeneral from '../../pages/organization/components/OrganizationGeneral/OrganizationGeneral';
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
+import Requests from '../../pages/requests/Requests';
 import UserCreate from '../../pages/users/components/UserCreate/UserCreate';
 import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
 import UserList from '../../pages/users/components/UserList/UserList';
@@ -66,6 +67,7 @@ const Router = () => {
           <Route path="apps" element={<Apps />}></Route>
           <Route path="store" element={<AppStore />}></Route>
           <Route path="account" element={<Account />} />
+          <Route path="requests" element={<Requests />} />
         </Route>
         <Route path="*" element={<Navigate to={'/'}></Navigate>}></Route>
       </Routes>

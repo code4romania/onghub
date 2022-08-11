@@ -6,16 +6,21 @@ import {
   Param,
   Body,
   Post,
+  Query,
+  Get,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { RequestsService } from './services/requests.service';
 import { Request } from '../requests/entities/request.entity';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { Pagination } from 'src/common/interfaces/pagination';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,6 +28,12 @@ import { Public } from 'src/common/decorators/public.decorator';
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
+
+  @ApiQuery({ type: () => BaseFilterDto })
+  @Get('')
+  async getAll(@Query() filters: BaseFilterDto): Promise<Pagination<Request>> {
+    return this.requestsService.findAll(filters);
+  }
 
   @Public()
   @ApiBody({ type: CreateRequestDto })
