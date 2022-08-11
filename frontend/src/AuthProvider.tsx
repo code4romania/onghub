@@ -7,14 +7,7 @@ import LoadingContent from './components/data-table/LoadingContent';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast } from './common/hooks/useToast';
 import { UserStatus } from './pages/users/enums/UserStatus.enum';
-
-const Loading = () => {
-  return (
-    <div className="w-full h-screen flex flex-col justify-center items-center gap-4">
-      <LoadingContent /> <span>Se incarca...</span>
-    </div>
-  );
-};
+import { Loading } from './components/loading/Loading';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
@@ -35,18 +28,17 @@ const AuthProvider = ({ children }: any) => {
     (async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        const {data: profile} = await refetchUserProfile();
-        if (profile.status === UserStatus.ACTIVE){
+        const { data: profile } = await refetchUserProfile();
+        if (profile?.status === UserStatus.ACTIVE) {
           setAuthState({ isAuthenticated: true });
         } else {
           throw Error(); // TODO: Better error handling.
         }
       } catch (error) {
         logout();
-      }
-       finally {
+      } finally {
         setIsLoading(false);
-       }
+      }
     })();
   }, []);
 

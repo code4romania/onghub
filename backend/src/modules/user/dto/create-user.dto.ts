@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,11 +11,12 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { Role } from '../enums/role.enum';
 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @Length(10, 100)
+  @Length(5, 100)
   @Matches(REGEX.NAME)
   name: string;
 
@@ -27,6 +29,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsValidPhone()
   phone: string;
+
+  @IsOptional()
+  @IsEnum(Role)
+  role?: Role;
 
   @IsNumber()
   organizationId: number;

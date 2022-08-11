@@ -15,6 +15,7 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
+import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -56,7 +57,7 @@ export class OrganizationService {
       });
     }
 
-    if (createOrganizationDto.legal.directors.length < 3) {
+    if (createOrganizationDto.legal.directors?.length < 3) {
       throw new BadRequestException({
         ...ORGANIZATION_ERRORS.CREATE_LEGAL.DIRECTORS_MIN,
       });
@@ -146,14 +147,14 @@ export class OrganizationService {
         {
           type: FinancialType.EXPENSE,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalExpense,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalExpense,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
         {
           type: FinancialType.INCOME,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalIncome,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalIncome,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
       ],
       organizationReport: {
@@ -164,7 +165,21 @@ export class OrganizationService {
     });
   }
 
-  public async findOne(id: number): Promise<Organization> {
+  public async find(id: number) {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
+  public async findWithRelations(id: number): Promise<Organization> {
     const organization = await this.organizationRepository.get({
       where: { id },
       relations: [
@@ -209,15 +224,7 @@ export class OrganizationService {
     id: number,
     updateOrganizationDto: UpdateOrganizationDto,
   ): Promise<any> {
-    const organization = await this.organizationRepository.get({
-      where: { id },
-    });
-
-    if (!organization) {
-      throw new NotFoundException({
-        ...ORGANIZATION_ERRORS.GET,
-      });
-    }
+    const organization = await this.find(id);
 
     if (updateOrganizationDto.general) {
       return this.organizationGeneralService.update(
@@ -421,5 +428,24 @@ export class OrganizationService {
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
+  }
+
+  /**
+   * Will update the status from PENDING to ACTIVE
+   *
+   * @throws Will throw error if the organization is already in ACTIVE state
+   * @param organizationId the ORG to be activated
+   */
+  public async activate(organizationId: number) {
+    const org = await this.find(organizationId);
+
+    if (org.status === OrganizationStatus.ACTIVE) {
+      throw new BadRequestException(ORGANIZATION_ERRORS.ACTIVATE);
+    }
+
+    return this.organizationRepository.updateOne({
+      id: organizationId,
+      status: OrganizationStatus.ACTIVE,
+    });
   }
 }

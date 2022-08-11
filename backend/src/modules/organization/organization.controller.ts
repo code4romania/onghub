@@ -18,6 +18,8 @@ import {
   ApiTooManyRequestsResponse,
   ApiParam,
 } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
+import { User } from '../user/entities/user.entity';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
@@ -46,7 +48,7 @@ export class OrganizationController {
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
-    return this.organizationService.findOne(+id);
+    return this.organizationService.findWithRelations(+id);
   }
 
   @ApiBody({ type: UpdateOrganizationDto })
@@ -58,6 +60,7 @@ export class OrganizationController {
     return this.organizationService.update(+id, updateOrganizationDto);
   }
 
+  // @Public() -- NEEDED FOR CREATE FLOW
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([

@@ -33,7 +33,7 @@
   }
 
   .save-button {
-    @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+    @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400;
   }
 
   .add-button {
@@ -42,6 +42,10 @@
 
   .edit-button {
     @apply inline-flex items-center px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-yellow-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+  .back-button {
+    @apply inline-flex items-center mr-4 px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-white bg-gray-900  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
   }
 
   .form-item-label {
@@ -81,7 +85,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-nowrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
+  @apply whitespace-pre-wrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
 }
 
 .rdt_TableCol_Sortable svg {
