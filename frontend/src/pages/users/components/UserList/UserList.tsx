@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { BanIcon } from '@heroicons/react/outline';
 import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid';
-import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
@@ -12,6 +12,7 @@ import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
 import { useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
+import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
@@ -21,6 +22,8 @@ const UserList = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
+  const [searchWord, setSearchWord] = useState<string>('');
+  const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
 
   const { users } = useUser();
 
@@ -29,6 +32,7 @@ const UserList = () => {
     page as number,
     orderByColumn as string,
     orderDirection as OrderDirection,
+    searchWord,
   );
 
   useEffect(() => {
@@ -93,6 +97,9 @@ const UserList = () => {
     };
   };
 
+  /**
+   * PAGINATION
+   */
   const onRowsPerPageChange = (rows: number) => {
     setRowsPerPage(rows);
   };
@@ -110,6 +117,9 @@ const UserList = () => {
     );
   };
 
+  /**
+   * ROW ACTIONS
+   */
   const onReconnect = () => {
     console.log('to be implemented');
   };
@@ -126,30 +136,39 @@ const UserList = () => {
     console.log('to be implemented');
   };
 
+  /**
+   * FILTERS
+   */
   const onSearch = (searchWord: string) => {
-    console.log('search word', searchWord);
+    setSearchWord(searchWord);
+  };
+
+  const onDateChange = (range: any[]) => {
+    console.log('range', range);
+  };
+
+  const onStatusChange = (selected: any) => {
+    setStatus(selected);
   };
 
   return (
     <div>
       <DataTableFilters onSearch={onSearch}>
         <div className="flex gap-x-6">
-          <div className="flex-1">
-            <DateRangePicker />
+          <div className="basis-1/4">
+            <DateRangePicker label="Data adaugarii" onChange={onDateChange} />
           </div>
-          <div className="flex-1">
+          <div className="basis-1/4">
             <Select
-              config={{ label: 'Status', collection: ['1', '2', '3'], displayedAttribute: '' }}
-              onChange={(status: any) => console.log('change status', status)}
+              config={{
+                label: 'Status',
+                collection: UserStatusOptions,
+                displayedAttribute: 'label',
+              }}
+              selected={status}
+              onChange={onStatusChange}
             />
           </div>
-          <div className="flex-1">
-            <Select
-              config={{ label: 'Status', collection: ['1', '2', '3'], displayedAttribute: '' }}
-              onChange={(status: any) => console.log('change status', status)}
-            />
-          </div>
-          <div className="flex-1"></div>
         </div>
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">

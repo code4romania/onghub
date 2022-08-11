@@ -23,11 +23,12 @@ export const useUsersQuery = (
   page: number,
   orderBy: string,
   orderDirection: OrderDirection,
+  search?: string,
 ) => {
   const { setUsers } = useStore();
   return useQuery(
-    ['users', limit, page, orderBy, orderDirection],
-    () => getUsers(limit, page, orderBy, orderDirection),
+    ['users', limit, page, orderBy, orderDirection, search],
+    () => getUsers(limit, page, orderBy, orderDirection, search),
     {
       onSuccess: (data: PaginatedEntity<IUser>) => {
         setUsers(data);

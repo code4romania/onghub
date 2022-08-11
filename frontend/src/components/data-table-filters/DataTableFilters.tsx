@@ -1,29 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { AdjustmentsIcon, SearchIcon } from '@heroicons/react/outline';
+import debouce from 'lodash.debounce';
 
 interface DataTableFiltersProps {
   children?: React.ReactNode;
-  onSearch?: (searchWord: string) => void;
+  onSearch: (searchWord: string) => void;
 }
 
 const DataTableFilters = ({ children, onSearch }: DataTableFiltersProps) => {
   const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(false);
 
+  // cleanup any side effects of deounce
+  useEffect(() => {
+    return () => {
+      onDebouncedSearch.cancel();
+    };
+  }, []);
+
+  const onDebouncedSearch = useMemo(() => {
+    return debouce(onSearch, 300);
+  }, []);
+
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-4 px-10 flex justify-between gap-x-16">
-        <div className="mt-1 relative rounded-md flex-1">
+      <div className="py-4 px-10 flex justify-between gap-x-6">
+        <div className="mt-1 relative rounded-md basis-1/4">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <SearchIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
           </div>
           <input
             type="text"
-            onChange={(event) => onSearch && onSearch(event.target.value)}
+            onChange={(event) => onDebouncedSearch(event.target.value)}
             className="pl-10 block w-full pr-10 border-gray-200 shadow-sm  sm:text-base text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="Search"
           />
         </div>
-        <div className="flex-3 flex items-center justify-end">
+        <div className="basis-3/4 flex items-center justify-end">
           <button
             type="button"
             className="edit-button"

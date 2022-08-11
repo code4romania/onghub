@@ -13,10 +13,13 @@ export const getUsers = async (
   page: number,
   orderBy: string,
   orderDirection: OrderDirection,
+  search?: string,
 ): Promise<PaginatedEntity<IUser>> => {
-  return API.get(
-    `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`,
-  ).then((res) => res.data);
+  let requestUrl = `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  return API.get(requestUrl).then((res) => res.data);
 };
 
 export const getProfile = async (): Promise<IUser> => {
