@@ -105,7 +105,7 @@ export class OrganizationService {
 
     let branches = [];
     if (createOrganizationDto.activity.hasBranches) {
-      if (createOrganizationDto.activity.branches.length === 0) {
+      if (createOrganizationDto.activity.branches?.length === 0) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
