@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import './Header.css';
 import logo from './../../assets/images/logo.svg';
-import profile from './../../assets/images/profile.svg';
+import profileImg from './../../assets/images/profile.svg';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { Menu, Transition } from '@headlessui/react';
 import { CogIcon, LogoutIcon } from '@heroicons/react/outline';
@@ -12,7 +12,7 @@ import { useUser } from '../../store/selectors';
 const Header = () => {
   const { logout, isAuthenticated } = useAuthContext();
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { profile } = useUser();
 
   return (
     <header className="bg-white">
@@ -27,9 +27,9 @@ const Header = () => {
                 <div>
                   <Menu.Button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                     <span className="font-titilliumBold text-gray-900 text-base tracking-wide">
-                      {user?.name || ''}
+                      {profile?.name || ''}
                     </span>
-                    <img className="w-10 h-10" src={profile} alt="Profile photo" />
+                    <img className="w-10 h-10" src={profileImg} alt="Profile photo" />
                   </Menu.Button>
                 </div>
 

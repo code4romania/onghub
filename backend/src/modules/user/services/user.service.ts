@@ -6,7 +6,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Pagination } from 'nestjs-typeorm-paginate';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
 import { FindOneOptions, UpdateResult } from 'typeorm';
@@ -20,6 +19,7 @@ import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
+import { Pagination } from 'src/common/interfaces/pagination';
 
 @Injectable()
 export class UserService {
@@ -75,8 +75,21 @@ export class UserService {
     // return this.userRepository.update({ id }, updateUserDto);
   }
 
-  public async findAll(options: UserFilterDto): Promise<Pagination<User>> {
-    return this.userRepository.getManyPaginated(USER_FILTERS_CONFIG, options);
+  public async findAll(
+    organizationId: number,
+    options: UserFilterDto,
+  ): Promise<Pagination<User>> {
+    const paginationOptions = {
+      ...options,
+      role: Role.EMPLOYEE,
+      status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
+      organizationId,
+    };
+
+    return this.userRepository.getManyPaginated(
+      USER_FILTERS_CONFIG,
+      paginationOptions,
+    );
   }
 
   findByCognitoId(cognitoId: string) {
