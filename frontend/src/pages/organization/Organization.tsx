@@ -7,7 +7,7 @@ import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queri
 import { useOrganizationQuery } from '../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../store/selectors';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
-import { IPageTab } from './interfaces/Tabs.interface';
+import { IPageTab } from '../../common/interfaces/tabs.interface';
 
 const Organization = () => {
   const navigate = useNavigate();

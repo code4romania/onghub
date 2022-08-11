@@ -19,11 +19,16 @@ const IncomeReportModal = ({
 }: ReportModalProps) => {
   const [totalDefalcat, setTotalDefalcat] = useState<number>(0);
   const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
-
   const { organizationGeneral } = useSelectedOrganization();
 
   // form state
-  const { control, reset, getValues } = useForm({
+  const {
+    control,
+    reset,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -41,7 +46,7 @@ const IncomeReportModal = ({
       (prev: number, current: number) => (prev += +current || 0),
       0,
     );
-    setTotalDefalcat(newTotal);
+    setTotalDefalcat(Math.round((newTotal + Number.EPSILON) * 100) / 100);
   };
 
   return (
@@ -84,7 +89,7 @@ const IncomeReportModal = ({
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      {`Raportare Cheltuieli ${year}`}
+                      {`Raportare Venituri ${year}`}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
@@ -143,11 +148,12 @@ const IncomeReportModal = ({
                                 config={{
                                   ...config,
                                   name: IncomeReportConfig[name].key,
+                                  error: errors[IncomeReportConfig[name].key]?.message,
                                   defaultValue: value,
                                   onChange: onChange,
                                   onBlur: () => recalculate(getValues() as Income),
                                 }}
-                                readonly={readonly}
+                                readonly={isReadonly}
                               />
                             );
                           }}
@@ -177,10 +183,7 @@ const IncomeReportModal = ({
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => {
-                          onSave(getValues() as Income);
-                          onClose();
-                        }}
+                        onClick={handleSubmit(onSave)}
                       >
                         Salveaza
                       </button>

@@ -425,6 +425,7 @@ const OrganizationGeneral = () => {
                         name="uploadPhoto"
                         id="uploadPhoto"
                         type="file"
+                        accept="image/png, image/jpeg, image/svg"
                         onChange={onChangeFile}
                       />
                     </>
