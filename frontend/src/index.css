@@ -85,7 +85,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-nowrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
+  @apply whitespace-pre-wrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
 }
 
 .rdt_TableCol_Sortable svg {

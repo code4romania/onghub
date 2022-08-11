@@ -5,14 +5,7 @@ import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
 import LoadingContent from './components/data-table/LoadingContent';
 import { UserStatus } from './pages/users/enums/UserStatus.enum';
-
-const Loading = () => {
-  return (
-    <div className="w-full h-screen flex flex-col justify-center items-center gap-4">
-      <LoadingContent /> <span>Se incarca...</span>
-    </div>
-  );
-};
+import { Loading } from './components/loading/Loading';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({

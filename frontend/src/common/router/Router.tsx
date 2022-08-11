@@ -4,6 +4,11 @@ import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
 import AppStore from '../../pages/apps-store/AppStore';
+import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
+import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
+import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
+import CreateOrganizationUser from '../../pages/create-organziation/components/CreateOrganizationUser';
+import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
 import Apps from '../../pages/my-apps/Apps';
@@ -29,6 +34,13 @@ const Router = () => {
           path="/login"
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
+        <Route path="new" element={<CreateOrganization />}>
+          <Route index element={<Navigate to={'/new/account'}></Navigate>} />
+          <Route path="account" element={<CreateOrganizationUser />} />
+          <Route path="general" element={<CreateOrganizationGeneral />} />
+          <Route path="activity" element={<CreateOrganizationActivity />} />
+          <Route path="legal" element={<CreateOrganizationLegal />} />
+        </Route>
         <Route
           path="/"
           element={
