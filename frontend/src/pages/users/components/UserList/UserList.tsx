@@ -22,8 +22,9 @@ const UserList = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
-  const [searchWord, setSearchWord] = useState<string>('');
+  const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
+  const [range, setRange] = useState<Date[]>([]);
 
   const { users } = useUser();
 
@@ -32,7 +33,9 @@ const UserList = () => {
     page as number,
     orderByColumn as string,
     orderDirection as OrderDirection,
-    searchWord,
+    searchWord as string,
+    status?.status,
+    range,
   );
 
   useEffect(() => {
@@ -143,17 +146,29 @@ const UserList = () => {
     setSearchWord(searchWord);
   };
 
-  const onDateChange = (range: any[]) => {
-    console.log('range', range);
+  const onDateChange = (interval: unknown[]) => {
+    if (interval[0] && interval[1]) {
+      setRange(interval as Date[]);
+    }
   };
 
-  const onStatusChange = (selected: any) => {
+  const onStatusChange = (selected: { status: UserStatus; label: string }) => {
     setStatus(selected);
+  };
+
+  const onResetFilters = () => {
+    setStatus(null);
+    setRange([]);
+    setSearchWord(null);
   };
 
   return (
     <div>
-      <DataTableFilters onSearch={onSearch}>
+      <DataTableFilters
+        onSearch={onSearch}
+        searchValue={searchWord}
+        onResetFilters={onResetFilters}
+      >
         <div className="flex gap-x-6">
           <div className="basis-1/4">
             <DateRangePicker label="Data adaugarii" onChange={onDateChange} />

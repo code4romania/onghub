@@ -4,11 +4,19 @@ import debouce from 'lodash.debounce';
 
 interface DataTableFiltersProps {
   children?: React.ReactNode;
+  searchValue?: string | null;
   onSearch: (searchWord: string) => void;
+  onResetFilters: () => void;
 }
 
-const DataTableFilters = ({ children, onSearch }: DataTableFiltersProps) => {
+const DataTableFilters = ({
+  children,
+  searchValue,
+  onSearch,
+  onResetFilters,
+}: DataTableFiltersProps) => {
   const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(false);
+  const [searchWord, setSearchWord] = useState<string>('');
 
   // cleanup any side effects of deounce
   useEffect(() => {
@@ -17,9 +25,24 @@ const DataTableFilters = ({ children, onSearch }: DataTableFiltersProps) => {
     };
   }, []);
 
+  // handle reset filters scenario
+  useEffect(() => {
+    if (searchValue === null) setSearchWord('');
+  }, [searchValue]);
+
   const onDebouncedSearch = useMemo(() => {
     return debouce(onSearch, 300);
   }, []);
+
+  const resetFilters = () => {
+    onResetFilters();
+    setFiltersCollapsed(false);
+  };
+
+  const onSearchValueChange = (value: string) => {
+    setSearchWord(value);
+    onDebouncedSearch(value);
+  };
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
@@ -30,20 +53,27 @@ const DataTableFilters = ({ children, onSearch }: DataTableFiltersProps) => {
           </div>
           <input
             type="text"
-            onChange={(event) => onDebouncedSearch(event.target.value)}
+            value={searchWord}
+            onChange={(event) => onSearchValueChange(event.target.value)}
             className="pl-10 block w-full pr-10 border-gray-200 shadow-sm  sm:text-base text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="Search"
           />
         </div>
-        <div className="basis-3/4 flex items-center justify-end">
+        <div className="basis-3/4 flex items-center justify-end gap-x-4">
           <button
             type="button"
             className="edit-button"
             onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
           >
             <AdjustmentsIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {filtersCollapsed ? 'Reseteaza filtre' : 'Filtre'}
+            {filtersCollapsed ? 'Ascunde filtre' : 'Filtre'}
           </button>
+          {filtersCollapsed && (
+            <button type="button" className="edit-button" onClick={resetFilters}>
+              <AdjustmentsIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              {'Reseteaza filtre'}
+            </button>
+          )}
         </div>
       </div>
       {filtersCollapsed && <div className="px-10 py-6 border-t border-gray-100">{children}</div>}
