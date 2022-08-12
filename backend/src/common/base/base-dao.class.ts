@@ -152,8 +152,8 @@ export abstract class BaseDAO<T> {
     Between(
       format(
         typeof from === 'string' ? new Date(from) : from,
-        'YYYY-MM-DD HH:MM:SS',
+        'yyyy-MM-dd HH:MM:SS',
       ),
-      format(typeof to === 'string' ? new Date(to) : to, 'YYYY-MM-DD HH:MM:SS'),
+      format(typeof to === 'string' ? new Date(to) : to, 'yyyy-MM-dd HH:MM:SS'),
     );
 }

@@ -80,10 +80,10 @@ export class UserService {
     options: UserFilterDto,
   ): Promise<Pagination<User>> {
     const paginationOptions = {
-      ...options,
       role: Role.EMPLOYEE,
       status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
       organizationId,
+      ...options,
     };
 
     return this.userRepository.getManyPaginated(
