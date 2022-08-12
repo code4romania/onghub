@@ -4,7 +4,6 @@ import {
   Matches,
   Length,
   IsArray,
-  IsEnum,
   IsNumber,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
@@ -19,25 +18,13 @@ export class CreateApplicationDto {
   @IsNumber()
   typeId: number;
 
-  @IsArray()
-  @IsNotEmpty()
-  @Length(10, 100, { each: true })
-  steps: string[];
-
   @IsString()
-  @IsNotEmpty()
   @Length(200, 250)
   shortDescription: string;
 
   @IsString()
-  @IsNotEmpty()
   @Length(200, 250)
   description: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Matches(REGEX.LINK)
-  loginLink: string;
 
   @IsString()
   @IsNotEmpty()
@@ -46,5 +33,15 @@ export class CreateApplicationDto {
 
   @IsString()
   @IsNotEmpty()
+  @Matches(REGEX.LINK)
+  loginLink: string;
+
+  @IsString()
+  @IsNotEmpty()
   logo: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  @Length(10, 100, { each: true })
+  steps: string[];
 }
