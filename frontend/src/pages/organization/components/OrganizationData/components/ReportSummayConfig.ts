@@ -1,3 +1,4 @@
+import { URL_REGEX } from '../../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../../components/InputField/components/InputFieldHttpAddon';
 import { MAX_REPORT } from '../../../constants/values.constants';
 
@@ -12,6 +13,9 @@ export const ReportSummaryConfig: Record<string, any> = {
       max: {
         value: MAX_REPORT,
         message: 'Number of volunteers cannot exceed 6 digits.',
+      },
+      validate: {
+        decimal: (value: number) => value % 1 == 0 || 'Decimals are not allowed',
       },
     },
     config: {
@@ -32,6 +36,9 @@ export const ReportSummaryConfig: Record<string, any> = {
         value: MAX_REPORT,
         message: 'Number of contractors cannot exceed 6 digits.',
       },
+      validate: {
+        decimal: (value: number) => value % 1 == 0 || 'Decimals are not allowed',
+      },
     },
     config: {
       type: 'number',
@@ -42,7 +49,12 @@ export const ReportSummaryConfig: Record<string, any> = {
   },
   report: {
     key: 'report',
-    rules: {},
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'Link format is invalid',
+      },
+    },
     config: {
       type: 'text',
       label: 'Link raport activitate',

@@ -160,6 +160,10 @@ const OrganizationData = () => {
   const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
+    if (data.report?.startsWith('www')) {
+      data.report = 'http://' + data.report;
+    }
+    console.log(data?.report);
     reportSummaryMutation.mutate({
       id: organization?.id as number,
       organization: {
@@ -215,6 +219,11 @@ const OrganizationData = () => {
   };
 
   const uploadPartnersList = async (partnerId: number, file: File) => {
+    if (!isExcel(file.name)) {
+      useErrorToast('Invalid file type.');
+      return;
+    }
+
     const rows = await readXlsxFile(file);
     if (rows.length <= 2) {
       useErrorToast('The file you uploaded contains no data!');
@@ -229,6 +238,11 @@ const OrganizationData = () => {
   };
 
   const uploadInvestorsList = async (investorId: number, file: File) => {
+    if (!isExcel(file.name)) {
+      useErrorToast('Invalid file type.');
+      return;
+    }
+
     const rows = await readXlsxFile(file);
     if (rows.length <= 2) {
       useErrorToast('The file you uploaded contains no data!');
@@ -241,6 +255,20 @@ const OrganizationData = () => {
     uploadInvestorsMutation.mutate({ id: organization?.id as number, investorId, data });
     setSelectedInvestor(null);
   };
+
+  function getExtension(filename: string) {
+    const parts = filename.split('.');
+    return parts[parts.length - 1];
+  }
+
+  function isExcel(filename: string) {
+    const ext = getExtension(filename);
+    if (ext.toLowerCase() != 'xlsx') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   return (
     <div className="flex flex-col gap-y-6">
