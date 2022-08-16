@@ -12,9 +12,9 @@ export interface IOrganization extends BaseEntity {
 }
 
 export interface IOganizationFull extends IOrganization {
-  general: IOrganizationGeneral;
-  activity: IOrganizationActivity;
-  financial: IOrganizationFinancial;
-  legal: IOrganizationLegal;
-  report: IOrganizationReport;
+  organizationGeneral: IOrganizationGeneral;
+  organizationActivity: IOrganizationActivity;
+  organizationFinancial: IOrganizationFinancial;
+  organizationLegal: IOrganizationLegal;
+  organizationReport: IOrganizationReport;
 }

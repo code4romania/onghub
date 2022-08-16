@@ -7,7 +7,7 @@ import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import { useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatus } from '../../enums/UserStatus.enum';
@@ -53,7 +53,7 @@ const UserList = () => {
         name: 'Restrictioneaza temporar',
         icon: BanIcon,
         onClick: onDisconnect,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -72,7 +72,7 @@ const UserList = () => {
         name: 'Elimina definitiv',
         icon: TrashIcon,
         onClick: onDelete,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 

@@ -8,15 +8,38 @@ interface MenuItem {
   name: string;
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   onClick: (row: any) => void;
-  isRemove?: boolean;
-  isUpload?: boolean;
-  isDownload?: boolean;
+  type?: PopoverMenuRowType;
 }
 
 interface MenuProps {
   row: any;
   menuItems: MenuItem[];
 }
+
+export enum PopoverMenuRowType {
+  REMOVE = 'remove',
+  SUCCESS = 'success',
+  INFO = 'info',
+  UPLOAD = 'upload',
+  DOWNLOAD = 'download',
+}
+
+const handleStyling = (type?: PopoverMenuRowType): string => {
+  switch (type) {
+    case PopoverMenuRowType.SUCCESS: {
+      return 'text-green-600';
+    }
+    case PopoverMenuRowType.REMOVE: {
+      return 'text-red-600';
+    }
+    case PopoverMenuRowType.INFO: {
+      return 'text-gray-900';
+    }
+    default: {
+      return 'text-gray-900';
+    }
+  }
+};
 
 const PopoverMenu = ({ row, menuItems }: MenuProps) => {
   return (
@@ -51,7 +74,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                 <div className="relative grid gap-4 bg-white py-4 px-5">
                   {menuItems.map((item) => (
                     <div key={item.name}>
-                      {item.isDownload && (
+                      {item.type === PopoverMenuRowType.DOWNLOAD && (
                         <a
                           className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
@@ -70,7 +93,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           </div>
                         </a>
                       )}
-                      {item.isUpload && (
+                      {item.type === PopoverMenuRowType.UPLOAD && (
                         <a
                           className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
@@ -89,33 +112,34 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           </div>
                         </a>
                       )}
-                      {!item.isDownload && !item.isUpload && (
-                        <a
-                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
-                          onClick={() => {
-                            item.onClick(row);
-                            close();
-                          }}
-                        >
-                          <item.icon
-                            className={classNames(
-                              item.isRemove ? 'text-red-600' : 'text-gray-900',
-                              'flex-shrink-0 h-5 w-5',
-                            )}
-                            aria-hidden="true"
-                          />
-                          <div className="ml-2.5">
-                            <label
+                      {item.type !== PopoverMenuRowType.DOWNLOAD &&
+                        item.type !== PopoverMenuRowType.UPLOAD && (
+                          <a
+                            className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                            onClick={() => {
+                              item.onClick(row);
+                              close();
+                            }}
+                          >
+                            <item.icon
                               className={classNames(
-                                item.isRemove ? 'text-red-600' : 'text-gray-900',
-                                'text-xm font-normal',
+                                handleStyling(item.type),
+                                'flex-shrink-0 h-5 w-5',
                               )}
-                            >
-                              <Trans id={item.name} />
-                            </label>
-                          </div>
-                        </a>
-                      )}
+                              aria-hidden="true"
+                            />
+                            <div className="ml-2.5">
+                              <label
+                                className={classNames(
+                                  handleStyling(item.type),
+                                  'text-xm font-normal',
+                                )}
+                              >
+                                <Trans id={item.name} />
+                              </label>
+                            </div>
+                          </a>
+                        )}
                     </div>
                   ))}
                 </div>
