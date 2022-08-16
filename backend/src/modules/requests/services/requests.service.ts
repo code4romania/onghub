@@ -30,6 +30,36 @@ export class RequestsService {
     );
   }
 
+  public async findOne(id: number): Promise<Request> {
+    return this.requestRepository.get({
+      where: { id },
+      relations: [
+        'organization',
+        'organization.organizationGeneral',
+        'organization.organizationGeneral.city',
+        'organization.organizationGeneral.county',
+        'organization.organizationGeneral.contact',
+        'organization.organizationActivity',
+        'organization.organizationActivity.federations',
+        'organization.organizationActivity.coalitions',
+        'organization.organizationActivity.domains',
+        'organization.organizationActivity.cities',
+        'organization.organizationActivity.federations',
+        'organization.organizationActivity.coalitions',
+        'organization.organizationActivity.branches',
+        'organization.organizationActivity.regions',
+        'organization.organizationLegal',
+        'organization.organizationLegal.legalReprezentative',
+        'organization.organizationLegal.directors',
+        'organization.organizationFinancial',
+        'organization.organizationReport',
+        'organization.organizationReport.reports',
+        'organization.organizationReport.partners',
+        'organization.organizationReport.investors',
+      ],
+    });
+  }
+
   public async create(createReqDto: CreateRequestDto) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({

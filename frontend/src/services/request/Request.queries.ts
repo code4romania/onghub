@@ -4,7 +4,13 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { IRequest } from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
 import { CreateRequestDTO } from './interfaces/Request.dto';
-import { approveRequest, createRequest, getRequests, rejectRequest } from './Request.service';
+import {
+  approveRequest,
+  createRequest,
+  getRequestById,
+  getRequests,
+  rejectRequest,
+} from './Request.service';
 
 export const useCreateRequestMutation = (onSuccess?: any, onError?: any) => {
   return useMutation((request: CreateRequestDTO) => createRequest(request), { onSuccess, onError });
@@ -37,4 +43,34 @@ export const useApproveRequestMutation = () => {
 
 export const useRejectRequestMutation = () => {
   return useMutation((requestId: string) => rejectRequest(requestId));
+};
+
+export const useRequest = (requestId: string) => {
+  const {
+    setOrganizationGeneral,
+    setOrganizationActivity,
+    setOrganizationFinancial,
+    setOrganizationReport,
+    setOrganizationLegal,
+    setOrganization,
+  } = useStore();
+  return useQuery(['request', requestId], () => getRequestById(requestId), {
+    onSuccess: (data: IRequest) => {
+      const {
+        organizationGeneral,
+        organizationActivity,
+        organizationFinancial,
+        organizationLegal,
+        organizationReport,
+        ...organization
+      } = data.organization;
+
+      setOrganization(organization);
+      setOrganizationGeneral(organizationGeneral);
+      setOrganizationActivity(organizationActivity);
+      setOrganizationFinancial(organizationFinancial);
+      setOrganizationLegal(organizationLegal);
+      setOrganizationReport(organizationReport);
+    },
+  });
 };

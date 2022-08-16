@@ -106,7 +106,7 @@ const RequestList = () => {
   };
 
   const onView = (data: IRequest) => {
-    navigate(`/organization/${data.organization.id}`);
+    navigate(`/requests/${data.id}`);
   };
 
   const onApprove = async (data: IRequest) => {

@@ -38,3 +38,7 @@ export const approveRequest = (requestId: string) => {
 export const rejectRequest = (requestId: string) => {
   return API.patch(`/requests/${requestId}/reject`);
 };
+
+export const getRequestById = (requestId: string) => {
+  return API.get(`/requests/${requestId}`).then((res) => res.data);
+};

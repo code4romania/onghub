@@ -12,6 +12,7 @@ import {
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiParam,
   ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
@@ -33,6 +34,12 @@ export class RequestsController {
   @Get('')
   async getAll(@Query() filters: BaseFilterDto): Promise<Pagination<Request>> {
     return this.requestsService.findAll(filters);
+  }
+
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Request> {
+    return this.requestsService.findOne(+id);
   }
 
   @Public()

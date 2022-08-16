@@ -19,6 +19,7 @@ import OrganizationGeneral from '../../pages/organization/components/Organizatio
 import OrganizationLegal from '../../pages/organization/components/OrganizationLegal/OrganizationLegal';
 import Organization from '../../pages/organization/Organization';
 import Requests from '../../pages/requests/Requests';
+import Request from '../../pages/requests//components/Request';
 import UserCreate from '../../pages/users/components/UserCreate/UserCreate';
 import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
 import UserList from '../../pages/users/components/UserList/UserList';
@@ -51,16 +52,24 @@ const Router = () => {
           }
         >
           <Route index element={<Dashboard />}></Route>
-          {['organization', 'requests/:id'].map((path, index) => (
-            <Route key={index} path={path} element={<Organization />}>
-              <Route index element={<Navigate to={'general'}></Navigate>} />
-              <Route path="general" element={<OrganizationGeneral />} />
-              <Route path="activity" element={<OrganizationActivity />} />
-              <Route path="legal" element={<OrganizationLegal />} />
-              <Route path="financial" element={<OrganizationFinancial />} />
-              <Route path="data" element={<OrganizationData />} />
-            </Route>
-          ))}
+          <Route path={'organization'} element={<Organization />}>
+            <Route index element={<Navigate to={'general'}></Navigate>} />
+            <Route path="general" element={<OrganizationGeneral />} />
+            <Route path="activity" element={<OrganizationActivity />} />
+            <Route path="legal" element={<OrganizationLegal />} />
+            <Route path="financial" element={<OrganizationFinancial />} />
+            <Route path="data" element={<OrganizationData />} />
+          </Route>
+
+          <Route path={'requests/:id'} element={<Request />}>
+            <Route index element={<Navigate to={'general'}></Navigate>} />
+            <Route path="general" element={<OrganizationGeneral />} />
+            <Route path="activity" element={<OrganizationActivity />} />
+            <Route path="legal" element={<OrganizationLegal />} />
+            <Route path="financial" element={<OrganizationFinancial />} />
+            <Route path="data" element={<OrganizationData />} />
+          </Route>
+
           <Route path="users" element={<Users />}>
             <Route index element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
