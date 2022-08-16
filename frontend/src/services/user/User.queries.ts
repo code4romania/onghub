@@ -1,4 +1,11 @@
-import { createUser, deleteUser, getProfile, getUsers } from './User.service';
+import {
+  createUser,
+  deleteUser,
+  getProfile,
+  getUserById,
+  getUsers,
+  updateUser,
+} from './User.service';
 import { useMutation, useQuery } from 'react-query';
 import useStore from '../../store/store';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
@@ -41,8 +48,18 @@ export const useUsersQuery = (
   );
 };
 
+export const useSelectedUserQuery = (userId: string) => {
+  return useQuery(['user', userId], () => getUserById(userId), { enabled: !!userId });
+};
+
 export const useCreateUserMutation = () => {
   return useMutation((payload: IUserPayload) => createUser(payload));
+};
+
+export const useUpdateUserMutation = () => {
+  return useMutation(({ userId, payload }: { userId: string; payload: Partial<IUserPayload> }) =>
+    updateUser(userId, payload),
+  );
 };
 
 export const useUserMutation = () => {

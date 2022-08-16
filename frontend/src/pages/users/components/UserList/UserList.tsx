@@ -16,8 +16,10 @@ import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
+import { useNavigate } from 'react-router-dom';
 
 const UserList = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -127,8 +129,8 @@ const UserList = () => {
     console.log('to be implemented');
   };
 
-  const onEdit = () => {
-    console.log('to be implemented');
+  const onEdit = (row: IUser) => {
+    navigate(`/user/${row.id}`);
   };
 
   const onDelete = () => {

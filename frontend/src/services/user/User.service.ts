@@ -10,6 +10,10 @@ export const createUser = async (payload: IUserPayload): Promise<IUser> => {
   return API.post(`/user`, payload).then((res) => res.data);
 };
 
+export const updateUser = async (id: string, payload: Partial<IUserPayload>): Promise<IUser> => {
+  return API.patch(`/user/${id}`, payload).then((res) => res.data);
+};
+
 export const getUsers = async (
   limit: number,
   page: number,
@@ -31,6 +35,10 @@ export const getUsers = async (
     )}`;
 
   return API.get(requestUrl).then((res) => res.data);
+};
+
+export const getUserById = async (userId: string) => {
+  return API.get(`/user/${userId}`).then((res) => res.data);
 };
 
 export const getProfile = async (): Promise<IUser> => {
