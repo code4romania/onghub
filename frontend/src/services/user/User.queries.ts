@@ -4,6 +4,7 @@ import {
   getProfile,
   getUserById,
   getUsers,
+  restoreUserAccess,
   restrictUserAccess,
   updateUser,
 } from './User.service';
@@ -65,6 +66,10 @@ export const useUpdateUserMutation = () => {
 
 export const useRestrictUserMutation = () => {
   return useMutation((ids: number[]) => restrictUserAccess(ids));
+};
+
+export const useRestoreUserMutation = () => {
+  return useMutation((ids: number[]) => restoreUserAccess(ids));
 };
 
 export const useUserMutation = () => {

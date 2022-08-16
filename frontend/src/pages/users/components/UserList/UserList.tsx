@@ -10,7 +10,11 @@ import DataTableComponent from '../../../../components/data-table/DataTableCompo
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
-import { useRestrictUserMutation, useUsersQuery } from '../../../../services/user/User.queries';
+import {
+  useRestoreUserMutation,
+  useRestrictUserMutation,
+  useUsersQuery,
+} from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
@@ -40,6 +44,7 @@ const UserList = () => {
     range,
   );
   const restrictUserAccessMutation = useRestrictUserMutation();
+  const restoreUserAccessMutation = useRestoreUserMutation();
 
   useEffect(() => {
     if (users?.meta) {
@@ -75,7 +80,7 @@ const UserList = () => {
       {
         name: 'Reda accesul',
         icon: RefreshIcon,
-        onClick: onReconnect,
+        onClick: onRestoreAccess,
       },
       {
         name: 'Editeaza',
@@ -128,8 +133,13 @@ const UserList = () => {
   /**
    * ROW ACTIONS
    */
-  const onReconnect = () => {
-    console.log('to be implemented');
+  const onRestoreAccess = (row: IUser) => {
+    restoreUserAccessMutation.mutate([row.id], {
+      onSuccess: () => {
+        useSuccessToast(`Access restored for user ${row.id}`);
+        refetch();
+      },
+    });
   };
 
   const onEdit = (row: IUser) => {
