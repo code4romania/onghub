@@ -11,6 +11,7 @@ import DateRangePicker from '../../../../components/date-range-picker/DateRangeP
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
 import {
+  useRemoveUserMutation,
   useRestoreUserMutation,
   useRestrictUserMutation,
   useUsersQuery,
@@ -45,6 +46,7 @@ const UserList = () => {
   );
   const restrictUserAccessMutation = useRestrictUserMutation();
   const restoreUserAccessMutation = useRestoreUserMutation();
+  const removeUserMutation = useRemoveUserMutation();
 
   useEffect(() => {
     if (users?.meta) {
@@ -59,7 +61,16 @@ const UserList = () => {
     if (error) useErrorToast('Error while loading the users');
 
     if (restrictUserAccessMutation.error) useErrorToast('Error while restricting accees');
-  }, [error, restrictUserAccessMutation.error]);
+
+    if (restoreUserAccessMutation.error) useErrorToast('Error while restoring accees');
+
+    if (removeUserMutation.error) useErrorToast('Error while removing user');
+  }, [
+    error,
+    restrictUserAccessMutation.error,
+    restoreUserAccessMutation.error,
+    removeUserMutation.error,
+  ]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
@@ -146,8 +157,13 @@ const UserList = () => {
     navigate(`/user/${row.id}`);
   };
 
-  const onDelete = () => {
-    console.log('to be implemented');
+  const onDelete = (row: IUser) => {
+    removeUserMutation.mutate(row.id, {
+      onSuccess: () => {
+        useSuccessToast(`Successfully removed user with id ${row.id}`);
+        refetch();
+      },
+    });
   };
 
   const onRestrictAccess = (row: IUser) => {

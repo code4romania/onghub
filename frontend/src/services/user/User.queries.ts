@@ -4,6 +4,7 @@ import {
   getProfile,
   getUserById,
   getUsers,
+  removeUserById,
   restoreUserAccess,
   restrictUserAccess,
   updateUser,
@@ -70,6 +71,10 @@ export const useRestrictUserMutation = () => {
 
 export const useRestoreUserMutation = () => {
   return useMutation((ids: number[]) => restoreUserAccess(ids));
+};
+
+export const useRemoveUserMutation = () => {
+  return useMutation((id: number) => removeUserById(id));
 };
 
 export const useUserMutation = () => {

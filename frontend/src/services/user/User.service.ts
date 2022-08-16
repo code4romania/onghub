@@ -22,6 +22,10 @@ export const restoreUserAccess = async (payload: number[]): Promise<any> => {
   return API.patch(`/user/activate`, payload).then((res) => res.data);
 };
 
+export const removeUserById = async (id: number): Promise<any> => {
+  return API.delete(`/user/${id}`).then((res) => res.data);
+};
+
 export const getUsers = async (
   limit: number,
   page: number,
