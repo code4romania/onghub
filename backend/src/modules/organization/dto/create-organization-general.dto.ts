@@ -29,8 +29,8 @@ export class CreateOrganizationGeneralDto {
   name: string;
 
   /* Organization alias */
-  @IsAlpha()
   @IsNotEmpty()
+  @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 100)
   alias: string;
 
