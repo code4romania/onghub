@@ -51,16 +51,6 @@ export class AdminUserController {
     return this.userService.getById(userId);
   }
 
-  @ApiParam({ name: 'id', type: Number })
-  @ApiBody({ type: UpdateUserDto })
-  @Patch(':id')
-  async update(
-    @Param('id') userId: number,
-    @Body() body: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.update(userId, body);
-  }
-
   // TODO: restrict to be called only by Admin/Super-Admin
   @ApiBody({ type: Number, isArray: true })
   @Patch('restrict')
@@ -69,6 +59,16 @@ export class AdminUserController {
     ids: number[],
   ) {
     return this.userService.restrictAccess(ids);
+  }
+
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: UpdateUserDto })
+  @Patch(':id')
+  async update(
+    @Param('id') userId: number,
+    @Body() body: UpdateUserDto,
+  ): Promise<User> {
+    return this.userService.update(userId, body);
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin

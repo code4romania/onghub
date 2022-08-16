@@ -4,13 +4,13 @@ import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
-import { useErrorToast } from '../../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
-import { useUsersQuery } from '../../../../services/user/User.queries';
+import { useRestrictUserMutation, useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
@@ -30,7 +30,7 @@ const UserList = () => {
 
   const { users } = useUser();
 
-  const { isLoading, error } = useUsersQuery(
+  const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -39,6 +39,7 @@ const UserList = () => {
     status?.status,
     range,
   );
+  const restrictUserAccessMutation = useRestrictUserMutation();
 
   useEffect(() => {
     if (users?.meta) {
@@ -51,7 +52,9 @@ const UserList = () => {
 
   useEffect(() => {
     if (error) useErrorToast('Error while loading the users');
-  }, [error]);
+
+    if (restrictUserAccessMutation.error) useErrorToast('Error while restricting accees');
+  }, [error, restrictUserAccessMutation.error]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
@@ -63,7 +66,7 @@ const UserList = () => {
       {
         name: 'Restrictioneaza temporar',
         icon: BanIcon,
-        onClick: onDisconnect,
+        onClick: onRestrictAccess,
         isRemove: true,
       },
     ];
@@ -137,8 +140,13 @@ const UserList = () => {
     console.log('to be implemented');
   };
 
-  const onDisconnect = () => {
-    console.log('to be implemented');
+  const onRestrictAccess = (row: IUser) => {
+    restrictUserAccessMutation.mutate([row.id], {
+      onSuccess: () => {
+        useSuccessToast(`Access restricted for user ${row.id}`);
+        refetch();
+      },
+    });
   };
 
   /**

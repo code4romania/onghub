@@ -14,6 +14,10 @@ export const updateUser = async (id: string, payload: Partial<IUserPayload>): Pr
   return API.patch(`/user/${id}`, payload).then((res) => res.data);
 };
 
+export const restrictUserAccess = async (payload: number[]): Promise<any> => {
+  return API.patch(`/user/restrict`, payload).then((res) => res.data);
+};
+
 export const getUsers = async (
   limit: number,
   page: number,

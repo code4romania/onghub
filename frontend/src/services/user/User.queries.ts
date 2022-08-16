@@ -4,6 +4,7 @@ import {
   getProfile,
   getUserById,
   getUsers,
+  restrictUserAccess,
   updateUser,
 } from './User.service';
 import { useMutation, useQuery } from 'react-query';
@@ -60,6 +61,10 @@ export const useUpdateUserMutation = () => {
   return useMutation(({ userId, payload }: { userId: string; payload: Partial<IUserPayload> }) =>
     updateUser(userId, payload),
   );
+};
+
+export const useRestrictUserMutation = () => {
+  return useMutation((ids: number[]) => restrictUserAccess(ids));
 };
 
 export const useUserMutation = () => {
