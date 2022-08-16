@@ -22,9 +22,11 @@ import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
 import { useNavigate } from 'react-router-dom';
+import ConfirmRemovalModal from '../../../../components/confim-removal-modal/ConfirmRemovalModal';
 
 const UserList = () => {
   const navigate = useNavigate();
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -32,6 +34,7 @@ const UserList = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
+  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
 
   const { users } = useUser();
 
@@ -56,6 +59,10 @@ const UserList = () => {
       setOrderDirection(users.meta.orderDirection);
     }
   }, []);
+
+  useEffect(() => {
+    if (selectedUser) setIsConfirmRemoveModalOpen(true);
+  }, [selectedUser]);
 
   useEffect(() => {
     if (error) useErrorToast('Error while loading the users');
@@ -101,7 +108,7 @@ const UserList = () => {
       {
         name: 'Elimina definitiv',
         icon: TrashIcon,
-        onClick: onDelete,
+        onClick: setSelectedUser,
         isRemove: true,
       },
     ];
@@ -147,7 +154,7 @@ const UserList = () => {
   const onRestoreAccess = (row: IUser) => {
     restoreUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
-        useSuccessToast(`Access restored for user ${row.id}`);
+        useSuccessToast(`Access restored for user ${row.name}`);
         refetch();
       },
     });
@@ -157,19 +164,25 @@ const UserList = () => {
     navigate(`/user/${row.id}`);
   };
 
-  const onDelete = (row: IUser) => {
-    removeUserMutation.mutate(row.id, {
-      onSuccess: () => {
-        useSuccessToast(`Successfully removed user with id ${row.id}`);
-        refetch();
-      },
-    });
+  const onDelete = () => {
+    if (selectedUser) {
+      removeUserMutation.mutate(selectedUser.id, {
+        onSuccess: () => {
+          useSuccessToast(`Successfully removed user with id ${selectedUser.name}`);
+          refetch();
+        },
+        onSettled: () => {
+          setSelectedUser(null);
+        },
+      });
+    }
+    setIsConfirmRemoveModalOpen(false);
   };
 
   const onRestrictAccess = (row: IUser) => {
     restrictUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
-        useSuccessToast(`Access restricted for user ${row.id}`);
+        useSuccessToast(`Access restricted for user ${row.name}`);
         refetch();
       },
     });
@@ -196,6 +209,11 @@ const UserList = () => {
     setStatus(null);
     setRange([]);
     setSearchWord(null);
+  };
+
+  const onCancelUserRemoval = () => {
+    setIsConfirmRemoveModalOpen(false);
+    setSelectedUser(null);
   };
 
   return (
@@ -249,6 +267,17 @@ const UserList = () => {
             onSort={onSort}
           />
         </div>
+        {isConfirmRemoveModalOpen && (
+          <ConfirmRemovalModal
+            title="Ești sigur că dorești stergerea utilizatorului?"
+            description="Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
+          puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+            closeBtnLabel="Inapoi"
+            confirmBtnLabel="Sterge"
+            onClose={onCancelUserRemoval}
+            onConfirm={onDelete}
+          />
+        )}
       </div>
     </div>
   );
