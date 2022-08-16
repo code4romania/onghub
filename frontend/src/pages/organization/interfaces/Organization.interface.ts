@@ -11,10 +11,10 @@ export interface IOrganization extends BaseEntity {
   syncedOn: Date;
 }
 
-export interface IOganizationFull extends IOrganization {
+export interface IOrganizationFull extends IOrganization {
   organizationGeneral: IOrganizationGeneral;
   organizationActivity: IOrganizationActivity;
-  organizationFinancial: IOrganizationFinancial;
+  organizationFinancial: IOrganizationFinancial[];
   organizationLegal: IOrganizationLegal;
   organizationReport: IOrganizationReport;
 }

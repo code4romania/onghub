@@ -11,27 +11,27 @@ import { IRequest } from '../interfaces/Request.interface';
 export const RequestListTableHeaders: TableColumn<IRequest>[] = [
   {
     id: 'organization',
-    name: 'Organizatioe',
-    sortable: true,
+    name: 'Organizatie',
+    sortable: false,
     selector: (row: IRequest) => row.organization.organizationGeneral?.name,
     grow: 3,
   },
   {
     id: 'name',
     name: 'Nume',
-    sortable: true,
+    sortable: false,
     selector: (row: IRequest) => row.name,
   },
   {
     id: 'email',
     name: 'Email',
-    sortable: true,
+    sortable: false,
     selector: (row: IRequest) => row.email,
   },
   {
     id: 'phone',
     name: 'Telefon',
-    sortable: true,
+    sortable: false,
     selector: (row: IRequest) => row.phone,
   },
   {

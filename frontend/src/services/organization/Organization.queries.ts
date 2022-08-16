@@ -17,6 +17,8 @@ import {
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
+import { OrganizationStatus } from '../../pages/organization/enums/OrganizationStatus.enum';
+import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 
 interface OrganizationPayload {
   id: number;
@@ -47,20 +49,25 @@ export const useOrganizationQuery = (id: number) => {
     setOrganizationFinancial,
     setOrganizationReport,
     setOrganizationLegal,
+    setOrganization,
   } = useStore();
   return useQuery(['organization', id], () => getOrganization(id), {
-    onSuccess: (data: {
-      organizationGeneral: IOrganizationGeneral;
-      organizationActivity: IOrganizationActivity;
-      organizationFinancial: IOrganizationFinancial[];
-      organizationReport: IOrganizationReport;
-      organizationLegal: IOrganizationLegal;
-    }) => {
-      setOrganizationGeneral(data.organizationGeneral);
-      setOrganizationActivity(data.organizationActivity);
-      setOrganizationFinancial(data.organizationFinancial);
-      setOrganizationLegal(data.organizationLegal);
-      setOrganizationReport(data.organizationReport);
+    onSuccess: (data: IOrganizationFull) => {
+      const {
+        organizationGeneral,
+        organizationActivity,
+        organizationFinancial,
+        organizationLegal,
+        organizationReport,
+        ...organization
+      } = data;
+
+      setOrganization(organization);
+      setOrganizationGeneral(organizationGeneral);
+      setOrganizationActivity(organizationActivity);
+      setOrganizationFinancial(organizationFinancial);
+      setOrganizationLegal(organizationLegal);
+      setOrganizationReport(organizationReport);
     },
     enabled: !!id,
   });

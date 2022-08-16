@@ -4,7 +4,7 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { IRequest } from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
 import { CreateRequestDTO } from './interfaces/Request.dto';
-import { createRequest, getRequests } from './Request.service';
+import { approveRequest, createRequest, getRequests, rejectRequest } from './Request.service';
 
 export const useCreateRequestMutation = (onSuccess?: any, onError?: any) => {
   return useMutation((request: CreateRequestDTO) => createRequest(request), { onSuccess, onError });
@@ -15,11 +15,13 @@ export const useRequestsQuery = (
   page: number,
   orderBy: string,
   orderDirection: OrderDirection,
+  search?: string,
+  interval?: Date[],
 ) => {
   const { setRequests } = useStore();
   return useQuery(
-    ['requests', limit, page, orderBy, orderDirection],
-    () => getRequests(limit, page, orderBy, orderDirection),
+    ['users', limit, page, orderBy, orderDirection, search, interval],
+    () => getRequests(limit, page, orderBy, orderDirection, search, interval),
     {
       onSuccess: (data: PaginatedEntity<IRequest>) => {
         setRequests(data);
@@ -27,4 +29,12 @@ export const useRequestsQuery = (
       enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
+};
+
+export const useApproveRequestMutation = () => {
+  return useMutation((requestId: string) => approveRequest(requestId));
+};
+
+export const useRejectRequestMutation = () => {
+  return useMutation((requestId: string) => rejectRequest(requestId));
 };

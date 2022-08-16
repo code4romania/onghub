@@ -1,11 +1,12 @@
-import { IOganizationFull } from '../../organization/interfaces/Organization.interface';
+import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
+import { IOrganizationFull } from '../../organization/interfaces/Organization.interface';
 import { RequestStatus } from '../enum/RequestStatus.enum';
 
-export interface IRequest {
+export interface IRequest extends BaseEntity {
   status: RequestStatus;
   name: string;
   phone: string;
   email: string;
-  organization: IOganizationFull;
+  organization: IOrganizationFull;
   createdOn: string;
 }

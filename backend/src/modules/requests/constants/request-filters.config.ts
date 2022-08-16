@@ -10,7 +10,7 @@ export const REQUEST_FILTER_CONFIG = {
     'organization',
     'createdOn',
   ],
-  searchableColumns: ['name', 'organization.organizationGeneral.name'],
+  searchableColumns: ['name', 'organization.organizationGeneral.name', 'email'],
   defaultSortBy: 'createdOn',
   defaultOrderDirection: OrderDirection.ASC,
   relations: ['organization', 'organization.organizationGeneral'],

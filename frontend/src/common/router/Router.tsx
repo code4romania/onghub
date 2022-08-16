@@ -51,14 +51,16 @@ const Router = () => {
           }
         >
           <Route index element={<Dashboard />}></Route>
-          <Route path="organization" element={<Organization />}>
-            <Route index element={<Navigate to={'general'}></Navigate>} />
-            <Route path="general" element={<OrganizationGeneral />} />
-            <Route path="activity" element={<OrganizationActivity />} />
-            <Route path="legal" element={<OrganizationLegal />} />
-            <Route path="financial" element={<OrganizationFinancial />} />
-            <Route path="data" element={<OrganizationData />} />
-          </Route>
+          {['organization', 'requests/:id'].map((path, index) => (
+            <Route key={index} path={path} element={<Organization />}>
+              <Route index element={<Navigate to={'general'}></Navigate>} />
+              <Route path="general" element={<OrganizationGeneral />} />
+              <Route path="activity" element={<OrganizationActivity />} />
+              <Route path="legal" element={<OrganizationLegal />} />
+              <Route path="financial" element={<OrganizationFinancial />} />
+              <Route path="data" element={<OrganizationData />} />
+            </Route>
+          ))}
           <Route path="users" element={<Users />}>
             <Route index element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
