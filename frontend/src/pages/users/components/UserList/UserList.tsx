@@ -207,7 +207,11 @@ const UserList = () => {
       >
         <div className="flex gap-x-6">
           <div className="basis-1/4">
-            <DateRangePicker label="Data adaugarii" onChange={onDateChange} />
+            <DateRangePicker
+              label="Data adaugarii"
+              defaultValue={range.length > 0 ? range : undefined}
+              onChange={onDateChange}
+            />
           </div>
           <div className="basis-1/4">
             <Select

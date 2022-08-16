@@ -6,12 +6,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 interface DateRangePickerProps {
   label: string;
+  defaultValue?: Date[];
   onChange?: (range: any[]) => void;
 }
 
-const DateRangePicker = ({ label, onChange }: DateRangePickerProps) => {
-  const [dateRange, setDateRange] = useState([null, null]);
+const DateRangePicker = ({ label, defaultValue, onChange }: DateRangePickerProps) => {
+  const [dateRange, setDateRange] = useState<Date[]>([]);
   const [startDate, endDate] = dateRange;
+
+  useEffect(() => {
+    if (defaultValue) {
+      setDateRange(defaultValue);
+    }
+  }, []);
 
   useEffect(() => {
     if (dateRange[0] && dateRange[1]) {
