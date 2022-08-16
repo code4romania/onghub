@@ -51,7 +51,7 @@ const UserList = () => {
   useEffect(() => {
     if (users?.meta) {
       setPage(users.meta.currentPage);
-      setRowsPerPage(users.meta.itermsPerPage);
+      setRowsPerPage(users.meta.itemsPerPage);
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
     }
@@ -241,7 +241,7 @@ const UserList = () => {
             loading={isLoading}
             pagination
             sortServer
-            paginationPerPage={users.meta.itermsPerPage}
+            paginationPerPage={users.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={users.meta.totalItems}
             onChangeRowsPerPage={onRowsPerPageChange}

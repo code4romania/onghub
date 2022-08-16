@@ -15,8 +15,7 @@ const UserEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const updateUserMutation = useUpdateUserMutation();
-
-  const { data, error } = useSelectedUserQuery(id as string);
+  const { data: user, error } = useSelectedUserQuery(id as string);
 
   const {
     handleSubmit,
@@ -29,10 +28,10 @@ const UserEdit = () => {
   });
 
   useEffect(() => {
-    if (data) {
-      reset(data);
+    if (user) {
+      reset(user);
     }
-  }, [data]);
+  }, [user]);
 
   useEffect(() => {
     if (error) {
@@ -47,7 +46,6 @@ const UserEdit = () => {
       {
         onSuccess: () => {
           useSuccessToast('User successfully updated');
-          navigate('/users');
         },
         onError: (error: unknown) => {
           console.error(error);
