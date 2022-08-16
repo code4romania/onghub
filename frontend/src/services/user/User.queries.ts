@@ -5,6 +5,7 @@ import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface
 import { IUser } from '../../pages/users/interfaces/User.interface';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 
 export const useProfileQuery = (queryOptions?: any) => {
   const { setProfile, setOrganization } = useStore();
@@ -23,11 +24,14 @@ export const useUsersQuery = (
   page: number,
   orderBy: string,
   orderDirection: OrderDirection,
+  search?: string,
+  status?: UserStatus,
+  interval?: Date[],
 ) => {
   const { setUsers } = useStore();
   return useQuery(
-    ['users', limit, page, orderBy, orderDirection],
-    () => getUsers(limit, page, orderBy, orderDirection),
+    ['users', limit, page, orderBy, orderDirection, search, status, interval],
+    () => getUsers(limit, page, orderBy, orderDirection, search, status, interval),
     {
       onSuccess: (data: PaginatedEntity<IUser>) => {
         setUsers(data);

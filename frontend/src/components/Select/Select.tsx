@@ -13,7 +13,7 @@ const Select = (props: {
   };
   selected?: any;
   error?: string | any;
-  readonly: boolean;
+  readonly?: boolean;
   onChange: any;
   multi?: boolean;
 }) => {

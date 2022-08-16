@@ -55,7 +55,7 @@ export class NomenclaturesService {
           county: citySearchDto.countyId,
         })
         .andWhere('_city.name ilike :name', {
-          name: `%${citySearchDto.search}%`,
+          name: `${citySearchDto.search}%`,
         })
         .limit(5)
         .getMany();
@@ -68,7 +68,7 @@ export class NomenclaturesService {
     } else {
       return query
         .where('_city.name ilike :name', {
-          name: `%${citySearchDto.search}%`,
+          name: `${citySearchDto.search}%`,
         })
         .limit(5)
         .getMany();

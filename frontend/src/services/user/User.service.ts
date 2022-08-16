@@ -1,5 +1,7 @@
+import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IUser } from '../../pages/users/interfaces/User.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 import API from '../API';
@@ -13,10 +15,22 @@ export const getUsers = async (
   page: number,
   orderBy: string,
   orderDirection: OrderDirection,
+  search?: string,
+  status?: UserStatus,
+  interval?: Date[],
 ): Promise<PaginatedEntity<IUser>> => {
-  return API.get(
-    `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`,
-  ).then((res) => res.data);
+  let requestUrl = `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (status) requestUrl = `${requestUrl}&status=${status}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
+
+  return API.get(requestUrl).then((res) => res.data);
 };
 
 export const getProfile = async (): Promise<IUser> => {
