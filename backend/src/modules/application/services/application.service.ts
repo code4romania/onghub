@@ -8,6 +8,7 @@ import {
 } from '../constants/application-error.constants';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
+import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class ApplicationService {
@@ -43,6 +44,10 @@ export class ApplicationService {
     }
 
     return application;
+  }
+
+  public async findAll(conditions: FindManyOptions<Application>) {
+    return this.applicationRepository.getMany(conditions);
   }
 
   public async update(
