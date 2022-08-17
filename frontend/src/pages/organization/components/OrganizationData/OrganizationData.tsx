@@ -218,56 +218,40 @@ const OrganizationData = () => {
   };
 
   const uploadPartnersList = async (partnerId: number, file: File) => {
-    if (!isExcel(file.name)) {
-      useErrorToast('Invalid file type.');
-      return;
-    }
-
+    try {
     const rows = await readXlsxFile(file);
     if (rows.length <= 2) {
       useErrorToast('The file you uploaded contains no data!');
       return;
     }
-
     const data = new FormData();
     data.append('partners', file);
     data.append('numberOfPartners', (rows.length - 2).toString());
     uploadPartnersMutation.mutate({ id: organization?.id as number, partnerId, data });
     setSelectedPartner(null);
+  } catch (error) {
+    useErrorToast('Invalid file format.');
+    return;
+  }
   };
 
   const uploadInvestorsList = async (investorId: number, file: File) => {
-    if (!isExcel(file.name)) {
-      useErrorToast('Invalid file type.');
-      return;
-    }
-
+    try {
     const rows = await readXlsxFile(file);
     if (rows.length <= 2) {
       useErrorToast('The file you uploaded contains no data!');
       return;
     }
-
     const data = new FormData();
     data.append('investors', file);
     data.append('numberOfInvestors', (rows.length - 2).toString());
     uploadInvestorsMutation.mutate({ id: organization?.id as number, investorId, data });
     setSelectedInvestor(null);
+  } catch (error) {
+    useErrorToast('Invalid file format.');
+    return;
+  }
   };
-
-  function getExtension(filename: string) {
-    const parts = filename.split('.');
-    return parts[parts.length - 1];
-  }
-
-  function isExcel(filename: string) {
-    const ext = getExtension(filename);
-    if (ext.toLowerCase() != 'xlsx') {
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   return (
     <div className="flex flex-col gap-y-6">
