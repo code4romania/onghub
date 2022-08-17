@@ -48,7 +48,10 @@ export class UserService {
     });
   }
 
-  public async getById(id: number = null): Promise<User> {
+  public async getById(
+    id: number = null,
+    organizationId?: number,
+  ): Promise<User> {
     if (!id) {
       throw new NotFoundException({ ...USER_ERRORS.GET, id });
     }
@@ -56,7 +59,8 @@ export class UserService {
     // 1. Get the user by id
     const user = await this.userRepository.get({ where: { id: id } });
 
-    if (!user) {
+    // 2. if there is not user with that id or if the user is not part as the same organization with the admin
+    if (!user || (organizationId && user.organizationId !== organizationId)) {
       throw new NotFoundException({ ...USER_ERRORS.GET, id });
     }
 
@@ -67,27 +71,43 @@ export class UserService {
     return this.userRepository.get(options);
   }
 
-  public async update(
+  public async updateById(
     id: number,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UpdateResult | any> {
-    return this.userRepository.update({ id }, updateUserDto);
+    payload: UpdateUserDto,
+    organizationId?: number,
+  ): Promise<User> {
+    // 1. Chekc if the user exists
+    await this.getById(id, organizationId);
+
+    // 2. Update user data
+    try {
+      return this.update(id, payload);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.UPDATE,
+        id,
+      });
+      throw new BadRequestException({ ...USER_ERRORS.UPDATE, error });
+    }
   }
 
   public async findAll(
-    organizationId: number,
     options: UserFilterDto,
+    organizationId?: number,
   ): Promise<Pagination<User>> {
-    const paginationOptions = {
+    const paginationOptions: any = {
       role: Role.EMPLOYEE,
       status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
-      organizationId,
       ...options,
     };
 
+    // For Admin user we will sort by organizatioinId
     return this.userRepository.getManyPaginated(
       USER_FILTERS_CONFIG,
-      paginationOptions,
+      organizationId
+        ? { ...paginationOptions, organizationId }
+        : paginationOptions,
     );
   }
 
@@ -121,20 +141,20 @@ export class UserService {
     }
   }
 
-  async removeById(id: number): Promise<string> {
+  async removeById(id: number, organizatioinId?: number): Promise<string> {
     // 1. Get the user by id
-    const user = await this.getById(id);
+    const user = await this.getById(id, organizatioinId);
 
     return this.remove(user);
   }
 
-  async restrictAccess(ids: number[]) {
+  async restrictAccess(ids: number[], organizatioinId?: number) {
     const updated = [],
       failed = [];
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
       try {
-        const user = await this.getById(id);
+        const user = await this.getById(id, organizatioinId);
         await this.userRepository.update(
           { id },
           { status: UserStatus.RESTRICTED },
@@ -153,13 +173,13 @@ export class UserService {
     return { updated, failed };
   }
 
-  async restoreAccess(ids: number[]) {
+  async restoreAccess(ids: number[], organizationId?: number) {
     const updated = [],
       failed = [];
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
       try {
-        const user = await this.getById(id);
+        const user = await this.getById(id, organizationId);
         await this.userRepository.update({ id }, { status: UserStatus.ACTIVE });
         updated.push(id);
       } catch (error) {
@@ -177,6 +197,13 @@ export class UserService {
   // ****************************************************
   // ***************** PRIVATE METHODS ******************
   // ****************************************************
+  private async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult | any> {
+    return this.userRepository.update({ id }, updateUserDto);
+  }
+
   private async create(createUserDto: CreateUserDto): Promise<User> {
     try {
       // 1. Check if user already exists
