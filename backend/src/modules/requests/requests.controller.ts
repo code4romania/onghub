@@ -22,13 +22,23 @@ import { CreateRequestDto } from './dto/create-request.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from '../user/enums/role.enum';
 
+@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('requests')
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
+
+  @Public()
+  @ApiBody({ type: CreateRequestDto })
+  @Post()
+  create(@Body() createRequestDto: CreateRequestDto): Promise<Request> {
+    return this.requestsService.create(createRequestDto);
+  }
 
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('')
@@ -40,13 +50,6 @@ export class RequestsController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Request> {
     return this.requestsService.findOne(+id);
-  }
-
-  @Public()
-  @ApiBody({ type: CreateRequestDto })
-  @Post()
-  create(@Body() createRequestDto: CreateRequestDto): Promise<Request> {
-    return this.requestsService.create(createRequestDto);
   }
 
   @Patch(':id/approve')
