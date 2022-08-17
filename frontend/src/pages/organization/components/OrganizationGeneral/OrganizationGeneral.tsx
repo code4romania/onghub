@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PencilIcon } from '@heroicons/react/solid';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { Controller, useForm } from 'react-hook-form';
@@ -19,6 +19,8 @@ import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { getPublicFileUrl } from '../../../../services/files/File.service';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -30,6 +32,7 @@ const OrganizationGeneral = () => {
   const { organizationGeneral, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
   const filesMutation = useUploadOrganizationFilesMutation();
+  const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
 
@@ -141,14 +144,16 @@ const OrganizationGeneral = () => {
       <div className="py-5 px-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Date generale</span>
 
-        <button
-          type="button"
-          className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
-        >
-          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {readonly ? 'Editeaza' : 'Salveaza modificari'}
-        </button>
+        {role !== UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className={classNames(readonly ? 'edit-button' : 'save-button')}
+            onClick={readonly ? startEdit : handleSubmit(handleSave)}
+          >
+            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+          </button>
+        )}
       </div>
 
       <div className="w-full border-t border-gray-300" />

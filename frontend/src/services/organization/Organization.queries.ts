@@ -10,6 +10,7 @@ import {
   deleteInvestors,
   deletePartners,
   getOrganization,
+  getOrganizationByProfile,
   patchOrganization,
   uploadInvestors,
   uploadOrganizationFiles,
@@ -63,6 +64,31 @@ export const useOrganizationQuery = (id: number) => {
       setOrganizationReport(data.organizationReport);
     },
     enabled: !!id,
+  });
+};
+
+export const useOrganizationByProfileQuery = () => {
+  const {
+    setOrganizationGeneral,
+    setOrganizationActivity,
+    setOrganizationFinancial,
+    setOrganizationReport,
+    setOrganizationLegal,
+  } = useStore();
+  return useQuery(['organization'], () => getOrganizationByProfile(), {
+    onSuccess: (data: {
+      organizationGeneral: IOrganizationGeneral;
+      organizationActivity: IOrganizationActivity;
+      organizationFinancial: IOrganizationFinancial[];
+      organizationReport: IOrganizationReport;
+      organizationLegal: IOrganizationLegal;
+    }) => {
+      setOrganizationGeneral(data.organizationGeneral);
+      setOrganizationActivity(data.organizationActivity);
+      setOrganizationFinancial(data.organizationFinancial);
+      setOrganizationLegal(data.organizationLegal);
+      setOrganizationReport(data.organizationReport);
+    },
   });
 };
 

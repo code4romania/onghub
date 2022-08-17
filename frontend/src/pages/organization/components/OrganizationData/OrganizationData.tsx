@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { PencilIcon, TrashIcon, DownloadIcon, UploadIcon } from '@heroicons/react/outline';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
@@ -27,6 +27,8 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import readXlsxFile from 'read-excel-file';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationData = () => {
   // static links for partners and investors tables
@@ -37,6 +39,7 @@ const OrganizationData = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
+  const { role } = useContext(AuthContext);
 
   const { organizationReport, organization } = useSelectedOrganization();
   const reportSummaryMutation = useOrganizationMutation();
@@ -93,7 +96,16 @@ const OrganizationData = () => {
   };
 
   const buildPartnersActionColumn = (): TableColumn<Partner> => {
-    const menuItems = [
+    const employeeMenuItems = [
+      {
+        name: 'Descarca lista',
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        isDownload: true,
+      },
+    ];
+
+    const adminMenuItems = [
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
@@ -116,14 +128,28 @@ const OrganizationData = () => {
 
     return {
       name: '',
-      cell: (row: Partner) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Partner) => (
+        <PopoverMenu
+          row={row}
+          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };
   };
 
   const buildInvestorsActionColumn = (): TableColumn<Investor> => {
-    const menuItems = [
+    const employeeMenuItems = [
+      {
+        name: 'Descarca lista',
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        isDownload: true,
+      },
+    ];
+
+    const adminMenuItems = [
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
@@ -146,7 +172,12 @@ const OrganizationData = () => {
 
     return {
       name: '',
-      cell: (row: Investor) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Investor) => (
+        <PopoverMenu
+          row={row}
+          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };
@@ -252,7 +283,11 @@ const OrganizationData = () => {
             </p>
           </div>
           <DataTableComponent
-            columns={[...ReportsTableHeaders, buildReportActionColumn()]}
+            columns={
+              role !== UserRole.EMPLOYEE
+                ? [...ReportsTableHeaders, buildReportActionColumn()]
+                : ReportsTableHeaders
+            }
             data={organizationReport?.reports || []}
             loading={reportSummaryMutation.isLoading}
           />

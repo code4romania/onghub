@@ -1,5 +1,5 @@
 import { PencilIcon } from '@heroicons/react/solid';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ChipSelection from '../../../../components/chip-selection/ChipSelection';
 import { OrganizationActivityConfig, OrganizationAreaEnum } from './OrganizationActivityConfig';
@@ -27,11 +27,14 @@ import {
   str2bool,
 } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationActivity = () => {
   const { organizationActivity, organization } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
   const { mutate, error } = useOrganizationMutation();
+  const { role } = useContext(AuthContext);
 
   const [readonly, setReadonly] = useState(true);
   const {
@@ -135,14 +138,16 @@ const OrganizationActivity = () => {
       <div className="py-5 px-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Date generale</span>
 
-        <button
-          type="button"
-          className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
-        >
-          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {readonly ? 'Editeaza' : 'Salveaza modificari'}
-        </button>
+        {role !== UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className={classNames(readonly ? 'edit-button' : 'save-button')}
+            onClick={readonly ? startEdit : handleSubmit(handleSave)}
+          >
+            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+          </button>
+        )}
       </div>
 
       <div className="w-full border-t border-gray-300" />

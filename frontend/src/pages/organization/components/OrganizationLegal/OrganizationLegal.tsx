@@ -1,5 +1,5 @@
 import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
@@ -24,6 +24,8 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 import { getPublicFileUrl } from '../../../../services/files/File.service';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -43,6 +45,7 @@ const OrganizationLegal = () => {
   const { organizationLegal, organization } = useSelectedOrganization();
   const { mutate, error } = useOrganizationMutation();
   const filesMutation = useUploadOrganizationFilesMutation();
+  const { role } = useContext(AuthContext);
 
   // React Hook Form
   const {
@@ -262,25 +265,27 @@ const OrganizationLegal = () => {
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Informatii Legale</span>
-        <button
-          type="button"
-          className={classNames(isEditMode ? 'save-button' : 'edit-button')}
-          onClick={
-            !isEditMode
-              ? setEditMode.bind(null, true)
-              : () => {
-                  handleSubmit(handleSave)();
-                }
-          }
-        >
-          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
-        </button>
+        {role !== UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className={classNames(isEditMode ? 'save-button' : 'edit-button')}
+            onClick={
+              !isEditMode
+                ? setEditMode.bind(null, true)
+                : () => {
+                    handleSubmit(handleSave)();
+                  }
+            }
+          >
+            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
+          </button>
+        )}
       </div>
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10">
-        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
+        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title="Reprezentant Legal al organizatiei"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
@@ -14,6 +14,8 @@ import { FinancialType } from '../../enums/FinancialType.enum';
 import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
@@ -22,13 +24,22 @@ const OrganizationFinancial = () => {
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
   const { organizationFinancial, organization } = useSelectedOrganization();
   const { mutate, isLoading, error } = useOrganizationMutation();
+  const { role } = useContext(AuthContext);
 
   useEffect(() => {
     if (error) useErrorToast('Error while saving financial data');
   }, [error]);
 
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
-    const menuItems = [
+    const employeeMenuItems = [
+      {
+        name: 'view',
+        icon: EyeIcon,
+        onClick: onView,
+      },
+    ];
+
+    const adminMenuItems = [
       {
         name: 'view',
         icon: EyeIcon,
@@ -43,7 +54,12 @@ const OrganizationFinancial = () => {
 
     return {
       name: '',
-      cell: (row: IOrganizationFinancial) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: IOrganizationFinancial) => (
+        <PopoverMenu
+          row={row}
+          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { ExpenseReportConfig } from './ExpenseReportConfig';
@@ -8,6 +8,9 @@ import { Expense } from '../../../interfaces/Expense.interface';
 import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { useSelectedOrganization } from '../../../../../store/selectors';
+import { AuthContext } from '../../../../../contexts/AuthContext';
+import { UserRole } from '../../../../users/enums/UserRole.enum';
+import { formatCurrency } from '../../../../../common/helpers/format.helper';
 
 const ExpenseReportModal = ({
   onClose,
@@ -20,6 +23,7 @@ const ExpenseReportModal = ({
   const [totalDefalcat, setTotalDefalcat] = useState<number>(0);
   const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
   const { organizationGeneral } = useSelectedOrganization();
+  const { role } = useContext(AuthContext);
 
   // form
   const {
@@ -101,7 +105,9 @@ const ExpenseReportModal = ({
                   </div>
                 </div>
                 <div className="mt-6 flex flex-row-reverse">
-                  <span className="text-xl text-gray-900 font-bold leading-6">{`${total} RON`}</span>
+                  <span className="text-xl text-gray-900 font-bold leading-6">{`${formatCurrency(
+                    total,
+                  )} RON`}</span>
                   <span className="text-xl text-gray-400 font-normal leading-6 px-3">
                     Total cheltuieli
                   </span>
@@ -168,8 +174,8 @@ const ExpenseReportModal = ({
                           {totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
                               {total > totalDefalcat
-                                ? `(${total - totalDefalcat} RON nealocati)`
-                                : `(${totalDefalcat - total} RON surplus)`}
+                                ? `(${formatCurrency(total - totalDefalcat)} RON nealocati)`
+                                : `(${formatCurrency(totalDefalcat - total)} RON surplus)`}
                             </span>
                           )}
                         </td>
@@ -196,7 +202,7 @@ const ExpenseReportModal = ({
                       </button>
                     </>
                   )}
-                  {isReadonly && (
+                  {isReadonly && role !== UserRole.EMPLOYEE && (
                     <button
                       type="button"
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"

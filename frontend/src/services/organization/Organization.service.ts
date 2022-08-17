@@ -1,5 +1,9 @@
 import API from '../API';
 
+export const getOrganizationByProfile = (): Promise<any> => {
+  return API.get(`/organization-profile`).then((res) => res.data);
+};
+
 export const getOrganization = (id: number): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
 };

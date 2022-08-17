@@ -19,6 +19,7 @@ import { AuthenticationModule } from './modules/authentication/auth.module';
 import { JwtAuthGuard } from './modules/authentication/jwt-auth.guard';
 import { UserStatusGuard } from './common/guards/user-status.guard';
 import { RequestsModule } from './modules/requests/requests.module';
+import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
   imports: [
@@ -57,6 +58,11 @@ import { RequestsModule } from './modules/requests/requests.module';
       // Global guard for all routes, doesn't require @UseGuards() in each Controller https://docs.nestjs.com/security/authentication#enable-authentication-globally
       provide: APP_GUARD,
       useClass: UserStatusGuard,
+    },
+    {
+      // Global guard for all routes, doesn't require @UseGuards() in each Controller https://docs.nestjs.com/security/authentication#enable-authentication-globally
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
