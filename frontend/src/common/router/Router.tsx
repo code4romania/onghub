@@ -21,6 +21,7 @@ import Organization from '../../pages/organization/Organization';
 import Requests from '../../pages/requests/Requests';
 import Request from '../../pages/requests//components/Request';
 import UserCreate from '../../pages/users/components/UserCreate/UserCreate';
+import UserEdit from '../../pages/users/components/UserEdit/UserEdit';
 import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
 import UserList from '../../pages/users/components/UserList/UserList';
 import Users from '../../pages/users/Users';
@@ -74,7 +75,9 @@ const Router = () => {
             <Route index element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
           </Route>
-          <Route path="user" element={<UserCreate />}></Route>
+
+          <Route path="user" element={<UserCreate />} />
+          <Route path="user/:id" element={<UserEdit />} />
           <Route path="apps" element={<Apps />}></Route>
           <Route path="store" element={<AppStore />}></Route>
           <Route path="account" element={<Account />} />

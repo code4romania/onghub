@@ -3,7 +3,11 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
-const InputField = (props: { config: Partial<InputFieldConfig>; readonly?: boolean }) => {
+const InputField = (props: {
+  config: Partial<InputFieldConfig>;
+  readonly?: boolean;
+  disabled?: boolean;
+}) => {
   return (
     <div className="relative w-full">
       {props.config.label && (
@@ -26,11 +30,12 @@ const InputField = (props: { config: Partial<InputFieldConfig>; readonly?: boole
                 ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
                 : 'focus:ring-indigo-500 focus:border-indigo-500',
               props.config.addOn ? 'pl-14' : 'pl-4',
-              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md',
+              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md disabled:bg-gray-100',
             )}
             placeholder={props.config.placeholder}
             defaultValue={props.config.defaultValue}
             aria-invalid={props.config.error ? 'true' : 'false'}
+            disabled={props.disabled}
           />
         )}
         {props.config.error && (

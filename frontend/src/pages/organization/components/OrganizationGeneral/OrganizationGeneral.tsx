@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PencilIcon } from '@heroicons/react/solid';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,8 +9,8 @@ import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
 import {
-  useOrganizationMutation,
-  useUploadOrganizationFilesMutation,
+  useOrganizationByProfileMutation,
+  useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
@@ -19,6 +19,8 @@ import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { getPublicFileUrl } from '../../../../services/files/File.service';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -28,8 +30,11 @@ const OrganizationGeneral = () => {
   const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate, error } = useOrganizationMutation();
-  const filesMutation = useUploadOrganizationFilesMutation();
+  const { mutate: updateOrganization, error: updateOrganizationError } =
+    useOrganizationByProfileMutation();
+  const { mutate: uploadFiltes, error: uploadFilesError } =
+    useUploadOrganizationFilesByProfileMutation();
+  const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
 
@@ -62,14 +67,14 @@ const OrganizationGeneral = () => {
   }, [cities]);
 
   useEffect(() => {
-    if (error) {
+    if (updateOrganizationError) {
       useErrorToast('Could not save organization');
     }
 
-    if (filesMutation.error) {
+    if (uploadFilesError) {
       useErrorToast('Could not update logo');
     }
-  }, [error, filesMutation.error]);
+  }, [updateOrganizationError, uploadFilesError]);
 
   const requestLogoUrl = async (logoPath: string) => {
     try {
@@ -116,12 +121,11 @@ const OrganizationGeneral = () => {
     if (file) {
       const data = new FormData();
       data.append('logo', file);
-      filesMutation.mutate(
-        { id: organization?.id as number, data },
+      uploadFiltes(
+        { data },
         {
           onSettled: () => {
-            mutate({
-              id: organization?.id as number,
+            updateOrganization({
               organization: { general: emptyStringToNull(organizationGeneral) },
             });
           },
@@ -129,7 +133,7 @@ const OrganizationGeneral = () => {
       );
       setFile(null);
     } else {
-      mutate({
+      updateOrganization({
         id: organization?.id as number,
         organization: { general: emptyStringToNull(organizationGeneral) },
       });
@@ -141,14 +145,16 @@ const OrganizationGeneral = () => {
       <div className="py-5 px-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Date generale</span>
 
-        <button
-          type="button"
-          className={classNames(readonly ? 'edit-button' : 'save-button')}
-          onClick={readonly ? startEdit : handleSubmit(handleSave)}
-        >
-          <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-          {readonly ? 'Editeaza' : 'Salveaza modificari'}
-        </button>
+        {role !== UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className={classNames(readonly ? 'edit-button' : 'save-button')}
+            onClick={readonly ? startEdit : handleSubmit(handleSave)}
+          >
+            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+          </button>
+        )}
       </div>
 
       <div className="w-full border-t border-gray-300" />

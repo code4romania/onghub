@@ -4,20 +4,29 @@ import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
-import { useErrorToast } from '../../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import Select from '../../../../components/Select/Select';
-import { useUsersQuery } from '../../../../services/user/User.queries';
+import {
+  useRemoveUserMutation,
+  useRestoreUserMutation,
+  useRestrictUserMutation,
+  useUsersQuery,
+} from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
+import { useNavigate } from 'react-router-dom';
+import ConfirmRemovalModal from '../../../../components/confim-removal-modal/ConfirmRemovalModal';
 
 const UserList = () => {
+  const navigate = useNavigate();
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -25,10 +34,11 @@ const UserList = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
+  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
 
   const { users } = useUser();
 
-  const { isLoading, error } = useUsersQuery(
+  const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -37,19 +47,37 @@ const UserList = () => {
     status?.status,
     range,
   );
+  const restrictUserAccessMutation = useRestrictUserMutation();
+  const restoreUserAccessMutation = useRestoreUserMutation();
+  const removeUserMutation = useRemoveUserMutation();
 
   useEffect(() => {
     if (users?.meta) {
       setPage(users.meta.currentPage);
-      setRowsPerPage(users.meta.itermsPerPage);
+      setRowsPerPage(users.meta.itemsPerPage);
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
     }
   }, []);
 
   useEffect(() => {
+    if (selectedUser) setIsConfirmRemoveModalOpen(true);
+  }, [selectedUser]);
+
+  useEffect(() => {
     if (error) useErrorToast('Error while loading the users');
-  }, [error]);
+
+    if (restrictUserAccessMutation.error) useErrorToast('Error while restricting accees');
+
+    if (restoreUserAccessMutation.error) useErrorToast('Error while restoring accees');
+
+    if (removeUserMutation.error) useErrorToast('Error while removing user');
+  }, [
+    error,
+    restrictUserAccessMutation.error,
+    restoreUserAccessMutation.error,
+    removeUserMutation.error,
+  ]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
@@ -61,7 +89,7 @@ const UserList = () => {
       {
         name: 'Restrictioneaza temporar',
         icon: BanIcon,
-        onClick: onDisconnect,
+        onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
@@ -70,7 +98,7 @@ const UserList = () => {
       {
         name: 'Reda accesul',
         icon: RefreshIcon,
-        onClick: onReconnect,
+        onClick: onRestoreAccess,
       },
       {
         name: 'Editeaza',
@@ -80,7 +108,7 @@ const UserList = () => {
       {
         name: 'Elimina definitiv',
         icon: TrashIcon,
-        onClick: onDelete,
+        onClick: setSelectedUser,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
@@ -123,20 +151,41 @@ const UserList = () => {
   /**
    * ROW ACTIONS
    */
-  const onReconnect = () => {
-    console.log('to be implemented');
+  const onRestoreAccess = (row: IUser) => {
+    restoreUserAccessMutation.mutate([row.id], {
+      onSuccess: () => {
+        useSuccessToast(`Access restored for user ${row.name}`);
+        refetch();
+      },
+    });
   };
 
-  const onEdit = () => {
-    console.log('to be implemented');
+  const onEdit = (row: IUser) => {
+    navigate(`/user/${row.id}`);
   };
 
   const onDelete = () => {
-    console.log('to be implemented');
+    if (selectedUser) {
+      removeUserMutation.mutate(selectedUser.id, {
+        onSuccess: () => {
+          useSuccessToast(`Successfully removed user with id ${selectedUser.name}`);
+          refetch();
+        },
+        onSettled: () => {
+          setSelectedUser(null);
+        },
+      });
+    }
+    setIsConfirmRemoveModalOpen(false);
   };
 
-  const onDisconnect = () => {
-    console.log('to be implemented');
+  const onRestrictAccess = (row: IUser) => {
+    restrictUserAccessMutation.mutate([row.id], {
+      onSuccess: () => {
+        useSuccessToast(`Access restricted for user ${row.name}`);
+        refetch();
+      },
+    });
   };
 
   /**
@@ -162,6 +211,11 @@ const UserList = () => {
     setSearchWord(null);
   };
 
+  const onCancelUserRemoval = () => {
+    setIsConfirmRemoveModalOpen(false);
+    setSelectedUser(null);
+  };
+
   return (
     <div>
       <DataTableFilters
@@ -171,7 +225,11 @@ const UserList = () => {
       >
         <div className="flex gap-x-6">
           <div className="basis-1/4">
-            <DateRangePicker label="Data adaugarii" onChange={onDateChange} />
+            <DateRangePicker
+              label="Data adaugarii"
+              defaultValue={range.length > 0 ? range : undefined}
+              onChange={onDateChange}
+            />
           </div>
           <div className="basis-1/4">
             <Select
@@ -201,7 +259,7 @@ const UserList = () => {
             loading={isLoading}
             pagination
             sortServer
-            paginationPerPage={users.meta.itermsPerPage}
+            paginationPerPage={users.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={users.meta.totalItems}
             onChangeRowsPerPage={onRowsPerPageChange}
@@ -209,6 +267,17 @@ const UserList = () => {
             onSort={onSort}
           />
         </div>
+        {isConfirmRemoveModalOpen && (
+          <ConfirmRemovalModal
+            title="Ești sigur că dorești stergerea utilizatorului?"
+            description="Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
+          puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+            closeBtnLabel="Inapoi"
+            confirmBtnLabel="Sterge"
+            onClose={onCancelUserRemoval}
+            onConfirm={onDelete}
+          />
+        )}
       </div>
     </div>
   );

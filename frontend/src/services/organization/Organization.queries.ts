@@ -8,12 +8,19 @@ import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
   deleteInvestors,
+  deleteInvestorsByProfile,
   deletePartners,
+  deletePartnersByProfile,
   getOrganization,
+  getOrganizationByProfile,
   patchOrganization,
+  patchOrganizationByProfile,
   uploadInvestors,
+  uploadInvestorsByProfile,
   uploadOrganizationFiles,
+  uploadOrganizationFilesByProfile,
   uploadPartners,
+  uploadPartnersByProfile,
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
@@ -21,7 +28,7 @@ import { OrganizationStatus } from '../../pages/organization/enums/OrganizationS
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 
 interface OrganizationPayload {
-  id: number;
+  id?: number;
   organization: {
     general?: IOrganizationGeneral;
     activity?: Partial<IOrganizationActivity>;
@@ -41,6 +48,8 @@ interface OrganizationPayload {
     };
   };
 }
+
+/**SUPER ADMIN */
 
 export const useOrganizationQuery = (id: number) => {
   const {
@@ -83,7 +92,7 @@ export const useOrganizationMutation = () => {
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
-    ({ id, organization }: OrganizationPayload) => patchOrganization(id, organization),
+    ({ id, organization }: OrganizationPayload) => patchOrganization(id as number, organization),
     {
       onSuccess: (
         data:
@@ -178,6 +187,138 @@ export const useDeleteInvestorMutation = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
     ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+/**EMPLOYEE & ADMIN */
+
+export const useOrganizationByProfileQuery = () => {
+  const {
+    setOrganizationGeneral,
+    setOrganizationActivity,
+    setOrganizationFinancial,
+    setOrganizationReport,
+    setOrganizationLegal,
+  } = useStore();
+  return useQuery(['organization'], () => getOrganizationByProfile(), {
+    onSuccess: (data: {
+      organizationGeneral: IOrganizationGeneral;
+      organizationActivity: IOrganizationActivity;
+      organizationFinancial: IOrganizationFinancial[];
+      organizationReport: IOrganizationReport;
+      organizationLegal: IOrganizationLegal;
+    }) => {
+      setOrganizationGeneral(data.organizationGeneral);
+      setOrganizationActivity(data.organizationActivity);
+      setOrganizationFinancial(data.organizationFinancial);
+      setOrganizationLegal(data.organizationLegal);
+      setOrganizationReport(data.organizationReport);
+    },
+  });
+};
+
+export const useOrganizationByProfileMutation = () => {
+  const {
+    setOrganizationGeneral,
+    setOrganizationFinancial,
+    setOrganizationLegal,
+    setOrganizationActivity,
+    setOrganizationReport,
+  } = useStore();
+  const { organizationFinancial } = useSelectedOrganization();
+  return useMutation(
+    ({ organization }: OrganizationPayload) => patchOrganizationByProfile(organization),
+    {
+      onSuccess: (
+        data:
+          | IOrganizationGeneral
+          | IOrganizationActivity
+          | IOrganizationFinancial
+          | IOrganizationLegal
+          | IOrganizationReport,
+        { organization }: OrganizationPayload,
+      ) => {
+        if (organization.general) {
+          setOrganizationGeneral(data as IOrganizationGeneral);
+        }
+        if (organization.activity) {
+          setOrganizationActivity(data as IOrganizationActivity);
+        }
+        if (organization.legal) {
+          setOrganizationLegal(data as IOrganizationLegal);
+        }
+        if (organization.financial) {
+          setOrganizationFinancial([
+            ...organizationFinancial.filter((org) => org.id !== data.id),
+            data as IOrganizationFinancial,
+          ]);
+        }
+        if (organization.report) {
+          setOrganizationReport(data as IOrganizationReport);
+        }
+      },
+    },
+  );
+};
+
+export const useUploadOrganizationFilesByProfileMutation = () => {
+  const { setOrganizationGeneral, setOrganizationLegal, organizationGeneral, organizationLegal } =
+    useStore();
+  return useMutation(({ data }: { data: FormData }) => uploadOrganizationFilesByProfile(data), {
+    onSuccess: (data: {
+      organizationGeneral: IOrganizationGeneral;
+      organizationLegal: IOrganizationLegal;
+    }) => {
+      if (organizationGeneral) {
+        setOrganizationGeneral({ ...organizationGeneral, logo: data.organizationGeneral.logo });
+      }
+
+      if (organizationLegal) {
+        setOrganizationLegal({
+          ...organizationLegal,
+          organizationStatute: data.organizationLegal?.organizationStatute,
+        });
+      }
+    },
+  });
+};
+
+export const useUploadPartnersListByProfile = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ partnerId, data }: { partnerId: number; data: FormData }) =>
+      uploadPartnersByProfile(partnerId, data),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+export const useUploadInvestorsByProfileList = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ investorId, data }: { investorId: number; data: FormData }) =>
+      uploadInvestorsByProfile(investorId, data),
+    {
+      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+export const useDeletePartnerByProfileMutation = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(({ partnerId }: { partnerId: number }) => deletePartnersByProfile(partnerId), {
+    onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+  });
+};
+
+export const useDeleteInvestorByProfileMutation = () => {
+  const { setOrganizationReport } = useStore();
+  return useMutation(
+    ({ investorId }: { investorId: number }) => deleteInvestorsByProfile(investorId),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
