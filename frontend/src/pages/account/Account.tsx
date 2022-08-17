@@ -5,10 +5,10 @@ import InputField from '../../components/InputField/InputField';
 import { AccountConfig } from './AccountConfig';
 import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
-import AccountDeleteModal from './AccountDeleteModal';
 import { useUserMutation } from '../../services/user/User.queries';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
+import ConfirmRemovalModal from '../../components/confim-removal-modal/ConfirmRemovalModal';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -201,7 +201,14 @@ const Account = () => {
         )}
       </div>
       {isAccountDeleteModalOpen && (
-        <AccountDeleteModal
+        <ConfirmRemovalModal
+          title="Ești sigur că dorești închiderea contului?"
+          description="Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
+          puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești
+          să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te
+          va contacta pentru a finaliza procesul."
+          closeBtnLabel="Inapoi"
+          confirmBtnLabel="Inchide contul"
           onClose={() => {
             setAccountDeleteModal(false);
           }}
