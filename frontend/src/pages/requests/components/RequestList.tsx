@@ -45,7 +45,7 @@ const RequestList = () => {
   useEffect(() => {
     if (requests?.meta) {
       setPage(requests.meta.currentPage);
-      setRowsPerPage(requests.meta.itermsPerPage);
+      setRowsPerPage(requests.meta.itemsPerPage);
       setOrderByColumn(requests.meta.orderByColumn);
       setOrderDirection(requests.meta.orderDirection);
     }
@@ -166,7 +166,7 @@ const RequestList = () => {
             loading={isLoading}
             pagination
             sortServer
-            paginationPerPage={requests.meta.itermsPerPage}
+            paginationPerPage={requests.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={requests.meta.totalItems}
             onChangeRowsPerPage={onRowsPerPageChange}
