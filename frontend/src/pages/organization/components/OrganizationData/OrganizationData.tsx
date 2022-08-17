@@ -163,7 +163,6 @@ const OrganizationData = () => {
     if (data.report?.startsWith('www')) {
       data.report = 'http://' + data.report;
     }
-    console.log(data?.report);
     reportSummaryMutation.mutate({
       id: organization?.id as number,
       organization: {
