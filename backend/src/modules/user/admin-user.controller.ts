@@ -13,6 +13,7 @@ import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './services/user.service';
@@ -44,6 +45,12 @@ export class AdminUserController {
     return this.userService.findAll(user.organizationId, filters);
   }
 
+  @ApiParam({ name: 'id', type: Number })
+  @Get(':id')
+  async getOne(@Param('id') userId: number): Promise<User> {
+    return this.userService.getById(userId);
+  }
+
   // TODO: restrict to be called only by Admin/Super-Admin
   @ApiBody({ type: Number, isArray: true })
   @Patch('restrict')
@@ -62,6 +69,16 @@ export class AdminUserController {
     ids: number[],
   ) {
     return this.userService.restoreAccess(ids);
+  }
+
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: UpdateUserDto })
+  @Patch(':id')
+  async update(
+    @Param('id') userId: number,
+    @Body() body: UpdateUserDto,
+  ): Promise<User> {
+    return this.userService.update(userId, body);
   }
 
   // TODO: restrict to be called only by Admin/Super-Admin

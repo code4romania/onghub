@@ -71,8 +71,7 @@ export class UserService {
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult | any> {
-    return 'Update the UserDTO with the possible updates or create multiple DTOs.';
-    // return this.userRepository.update({ id }, updateUserDto);
+    return this.userRepository.update({ id }, updateUserDto);
   }
 
   public async findAll(
