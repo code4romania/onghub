@@ -8,7 +8,7 @@ export const usersSlice = (set: any) => ({
     meta: {
       currentPage: 1,
       itemCount: 0,
-      itermsPerPage: 10,
+      itemsPerPage: 10,
       totalItems: 0,
       totalPages: 1,
       orderByColumn: 'name',

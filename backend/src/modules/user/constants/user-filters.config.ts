@@ -1,10 +1,10 @@
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 export const USER_FILTERS_CONFIG = {
-  selectColumns: ['name', 'email', 'createdOn', 'phone', 'status'],
-  searchableColumns: ['name'],
+  selectColumns: ['id', 'name', 'email', 'createdOn', 'phone', 'status'],
+  searchableColumns: ['name', 'email'],
   defaultSortBy: 'name',
   defaultOrderDirection: OrderDirection.ASC,
   relations: [],
-  rangeColumn: 'created_on',
+  rangeColumn: 'createdOn',
 };

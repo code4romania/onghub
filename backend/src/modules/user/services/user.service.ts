@@ -71,8 +71,7 @@ export class UserService {
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult | any> {
-    return 'Update the UserDTO with the possible updates or create multiple DTOs.';
-    // return this.userRepository.update({ id }, updateUserDto);
+    return this.userRepository.update({ id }, updateUserDto);
   }
 
   public async findAll(
@@ -80,10 +79,10 @@ export class UserService {
     options: UserFilterDto,
   ): Promise<Pagination<User>> {
     const paginationOptions = {
-      ...options,
       role: Role.EMPLOYEE,
       status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
       organizationId,
+      ...options,
     };
 
     return this.userRepository.getManyPaginated(
