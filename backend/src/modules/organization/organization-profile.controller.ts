@@ -91,7 +91,7 @@ export class OrganizationProfileController {
   @ApiBody({
     schema: PARTNER_UPLOAD_SCHEMA,
   })
-  @Post(':id/partners/:partnerId')
+  @Post('partners/:partnerId')
   uploadPartnerList(
     @ExtractUser() user: User,
     @Param('partnerId') partnerId: string,

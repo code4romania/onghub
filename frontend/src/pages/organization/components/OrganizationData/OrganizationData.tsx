@@ -18,11 +18,11 @@ import {
   getPublicFileUrl,
 } from '../../../../services/files/File.service';
 import {
-  useDeleteInvestorMutation,
-  useDeletePartnerMutation,
-  useOrganizationMutation,
-  useUploadInvestorsList,
-  useUploadPartnersList,
+  useDeleteInvestorByProfileMutation,
+  useDeletePartnerByProfileMutation,
+  useOrganizationByProfileMutation,
+  useUploadInvestorsByProfileList,
+  useUploadPartnersListByProfile,
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import readXlsxFile from 'read-excel-file';
@@ -41,12 +41,32 @@ const OrganizationData = () => {
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
   const { role } = useContext(AuthContext);
 
-  const { organizationReport, organization } = useSelectedOrganization();
-  const reportSummaryMutation = useOrganizationMutation();
-  const uploadPartnersMutation = useUploadPartnersList();
-  const uploadInvestorsMutation = useUploadInvestorsList();
-  const deleteInvestorMutation = useDeleteInvestorMutation();
-  const deletePartnerMutation = useDeletePartnerMutation();
+  const { organizationReport } = useSelectedOrganization();
+  const {
+    mutate: updateReport,
+    error: updateReportError,
+    isLoading: updateReportPending,
+  } = useOrganizationByProfileMutation();
+  const {
+    mutate: uploadPartners,
+    error: uploadPartnersError,
+    isLoading: uploadPartnersPending,
+  } = useUploadPartnersListByProfile();
+  const {
+    mutate: uploadInvestors,
+    error: uploadInvestorsError,
+    isLoading: uploadInvestorsPending,
+  } = useUploadInvestorsByProfileList();
+  const {
+    mutate: deleteInvestor,
+    error: deleteInvestorError,
+    isLoading: deleteInvestorPending,
+  } = useDeleteInvestorByProfileMutation();
+  const {
+    mutate: deletePartner,
+    error: deletePartnerError,
+    isLoading: deletePartnerPending,
+  } = useDeletePartnerByProfileMutation();
 
   useEffect(() => {
     initTemplateData();
@@ -54,17 +74,19 @@ const OrganizationData = () => {
 
   useEffect(() => {
     if (
-      reportSummaryMutation.error ||
-      uploadPartnersMutation.error ||
-      uploadInvestorsMutation.error ||
-      deleteInvestorMutation.error
+      updateReportError ||
+      uploadPartnersError ||
+      uploadInvestorsError ||
+      deleteInvestorError ||
+      deletePartnerError
     )
       useErrorToast('Could not load open data');
   }, [
-    reportSummaryMutation.error,
-    uploadPartnersMutation.error,
-    uploadInvestorsMutation.error,
-    deleteInvestorMutation.error,
+    updateReportError,
+    uploadPartnersError,
+    uploadInvestorsError,
+    deleteInvestorError,
+    deletePartnerError,
   ]);
 
   const initTemplateData = async () => {
@@ -191,8 +213,7 @@ const OrganizationData = () => {
   const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
-    reportSummaryMutation.mutate({
-      id: organization?.id as number,
+    updateReport({
       organization: {
         report: {
           reportId: data.id,
@@ -205,8 +226,7 @@ const OrganizationData = () => {
   };
 
   const onDeleteReport = (row: Report) => {
-    reportSummaryMutation.mutate({
-      id: organization?.id as number,
+    updateReport({
       organization: {
         report: {
           reportId: row.id,
@@ -229,11 +249,11 @@ const OrganizationData = () => {
   };
 
   const onDeletePartner = (row: Partner) => {
-    deletePartnerMutation.mutate({ id: organization?.id as number, partnerId: row.id });
+    deletePartner({ partnerId: row.id });
   };
 
   const onDeleteInvestor = (row: Investor) => {
-    deleteInvestorMutation.mutate({ id: organization?.id as number, investorId: row.id });
+    deleteInvestor({ investorId: row.id });
   };
 
   const onUploadNewList = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -255,7 +275,7 @@ const OrganizationData = () => {
     const data = new FormData();
     data.append('partners', file);
     data.append('numberOfPartners', (rows.length - 2).toString());
-    uploadPartnersMutation.mutate({ id: organization?.id as number, partnerId, data });
+    uploadPartners({ partnerId, data });
     setSelectedPartner(null);
   };
 
@@ -269,7 +289,7 @@ const OrganizationData = () => {
     const data = new FormData();
     data.append('investors', file);
     data.append('numberOfInvestors', (rows.length - 2).toString());
-    uploadInvestorsMutation.mutate({ id: organization?.id as number, investorId, data });
+    uploadInvestors({ investorId, data });
     setSelectedInvestor(null);
   };
 
@@ -289,7 +309,7 @@ const OrganizationData = () => {
                 : ReportsTableHeaders
             }
             data={organizationReport?.reports || []}
-            loading={reportSummaryMutation.isLoading}
+            loading={updateReportPending}
           />
         </>
       </CardPanel>
@@ -311,7 +331,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...PartnerTableHeaders, buildPartnersActionColumn()]}
             data={organizationReport?.partners || []}
-            loading={uploadPartnersMutation.isLoading || deletePartnerMutation.isLoading}
+            loading={uploadPartnersPending || deletePartnerPending}
           />
         </>
       </CardPanel>
@@ -333,7 +353,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...InvestorsTableHeaders, buildInvestorsActionColumn()]}
             data={organizationReport?.investors || []}
-            loading={uploadInvestorsMutation.isLoading || deleteInvestorMutation.isLoading}
+            loading={uploadInvestorsPending || deleteInvestorPending}
           />
         </>
       </CardPanel>

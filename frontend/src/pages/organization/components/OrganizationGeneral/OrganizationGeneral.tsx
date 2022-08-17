@@ -9,8 +9,8 @@ import Select from '../../../../components/Select/Select';
 import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
 import {
-  useOrganizationMutation,
-  useUploadOrganizationFilesMutation,
+  useOrganizationByProfileMutation,
+  useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { useNomenclature } from '../../../../store/selectors';
@@ -30,8 +30,10 @@ const OrganizationGeneral = () => {
   const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate, error } = useOrganizationMutation();
-  const filesMutation = useUploadOrganizationFilesMutation();
+  const { mutate: updateOrganization, error: updateOrganizationError } =
+    useOrganizationByProfileMutation();
+  const { mutate: uploadFiltes, error: uploadFilesError } =
+    useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
@@ -65,14 +67,14 @@ const OrganizationGeneral = () => {
   }, [cities]);
 
   useEffect(() => {
-    if (error) {
+    if (updateOrganizationError) {
       useErrorToast('Could not save organization');
     }
 
-    if (filesMutation.error) {
+    if (uploadFilesError) {
       useErrorToast('Could not update logo');
     }
-  }, [error, filesMutation.error]);
+  }, [updateOrganizationError, uploadFilesError]);
 
   const requestLogoUrl = async (logoPath: string) => {
     try {
@@ -119,12 +121,11 @@ const OrganizationGeneral = () => {
     if (file) {
       const data = new FormData();
       data.append('logo', file);
-      filesMutation.mutate(
-        { id: organization?.id as number, data },
+      uploadFiltes(
+        { data },
         {
           onSettled: () => {
-            mutate({
-              id: organization?.id as number,
+            updateOrganization({
               organization: { general: emptyStringToNull(organizationGeneral) },
             });
           },
@@ -132,7 +133,7 @@ const OrganizationGeneral = () => {
       );
       setFile(null);
     } else {
-      mutate({
+      updateOrganization({
         id: organization?.id as number,
         organization: { general: emptyStringToNull(organizationGeneral) },
       });

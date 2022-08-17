@@ -18,7 +18,9 @@ import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 import { flatten } from '../../../../common/helpers/format.helper';
 import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
 import {
+  useOrganizationByProfileMutation,
   useOrganizationMutation,
+  useUploadOrganizationFilesByProfileMutation,
   useUploadOrganizationFilesMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -42,9 +44,11 @@ const OrganizationLegal = () => {
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
-  const { organizationLegal, organization } = useSelectedOrganization();
-  const { mutate, error } = useOrganizationMutation();
-  const filesMutation = useUploadOrganizationFilesMutation();
+  const { organizationLegal } = useSelectedOrganization();
+  const { mutate: updateOrganization, error: updateOrganizationError } =
+    useOrganizationByProfileMutation();
+  const { mutate: uploadFiles, error: uploadFilesError } =
+    useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
 
   // React Hook Form
@@ -74,8 +78,8 @@ const OrganizationLegal = () => {
   }, [organizationLegal]);
 
   useEffect(() => {
-    if (error) useErrorToast('Error while saving organization');
-  }, [error]);
+    if (updateOrganizationError) useErrorToast('Error while saving organization');
+  }, [updateOrganizationError]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
@@ -218,8 +222,7 @@ const OrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    mutate({
-      id: organization?.id as number,
+    updateOrganization({
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 
@@ -231,7 +234,7 @@ const OrganizationLegal = () => {
       const file = event.target.files[0];
       const data = new FormData();
       data.append('organizationStatute', file);
-      filesMutation.mutate({ id: organization?.id as number, data });
+      uploadFiles({ data });
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -241,8 +244,7 @@ const OrganizationLegal = () => {
   const onRemoveOrganizationStatute = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    mutate({
-      id: organization?.id as number,
+    updateOrganization({
       organization: {
         legal: {
           organizationStatute: null,

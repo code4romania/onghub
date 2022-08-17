@@ -15,7 +15,7 @@ import {
   useRegionsQuery,
 } from '../../../../services/nomenclature/Nomenclature.queries';
 import InputField from '../../../../components/InputField/InputField';
-import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useOrganizationByProfileMutation } from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
   emptyArrayToNull,
@@ -31,9 +31,9 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationActivity = () => {
-  const { organizationActivity, organization } = useSelectedOrganization();
+  const { organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
-  const { mutate, error } = useOrganizationMutation();
+  const { mutate, error } = useOrganizationByProfileMutation();
   const { role } = useContext(AuthContext);
 
   const [readonly, setReadonly] = useState(true);
@@ -82,7 +82,6 @@ const OrganizationActivity = () => {
     };
 
     mutate({
-      id: organization?.id as number,
       organization: { activity: emptyArrayToNull(activity) },
     });
   };

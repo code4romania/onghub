@@ -11,7 +11,7 @@ import { Expense } from '../../interfaces/Expense.interface';
 import { Income } from '../../interfaces/Income.interface';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { FinancialType } from '../../enums/FinancialType.enum';
-import { useOrganizationMutation } from '../../../../services/organization/Organization.queries';
+import { useOrganizationByProfileMutation } from '../../../../services/organization/Organization.queries';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { AuthContext } from '../../../../contexts/AuthContext';
@@ -22,8 +22,8 @@ const OrganizationFinancial = () => {
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
-  const { organizationFinancial, organization } = useSelectedOrganization();
-  const { mutate, isLoading, error } = useOrganizationMutation();
+  const { organizationFinancial } = useSelectedOrganization();
+  const { mutate, isLoading, error } = useOrganizationByProfileMutation();
   const { role } = useContext(AuthContext);
 
   useEffect(() => {
@@ -87,7 +87,6 @@ const OrganizationFinancial = () => {
 
   const onSave = (data: Partial<Expense | Income>) => {
     mutate({
-      id: organization?.id as number,
       organization: {
         financial: {
           id: selectedReport?.id as number,
@@ -95,6 +94,8 @@ const OrganizationFinancial = () => {
         },
       },
     });
+    setIsIncomeReportModalOpen(false);
+    setIsExpenseReportModalOpen(false);
   };
 
   return (
