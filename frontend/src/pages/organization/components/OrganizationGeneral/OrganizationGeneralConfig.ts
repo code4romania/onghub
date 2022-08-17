@@ -159,7 +159,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Anul infiintarii*',
-      collection: rangeOfYears(1800),
+      collection: rangeOfYears(1800).sort((a, b) => b - a),
       displayedAttribute: '',
     },
   },
@@ -264,7 +264,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Short description has a maximum length of 250 characters.',
       },
       minLength: {
-        value: 1,
+        value: 50,
         message: 'Short description has a minimum length of 50 characters.',
       },
     },
@@ -544,7 +544,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: 'Maximum length of the donation keyword is 10 characters.',
       },
       pattern: {
-        value: ALPHANUMERIC_REGEX,
+        value: NAME_REGEX,
         message: 'Invalid format',
       },
     },
