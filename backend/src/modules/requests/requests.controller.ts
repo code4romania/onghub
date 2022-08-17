@@ -25,7 +25,6 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 
-@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -40,23 +39,27 @@ export class RequestsController {
     return this.requestsService.create(createRequestDto);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('')
   async getAll(@Query() filters: BaseFilterDto): Promise<Pagination<Request>> {
     return this.requestsService.findAll(filters);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Request> {
     return this.requestsService.findOne(+id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Patch(':id/approve')
   approve(@Param('id') id: number): Promise<Request> {
     return this.requestsService.approve(id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Patch(':id/reject')
   reject(@Param('id') id: number): Promise<Request> {
     return this.requestsService.reject(id);
