@@ -3,14 +3,19 @@ import { ExclamationIcon, XIcon, CheckIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
-import { useErrorToast } from '../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import { IPageTab } from '../../../common/interfaces/tabs.interface';
 import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
-import { useRequest } from '../../../services/request/Request.queries';
+import {
+  useApproveRequestMutation,
+  useRejectRequestMutation,
+  useRequest,
+} from '../../../services/request/Request.queries';
 import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import { OrganizationStatus } from '../../organization/enums/OrganizationStatus.enum';
 
 const Request = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
@@ -20,7 +25,11 @@ const Request = () => {
   useCountiesQuery();
 
   // load organization data
-  const { data: request, error } = useRequest(params.id ? params?.id : '');
+  const { data: request, error, refetch } = useRequest(params.id ? params?.id : '');
+
+  // apporve & reject
+  const { mutateAsync: approveMutate, error: approveError } = useApproveRequestMutation();
+  const { mutateAsync: rejectMutate, error: rejectError } = useRejectRequestMutation();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -32,12 +41,34 @@ const Request = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast('Could not load Organization');
-  }, [error]);
+    if (error) {
+      useErrorToast('Could not load Organization');
+    } else if (approveError || rejectError) {
+      useErrorToast('Error while changing the status');
+    }
+  }, [error, approveError, rejectError]);
 
   const onTabClick = (tab: IPageTab) => {
     setSelectedTab(tab.id);
     navigate(tab.href);
+  };
+
+  const onApprove = async () => {
+    await approveMutate(id as string, {
+      onSuccess: () => {
+        useSuccessToast('Status actualizat.');
+        refetch();
+      },
+    });
+  };
+
+  const onReject = async () => {
+    await rejectMutate(id as string, {
+      onSuccess: () => {
+        useSuccessToast('Status actualizat.');
+        refetch();
+      },
+    });
   };
 
   return (
@@ -58,10 +89,10 @@ const Request = () => {
             </p>
           </div>
           <div className="flex gap-4">
-            <button type="button" className="red-button gap-2">
+            <button type="button" className="red-button gap-2" onClick={onReject}>
               <XIcon className="w-5 h-5" /> Respinge
             </button>
-            <button type="button" className="save-button gap-2">
+            <button type="button" className="save-button gap-2" onClick={onApprove}>
               <CheckIcon className="w-5 h-5" /> Aproba
             </button>
           </div>
