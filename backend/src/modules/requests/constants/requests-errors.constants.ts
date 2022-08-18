@@ -12,7 +12,7 @@ export const REQUEST_ERRORS = {
   },
   UPDATE: {
     NOT_PENDING: {
-      message: 'Request is not pending.',
+      message: 'Could not update a Request with other status than pending.',
       errorCode: 'REQ_003',
     },
   },
