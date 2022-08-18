@@ -4,12 +4,12 @@ import {
   ViewGridAddIcon,
   CollectionIcon,
 } from '@heroicons/react/outline';
-import { SunIcon } from '@heroicons/react/solid';
+import { SunIcon, UserAddIcon } from '@heroicons/react/solid';
 
 export const EMPLOYEE_ROUTES = [
   { id: 0, name: 'Dashboard', href: '', icon: TemplateIcon },
   { id: 1, name: 'Organizatia mea', href: 'organization', icon: SunIcon },
-  { id: 3, name: 'Aplicatiile mele', href: 'apps', icon: ViewGridAddIcon },
+  { id: 2, name: 'Aplicatiile mele', href: 'apps', icon: ViewGridAddIcon },
 ];
 
 export const ADMIN_ROUTES = [
@@ -22,6 +22,7 @@ export const ADMIN_ROUTES = [
 
 export const SUPER_ADMIN_ROUTES = [
   { id: 0, name: 'Dashboard', href: '', icon: TemplateIcon },
-  { id: 2, name: 'Utilizatori', href: 'users', icon: UserGroupIcon },
-  { id: 4, name: 'Toate aplicatiile', href: 'store', icon: CollectionIcon },
+  { id: 1, name: 'Utilizatori', href: 'users', icon: UserGroupIcon },
+  { id: 2, name: 'Solicitari Access', href: 'requests', icon: UserAddIcon },
+  { id: 3, name: 'Toate aplicatiile', href: 'store', icon: CollectionIcon },
 ];

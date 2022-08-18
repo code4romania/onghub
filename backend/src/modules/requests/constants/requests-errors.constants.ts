@@ -10,4 +10,10 @@ export const REQUEST_ERRORS = {
       errorCode: 'REQ_002',
     },
   },
+  UPDATE: {
+    NOT_PENDING: {
+      message: 'Could not update a Request with other status than pending.',
+      errorCode: 'REQ_003',
+    },
+  },
 };

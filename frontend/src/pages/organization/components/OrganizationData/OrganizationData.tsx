@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { PencilIcon, TrashIcon, DownloadIcon, UploadIcon } from '@heroicons/react/outline';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { Report } from '../../interfaces/Report.interface';
 import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
@@ -105,7 +105,7 @@ const OrganizationData = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onDeleteReport,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -123,7 +123,7 @@ const OrganizationData = () => {
         name: 'Descarca lista',
         icon: DownloadIcon,
         onClick: onDownloadFile,
-        isDownload: true,
+        type: PopoverMenuRowType.DOWNLOAD,
       },
     ];
 
@@ -132,19 +132,19 @@ const OrganizationData = () => {
         name: 'Descarca lista',
         icon: DownloadIcon,
         onClick: onDownloadFile,
-        isDownload: true,
+        type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
         onClick: setSelectedPartner,
-        isUpload: true,
+        type: PopoverMenuRowType.UPLOAD,
       },
       {
         name: 'Elimina lista',
         icon: TrashIcon,
         onClick: onDeletePartner,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -176,19 +176,19 @@ const OrganizationData = () => {
         name: 'Descarca lista',
         icon: DownloadIcon,
         onClick: onDownloadFile,
-        isDownload: true,
+        type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
         onClick: setSelectedInvestor,
-        isUpload: true,
+        type: PopoverMenuRowType.UPLOAD,
       },
       {
         name: 'Elimina lista',
         icon: TrashIcon,
         onClick: onDeleteInvestor,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 

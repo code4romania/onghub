@@ -7,8 +7,8 @@ import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
 import {
   useRemoveUserMutation,
@@ -90,7 +90,7 @@ const UserList = () => {
         name: 'Restrictioneaza temporar',
         icon: BanIcon,
         onClick: onRestrictAccess,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -109,7 +109,7 @@ const UserList = () => {
         name: 'Elimina definitiv',
         icon: TrashIcon,
         onClick: setSelectedUser,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 

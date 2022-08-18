@@ -16,7 +16,7 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', name: 'email', unique: true })
   email: string;
 
-  @Column({ type: 'varchar', name: 'phone', unique: true })
+  @Column({ type: 'varchar', name: 'phone' })
   phone: string;
 
   /* ROLE will be handled differently, depending who is creating the user

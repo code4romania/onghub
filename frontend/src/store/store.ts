@@ -21,6 +21,8 @@ import { IOrganization } from '../pages/organization/interfaces/Organization.int
 import { organizationSlice } from './organization/organization.slice';
 import { usersSlice } from './user/Users.slice';
 import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
+import { IRequest } from '../pages/requests/interfaces/Request.interface';
+import { requestsSlice } from './request/Requests.slice';
 
 interface OrganizationState {
   organization: IOrganization | null;
@@ -61,18 +63,24 @@ interface UserState {
   setUsers: (users: PaginatedEntity<IUser>) => void;
 }
 
-const useStore = create<OrganizationState & NomenclatureState & UserState & ProfileState>()(
-  (set: any) => ({
-    ...organizationSlice(set),
-    ...organizationGeneralSlice(set),
-    ...organizationFinancialSlice(set),
-    ...organizationActivitySlice(set),
-    ...organizationReportsSlice(set),
-    ...organizationLegalSlice(set),
-    ...nomenclatureSlice(set),
-    ...profileSlice(set),
-    ...usersSlice(set),
-  }),
-);
+interface RequestState {
+  requests: PaginatedEntity<IRequest>;
+  setRequests: (requests: PaginatedEntity<IRequest>) => void;
+}
+
+const useStore = create<
+  OrganizationState & NomenclatureState & UserState & ProfileState & RequestState
+>()((set: any) => ({
+  ...organizationSlice(set),
+  ...organizationGeneralSlice(set),
+  ...organizationFinancialSlice(set),
+  ...organizationActivitySlice(set),
+  ...organizationReportsSlice(set),
+  ...organizationLegalSlice(set),
+  ...nomenclatureSlice(set),
+  ...profileSlice(set),
+  ...usersSlice(set),
+  ...requestsSlice(set),
+}));
 
 export default useStore;

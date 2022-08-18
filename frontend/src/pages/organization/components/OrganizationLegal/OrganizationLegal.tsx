@@ -6,7 +6,7 @@ import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { Person } from '../../../../common/interfaces/person.interface';
 import ContactForm from '../../../../components/Contact/Contact';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { Contact } from '../../interfaces/Contact.interface';
@@ -92,7 +92,7 @@ const OrganizationLegal = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onOpenDeleteDirectorModal,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -116,7 +116,7 @@ const OrganizationLegal = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onOpenDeleteOtherModal,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
