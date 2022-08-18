@@ -34,6 +34,7 @@ import {
   ReportService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
+import { OrganizationProfileController } from './organization-profile.controller';
 
 @Module({
   imports: [
@@ -50,7 +51,7 @@ import { OrganizationReportService } from './services/organization-report.servic
       Investor,
     ]),
   ],
-  controllers: [OrganizationController],
+  controllers: [OrganizationController, OrganizationProfileController],
   providers: [
     ContactService,
     OrganizationService,
