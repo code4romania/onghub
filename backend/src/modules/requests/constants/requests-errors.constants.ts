@@ -10,4 +10,10 @@ export const REQUEST_ERRORS = {
       errorCode: 'REQ_002',
     },
   },
+  UPDATE: {
+    NOT_PENDING: {
+      message: 'Request is not pending.',
+      errorCode: 'REQ_003',
+    },
+  },
 };

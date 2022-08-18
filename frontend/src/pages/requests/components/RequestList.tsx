@@ -113,7 +113,7 @@ const RequestList = () => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        refetch();
+        navigate('/requests'); // TODO: Redirect to /organizations/id
       },
     });
   };
@@ -122,7 +122,7 @@ const RequestList = () => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        refetch();
+        navigate('/requests');
       },
     });
   };

@@ -22,6 +22,7 @@ export class RequestsService {
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
       ...options,
+      status: RequestStatus.PENDING,
     };
 
     return this.requestRepository.getManyPaginated(
@@ -32,7 +33,7 @@ export class RequestsService {
 
   public async findOne(id: number): Promise<Request> {
     return this.requestRepository.get({
-      where: { id },
+      where: { id, status: RequestStatus.PENDING },
       relations: [
         'organization',
         'organization.organizationGeneral',
@@ -95,6 +96,7 @@ export class RequestsService {
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
         phone: createReqDto.admin.phone,
+        organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
       });
     } catch (error) {
@@ -116,13 +118,15 @@ export class RequestsService {
       await this.find(requestId);
 
     if (status !== RequestStatus.PENDING) {
-      // TODO: Add errors and throw the correct one
-      throw new Error('The request is not PENDING');
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      });
     }
 
     if (organization?.status !== OrganizationStatus.PENDING) {
-      // TODO: Add errors and throw the correct one
-      throw new Error('The organizaton status is not PENDING');
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      });
     }
 
     // 2. Update organization status from PENDING to ACTIVE
@@ -140,7 +144,18 @@ export class RequestsService {
   }
 
   public async reject(requestId: number) {
-    // 1. Decline the request
+    // 1. Check if request is pending
+    const found = await this.requestRepository.get({
+      where: { id: requestId },
+    });
+
+    if (found && found.status !== RequestStatus.PENDING) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      });
+    }
+
+    // 2. Decline the request.
     await this.requestRepository.update(
       { id: requestId },
       { status: RequestStatus.DECLINED },
