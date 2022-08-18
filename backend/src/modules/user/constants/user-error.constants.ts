@@ -32,7 +32,7 @@ export const USER_ERRORS = {
     errorCode: 'USR_008',
   },
   UPDATE: {
-    message: 'Could not udpate the user',
+    message: 'Could not update the user',
     errorCode: 'USR_009',
   },
 };
