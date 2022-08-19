@@ -5,9 +5,7 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import { IPageTab } from '../../../common/interfaces/tabs.interface';
-import ConfirmRemovalModal, {
-  ConfirmRemovalModalProps,
-} from '../../../components/confim-removal-modal/ConfirmRemovalModal';
+import ConfirmRemovalModal from '../../../components/confim-removal-modal/ConfirmRemovalModal';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
 import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
@@ -17,7 +15,7 @@ import {
   useRequest,
 } from '../../../services/request/Request.queries';
 import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
-import { APPROVE_MODAL, REJECT_MODAL } from '../constants/Request.modals';
+import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
 import { RequestStatus } from '../enum/RequestStatus.enum';
 
 const Request = () => {
@@ -26,14 +24,19 @@ const Request = () => {
   const location = useLocation();
   const params = useParams();
   const [selectedTab, setSelectedTab] = useState(0);
-  // const [modalConfig, setModalConfig] = useState({} as Partial<ConfirmRemovalModalProps>);
-  // const [isModalOpen, setModalOpen] = useState(false);
+  const [isApproveModalOpen, setApproveModalOpen] = useState(false);
+  const [isRejectModalOpen, setRejectModalOpen] = useState(false);
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
 
   // load organization data
-  const { data: request, error, refetch } = useRequest(params.id ? params?.id : '');
+  const {
+    data: request,
+    error,
+    refetch,
+    isLoading: dataLoading,
+  } = useRequest(params.id ? params?.id : '');
 
   // apporve & reject
   const {
@@ -73,7 +76,10 @@ const Request = () => {
     await approveMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        refetch();
+        navigate('/requests');
+      },
+      onSettled: () => {
+        setApproveModalOpen(false);
       },
     });
   };
@@ -82,12 +88,15 @@ const Request = () => {
     await rejectMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        refetch();
+        navigate('/requests');
+      },
+      onSettled: () => {
+        setApproveModalOpen(false);
       },
     });
   };
 
-  if (approveLoading || rejectLoading) {
+  if (dataLoading || approveLoading || rejectLoading) {
     return <Loading />;
   }
 
@@ -109,10 +118,18 @@ const Request = () => {
                 </p>
               </div>
               <div className="flex gap-4">
-                <button type="button" className="red-button gap-2" onClick={onReject}>
+                <button
+                  type="button"
+                  className="red-button gap-2"
+                  onClick={() => setRejectModalOpen(true)}
+                >
                   <XIcon className="w-5 h-5" /> Respinge
                 </button>
-                <button type="button" className="save-button gap-2" onClick={onApprove}>
+                <button
+                  type="button"
+                  className="save-button gap-2"
+                  onClick={() => setApproveModalOpen(true)}
+                >
                   <CheckIcon className="w-5 h-5" /> Aproba
                 </button>
               </div>
@@ -142,7 +159,20 @@ const Request = () => {
           <Outlet />
         </div>
       </ContentWrapper>
-      {/* {isModalOpen && <ConfirmRemovalModal {...modalConfig} onClose={() => setModalOpen(false)} onConfirm={} />} */}
+      {isApproveModalOpen && (
+        <ConfirmRemovalModal
+          {...APPROVE_MODAL_CONFIG}
+          onClose={() => setApproveModalOpen(false)}
+          onConfirm={onApprove}
+        />
+      )}
+      {isRejectModalOpen && (
+        <ConfirmRemovalModal
+          {...REJECT_MODAL_CONFIG}
+          onClose={() => setRejectModalOpen(false)}
+          onConfirm={onReject}
+        />
+      )}
     </div>
   );
 };
