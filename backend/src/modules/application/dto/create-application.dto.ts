@@ -4,9 +4,10 @@ import {
   Matches,
   Length,
   IsArray,
-  IsNumber,
+  IsEnum,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 export class CreateApplicationDto {
   @IsString()
@@ -15,8 +16,9 @@ export class CreateApplicationDto {
   @Length(3, 100)
   name: string;
 
-  @IsNumber()
-  typeId: number;
+  @IsEnum(ApplicationTypeEnum)
+  @IsNotEmpty()
+  type: ApplicationTypeEnum;
 
   @IsString()
   @Length(200, 250)

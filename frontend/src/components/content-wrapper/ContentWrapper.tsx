@@ -5,7 +5,7 @@ interface ContentWrapperProps {
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
-  btnLabel?: string;
+  btnLabel?: string | null;
   onBtnClick?: () => void;
   goBack?: () => void;
 }
@@ -35,7 +35,7 @@ const ContentWrapper = ({
           <p className="text-gray-800 font-titilliumBold text-3xl">{title}</p>
         </div>
         {onBtnClick && btnLabel && (
-          <button type="button" className="save-button" onClick={onBtnClick}>
+          <button type="button" className="save-button mt-1 mr-1" onClick={onBtnClick}>
             <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             {btnLabel}
           </button>

@@ -1,28 +1,18 @@
-import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { ApplicationType } from '../../../shared/entities/application-type.entity';
+import { Column, Entity } from 'typeorm';
+import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 @Entity()
 export class Application extends BaseEntity {
   @Column({ type: 'text', name: 'name' })
   name: string;
 
-  @Exclude()
   @Column({
-    type: 'integer',
-    nullable: true,
-    name: 'type_id',
+    type: 'enum',
+    enum: ApplicationTypeEnum,
+    name: 'type',
   })
-  typeId: number;
-
-  @ManyToOne(
-    () => ApplicationType,
-    (applicationType) => applicationType.application,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'type_id' })
-  type: ApplicationType;
+  type: ApplicationTypeEnum;
 
   @Column({ type: 'jsonb', name: 'steps' })
   steps: string[];
