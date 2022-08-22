@@ -1,5 +1,13 @@
-import { IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Matches,
+  Max,
+} from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { MAX_REPORT } from '../constants/values.constants';
 
 export class UpdateOrganizationReportDto {
   @IsNumber()
@@ -7,14 +15,18 @@ export class UpdateOrganizationReportDto {
 
   @IsNumber()
   @IsOptional()
-  numberOfVolunteers: number;
+  @Max(MAX_REPORT)
+  @IsPositive()
+  numberOfVolunteers?: number;
 
   @IsNumber()
   @IsOptional()
-  numberOfContractors: number;
+  @Max(MAX_REPORT)
+  @IsPositive()
+  numberOfContractors?: number;
 
   @IsString()
   @IsOptional()
   @Matches(REGEX.LINK)
-  report: string;
+  report?: string;
 }
