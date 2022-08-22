@@ -10,21 +10,22 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFilterDto } from './dto/user-filter.dto';
 import { User } from './entities/user.entity';
+import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 
+@Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
 @ApiBearerAuth()
-// TODO: add permissions for Admin (SuperAdmin and Admin)
 export class AdminUserController {
   constructor(private readonly userService: UserService) {}
 
-  // TODO: restrict to be called only by Admin/Super-Admin
   @ApiBody({ type: CreateUserDto })
   @Post('')
   async create(@Body() body: CreateUserDto) {
@@ -42,33 +43,36 @@ export class AdminUserController {
     @ExtractUser() user: User,
     @Query() filters: UserFilterDto,
   ): Promise<Pagination<User>> {
-    return this.userService.findAll(user.organizationId, filters);
+    return this.userService.findAll(filters, user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })
   @Get(':id')
-  async getOne(@Param('id') userId: number): Promise<User> {
+  async getOne(
+    @Param('id') userId: number,
+    @ExtractUser() user: User,
+  ): Promise<User> {
     return this.userService.getById(userId);
   }
 
-  // TODO: restrict to be called only by Admin/Super-Admin
   @ApiBody({ type: Number, isArray: true })
   @Patch('restrict')
   restrict(
     @Body(new ParseArrayPipe({ items: Number }))
     ids: number[],
+    @ExtractUser() user: User,
   ) {
-    return this.userService.restrictAccess(ids);
+    return this.userService.restrictAccess(ids, user.organizationId);
   }
 
-  // TODO: restrict to be called only by Admin/Super-Admin
   @ApiBody({ type: Number, isArray: true })
   @Patch('activate')
   restore(
     @Body(new ParseArrayPipe({ items: Number }))
     ids: number[],
+    @ExtractUser() user: User,
   ) {
-    return this.userService.restoreAccess(ids);
+    return this.userService.restoreAccess(ids, user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })
@@ -77,14 +81,14 @@ export class AdminUserController {
   async update(
     @Param('id') userId: number,
     @Body() body: UpdateUserDto,
+    @ExtractUser() user: User,
   ): Promise<User> {
-    return this.userService.update(userId, body);
+    return this.userService.updateById(userId, body, user.organizationId);
   }
 
-  // TODO: restrict to be called only by Admin/Super-Admin
   @ApiParam({ name: 'id', type: Number })
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.userService.removeById(id);
+  remove(@Param('id') id: number, @ExtractUser() user: User) {
+    return this.userService.removeById(id, user.organizationId);
   }
 }

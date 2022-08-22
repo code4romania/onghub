@@ -14,7 +14,7 @@ import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import { Person } from '../../../common/interfaces/person.interface';
 import ContactForm from '../../../components/Contact/Contact';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import DeleteRowConfirmationModal from '../../organization/components/OrganizationLegal/components/DeleteRowConfirmationModal';
 import DirectorModal from '../../organization/components/OrganizationLegal/components/DirectorModal';
@@ -79,7 +79,7 @@ const CreateOrganizationLegal = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onOpenDeleteDirectorModal,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -103,7 +103,7 @@ const CreateOrganizationLegal = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onOpenDeleteOtherModal,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 

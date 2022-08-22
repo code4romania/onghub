@@ -18,7 +18,6 @@ import {
   ApiTooManyRequestsResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
 import { OrganizationService } from './services/organization.service';
@@ -27,41 +26,39 @@ import {
   PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
 } from './constants/open-api.schema';
+import { ExtractUser } from '../user/decorators/user.decorator';
+import { User } from '../user/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 
-@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
-@Controller('organization')
-export class OrganizationController {
+@Controller('organization-profile')
+export class OrganizationProfileController {
   constructor(private readonly organizationService: OrganizationService) {}
 
-  @ApiBody({ type: CreateOrganizationDto })
-  @Post()
-  create(
-    @Body() createOrganizationDto: CreateOrganizationDto,
-  ): Promise<Organization> {
-    return this.organizationService.create(createOrganizationDto);
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @Get()
+  findOne(@ExtractUser() user: User): Promise<Organization> {
+    return this.organizationService.findWithRelations(user.organizationId);
   }
 
-  @ApiParam({ name: 'id', type: String })
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Organization> {
-    return this.organizationService.findWithRelations(+id);
-  }
-
+  @Roles(Role.ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
-  @Patch(':id')
+  @Patch()
   update(
-    @Param('id') id: string,
+    @ExtractUser() user: User,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
-    return this.organizationService.update(+id, updateOrganizationDto);
+    return this.organizationService.update(
+      user.organizationId,
+      updateOrganizationDto,
+    );
   }
 
   // @Public() -- NEEDED FOR CREATE FLOW
+  @Roles(Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -72,9 +69,9 @@ export class OrganizationController {
   @ApiBody({
     schema: ORGANIZATION_UPLOAD_SCHEMA,
   })
-  @Post(':id/upload')
+  @Post('upload')
   upload(
-    @Param('id') id: number,
+    @ExtractUser() user: User,
     @UploadedFiles()
     files: {
       logo: Express.Multer.File[];
@@ -82,69 +79,77 @@ export class OrganizationController {
     },
   ): Promise<any> {
     return this.organizationService.upload(
-      id,
+      user.organizationId,
       files.logo,
       files.organizationStatute,
     );
   }
 
+  @Roles(Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
   @ApiBody({
     schema: PARTNER_UPLOAD_SCHEMA,
   })
-  @Post(':id/partners/:partnerId')
+  @Post('partners/:partnerId')
   uploadPartnerList(
-    @Param('id') id: string,
+    @ExtractUser() user: User,
     @Param('partnerId') partnerId: string,
     @Body() body: { numberOfPartners: number },
     @UploadedFiles() files: { partners: Express.Multer.File[] },
   ): Promise<any> {
     return this.organizationService.uploadPartners(
-      +id,
+      user.organizationId,
       +partnerId,
       +body.numberOfPartners,
       files.partners,
     );
   }
 
+  @Roles(Role.ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
   @ApiBody({
     schema: INVESTOR_UPLOAD_SCHEMA,
   })
-  @Post(':id/investors/:investorId')
+  @Post('investors/:investorId')
   uploadInvestorList(
-    @Param('id') id: string,
+    @ExtractUser() user: User,
     @Param('investorId') investorId: string,
     @Body() body: { numberOfInvestors: number },
     @UploadedFiles() files: { investors: Express.Multer.File[] },
   ): Promise<any> {
     return this.organizationService.uploadInvestors(
-      +id,
+      user.organizationId,
       +investorId,
       +body.numberOfInvestors,
       files.investors,
     );
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @Roles(Role.ADMIN)
   @ApiParam({ name: 'partnerId', type: String })
-  @Delete(':id/partners/:partnerId')
+  @Delete('partners/:partnerId')
   deletePartner(
-    @Param('id') id: string,
+    @ExtractUser() user: User,
     @Param('partnerId') partnerId: string,
   ) {
-    return this.organizationService.deletePartner(+id, +partnerId);
+    return this.organizationService.deletePartner(
+      user.organizationId,
+      +partnerId,
+    );
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @Roles(Role.ADMIN)
   @ApiParam({ name: 'investorId', type: String })
-  @Delete(':id/investors/:investorId')
+  @Delete('investors/:investorId')
   deleteInvestors(
-    @Param('id') id: string,
+    @ExtractUser() user: User,
     @Param('investorId') investorId: string,
   ) {
-    return this.organizationService.deleteInvestor(+id, +investorId);
+    return this.organizationService.deleteInvestor(
+      user.organizationId,
+      +investorId,
+    );
   }
 }

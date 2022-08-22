@@ -103,11 +103,11 @@ export abstract class BaseDAO<T> {
     if (search) {
       const where = config.searchableColumns.map((column: string) => ({
         ...andWherQuery,
-        [column]: ILike(`%${search}%`),
+        ...this.buildSearchQuery(column, search),
       }));
       orWhereQuery.push(...where);
     } else {
-      orWhereQuery.push(andWherQuery);
+      if (Object.keys(andWherQuery).length > 0) orWhereQuery.push(andWherQuery);
     }
 
     // order conditions
@@ -117,14 +117,20 @@ export abstract class BaseDAO<T> {
     };
 
     // full query
-    const query: FindManyOptions<T> = {
+    let query: FindManyOptions<T> = {
       select: selectQuery,
       relations: relationsQuery,
-      where: orWhereQuery,
       order: orderOptions,
       take: limit,
       skip: (page - 1) * limit,
     };
+
+    if (orWhereQuery.length > 0) {
+      query = {
+        ...query,
+        where: orWhereQuery,
+      };
+    }
 
     // [T[], totalItems]
     const response = await this.repository.findAndCount(query);
@@ -143,9 +149,27 @@ export abstract class BaseDAO<T> {
   }
 
   private buildQueryObject = (options: string[]): any => {
-    return options.reduce((prev: any, curr: any) => {
-      return { ...prev, [curr]: true };
+    return options.reduce((prev: any, curr: string) => {
+      const currentBlock = curr.split('.');
+      return currentBlock.length === 1
+        ? { ...prev, [curr]: true }
+        : {
+            ...prev,
+            [currentBlock[0]]: this.buildQueryObject([currentBlock[1]]),
+          };
     }, {});
+  };
+
+  private buildSearchQuery = (option: string, search: string): any => {
+    const optionValues = option.split('.');
+    return optionValues.length === 1
+      ? { [option]: ILike(`%${search}%`) }
+      : {
+          [optionValues[0]]: this.buildSearchQuery(
+            optionValues.slice(1).join('.'),
+            search,
+          ),
+        };
   };
 
   private betweenDates = (from: Date | string, to: Date | string) =>

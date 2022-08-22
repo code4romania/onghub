@@ -8,6 +8,7 @@ import { CogIcon, LogoutIcon } from '@heroicons/react/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
+import { Auth } from 'aws-amplify';
 
 const Header = () => {
   const { logout, isAuthenticated } = useAuthContext();
@@ -21,6 +22,14 @@ const Header = () => {
           <div className="flex items-center">
             <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
           </div>
+          {!isAuthenticated && (
+            <button
+              className="bg-yellow-600 px-6 py-2 shadow rounded-full text-black font-titilliumBold"
+              onClick={(e) => Auth.federatedSignIn()}
+            >
+              INTRA IN CONT
+            </button>
+          )}
           {isAuthenticated && (
             <div className="flex space-x-4 items-center">
               <Menu as="div" className="relative inline-block text-left">

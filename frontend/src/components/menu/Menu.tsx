@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   ArrowCircleLeftIcon,
   ArrowCircleRightIcon,
@@ -6,24 +6,47 @@ import {
 } from '@heroicons/react/outline';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { NAVIGATION_ROUTES } from '../../common/router/Routes.constants';
+import {
+  EMPLOYEE_ROUTES,
+  ADMIN_ROUTES,
+  SUPER_ADMIN_ROUTES,
+} from '../../common/router/Routes.constants';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { Trans } from '@lingui/react';
+import { AuthContext } from '../../contexts/AuthContext';
+import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
 const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isNarrow, setIsNarrow] = useState(false);
+  const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
 
   useEffect(() => {
-    if (location) {
-      const exists = NAVIGATION_ROUTES.find(
+    if (location && role) {
+      const exists = getNavigationRoutes(role).find(
         (navigationItem) => navigationItem.href == location.pathname.split('/')[1],
       );
       setCurrentMenuItemId(exists ? exists.id : -1);
     }
   }, [location.pathname]);
+
+  const getNavigationRoutes = (role: UserRole) => {
+    let routes = EMPLOYEE_ROUTES;
+    switch (role) {
+      case UserRole.ADMIN:
+        routes = ADMIN_ROUTES;
+        break;
+      case UserRole.SUPER_ADMIN:
+        routes = SUPER_ADMIN_ROUTES;
+        break;
+      default:
+        routes = EMPLOYEE_ROUTES;
+    }
+
+    return routes;
+  };
 
   const handleMenuItemClick = (item: any) => {
     setCurrentMenuItemId(item.id);
@@ -39,27 +62,28 @@ const Menu = () => {
         )}
         aria-label="Sidebar"
       >
-        {NAVIGATION_ROUTES.map((item) => (
-          <a
-            key={item.name}
-            className={classNames(
-              item.id === currentMenuItemId ? 'bg-menu-green/[0.15] text-green' : '',
-              isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
-              'main-menu-item',
-            )}
-            onClick={() => handleMenuItemClick(item)}
-          >
-            <item.icon className="w-5 h-5" />
-            <span
+        {role &&
+          getNavigationRoutes(role).map((item) => (
+            <a
+              key={item.name}
               className={classNames(
-                isNarrow ? '-translate-x-2 hidden' : '',
-                'transition-transform duration-50 whitespace-nowrap',
+                item.id === currentMenuItemId ? 'bg-menu-green/[0.15] text-green' : '',
+                isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
+                'main-menu-item',
               )}
+              onClick={() => handleMenuItemClick(item)}
             >
-              {item.name}
-            </span>
-          </a>
-        ))}
+              <item.icon className="w-5 h-5" />
+              <span
+                className={classNames(
+                  isNarrow ? '-translate-x-2 hidden' : '',
+                  'transition-transform duration-50 whitespace-nowrap',
+                )}
+              >
+                {item.name}
+              </span>
+            </a>
+          ))}
         <div className="pt-60 space-y-4">
           <a
             key={'info'}

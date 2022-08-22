@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { PencilIcon, TrashIcon, DownloadIcon, UploadIcon } from '@heroicons/react/outline';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { Report } from '../../interfaces/Report.interface';
 import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
@@ -18,15 +18,17 @@ import {
   getPublicFileUrl,
 } from '../../../../services/files/File.service';
 import {
-  useDeleteInvestorMutation,
-  useDeletePartnerMutation,
-  useOrganizationMutation,
-  useUploadInvestorsList,
-  useUploadPartnersList,
+  useDeleteInvestorByProfileMutation,
+  useDeletePartnerByProfileMutation,
+  useOrganizationByProfileMutation,
+  useUploadInvestorsByProfileList,
+  useUploadPartnersListByProfile,
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import readXlsxFile from 'read-excel-file';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationData = () => {
   // static links for partners and investors tables
@@ -37,13 +39,34 @@ const OrganizationData = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
+  const { role } = useContext(AuthContext);
 
-  const { organizationReport, organization } = useSelectedOrganization();
-  const reportSummaryMutation = useOrganizationMutation();
-  const uploadPartnersMutation = useUploadPartnersList();
-  const uploadInvestorsMutation = useUploadInvestorsList();
-  const deleteInvestorMutation = useDeleteInvestorMutation();
-  const deletePartnerMutation = useDeletePartnerMutation();
+  const { organizationReport } = useSelectedOrganization();
+  const {
+    mutate: updateReport,
+    error: updateReportError,
+    isLoading: updateReportPending,
+  } = useOrganizationByProfileMutation();
+  const {
+    mutate: uploadPartners,
+    error: uploadPartnersError,
+    isLoading: uploadPartnersPending,
+  } = useUploadPartnersListByProfile();
+  const {
+    mutate: uploadInvestors,
+    error: uploadInvestorsError,
+    isLoading: uploadInvestorsPending,
+  } = useUploadInvestorsByProfileList();
+  const {
+    mutate: deleteInvestor,
+    error: deleteInvestorError,
+    isLoading: deleteInvestorPending,
+  } = useDeleteInvestorByProfileMutation();
+  const {
+    mutate: deletePartner,
+    error: deletePartnerError,
+    isLoading: deletePartnerPending,
+  } = useDeletePartnerByProfileMutation();
 
   useEffect(() => {
     initTemplateData();
@@ -51,17 +74,19 @@ const OrganizationData = () => {
 
   useEffect(() => {
     if (
-      reportSummaryMutation.error ||
-      uploadPartnersMutation.error ||
-      uploadInvestorsMutation.error ||
-      deleteInvestorMutation.error
+      updateReportError ||
+      uploadPartnersError ||
+      uploadInvestorsError ||
+      deleteInvestorError ||
+      deletePartnerError
     )
       useErrorToast('Could not load open data');
   }, [
-    reportSummaryMutation.error,
-    uploadPartnersMutation.error,
-    uploadInvestorsMutation.error,
-    deleteInvestorMutation.error,
+    updateReportError,
+    uploadPartnersError,
+    uploadInvestorsError,
+    deleteInvestorError,
+    deletePartnerError,
   ]);
 
   const initTemplateData = async () => {
@@ -80,7 +105,7 @@ const OrganizationData = () => {
         name: 'Elimina date',
         icon: TrashIcon,
         onClick: onDeleteReport,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -93,60 +118,88 @@ const OrganizationData = () => {
   };
 
   const buildPartnersActionColumn = (): TableColumn<Partner> => {
-    const menuItems = [
+    const employeeMenuItems = [
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
         onClick: onDownloadFile,
-        isDownload: true,
+        type: PopoverMenuRowType.DOWNLOAD,
+      },
+    ];
+
+    const adminMenuItems = [
+      {
+        name: 'Descarca lista',
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
         onClick: setSelectedPartner,
-        isUpload: true,
+        type: PopoverMenuRowType.UPLOAD,
       },
       {
         name: 'Elimina lista',
         icon: TrashIcon,
         onClick: onDeletePartner,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
     return {
       name: '',
-      cell: (row: Partner) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Partner) => (
+        <PopoverMenu
+          row={row}
+          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };
   };
 
   const buildInvestorsActionColumn = (): TableColumn<Investor> => {
-    const menuItems = [
+    const employeeMenuItems = [
       {
         name: 'Descarca lista',
         icon: DownloadIcon,
         onClick: onDownloadFile,
         isDownload: true,
       },
+    ];
+
+    const adminMenuItems = [
+      {
+        name: 'Descarca lista',
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        type: PopoverMenuRowType.DOWNLOAD,
+      },
       {
         name: 'Incarca lista noua',
         icon: UploadIcon,
         onClick: setSelectedInvestor,
-        isUpload: true,
+        type: PopoverMenuRowType.UPLOAD,
       },
       {
         name: 'Elimina lista',
         icon: TrashIcon,
         onClick: onDeleteInvestor,
-        isRemove: true,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
     return {
       name: '',
-      cell: (row: Investor) => <PopoverMenu row={row} menuItems={menuItems} />,
+      cell: (row: Investor) => (
+        <PopoverMenu
+          row={row}
+          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+        />
+      ),
       width: '50px',
       allowOverflow: true,
     };
@@ -163,8 +216,7 @@ const OrganizationData = () => {
     if (data.report?.startsWith('www')) {
       data.report = 'http://' + data.report;
     }
-    reportSummaryMutation.mutate({
-      id: organization?.id as number,
+    updateReport({
       organization: {
         report: {
           reportId: data.id,
@@ -177,8 +229,7 @@ const OrganizationData = () => {
   };
 
   const onDeleteReport = (row: Report) => {
-    reportSummaryMutation.mutate({
-      id: organization?.id as number,
+    updateReport({
       organization: {
         report: {
           reportId: row.id,
@@ -201,11 +252,11 @@ const OrganizationData = () => {
   };
 
   const onDeletePartner = (row: Partner) => {
-    deletePartnerMutation.mutate({ id: organization?.id as number, partnerId: row.id });
+    deletePartner({ partnerId: row.id });
   };
 
   const onDeleteInvestor = (row: Investor) => {
-    deleteInvestorMutation.mutate({ id: organization?.id as number, investorId: row.id });
+    deleteInvestor({ investorId: row.id });
   };
 
   const onUploadNewList = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,38 +270,38 @@ const OrganizationData = () => {
 
   const uploadPartnersList = async (partnerId: number, file: File) => {
     try {
-    const rows = await readXlsxFile(file);
-    if (rows.length <= 2) {
-      useErrorToast('The file you uploaded contains no data!');
+      const rows = await readXlsxFile(file);
+      if (rows.length <= 2) {
+        useErrorToast('The file you uploaded contains no data!');
+        return;
+      }
+      const data = new FormData();
+      data.append('partners', file);
+      data.append('numberOfPartners', (rows.length - 2).toString());
+      uploadPartners({ partnerId, data });
+      setSelectedPartner(null);
+    } catch (error) {
+      useErrorToast('Invalid file format.');
       return;
     }
-    const data = new FormData();
-    data.append('partners', file);
-    data.append('numberOfPartners', (rows.length - 2).toString());
-    uploadPartnersMutation.mutate({ id: organization?.id as number, partnerId, data });
-    setSelectedPartner(null);
-  } catch (error) {
-    useErrorToast('Invalid file format.');
-    return;
-  }
   };
 
   const uploadInvestorsList = async (investorId: number, file: File) => {
     try {
-    const rows = await readXlsxFile(file);
-    if (rows.length <= 2) {
-      useErrorToast('The file you uploaded contains no data!');
+      const rows = await readXlsxFile(file);
+      if (rows.length <= 2) {
+        useErrorToast('The file you uploaded contains no data!');
+        return;
+      }
+      const data = new FormData();
+      data.append('investors', file);
+      data.append('numberOfInvestors', (rows.length - 2).toString());
+      uploadInvestors({ investorId, data });
+      setSelectedInvestor(null);
+    } catch (error) {
+      useErrorToast('Invalid file format.');
       return;
     }
-    const data = new FormData();
-    data.append('investors', file);
-    data.append('numberOfInvestors', (rows.length - 2).toString());
-    uploadInvestorsMutation.mutate({ id: organization?.id as number, investorId, data });
-    setSelectedInvestor(null);
-  } catch (error) {
-    useErrorToast('Invalid file format.');
-    return;
-  }
   };
 
   return (
@@ -263,9 +314,13 @@ const OrganizationData = () => {
             </p>
           </div>
           <DataTableComponent
-            columns={[...ReportsTableHeaders, buildReportActionColumn()]}
+            columns={
+              role !== UserRole.EMPLOYEE
+                ? [...ReportsTableHeaders, buildReportActionColumn()]
+                : ReportsTableHeaders
+            }
             data={organizationReport?.reports || []}
-            loading={reportSummaryMutation.isLoading}
+            loading={updateReportPending}
           />
         </>
       </CardPanel>
@@ -287,7 +342,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...PartnerTableHeaders, buildPartnersActionColumn()]}
             data={organizationReport?.partners || []}
-            loading={uploadPartnersMutation.isLoading || deletePartnerMutation.isLoading}
+            loading={uploadPartnersPending || deletePartnerPending}
           />
         </>
       </CardPanel>
@@ -309,7 +364,7 @@ const OrganizationData = () => {
           <DataTableComponent
             columns={[...InvestorsTableHeaders, buildInvestorsActionColumn()]}
             data={organizationReport?.investors || []}
-            loading={uploadInvestorsMutation.isLoading || deleteInvestorMutation.isLoading}
+            loading={uploadInvestorsPending || deleteInvestorPending}
           />
         </>
       </CardPanel>

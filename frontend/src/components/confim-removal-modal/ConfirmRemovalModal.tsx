@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-interface ConfirmRemovalModalProps {
+export interface ConfirmRemovalModalProps {
   title: string;
   description: string;
   closeBtnLabel: string;

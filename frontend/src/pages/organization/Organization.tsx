@@ -1,25 +1,26 @@
 /* eslint-disable no-constant-condition */
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { useOrganizationQuery } from '../../services/organization/Organization.queries';
-import { useSelectedOrganization } from '../../store/selectors';
+import { useOrganizationByProfileQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
+import { ExclamationIcon } from '@heroicons/react/solid';
+import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import { OrganizationStatus } from './enums/OrganizationStatus.enum';
 
 const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
-  const { organization } = useSelectedOrganization();
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
 
   // load organization data
-  const { error } = useOrganizationQuery(organization?.id as number);
+  const { error } = useOrganizationByProfileQuery();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(

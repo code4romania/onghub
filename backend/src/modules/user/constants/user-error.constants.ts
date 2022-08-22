@@ -31,4 +31,8 @@ export const USER_ERRORS = {
     message: 'User already exists and cannot be created',
     errorCode: 'USR_008',
   },
+  UPDATE: {
+    message: 'Could not update the user',
+    errorCode: 'USR_009',
+  },
 };
