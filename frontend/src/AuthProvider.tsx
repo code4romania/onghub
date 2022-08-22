@@ -10,6 +10,7 @@ import { UserRole } from './pages/users/enums/UserRole.enum';
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
+    isRestricted: false,
   });
   const [role, setRole] = useState<UserRole | null>(null);
 
@@ -22,7 +23,7 @@ const AuthProvider = ({ children }: any) => {
 
   const logout: any = async () => {
     await Auth.signOut();
-    setAuthState({ isAuthenticated: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false });
     setRole(null);
   };
 
@@ -32,10 +33,10 @@ const AuthProvider = ({ children }: any) => {
         await Auth.currentAuthenticatedUser();
         const { data: profile } = await refetchUserProfile();
         if (profile?.status === UserStatus.ACTIVE) {
-          setAuthState({ isAuthenticated: true });
+          setAuthState({ isRestricted: false, isAuthenticated: true });
           setRole(profile?.role as UserRole);
         } else {
-          throw Error(); // TODO: Better error handling.
+          setAuthState({ ...authState, isRestricted: true });
         }
       } catch (error) {
         logout();

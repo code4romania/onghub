@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Auth, Hub } from 'aws-amplify';
+import { Hub } from 'aws-amplify';
 import Header from '../../components/Header/Header';
 
 const Login = () => {
