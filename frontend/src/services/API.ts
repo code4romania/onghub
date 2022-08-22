@@ -33,4 +33,19 @@ API.interceptors.request.use(async (request) => {
   return request;
 });
 
+API.interceptors.response.use(
+  async (response) => {
+    return response;
+  },
+  async (error: any) => {
+    // Redirect to login once we have restricted access
+    if (error.response.status === 403 || error.response.status === 401) {
+      Auth.signOut();
+      window.location.href = '/login';
+    }
+
+    return error;
+  },
+);
+
 export default API;
