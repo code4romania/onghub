@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 import { CreateApplicationDto } from './dto/create-application.dto';
+import { ApplicationFilterDto } from './dto/filter-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { Application } from './entities/application.entity';
 import { ApplicationService } from './services/application.service';
@@ -31,9 +40,9 @@ export class ApplicationController {
     return this.applicationService.update(+id, updateApplicationDto);
   }
 
-  @Roles(Role.EMPLOYEE, Role.ADMIN, Role.SUPER_ADMIN)
-  @Get('all')
-  viewAll() {
-    return this.applicationService.findAll({});
+  @Roles(Role.SUPER_ADMIN)
+  @Get('')
+  getAll(@Query() filters: ApplicationFilterDto) {
+    return this.applicationService.findAll(filters);
   }
 }

@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity } from 'typeorm';
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 @Entity()
@@ -13,6 +14,14 @@ export class Application extends BaseEntity {
     name: 'type',
   })
   type: ApplicationTypeEnum;
+
+  @Column({
+    type: 'enum',
+    enum: ApplicationStatus,
+    name: 'status',
+    default: ApplicationStatus.ACTIVE,
+  })
+  status: ApplicationStatus;
 
   @Column({ type: 'jsonb', name: 'steps' })
   steps: string[];
