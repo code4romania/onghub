@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -10,7 +11,9 @@ import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
+import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
+import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
 import { Area } from '../enums/organization-area.enum';
@@ -177,6 +180,24 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findAll(
+    options: OrganizationFilterDto,
+  ): Promise<Pagination<Organization>> {
+    const paginationOptions: any = {
+      status: [
+        OrganizationStatus.ACTIVE,
+        OrganizationStatus.PENDING,
+        OrganizationStatus.RESTRICTED,
+      ],
+      ...options,
+    };
+
+    return this.organizationRepository.getManyPaginated(
+      ORGANIZATION_FILTERS_CONFIG,
+      paginationOptions,
+    );
   }
 
   public async findWithRelations(id: number): Promise<Organization> {

@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   UploadedFiles,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
@@ -29,6 +30,8 @@ import {
 } from './constants/open-api.schema';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
+import { OrganizationFilterDto } from './dto/organization-filter.dto';
+import { Pagination } from 'src/common/interfaces/pagination';
 
 @Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
@@ -50,6 +53,13 @@ export class OrganizationController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findWithRelations(+id);
+  }
+
+  @Get('')
+  findAll(
+    @Query() filters: OrganizationFilterDto,
+  ): Promise<Pagination<Organization>> {
+    return this.organizationService.findAll(filters);
   }
 
   @ApiBody({ type: UpdateOrganizationDto })
