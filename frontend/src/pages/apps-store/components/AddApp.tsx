@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
@@ -23,6 +23,11 @@ const AddApp = () => {
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
+  });
+
+  const { fields, append, prepend, remove, swap, move, insert, replace } = useFieldArray({
+    control,
+    name: 'steps',
   });
 
   const handleSave = () => {
