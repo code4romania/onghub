@@ -37,10 +37,11 @@ API.interceptors.response.use(
   async (response) => {
     return response;
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async (error: any) => {
     // Redirect to login once we have restricted access
-    if (error.response.status === 403 || error.response.status === 401) {
-      Auth.signOut();
+    if (error.response.status === 403) {
+      await Auth.signOut();
       window.location.href = '/login';
     }
 

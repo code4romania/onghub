@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react';
 import { Hub } from 'aws-amplify';
 import Header from '../../components/Header/Header';
-import { useAuthContext } from '../../contexts/AuthContext';
-
 const Login = () => {
-  const { setAuthState } = useAuthContext();
-
   useEffect(() => {
-    setAuthState({ isAuthenticated: false, isRestricted: false });
     const listener = Hub.listen('auth', ({ payload: { event, data } }) => {
       switch (event) {
         case 'signIn':
