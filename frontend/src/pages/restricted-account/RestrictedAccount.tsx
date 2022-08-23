@@ -10,10 +10,6 @@ const RestrictedAccount = () => {
     setAuthState({ isAuthenticated: false, isRestricted: false });
   };
 
-  const onSendEmail = () => {
-    console.log('To be implemented....');
-  };
-
   return (
     <>
       <Header />
@@ -25,17 +21,13 @@ const RestrictedAccount = () => {
           <p className="font-normal text-xl md:text-2xl">
             Lorem ipsum. Nu mai ai access in ONGHub. Pentru mai multe detalii, contacteaza echipa
             noastra gratuit prin email la{' '}
-            <a
-              className="text-green font-semibold cursor-pointer"
-              href={`mailto:${process.env.REACT_APP_CONTACT_EMAIL}`}
-            >
-              {process.env.REACT_APP_CONTACT_EMAIL}
-            </a>
+            <span className="text-green font-semibold">{process.env.REACT_APP_CONTACT_EMAIL}</span>
           </p>
           <div className="flex items-start flex-col sm:flex-row">
-            <button onClick={onSendEmail} className="save-button mb-2">
-              Trimite e-mail
-            </button>
+            <a className="mb-2" href={`mailto:${process.env.REACT_APP_CONTACT_EMAIL}`}>
+              <button className="save-button ">Trimite e-mail</button>
+            </a>
+
             <button onClick={onGoBackToSite} className="edit-button mb-2 sm:ml-6">
               Inapoi la website
             </button>
