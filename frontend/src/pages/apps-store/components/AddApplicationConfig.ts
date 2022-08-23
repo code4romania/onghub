@@ -2,7 +2,7 @@ import { ALPHANUMERIC_REGEX, URL_REGEX } from '../../../common/helpers/format.he
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
 import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 
-export const AddAppConfigConfig: Record<string, any> = {
+export const AddAppConfig: Record<string, any> = {
   name: {
     key: 'name',
     rules: {
@@ -59,7 +59,7 @@ export const AddAppConfigConfig: Record<string, any> = {
       {
         label: ApplicationTypeNaming[ApplicationTypeEnum.STANDALONE],
         name: 'type',
-        value: ApplicationTypeEnum.INDEPENDENT,
+        value: ApplicationTypeEnum.STANDALONE,
       },
     ],
   },
@@ -139,6 +139,41 @@ export const AddAppConfigConfig: Record<string, any> = {
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
+    },
+  },
+  videoLink: {
+    key: 'videoLink',
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Link video prezentare*',
+      helperText: '',
+      placeholder: '',
+      addOn: InputFieldHttpAddon,
+    },
+  },
+  step: {
+    key: 'step',
+    rules: {
+      required: {
+        value: true,
+        message: 'Step is required.',
+      },
+      pattern: {
+        value: ALPHANUMERIC_REGEX,
+        message: 'Format must be valid',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Pas',
+      helperText: '',
+      placeholder: '',
     },
   },
 };

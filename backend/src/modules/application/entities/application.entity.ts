@@ -26,12 +26,12 @@ export class Application extends BaseEntity {
   @Column({ type: 'text', name: 'website' })
   website: string;
 
-  @Column({ type: 'text', name: 'login_link' })
+  @Column({ type: 'text', name: 'login_link', nullable: true })
   loginLink: string;
 
   @Column({ type: 'text', name: 'video_link' })
   videoLink: string;
 
-  @Column({ type: 'text', name: 'logo' })
+  @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
 }

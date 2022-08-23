@@ -26,7 +26,7 @@ import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
 import UserList from '../../pages/users/components/UserList/UserList';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
-import AddApp from '../../pages/apps-store/components/AddApp';
+import AddApplication from '../../pages/apps-store/components/AddApplication';
 
 const Router = () => {
   const { isAuthenticated } = useAuthContext();
@@ -81,7 +81,7 @@ const Router = () => {
           <Route path="user/:id" element={<UserEdit />} />
           <Route path="apps" element={<Apps />}></Route>
           <Route path="store" element={<AppStore />}></Route>
-          <Route path="store/new" element={<AddApp />} />
+          <Route path="store/new" element={<AddApplication />} />
           <Route path="account" element={<Account />} />
           <Route path="requests" element={<Requests />} />
         </Route>
