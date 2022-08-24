@@ -14,6 +14,10 @@ import {
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { FindManyOptions } from 'typeorm';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
+import { ApplicationFilterDto } from '../dto/filter-application.dto';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { ApplicationStatus } from '../enums/application-status.enum';
+import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
 
 @Injectable()
 export class ApplicationService {
@@ -37,7 +41,6 @@ export class ApplicationService {
   public async findOne(id: number): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },
-      relations: ['type'],
     });
 
     if (!application) {
@@ -50,8 +53,24 @@ export class ApplicationService {
     return application;
   }
 
-  public async findAll(conditions: FindManyOptions<Application>) {
-    return this.applicationRepository.getMany(conditions);
+  public async findAll(
+    options: ApplicationFilterDto,
+  ): Promise<Pagination<Application>> {
+    const paginationOptions: any = {
+      type: [
+        ApplicationTypeEnum.DATA_PULLING,
+        ApplicationTypeEnum.INDEPENDENT,
+        ApplicationTypeEnum.SIMPLE,
+        ApplicationTypeEnum.STANDALONE,
+      ],
+      status: [ApplicationStatus.ACTIVE, ApplicationStatus.DISABLED],
+      ...options,
+    };
+
+    return this.applicationRepository.getManyPaginated(
+      APPLICATION_FILTERS_CONFIG,
+      paginationOptions,
+    );
   }
 
   public async update(
