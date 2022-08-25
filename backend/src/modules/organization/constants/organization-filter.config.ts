@@ -1,10 +1,17 @@
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
-//TODO: to add organizationGeneral.name to selectColumns, searchableColumns and defaultSortBy
 export const ORGANIZATION_FILTERS_CONFIG = {
-  selectColumns: ['id', 'createdOn', 'status', 'updatedOn'],
-  searchableColumns: [],
-  defaultSortBy: 'id', // placeholder
+  selectColumns: [
+    'id',
+    'status',
+    'createdOn',
+    'updatedOn',
+    'name',
+    'userCount',
+    'completionStatusCount',
+  ],
+  searchableColumns: ['status'],
+  defaultSortBy: 'id',
   defaultOrderDirection: OrderDirection.ASC,
   relations: [],
   rangeColumn: 'createdOn',

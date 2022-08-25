@@ -1,3 +1,6 @@
+import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import API from '../API';
 
 /**EMPLOYEE && ADMIN */
@@ -38,6 +41,20 @@ export const deleteInvestorsByProfile = (investorId: number): Promise<any> => {
 /**
  * SUPER ADMIN
  */
+export const getOrganizations = async (
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+): Promise<PaginatedEntity<IOrganizationFull>> => {
+  let requestUrl = `/organization?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  return API.get(requestUrl).then((res) => res.data);
+};
+
 export const getOrganization = (id: number): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
 };

@@ -18,3 +18,9 @@ export interface IOrganizationFull extends IOrganization {
   organizationLegal: IOrganizationLegal;
   organizationReport: IOrganizationReport;
 }
+
+export interface IOrganizationView extends IOrganization {
+  name: string;
+  userCount: number;
+  completionStatusCount: number;
+}

@@ -16,9 +16,11 @@ import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
+import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -37,6 +39,7 @@ export class OrganizationService {
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
+    private readonly organizationViewRepository: OrganizationViewRepository,
   ) {}
 
   public async create(
@@ -182,19 +185,16 @@ export class OrganizationService {
     return organization;
   }
 
-  public async findAll(
-    options: OrganizationFilterDto,
-  ): Promise<Pagination<Organization>> {
+  public async findAll({
+    options,
+  }: {
+    options: OrganizationFilterDto;
+  }): Promise<Pagination<OrganizationView>> {
     const paginationOptions: any = {
-      status: [
-        OrganizationStatus.ACTIVE,
-        OrganizationStatus.PENDING,
-        OrganizationStatus.RESTRICTED,
-      ],
       ...options,
     };
 
-    return this.organizationRepository.getManyPaginated(
+    return this.organizationViewRepository.getManyPaginated(
       ORGANIZATION_FILTERS_CONFIG,
       paginationOptions,
     );

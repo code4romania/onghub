@@ -17,14 +17,19 @@ import { organizationLegalSlice } from './organization/organization-legal.slice'
 import { organizationReportsSlice } from './organization/organization-reports.slice';
 import { profileSlice } from './user/Profile.slice';
 import { IUser } from '../pages/users/interfaces/User.interface';
-import { IOrganization } from '../pages/organization/interfaces/Organization.interface';
+import {
+  IOrganization,
+  IOrganizationFull,
+} from '../pages/organization/interfaces/Organization.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { usersSlice } from './user/Users.slice';
 import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import { IRequest } from '../pages/requests/interfaces/Request.interface';
 import { requestsSlice } from './request/Requests.slice';
+import { organizationsSlice } from './organization/organizations.slice';
 
 interface OrganizationState {
+  organizations: PaginatedEntity<IOrganizationFull>;
   organization: IOrganization | null;
   organizationGeneral: IOrganizationGeneral | null;
   organizationFinancial: IOrganizationFinancial[];
@@ -37,6 +42,7 @@ interface OrganizationState {
   setOrganizationFinancial: (organizationFinancial: IOrganizationFinancial[]) => void;
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
+  setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -81,6 +87,7 @@ const useStore = create<
   ...profileSlice(set),
   ...usersSlice(set),
   ...requestsSlice(set),
+  ...organizationsSlice(set),
 }));
 
 export default useStore;

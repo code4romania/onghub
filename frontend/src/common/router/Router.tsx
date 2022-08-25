@@ -26,6 +26,7 @@ import UserInvites from '../../pages/users/components/UserInvites/UserInvites';
 import UserList from '../../pages/users/components/UserList/UserList';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
+import Organizations from '../../pages/organization/Organizations';
 
 const Router = () => {
   const { isAuthenticated } = useAuthContext();
@@ -82,6 +83,7 @@ const Router = () => {
           <Route path="store" element={<AppStore />}></Route>
           <Route path="account" element={<Account />} />
           <Route path="requests" element={<Requests />} />
+          <Route path="organizations" element={<Organizations />} />
         </Route>
         <Route path="*" element={<Navigate to={'/'}></Navigate>}></Route>
       </Routes>

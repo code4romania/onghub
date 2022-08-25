@@ -13,6 +13,7 @@ import {
   deletePartnersByProfile,
   getOrganization,
   getOrganizationByProfile,
+  getOrganizations,
   patchOrganization,
   patchOrganizationByProfile,
   uploadInvestors,
@@ -24,8 +25,9 @@ import {
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
-import { OrganizationStatus } from '../../pages/organization/enums/OrganizationStatus.enum';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
+import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 
 interface OrganizationPayload {
   id?: number;
@@ -50,6 +52,28 @@ interface OrganizationPayload {
 }
 
 /**SUPER ADMIN */
+export const useOrganizationsQuery = (
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+) => {
+  const { setOrganizations } = useStore();
+  return useQuery(
+    ['organizations', limit, page, orderBy, orderDirection, search],
+    () => getOrganizations(limit, page, orderBy, orderDirection, search),
+    {
+      onSuccess: (data: PaginatedEntity<IOrganizationFull>) => {
+        setOrganizations({
+          items: data.items,
+          meta: { ...data.meta, orderByColumn: orderBy, orderDirection },
+        });
+      },
+      enabled: !!(limit && page && orderBy && orderDirection),
+    },
+  );
+};
 
 export const useOrganizationQuery = (id: number) => {
   const {

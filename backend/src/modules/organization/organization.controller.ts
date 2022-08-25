@@ -32,6 +32,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 import { OrganizationFilterDto } from './dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { OrganizationView } from './entities/organization.view-entity';
 
 @Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
@@ -58,8 +59,8 @@ export class OrganizationController {
   @Get('')
   findAll(
     @Query() filters: OrganizationFilterDto,
-  ): Promise<Pagination<Organization>> {
-    return this.organizationService.findAll(filters);
+  ): Promise<Pagination<OrganizationView>> {
+    return this.organizationService.findAll({ options: filters });
   }
 
   @ApiBody({ type: UpdateOrganizationDto })

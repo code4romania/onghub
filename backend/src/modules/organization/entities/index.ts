@@ -8,3 +8,4 @@ export * from './contact.entity';
 export * from './report.entity';
 export * from './partner.entity';
 export * from './investor.entity';
+export * from './organization.view-entity';
