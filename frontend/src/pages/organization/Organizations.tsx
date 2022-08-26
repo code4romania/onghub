@@ -1,3 +1,4 @@
+import { BanIcon, EyeIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../common/config/pagination.config';
@@ -7,6 +8,7 @@ import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import DataTableFilters from '../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../components/date-range-picker/DateRangePicker';
+import PopoverMenu, { PopoverMenuRowType } from '../../components/popover-menu/PopoverMenu';
 import Select from '../../components/Select/Select';
 import { useOrganizationsQuery } from '../../services/organization/Organization.queries';
 import { useOrganizations } from '../../store/selectors';
@@ -14,6 +16,7 @@ import {
   OrganizationCompletionStatusOptions,
   OrganizationsUsersCountOptions,
 } from './constants/filters.constants';
+import { IOrganizationView } from './interfaces/Organization.interface';
 import { OrganizationsTableHeaders } from './table-headers/OrganizationsTable.headers';
 
 const Organizations = () => {
@@ -100,6 +103,31 @@ const Organizations = () => {
     );
   };
 
+  const buildOrganizationsActionColumn = (): TableColumn<IOrganizationView> => {
+    const activeOrganizationsMenuItems = [
+      {
+        name: 'Vizualizeaza ONG',
+        icon: EyeIcon,
+        onClick: () => console.log('To be implemented'),
+      },
+      {
+        name: 'Restrictioneaza Temporar',
+        icon: BanIcon,
+        onClick: () => console.log('To be implemented'),
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: IOrganizationView) => (
+        <PopoverMenu row={row} menuItems={activeOrganizationsMenuItems} />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
   return (
     <ContentWrapper
       title="ONG-uri"
@@ -148,7 +176,7 @@ const Organizations = () => {
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={[...OrganizationsTableHeaders]}
+            columns={[...OrganizationsTableHeaders, buildOrganizationsActionColumn()]}
             data={organizations.items}
             loading={isLoading}
             pagination
