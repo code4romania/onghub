@@ -42,6 +42,7 @@ const DateRangePicker = ({ label, defaultValue, onChange }: DateRangePickerProps
             setDateRange(update);
           }}
           isClearable={false}
+          placeholderText="Selectaza Interval"
         />
       </div>
     </div>

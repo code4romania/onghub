@@ -38,13 +38,16 @@ export const useUsersQuery = (
   status?: UserStatus,
   interval?: Date[],
 ) => {
-  const { setUsers, users } = useStore();
+  const { setUsers } = useStore();
   return useQuery(
     ['users', limit, page, orderBy, orderDirection, search, status, interval],
     () => getUsers(limit, page, orderBy, orderDirection, search, status, interval),
     {
       onSuccess: (data: PaginatedEntity<IUser>) => {
-        setUsers({ items: data.items, meta: { ...users.meta, ...data.meta } });
+        setUsers({
+          items: data.items,
+          meta: { ...data.meta, orderByColumn: orderBy, orderDirection },
+        });
       },
       enabled: !!(limit && page && orderBy && orderDirection),
     },
