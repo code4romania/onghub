@@ -1,3 +1,4 @@
+import formatISO9075 from 'date-fns/formatISO9075';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
@@ -47,10 +48,25 @@ export const getOrganizations = async (
   orderBy: string,
   orderDirection: OrderDirection,
   search?: string,
+  status?: number,
+  interval?: Date[],
+  userCount?: string,
 ): Promise<PaginatedEntity<IOrganizationFull>> => {
   let requestUrl = `/organization?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (status !== null && status !== undefined)
+    requestUrl = `${requestUrl}&completionStatusCount=${status}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
+
+  if (userCount) {
+    requestUrl = `${requestUrl}&userCount=${userCount}`;
+  }
 
   return API.get(requestUrl).then((res) => res.data);
 };

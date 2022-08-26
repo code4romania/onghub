@@ -58,11 +58,15 @@ export const useOrganizationsQuery = (
   orderBy: string,
   orderDirection: OrderDirection,
   search?: string,
+  status?: number,
+  interval?: Date[],
+  userCount?: string,
 ) => {
   const { setOrganizations } = useStore();
   return useQuery(
-    ['organizations', limit, page, orderBy, orderDirection, search],
-    () => getOrganizations(limit, page, orderBy, orderDirection, search),
+    ['organizations', limit, page, orderBy, orderDirection, search, status, interval, userCount],
+    () =>
+      getOrganizations(limit, page, orderBy, orderDirection, search, status, interval, userCount),
     {
       onSuccess: (data: PaginatedEntity<IOrganizationFull>) => {
         setOrganizations({

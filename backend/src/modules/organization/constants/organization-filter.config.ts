@@ -10,7 +10,7 @@ export const ORGANIZATION_FILTERS_CONFIG = {
     'userCount',
     'completionStatusCount',
   ],
-  searchableColumns: ['status'],
+  searchableColumns: ['name'],
   defaultSortBy: 'id',
   defaultOrderDirection: OrderDirection.ASC,
   relations: [],
