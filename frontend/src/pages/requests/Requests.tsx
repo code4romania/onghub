@@ -8,7 +8,7 @@ const Requests = () => {
       title="Solicitari access"
       subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile. "
     >
-      <div className="pb-6 flex mt-4 w-full">
+      <div className="pb-6 flex w-full">
         <RequestList />
       </div>
     </ContentWrapper>
