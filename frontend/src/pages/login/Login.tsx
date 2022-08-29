@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { Auth, Hub } from 'aws-amplify';
+import { Hub } from 'aws-amplify';
 import Header from '../../components/Header/Header';
-
 const Login = () => {
   useEffect(() => {
-    Hub.listen('auth', ({ payload: { event, data } }) => {
+    const listener = Hub.listen('auth', ({ payload: { event, data } }) => {
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
@@ -35,6 +34,9 @@ const Login = () => {
         case 'configured':
           console.log('the Auth module is configured');
       }
+
+      // unsubscribe
+      return listener;
     });
   }, []);
 
