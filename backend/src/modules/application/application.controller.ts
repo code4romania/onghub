@@ -8,6 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -40,9 +41,16 @@ export class ApplicationController {
     return this.applicationService.update(+id, updateApplicationDto);
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(...[Role.SUPER_ADMIN, Role.ADMIN])
   @Get('')
   getAll(@Query() filters: ApplicationFilterDto) {
     return this.applicationService.findAll(filters);
+  }
+
+  @Roles(...[Role.SUPER_ADMIN, Role.ADMIN])
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.applicationService.findOne(+id);
   }
 }

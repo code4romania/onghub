@@ -60,7 +60,7 @@ const UserEdit = () => {
       title="Editeaza"
       subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
     disponibile."
-      goBack={() => navigate('/users')}
+      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
     >
       <div className="py-6 flex">
         <CardPanel

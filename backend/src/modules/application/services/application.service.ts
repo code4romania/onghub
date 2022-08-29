@@ -12,11 +12,9 @@ import {
   APPLICATION_ERRORS,
 } from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
-import { FindManyOptions } from 'typeorm';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { ApplicationStatus } from '../enums/application-status.enum';
 import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
 
 @Injectable()
@@ -57,13 +55,6 @@ export class ApplicationService {
     options: ApplicationFilterDto,
   ): Promise<Pagination<Application>> {
     const paginationOptions: any = {
-      type: [
-        ApplicationTypeEnum.DATA_PULLING,
-        ApplicationTypeEnum.INDEPENDENT,
-        ApplicationTypeEnum.SIMPLE,
-        ApplicationTypeEnum.STANDALONE,
-      ],
-      status: [ApplicationStatus.ACTIVE, ApplicationStatus.DISABLED],
       ...options,
     };
 

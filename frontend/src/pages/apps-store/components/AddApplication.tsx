@@ -2,7 +2,7 @@ import { PencilIcon } from '@heroicons/react/outline';
 import { PlusIcon, UserRemoveIcon, XIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../common/hooks/useToast';
@@ -12,23 +12,41 @@ import { Loading } from '../../../components/loading/Loading';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import Textarea from '../../../components/Textarea/Textarea';
-import { useCreateApplicationMutation } from '../../../services/application/Application.queries';
+import {
+  useApplication,
+  useCreateApplicationMutation,
+  useUpdateApplicationMutation,
+} from '../../../services/application/Application.queries';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 
-const AddApplication = () => {
+const AddApplication = ({ edit }: { edit?: boolean }) => {
   const navigate = useNavigate();
-  const [readonly, setReadonly] = useState(true);
-  const [isEdit, setEdit] = useState(true);
+  const [readonly, setReadonly] = useState(false);
+  const [isEdit, setEdit] = useState(edit || false);
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
+  const params = useParams();
 
-  // Mutation=
+  const {
+    data: application,
+    error,
+    isLoading: applicationFetchLoading,
+  } = useApplication(params?.id || '');
+
+  // Mutation
   const {
     mutateAsync: mutateApplication,
     error: createApplicationError,
     isLoading: createApplicationLoading,
   } = useCreateApplicationMutation();
+
+  // Mutation
+  const {
+    mutateAsync: updateApplication,
+    error: updateApplicationError,
+    isLoading: updateApplicationLoading,
+  } = useUpdateApplicationMutation();
 
   // React Hook Form
   const {
@@ -43,7 +61,7 @@ const AddApplication = () => {
     reValidateMode: 'onChange',
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: 'steps',
   });
@@ -51,10 +69,28 @@ const AddApplication = () => {
   // watchers
   const type = watch('type');
 
+  useEffect(() => {
+    console.log(application);
+    if (application) {
+      reset({ ...application, steps: application.steps.map((step) => ({ step })) });
+    }
+  }, [application]);
+
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
     const res = await mutateApplication(dto);
     navigate('/store');
+  };
+
+  const handleEdit = async (data: any) => {
+    if (application) {
+      const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
+      const res = await updateApplication({
+        applicationId: application?.id?.toString(),
+        applicationUpdatePayload: dto,
+      });
+      navigate(-1);
+    }
   };
 
   const startEdit = () => {
@@ -62,14 +98,22 @@ const AddApplication = () => {
   };
 
   useEffect(() => {
-    reset({
-      steps: [{ step: '' }],
-    });
+    if (!edit) {
+      reset({
+        steps: [{ step: '' }],
+      });
+    }
   }, []);
 
   useEffect(() => {
-    useErrorToast(createApplicationError as string);
-  }, [createApplicationError]);
+    if (createApplicationError) {
+      useErrorToast(createApplicationError as string);
+    }
+
+    if (updateApplicationError) {
+      useErrorToast(createApplicationError as string);
+    }
+  }, [createApplicationError, updateApplicationError]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -80,7 +124,7 @@ const AddApplication = () => {
     }
   };
 
-  if (createApplicationLoading) {
+  if (createApplicationLoading || applicationFetchLoading || updateApplicationLoading) {
     return <Loading />;
   }
 
@@ -88,7 +132,7 @@ const AddApplication = () => {
     <ContentWrapper
       title={'Adauga aplicatie'}
       subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
-      goBack={() => navigate('/store')}
+      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate(-1) }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 px-10 flex justify-between">
@@ -99,7 +143,7 @@ const AddApplication = () => {
           <button
             type="button"
             className={classNames(readonly ? 'edit-button' : 'save-button')}
-            onClick={readonly ? startEdit : handleSubmit(handleSave)}
+            onClick={readonly ? startEdit : handleSubmit(isEdit ? handleEdit : handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             {readonly ? 'Editeaza' : 'Salveaza modificari'}

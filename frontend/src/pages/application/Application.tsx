@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
-import { USERS_TABS } from './constants/Tabs.constants';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { ORGANIZATION_TABS } from '../organization/constants/Tabs.constants';
+import { UserRole } from '../users/enums/UserRole.enum';
+import { APPLICATION_TABS } from './constants/ApplicationTabs';
 
-const Users = () => {
+const Application = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { role } = useAuthContext();
 
   useEffect(() => {
-    const found: IPageTab | undefined = USERS_TABS.find(
+    const found: IPageTab | undefined = ORGANIZATION_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
@@ -24,14 +29,26 @@ const Users = () => {
     navigate(tab.href);
   };
 
+  const onApplicationEdit = () => {
+    navigate('edit');
+  };
+
   return (
     <ContentWrapper
-      title="Utilizatori"
-      subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-disponibile."
-      addButton={{
-        btnLabel: 'Adauga Utilizator',
-        onBtnClick: () => navigate('/user'),
+      title={'Aplicatie'}
+      backButton={{
+        btnLabel: 'Inapoi',
+        onBtnClick: () => navigate(-1),
+      }}
+      editButton={{
+        btnLabel: 'Editeaza',
+        onBtnClick: onApplicationEdit,
+        visible: role === UserRole.SUPER_ADMIN,
+      }}
+      deleteButton={{
+        btnLabel: 'Sterge',
+        onBtnClick: () => navigate(-1),
+        visible: role === UserRole.SUPER_ADMIN,
       }}
     >
       <div className="pb-6 flex">
@@ -39,7 +56,7 @@ disponibile."
           className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
         >
-          {USERS_TABS.map((tab) => (
+          {APPLICATION_TABS.map((tab) => (
             <a
               key={tab.name}
               onClick={() => onTabClick(tab)}
@@ -60,4 +77,4 @@ disponibile."
   );
 };
 
-export default Users;
+export default Application;
