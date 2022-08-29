@@ -8,7 +8,9 @@ import { CreateRequestDTO } from './interfaces/Request.dto';
 import { Request } from './interfaces/Request.interface';
 
 export const createRequest = (createRequestDTO: CreateRequestDTO): Promise<Request> => {
-  return API.post(`/requests`, createRequestDTO).then((res: AxiosResponse<Request>) => res.data);
+  return API.post(`/requests/organization`, createRequestDTO).then(
+    (res: AxiosResponse<Request>) => res.data,
+  );
 };
 
 export const getRequests = async (

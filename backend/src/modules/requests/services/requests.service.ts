@@ -9,6 +9,8 @@ import { Request } from '../entities/request.entity';
 import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { REQUEST_FILTER_CONFIG } from '../constants/request-filters.config';
+import { RequestType } from '../enums/request-type.enum';
+import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 
 @Injectable()
 export class RequestsService {
@@ -31,7 +33,7 @@ export class RequestsService {
     );
   }
 
-  public async findOne(id: number): Promise<Request> {
+  public async findOneOrganizationRequest(id: number): Promise<Request> {
     return this.requestRepository.get({
       where: { id, status: RequestStatus.PENDING },
       relations: [
@@ -61,7 +63,7 @@ export class RequestsService {
     });
   }
 
-  public async create(createReqDto: CreateRequestDto) {
+  public async createOrganizationRequest(createReqDto: CreateRequestDto) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
       where: { email: createReqDto.admin.email },
@@ -73,31 +75,52 @@ export class RequestsService {
       });
     }
 
-    // Check if there isn't already a request made by the same user.
-    const foundRequest = await this.requestRepository.get({
+    // check if there is a user with those credentials
+    const foundUser = await this.userService.findOne({
       where: [
-        { email: createReqDto.admin.email, status: RequestStatus.PENDING },
-        { phone: createReqDto.admin.phone, status: RequestStatus.PENDING },
+        { email: createReqDto.admin.email },
+        { phone: createReqDto.admin.phone },
       ],
     });
 
-    if (foundRequest) {
-      throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+    if (foundUser) {
+      // Check if there isn't already a request made by the same user.
+      const foundRequest = await this.requestRepository.get({
+        where: {
+          userId: foundUser.id,
+          status: RequestStatus.PENDING,
+          type: RequestType.CREATE_ORGANIZATION,
+        },
       });
+
+      if (foundRequest) {
+        throw new BadRequestException({
+          ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+        });
+      }
     }
 
     try {
-      const organization = await this.organizationService.create(
-        createReqDto.organization,
-      );
+      const { organization, admin } = createReqDto;
+
+      // 1. Create Organization
+      const ong = await this.organizationService.create(organization);
+
+      // 2. Create Admin for the organization
+      const user = await this.userService.createAdmin({
+        ...admin,
+        status: UserStatus.PENDING,
+        organizationId: ong.id,
+      });
 
       return this.requestRepository.save({
-        name: createReqDto.admin.name,
-        email: createReqDto.admin.email,
-        phone: createReqDto.admin.phone,
-        organizationName: createReqDto.organization.general.name,
-        organizationId: organization.id,
+        organization: {
+          id: ong.id,
+        },
+        user: {
+          id: user.id,
+        },
+        type: RequestType.CREATE_ORGANIZATION,
       });
     } catch (error) {
       this.logger.error({ error, payload: createReqDto });
@@ -105,25 +128,16 @@ export class RequestsService {
     }
   }
 
-  private find(id: number): Promise<Request> {
-    return this.requestRepository.get({
-      where: { id },
-      relations: ['organization'],
-    });
-  }
-
-  public async approve(requestId: number) {
+  public async approveOrganization(requestId: number) {
     // 1. Get the request
-    const { organizationId, email, phone, name, status, organization } =
-      await this.find(requestId);
+    const { organizationId, user, status, organization } =
+      await this.findWithRelations(requestId);
 
-    if (status !== RequestStatus.PENDING) {
-      throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
-      });
-    }
-
-    if (organization?.status !== OrganizationStatus.PENDING) {
+    if (
+      status !== RequestStatus.PENDING ||
+      organization?.status !== OrganizationStatus.PENDING ||
+      user?.status !== UserStatus.PENDING
+    ) {
       throw new BadRequestException({
         ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
@@ -131,16 +145,17 @@ export class RequestsService {
 
     // 2. Update organization status from PENDING to ACTIVE
     await this.organizationService.activate(organizationId);
-    // 3. Create the ADMIN user
-    await this.userService.createAdmin({ email, phone, name, organizationId });
+    // 3. Activate the ADMIN user
+    await this.userService.activateAdmin(user);
     // 4. Update the request status
     await this.requestRepository.update(
       { id: requestId },
       { status: RequestStatus.APPROVED },
     );
+
     // TODO 5. Send email with approval
 
-    return this.find(requestId);
+    return this.findWithOrganization(requestId);
   }
 
   public async reject(requestId: number) {
@@ -163,6 +178,23 @@ export class RequestsService {
 
     // TODO: 2. Send rejection by email
 
-    return this.find(requestId);
+    return this.findWithOrganization(requestId);
+  }
+
+  /**
+   * PRIVATE METHODS
+   */
+  private findWithRelations(id: number): Promise<Request> {
+    return this.requestRepository.get({
+      where: { id },
+      relations: ['organization', 'user'],
+    });
+  }
+
+  private findWithOrganization(id: number): Promise<Request> {
+    return this.requestRepository.get({
+      where: { id },
+      relations: ['organization'],
+    });
   }
 }
