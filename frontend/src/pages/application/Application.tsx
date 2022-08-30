@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import { Loading } from '../../components/loading/Loading';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { useApplication } from '../../services/application/Application.queries';
 import { ORGANIZATION_TABS } from '../organization/constants/Tabs.constants';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { APPLICATION_TABS } from './constants/ApplicationTabs';
@@ -14,6 +15,9 @@ const Application = () => {
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { role } = useAuthContext();
+  const params = useParams();
+
+  const { isLoading } = useApplication(params.id ? params?.id : '');
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -33,12 +37,16 @@ const Application = () => {
     navigate('edit');
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <ContentWrapper
       title={'Aplicatie'}
       backButton={{
         btnLabel: 'Inapoi',
-        onBtnClick: () => navigate(-1),
+        onBtnClick: () => navigate(-2),
       }}
       editButton={{
         btnLabel: 'Editeaza',

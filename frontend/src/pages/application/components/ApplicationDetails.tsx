@@ -1,17 +1,10 @@
+import React from 'react';
 import { GlobeAltIcon, PlusIcon } from '@heroicons/react/outline';
 import logo from '../../../assets/images/logo.svg';
-import React from 'react';
-import { useApplication } from '../../../services/application/Application.queries';
-import { useParams } from 'react-router-dom';
-import { Loading } from '../../../components/loading/Loading';
+import { useSelectedApplication } from '../../../store/selectors';
 
 const ApplicationDetails = () => {
-  const params = useParams();
-  const { data: application, isLoading } = useApplication(params.id ? params?.id : '');
-
-  if (isLoading) {
-    return <Loading />;
-  }
+  const { application } = useSelectedApplication();
 
   return (
     <div className="flex gap-4 mr-1 mb-1 relative">

@@ -1,8 +1,8 @@
 import { PencilIcon } from '@heroicons/react/outline';
-import { PlusIcon, UserRemoveIcon, XIcon } from '@heroicons/react/solid';
+import { PlusIcon, XIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../common/hooks/useToast';
@@ -13,26 +13,20 @@ import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import Textarea from '../../../components/Textarea/Textarea';
 import {
-  useApplication,
   useCreateApplicationMutation,
   useUpdateApplicationMutation,
 } from '../../../services/application/Application.queries';
+import { useSelectedApplication } from '../../../store/selectors';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 
 const AddApplication = ({ edit }: { edit?: boolean }) => {
   const navigate = useNavigate();
   const [readonly, setReadonly] = useState(false);
-  const [isEdit, setEdit] = useState(edit || false);
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
-  const params = useParams();
 
-  const {
-    data: application,
-    error,
-    isLoading: applicationFetchLoading,
-  } = useApplication(params?.id || '');
+  const { application } = useSelectedApplication();
 
   // Mutation
   const {
@@ -124,7 +118,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     }
   };
 
-  if (createApplicationLoading || applicationFetchLoading || updateApplicationLoading) {
+  if (createApplicationLoading || updateApplicationLoading) {
     return <Loading />;
   }
 
@@ -137,13 +131,13 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 px-10 flex justify-between">
           <span className="font-titilliumBold text-xl text-gray-800">
-            {isEdit ? 'Editare pagina aplicatie' : 'Generare pagina aplicatie'}
+            {edit ? 'Editare pagina aplicatie' : 'Generare pagina aplicatie'}
           </span>
 
           <button
             type="button"
             className={classNames(readonly ? 'edit-button' : 'save-button')}
-            onClick={readonly ? startEdit : handleSubmit(isEdit ? handleEdit : handleSave)}
+            onClick={readonly ? startEdit : handleSubmit(edit ? handleEdit : handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             {readonly ? 'Editeaza' : 'Salveaza modificari'}

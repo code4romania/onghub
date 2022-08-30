@@ -42,8 +42,12 @@ export const useApplicationsQuery = (
 };
 
 export const useApplication = (applicationId: string) => {
+  const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
+    onSuccess: (data: Application) => {
+      setSelectedApplication(data);
+    },
   });
 };
 

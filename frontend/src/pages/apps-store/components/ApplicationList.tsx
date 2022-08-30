@@ -1,4 +1,4 @@
-import { EyeIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
+import { EyeIcon, ShieldCheckIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,6 @@ import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
-import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import { useApplicationsQuery } from '../../../services/application/Application.queries';
@@ -15,10 +14,6 @@ import {
   Application,
   ApplicationStatus,
 } from '../../../services/application/interfaces/Application.interface';
-import {
-  useApproveRequestMutation,
-  useRejectRequestMutation,
-} from '../../../services/request/Request.queries';
 import { useApplications } from '../../../store/selectors';
 import { IRequest } from '../../requests/interfaces/Request.interface';
 import { ApplicationStatusCollection } from '../constants/ApplicationStatus.constant';
@@ -36,9 +31,7 @@ const ApplicationList = () => {
 
   const navigate = useNavigate();
 
-  const { applications } = useApplications();
-
-  const { isLoading, error, refetch } = useApplicationsQuery(
+  const { isLoading, error } = useApplicationsQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -47,6 +40,8 @@ const ApplicationList = () => {
     status?.status,
     type?.type,
   );
+
+  const { applications } = useApplications();
 
   useEffect(() => {
     if (applications?.meta) {

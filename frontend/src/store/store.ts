@@ -73,6 +73,9 @@ interface RequestState {
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
   setApplications: (applications: PaginatedEntity<Application>) => void;
+
+  selectedApplication: Application | null;
+  setSelectedApplication: (application: Application) => void;
 }
 
 const useStore = create<
