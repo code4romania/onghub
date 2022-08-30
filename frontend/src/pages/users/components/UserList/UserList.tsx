@@ -22,7 +22,7 @@ import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
 import { useNavigate } from 'react-router-dom';
-import ConfirmRemovalModal from '../../../../components/confim-removal-modal/ConfirmRemovalModal';
+import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -268,7 +268,7 @@ const UserList = () => {
           />
         </div>
         {isConfirmRemoveModalOpen && (
-          <ConfirmRemovalModal
+          <ConfirmationModal
             title="Ești sigur că dorești stergerea utilizatorului?"
             description="Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
           puse la dispozitie prin intemediul acestui portal. Lorem ipsum"

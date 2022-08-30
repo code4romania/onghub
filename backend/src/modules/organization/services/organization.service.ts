@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -10,12 +11,16 @@ import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
+import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
+import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
+import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -34,6 +39,7 @@ export class OrganizationService {
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
+    private readonly organizationViewRepository: OrganizationViewRepository,
   ) {}
 
   public async create(
@@ -177,6 +183,21 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findAll({
+    options,
+  }: {
+    options: OrganizationFilterDto;
+  }): Promise<Pagination<OrganizationView>> {
+    const paginationOptions: any = {
+      ...options,
+    };
+
+    return this.organizationViewRepository.getManyPaginated(
+      ORGANIZATION_FILTERS_CONFIG,
+      paginationOptions,
+    );
   }
 
   public async findWithRelations(id: number): Promise<Organization> {

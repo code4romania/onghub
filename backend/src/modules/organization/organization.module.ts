@@ -12,6 +12,7 @@ import {
   Report,
   Partner,
   Investor,
+  OrganizationView,
 } from './entities';
 import {
   ContactRepository,
@@ -22,6 +23,7 @@ import {
   OrganizationLegalRepository,
   OrganizationReportRepository,
   OrganizationRepository,
+  OrganizationViewRepository,
   PartnerRepository,
 } from './repositories';
 import {
@@ -41,6 +43,7 @@ import { OrganizationProfileController } from './organization-profile.controller
     TypeOrmModule.forFeature([
       Contact,
       Organization,
+      OrganizationView,
       OrganizationGeneral,
       OrganizationActivity,
       OrganizationLegal,
@@ -70,6 +73,7 @@ import { OrganizationProfileController } from './organization-profile.controller
     OrganizationReportRepository,
     OrganizationReportService,
     ReportService,
+    OrganizationViewRepository,
   ],
   exports: [OrganizationService],
 })

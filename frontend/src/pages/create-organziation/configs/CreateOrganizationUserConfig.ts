@@ -40,8 +40,8 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
         message: 'Phone is required.',
       },
       minLength: {
-        value: 12,
-        message: 'Phone has a minimum length of 12 characters.',
+        value: 10,
+        message: 'Phone has a minimum length of 10 characters.',
       },
       maxLength: {
         value: 15,
@@ -54,7 +54,7 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
     },
     config: {
       type: 'tel',
-      label: 'Telefon',
+      label: 'Telefon*',
       helperText: '',
       placeholder: '+40712345678',
     },

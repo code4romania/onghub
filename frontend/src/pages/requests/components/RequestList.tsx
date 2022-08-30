@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
@@ -15,6 +16,7 @@ import {
   useRequestsQuery,
 } from '../../../services/request/Request.queries';
 import { useRequests } from '../../../store/selectors';
+import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
 import { IRequest } from '../interfaces/Request.interface';
 import { RequestListTableHeaders } from './RequestList.headers';
 
@@ -25,6 +27,9 @@ const RequestList = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
+  const [isApproveModalOpen, setApproveModalOpen] = useState(false);
+  const [isRejectModalOpen, setRejectModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<IRequest | null>(null);
 
   const navigate = useNavigate();
 
@@ -59,8 +64,8 @@ const RequestList = () => {
     }
   }, [error, approveError, rejectError]);
 
-  const buildUserActionColumn = (): TableColumn<IRequest> => {
-    const activeUserMenuItems = [
+  const buildRequestsActionColumn = (): TableColumn<IRequest> => {
+    const activeRequestsMenuItems = [
       {
         name: 'Vizualizeaza formular',
         icon: EyeIcon,
@@ -69,23 +74,33 @@ const RequestList = () => {
       {
         name: 'Aproba',
         icon: ShieldCheckIcon,
-        onClick: onApprove,
+        onClick: onOpenApprove,
         type: PopoverMenuRowType.SUCCESS,
       },
       {
         name: 'Respinge',
         icon: XIcon,
-        onClick: onReject,
+        onClick: onOpenReject,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
 
     return {
       name: '',
-      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeUserMenuItems} />,
+      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  const onOpenApprove = (row: IRequest) => {
+    setSelectedRow(row);
+    setApproveModalOpen(true);
+  };
+
+  const onOpenReject = (row: IRequest) => {
+    setSelectedRow(row);
+    setRejectModalOpen(true);
   };
 
   const onRowsPerPageChange = (rows: number) => {
@@ -113,7 +128,10 @@ const RequestList = () => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests'); // TODO: Redirect to /organizations/id
+        refetch(); // TODO: Redirect to /organizations/id
+      },
+      onSettled: () => {
+        setApproveModalOpen(false);
       },
     });
   };
@@ -122,7 +140,10 @@ const RequestList = () => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests');
+        refetch();
+      },
+      onSettled: () => {
+        setApproveModalOpen(false);
       },
     });
   };
@@ -161,7 +182,7 @@ const RequestList = () => {
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={[...RequestListTableHeaders, buildUserActionColumn()]}
+            columns={[...RequestListTableHeaders, buildRequestsActionColumn()]}
             data={requests.items}
             loading={isLoading}
             pagination
@@ -175,6 +196,20 @@ const RequestList = () => {
           />
         </div>
       </div>
+      {isApproveModalOpen && selectedRow && (
+        <ConfirmationModal
+          {...APPROVE_MODAL_CONFIG}
+          onClose={() => setApproveModalOpen(false)}
+          onConfirm={() => onApprove(selectedRow)}
+        />
+      )}
+      {isRejectModalOpen && selectedRow && (
+        <ConfirmationModal
+          {...REJECT_MODAL_CONFIG}
+          onClose={() => setRejectModalOpen(false)}
+          onConfirm={() => onReject(selectedRow)}
+        />
+      )}
     </div>
   );
 };
