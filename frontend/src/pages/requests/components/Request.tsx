@@ -5,7 +5,7 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import { IPageTab } from '../../../common/interfaces/tabs.interface';
-import ConfirmRemovalModal from '../../../components/confim-removal-modal/ConfirmRemovalModal';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
 import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
@@ -160,14 +160,14 @@ const Request = () => {
         </div>
       </ContentWrapper>
       {isApproveModalOpen && (
-        <ConfirmRemovalModal
+        <ConfirmationModal
           {...APPROVE_MODAL_CONFIG}
           onClose={() => setApproveModalOpen(false)}
           onConfirm={onApprove}
         />
       )}
       {isRejectModalOpen && (
-        <ConfirmRemovalModal
+        <ConfirmationModal
           {...REJECT_MODAL_CONFIG}
           onClose={() => setRejectModalOpen(false)}
           onConfirm={onReject}

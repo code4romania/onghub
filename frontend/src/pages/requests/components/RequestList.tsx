@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
-import ConfirmRemovalModal from '../../../components/confim-removal-modal/ConfirmRemovalModal';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
@@ -197,14 +197,14 @@ const RequestList = () => {
         </div>
       </div>
       {isApproveModalOpen && selectedRow && (
-        <ConfirmRemovalModal
+        <ConfirmationModal
           {...APPROVE_MODAL_CONFIG}
           onClose={() => setApproveModalOpen(false)}
           onConfirm={() => onApprove(selectedRow)}
         />
       )}
       {isRejectModalOpen && selectedRow && (
-        <ConfirmRemovalModal
+        <ConfirmationModal
           {...REJECT_MODAL_CONFIG}
           onClose={() => setRejectModalOpen(false)}
           onConfirm={() => onReject(selectedRow)}

@@ -8,7 +8,7 @@ import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import { useUserMutation } from '../../services/user/User.queries';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
-import ConfirmRemovalModal from '../../components/confim-removal-modal/ConfirmRemovalModal';
+import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -201,7 +201,7 @@ const Account = () => {
         )}
       </div>
       {isAccountDeleteModalOpen && (
-        <ConfirmRemovalModal
+        <ConfirmationModal
           title="Ești sigur că dorești închiderea contului?"
           description="Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
           puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești
