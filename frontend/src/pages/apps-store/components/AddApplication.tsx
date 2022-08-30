@@ -5,7 +5,7 @@ import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import { classNames } from '../../../common/helpers/tailwind.helper';
-import { useErrorToast } from '../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import InputField from '../../../components/InputField/InputField';
 import { Loading } from '../../../components/loading/Loading';
@@ -49,7 +49,6 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     formState: { errors },
     reset,
     watch,
-    setValue,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -73,6 +72,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
     const res = await mutateApplication(dto);
+    useSuccessToast('Aplicatie modificata cu succes!');
     navigate('/store');
   };
 
@@ -83,6 +83,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
         applicationId: application?.id?.toString(),
         applicationUpdatePayload: dto,
       });
+      useSuccessToast('Aplicatie modificata cu succes!');
       navigate(-1);
     }
   };

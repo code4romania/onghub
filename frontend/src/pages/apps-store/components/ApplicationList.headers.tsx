@@ -1,6 +1,5 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { capitalizeFirstLetter } from '../../../common/helpers/format.helper';
 import StatusBadge from '../../../components/status-badge/StatusBadge';
 import { Application } from '../../../services/application/interfaces/Application.interface';
 import {

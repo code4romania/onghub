@@ -4,7 +4,7 @@ import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
-import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';

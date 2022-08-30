@@ -8,7 +8,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
-import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
 import { CreateApplicationDto } from './dto/create-application.dto';
