@@ -106,7 +106,7 @@ const Request = () => {
         title={request?.organization.organizationGeneral.name || ''}
         subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
     disponibile."
-        goBack={() => navigate('/requests')}
+        backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('requests') }}
       >
         <div>
           {request?.status === RequestStatus.PENDING && (

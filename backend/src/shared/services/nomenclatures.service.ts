@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { City, County, Domain, Region } from 'src/shared/entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
-import { ApplicationType } from '../entities/application-type.entity';
 import { NOMENCLATURE_ERRORS } from '../constants/nomenclature-error.constants';
 import { Coalition } from '../entities/coalition.entity';
 import { Federation } from '../entities/federation.entity';
@@ -17,8 +16,6 @@ export class NomenclaturesService {
     private readonly countiesRepository: Repository<County>,
     @InjectRepository(Domain)
     private readonly domainsRepository: Repository<Domain>,
-    @InjectRepository(ApplicationType)
-    private readonly applicationTypeRepository: Repository<ApplicationType>,
     @InjectRepository(Region)
     private readonly regionsRepository: Repository<Region>,
     @InjectRepository(Federation)
@@ -81,10 +78,6 @@ export class NomenclaturesService {
 
   public getDomains(conditions: FindManyOptions<Domain>) {
     return this.domainsRepository.find(conditions);
-  }
-
-  public getAppType(conditions: FindOneOptions<ApplicationType>) {
-    return this.applicationTypeRepository.findOne(conditions);
   }
 
   public getRegions(conditions: FindManyOptions<Region>) {

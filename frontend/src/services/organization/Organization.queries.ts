@@ -24,7 +24,6 @@ import {
 } from './Organization.service';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Person } from '../../common/interfaces/person.interface';
-import { OrganizationStatus } from '../../pages/organization/enums/OrganizationStatus.enum';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 
 interface OrganizationPayload {

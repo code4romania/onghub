@@ -26,7 +26,7 @@ export const useRequestsQuery = (
 ) => {
   const { setRequests } = useStore();
   return useQuery(
-    ['users', limit, page, orderBy, orderDirection, search, interval],
+    ['requests', limit, page, orderBy, orderDirection, search, interval],
     () => getRequests(limit, page, orderBy, orderDirection, search, interval),
     {
       onSuccess: (data: PaginatedEntity<IRequest>) => {

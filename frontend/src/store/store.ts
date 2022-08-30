@@ -23,6 +23,8 @@ import { usersSlice } from './user/Users.slice';
 import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
 import { IRequest } from '../pages/requests/interfaces/Request.interface';
 import { requestsSlice } from './request/Requests.slice';
+import { Application } from '../services/application/interfaces/Application.interface';
+import { applicationsSlice } from './application/Application.slice';
 
 interface OrganizationState {
   organization: IOrganization | null;
@@ -68,8 +70,16 @@ interface RequestState {
   setRequests: (requests: PaginatedEntity<IRequest>) => void;
 }
 
+interface ApplicationState {
+  applications: PaginatedEntity<Application>;
+  setApplications: (applications: PaginatedEntity<Application>) => void;
+
+  selectedApplication: Application | null;
+  setSelectedApplication: (application: Application) => void;
+}
+
 const useStore = create<
-  OrganizationState & NomenclatureState & UserState & ProfileState & RequestState
+  OrganizationState & NomenclatureState & UserState & ProfileState & RequestState & ApplicationState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -81,6 +91,7 @@ const useStore = create<
   ...profileSlice(set),
   ...usersSlice(set),
   ...requestsSlice(set),
+  ...applicationsSlice(set),
 }));
 
 export default useStore;
