@@ -14,7 +14,12 @@ interface ReportSummaryModalProps {
 }
 
 const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSummaryModalProps) => {
-  const { control, reset, handleSubmit } = useForm({
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -88,6 +93,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                           config={{
                             ...ReportSummaryConfig.numberOfVolunteers.config,
                             name: ReportSummaryConfig.numberOfVolunteers.key,
+                            error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -106,6 +112,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                           config={{
                             ...ReportSummaryConfig.numberOfContractors.config,
                             name: ReportSummaryConfig.numberOfContractors.key,
+                            error: errors[ReportSummaryConfig.numberOfContractors.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -124,6 +131,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                           config={{
                             ...ReportSummaryConfig.report.config,
                             name: ReportSummaryConfig.report.key,
+                            error: errors[ReportSummaryConfig.report.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}

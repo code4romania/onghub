@@ -76,11 +76,14 @@ export class UserService {
     payload: UpdateUserDto,
     organizationId?: number,
   ): Promise<User> {
-    // 1. Chekc if the user exists
-    await this.getById(id, organizationId);
-
-    // 2. Update user data
     try {
+      // 1. Chekc if the user exists
+      const user = await this.getById(id, organizationId);
+
+      // 2. Update cognito user data
+      await this.cognitoService.updateUser(user.email, payload);
+
+      // 3. Update db user data
       return this.update(id, payload);
     } catch (error) {
       this.logger.error({
@@ -88,7 +91,23 @@ export class UserService {
         ...USER_ERRORS.UPDATE,
         id,
       });
-      throw new BadRequestException({ ...USER_ERRORS.UPDATE, error });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        // 1. USR_007: User not found or doesn't have an organizationId
+        case USER_ERRORS.GET.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.GET,
+            error: err,
+          });
+        }
+        // 3. USR_009: Something unexpected happened while updating the user
+        default: {
+          throw new InternalServerErrorException({
+            ...USER_ERRORS.UPDATE,
+            error: err,
+          });
+        }
+      }
     }
   }
 

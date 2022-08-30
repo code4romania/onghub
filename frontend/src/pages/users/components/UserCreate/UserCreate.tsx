@@ -45,7 +45,7 @@ const UserCreate = () => {
       title="Adauga Utilizator"
       subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
     disponibile."
-      goBack={() => navigate('/users')}
+      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
     >
       <div className="flex">
         <CardPanel

@@ -27,9 +27,15 @@ import UserList from '../../pages/users/components/UserList/UserList';
 import Users from '../../pages/users/Users';
 import AuthGuard from '../guards/AuthGuards';
 import Organizations from '../../pages/organization/Organizations';
+import AddApplication from '../../pages/apps-store/components/AddApplication';
+import Application from '../../pages/application/Application';
+import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
+import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
+import ApplicationRequests from '../../pages/application/components/ApplicationRequests';
+import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
 
 const Router = () => {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isRestricted } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -38,6 +44,7 @@ const Router = () => {
           path="/login"
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
+        <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
         <Route path="new" element={<CreateOrganization />}>
           <Route index element={<Navigate to={'/new/account'}></Navigate>} />
           <Route path="account" element={<CreateOrganizationUser />} />
@@ -77,10 +84,21 @@ const Router = () => {
             <Route path="invites" element={<UserInvites />}></Route>
           </Route>
 
+          <Route path={'application/:id'} element={<Application />}>
+            <Route index element={<Navigate to={'details'}></Navigate>} />
+            <Route path="details" element={<ApplicationDetails />} />
+            <Route path="installs" element={<ApplicationNGOList />} />
+            <Route path="requests" element={<ApplicationRequests />} />
+          </Route>
+          <Route path="application/:id/edit" element={<AddApplication edit={true} />} />
+
           <Route path="user" element={<UserCreate />} />
           <Route path="user/:id" element={<UserEdit />} />
           <Route path="apps" element={<Apps />}></Route>
+
           <Route path="store" element={<AppStore />}></Route>
+          <Route path="store/new" element={<AddApplication />} />
+
           <Route path="account" element={<Account />} />
           <Route path="requests" element={<Requests />} />
           <Route path="organizations" element={<Organizations />} />

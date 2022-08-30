@@ -11,7 +11,7 @@ import { useUser } from '../../store/selectors';
 import { Auth } from 'aws-amplify';
 
 const Header = () => {
-  const { logout, isAuthenticated } = useAuthContext();
+  const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
 
@@ -22,7 +22,7 @@ const Header = () => {
           <div className="flex items-center">
             <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
           </div>
-          {!isAuthenticated && (
+          {!isAuthenticated && !isRestricted && (
             <button
               className="bg-yellow-600 px-6 py-2 shadow rounded-full text-black font-titilliumBold"
               onClick={(e) => Auth.federatedSignIn()}

@@ -213,6 +213,9 @@ const OrganizationData = () => {
   const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
+    if (data.report?.startsWith('www')) {
+      data.report = 'http://' + data.report;
+    }
     updateReport({
       organization: {
         report: {
@@ -266,31 +269,39 @@ const OrganizationData = () => {
   };
 
   const uploadPartnersList = async (partnerId: number, file: File) => {
-    const rows = await readXlsxFile(file);
-    if (rows.length <= 2) {
-      useErrorToast('The file you uploaded contains no data!');
+    try {
+      const rows = await readXlsxFile(file);
+      if (rows.length <= 2) {
+        useErrorToast('The file you uploaded contains no data!');
+        return;
+      }
+      const data = new FormData();
+      data.append('partners', file);
+      data.append('numberOfPartners', (rows.length - 2).toString());
+      uploadPartners({ partnerId, data });
+      setSelectedPartner(null);
+    } catch (error) {
+      useErrorToast('Invalid file format.');
       return;
     }
-
-    const data = new FormData();
-    data.append('partners', file);
-    data.append('numberOfPartners', (rows.length - 2).toString());
-    uploadPartners({ partnerId, data });
-    setSelectedPartner(null);
   };
 
   const uploadInvestorsList = async (investorId: number, file: File) => {
-    const rows = await readXlsxFile(file);
-    if (rows.length <= 2) {
-      useErrorToast('The file you uploaded contains no data!');
+    try {
+      const rows = await readXlsxFile(file);
+      if (rows.length <= 2) {
+        useErrorToast('The file you uploaded contains no data!');
+        return;
+      }
+      const data = new FormData();
+      data.append('investors', file);
+      data.append('numberOfInvestors', (rows.length - 2).toString());
+      uploadInvestors({ investorId, data });
+      setSelectedInvestor(null);
+    } catch (error) {
+      useErrorToast('Invalid file format.');
       return;
     }
-
-    const data = new FormData();
-    data.append('investors', file);
-    data.append('numberOfInvestors', (rows.length - 2).toString());
-    uploadInvestors({ investorId, data });
-    setSelectedInvestor(null);
   };
 
   return (

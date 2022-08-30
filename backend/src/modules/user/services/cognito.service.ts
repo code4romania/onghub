@@ -3,13 +3,15 @@ import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
   AdminDeleteUserCommand,
-  AdminDisableUserCommand,
+  AdminUpdateUserAttributesCommand,
+  AdminUpdateUserAttributesCommandOutput,
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class CognitoUserService {
@@ -41,6 +43,28 @@ export class CognitoUserService {
       createUserCommand,
     );
     return data.User.Username;
+  }
+
+  async updateUser(email: string, { name, phone }: UpdateUserDto) {
+    const updateUserAttributesCommand = new AdminUpdateUserAttributesCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Username: email,
+      UserAttributes: [
+        {
+          Name: 'phone_number',
+          Value: phone,
+        },
+        {
+          Name: 'name',
+          Value: name,
+        },
+      ],
+    });
+
+    const data: AdminUpdateUserAttributesCommandOutput =
+      await this.cognitoProvider.send(updateUserAttributesCommand);
+
+    return data;
   }
 
   async globalSignOut(cognitoId: string) {

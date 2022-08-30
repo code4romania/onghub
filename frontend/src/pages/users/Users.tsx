@@ -29,8 +29,10 @@ const Users = () => {
       title="Utilizatori"
       subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
 disponibile."
-      btnLabel="Adauga Utilizator"
-      onBtnClick={() => navigate('/user')}
+      addButton={{
+        btnLabel: 'Adauga Utilizator',
+        onBtnClick: () => navigate('/user'),
+      }}
     >
       <div className="pb-6 flex">
         <nav
