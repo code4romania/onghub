@@ -119,7 +119,3 @@ export const rangeOfYears = (start: number, end?: number) => {
     .fill(start)
     .map((year, index) => year + index);
 };
-
-export function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}

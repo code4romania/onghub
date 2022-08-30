@@ -40,13 +40,13 @@ export class ApplicationController {
     return this.applicationService.update(+id, updateApplicationDto);
   }
 
-  @Roles(...[Role.SUPER_ADMIN, Role.ADMIN])
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @Get('')
   getAll(@Query() filters: ApplicationFilterDto) {
     return this.applicationService.findAll(filters);
   }
 
-  @Roles(...[Role.SUPER_ADMIN, Role.ADMIN])
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string) {
