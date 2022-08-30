@@ -1,4 +1,4 @@
-import { Between, In } from 'typeorm';
+import { Between, FindOperator } from 'typeorm';
 import { format } from 'date-fns';
 import {
   DeepPartial,
@@ -11,9 +11,13 @@ import {
 } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { OrderDirection } from '../enums/order-direction.enum';
-import { IPaginationConfig } from '../interfaces/pagination-config';
+import {
+  FilterOperator,
+  IPaginationConfig,
+} from '../interfaces/pagination-config';
 import { PaginationMeta } from '../interfaces/pagination-meta';
 import { BaseFilterDto } from './base-filter.dto';
+import { OperatorSymbolToFunction } from '../helpers/operator-to-function.map';
 
 export abstract class BaseDAO<T> {
   constructor(private readonly repository: Repository<T>) {}
@@ -89,8 +93,8 @@ export abstract class BaseDAO<T> {
     // loop through filters
     for (const filter in filters) {
       andWherQuery[filter] =
-        typeof filters[filter] === 'object' && Array.isArray(filters[filter])
-          ? In(filters[filter])
+        typeof filters[filter] === 'string'
+          ? this.applyFilter(filters[filter])
           : filters[filter];
     }
 
@@ -170,6 +174,30 @@ export abstract class BaseDAO<T> {
             search,
           ),
         };
+  };
+
+  private applyFilter = (
+    filterValue: string,
+  ): string | FindOperator<string> => {
+    const [operator, ...values] = filterValue.split(':');
+
+    if (!Object.values(FilterOperator).includes(operator as FilterOperator)) {
+      return filterValue;
+    }
+
+    const test = filterValue.substring(operator.length + 1).split(',');
+    // map the correct method
+    switch (operator) {
+      case FilterOperator.BTW:
+      case FilterOperator.IN:
+        return OperatorSymbolToFunction.get(operator as FilterOperator)(
+          ...filterValue.substring(operator.length + 1).split(','),
+        );
+      default:
+        return OperatorSymbolToFunction.get(operator as FilterOperator)(
+          filterValue.substring(operator.length + 1),
+        );
+    }
   };
 
   private betweenDates = (from: Date | string, to: Date | string) =>

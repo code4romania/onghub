@@ -68,7 +68,7 @@ const ContentWrapper = ({
         </div>
       </div>
       <p className="text-gray-400 pt-6">{subtitle}</p>
-      {children}
+      <div className="py-6">{children}</div>
     </section>
   );
 };

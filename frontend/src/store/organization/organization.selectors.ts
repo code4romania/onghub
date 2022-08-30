@@ -16,3 +16,10 @@ export const useSelectedOrganization = () => {
     organizationLegal,
   };
 };
+
+export const useOrganizations = () => {
+  const organizations = useStore((state) => state.organizations);
+  return {
+    organizations,
+  };
+};

@@ -110,7 +110,7 @@ const Request = () => {
       >
         <div>
           {request?.status === RequestStatus.PENDING && (
-            <div className="w-full bg-white shadow rounded-lg py-5 px-10 flex justify-between items-center flex-col sm:flex-row mt-4">
+            <div className="w-full bg-white shadow rounded-lg py-5 px-10 flex justify-between items-center flex-col sm:flex-row">
               <div className="flex gap-4">
                 <ExclamationIcon className="text-orange h-7 w-7" />
                 <p className="text-gray-800 font-titilliumBold rounded-md  text-xl hover:bg-green-tab lg:whitespace-nowrap">

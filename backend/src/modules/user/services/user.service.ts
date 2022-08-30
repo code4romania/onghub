@@ -117,7 +117,7 @@ export class UserService {
   ): Promise<Pagination<User>> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
-      status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
+      status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
       ...options,
     };
 

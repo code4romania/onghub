@@ -62,7 +62,7 @@ const UserEdit = () => {
     disponibile."
       backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
     >
-      <div className="py-6 flex">
+      <div className="flex">
         <CardPanel
           title="Editeaza"
           loading={updateUserMutation.isLoading}

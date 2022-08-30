@@ -64,8 +64,8 @@ const RequestList = () => {
     }
   }, [error, approveError, rejectError]);
 
-  const buildUserActionColumn = (): TableColumn<IRequest> => {
-    const activeUserMenuItems = [
+  const buildRequestsActionColumn = (): TableColumn<IRequest> => {
+    const activeRequestsMenuItems = [
       {
         name: 'Vizualizeaza formular',
         icon: EyeIcon,
@@ -87,7 +87,7 @@ const RequestList = () => {
 
     return {
       name: '',
-      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeUserMenuItems} />,
+      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
@@ -182,7 +182,7 @@ const RequestList = () => {
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={[...RequestListTableHeaders, buildUserActionColumn()]}
+            columns={[...RequestListTableHeaders, buildRequestsActionColumn()]}
             data={requests.items}
             loading={isLoading}
             pagination
