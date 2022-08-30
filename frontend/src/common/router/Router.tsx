@@ -30,7 +30,6 @@ import AddApplication from '../../pages/apps-store/components/AddApplication';
 import Application from '../../pages/application/Application';
 import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
-import ApplicationRequests from '../../pages/application/components/ApplicationRequests';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
 
 const Router = () => {
@@ -87,7 +86,6 @@ const Router = () => {
             <Route index element={<Navigate to={'details'}></Navigate>} />
             <Route path="details" element={<ApplicationDetails />} />
             <Route path="installs" element={<ApplicationNGOList />} />
-            <Route path="requests" element={<ApplicationRequests />} />
           </Route>
           <Route path="application/:id/edit" element={<AddApplication edit={true} />} />
 

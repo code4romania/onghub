@@ -55,30 +55,32 @@ const Application = () => {
       }}
       deleteButton={{
         btnLabel: 'Sterge',
-        onBtnClick: () => navigate(-1),
+        onBtnClick: () => navigate(-2),
         visible: role === UserRole.SUPER_ADMIN,
       }}
     >
       <div className="pb-6 flex">
-        <nav
-          className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
-          aria-label="Tabs"
-        >
-          {APPLICATION_TABS.map((tab) => (
-            <a
-              key={tab.name}
-              onClick={() => onTabClick(tab)}
-              className={classNames(
-                selectedTab === tab.id
-                  ? 'bg-green-tab text-gray-800 font-titilliumBold'
-                  : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
-              )}
-            >
-              {tab.name}
-            </a>
-          ))}
-        </nav>
+        {role === UserRole.SUPER_ADMIN && (
+          <nav
+            className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
+            aria-label="Tabs"
+          >
+            {APPLICATION_TABS.map((tab) => (
+              <a
+                key={tab.name}
+                onClick={() => onTabClick(tab)}
+                className={classNames(
+                  selectedTab === tab.id
+                    ? 'bg-green-tab text-gray-800 font-titilliumBold'
+                    : 'font-titilliumSemiBold',
+                  'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
+                )}
+              >
+                {tab.name}
+              </a>
+            ))}
+          </nav>
+        )}
       </div>
       <Outlet />
     </ContentWrapper>
