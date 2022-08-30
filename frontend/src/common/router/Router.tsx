@@ -31,9 +31,10 @@ import Application from '../../pages/application/Application';
 import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
 import ApplicationRequests from '../../pages/application/components/ApplicationRequests';
+import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
 
 const Router = () => {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isRestricted } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -42,6 +43,7 @@ const Router = () => {
           path="/login"
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
+        <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
         <Route path="new" element={<CreateOrganization />}>
           <Route index element={<Navigate to={'/new/account'}></Navigate>} />
           <Route path="account" element={<CreateOrganizationUser />} />

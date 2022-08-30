@@ -57,8 +57,8 @@ export class OrganizationReportService {
       status: report
         ? CompletionStatus.COMPLETED
         : CompletionStatus.NOT_COMPLETED,
-      numberOfContractors: numberOfContractors ?? null,
-      numberOfVolunteers: numberOfVolunteers ?? null,
+      numberOfContractors: Math.floor(numberOfContractors) ?? null,
+      numberOfVolunteers: Math.floor(numberOfVolunteers) ?? null,
       report: report || null,
     });
 

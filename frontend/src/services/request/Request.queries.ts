@@ -24,13 +24,16 @@ export const useRequestsQuery = (
   search?: string,
   interval?: Date[],
 ) => {
-  const { setRequests, requests } = useStore();
+  const { setRequests } = useStore();
   return useQuery(
     ['requests', limit, page, orderBy, orderDirection, search, interval],
     () => getRequests(limit, page, orderBy, orderDirection, search, interval),
     {
       onSuccess: (data: PaginatedEntity<IRequest>) => {
-        setRequests({ items: data.items, meta: { ...requests.meta, ...data.meta } });
+        setRequests({
+          items: data.items,
+          meta: { ...data.meta, orderByColumn: orderBy, orderDirection },
+        });
       },
       enabled: !!(limit && page && orderBy && orderDirection),
     },
