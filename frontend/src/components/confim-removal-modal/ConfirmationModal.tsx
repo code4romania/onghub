@@ -1,23 +1,26 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { classNames } from '../../common/helpers/tailwind.helper';
 
-export interface ConfirmRemovalModalProps {
+interface ConfirmationModalProps {
   title: string;
   description: string;
   closeBtnLabel: string;
   confirmBtnLabel: string;
+  confirmButtonStyle?: string;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const ConfirmRemovalModal = ({
+const ConfirmationModal = ({
   title,
   description,
   closeBtnLabel,
   confirmBtnLabel,
+  confirmButtonStyle,
   onClose,
   onConfirm,
-}: ConfirmRemovalModalProps) => {
+}: ConfirmationModalProps) => {
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -55,8 +58,12 @@ const ConfirmRemovalModal = ({
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
-                  <button type="button" className="red-button" onClick={onConfirm}>
+                <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse gap-4">
+                  <button
+                    type="button"
+                    className={classNames(confirmButtonStyle ?? 'red-button')}
+                    onClick={onConfirm}
+                  >
                     {confirmBtnLabel}
                   </button>
                   <button
@@ -76,4 +83,4 @@ const ConfirmRemovalModal = ({
   );
 };
 
-export default ConfirmRemovalModal;
+export default ConfirmationModal;
