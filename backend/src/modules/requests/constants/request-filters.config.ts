@@ -1,23 +1,30 @@
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 export const REQUEST_FILTER_CONFIG = {
-  selectColumns: [
-    'id',
+  selectColumns: {
+    id: true,
+    organization: {
+      id: true,
+      organizationGeneral: {
+        name: true,
+      },
+    },
+    user: { email: true, phone: true, name: true },
+    createdOn: true,
+    status: true,
+  },
+  searchableColumns: [
     'organization.organizationGeneral.name',
-    // 'user.email',
-    // 'user.phone',
-    'status',
-    'organization',
-    'createdOn',
+    'user.email',
+    'user.name',
   ],
-  searchableColumns: ['organization.organizationGeneral.name'],
   defaultSortBy: 'createdOn',
   defaultOrderDirection: OrderDirection.ASC,
-  relations: [
-    'organization',
-    'organization.organizationGeneral',
-    // 'user',
-    // 'application',
-  ],
+  relations: {
+    organization: {
+      organizationGeneral: true,
+    },
+    user: true,
+  },
   rangeColumn: 'createdOn',
 };
