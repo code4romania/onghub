@@ -117,7 +117,7 @@ const Account = () => {
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">Nume</span>
-                <span className="text-gray-800 font-titilliumBold">{profile?.name})</span>
+                <span className="text-gray-800 font-titilliumBold">{profile?.name}</span>
               </div>
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">E-mail cont</span>
