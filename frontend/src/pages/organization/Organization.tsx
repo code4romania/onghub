@@ -57,7 +57,7 @@ const Organization = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                selectedTab === tab.id
+                tab.href === location.pathname.split('/')[2]
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
                 'text-gray-700 rounded-md text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
