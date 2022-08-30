@@ -40,7 +40,7 @@ export class Request extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'user_id' })
   userId: number;
 
-  @ManyToOne((type) => Application)
+  @ManyToOne((type) => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

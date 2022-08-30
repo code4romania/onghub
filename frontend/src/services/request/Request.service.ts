@@ -34,13 +34,13 @@ export const getRequests = async (
 };
 
 export const approveRequest = (requestId: string) => {
-  return API.patch(`/requests/${requestId}/approve`);
+  return API.patch(`/requests/organization/${requestId}/approve`);
 };
 
 export const rejectRequest = (requestId: string) => {
-  return API.patch(`/requests/${requestId}/reject`);
+  return API.patch(`/requests/organization/${requestId}/reject`);
 };
 
 export const getRequestById = (requestId: string) => {
-  return API.get(`/requests/${requestId}`).then((res) => res.data);
+  return API.get(`/requests/organization/${requestId}`).then((res) => res.data);
 };

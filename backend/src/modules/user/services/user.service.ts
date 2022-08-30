@@ -273,7 +273,7 @@ export class UserService {
       // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
-        status: UserStatus.ACTIVE,
+        status: createUserDto.status || UserStatus.ACTIVE,
         cognitoId,
       });
       return user;

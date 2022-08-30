@@ -114,12 +114,8 @@ export class RequestsService {
       });
 
       return this.requestRepository.save({
-        organization: {
-          id: ong.id,
-        },
-        user: {
-          id: user.id,
-        },
+        organizationId: ong.id,
+        userId: user.id,
         type: RequestType.CREATE_ORGANIZATION,
       });
     } catch (error) {
