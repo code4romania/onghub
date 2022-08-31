@@ -5,11 +5,10 @@ import InputField from '../../components/InputField/InputField';
 import { AccountConfig } from './AccountConfig';
 import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
-import AccountDeleteModal from './AccountDeleteModal';
 import { useUserMutation } from '../../services/user/User.queries';
-import { LogoutIcon } from '@heroicons/react/solid';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
+import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -19,7 +18,6 @@ const Account = () => {
     control,
     formState: { errors },
     reset,
-    setValue,
     watch,
   } = useForm({
     mode: 'onSubmit',
@@ -27,7 +25,7 @@ const Account = () => {
   });
   const [isAccountDeleteModalOpen, setAccountDeleteModal] = useState(false);
   const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
-  const {user} = useUser();
+  const { profile } = useUser();
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
@@ -119,11 +117,11 @@ const Account = () => {
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">Nume</span>
-                <span className="text-gray-800 font-titilliumBold">{user?.name})</span>
+                <span className="text-gray-800 font-titilliumBold">{profile?.name}</span>
               </div>
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">E-mail cont</span>
-                <span className="text-gray-800 font-titilliumBold">{user?.email} </span>
+                <span className="text-gray-800 font-titilliumBold">{profile?.email} </span>
               </div>
             </div>
           </div>
@@ -203,7 +201,14 @@ const Account = () => {
         )}
       </div>
       {isAccountDeleteModalOpen && (
-        <AccountDeleteModal
+        <ConfirmationModal
+          title="Ești sigur că dorești închiderea contului?"
+          description="Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
+          puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești
+          să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te
+          va contacta pentru a finaliza procesul."
+          closeBtnLabel="Inapoi"
+          confirmBtnLabel="Inchide contul"
           onClose={() => {
             setAccountDeleteModal(false);
           }}

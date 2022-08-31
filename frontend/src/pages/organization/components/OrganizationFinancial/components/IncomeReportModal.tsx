@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import ReportTableRow from './ReportTableRow';
@@ -8,6 +8,9 @@ import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface
 import { Income } from '../../../interfaces/Income.interface';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { useSelectedOrganization } from '../../../../../store/selectors';
+import { AuthContext } from '../../../../../contexts/AuthContext';
+import { UserRole } from '../../../../users/enums/UserRole.enum';
+import { formatCurrency } from '../../../../../common/helpers/format.helper';
 
 const IncomeReportModal = ({
   onClose,
@@ -19,11 +22,17 @@ const IncomeReportModal = ({
 }: ReportModalProps) => {
   const [totalDefalcat, setTotalDefalcat] = useState<number>(0);
   const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
-
   const { organizationGeneral } = useSelectedOrganization();
+  const { role } = useContext(AuthContext);
 
   // form state
-  const { control, reset, getValues } = useForm({
+  const {
+    control,
+    reset,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -41,7 +50,7 @@ const IncomeReportModal = ({
       (prev: number, current: number) => (prev += +current || 0),
       0,
     );
-    setTotalDefalcat(newTotal);
+    setTotalDefalcat(Math.round((newTotal + Number.EPSILON) * 100) / 100);
   };
 
   return (
@@ -84,7 +93,7 @@ const IncomeReportModal = ({
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      {`Raportare Cheltuieli ${year}`}
+                      {`Raportare Venituri ${year}`}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
@@ -96,7 +105,9 @@ const IncomeReportModal = ({
                   </div>
                 </div>
                 <div className="mt-6 flex flex-row-reverse">
-                  <span className="text-xl text-gray-900 font-bold leading-6">{`${total} RON`}</span>
+                  <span className="text-xl text-gray-900 font-bold leading-6">{`${formatCurrency(
+                    total,
+                  )} RON`}</span>
                   <span className="text-xl text-gray-400 font-normal leading-6 px-3">
                     Total Venituri
                   </span>
@@ -143,11 +154,12 @@ const IncomeReportModal = ({
                                 config={{
                                   ...config,
                                   name: IncomeReportConfig[name].key,
+                                  error: errors[IncomeReportConfig[name].key]?.message,
                                   defaultValue: value,
                                   onChange: onChange,
                                   onBlur: () => recalculate(getValues() as Income),
                                 }}
-                                readonly={readonly}
+                                readonly={isReadonly}
                               />
                             );
                           }}
@@ -162,8 +174,8 @@ const IncomeReportModal = ({
                           {totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
                               {total > totalDefalcat
-                                ? `(${total - totalDefalcat} RON nealocati)`
-                                : `(${totalDefalcat - total} RON surplus)`}
+                                ? `(${formatCurrency(total - totalDefalcat)} RON nealocati)`
+                                : `(${formatCurrency(totalDefalcat - total)} RON surplus)`}
                             </span>
                           )}
                         </td>
@@ -177,10 +189,7 @@ const IncomeReportModal = ({
                       <button
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => {
-                          onSave(getValues() as Income);
-                          onClose();
-                        }}
+                        onClick={handleSubmit(onSave)}
                       >
                         Salveaza
                       </button>
@@ -193,7 +202,7 @@ const IncomeReportModal = ({
                       </button>
                     </>
                   )}
-                  {isReadonly && (
+                  {isReadonly && role !== UserRole.EMPLOYEE && (
                     <button
                       type="button"
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"

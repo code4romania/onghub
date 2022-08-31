@@ -2,33 +2,29 @@ import React from 'react';
 import { Auth } from 'aws-amplify';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
-import { useUserQuery } from './services/user/User.queries';
-import LoadingContent from './components/data-table/LoadingContent';
-import { useNavigate } from 'react-router-dom';
-import { useErrorToast } from './common/hooks/useToast';
+import { useProfileQuery } from './services/user/User.queries';
 import { UserStatus } from './pages/users/enums/UserStatus.enum';
-
-const Loading = () => {
-  return (
-    <div className="w-full h-screen flex flex-col justify-center items-center gap-4">
-      <LoadingContent /> <span>Se incarca...</span>
-    </div>
-  );
-};
+import { Loading } from './components/loading/Loading';
+import { UserRole } from './pages/users/enums/UserRole.enum';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
+    isRestricted: false,
   });
+  const [role, setRole] = useState<UserRole | null>(null);
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
-  const { refetch: refetchUserProfile, error: fetchUserError } = useUserQuery({ enabled: false });
+  const { refetch: refetchUserProfile, error: fetchUserError } = useProfileQuery({
+    enabled: false,
+  });
 
   const [isLoading, setIsLoading] = useState(true);
 
   const logout: any = async () => {
     await Auth.signOut();
-    setAuthState({ isAuthenticated: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false });
+    setRole(null);
   };
 
   useEffect(() => {
@@ -37,9 +33,10 @@ const AuthProvider = ({ children }: any) => {
         await Auth.currentAuthenticatedUser();
         const { data: profile } = await refetchUserProfile();
         if (profile?.status === UserStatus.ACTIVE) {
-          setAuthState({ isAuthenticated: true });
+          setAuthState({ isRestricted: false, isAuthenticated: true });
+          setRole(profile?.role as UserRole);
         } else {
-          throw Error(); // TODO: Better error handling.
+          setAuthState({ ...authState, isRestricted: true });
         }
       } catch (error) {
         logout();
@@ -56,7 +53,7 @@ const AuthProvider = ({ children }: any) => {
   }, [fetchUserError]);
 
   return (
-    <AuthContext.Provider value={{ ...authState, setAuthState, logout }}>
+    <AuthContext.Provider value={{ ...authState, role, setAuthState, logout }}>
       {isLoading ? <Loading /> : children}
     </AuthContext.Provider>
   );

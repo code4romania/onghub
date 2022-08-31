@@ -1,16 +1,18 @@
+import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsString,
   Length,
   Matches,
   MaxLength,
+  ValidateNested,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organization.dto';
 
-export class CreateRequestDto {
+class CreateRequestUserDto {
   @IsString()
   @IsNotEmpty()
   @Length(10, 100)
@@ -26,7 +28,15 @@ export class CreateRequestDto {
   @IsNotEmpty()
   @IsValidPhone()
   phone: string;
+}
 
-  @IsNumber()
-  organizationId: number;
+export class CreateRequestDto {
+  /* Request Admin */
+  @Type(() => CreateRequestUserDto)
+  @ValidateNested()
+  admin: CreateRequestUserDto;
+
+  @Type(() => CreateOrganizationDto)
+  @ValidateNested()
+  organization: CreateOrganizationDto;
 }

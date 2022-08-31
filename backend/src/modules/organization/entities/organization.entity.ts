@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
+import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationActivity } from './organization-activity.entity';
@@ -96,4 +97,7 @@ export class Organization extends BaseEntity {
   )
   @JoinColumn({ name: 'organization_report_id' })
   organizationReport: OrganizationReport;
+
+  @OneToMany((type) => User, (user) => user.organization)
+  users: User[];
 }

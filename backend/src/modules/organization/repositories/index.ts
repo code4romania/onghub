@@ -7,3 +7,4 @@ export * from './organization.repository';
 export * from './contact.repository';
 export * from './partner.repository';
 export * from './investor.repository';
+export * from './organization-view.repository';

@@ -1,40 +1,55 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
-import CardPanel from '../../../components/card-panel/CardPanel';
-import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
-import InputField from '../../../components/InputField/InputField';
-import { useCreateUserMutation } from '../../../services/user/User.queries';
-import { useSelectedOrganization } from '../../../store/selectors';
-import { UserCreateConfig } from './UserCreateConfig';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
+import CardPanel from '../../../../components/card-panel/CardPanel';
+import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
+import InputField from '../../../../components/InputField/InputField';
+import {
+  useUpdateUserMutation,
+  useSelectedUserQuery,
+} from '../../../../services/user/User.queries';
+import { UserCreateConfig } from '../UserCreate/UserCreateConfig';
 
-const UserCreate = () => {
+const UserEdit = () => {
   const navigate = useNavigate();
-  const { organization } = useSelectedOrganization();
-  const createUserMutation = useCreateUserMutation();
+  const { id } = useParams();
+  const updateUserMutation = useUpdateUserMutation();
+  const { data: user, error } = useSelectedUserQuery(id as string);
 
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
+  useEffect(() => {
+    if (user) {
+      reset(user);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (error) {
+      useErrorToast(`Could not load user with id ${id}`);
+    }
+  }, [error]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    createUserMutation.mutate(
-      { ...data, organizationId: organization?.id as number },
+    updateUserMutation.mutate(
+      { userId: id as string, payload: data },
       {
         onSuccess: () => {
-          useSuccessToast('User successfully created');
-          navigate(-1);
+          useSuccessToast('User successfully updated');
         },
         onError: (error: unknown) => {
           console.error(error);
-          useErrorToast('Could not create the user');
+          useErrorToast('Could not update the user');
         },
       },
     );
@@ -42,16 +57,15 @@ const UserCreate = () => {
 
   return (
     <ContentWrapper
-      title="Adauga Utilizator"
+      title="Editeaza"
       subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
     disponibile."
-      goBack={navigate.bind(null, -1)}
+      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
     >
-      <div className="py-6 flex">
+      <div className="flex">
         <CardPanel
-          title="Trimite invitatie"
-          btnLabel="Trimite invitatie"
-          loading={createUserMutation.isLoading}
+          title="Editeaza"
+          loading={updateUserMutation.isLoading}
           onSave={handleSubmit(onSubmit)}
         >
           <form className="xl:w-1/2 flex flex-col gap-y-4 pb-20">
@@ -88,6 +102,7 @@ const UserCreate = () => {
                 render={({ field: { onChange, value } }) => {
                   return (
                     <InputField
+                      disabled
                       config={{
                         ...UserCreateConfig.email.config,
                         name: UserCreateConfig.email.key,
@@ -126,4 +141,4 @@ const UserCreate = () => {
   );
 };
 
-export default UserCreate;
+export default UserEdit;

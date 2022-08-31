@@ -35,4 +35,12 @@ export const USER_ERRORS = {
     message: 'Could not delete user from Cognito',
     errorCode: 'USR_009',
   },
+  UPDATE: {
+    message: 'Could not update the user',
+    errorCode: 'USR_010',
+  },
+  ACTIVATE: {
+    message: 'Could not activate user',
+    errorCode: 'USR_011',
+  },
 };

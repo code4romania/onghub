@@ -12,6 +12,7 @@ import {
   Report,
   Partner,
   Investor,
+  OrganizationView,
 } from './entities';
 import {
   ContactRepository,
@@ -22,6 +23,7 @@ import {
   OrganizationLegalRepository,
   OrganizationReportRepository,
   OrganizationRepository,
+  OrganizationViewRepository,
   PartnerRepository,
 } from './repositories';
 import {
@@ -35,12 +37,14 @@ import {
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 import { UserModule } from '../user/user.module';
+import { OrganizationProfileController } from './organization-profile.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Contact,
       Organization,
+      OrganizationView,
       OrganizationGeneral,
       OrganizationActivity,
       OrganizationLegal,
@@ -52,7 +56,7 @@ import { UserModule } from '../user/user.module';
     ]),
     forwardRef(() => UserModule),
   ],
-  controllers: [OrganizationController],
+  controllers: [OrganizationController, OrganizationProfileController],
   providers: [
     ContactService,
     OrganizationService,
@@ -71,6 +75,7 @@ import { UserModule } from '../user/user.module';
     OrganizationReportRepository,
     OrganizationReportService,
     ReportService,
+    OrganizationViewRepository,
   ],
   exports: [OrganizationService],
 })

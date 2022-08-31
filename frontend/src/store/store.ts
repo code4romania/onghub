@@ -15,12 +15,23 @@ import { Coalition } from '../common/interfaces/coalitions.interface';
 import { Federation } from '../common/interfaces/federations.interface';
 import { organizationLegalSlice } from './organization/organization-legal.slice';
 import { organizationReportsSlice } from './organization/organization-reports.slice';
-import { userSlice } from './user/User.slice';
+import { profileSlice } from './user/Profile.slice';
 import { IUser } from '../pages/users/interfaces/User.interface';
-import { IOrganization } from '../pages/organization/interfaces/Organization.interface';
+import {
+  IOrganization,
+  IOrganizationFull,
+} from '../pages/organization/interfaces/Organization.interface';
 import { organizationSlice } from './organization/organization.slice';
+import { usersSlice } from './user/Users.slice';
+import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
+import { IRequest } from '../pages/requests/interfaces/Request.interface';
+import { requestsSlice } from './request/Requests.slice';
+import { organizationsSlice } from './organization/organizations.slice';
+import { Application } from '../services/application/interfaces/Application.interface';
+import { applicationsSlice } from './application/Application.slice';
 
 interface OrganizationState {
+  organizations: PaginatedEntity<IOrganizationFull>;
   organization: IOrganization | null;
   organizationGeneral: IOrganizationGeneral | null;
   organizationFinancial: IOrganizationFinancial[];
@@ -33,6 +44,7 @@ interface OrganizationState {
   setOrganizationFinancial: (organizationFinancial: IOrganizationFinancial[]) => void;
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
+  setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -49,12 +61,32 @@ interface NomenclatureState {
   setCoalitions: (coaltions: Coalition[]) => void;
 }
 
-interface UserState {
-  user: IUser | null;
-  setUser: (user: IUser | null) => void;
+interface ProfileState {
+  profile: IUser | null;
+  setProfile: (user: IUser | null) => void;
 }
 
-const useStore = create<OrganizationState & NomenclatureState & UserState>()((set: any) => ({
+interface UserState {
+  users: PaginatedEntity<IUser>;
+  setUsers: (users: PaginatedEntity<IUser>) => void;
+}
+
+interface RequestState {
+  requests: PaginatedEntity<IRequest>;
+  setRequests: (requests: PaginatedEntity<IRequest>) => void;
+}
+
+interface ApplicationState {
+  applications: PaginatedEntity<Application>;
+  setApplications: (applications: PaginatedEntity<Application>) => void;
+
+  selectedApplication: Application | null;
+  setSelectedApplication: (application: Application) => void;
+}
+
+const useStore = create<
+  OrganizationState & NomenclatureState & UserState & ProfileState & RequestState & ApplicationState
+>()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
   ...organizationFinancialSlice(set),
@@ -62,7 +94,11 @@ const useStore = create<OrganizationState & NomenclatureState & UserState>()((se
   ...organizationReportsSlice(set),
   ...organizationLegalSlice(set),
   ...nomenclatureSlice(set),
-  ...userSlice(set),
+  ...profileSlice(set),
+  ...usersSlice(set),
+  ...requestsSlice(set),
+  ...organizationsSlice(set),
+  ...applicationsSlice(set),
 }));
 
 export default useStore;

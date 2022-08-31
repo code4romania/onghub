@@ -13,7 +13,7 @@ const Select = (props: {
   };
   selected?: any;
   error?: string | any;
-  readonly: boolean;
+  readonly?: boolean;
   onChange: any;
   multi?: boolean;
 }) => {
@@ -39,7 +39,11 @@ const Select = (props: {
                   <span className="block truncate">
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
-                      : props.selected) || ''}
+                      : props.selected) || (
+                      <span className="text-gray-700 text-normal font-normal">
+                        {props.config.label}
+                      </span>
+                    )}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

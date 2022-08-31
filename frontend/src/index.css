@@ -57,7 +57,7 @@
   }
 
   .red-button {
-    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm;
+    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto sm:text-sm;
   }
 }
 
@@ -85,7 +85,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-nowrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
+  @apply whitespace-pre-wrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
 }
 
 .rdt_TableCol_Sortable svg {

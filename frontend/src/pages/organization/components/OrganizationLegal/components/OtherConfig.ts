@@ -52,7 +52,7 @@ export const OtherConfig: Record<string, any> = {
       type: 'text',
       label: 'Rol*',
       helperText: '',
-      placeholder: 'director',
+      placeholder: 'Rol',
     },
   },
 };

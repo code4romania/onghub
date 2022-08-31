@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   UploadedFiles,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
@@ -27,7 +28,13 @@ import {
   PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
 } from './constants/open-api.schema';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from '../user/enums/role.enum';
+import { OrganizationFilterDto } from './dto/organization-filter.dto';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { OrganizationView } from './entities/organization.view-entity';
 
+@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -51,6 +58,13 @@ export class OrganizationController {
     return this.organizationService.findWithRelations(+id);
   }
 
+  @Get('')
+  findAll(
+    @Query() filters: OrganizationFilterDto,
+  ): Promise<Pagination<OrganizationView>> {
+    return this.organizationService.findAll({ options: filters });
+  }
+
   @ApiBody({ type: UpdateOrganizationDto })
   @Patch(':id')
   update(
@@ -66,6 +80,7 @@ export class OrganizationController {
     return this.organizationService.delete(+id);
   }
 
+  // @Public() -- NEEDED FOR CREATE FLOW
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([

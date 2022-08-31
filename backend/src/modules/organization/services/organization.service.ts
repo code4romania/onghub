@@ -6,6 +6,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { UserService } from 'src/modules/user/services/user.service';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -13,12 +14,16 @@ import { In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
+import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
+import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization, OrganizationReport } from '../entities';
+import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -39,6 +44,7 @@ export class OrganizationService {
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
+    private readonly organizationViewRepository: OrganizationViewRepository,
   ) {}
 
   public async create(
@@ -62,7 +68,7 @@ export class OrganizationService {
       });
     }
 
-    if (createOrganizationDto.legal.directors.length < 3) {
+    if (createOrganizationDto.legal.directors?.length < 3) {
       throw new BadRequestException({
         ...ORGANIZATION_ERRORS.CREATE_LEGAL.DIRECTORS_MIN,
       });
@@ -110,7 +116,7 @@ export class OrganizationService {
 
     let branches = [];
     if (createOrganizationDto.activity.hasBranches) {
-      if (createOrganizationDto.activity.branches) {
+      if (createOrganizationDto.activity.branches?.length === 0) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.BRANCH,
         });
@@ -152,14 +158,14 @@ export class OrganizationService {
         {
           type: FinancialType.EXPENSE,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalExpense,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalExpense,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
         {
           type: FinancialType.INCOME,
           year: new Date().getFullYear() - 1,
-          total: financialInformation.totalIncome,
-          numberOfEmployees: financialInformation.numberOfEmployees,
+          total: financialInformation?.totalIncome,
+          numberOfEmployees: financialInformation?.numberOfEmployees,
         },
       ],
       organizationReport: {
@@ -182,6 +188,21 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findAll({
+    options,
+  }: {
+    options: OrganizationFilterDto;
+  }): Promise<Pagination<OrganizationView>> {
+    const paginationOptions: any = {
+      ...options,
+    };
+
+    return this.organizationViewRepository.getManyPaginated(
+      ORGANIZATION_FILTERS_CONFIG,
+      paginationOptions,
+    );
   }
 
   public async findWithRelations(id: number): Promise<Organization> {

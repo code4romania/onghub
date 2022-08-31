@@ -107,6 +107,14 @@ module.exports = {
       transitionProperty: {
         width: 'width',
       },
+      flex: {
+        2: '2 2 0%',
+        3: '3 3 0%',
+      },
+      spacing: {
+        128: '32rem',
+        136: '34rem',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],

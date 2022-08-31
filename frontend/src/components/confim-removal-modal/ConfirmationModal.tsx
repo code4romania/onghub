@@ -1,12 +1,26 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { classNames } from '../../common/helpers/tailwind.helper';
 
-interface AccountDeleteModalProps {
+interface ConfirmationModalProps {
+  title: string;
+  description: string;
+  closeBtnLabel: string;
+  confirmBtnLabel: string;
+  confirmButtonStyle?: string;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const AccountDeleteModal = ({ onClose, onConfirm }: AccountDeleteModalProps) => {
+const ConfirmationModal = ({
+  title,
+  description,
+  closeBtnLabel,
+  confirmBtnLabel,
+  confirmButtonStyle,
+  onClose,
+  onConfirm,
+}: ConfirmationModalProps) => {
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -37,28 +51,27 @@ const AccountDeleteModal = ({ onClose, onConfirm }: AccountDeleteModalProps) => 
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      Ești sigur că dorești închiderea contului?
+                      {title}
                     </Dialog.Title>
                     <div className="mt-6">
-                      <p className="text-base text-gray-900 font-normal">
-                        Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
-                        puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești
-                        să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te
-                        va contacta pentru a finaliza procesul.
-                      </p>
+                      <p className="text-base text-gray-900 font-normal">{description}</p>
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
-                  <button type="button" className="red-button" onClick={onConfirm}>
-                    Inchide contul
+                <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse gap-4">
+                  <button
+                    type="button"
+                    className={classNames(confirmButtonStyle ?? 'red-button')}
+                    onClick={onConfirm}
+                  >
+                    {confirmBtnLabel}
                   </button>
                   <button
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                     onClick={onClose}
                   >
-                    Inapoi
+                    {closeBtnLabel}
                   </button>
                 </div>
               </Dialog.Panel>
@@ -70,4 +83,4 @@ const AccountDeleteModal = ({ onClose, onConfirm }: AccountDeleteModalProps) => 
   );
 };
 
-export default AccountDeleteModal;
+export default ConfirmationModal;

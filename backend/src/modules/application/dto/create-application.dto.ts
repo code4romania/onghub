@@ -5,9 +5,10 @@ import {
   Length,
   IsArray,
   IsEnum,
-  IsNumber,
+  IsOptional,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 export class CreateApplicationDto {
   @IsString()
@@ -16,35 +17,39 @@ export class CreateApplicationDto {
   @Length(3, 100)
   name: string;
 
-  @IsNumber()
-  typeId: number;
-
-  @IsArray()
+  @IsEnum(ApplicationTypeEnum)
   @IsNotEmpty()
-  @Length(10, 100, { each: true })
-  steps: string[];
+  type: ApplicationTypeEnum;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(200, 250)
+  @Length(50, 250)
   shortDescription: string;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(200, 250)
+  @Length(200, 1000)
   description: string;
 
   @IsString()
   @IsNotEmpty()
   @Matches(REGEX.LINK)
-  loginLink: string;
+  videoLink: string;
 
   @IsString()
   @IsNotEmpty()
   @Matches(REGEX.LINK)
-  video: string;
+  website: string;
 
+  @IsOptional()
+  @Matches(REGEX.LINK)
+  loginLink: string;
+
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   logo: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  @Length(2, 100, { each: true })
+  steps: string[];
 }

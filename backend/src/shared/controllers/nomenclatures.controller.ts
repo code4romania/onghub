@@ -6,7 +6,6 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiQuery } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { NomenclaturesService } from '../services';
@@ -17,7 +16,6 @@ import { NomenclaturesService } from '../services';
 export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
 
-  @ApiQuery({ name: 'citySearchDto', type: CitySearchDto })
   @Get('cities')
   getCities(@Query() citySearchDto: CitySearchDto) {
     return this.nomenclaturesService.getCitiesSearch(citySearchDto);

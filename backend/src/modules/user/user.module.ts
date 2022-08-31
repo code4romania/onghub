@@ -1,6 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { UserService } from './services/user.service';
-import { UserController } from './user.controller';
+import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
@@ -15,7 +15,7 @@ import { LoggerModule } from 'nestjs-pino';
     LoggerModule.forRoot(),
     forwardRef(() => OrganizationModule),
   ],
-  controllers: [UserController, AdminUserController],
+  controllers: [ProfileController, AdminUserController],
   providers: [UserRepository, UserService, CognitoUserService],
   exports: [UserService],
 })
