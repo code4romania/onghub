@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from '@lingui/react';
 import { TableColumn } from 'react-data-table-component';
 import { formatDate } from '../../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
@@ -29,7 +28,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
   },
   {
     id: 'status',
-    name: <Trans id="status" />,
+    name: 'Status',
     cell: (row: Investor) => (
       <StatusBadge
         status={
@@ -44,7 +43,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
   },
   {
     id: 'updatedOn',
-    name: <Trans id="updateOn" />,
+    name: 'Ultima actualizare',
     selector: (row: Investor) => formatDate(row?.updatedOn as string),
     sortable: true,
     grow: 1,

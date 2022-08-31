@@ -1,12 +1,7 @@
 import React from 'react';
-import { Trans } from '@lingui/react';
 
 const EmptyContent = () => {
-  return (
-    <span>
-      <Trans id="table.empty" />
-    </span>
-  );
+  return <span>Nu exista date in tabel</span>;
 };
 
 export default EmptyContent;

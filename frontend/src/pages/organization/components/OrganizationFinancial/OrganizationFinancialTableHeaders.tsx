@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from '@lingui/react';
 import { TableColumn } from 'react-data-table-component';
 import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.interface';
 import { formatCurrency, formatDate } from '../../../../common/helpers/format.helper';
@@ -10,10 +9,10 @@ import { CompletionStatus } from '../../enums/CompletionStatus.enum';
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
   {
     id: 'reportName',
-    name: <Trans id="reports" />,
+    name: 'Raportare',
     cell: (row: IOrganizationFinancial) => (
       <span>
-        {row.type === FinancialType.INCOME ? <Trans id="income" /> : <Trans id="expense" />}
+        {row.type === FinancialType.INCOME ? 'Raportare Venituri' : 'Raportare Cheltuieli'}
         {` ${row.year}`}
       </span>
     ),
@@ -21,35 +20,35 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'year',
-    name: <Trans id="year" />,
+    name: 'An',
     selector: (row: IOrganizationFinancial) => row.year,
     sortable: true,
     grow: 0.5,
   },
   {
     id: 'numberOfEmployees',
-    name: <Trans id="employees" />,
+    name: 'Angajati',
     selector: (row: IOrganizationFinancial) => row.numberOfEmployees,
     sortable: true,
     grow: 0.6,
   },
   {
     id: 'total',
-    name: <Trans id="total" />,
+    name: 'Suma',
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
     grow: 0.5,
   },
   {
     id: 'updatedOn',
-    name: <Trans id="updateOn" />,
+    name: 'Ultima actualizare',
     selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn as string),
     sortable: true,
     grow: 1,
   },
   {
     id: 'status',
-    name: <Trans id="status" />,
+    name: 'Status',
     cell: (row: IOrganizationFinancial) => (
       <StatusBadge
         status={

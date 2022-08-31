@@ -12,7 +12,6 @@ import {
   SUPER_ADMIN_ROUTES,
 } from '../../common/router/Routes.constants';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { Trans } from '@lingui/react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
@@ -99,7 +98,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              <Trans id="menu.info" />
+              Informatii
             </span>
           </a>
           <a
@@ -121,7 +120,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              <Trans id="menu.collapse" />
+              Restrange meniul
             </span>
           </a>
         </div>

@@ -1,1 +1,21 @@
-/*eslint-disable*/module.exports={messages:{"employees":"Angajati","expense":"Raportare Cheltuieli","income":"Raportare Venituri","menu.collapse":"Restrange meniul","menu.info":"Informatii","pagination.rangeSeparatorText":"din","pagination.rowsPerPageText":"Randuri pe pagina","reports":"Raportare","status":"Status","table.empty":"Nu exista date in tabel","total":"Suma","updateOn":"Ultima actualizare","year":"An","view":"Vizualizeaza","edit":"Editeaza","completed":"Completat","notCompleted":"Necompletat"}};
+/*eslint-disable*/ module.exports = {
+  messages: {
+    employees: 'Angajati',
+    expense: 'Raportare Cheltuieli',
+    income: 'Raportare Venituri',
+    'menu.collapse': 'Restrange meniul',
+    'menu.info': 'Informatii',
+    'pagination.rangeSeparatorText': 'din',
+    'pagination.rowsPerPageText': 'Randuri pe pagina',
+    reports: 'Raportare',
+    status: 'Status',
+    'table.empty': 'Nu exista date in tabel',
+    total: 'Suma',
+    updateOn: 'Ultima actualizare',
+    year: 'An',
+    view: 'Vizualizeaza',
+    edit: 'Editeaza',
+    completed: 'Completat',
+    notCompleted: 'Necompletat',
+  },
+};

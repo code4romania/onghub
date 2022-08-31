@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { Trans } from '@lingui/react';
 
 interface MenuItem {
   name: string;
@@ -88,7 +87,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           />
                           <div className="ml-2.5">
                             <label className="text-gray-900 text-xm font-normal">
-                              <Trans id={item.name} />
+                              id={item.name}
                             </label>
                           </div>
                         </a>
@@ -107,7 +106,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           />
                           <div className="ml-2.5">
                             <label htmlFor="upload" className="text-gray-900 text-xm font-normal">
-                              <Trans id={item.name} />
+                              d={item.name}
                             </label>
                           </div>
                         </a>
@@ -135,7 +134,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                                   'text-xm font-normal',
                                 )}
                               >
-                                <Trans id={item.name} />
+                                id={item.name}
                               </label>
                             </div>
                           </a>

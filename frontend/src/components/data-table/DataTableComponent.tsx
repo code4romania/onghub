@@ -1,10 +1,10 @@
 import React from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
 import { ChevronDownIcon } from '@heroicons/react/outline';
-import { useLingui } from '@lingui/react';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { useTranslation } from 'react-i18next';
 
 interface DataTableProps {
   columns: TableColumn<any>[];
@@ -33,7 +33,7 @@ const DataTableComponent = ({
   onChangePage,
   onChangeRowsPerPage,
 }: DataTableProps) => {
-  const { i18n } = useLingui();
+  const { t } = useTranslation('translation');
 
   return (
     <div
@@ -50,8 +50,10 @@ const DataTableComponent = ({
         pagination={pagination}
         paginationServer={pagination}
         paginationComponentOptions={{
-          rowsPerPageText: (i18n.messages['pagination.rowsPerPageText'] as string) || '',
-          rangeSeparatorText: (i18n.messages['pagination.rangeSeparatorText'] as string) || '',
+          // rowsPerPageText: (i18n.messages['pagination.rowsPerPageText'] as string) || '',
+          rowsPerPageText: (t('pagination.rowsPerText') as string) || '',
+          // rangeSeparatorText: (i18n.messages['pagination.rangeSeparatorText'] as string) || '',
+          rangeSeparatorText: (t('pagination.rangeSeparatorText') as string) || '',
         }}
         responsive
         sortIcon={<ChevronDownIcon />}
