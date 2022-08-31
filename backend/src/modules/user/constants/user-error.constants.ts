@@ -35,4 +35,8 @@ export const USER_ERRORS = {
     message: 'Could not update the user',
     errorCode: 'USR_009',
   },
+  ACTIVATE: {
+    message: 'Could not activate user',
+    errorCode: 'USR_010',
+  },
 };

@@ -1,13 +1,14 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Organization } from 'src/modules/organization/entities';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
+import { Request } from '../../requests/entities/request.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  @Column({ type: 'varchar', name: 'cognito_id', unique: true })
+  @Column({ type: 'varchar', name: 'cognito_id', unique: true, nullable: true })
   cognitoId: string;
 
   @Column({ type: 'varchar', name: 'name' })
@@ -43,4 +44,11 @@ export class User extends BaseEntity {
   @ManyToOne((type) => Organization)
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;
+
+  @OneToMany(() => Request, (request) => request.user, {
+    cascade: true,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'user_id' })
+  requests: Request[];
 }
