@@ -345,7 +345,13 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                               config={{
                                 ...AddAppConfig.step.config,
                                 name: AddAppConfig.step.key,
-                                error: errors.steps && errors?.steps[index]?.step?.message,
+                                error:
+                                  errors.steps &&
+                                  ((
+                                    errors as {
+                                      [x: string]: any | any[];
+                                    }
+                                  )?.steps[index]?.step?.message as any),
                                 defaultValue: value,
                                 onChange: onChange,
                               }}

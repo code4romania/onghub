@@ -1,12 +1,11 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { IOrganizationFull } from '../../organization/interfaces/Organization.interface';
+import { IUser } from '../../users/interfaces/User.interface';
 import { RequestStatus } from '../enum/RequestStatus.enum';
 
 export interface IRequest extends BaseEntity {
   status: RequestStatus;
-  name: string;
-  phone: string;
-  email: string;
+  user: IUser;
   organization: IOrganizationFull;
   createdOn: string;
 }

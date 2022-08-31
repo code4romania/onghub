@@ -82,10 +82,6 @@ export abstract class BaseDAO<T> {
       ...filters
     } = options;
 
-    // select query
-    const selectQuery = this.buildQueryObject(config.selectColumns);
-    // relations
-    const relationsQuery = this.buildQueryObject(config.relations);
     // filters (and where)
     const orWhereQuery = [];
     const andWherQuery: any = {};
@@ -122,8 +118,8 @@ export abstract class BaseDAO<T> {
 
     // full query
     let query: FindManyOptions<T> = {
-      select: selectQuery,
-      relations: relationsQuery,
+      select: config.selectColumns,
+      relations: config.relations,
       order: orderOptions,
       take: limit,
       skip: (page - 1) * limit,
@@ -152,18 +148,6 @@ export abstract class BaseDAO<T> {
     };
   }
 
-  private buildQueryObject = (options: string[]): any => {
-    return options.reduce((prev: any, curr: string) => {
-      const currentBlock = curr.split('.');
-      return currentBlock.length === 1
-        ? { ...prev, [curr]: true }
-        : {
-            ...prev,
-            [currentBlock[0]]: this.buildQueryObject([currentBlock[1]]),
-          };
-    }, {});
-  };
-
   private buildSearchQuery = (option: string, search: string): any => {
     const optionValues = option.split('.');
     return optionValues.length === 1
@@ -185,13 +169,15 @@ export abstract class BaseDAO<T> {
       return filterValue;
     }
 
-    const test = filterValue.substring(operator.length + 1).split(',');
     // map the correct method
     switch (operator) {
       case FilterOperator.BTW:
-      case FilterOperator.IN:
         return OperatorSymbolToFunction.get(operator as FilterOperator)(
           ...filterValue.substring(operator.length + 1).split(','),
+        );
+      case FilterOperator.IN:
+        return OperatorSymbolToFunction.get(operator as FilterOperator)(
+          filterValue.substring(operator.length + 1).split(','),
         );
       default:
         return OperatorSymbolToFunction.get(operator as FilterOperator)(

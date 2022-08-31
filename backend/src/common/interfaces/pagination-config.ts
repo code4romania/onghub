@@ -14,9 +14,9 @@ export enum FilterOperator {
 
 export interface IPaginationConfig {
   searchableColumns: string[];
-  selectColumns: string[];
+  selectColumns: any;
   defaultSortBy: string;
   defaultOrderDirection: OrderDirection;
-  relations: string[];
+  relations: any;
   rangeColumn?: string;
 }
