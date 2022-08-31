@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../users/enums/UserRole.enum';
-import ApplicationList from './components/ApplicationList';
+import ApplicationListAdmin from './components/ApplicationListAdmin';
+import ApplicationListSuperAdmin from './components/ApplicationListSuperAdmin';
 
 const AppStore = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const AppStore = () => {
 
   return (
     <ContentWrapper
-      title="Aplicatii"
+      title="Toate aplicatiile"
       subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
       addButton={{
         visible: role === UserRole.SUPER_ADMIN,
@@ -21,7 +22,7 @@ const AppStore = () => {
         },
       }}
     >
-      <ApplicationList />
+      {role === UserRole.ADMIN ? <ApplicationListSuperAdmin /> : <ApplicationListAdmin />}
     </ContentWrapper>
   );
 };

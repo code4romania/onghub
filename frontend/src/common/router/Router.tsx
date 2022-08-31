@@ -11,7 +11,6 @@ import CreateOrganizationUser from '../../pages/create-organziation/components/C
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
-import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity/OrganizationActivity';
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
@@ -32,6 +31,7 @@ import Application from '../../pages/application/Application';
 import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
+import MyApps from '../../pages/my-apps/MyApps';
 
 const Router = () => {
   const { isAuthenticated, isRestricted } = useAuthContext();
@@ -92,7 +92,7 @@ const Router = () => {
 
           <Route path="user" element={<UserCreate />} />
           <Route path="user/:id" element={<UserEdit />} />
-          <Route path="apps" element={<Apps />}></Route>
+          <Route path="apps" element={<MyApps />}></Route>
 
           <Route path="store" element={<AppStore />}></Route>
           <Route path="store/new" element={<AddApplication />} />
