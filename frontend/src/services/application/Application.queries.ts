@@ -30,7 +30,7 @@ export const useApplicationsQuery = (
 ) => {
   const { setApplications, applications } = useStore();
   return useQuery(
-    ['requests', limit, page, orderBy, orderDirection, search, status, type],
+    ['applications', limit, page, orderBy, orderDirection, search, status, type],
     () => getApplications(limit, page, orderBy, orderDirection, search, status, type),
     {
       onSuccess: (data: PaginatedEntity<Application>) => {

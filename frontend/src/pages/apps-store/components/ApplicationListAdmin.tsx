@@ -14,10 +14,10 @@ import { APPLICATION_STATUS_NAME } from '../constants/ApplicationStatus.constant
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 
 const ApplicationListAdmin = () => {
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage] = useState<number>(10000);
-  const [orderByColumn] = useState<string>();
-  const [orderDirection] = useState<OrderDirection>();
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10000);
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [status] = useState<{ status: ApplicationStatus; label: string } | null>({
     status: ApplicationStatus.ACTIVE,
     label: APPLICATION_STATUS_NAME[ApplicationStatus.ACTIVE],
@@ -30,6 +30,7 @@ const ApplicationListAdmin = () => {
     page as number,
     orderByColumn as string,
     orderDirection as OrderDirection,
+    '', // search term
     status?.status,
   );
 
@@ -38,6 +39,9 @@ const ApplicationListAdmin = () => {
   useEffect(() => {
     if (applications?.meta) {
       setPage(applications.meta.currentPage);
+      setRowsPerPage(100000);
+      setOrderByColumn(applications.meta.orderByColumn);
+      setOrderDirection(applications.meta.orderDirection);
     }
   }, []);
 
