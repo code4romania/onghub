@@ -169,13 +169,15 @@ export abstract class BaseDAO<T> {
       return filterValue;
     }
 
-    const test = filterValue.substring(operator.length + 1).split(',');
     // map the correct method
     switch (operator) {
       case FilterOperator.BTW:
-      case FilterOperator.IN:
         return OperatorSymbolToFunction.get(operator as FilterOperator)(
           ...filterValue.substring(operator.length + 1).split(','),
+        );
+      case FilterOperator.IN:
+        return OperatorSymbolToFunction.get(operator as FilterOperator)(
+          filterValue.substring(operator.length + 1).split(','),
         );
       default:
         return OperatorSymbolToFunction.get(operator as FilterOperator)(
