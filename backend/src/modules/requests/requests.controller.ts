@@ -32,13 +32,6 @@ import { Role } from '../user/enums/role.enum';
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 
-  @Public()
-  @ApiBody({ type: CreateRequestDto })
-  @Post()
-  create(@Body() createRequestDto: CreateRequestDto): Promise<Request> {
-    return this.requestsService.create(createRequestDto);
-  }
-
   @Roles(Role.SUPER_ADMIN)
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('')
@@ -46,21 +39,35 @@ export class RequestsController {
     return this.requestsService.findAll(filters);
   }
 
+  /**
+   * ------------------------------
+   * ------------------------------
+   * ******* ORGANIZATION *********
+   * ------------------------------
+   */
+
+  @Public()
+  @ApiBody({ type: CreateRequestDto })
+  @Post('organization')
+  create(@Body() createRequestDto: CreateRequestDto): Promise<any> {
+    return this.requestsService.createOrganizationRequest(createRequestDto);
+  }
+
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
-  @Get(':id')
+  @Get('organization/:id')
   findOne(@Param('id') id: string): Promise<Request> {
-    return this.requestsService.findOne(+id);
+    return this.requestsService.findOneOrganizationRequest(+id);
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @Patch(':id/approve')
+  @Patch('organization/:id/approve')
   approve(@Param('id') id: number): Promise<Request> {
-    return this.requestsService.approve(id);
+    return this.requestsService.approveOrganization(id);
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @Patch(':id/reject')
+  @Patch('organization/:id/reject')
   reject(@Param('id') id: number): Promise<Request> {
     return this.requestsService.reject(id);
   }

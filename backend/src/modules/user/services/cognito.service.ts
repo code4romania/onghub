@@ -22,7 +22,11 @@ export class CognitoUserService {
     });
   }
 
-  async createUser({ name, email, phone }: CreateUserDto): Promise<string> {
+  async createUser({
+    name,
+    email,
+    phone,
+  }: Partial<CreateUserDto>): Promise<string> {
     const createUserCommand = new AdminCreateUserCommand({
       UserPoolId: CognitoConfig.userPoolId,
       Username: email,

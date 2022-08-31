@@ -20,19 +20,19 @@ export const RequestListTableHeaders: TableColumn<IRequest>[] = [
     id: 'name',
     name: 'Nume',
     sortable: false,
-    selector: (row: IRequest) => row.name,
+    selector: (row: IRequest) => row.user.name,
   },
   {
     id: 'email',
     name: 'Email',
     sortable: false,
-    selector: (row: IRequest) => row.email,
+    selector: (row: IRequest) => row.user.email,
   },
   {
     id: 'phone',
     name: 'Telefon',
     sortable: false,
-    selector: (row: IRequest) => row.phone,
+    selector: (row: IRequest) => row.user.phone,
   },
   {
     id: 'status',

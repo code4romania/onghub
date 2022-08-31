@@ -11,7 +11,7 @@ export const requestsSlice = (set: any) => ({
       itemsPerPage: 10,
       totalItems: 0,
       totalPages: 1,
-      orderByColumn: 'name',
+      orderByColumn: 'createdOn',
       orderDirection: OrderDirection.ASC,
     },
   },
