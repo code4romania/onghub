@@ -5,9 +5,20 @@ export const REQUEST_ERRORS = {
       errorCode: 'REQ_001',
     },
     REQ_EXISTS: {
-      message:
-        'There is already a pending request with the same admin email address.',
+      message: 'There is already a pending request with the same data.',
       errorCode: 'REQ_002',
+    },
+    ORGANIZATION_STATUS: {
+      message: 'Organization status must be active.',
+      errorCode: 'REQ_004',
+    },
+    APPLICATION_STATUS: {
+      message: 'Application status must be active.',
+      errorCode: 'REQ_005',
+    },
+    APP_EXISTS: {
+      message: 'The app is already asssigned to the organization.',
+      errorCode: 'REQ_006',
     },
   },
   UPDATE: {

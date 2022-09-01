@@ -5,10 +5,22 @@ import { Application } from './entities/application.entity';
 import { ApplicationRepository } from './repositories/application.repository';
 import { ApplicationService } from './services/application.service';
 import { SharedModule } from 'src/shared/shared.module';
+import { OngApplication } from './entities/ong-application.entity';
+import { OngApplicationRepository } from './repositories/ong-application.repository';
+import { OngApplicationService } from './services/ong-application.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), SharedModule],
+  imports: [
+    TypeOrmModule.forFeature([Application, OngApplication]),
+    SharedModule,
+  ],
   controllers: [ApplicationController],
-  providers: [ApplicationService, ApplicationRepository],
+  providers: [
+    ApplicationService,
+    ApplicationRepository,
+    OngApplicationRepository,
+    OngApplicationService,
+  ],
+  exports: [OngApplicationService, ApplicationService],
 })
 export class ApplicationModule {}

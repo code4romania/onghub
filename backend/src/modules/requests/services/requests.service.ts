@@ -11,14 +11,20 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { REQUEST_FILTER_CONFIG } from '../constants/request-filters.config';
 import { RequestType } from '../enums/request-type.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { CreateApplicationRequestDto } from '../dto/create-application-request.dto';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
+import { ApplicationService } from 'src/modules/application/services/application.service';
+import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 
 @Injectable()
 export class RequestsService {
   private readonly logger = new Logger(RequestsService.name);
   constructor(
-    private requestRepository: RequestRepository,
-    private organizationService: OrganizationService,
-    private userService: UserService,
+    private readonly requestRepository: RequestRepository,
+    private readonly organizationService: OrganizationService,
+    private readonly userService: UserService,
+    private readonly ongApplicationService: OngApplicationService,
+    private readonly applicationService: ApplicationService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -175,6 +181,70 @@ export class RequestsService {
     // TODO: 2. Send rejection by email
 
     return this.findWithOrganization(requestId);
+  }
+
+  public async createApplicationRequest(
+    createApplicationRequestDto: CreateApplicationRequestDto,
+  ): Promise<Request> {
+    const { organizationId, applicationId } = createApplicationRequestDto;
+
+    // 1. check if organization is active
+    const organization = await this.organizationService.find(organizationId);
+
+    if (organization.status !== OrganizationStatus.ACTIVE) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.ORGANIZATION_STATUS,
+      });
+    }
+
+    // 2. check if application is active
+    const application = await this.applicationService.findOne(applicationId);
+
+    if (application.status !== ApplicationStatus.ACTIVE) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.APPLICATION_STATUS,
+      });
+    }
+
+    // 3. check if there is aleady an pending request for
+    const request = await this.requestRepository.get({
+      where: {
+        organizationId,
+        applicationId,
+        status: RequestStatus.PENDING,
+        type: RequestType.REQUEST_APPLICATION_ACCESS,
+      },
+    });
+
+    if (request) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+      });
+    }
+
+    // 4. Check if the app is aleady assigned to the organization (either restricted or otherwise)
+    const ongApp = await this.ongApplicationService.findOne({
+      where: { organizationId, applicationId },
+    });
+
+    if (ongApp) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.CREATE.APP_EXISTS,
+      });
+    }
+
+    // 5. create request app
+    const newOngApp = await this.ongApplicationService.create(
+      organizationId,
+      applicationId,
+    );
+
+    // 6. create pending request
+    return this.requestRepository.save({
+      organizationId,
+      applicationId: newOngApp.id,
+      type: RequestType.REQUEST_APPLICATION_ACCESS,
+    });
   }
 
   /**

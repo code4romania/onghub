@@ -24,6 +24,9 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
+import { CreateApplicationRequestDto } from './dto/create-application-request.dto';
+import { ExtractUser } from '../user/decorators/user.decorator';
+import { User } from '../user/entities/user.entity';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -70,5 +73,21 @@ export class RequestsController {
   @Patch('organization/:id/reject')
   reject(@Param('id') id: number): Promise<Request> {
     return this.requestsService.reject(id);
+  }
+
+  /**
+   * APPLICATION
+   */
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiBody({ type: CreateApplicationRequestDto })
+  @Post('application')
+  createApplicationRequest(
+    @Body() createRequestDto: CreateApplicationRequestDto,
+    @ExtractUser() user: User,
+  ): Promise<any> {
+    return this.requestsService.createApplicationRequest({
+      organizationId: user.organizationId,
+      applicationId: createRequestDto.applicationId,
+    });
   }
 }

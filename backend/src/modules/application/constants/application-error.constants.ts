@@ -15,3 +15,10 @@ export const APPLICATION_ERRORS = {
     },
   },
 };
+
+export const ONG_APPLICATION_ERRORS = {
+  CREATE: {
+    message: 'Error while cerateing the app',
+    errorCode: 'ONG_APP_001',
+  },
+};
