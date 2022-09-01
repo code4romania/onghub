@@ -14,6 +14,7 @@ import {
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
+import { Trans, useTranslation } from 'react-i18next';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -51,6 +52,8 @@ const Menu = () => {
     setCurrentMenuItemId(item.id);
     navigate(`${item.href}`);
   };
+
+  const { t } = useTranslation();
 
   return (
     <div className="flex">
@@ -98,7 +101,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              Informatii
+              {t('menu_info')}
             </span>
           </a>
           <a
