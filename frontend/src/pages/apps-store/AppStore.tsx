@@ -22,7 +22,7 @@ const AppStore = () => {
         },
       }}
     >
-      {role === UserRole.ADMIN ? <ApplicationListSuperAdmin /> : <ApplicationListAdmin />}
+      {role === UserRole.SUPER_ADMIN ? <ApplicationListSuperAdmin /> : <ApplicationListAdmin />}
     </ContentWrapper>
   );
 };
