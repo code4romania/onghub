@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { FindOneOptions } from 'typeorm';
+import { FindOneOptions, UpdateResult } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
@@ -36,5 +36,12 @@ export class OngApplicationService {
     conditions: FindOneOptions<OngApplication>,
   ): Promise<OngApplication> {
     return this.ongApplicationRepository.get(conditions);
+  }
+
+  public async updateOne(
+    id: number,
+    updates: Partial<OngApplication>,
+  ): Promise<UpdateResult> {
+    return this.ongApplicationRepository.update({ id }, updates);
   }
 }

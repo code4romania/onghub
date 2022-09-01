@@ -24,6 +24,7 @@ import { OngApplicationService } from 'src/modules/application/services/ong-appl
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 
 @Injectable()
 export class RequestsService {
@@ -154,7 +155,7 @@ export class RequestsService {
 
   public async approveOrganization(requestId: number) {
     // 1. Get the request
-    const { organizationId, user, status, organization } =
+    const { organizationId, user, status, type, organization } =
       await this.findWithRelations(requestId);
 
     if (
@@ -164,6 +165,12 @@ export class RequestsService {
     ) {
       throw new BadRequestException({
         ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      });
+    }
+
+    if (type !== RequestType.CREATE_ORGANIZATION) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.WRONG_TYPE,
       });
     }
 
@@ -303,13 +310,55 @@ export class RequestsService {
     return request;
   }
 
+  public async updateApplicationRequest(
+    requestId: number,
+    isApproved: boolean,
+  ): Promise<Request> {
+    const request = await this.findWithRelations(requestId);
+
+    if (!request) {
+      throw new NotFoundException({
+        ...REQUEST_ERRORS.GET.NOT_FOUND,
+      });
+    }
+
+    if (
+      request.status !== RequestStatus.PENDING ||
+      request.ongApplication.status !== OngApplicationStatus.PENDING
+    ) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      });
+    }
+
+    if (request.type !== RequestType.REQUEST_APPLICATION_ACCESS) {
+      throw new BadRequestException({
+        ...REQUEST_ERRORS.UPDATE.WRONG_TYPE,
+      });
+    }
+
+    // TODO: check what we want to do with the not restricted apps in this scenario
+    await this.ongApplicationService.updateOne(request.applicationId, {
+      status: isApproved
+        ? OngApplicationStatus.ACTIVE
+        : OngApplicationStatus.RESTRICTED,
+    });
+
+    await this.requestRepository.update(
+      { id: requestId },
+      { status: isApproved ? RequestStatus.APPROVED : RequestStatus.DECLINED },
+    );
+
+    return this.findWithApplication(requestId);
+  }
+
   /**
    * PRIVATE METHODS
    */
   private findWithRelations(id: number): Promise<Request> {
     return this.requestRepository.get({
       where: { id },
-      relations: ['organization', 'user'],
+      relations: ['organization', 'user', 'ongApplication'],
     });
   }
 
@@ -317,6 +366,13 @@ export class RequestsService {
     return this.requestRepository.get({
       where: { id },
       relations: ['organization'],
+    });
+  }
+
+  private findWithApplication(id: number): Promise<Request> {
+    return this.requestRepository.get({
+      where: { id },
+      relations: ['ongApplication'],
     });
   }
 }

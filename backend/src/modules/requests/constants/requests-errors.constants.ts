@@ -26,6 +26,10 @@ export const REQUEST_ERRORS = {
       message: 'Could not update a Request with other status than pending.',
       errorCode: 'REQ_003',
     },
+    WRONG_TYPE: {
+      message: 'Cannot do this operation, wrong request type',
+      errorCode: 'REQ_008',
+    },
   },
   GET: {
     NOT_FOUND: {
