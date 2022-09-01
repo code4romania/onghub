@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { FindOneOptions, UpdateResult } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
@@ -36,6 +41,24 @@ export class OngApplicationService {
     conditions: FindOneOptions<OngApplication>,
   ): Promise<OngApplication> {
     return this.ongApplicationRepository.get(conditions);
+  }
+
+  public async findById(
+    id: number,
+    organizationId: number,
+  ): Promise<OngApplication> {
+    const application = await this.ongApplicationRepository.get({
+      where: { id, organizationId },
+      relations: ['application'],
+    });
+
+    if (!application) {
+      throw new NotFoundException({
+        ...ONG_APPLICATION_ERRORS.GET.NOT_FOUND,
+      });
+    }
+
+    return application;
   }
 
   public async updateOne(

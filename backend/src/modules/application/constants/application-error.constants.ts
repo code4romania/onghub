@@ -21,4 +21,10 @@ export const ONG_APPLICATION_ERRORS = {
     message: 'Error while cerateing the app',
     errorCode: 'ONG_APP_001',
   },
+  GET: {
+    NOT_FOUND: {
+      message: 'Application Not Found',
+      errorCode: 'ONG_APP_002',
+    },
+  },
 };
