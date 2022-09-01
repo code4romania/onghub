@@ -6,6 +6,6 @@ export const useApplications = () => {
 };
 
 export const useSelectedApplication = () => {
-  const application = useStore((state) => state.selectedApplication);
-  return { application };
+  const applicationResponse = useStore((state) => state.selectedApplication);
+  return { applicationResponse };
 };

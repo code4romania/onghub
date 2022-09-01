@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
-import { Loading } from '../../components/loading/Loading';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { useApplication } from '../../services/application/Application.queries';
 import { UserRole } from '../users/enums/UserRole.enum';
-import { APPLICATION_TABS } from './constants/ApplicationTabs';
+import { APPLICATION_STORE_TABS } from './constants/ApplicationStoreTabs.constant';
 
-const Application = () => {
+const ApplicationStore = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { role } = useAuthContext();
-  const params = useParams();
-
-  const { data: applicationResponse, isLoading } = useApplication(params.id ? params?.id : '');
 
   useEffect(() => {
-    const found: IPageTab | undefined = APPLICATION_TABS.find(
+    const found: IPageTab | undefined = APPLICATION_STORE_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
@@ -32,30 +26,16 @@ const Application = () => {
     navigate(tab.href);
   };
 
-  const onApplicationEdit = () => {
-    navigate('edit');
-  };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <ContentWrapper
-      title={applicationResponse?.application?.name || ''}
-      backButton={{
-        btnLabel: 'Inapoi',
-        onBtnClick: () => navigate(-2),
-      }}
-      editButton={{
-        btnLabel: 'Editeaza',
-        onBtnClick: onApplicationEdit,
+      title="Toate aplicatiile"
+      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
+      addButton={{
         visible: role === UserRole.SUPER_ADMIN,
-      }}
-      deleteButton={{
-        btnLabel: 'Sterge',
-        onBtnClick: () => navigate(-2),
-        visible: role === UserRole.SUPER_ADMIN,
+        btnLabel: 'Adauga aplicatie',
+        onBtnClick: () => {
+          navigate('new');
+        },
       }}
     >
       <div className="pb-6 flex">
@@ -64,7 +44,7 @@ const Application = () => {
             className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
             aria-label="Tabs"
           >
-            {APPLICATION_TABS.map((tab) => (
+            {APPLICATION_STORE_TABS.map((tab) => (
               <a
                 key={tab.name}
                 onClick={() => onTabClick(tab)}
@@ -86,4 +66,4 @@ const Application = () => {
   );
 };
 
-export default Application;
+export default ApplicationStore;

@@ -10,7 +10,11 @@ import {
   patchApplication,
 } from './Application.service';
 import { CreateApplicationDto } from './interfaces/Application.dto';
-import { Application, ApplicationStatus } from './interfaces/Application.interface';
+import {
+  Application,
+  ApplicationResponse,
+  ApplicationStatus,
+} from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
   return useMutation((applicationDto: CreateApplicationDto) => createApplication(applicationDto), {
@@ -45,7 +49,7 @@ export const useApplication = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
-    onSuccess: (data: Application) => {
+    onSuccess: (data: ApplicationResponse) => {
       setSelectedApplication(data);
     },
   });

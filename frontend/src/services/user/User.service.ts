@@ -1,6 +1,7 @@
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IUser } from '../../pages/users/interfaces/User.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
@@ -54,7 +55,7 @@ export const getUserById = async (userId: string) => {
 };
 
 export const getProfile = async (): Promise<IUser> => {
-  return API.get(`/profile`).then((res) => res.data);
+  return API.get(`/profile`).then((res) => ({ ...res.data, role: UserRole.ADMIN })); // TEMPORARY
 };
 
 export const deleteUser = async (): Promise<any> => {

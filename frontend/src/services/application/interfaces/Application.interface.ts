@@ -6,6 +6,12 @@ export enum ApplicationStatus {
   DISABLED = 'disabled',
 }
 
+export enum ApplicationPermission {
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  RESTRICTED = 'restricted',
+}
+
 export interface Application extends BaseEntity {
   name: string;
   type: ApplicationTypeEnum;
@@ -17,4 +23,9 @@ export interface Application extends BaseEntity {
   website: string;
   logo: string;
   steps: string[];
+}
+
+export interface ApplicationResponse {
+  application: Application;
+  status: ApplicationPermission | null;
 }

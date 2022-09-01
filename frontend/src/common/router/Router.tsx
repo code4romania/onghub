@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
-import AppStore from '../../pages/apps-store/AppStore';
+import ApplicationStore from '../../pages/apps-store/ApplicationStore';
 import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
 import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
 import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
@@ -32,6 +32,8 @@ import ApplicationDetails from '../../pages/application/components/ApplicationDe
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
 import MyApps from '../../pages/my-apps/MyApps';
+import ApplicationList from '../../pages/apps-store/components/ApplicationList';
+import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 
 const Router = () => {
   const { isAuthenticated, isRestricted } = useAuthContext();
@@ -94,7 +96,10 @@ const Router = () => {
           <Route path="user/:id" element={<UserEdit />} />
           <Route path="apps" element={<MyApps />}></Route>
 
-          <Route path="store" element={<AppStore />}></Route>
+          <Route path={'store'} element={<ApplicationStore />}>
+            <Route index element={<ApplicationList />} />
+            <Route path="requests" element={<ApplicationRequests />} />
+          </Route>
           <Route path="store/new" element={<AddApplication />} />
 
           <Route path="account" element={<Account />} />

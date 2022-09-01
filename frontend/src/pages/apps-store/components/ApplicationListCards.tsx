@@ -11,9 +11,8 @@ import {
 import { useApplications } from '../../../store/selectors';
 import ApplicationCard from '../../my-apps/components/ApplicationCard';
 import { APPLICATION_STATUS_NAME } from '../constants/ApplicationStatus.constant';
-import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 
-const ApplicationListAdmin = () => {
+const ApplicationListCards = () => {
   const [page, setPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10000);
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -22,8 +21,6 @@ const ApplicationListAdmin = () => {
     status: ApplicationStatus.ACTIVE,
     label: APPLICATION_STATUS_NAME[ApplicationStatus.ACTIVE],
   });
-
-  const navigate = useNavigate();
 
   const { isLoading, error } = useApplicationsQuery(
     rowsPerPage as number,
@@ -64,4 +61,4 @@ const ApplicationListAdmin = () => {
   );
 };
 
-export default ApplicationListAdmin;
+export default ApplicationListCards;

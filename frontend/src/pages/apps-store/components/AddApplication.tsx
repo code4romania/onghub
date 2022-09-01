@@ -26,7 +26,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
 
-  const { application } = useSelectedApplication();
+  const { applicationResponse } = useSelectedApplication();
 
   // Mutation
   const {
@@ -63,11 +63,13 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const type = watch('type');
 
   useEffect(() => {
-    console.log(application);
-    if (application) {
-      reset({ ...application, steps: application.steps.map((step) => ({ step })) });
+    if (applicationResponse?.application) {
+      reset({
+        ...applicationResponse?.application,
+        steps: applicationResponse?.application.steps.map((step) => ({ step })),
+      });
     }
-  }, [application]);
+  }, [applicationResponse?.application]);
 
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
@@ -77,10 +79,10 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   };
 
   const handleEdit = async (data: any) => {
-    if (application) {
+    if (applicationResponse?.application) {
       const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
       const res = await updateApplication({
-        applicationId: application?.id?.toString(),
+        applicationId: applicationResponse?.application?.id?.toString(),
         applicationUpdatePayload: dto,
       });
       useSuccessToast('Aplicatie modificata cu succes!');
@@ -240,6 +242,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                     );
                   }}
                 />
+                {/* Website-urile independente nu au LINK de login. */}
                 {type !== ApplicationTypeEnum.INDEPENDENT && (
                   <Controller
                     key={AddAppConfig.loginLink.key}

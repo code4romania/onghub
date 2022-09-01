@@ -4,7 +4,12 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import API from '../API';
 import { CreateApplicationDto } from './interfaces/Application.dto';
-import { Application, ApplicationStatus } from './interfaces/Application.interface';
+import {
+  Application,
+  ApplicationPermission,
+  ApplicationResponse,
+  ApplicationStatus,
+} from './interfaces/Application.interface';
 
 export const createApplication = (
   createApplicationDto: CreateApplicationDto,
@@ -34,8 +39,8 @@ export const getApplications = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getApplicationById = (applicationId: string): Promise<Application> => {
-  return API.get(`/application/${applicationId}`).then((res) => res.data);
+export const getApplicationById = (applicationId: string): Promise<ApplicationResponse> => {
+  return API.get(`/application/${applicationId}`).then((res) => adaptApp(res.data));
 };
 
 export const patchApplication = (
@@ -45,4 +50,13 @@ export const patchApplication = (
   return API.patch(`/application/${applicationId}`, applicationUpdatePayload).then(
     (res) => res.data,
   );
+};
+
+// Temporary
+export const adaptApp = (application: Application): ApplicationResponse => {
+  return {
+    application,
+    // status: ApplicationPermission.RESTRICTED,
+    status: ApplicationPermission.ACTIVE,
+  };
 };

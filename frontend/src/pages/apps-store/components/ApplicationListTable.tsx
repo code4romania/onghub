@@ -20,7 +20,7 @@ import { ApplicationStatusCollection } from '../constants/ApplicationStatus.cons
 import { ApplicationTypeCollection, ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { ApplicationtListTableHeaders } from './ApplicationList.headers';
 
-const ApplicationListSuperAdmin = () => {
+const ApplicationListTable = () => {
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -199,4 +199,4 @@ const ApplicationListSuperAdmin = () => {
   );
 };
 
-export default ApplicationListSuperAdmin;
+export default ApplicationListTable;
