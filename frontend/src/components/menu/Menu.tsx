@@ -22,7 +22,7 @@ const Menu = () => {
   const [isNarrow, setIsNarrow] = useState(false);
   const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('menu');
 
   useEffect(() => {
     if (location && role) {
@@ -100,7 +100,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              {t('menu_info')}
+              {t('informations')}
             </span>
           </a>
           <a
@@ -122,7 +122,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              Restrange meniul
+              {t('collapse')}
             </span>
           </a>
         </div>

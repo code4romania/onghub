@@ -28,6 +28,7 @@ import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal'
 import { getPublicFileUrl } from '../../../../services/files/File.service';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -50,6 +51,8 @@ const OrganizationLegal = () => {
   const { mutate: uploadFiles, error: uploadFilesError } =
     useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
+  // React i18n
+  const { t } = useTranslation(['legal', 'organization', 'common']);
 
   // React Hook Form
   const {
@@ -78,18 +81,18 @@ const OrganizationLegal = () => {
   }, [organizationLegal]);
 
   useEffect(() => {
-    if (updateOrganizationError) useErrorToast('Error while saving organization');
+    if (updateOrganizationError) useErrorToast(t('save_error', { ns: 'organization' }));
   }, [updateOrganizationError]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
       {
-        name: 'edit',
+        name: t('edit', { ns: 'common' }),
         icon: PencilIcon,
         onClick: onEditDirector,
       },
       {
-        name: 'Elimina date',
+        name: t('delete', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onOpenDeleteDirectorModal,
         type: PopoverMenuRowType.REMOVE,
@@ -108,12 +111,12 @@ const OrganizationLegal = () => {
   const buildOtherActionColumn = (): TableColumn<Person> => {
     const menuItems = [
       {
-        name: 'edit',
+        name: t('edit', { ns: 'common' }),
         icon: PencilIcon,
         onClick: onEditOther,
       },
       {
-        name: 'Elimina date',
+        name: t('delete', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onOpenDeleteOtherModal,
         type: PopoverMenuRowType.REMOVE,
@@ -259,7 +262,7 @@ const OrganizationLegal = () => {
       const orgStatuteUrl = await getPublicFileUrl(path);
       setOrganizationStatute(orgStatuteUrl);
     } catch (error) {
-      useErrorToast('Could not load organization statute');
+      useErrorToast(t('statute_error'));
     }
   };
 
@@ -280,7 +283,7 @@ const OrganizationLegal = () => {
             }
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {isEditMode ? 'Salveaza modificari' : 'Editeaza'}
+            {isEditMode ? t('save', { ns: 'common' }) : t('edit', { ns: 'common' })}
           </button>
         )}
       </div>
@@ -290,8 +293,8 @@ const OrganizationLegal = () => {
         <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
-              title="Reprezentant Legal al organizatiei"
-              subTitle="This information will be displayed publicly so be careful what you share"
+              title={t('representative')}
+              subTitle={t('information', { ns: 'organization' })}
             />
             <form className="space-y-8">
               <ContactForm
@@ -309,8 +312,8 @@ const OrganizationLegal = () => {
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader
-              title="Consiliul director al organizatiei"
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
+              title={t('director')}
+              subTitle={t('information', { ns: 'organization' })}
             />
             {isEditMode && directors.length < 3 && (
               <div className="rounded-md bg-red-50 p-4">
@@ -319,10 +322,7 @@ const OrganizationLegal = () => {
                     <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      Este obligatoriu sa adaugi cel putin 3 membri ai consiliului director pentru a
-                      continua
-                    </h3>
+                    <h3 className="text-sm font-medium text-red-800">{t('dir_minimum')}</h3>
                   </div>
                 </div>
               </div>
@@ -338,15 +338,12 @@ const OrganizationLegal = () => {
                 onClick={setIsDirectorModalOpen.bind(null, true)}
               >
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Adauga un membru
+                {t('add')}
               </button>
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader
-              title="Alte persoane relevante in organizatie"
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
-            />
+            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'organization' })} />
             <DataTableComponent
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
@@ -358,17 +355,17 @@ const OrganizationLegal = () => {
                 onClick={setIsOtherModalOpen.bind(null, true)}
               >
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Adauga un membru
+                {t('add')}
               </button>
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader
-              title="Statutul organizatiei"
-              subTitle="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, autem. Eum voluptatem accusantium officia porro asperiores."
+              title={t('statute')}
+              subTitle={t('information', { ns: 'organization' })}
             />
             <div className="flex flex-col gap-y-4">
-              <h3>Document</h3>
+              <h3>{t('document')}</h3>
               {isEditMode &&
                 organizationLegal?.organizationStatute === null &&
                 organizationStatute === null && (
@@ -377,7 +374,7 @@ const OrganizationLegal = () => {
                       htmlFor="uploadPhoto"
                       className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                      Incarca fisier
+                      {t('statute_upload', { ns: 'common' })}
                     </label>
                     <input
                       className="h-0 w-0"
@@ -395,7 +392,7 @@ const OrganizationLegal = () => {
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
-                  Statut_Organizatie
+                  {t('file_name')}
                   {isEditMode && (
                     <XIcon
                       className="ml-2 w-4 h-4 text-gray-600"

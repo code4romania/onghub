@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { PASSWORD_REGEX } from '../../common/helpers/format.helper';
 
 export const AccountConfig: Record<string, any> = {

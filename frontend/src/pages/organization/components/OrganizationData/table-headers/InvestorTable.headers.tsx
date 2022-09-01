@@ -21,7 +21,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
   },
   {
     id: 'numberOfInvestors',
-    name: 'Numar parteneri',
+    name: 'Numar finantatori',
     selector: (row: Investor) => row.numberOfInvestors || 'N/A',
     grow: 1.5,
     sortable: true,

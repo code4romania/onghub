@@ -1,0 +1,102 @@
+{
+  "common": {
+    "year": "An",
+    "status": "Status",
+    "updatedOn": "Ultima actualizare",
+    "save": "Salveaza modificari",
+    "back": "Inapoi",
+    "edit": "Editeaza",
+    "logo": {
+      "update": "Logo-ul nu s-a putut actualiza",
+      "load": "Logo-ul nu s-a putut incarca"
+    },
+    "delete": "Elimina date",
+    "statute_upload": "Incarca fisier"
+  },
+  "menu": {
+    "informations": "Informatii",
+    "collapse": "Restrange meniul"
+  },
+  "pagination": {
+    "rowsPerPage": "Randuri pe pagina",
+    "rangeSeparatorText": "din"
+  },
+  "empty": {
+    "table": "Nu exista date in tabel"
+  },
+  "account": {
+    "password": "Parola a fost schimbata cu success",
+    "my_acc": "Contul meu",
+    "acc_descr": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "settings": "Setari cont",
+    "settings_descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "change_pass": "Schimba parola",
+    "name": "Nume",
+    "email": "E-mail cont",
+    "wrong_pass": "Parolele nu se potrivesc",
+    "close": {
+      "acc": "Inchide contul",
+      "title": "Ești sigur că dorești închiderea contului?",
+      "descr": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
+    }
+  },
+  "organization": {
+    "error": "Organizatia nu s-a putut incarca",
+    "my_org": "Organizatia mea",
+    "descr": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "tabs": {
+      "general": "Date generale",
+      "activity": "Activitatea organizatiei",
+      "legal": "Informatii legale",
+      "financial": "Informatii financiare",
+      "open_data": "Open data"
+    },
+    "save_error": "Organizatia nu s-a putut salva",
+    "information": "Aceste informatii vor fi publice, atentie la ce impartasesti."
+  },
+  "general": {
+    "logo": {
+      "name": "Logo organizatie",
+      "upload": "Incarca logo",
+      "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+    },
+    "contact": {
+      "name": "Persoana de contact in relatia cu ONGHub",
+      "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+    },
+    "social": "Comunicare si social media",
+    "fundraising": "Strangere de fonduri"
+  },
+  "activity": {
+    "domains": "Domenii si acoperire geografica",
+    "fed_coal": "Federatii si coalitii",
+    "branches": "Filiale si sucursale",
+    "other": "Alte informatii"
+  },
+  "legal": {
+    "statute_error": "Nu s-a putut incarca statutul organizatiei",
+    "representative": "Reprezentantul legal al organizatiei",
+    "director": "Consiliul directoral al organizatiei",
+    "dir_minimum": "Este obligatoriu sa adaugi cel putin 3 membri al consiliului directoral pentru a continua.",
+    "add": "Adauga un membru",
+    "other": "Alte persoane relevante in organizatie",
+    "statute": "Statutul organizatiei",
+    "document": "Document",
+    "file_name": "Statut_Organizatie"
+  },
+  "open_data": {
+    "report": {
+      "volunteers": "Voluntari",
+      "contractors": "Contractori",
+      "activity": "Raport activitate"
+    },
+    "partners": {
+      "list": "Lista parteneri",
+      "count": "Numar parteneri"
+    },
+    "investors": {
+      "list": "Lista finantatori",
+      "count": "Numar finantatori"
+    }
+  }
+}

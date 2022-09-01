@@ -29,12 +29,16 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationActivity = () => {
   const { organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
   const { mutate, error } = useOrganizationByProfileMutation();
   const { role } = useContext(AuthContext);
+
+  // React i18n
+  const { t } = useTranslation(['activity', 'organization', 'common']);
 
   const [readonly, setReadonly] = useState(true);
   const {
@@ -119,7 +123,7 @@ const OrganizationActivity = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Could not save organization');
+      useErrorToast(t('save_error', { ns: 'organization' }));
     }
   }, [error]);
 
@@ -144,7 +148,7 @@ const OrganizationActivity = () => {
             onClick={readonly ? startEdit : handleSubmit(handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+            {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
           </button>
         )}
       </div>
@@ -153,9 +157,9 @@ const OrganizationActivity = () => {
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
         <div className="flex flex-col gap-4 ">
           <div>
-            <span className="text-xl font-bold text-gray-900">Domenii si acoperire geografica</span>
+            <span className="text-xl font-bold text-gray-900">{t('domains')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'organization' })}
             </p>
           </div>
           <Controller
@@ -231,9 +235,9 @@ const OrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Federatii si coalitii</span>
+            <span className="text-xl font-bold text-gray-900">{t('fed_coal')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'organization' })}
             </p>
           </div>
           <RadioGroup
@@ -328,9 +332,9 @@ const OrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Filiale si sucursale</span>
+            <span className="text-xl font-bold text-gray-900">{t('branches')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'organization' })}
             </p>
           </div>
           <RadioGroup
@@ -366,9 +370,9 @@ const OrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Alte informatii</span>
+            <span className="text-xl font-bold text-gray-900">{t('other')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'organization' })}
             </p>
           </div>
           <RadioGroup

@@ -21,6 +21,7 @@ import { useErrorToast } from '../../../../common/hooks/useToast';
 import { getPublicFileUrl } from '../../../../services/files/File.service';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -50,6 +51,9 @@ const OrganizationGeneral = () => {
     reValidateMode: 'onChange',
   });
 
+  // React i18n
+  const { t } = useTranslation(['general', 'organization', 'common']);
+
   useEffect(() => {
     if (organizationGeneral) {
       const contact = flatten(organizationGeneral.contact, {}, 'contact');
@@ -68,11 +72,11 @@ const OrganizationGeneral = () => {
 
   useEffect(() => {
     if (updateOrganizationError) {
-      useErrorToast('Could not save organization');
+      useErrorToast(t('save_error', { ns: 'orgnization' }));
     }
 
     if (uploadFilesError) {
-      useErrorToast('Could not update logo');
+      useErrorToast(t('logo.update', { ns: 'common' }));
     }
   }, [updateOrganizationError, uploadFilesError]);
 
@@ -81,7 +85,7 @@ const OrganizationGeneral = () => {
       const logoUrl = await getPublicFileUrl(logoPath);
       setLogo(logoUrl);
     } catch (error) {
-      useErrorToast('Could not load logo image');
+      useErrorToast(t('logo.load', { ns: 'common' }));
     }
   };
 
@@ -143,7 +147,9 @@ const OrganizationGeneral = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">Date generale</span>
+        <span className="font-titilliumBold text-xl text-gray-800">
+          {t('tabs.general', { ns: 'organization' })}
+        </span>
 
         {role !== UserRole.EMPLOYEE && (
           <button
@@ -152,7 +158,7 @@ const OrganizationGeneral = () => {
             onClick={readonly ? startEdit : handleSubmit(handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+            {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
           </button>
         )}
       </div>
@@ -161,8 +167,8 @@ const OrganizationGeneral = () => {
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
           <SectionHeader
-            title="Date generale"
-            subTitle="This information will be displayed publicly so be careful what you share"
+            title={t('tabs.general', { ns: 'organization' })}
+            subTitle={t('information', { ns: 'organization' })}
           />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
@@ -401,7 +407,7 @@ const OrganizationGeneral = () => {
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-                  Logo organizatie
+                  {t('logo.name')}
                 </label>
 
                 <div className="mt-1 flex items-center">
@@ -424,7 +430,7 @@ const OrganizationGeneral = () => {
                         htmlFor="uploadPhoto"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        Incarca logo
+                        {t('logo.upload')}
                       </label>
                       <input
                         className="h-0 w-0"
@@ -438,17 +444,15 @@ const OrganizationGeneral = () => {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                  {t('logo.descr')}
                 </p>
               </div>
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">
-                Persoana de contact in relatia cu ONGHub
-              </span>
+              <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                {t('contact.descr')}
               </p>
               <ContactForm
                 control={control}
@@ -462,9 +466,9 @@ const OrganizationGeneral = () => {
               />
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Comunicare si social media</span>
+              <span className="text-xl font-bold text-gray-900">{t('social')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'organization' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller
@@ -590,9 +594,9 @@ const OrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Fundraising</span>
+              <span className="text-xl font-bold text-gray-900">{t('fundraising')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'organization' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller

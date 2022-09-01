@@ -106,7 +106,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           />
                           <div className="ml-2.5">
                             <label htmlFor="upload" className="text-gray-900 text-xm font-normal">
-                              d={item.name}
+                              id={item.name}
                             </label>
                           </div>
                         </a>

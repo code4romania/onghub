@@ -33,7 +33,7 @@ const DataTableComponent = ({
   onChangePage,
   onChangeRowsPerPage,
 }: DataTableProps) => {
-  const { t } = useTranslation('translation');
+  const { t } = useTranslation('pagination');
 
   return (
     <div
@@ -50,10 +50,8 @@ const DataTableComponent = ({
         pagination={pagination}
         paginationServer={pagination}
         paginationComponentOptions={{
-          // rowsPerPageText: (i18n.messages['pagination.rowsPerPageText'] as string) || '',
-          rowsPerPageText: (t('pagination.rowsPerText') as string) || '',
-          // rangeSeparatorText: (i18n.messages['pagination.rangeSeparatorText'] as string) || '',
-          rangeSeparatorText: (t('pagination.rangeSeparatorText') as string) || '',
+          rowsPerPageText: (t('rowsPerPage') as string) || '',
+          rangeSeparatorText: (t('rangeSeparatorText') as string) || '',
         }}
         responsive
         sortIcon={<ChevronDownIcon />}
