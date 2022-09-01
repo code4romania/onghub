@@ -1,16 +1,23 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
-import translationRo from '../../assets/locales/ro/translation.json';
+import translationMenuRo from '../../assets/locales/ro/translationMenu.json';
+import translationEn from '../../assets/locales/en/translation.json';
 
-// const backend = new Backend({
-//   loadPath: 'src/assets/locales/ro/translation.json',
-// });
+const resources = {
+  ro: {
+    menu: translationMenuRo,
+  },
+  en: {
+    translation: translationEn,
+  },
+};
 
 i18n.use(initReactI18next).init({
-  resources: { ro: translationRo },
   lng: 'ro',
   fallbackLng: 'en',
+
+  defaultNS: 'common',
+  resources,
   debug: true,
   interpolation: {
     escapeValue: false,

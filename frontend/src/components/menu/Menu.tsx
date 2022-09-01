@@ -14,7 +14,7 @@ import {
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const Menu = () => {
   const [isNarrow, setIsNarrow] = useState(false);
   const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     if (location && role) {
@@ -52,8 +53,6 @@ const Menu = () => {
     setCurrentMenuItemId(item.id);
     navigate(`${item.href}`);
   };
-
-  const { t } = useTranslation();
 
   return (
     <div className="flex">
