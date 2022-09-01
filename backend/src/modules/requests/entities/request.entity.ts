@@ -35,7 +35,7 @@ export class Request extends BaseEntity {
 
   @OneToOne((type) => OngApplication)
   @JoinColumn({ name: 'application_id' })
-  application: OngApplication;
+  ongApplication: OngApplication;
 
   @Column({ type: 'integer', nullable: true, name: 'user_id' })
   userId: number;

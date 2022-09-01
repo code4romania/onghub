@@ -90,4 +90,13 @@ export class RequestsController {
       applicationId: createRequestDto.applicationId,
     });
   }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiQuery({ type: () => BaseFilterDto })
+  @Get('application')
+  getApplicationsRequests(
+    @Query() filters: BaseFilterDto,
+  ): Promise<Pagination<Request>> {
+    return this.requestsService.getApplicationRequests(filters);
+  }
 }

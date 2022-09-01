@@ -8,13 +8,17 @@ import { OrganizationStatus } from 'src/modules/organization/enums/organization-
 import { Request } from '../entities/request.entity';
 import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { REQUEST_FILTER_CONFIG } from '../constants/request-filters.config';
+import {
+  REQUEST_APP_ACESS_FILTER_CONFIG,
+  REQUEST_FILTER_CONFIG,
+} from '../constants/request-filters.config';
 import { RequestType } from '../enums/request-type.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { CreateApplicationRequestDto } from '../dto/create-application-request.dto';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
+import { Pagination } from 'src/common/interfaces/pagination';
 
 @Injectable()
 export class RequestsService {
@@ -30,6 +34,7 @@ export class RequestsService {
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
       ...options,
+      type: RequestType.CREATE_ORGANIZATION,
       status: RequestStatus.PENDING,
     };
 
@@ -245,6 +250,21 @@ export class RequestsService {
       applicationId: newOngApp.id,
       type: RequestType.REQUEST_APPLICATION_ACCESS,
     });
+  }
+
+  public async getApplicationRequests(
+    options: BaseFilterDto,
+  ): Promise<Pagination<Request>> {
+    const paginationOptions = {
+      ...options,
+      type: RequestType.REQUEST_APPLICATION_ACCESS,
+      status: RequestStatus.PENDING,
+    };
+
+    return this.requestRepository.getManyPaginated(
+      REQUEST_APP_ACESS_FILTER_CONFIG,
+      paginationOptions,
+    );
   }
 
   /**
