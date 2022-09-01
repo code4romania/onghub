@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UserService } from 'src/modules/user/services/user.service';
 import { CreateRequestDto } from '../dto/create-request.dto';
@@ -45,8 +50,12 @@ export class RequestsService {
   }
 
   public async findOneOrganizationRequest(id: number): Promise<Request> {
-    return this.requestRepository.get({
-      where: { id, status: RequestStatus.PENDING },
+    const request = this.requestRepository.get({
+      where: {
+        id,
+        status: RequestStatus.PENDING,
+        type: RequestType.CREATE_ORGANIZATION,
+      },
       relations: [
         'organization',
         'organization.organizationGeneral',
@@ -72,6 +81,14 @@ export class RequestsService {
         'organization.organizationReport.investors',
       ],
     });
+
+    if (!request) {
+      throw new NotFoundException({
+        ...REQUEST_ERRORS.GET.NOT_FOUND,
+      });
+    }
+
+    return request;
   }
 
   public async createOrganizationRequest(createReqDto: CreateRequestDto) {
@@ -265,6 +282,25 @@ export class RequestsService {
       REQUEST_APP_ACESS_FILTER_CONFIG,
       paginationOptions,
     );
+  }
+
+  public async findOneApplicationrequest(id: number): Promise<Request> {
+    const request = this.requestRepository.get({
+      where: {
+        id,
+        status: RequestStatus.PENDING,
+        type: RequestType.REQUEST_APPLICATION_ACCESS,
+      },
+      relations: ['ongApplication', 'ongApplication.application'],
+    });
+
+    if (!request) {
+      throw new NotFoundException({
+        ...REQUEST_ERRORS.GET.NOT_FOUND,
+      });
+    }
+
+    return request;
   }
 
   /**

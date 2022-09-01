@@ -99,4 +99,11 @@ export class RequestsController {
   ): Promise<Pagination<Request>> {
     return this.requestsService.getApplicationRequests(filters);
   }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get('application/:id')
+  getApplicationRequest(@Param('id') id: string): Promise<Request> {
+    return this.requestsService.findOneApplicationrequest(+id);
+  }
 }

@@ -27,4 +27,10 @@ export const REQUEST_ERRORS = {
       errorCode: 'REQ_003',
     },
   },
+  GET: {
+    NOT_FOUND: {
+      message: 'Request not found',
+      errorCode: 'REQ_007',
+    },
+  },
 };
