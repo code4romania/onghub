@@ -24,6 +24,9 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../user/enums/role.enum';
+import { CreateApplicationRequestDto } from './dto/create-application-request.dto';
+import { ExtractUser } from '../user/decorators/user.decorator';
+import { User } from '../user/entities/user.entity';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -61,14 +64,62 @@ export class RequestsController {
   }
 
   @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @Patch('organization/:id/approve')
   approve(@Param('id') id: number): Promise<Request> {
     return this.requestsService.approveOrganization(id);
   }
 
   @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @Patch('organization/:id/reject')
   reject(@Param('id') id: number): Promise<Request> {
     return this.requestsService.reject(id);
+  }
+
+  /**
+   * APPLICATION
+   */
+  @Roles(Role.ADMIN)
+  @ApiBody({ type: CreateApplicationRequestDto })
+  @Post('application')
+  createApplicationRequest(
+    @Body() createRequestDto: CreateApplicationRequestDto,
+    @ExtractUser() user: User,
+  ): Promise<any> {
+    return this.requestsService.createApplicationRequest({
+      organizationId: user.organizationId,
+      applicationId: createRequestDto.applicationId,
+    });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiQuery({ type: () => BaseFilterDto })
+  @Get('application')
+  getApplicationsRequests(
+    @Query() filters: BaseFilterDto,
+  ): Promise<Pagination<Request>> {
+    return this.requestsService.getApplicationRequests(filters);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get('application/:id')
+  getApplicationRequest(@Param('id') id: number): Promise<Request> {
+    return this.requestsService.findOneApplicationRequest(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch('application/:id/approve')
+  approveApplicationRequest(@Param('id') id: number): Promise<Request> {
+    return this.requestsService.updateApplicationRequest(id, true);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch('application/:id/reject')
+  rejectApplicationRequest(@Param('id') id: number): Promise<any> {
+    return this.requestsService.updateApplicationRequest(id, false);
   }
 }
