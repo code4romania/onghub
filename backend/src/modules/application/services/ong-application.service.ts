@@ -4,9 +4,10 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import { FindOneOptions, In, UpdateResult } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 
 @Injectable()
@@ -43,12 +44,28 @@ export class OngApplicationService {
     return this.ongApplicationRepository.get(conditions);
   }
 
+  public async findMyOngApplications(
+    organizationId: number,
+  ): Promise<OngApplication[]> {
+    return this.ongApplicationRepository.getMany({
+      where: {
+        organizationId,
+        status: In([OngApplicationStatus.ACTIVE, OngApplicationStatus.PENDING]),
+      },
+      relations: ['application'],
+    });
+  }
+
   public async findById(
     id: number,
     organizationId: number,
   ): Promise<OngApplication> {
     const application = await this.ongApplicationRepository.get({
-      where: { id, organizationId },
+      where: {
+        id,
+        organizationId,
+        status: In([OngApplicationStatus.ACTIVE, OngApplicationStatus.PENDING]),
+      },
       relations: ['application'],
     });
 
