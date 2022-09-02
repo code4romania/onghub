@@ -61,7 +61,7 @@ export class ApplicationController {
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get('ong/:id')
-  findOneOngeApplication(@Param('id') id: number, @ExtractUser() user) {
+  findOneOngApplication(@Param('id') id: number, @ExtractUser() user) {
     return this.ongApplicationService.findById(id, user.organizationId);
   }
 }

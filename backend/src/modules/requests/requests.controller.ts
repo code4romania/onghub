@@ -106,7 +106,7 @@ export class RequestsController {
   @ApiParam({ name: 'id', type: String })
   @Get('application/:id')
   getApplicationRequest(@Param('id') id: number): Promise<Request> {
-    return this.requestsService.findOneApplicationrequest(id);
+    return this.requestsService.findOneApplicationRequest(id);
   }
 
   @Roles(Role.SUPER_ADMIN)

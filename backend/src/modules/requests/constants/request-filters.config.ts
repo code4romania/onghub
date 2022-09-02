@@ -29,7 +29,7 @@ export const REQUEST_FILTER_CONFIG = {
   rangeColumn: 'createdOn',
 };
 
-export const REQUEST_APP_ACESS_FILTER_CONFIG = {
+export const REQUEST_APP_ACCESS_FILTER_CONFIG = {
   selectColumns: {
     id: true,
     ongApplication: {

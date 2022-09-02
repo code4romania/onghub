@@ -14,7 +14,7 @@ import { Request } from '../entities/request.entity';
 import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import {
-  REQUEST_APP_ACESS_FILTER_CONFIG,
+  REQUEST_APP_ACCESS_FILTER_CONFIG,
   REQUEST_FILTER_CONFIG,
 } from '../constants/request-filters.config';
 import { RequestType } from '../enums/request-type.enum';
@@ -286,12 +286,12 @@ export class RequestsService {
     };
 
     return this.requestRepository.getManyPaginated(
-      REQUEST_APP_ACESS_FILTER_CONFIG,
+      REQUEST_APP_ACCESS_FILTER_CONFIG,
       paginationOptions,
     );
   }
 
-  public async findOneApplicationrequest(id: number): Promise<Request> {
+  public async findOneApplicationRequest(id: number): Promise<Request> {
     const request = this.requestRepository.get({
       where: {
         id,
