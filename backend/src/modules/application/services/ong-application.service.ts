@@ -9,12 +9,14 @@ import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants
 import { OngApplication } from '../entities/ong-application.entity';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
+import { ApplicationService } from './application.service';
 
 @Injectable()
 export class OngApplicationService {
   private readonly logger = new Logger(OngApplicationService.name);
   constructor(
     private readonly ongApplicationRepository: OngApplicationRepository,
+    private readonly applicationService: ApplicationService,
   ) {}
 
   public async create(
@@ -59,23 +61,25 @@ export class OngApplicationService {
   public async findById(
     id: number,
     organizationId: number,
-  ): Promise<OngApplication> {
-    const application = await this.ongApplicationRepository.get({
+  ): Promise<OngApplication | any> {
+    const ongApplication = await this.ongApplicationRepository.get({
       where: {
-        id,
+        applicationId: id,
         organizationId,
         status: In([OngApplicationStatus.ACTIVE, OngApplicationStatus.PENDING]),
       },
       relations: ['application'],
     });
 
-    if (!application) {
+    const application = await this.applicationService.findOne(id);
+
+    if (!ongApplication && !application) {
       throw new NotFoundException({
         ...ONG_APPLICATION_ERRORS.GET.NOT_FOUND,
       });
     }
 
-    return application;
+    return ongApplication ? ongApplication : application;
   }
 
   public async updateOne(

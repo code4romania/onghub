@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GlobeAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline';
 import logo from '../../../assets/images/logo.svg';
 import { useSelectedApplication } from '../../../store/selectors';
@@ -8,11 +8,34 @@ import { ApplicationPermission } from '../../../services/application/interfaces/
 import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
 import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
+import { useCreateApplicationRequestMutation } from '../../../services/request/Request.queries';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 
 const ApplicationDetails = () => {
   const [isConfirmationModalOpen, setConfirmaitonModalOpen] = useState(false);
   const { applicationResponse } = useSelectedApplication();
   const { role } = useAuthContext();
+
+  // Mutation
+  const {
+    mutateAsync: mutateApplicationRequest,
+    error: createApplicationRequestError,
+    isLoading: createApplicationRequestLoading,
+  } = useCreateApplicationRequestMutation();
+
+  useEffect(() => {
+    if (createApplicationRequestLoading) {
+      useErrorToast('Solicitarea nu a putut fi trimisa');
+    }
+  }, [createApplicationRequestLoading]);
+
+  // Actions
+  const requestApplication = async () => {
+    if (applicationResponse?.application) {
+      await mutateApplicationRequest({ applicationId: applicationResponse?.application?.id });
+      useSuccessToast('Solicitare trimisa cu success');
+    }
+  };
 
   return (
     <div className="flex gap-4 mr-1 mb-1 relative">
@@ -54,7 +77,7 @@ const ApplicationDetails = () => {
             {/* The application is not added */}
             {!applicationResponse?.status && (
               <div className="flex pt-4 gap-4 items-center justify-center">
-                <button className="save-button pl-8 pr-8 flex gap-4">
+                <button className="save-button pl-8 pr-8 flex gap-4" onClick={requestApplication}>
                   <PlusIcon className="h-5 w-5" />
                   Solicita aplicatia
                 </button>

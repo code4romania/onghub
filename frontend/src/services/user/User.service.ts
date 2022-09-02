@@ -55,7 +55,7 @@ export const getUserById = async (userId: string) => {
 };
 
 export const getProfile = async (): Promise<IUser> => {
-  return API.get(`/profile`).then((res) => ({ ...res.data, role: UserRole.ADMIN })); // TEMPORARY
+  return API.get(`/profile`).then((res) => ({ ...res.data })); // TEMPORARY
 };
 
 export const deleteUser = async (): Promise<any> => {

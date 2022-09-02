@@ -10,9 +10,9 @@ import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
 import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import {
-  useApproveRequestMutation,
-  useRejectRequestMutation,
-  useRequest,
+  useApproveOrganizationRequestMutation,
+  useRejectOrganizationRequestMutation,
+  useOrganizationRequest,
 } from '../../../services/request/Request.queries';
 import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
@@ -36,19 +36,19 @@ const Request = () => {
     error,
     refetch,
     isLoading: dataLoading,
-  } = useRequest(params.id ? params?.id : '');
+  } = useOrganizationRequest(params.id ? params?.id : '');
 
   // apporve & reject
   const {
     mutateAsync: approveMutate,
     error: approveError,
     isLoading: approveLoading,
-  } = useApproveRequestMutation();
+  } = useApproveOrganizationRequestMutation();
   const {
     mutateAsync: rejectMutate,
     error: rejectError,
     isLoading: rejectLoading,
-  } = useRejectRequestMutation();
+  } = useRejectOrganizationRequestMutation();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
