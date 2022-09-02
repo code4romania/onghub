@@ -28,3 +28,37 @@ export const REQUEST_FILTER_CONFIG = {
   },
   rangeColumn: 'createdOn',
 };
+
+export const REQUEST_APP_ACCESS_FILTER_CONFIG = {
+  selectColumns: {
+    id: true,
+    ongApplication: {
+      id: true,
+      application: {
+        name: true,
+      },
+    },
+    organization: {
+      id: true,
+      organizationGeneral: {
+        name: true,
+      },
+    },
+    createdOn: true,
+  },
+  searchableColumns: [
+    'ongApplication.application.name',
+    'organization.organizationGeneral.name',
+  ],
+  defaultSortBy: 'createdOn',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {
+    organization: {
+      organizationGeneral: true,
+    },
+    ongApplication: {
+      application: true,
+    },
+  },
+  rangeColumn: 'createdOn',
+};
