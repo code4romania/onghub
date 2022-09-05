@@ -11,6 +11,7 @@ import { useSelectedOrganization } from '../../../../../store/selectors';
 import { AuthContext } from '../../../../../contexts/AuthContext';
 import { UserRole } from '../../../../users/enums/UserRole.enum';
 import { formatCurrency } from '../../../../../common/helpers/format.helper';
+import { useTranslation } from 'react-i18next';
 
 const IncomeReportModal = ({
   onClose,
@@ -24,6 +25,7 @@ const IncomeReportModal = ({
   const [isReadonly, setIsReadonly] = useState<boolean>(readonly || false);
   const { organizationGeneral } = useSelectedOrganization();
   const { role } = useContext(AuthContext);
+  const { t } = useTranslation(['financial_modal', 'common_modal', 'organization', 'common']);
 
   // form state
   const {
@@ -86,20 +88,18 @@ const IncomeReportModal = ({
                     className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={() => onClose()}
                   >
-                    <span className="sr-only">Close</span>
+                    <span className="sr-only">{t('close', { ns: 'common_modal' })}</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      {`Raportare Venituri ${year}`}
+                      {`${t('income_report')} ${year}`}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
-                        Lorem ipsum. This information will be displayed publicly so be careful what
-                        you share. Lorem ipsum. This information will be displayed publicly so be
-                        careful what you share.
+                        {t('information', { ns: 'organization' })}
                       </p>
                     </div>
                   </div>
@@ -109,7 +109,7 @@ const IncomeReportModal = ({
                     total,
                   )} RON`}</span>
                   <span className="text-xl text-gray-400 font-normal leading-6 px-3">
-                    Total Venituri
+                    {t('income')}
                   </span>
                 </div>
                 <a
@@ -119,7 +119,7 @@ const IncomeReportModal = ({
                   rel="noreferrer"
                 >
                   <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
-                  *suma preluata automat din raportarea ANAF
+                  {t('anaf')}
                 </a>
                 <form className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-300 mt-8">
@@ -129,13 +129,13 @@ const IncomeReportModal = ({
                           scope="col"
                           className="py-3.5 pl-4 pr-3 text-left font-titilliumBold text-sm font-bold text-gray-800 sm:pl-6"
                         >
-                          Categorie Venituri
+                          {t('category_income')}
                         </th>
                         <th
                           scope="col"
                           className="px-3 py-3.5 text-left font-titilliumBold text-sm font-bold text-gray-800"
                         >
-                          Suma
+                          {t('sum')}
                         </th>
                       </tr>
                     </thead>
@@ -167,15 +167,17 @@ const IncomeReportModal = ({
                       ))}
                       <tr>
                         <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-bold text-gray-700 sm:pl-6">
-                          Total Defalcat
+                          {t('defalcat')}
                         </td>
                         <td className="whitespace-nowrap py-4 px-3 text-base font-bold ">
                           {`${totalDefalcat} `}
                           {totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
                               {total > totalDefalcat
-                                ? `(${formatCurrency(total - totalDefalcat)} RON nealocati)`
-                                : `(${formatCurrency(totalDefalcat - total)} RON surplus)`}
+                                ? `(${formatCurrency(total - totalDefalcat)} RON ${t(
+                                    'unallocated',
+                                  )})`
+                                : `(${formatCurrency(totalDefalcat - total)} RON ${t('excess')})`}
                             </span>
                           )}
                         </td>
@@ -191,14 +193,14 @@ const IncomeReportModal = ({
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                         onClick={handleSubmit(onSave)}
                       >
-                        Salveaza
+                        {t('save', { ns: 'common_modal' })}
                       </button>
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                         onClick={() => onClose()}
                       >
-                        Anuleaza Modificari
+                        {t('cancel', { ns: 'common_modal' })}
                       </button>
                     </>
                   )}
@@ -210,7 +212,7 @@ const IncomeReportModal = ({
                         setIsReadonly(false);
                       }}
                     >
-                      Editeaza
+                      {t('edit', { ns: 'common' })}
                     </button>
                   )}
                 </div>

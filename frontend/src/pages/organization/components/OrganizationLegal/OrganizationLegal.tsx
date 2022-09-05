@@ -92,7 +92,7 @@ const OrganizationLegal = () => {
         onClick: onEditDirector,
       },
       {
-        name: t('delete', { ns: 'common' }),
+        name: t('delete_data', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onOpenDeleteDirectorModal,
         type: PopoverMenuRowType.REMOVE,
@@ -116,7 +116,7 @@ const OrganizationLegal = () => {
         onClick: onEditOther,
       },
       {
-        name: t('delete', { ns: 'common' }),
+        name: t('delete_data', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onOpenDeleteOtherModal,
         type: PopoverMenuRowType.REMOVE,

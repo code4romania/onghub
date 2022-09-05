@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Contact } from '../../../interfaces/Contact.interface';
 import { DirectorConfig } from './DirectorConfig';
 import ContactForm from '../../../../../components/Contact/Contact';
+import { useTranslation } from 'react-i18next';
 
 interface DirectorModalProps {
   defaultValue?: Partial<Contact>;
@@ -23,6 +24,8 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave }: DirectorModalP
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  const { t } = useTranslation(['legal_modal', 'common_modal', 'orgnization', 'common']);
 
   useEffect(() => {
     if (defaultValue) {
@@ -63,21 +66,18 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave }: DirectorModalP
                     className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={onClose}
                   >
-                    <span className="sr-only">Close</span>
+                    <span className="sr-only">{t('close', { ns: 'common_modal' })}</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      {isEdit
-                        ? 'Editare membru consiliul director'
-                        : 'Adaugare membru consiliul director'}
+                      {isEdit ? t('edit_director') : t('add_director')}
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
-                        Lorem ipsum. This information will be displayed publicly so be careful what
-                        you share. Lorem ipsum.
+                        {t('information', { ns: 'organization' })}
                       </p>
                     </div>
                   </div>
@@ -98,14 +98,14 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave }: DirectorModalP
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                         onClick={handleSubmit(onSave)}
                       >
-                        Salveaza
+                        {t('save', { ns: 'common' })}
                       </button>
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                         onClick={onClose}
                       >
-                        Anuleaza Modificari
+                        {t('cancel', { ns: 'common_modal' })}
                       </button>
                     </>
                   )}
@@ -115,7 +115,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave }: DirectorModalP
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={handleSubmit(onSave)}
                     >
-                      Adauga
+                      {t('add')}
                     </button>
                   )}
                 </div>

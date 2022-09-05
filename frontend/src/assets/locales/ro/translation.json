@@ -10,8 +10,10 @@
       "update": "Logo-ul nu s-a putut actualiza",
       "load": "Logo-ul nu s-a putut incarca"
     },
-    "delete": "Elimina date",
-    "statute_upload": "Incarca fisier"
+    "delete_data": "Elimina date",
+    "statute_upload": "Incarca fisier",
+    "view": "Vizualizeaza",
+    "delete": "Sterge"
   },
   "menu": {
     "informations": "Informatii",
@@ -52,7 +54,8 @@
       "open_data": "Open data"
     },
     "save_error": "Organizatia nu s-a putut salva",
-    "information": "Aceste informatii vor fi publice, atentie la ce impartasesti."
+    "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp."
   },
   "general": {
     "logo": {
@@ -84,19 +87,70 @@
     "document": "Document",
     "file_name": "Statut_Organizatie"
   },
+  "financial": {
+    "save_error": "Eroare la salvarea datelor financiare",
+    "title": "Date Financiare",
+    "report_row": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum aliquam accusantium est totam sint hic similique!"
+  },
   "open_data": {
+    "load_error": "Datele nu s-au putut incarca",
+    "download": "Descarca lista",
+    "upload": "Incarca lista noua",
+    "delete": "Elimina lista",
+    "no_file": "Niciun fisier incarcat",
+    "download_error": "Nu s-a putut descarca fisierul",
+    "no_data": "Fisierul pe care l-ai incarcat nu contine date!",
+    "invalid": "Formatul fisierului este invalid",
     "report": {
+      "title": "Sumar",
       "volunteers": "Voluntari",
       "contractors": "Contractori",
       "activity": "Raport activitate"
     },
     "partners": {
+      "title": "Parteneri",
       "list": "Lista parteneri",
-      "count": "Numar parteneri"
+      "count": "Numar parteneri",
+      "download": "Descarca model de tabel parteneri"
     },
     "investors": {
+      "title": "Finantatori",
       "list": "Lista finantatori",
-      "count": "Numar finantatori"
+      "count": "Numar finantatori",
+      "download": "Descarca model de tabel finantatori"
     }
+  },
+  "delete_row": {
+    "delete": "Stergeti randul?",
+    "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
+    "no_delete": "Nu Sterge"
+  },
+  "common_modal": {
+    "cancel": "Anuleaza modificari",
+    "close": "Close",
+    "save": "Salveaza"
+  },
+  "legal_modal": {
+    "add": "Adauga",
+    "edit_director": "Editare membru consiliul directoral",
+    "add_director": "Adaugare membru consiliul directoral",
+    "edit_relevant": "Editare alta persoana relevanta in organizatie",
+    "add_relevant": "Adaugare alta persoana relevanta in organizatie"
+  },
+  "financial_modal": {
+    "income": "Total Venituri",
+    "expense": "Total Cheltuieli",
+    "anaf": "*suma preluata automat din raportarea ANAF",
+    "category_income": "Categorie Venituri",
+    "category_expense": "Categorie cheltuieli",
+    "sum": "Suma",
+    "defalcat": "Total Defalcat",
+    "unallocated": "nealocati",
+    "excess": "surplus",
+    "income_report": "Raportare Venituri",
+    "expense_report": "Raportare Cheltuieli"
+  },
+  "open_data_modal": {
+    "summary": "Sumar activitate"
   }
 }
