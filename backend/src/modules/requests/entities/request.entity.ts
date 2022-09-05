@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Application } from 'src/modules/application/entities/application.entity';
+import { OngApplication } from 'src/modules/application/entities/ong-application.entity';
 import { Organization } from 'src/modules/organization/entities';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Entity, Column, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
@@ -33,9 +33,9 @@ export class Request extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'application_id' })
   applicationId: number;
 
-  @OneToOne((type) => Application)
+  @OneToOne((type) => OngApplication)
   @JoinColumn({ name: 'application_id' })
-  application: Application;
+  ongApplication: OngApplication;
 
   @Column({ type: 'integer', nullable: true, name: 'user_id' })
   userId: number;
