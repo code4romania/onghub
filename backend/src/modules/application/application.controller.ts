@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from '../user/decorators/user.decorator';
+import { User } from '../user/entities/user.entity';
 import { Role } from '../user/enums/role.enum';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { ApplicationFilterDto } from './dto/filter-application.dto';
@@ -45,10 +47,15 @@ export class ApplicationController {
     return this.applicationService.update(+id, updateApplicationDto);
   }
 
-  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Get('')
-  getAll(@Query() filters: ApplicationFilterDto) {
-    return this.applicationService.findAll(filters);
+  getAll(
+    @Query() filters: ApplicationFilterDto,
+    @ExtractUser() user: User,
+  ): Promise<Pagination<Application>> | Promise<Application[]> {
+    return user.role === Role.SUPER_ADMIN
+      ? this.applicationService.findAll(filters)
+      : this.applicationService.findAllForOng(user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)

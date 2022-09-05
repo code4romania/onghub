@@ -1,7 +1,8 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
+import { OngApplication } from './ong-application.entity';
 
 @Entity()
 export class Application extends BaseEntity {
@@ -43,4 +44,7 @@ export class Application extends BaseEntity {
 
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
+
+  @OneToMany(() => OngApplication, (ongApp) => ongApp.application)
+  ongApplications: OngApplication[];
 }

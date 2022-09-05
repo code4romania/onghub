@@ -16,6 +16,7 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -62,6 +63,27 @@ export class ApplicationService {
       APPLICATION_FILTERS_CONFIG,
       paginationOptions,
     );
+  }
+
+  public async findAllForOng(organizationId: number): Promise<Application[]> {
+    return this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'application.id as id',
+        'application.logo as logo',
+        'application.short_description as shortDescription',
+        'ongApp.status as ongStatus',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .where('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .execute();
   }
 
   public async update(
