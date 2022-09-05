@@ -11,8 +11,8 @@ import DataTableComponent from '../../../components/data-table/DataTableComponen
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import {
-  useApproveRequestMutation,
-  useRejectRequestMutation,
+  useApproveOrganizationRequestMutation,
+  useRejectOrganizationRequestMutation,
   useRequestsQuery,
 } from '../../../services/request/Request.queries';
 import { useRequests } from '../../../store/selectors';
@@ -33,8 +33,9 @@ const RequestList = () => {
 
   const navigate = useNavigate();
 
-  const { mutateAsync: approveMutate, error: approveError } = useApproveRequestMutation();
-  const { mutateAsync: rejectMutate, error: rejectError } = useRejectRequestMutation();
+  const { mutateAsync: approveMutate, error: approveError } =
+    useApproveOrganizationRequestMutation();
+  const { mutateAsync: rejectMutate, error: rejectError } = useRejectOrganizationRequestMutation();
 
   const { requests } = useRequests();
 

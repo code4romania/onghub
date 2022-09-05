@@ -1,7 +1,7 @@
 import { emptyStringToNull, mapSelectToValue } from '../../../common/helpers/format.helper';
-import { CreateRequestDTO } from '../../../services/request/interfaces/Request.dto';
+import { CreateOrganizationRequestDTO } from '../../../services/request/interfaces/Request.dto';
 
-export const createRequestDTOMapper = (data: any): CreateRequestDTO | any => {
+export const createRequestDTOMapper = (data: any): CreateOrganizationRequestDTO | any => {
   const dto = {
     admin: { ...emptyStringToNull(data.admin), organizationId: -1 },
     organization: {

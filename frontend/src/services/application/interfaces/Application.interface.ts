@@ -1,5 +1,6 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
+import { IOrganization } from '../../../pages/organization/interfaces/Organization.interface';
 
 export enum ApplicationStatus {
   ACTIVE = 'active',
@@ -26,6 +27,7 @@ export interface Application extends BaseEntity {
 }
 
 export interface ApplicationResponse {
+  organization: IOrganization;
   application: Application;
   status: ApplicationPermission | null;
 }
