@@ -55,7 +55,12 @@
     },
     "save_error": "Organizatia nu s-a putut salva",
     "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
-    "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp."
+    "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.",
+    "modal": {
+      "cancel": "Anuleaza modificari",
+      "close": "Close",
+      "save": "Salveaza"
+    }
   },
   "general": {
     "logo": {
@@ -85,12 +90,32 @@
     "other": "Alte persoane relevante in organizatie",
     "statute": "Statutul organizatiei",
     "document": "Document",
-    "file_name": "Statut_Organizatie"
+    "file_name": "Statut_Organizatie",
+    "modal": {
+      "add": "Adauga",
+      "edit_director": "Editare membru consiliul directoral",
+      "add_director": "Adaugare membru consiliul directoral",
+      "edit_relevant": "Editare alta persoana relevanta in organizatie",
+      "add_relevant": "Adaugare alta persoana relevanta in organizatie"
+    }
   },
   "financial": {
     "save_error": "Eroare la salvarea datelor financiare",
     "title": "Date Financiare",
-    "report_row": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum aliquam accusantium est totam sint hic similique!"
+    "report_row": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum aliquam accusantium est totam sint hic similique!",
+    "modal": {
+      "income": "Total Venituri",
+      "expense": "Total Cheltuieli",
+      "anaf": "*suma preluata automat din raportarea ANAF",
+      "category_income": "Categorie Venituri",
+      "category_expense": "Categorie cheltuieli",
+      "sum": "Suma",
+      "defalcat": "Total Defalcat",
+      "unallocated": "nealocati",
+      "excess": "surplus",
+      "income_report": "Raportare Venituri",
+      "expense_report": "Raportare Cheltuieli"
+    }
   },
   "open_data": {
     "load_error": "Datele nu s-au putut incarca",
@@ -118,6 +143,9 @@
       "list": "Lista finantatori",
       "count": "Numar finantatori",
       "download": "Descarca model de tabel finantatori"
+    },
+    "modal": {
+      "summary": "Sumar activitate"
     }
   },
   "delete_row": {
@@ -125,32 +153,5 @@
     "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
     "no_delete": "Nu Sterge"
   },
-  "common_modal": {
-    "cancel": "Anuleaza modificari",
-    "close": "Close",
-    "save": "Salveaza"
-  },
-  "legal_modal": {
-    "add": "Adauga",
-    "edit_director": "Editare membru consiliul directoral",
-    "add_director": "Adaugare membru consiliul directoral",
-    "edit_relevant": "Editare alta persoana relevanta in organizatie",
-    "add_relevant": "Adaugare alta persoana relevanta in organizatie"
-  },
-  "financial_modal": {
-    "income": "Total Venituri",
-    "expense": "Total Cheltuieli",
-    "anaf": "*suma preluata automat din raportarea ANAF",
-    "category_income": "Categorie Venituri",
-    "category_expense": "Categorie cheltuieli",
-    "sum": "Suma",
-    "defalcat": "Total Defalcat",
-    "unallocated": "nealocati",
-    "excess": "surplus",
-    "income_report": "Raportare Venituri",
-    "expense_report": "Raportare Cheltuieli"
-  },
-  "open_data_modal": {
-    "summary": "Sumar activitate"
-  }
+  "user": {}
 }
