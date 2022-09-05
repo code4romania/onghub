@@ -291,6 +291,7 @@ export class RequestsService {
     );
   }
 
+  // TODO: To be deleted
   public async findOneApplicationRequest(id: number): Promise<Request> {
     const request = this.requestRepository.get({
       where: {
@@ -338,7 +339,7 @@ export class RequestsService {
     }
 
     // TODO: check what we want to do with the not restricted apps in this scenario
-    await this.ongApplicationService.updateOne(request.applicationId, {
+    await this.ongApplicationService.udpate(request.applicationId, {
       status: isApproved
         ? OngApplicationStatus.ACTIVE
         : OngApplicationStatus.RESTRICTED,

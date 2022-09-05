@@ -16,7 +16,11 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
-import { ApplicationStatus } from '../enums/application-status.enum';
+import {
+  ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
+} from '../interfaces/application-with-ong-status.interface';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -65,14 +69,17 @@ export class ApplicationService {
     );
   }
 
-  public async findAllForOng(organizationId: number): Promise<Application[]> {
+  public async findAllForOng(
+    organizationId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
     return this.applicationRepository
       .getQueryBuilder()
       .select([
         'application.id as id',
         'application.logo as logo',
-        'application.short_description as shortDescription',
-        'ongApp.status as ongStatus',
+        'application.name as name',
+        'application.short_description as shortdescription',
+        'ongApp.status as status',
       ])
       .leftJoin(
         'ong_application',
@@ -80,10 +87,28 @@ export class ApplicationService {
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId },
       )
-      .where('application.status = :status', {
-        status: ApplicationStatus.ACTIVE,
-      })
       .execute();
+  }
+
+  public async findOneForOng(
+    organizationId: number,
+    applicationId: number,
+  ): Promise<ApplicationWithOngStatusDetails> {
+    return Promise.resolve({
+      id: 1,
+      status: OngApplicationStatus.ACTIVE,
+      name: 'Test',
+      logo: null,
+      shortdescription:
+        'Lorem ipsum, Lorem ipsum, Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
+      type: ApplicationTypeEnum.SIMPLE,
+      steps: ['Step1', 'Step2'],
+      description:
+        'Lorem ipsum, Lorem ipsum, Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
+      website: 'www.google.com',
+      loginlink: 'www.google.com',
+      videolink: 'https://www.youtube.com/watch?v=kjrz7ZeCU8I',
+    });
   }
 
   public async update(
@@ -105,5 +130,18 @@ export class ApplicationService {
       id,
       ...updateApplicationDto,
     });
+  }
+
+  // TODO: To be implemented
+  public async deleteOne(id: number): Promise<{ success: boolean }> {
+    return Promise.resolve({ success: true });
+  }
+
+  // TODO: To be implemented
+  public async deleteOneForOng(
+    organizationId: number,
+    id: number,
+  ): Promise<{ success: boolean }> {
+    return Promise.resolve({ success: true });
   }
 }
