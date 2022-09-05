@@ -147,9 +147,7 @@ const OrganizationGeneral = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">
-          {t('tabs.general', { ns: 'organization' })}
-        </span>
+        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
 
         {role !== UserRole.EMPLOYEE && (
           <button
@@ -166,10 +164,7 @@ const OrganizationGeneral = () => {
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader
-            title={t('tabs.general', { ns: 'organization' })}
-            subTitle={t('information', { ns: 'organization' })}
-          />
+          <SectionHeader title={t('title')} subTitle={t('information', { ns: 'organization' })} />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller

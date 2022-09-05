@@ -63,6 +63,7 @@
     }
   },
   "general": {
+    "title": "Date generale",
     "logo": {
       "name": "Logo organizatie",
       "upload": "Incarca logo",
@@ -76,12 +77,14 @@
     "fundraising": "Strangere de fonduri"
   },
   "activity": {
+    "title": "Activitatea organizatiei",
     "domains": "Domenii si acoperire geografica",
     "fed_coal": "Federatii si coalitii",
     "branches": "Filiale si sucursale",
     "other": "Alte informatii"
   },
   "legal": {
+    "title": "Informatii Legale",
     "statute_error": "Nu s-a putut incarca statutul organizatiei",
     "representative": "Reprezentantul legal al organizatiei",
     "director": "Consiliul directoral al organizatiei",
@@ -153,5 +156,41 @@
     "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
     "no_delete": "Nu Sterge"
   },
-  "user": {}
+  "user": {
+    "title": "Utilizatori",
+    "subtitle": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "add": "Adauga Utilizator",
+    "tabs": {
+      "users": "Utilizatori",
+      "invites": "Invitatii"
+    },
+    "create": {
+      "success": "Utilizator create cu succes",
+      "failure": "Utilizatorul nu a putut fi creat",
+      "invite": "Trimite invitatie"
+    },
+    "edit": {
+      "load_error": "Nu s-a putut incarca utilizatorul cu id-ul",
+      "success": "Utilizator actualizat cu succes",
+      "failure": "Utilizatorul nu a putut fi actualizat"
+    },
+    "list": {
+      "load_error": "Eroare la incarcarea utilizatorilor",
+      "restrict_error": "Eroare la restrictionarea accesului",
+      "restore_error": "Eroare la restituirea accesului",
+      "remove_error": "Eroare la stergerea utilizatorului",
+      "temporary": "Restrictioneaza temporar",
+      "give_access": "Reda accesul",
+      "permanent": "Elimina definitiv",
+      "restore_success": "Acces restituit pentru utilizatorul",
+      "remove_success": "S-a sters cu succes utilizatorul cu id-ul",
+      "restrict_success": "Acces restrictionat pentru utilizatorul",
+      "date": "Data adaugarii",
+      "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
+      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+    },
+    "invites": {
+      "title": "Lista cu invitatiile"
+    }
+  }
 }

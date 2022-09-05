@@ -269,7 +269,7 @@ const OrganizationLegal = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">Informatii Legale</span>
+        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"

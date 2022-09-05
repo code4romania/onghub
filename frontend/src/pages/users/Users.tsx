@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
@@ -9,6 +10,7 @@ const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { t } = useTranslation('user');
 
   useEffect(() => {
     const found: IPageTab | undefined = USERS_TABS.find(
@@ -26,11 +28,10 @@ const Users = () => {
 
   return (
     <ContentWrapper
-      title="Utilizatori"
-      subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-disponibile."
+      title={t('title')}
+      subtitle={t('subtitle')}
       addButton={{
-        btnLabel: 'Adauga Utilizator',
+        btnLabel: t('add'),
         onBtnClick: () => navigate('/user'),
       }}
     >
