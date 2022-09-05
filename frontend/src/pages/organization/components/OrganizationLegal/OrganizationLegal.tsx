@@ -294,7 +294,7 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
-              subTitle={t('information', { ns: 'organization' })}
+              subTitle={t('information', { ns: 'common' })}
             />
             <form className="space-y-8">
               <ContactForm
@@ -311,10 +311,7 @@ const OrganizationLegal = () => {
             </form>
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader
-              title={t('director')}
-              subTitle={t('information', { ns: 'organization' })}
-            />
+            <SectionHeader title={t('director')} subTitle={t('information', { ns: 'common' })} />
             {isEditMode && directors.length < 3 && (
               <div className="rounded-md bg-red-50 p-4">
                 <div className="flex">
@@ -343,7 +340,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'organization' })} />
+            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'common' })} />
             <DataTableComponent
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
@@ -360,10 +357,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader
-              title={t('statute')}
-              subTitle={t('information', { ns: 'organization' })}
-            />
+            <SectionHeader title={t('statute')} subTitle={t('information', { ns: 'common' })} />
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode &&

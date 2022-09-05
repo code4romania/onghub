@@ -77,7 +77,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
-                        {t('information', { ns: 'organization' })}
+                        {t('information', { ns: 'common' })}
                       </p>
                     </div>
                   </div>

@@ -109,7 +109,7 @@ const UserList = () => {
         onClick: onEdit,
       },
       {
-        name: t('permanent'),
+        name: t('list.permanent'),
         icon: TrashIcon,
         onClick: setSelectedUser,
         type: PopoverMenuRowType.REMOVE,

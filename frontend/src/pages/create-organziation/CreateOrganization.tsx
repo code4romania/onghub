@@ -12,6 +12,7 @@ import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constan
 import { useCreateRequestMutation } from '../../services/request/Request.queries';
 import { CreateRequestDTO } from '../../services/request/interfaces/Request.dto';
 import { createRequestDTOMapper } from './helper/CreateOrganization.helper';
+import { useTranslation } from 'react-i18next';
 
 const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
@@ -35,6 +36,8 @@ const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { t } = useTranslation(['organization', 'common']);
 
   useCountiesQuery();
 
@@ -63,7 +66,7 @@ const CreateOrganization = () => {
     }
 
     if (filesError) {
-      setError('Could not update logo');
+      setError(t('logo.load', { ns: 'common' }));
     }
   }, [requestError, filesError]);
 
@@ -129,29 +132,24 @@ const CreateOrganization = () => {
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <CheckCircleIcon className="fill-green w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">Felicitari!</span>
+                <span className="font-titilliumBold text-3xl">{t('create.congratulations')}</span>
               </div>
-              <p className="leading-6">
-                Ai completat cu succes formularul de aplicare pentru ONG Hub. Pe adresa de e-mail
-                indicată, ai primit confirmarea aplicării și o copie a formularului completat. Te
-                vom contacta în cel mai scurt timp pentru a continua procesul de implementare al ONG
-                Hub pentru organizația ta.
-              </p>
+              <p className="leading-6">{t('create.success')}</p>
             </div>
           )}
           {error && (
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1 flex flex-col gap-4">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <ExclamationCircleIcon className="fill-red-600 w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">Eroare!</span>
+                <span className="font-titilliumBold text-3xl">{t('error', { ns: 'common' })}</span>
               </div>
-              <p className="leading-6">{error || 'Something went wrong.'}</p>
+              <p className="leading-6">{error || t('wrong', { ns: 'common' })}</p>
               <button
                 type="button"
                 className="mt-4 w-48 flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0  sm:text-sm"
                 onClick={reset}
               >
-                Incearca din nou
+                {t('again')}
               </button>
             </div>
           )}

@@ -46,7 +46,7 @@ const Account = () => {
       })
       .then(() => {
         setReadonly(true);
-        useSuccessToast('Password has been changed successfully.');
+        useSuccessToast(t('password'));
       })
       .catch((err) => {
         // TODO: Better error handling

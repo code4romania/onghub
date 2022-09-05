@@ -77,7 +77,7 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave }: OtherModalProps) 
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-base text-gray-500">
-                        {t('information', { ns: 'organization' })}
+                        {t('information', { ns: 'common' })}
                       </p>
                     </div>
                   </div>

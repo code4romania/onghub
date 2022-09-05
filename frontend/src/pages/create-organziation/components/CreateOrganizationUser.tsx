@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import InputField from '../../../components/InputField/InputField';
 import SectionHeader from '../../../components/section-header/SectionHeader';
@@ -12,6 +13,8 @@ const CreateOrganizationUser = () => {
   const [organization, setOrganization] = useOutletContext<any>();
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation(['user', 'common']);
 
   // React Hook Form
   const {
@@ -47,8 +50,8 @@ const CreateOrganizationUser = () => {
       <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
           <SectionHeader
-            title="Persoana de contact in relatia cu ONGHub"
-            subTitle="This information will be displayed publicly so be careful what you share"
+            title={t('create_org.title')}
+            subTitle={t('information', { ns: 'common' })}
           />
           <form className="space-y-8 xl:w-1/2 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
@@ -123,14 +126,14 @@ const CreateOrganizationUser = () => {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
           >
-            Mai departe
+            {t('next', { ns: 'common' })}
           </button>
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => alert('not implemented')}
           >
-            Inapoi
+            {t('back', { ns: 'common' })}
           </button>
         </div>
       </div>

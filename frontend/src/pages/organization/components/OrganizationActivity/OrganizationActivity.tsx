@@ -159,7 +159,7 @@ const OrganizationActivity = () => {
           <div>
             <span className="text-xl font-bold text-gray-900">{t('domains')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'organization' })}
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <Controller
@@ -237,7 +237,7 @@ const OrganizationActivity = () => {
           <div>
             <span className="text-xl font-bold text-gray-900">{t('fed_coal')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'organization' })}
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
@@ -334,7 +334,7 @@ const OrganizationActivity = () => {
           <div>
             <span className="text-xl font-bold text-gray-900">{t('branches')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'organization' })}
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
@@ -372,7 +372,7 @@ const OrganizationActivity = () => {
           <div>
             <span className="text-xl font-bold text-gray-900">{t('other')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'organization' })}
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
