@@ -6,6 +6,7 @@ export interface ApplicationWithOngStatus {
   name: string;
   logo: string;
   shortdescription: string;
+  loginlink: string;
   status: OngApplicationStatus;
 }
 

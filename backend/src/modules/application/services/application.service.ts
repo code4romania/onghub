@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  NotImplementedException,
 } from '@nestjs/common';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
@@ -73,6 +74,7 @@ export class ApplicationService {
         'application.logo as logo',
         'application.name as name',
         'application.short_description as shortdescription',
+        'application.login_link as loginlink',
         'ongApp.status as status',
       ])
       .leftJoin(
@@ -143,13 +145,13 @@ export class ApplicationService {
 
   // TODO: To be implemented
   public async deleteOne(id: number): Promise<{ success: boolean }> {
-    return Promise.resolve({ success: true });
+    throw new NotImplementedException();
   }
 
   // TODO: To be implemented
   public async deleteOneForOng(
     organizationId: number,
-    id: number,
+    applicationId: number,
   ): Promise<{ success: boolean }> {
     return Promise.resolve({ success: true });
   }
