@@ -22,4 +22,8 @@ export const ONG_APPLICATION_ERRORS = {
   },
   DELETE: { message: 'Could not delete application', errorCode: 'ONG_APP_003' },
   UPDATE: { message: 'Could not update application', errorCode: 'ONG_APP_004' },
+  RESTRICT: {
+    message: 'Could not restrict application',
+    errorCode: 'ONG_APP_005',
+  },
 };

@@ -99,11 +99,11 @@ export class OngApplicationService {
     } catch (error) {
       this.logger.error({
         error: { error },
-        ...ONG_APPLICATION_ERRORS.UPDATE,
+        ...ONG_APPLICATION_ERRORS.RESTRICT,
       });
       const err = error?.response;
       throw new BadRequestException({
-        ...ONG_APPLICATION_ERRORS.UPDATE,
+        ...ONG_APPLICATION_ERRORS.RESTRICT,
         error: err,
       });
     }
@@ -115,10 +115,41 @@ export class OngApplicationService {
     return this.ongApplicationRepository.get(conditions);
   }
 
-  public async udpate(
-    id: number,
-    updates: Partial<OngApplication>,
+  public async update(
+    organizationId: number,
+    applicationId: number,
+    status: OngApplicationStatus,
   ): Promise<UpdateResult> {
-    return this.ongApplicationRepository.update({ id }, updates);
+    const ongApplication = await this.ongApplicationRepository.get({
+      where: {
+        applicationId,
+        organizationId,
+      },
+    });
+
+    if (!ongApplication) {
+      throw new NotFoundException({
+        ...ONG_APPLICATION_ERRORS.GET,
+      });
+    }
+
+    try {
+      const result = await this.ongApplicationRepository.update(
+        { organizationId, applicationId },
+        { status },
+      );
+
+      return result;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ONG_APPLICATION_ERRORS.UPDATE,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ONG_APPLICATION_ERRORS.UPDATE,
+        error: err,
+      });
+    }
   }
 }
