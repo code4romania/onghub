@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
-import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
@@ -186,11 +185,10 @@ export class ApplicationRequestService {
       });
     }
 
-    await this.ongApplicationService.delete({
+    await this.ongApplicationService.delete(
+      request.applicationId,
       organizationId,
-      applicationId: request.applicationId,
-      status: OngApplicationStatus.PENDING,
-    });
+    );
 
     await this.applicationRequestRepository.update(
       { id: requestId },

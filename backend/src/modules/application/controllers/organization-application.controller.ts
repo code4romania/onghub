@@ -20,13 +20,17 @@ import {
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../services/application.service';
+import { OngApplicationService } from '../services/ong-application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('organization')
 export class OrganizationApplicationController {
-  constructor(private readonly applicationService: ApplicationService) {}
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
+  ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @Get('application')
@@ -51,7 +55,7 @@ export class OrganizationApplicationController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<{ success: boolean }> {
-    return this.applicationService.deleteOneForOng(user.organizationId, id);
+    return this.ongApplicationService.delete(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)

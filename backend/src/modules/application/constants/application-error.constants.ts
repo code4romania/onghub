@@ -16,4 +16,9 @@ export const ONG_APPLICATION_ERRORS = {
     message: 'Error while cerateing the app',
     errorCode: 'ONG_APP_001',
   },
+  GET: {
+    message: 'Application not found',
+    errorCode: 'ONG_APP_002',
+  },
+  DELETE: { message: 'Could not delete application', errorCode: 'ONG_APP_003' },
 };

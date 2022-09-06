@@ -148,14 +148,6 @@ export class ApplicationService {
     throw new NotImplementedException();
   }
 
-  // TODO: To be implemented
-  public async deleteOneForOng(
-    organizationId: number,
-    applicationId: number,
-  ): Promise<{ success: boolean }> {
-    return Promise.resolve({ success: true });
-  }
-
   public async restrict(applicationId: number): Promise<{ success: boolean }> {
     return Promise.resolve({ success: true });
   }
