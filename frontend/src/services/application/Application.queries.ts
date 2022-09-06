@@ -7,6 +7,7 @@ import {
   createApplication,
   getApplicationById,
   getApplications,
+  getOngApplications,
   patchApplication,
 } from './Application.service';
 import { CreateApplicationDto } from './interfaces/Application.dto';
@@ -43,6 +44,15 @@ export const useApplicationsQuery = (
       enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
+};
+
+export const useOngApplicationsQuery = () => {
+  const { setApplications, applications } = useStore();
+  return useQuery(['applications'], () => getOngApplications(), {
+    onSuccess: (data: PaginatedEntity<Application>) => {
+      setApplications({ items: data.items, meta: { ...applications.meta, ...data.meta } });
+    },
+  });
 };
 
 export const useApplication = (applicationId: string) => {

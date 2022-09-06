@@ -38,6 +38,13 @@ export const getApplications = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
+export const getOngApplications = async (): Promise<
+  PaginatedEntity<ApplicationWithOngStatusDetails>
+> => {
+  const requestUrl = `/organization/application`;
+  return API.get(requestUrl).then((res) => res.data);
+};
+
 export const getApplicationById = (
   applicationId: string,
 ): Promise<ApplicationWithOngStatusDetails> => {

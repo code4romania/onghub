@@ -34,7 +34,6 @@ import { OrganizationFilterDto } from './dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationView } from './entities/organization.view-entity';
 
-@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()

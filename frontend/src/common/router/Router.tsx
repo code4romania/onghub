@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
-import ApplicationStore from '../../pages/apps-store/ApplicationStore';
+import AllApplications from '../../pages/apps-store/AllApplications';
 import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
 import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
 import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
@@ -94,9 +94,10 @@ const Router = () => {
 
           <Route path="user" element={<UserCreate />} />
           <Route path="user/:id" element={<UserEdit />} />
+
           <Route path="apps" element={<MyApps />}></Route>
 
-          <Route path={'store'} element={<ApplicationStore />}>
+          <Route path={'store'} element={<AllApplications />}>
             <Route index element={<ApplicationList />} />
             <Route path="requests" element={<ApplicationRequests />} />
           </Route>

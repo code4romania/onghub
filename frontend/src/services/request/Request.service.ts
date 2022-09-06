@@ -55,7 +55,6 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 };
 
 // Application
-
 export const createApplicationRequest = (
   createRequestDTO: CreateApplicationRequestDTO,
 ): Promise<Request> => {

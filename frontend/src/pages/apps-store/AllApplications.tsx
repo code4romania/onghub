@@ -7,7 +7,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { APPLICATION_STORE_TABS } from './constants/ApplicationStoreTabs.constant';
 
-const ApplicationStore = () => {
+const AllApplications = () => {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(0);
   const { role } = useAuthContext();
@@ -66,4 +66,4 @@ const ApplicationStore = () => {
   );
 };
 
-export default ApplicationStore;
+export default AllApplications;

@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import { Loading } from '../../../components/loading/Loading';
-import { useApplicationsQuery } from '../../../services/application/Application.queries';
+import {
+  useApplicationsQuery,
+  useOngApplicationsQuery,
+} from '../../../services/application/Application.queries';
 import {
   Application,
   ApplicationStatus,
@@ -22,14 +25,7 @@ const ApplicationListCards = () => {
     label: APPLICATION_STATUS_NAME[ApplicationStatus.ACTIVE],
   });
 
-  const { isLoading, error } = useApplicationsQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-    '', // search term
-    status?.status,
-  );
+  const { isLoading, error } = useOngApplicationsQuery();
 
   const { applications } = useApplications();
 
