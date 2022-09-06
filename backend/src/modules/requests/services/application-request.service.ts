@@ -166,11 +166,11 @@ export class ApplicationRequestService {
   }
 
   public async abandon(
-    requestId: number,
+    applicationId: number,
     organizationId: number,
   ): Promise<{ success: boolean }> {
     const request = await this.applicationRequestRepository.get({
-      where: { id: requestId, organizationId },
+      where: { applicationId, organizationId },
     });
 
     if (!request) {
@@ -190,10 +190,7 @@ export class ApplicationRequestService {
       organizationId,
     );
 
-    await this.applicationRequestRepository.update(
-      { id: requestId },
-      { status: RequestStatus.DECLINED },
-    );
+    await this.applicationRequestRepository.remove({ id: request.id });
 
     return { success: true };
   }
