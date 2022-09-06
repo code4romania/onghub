@@ -7,6 +7,7 @@ import {
 import { FindOneOptions, UpdateResult } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 
 @Injectable()
@@ -66,6 +67,43 @@ export class OngApplicationService {
       const err = error?.response;
       throw new BadRequestException({
         ...ONG_APPLICATION_ERRORS.DELETE,
+        error: err,
+      });
+    }
+  }
+
+  public async restrict(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<{ success: boolean }> {
+    const ongApplication = await this.ongApplicationRepository.get({
+      where: {
+        applicationId,
+        organizationId,
+      },
+    });
+
+    if (!ongApplication) {
+      throw new NotFoundException({
+        ...ONG_APPLICATION_ERRORS.GET,
+      });
+    }
+
+    try {
+      await this.ongApplicationRepository.update(
+        { id: ongApplication.id },
+        { status: OngApplicationStatus.RESTRICTED },
+      );
+
+      return { success: true };
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ONG_APPLICATION_ERRORS.UPDATE,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ONG_APPLICATION_ERRORS.UPDATE,
         error: err,
       });
     }

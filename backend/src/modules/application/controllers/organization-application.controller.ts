@@ -1,20 +1,25 @@
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
+  Patch,
   UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { Role } from '../../user/enums/role.enum';
+import { RestrictApplicationDto } from '../dto/restrict-application.dto';
 import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
@@ -60,8 +65,15 @@ export class OrganizationApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: Number })
-  @Delete('application/:id/restrict')
-  restrict(@Param('id') id: number): Promise<{ success: boolean }> {
-    return this.applicationService.restrict(id);
+  @ApiBody({ type: RestrictApplicationDto })
+  @Patch('application/:id/restrict')
+  restrict(
+    @Param('id') id: number,
+    @Body() restrictApplicationDto: RestrictApplicationDto,
+  ): Promise<{ success: boolean }> {
+    return this.ongApplicationService.restrict(
+      id,
+      restrictApplicationDto.organizationId,
+    );
   }
 }

@@ -21,4 +21,5 @@ export const ONG_APPLICATION_ERRORS = {
     errorCode: 'ONG_APP_002',
   },
   DELETE: { message: 'Could not delete application', errorCode: 'ONG_APP_003' },
+  UPDATE: { message: 'Could not update application', errorCode: 'ONG_APP_004' },
 };

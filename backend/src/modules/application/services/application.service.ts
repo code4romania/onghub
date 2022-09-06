@@ -147,8 +147,4 @@ export class ApplicationService {
   public async deleteOne(id: number): Promise<{ success: boolean }> {
     throw new NotImplementedException();
   }
-
-  public async restrict(applicationId: number): Promise<{ success: boolean }> {
-    return Promise.resolve({ success: true });
-  }
 }
