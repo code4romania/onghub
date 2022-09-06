@@ -2,7 +2,10 @@ import { AxiosResponse } from 'axios';
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IRequest } from '../../pages/requests/interfaces/Request.interface';
+import {
+  IApplicationRequest,
+  IOrganizationRequest,
+} from '../../pages/requests/interfaces/Request.interface';
 import API from '../API';
 import {
   CreateApplicationRequestDTO,
@@ -26,7 +29,7 @@ export const getRequests = async (
   orderDirection: OrderDirection,
   search?: string,
   interval?: Date[],
-): Promise<PaginatedEntity<IRequest>> => {
+): Promise<PaginatedEntity<IOrganizationRequest>> => {
   let requestUrl = `/requests?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
@@ -80,7 +83,7 @@ export const getApplicationRequests = async (
   orderDirection: OrderDirection,
   search?: string,
   interval?: Date[],
-): Promise<PaginatedEntity<IRequest>> => {
+): Promise<PaginatedEntity<IApplicationRequest>> => {
   let requestUrl = `/requests/application?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;

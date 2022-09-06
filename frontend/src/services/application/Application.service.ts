@@ -6,8 +6,8 @@ import API from '../API';
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
-  ApplicationResponse,
   ApplicationStatus,
+  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const createApplication = (
@@ -38,15 +38,10 @@ export const getApplications = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getApplicationById = (applicationId: string): Promise<ApplicationResponse> => {
-  return API.get(`/application/ong/${applicationId}`).then((res) => {
-    // TEMPORARY
-    if (res.data.organizationId) {
-      return res.data;
-    } else {
-      return { application: res.data, status: null };
-    }
-  });
+export const getApplicationById = (
+  applicationId: string,
+): Promise<ApplicationWithOngStatusDetails> => {
+  return API.get(`/application/${applicationId}`).then((res) => res.data);
 };
 
 export const patchApplication = (
@@ -57,12 +52,3 @@ export const patchApplication = (
     (res) => res.data,
   );
 };
-
-// Temporary
-// export const adaptApp = (application: Application): ApplicationResponse => {
-//   return {
-//     application,
-//     // status: ApplicationPermission.RESTRICTED,
-//     // status: ApplicationPermission.ACTIVE,
-//   };
-// };

@@ -12,8 +12,8 @@ import {
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
-  ApplicationResponse,
   ApplicationStatus,
+  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
@@ -49,7 +49,7 @@ export const useApplication = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
-    onSuccess: (data: ApplicationResponse) => {
+    onSuccess: (data: ApplicationWithOngStatusDetails) => {
       setSelectedApplication(data);
     },
   });

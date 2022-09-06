@@ -1,6 +1,7 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
 import { IOrganization } from '../../../pages/organization/interfaces/Organization.interface';
+import { OngApplicationStatus } from '../../../pages/requests/interfaces/OngApplication.interface';
 
 export enum ApplicationStatus {
   ACTIVE = 'active',
@@ -26,8 +27,21 @@ export interface Application extends BaseEntity {
   steps: string[];
 }
 
-export interface ApplicationResponse {
-  organization: IOrganization;
-  application: Application;
-  status: ApplicationPermission | null;
+// For Cards List
+export interface ApplicationWithOngStatus {
+  id: number;
+  name: string;
+  logo: string;
+  shortdescription: string;
+  status: OngApplicationStatus;
+}
+
+// Full details
+export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatus {
+  type: ApplicationTypeEnum;
+  steps: string[];
+  description: string;
+  website: string;
+  loginlink: string;
+  videolink: string;
 }

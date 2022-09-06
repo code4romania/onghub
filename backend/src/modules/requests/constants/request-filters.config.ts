@@ -35,6 +35,7 @@ export const REQUEST_APP_ACCESS_FILTER_CONFIG = {
     ongApplication: {
       id: true,
       application: {
+        id: true,
         name: true,
       },
     },

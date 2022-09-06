@@ -10,25 +10,14 @@ import DataTableFilters from '../../../components/data-table-filters/DataTableFi
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
-import Select from '../../../components/Select/Select';
-import { useApplicationsQuery } from '../../../services/application/Application.queries';
-import {
-  Application,
-  ApplicationStatus,
-} from '../../../services/application/interfaces/Application.interface';
 import {
   useApplicationRequestsQuery,
   useApproveOrganizationRequestMutation,
   useRejectOrganizationRequestMutation,
-  useRequestsQuery,
 } from '../../../services/request/Request.queries';
-import { useApplications, useRequests } from '../../../store/selectors';
-import { RequestListTableHeaders } from '../../requests/components/RequestList.headers';
+import { useApplicationRequests } from '../../../store/request/ApplicationRequests.selectors';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../../requests/constants/Request.modals';
-import { IRequest } from '../../requests/interfaces/Request.interface';
-import { ApplicationStatusCollection } from '../constants/ApplicationStatus.constant';
-import { ApplicationTypeCollection, ApplicationTypeEnum } from '../constants/ApplicationType.enum';
-import { ApplicationtListTableHeaders } from './ApplicationList.headers';
+import { IApplicationRequest } from '../../requests/interfaces/Request.interface';
 import { ApplicationRequestsTableHeaders } from './ApplicationRequests.headers';
 
 const ApplicationRequests = () => {
@@ -40,7 +29,7 @@ const ApplicationRequests = () => {
   const [range, setRange] = useState<Date[]>([]);
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<IRequest | null>(null);
+  const [selectedRow, setSelectedRow] = useState<IApplicationRequest | null>(null);
 
   const navigate = useNavigate();
 
@@ -48,7 +37,7 @@ const ApplicationRequests = () => {
     useApproveOrganizationRequestMutation();
   const { mutateAsync: rejectMutate, error: rejectError } = useRejectOrganizationRequestMutation();
 
-  const { requests } = useRequests();
+  const { applicationRequests: requests } = useApplicationRequests();
 
   const { isLoading, error, refetch } = useApplicationRequestsQuery(
     rowsPerPage as number,
@@ -76,10 +65,10 @@ const ApplicationRequests = () => {
     }
   }, [error, approveError, rejectError]);
 
-  const buildRequestsActionColumn = (): TableColumn<IRequest> => {
+  const buildRequestsActionColumn = (): TableColumn<IApplicationRequest> => {
     const activeRequestsMenuItems = [
       {
-        name: 'Vizualizeaza formular',
+        name: 'Vizualizeaza aplicatie',
         icon: EyeIcon,
         onClick: onView,
       },
@@ -99,18 +88,20 @@ const ApplicationRequests = () => {
 
     return {
       name: '',
-      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />,
+      cell: (row: IApplicationRequest) => (
+        <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />
+      ),
       width: '50px',
       allowOverflow: true,
     };
   };
 
-  const onOpenApprove = (row: IRequest) => {
+  const onOpenApprove = (row: IApplicationRequest) => {
     setSelectedRow(row);
     setApproveModalOpen(true);
   };
 
-  const onOpenReject = (row: IRequest) => {
+  const onOpenReject = (row: IApplicationRequest) => {
     setSelectedRow(row);
     setRejectModalOpen(true);
   };
@@ -132,11 +123,11 @@ const ApplicationRequests = () => {
     );
   };
 
-  const onView = (data: IRequest) => {
-    navigate(`/requests/${data.id}`);
+  const onView = (data: IApplicationRequest) => {
+    navigate(`/application/${data.ongApplication.application.id}`);
   };
 
-  const onApprove = async (data: IRequest) => {
+  const onApprove = async (data: IApplicationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
@@ -148,7 +139,7 @@ const ApplicationRequests = () => {
     });
   };
 
-  const onReject = async (data: IRequest) => {
+  const onReject = async (data: IApplicationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
@@ -194,7 +185,7 @@ const ApplicationRequests = () => {
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={[...ApplicationRequestsTableHeaders]}
+            columns={[...ApplicationRequestsTableHeaders, buildRequestsActionColumn()]}
             data={requests.items}
             loading={isLoading}
             pagination

@@ -2,7 +2,7 @@ import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import {
   Application,
-  ApplicationResponse,
+  ApplicationWithOngStatusDetails,
 } from '../../services/application/interfaces/Application.interface';
 
 export const applicationsSlice = (set: any) => ({
@@ -22,7 +22,7 @@ export const applicationsSlice = (set: any) => ({
   setApplications: (applications: PaginatedEntity<Application>) => {
     set({ applications });
   },
-  setSelectedApplication: (selectedApplication: ApplicationResponse) => {
+  setSelectedApplication: (selectedApplication: ApplicationWithOngStatusDetails) => {
     set({ selectedApplication });
   },
 });

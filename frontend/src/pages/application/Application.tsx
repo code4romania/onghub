@@ -16,7 +16,7 @@ const Application = () => {
   const { role } = useAuthContext();
   const params = useParams();
 
-  const { data: applicationResponse, isLoading } = useApplication(params.id ? params?.id : '');
+  const { data: application, isLoading } = useApplication(params.id ? params?.id : '');
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_TABS.find(
@@ -42,7 +42,7 @@ const Application = () => {
 
   return (
     <ContentWrapper
-      title={applicationResponse?.application?.name || ''}
+      title={application?.name || ''}
       backButton={{
         btnLabel: 'Inapoi',
         onBtnClick: () => navigate(-2),

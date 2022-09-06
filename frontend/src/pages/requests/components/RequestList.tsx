@@ -15,9 +15,9 @@ import {
   useRejectOrganizationRequestMutation,
   useRequestsQuery,
 } from '../../../services/request/Request.queries';
-import { useRequests } from '../../../store/selectors';
+import { useOrganizationRequests } from '../../../store/selectors';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
-import { IRequest } from '../interfaces/Request.interface';
+import { IOrganizationRequest } from '../interfaces/Request.interface';
 import { RequestListTableHeaders } from './RequestList.headers';
 
 const RequestList = () => {
@@ -29,7 +29,7 @@ const RequestList = () => {
   const [range, setRange] = useState<Date[]>([]);
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<IRequest | null>(null);
+  const [selectedRow, setSelectedRow] = useState<IOrganizationRequest | null>(null);
 
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const RequestList = () => {
     useApproveOrganizationRequestMutation();
   const { mutateAsync: rejectMutate, error: rejectError } = useRejectOrganizationRequestMutation();
 
-  const { requests } = useRequests();
+  const { organizationRequests: requests } = useOrganizationRequests();
 
   const { isLoading, error, refetch } = useRequestsQuery(
     rowsPerPage as number,
@@ -65,7 +65,7 @@ const RequestList = () => {
     }
   }, [error, approveError, rejectError]);
 
-  const buildRequestsActionColumn = (): TableColumn<IRequest> => {
+  const buildRequestsActionColumn = (): TableColumn<IOrganizationRequest> => {
     const activeRequestsMenuItems = [
       {
         name: 'Vizualizeaza formular',
@@ -88,18 +88,20 @@ const RequestList = () => {
 
     return {
       name: '',
-      cell: (row: IRequest) => <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />,
+      cell: (row: IOrganizationRequest) => (
+        <PopoverMenu row={row} menuItems={activeRequestsMenuItems} />
+      ),
       width: '50px',
       allowOverflow: true,
     };
   };
 
-  const onOpenApprove = (row: IRequest) => {
+  const onOpenApprove = (row: IOrganizationRequest) => {
     setSelectedRow(row);
     setApproveModalOpen(true);
   };
 
-  const onOpenReject = (row: IRequest) => {
+  const onOpenReject = (row: IOrganizationRequest) => {
     setSelectedRow(row);
     setRejectModalOpen(true);
   };
@@ -121,11 +123,11 @@ const RequestList = () => {
     );
   };
 
-  const onView = (data: IRequest) => {
+  const onView = (data: IOrganizationRequest) => {
     navigate(`/requests/${data.id}`);
   };
 
-  const onApprove = async (data: IRequest) => {
+  const onApprove = async (data: IOrganizationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
@@ -137,7 +139,7 @@ const RequestList = () => {
     });
   };
 
-  const onReject = async (data: IRequest) => {
+  const onReject = async (data: IOrganizationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');

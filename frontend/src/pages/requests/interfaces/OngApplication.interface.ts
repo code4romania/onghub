@@ -8,7 +8,11 @@ export enum OngApplicationStatus {
 }
 
 export interface OngApplication {
+  organizationId: number;
   organization: IOrganization;
+
+  applicaiontId: number;
   application: Application;
+
   status: OngApplicationStatus;
 }
