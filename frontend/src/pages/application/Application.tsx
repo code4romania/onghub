@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
@@ -18,6 +19,8 @@ const Application = () => {
   const params = useParams();
 
   const { isLoading } = useApplication(params.id ? params?.id : '');
+
+  const { t } = useTranslation(['app', 'common']);
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -43,18 +46,18 @@ const Application = () => {
 
   return (
     <ContentWrapper
-      title={'Aplicatie'}
+      title={t('title')}
       backButton={{
-        btnLabel: 'Inapoi',
+        btnLabel: t('back', { ns: 'common' }),
         onBtnClick: () => navigate(-2),
       }}
       editButton={{
-        btnLabel: 'Editeaza',
+        btnLabel: t('edit', { ns: 'common' }),
         onBtnClick: onApplicationEdit,
         visible: role === UserRole.SUPER_ADMIN,
       }}
       deleteButton={{
-        btnLabel: 'Sterge',
+        btnLabel: t('delete', { ns: 'common' }),
         onBtnClick: () => navigate(-1),
         visible: role === UserRole.SUPER_ADMIN,
       }}

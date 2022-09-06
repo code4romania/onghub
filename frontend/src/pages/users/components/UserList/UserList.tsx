@@ -90,7 +90,7 @@ const UserList = () => {
         onClick: onEdit,
       },
       {
-        name: t('list.temporary'),
+        name: t('list.restrict'),
         icon: BanIcon,
         onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,

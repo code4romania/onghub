@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -9,13 +10,15 @@ const AppStore = () => {
   const navigate = useNavigate();
   const { role } = useAuthContext();
 
+  const { t } = useTranslation('appstore');
+
   return (
     <ContentWrapper
-      title="Aplicatii"
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
+      title={t('title')}
+      subtitle={t('description')}
       addButton={{
         visible: role === UserRole.SUPER_ADMIN,
-        btnLabel: 'Adauga aplicatie',
+        btnLabel: t('add'),
         onBtnClick: () => {
           navigate('new');
         },

@@ -2,6 +2,7 @@ import { PencilIcon } from '@heroicons/react/outline';
 import { PlusIcon, XIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import { classNames } from '../../../common/helpers/tailwind.helper';
@@ -27,6 +28,8 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const [logo, setLogo] = useState<string | null>(null);
 
   const { application } = useSelectedApplication();
+
+  const { t } = useTranslation(['appstore', 'common']);
 
   // Mutation
   const {
@@ -72,7 +75,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
     const res = await mutateApplication(dto);
-    useSuccessToast('Aplicatie modificata cu succes!');
+    useSuccessToast(t('success'));
     navigate('/store');
   };
 
@@ -83,7 +86,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
         applicationId: application?.id?.toString(),
         applicationUpdatePayload: dto,
       });
-      useSuccessToast('Aplicatie modificata cu succes!');
+      useSuccessToast(t('success'));
       navigate(-1);
     }
   };
@@ -125,14 +128,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   return (
     <ContentWrapper
-      title={'Adauga aplicatie'}
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
-      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate(-1) }}
+      title={t('add')}
+      subtitle={t('create.description')}
+      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate(-1) }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 px-10 flex justify-between">
           <span className="font-titilliumBold text-xl text-gray-800">
-            {edit ? 'Editare pagina aplicatie' : 'Generare pagina aplicatie'}
+            {edit ? t('create.edit') : t('create.generate')}
           </span>
 
           <button
@@ -141,17 +144,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
             onClick={readonly ? startEdit : handleSubmit(edit ? handleEdit : handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {readonly ? 'Editeaza' : 'Salveaza modificari'}
+            {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
           </button>
         </div>
 
         <div className="w-full border-t border-gray-300" />
         <div className="p-5 sm:p-10 flex">
           <div className="flex flex-col gap-4 w-full">
-            <SectionHeader
-              title="Date generale"
-              subTitle="This information will be displayed publicly so be careful what you share"
-            />
+            <SectionHeader title={t('create.general')} subTitle={t('create.description')} />
             <form className="space-y-8 xxl:w-1/3 xl:w-1/2 divide-y divide-gray-200 divide-">
               <div className="flex flex-col gap-4">
                 <Controller
@@ -286,7 +286,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-                  Logo organizatie
+                  {t('create.logo')}
                 </label>
 
                 <div className="mt-1 flex items-center">
@@ -309,7 +309,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         htmlFor="uploadPhoto"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        Incarca logo
+                        {t('create.upload')}
                       </label>
                       <input
                         className="h-0 w-0"
@@ -328,10 +328,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
               </div>
               {/* End Logo */}
               <div className="flex flex-col gap-4 pt-4">
-                <SectionHeader
-                  title="Pasi pentru adaugarea aplicatiei"
-                  subTitle="This information will be displayed publicly so be careful what you share"
-                />
+                <SectionHeader title={t('create.steps')} subTitle={t('create.steps_descr')} />
                 {fields.map((item, index) => {
                   return (
                     <div className="flex gap-4 items-start" key={index}>
@@ -373,7 +370,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                       }}
                     >
                       <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                      Adauga mai multi pasi
+                      {t('create.step_add')}
                     </button>
                     <button
                       className="add-button"
@@ -383,7 +380,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                       }}
                     >
                       <XIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                      Sterge pas
+                      {t('create.step_delete')}
                     </button>
                   </div>
                 )}

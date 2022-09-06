@@ -192,7 +192,7 @@
       "restrict_error": "Eroare la restrictionarea accesului",
       "restore_error": "Eroare la restituirea accesului",
       "remove_error": "Eroare la stergerea utilizatorului",
-      "temporary": "Restrictioneaza temporar",
+      "restrict": "Restrictioneaza temporar",
       "give_access": "Reda accesul",
       "permanent": "Elimina definitiv",
       "restore_success": "Acces restituit pentru utilizatorul",
@@ -207,6 +207,57 @@
     },
     "create_org": {
       "title": "Persoana de contact in relatia cu ONGHub"
+    }
+  },
+  "organizations": {
+    "load_error": "Eroare la incarcarea organizatiilor",
+    "view": "Vizualizeaza ONG",
+    "restrict": "Restrictioneaza temporar",
+    "title": "ONG-uri",
+    "list": "Lista ONG-uri",
+    "administer": "Administreaza aici accesul pentru organizatiile din sistem.",
+    "filter": {
+      "registration": "Perioada de inregistrare",
+      "users": "Numar de utilizatori",
+      "status": "Status actualizare date"
+    }
+  },
+  "appstore": {
+    "title": "Aplicatii",
+    "description": "Lorem ipsum",
+    "add": "Adauga aplicatie",
+    "all": "Toate aplicatiile",
+    "list": {
+      "load_error": "Eroare la incarcarea aplicatiilor",
+      "view": "Vizualizeaza aplicatie",
+      "activate": "Activeaza aplicatie",
+      "restrict": "Restrictioneaza aplicatie",
+      "type": "Tip aplicatie",
+      "status": "Status"
+    },
+    "create": {
+      "success": "Aplicatie modificata cu succes",
+      "description": "Lorem ipsum",
+      "edit": "Editare pagina aplicatie",
+      "generate": "Generare pagina aplicatie",
+      "general": "Date generale",
+      "logo": "Logo aplicatie",
+      "upload": "Incarca logo",
+      "logo_descr": "Incarca logo-ul aplicatiei tale, la o calitate caat mai buna.",
+      "steps": "Pasi pentru adaugarea aplicatiei",
+      "steps_descr": "Lorem ipsum",
+      "step_add": "Adauga mai multi pasi",
+      "step_delete": "Sterge pas"
+    }
+  },
+  "app": {
+    "title": "Aplicatie",
+    "details": {
+      "website": "Vezi website",
+      "how_to": "Cum poti folosi aplicatia pentru organizatia ta",
+      "request": "Solicita aplicatia",
+      "description": "Descriere",
+      "video": "Video prezentare"
     }
   }
 }

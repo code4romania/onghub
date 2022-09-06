@@ -2,9 +2,12 @@ import React from 'react';
 import { GlobeAltIcon, PlusIcon } from '@heroicons/react/outline';
 import logo from '../../../assets/images/logo.svg';
 import { useSelectedApplication } from '../../../store/selectors';
+import { useTranslation } from 'react-i18next';
 
 const ApplicationDetails = () => {
   const { application } = useSelectedApplication();
+
+  const { t } = useTranslation('app');
 
   return (
     <div className="flex gap-4 mr-1 mb-1 relative">
@@ -20,12 +23,12 @@ const ApplicationDetails = () => {
                 window.location.href = application?.website || '';
               }}
             >
-              Vezi website
+              {t('details.website')}
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-4 pt-4 pb-4">
-          <p>Cum poti folosi aplicatia pentru organizatia ta?</p>
+          <p>{t('details.how_to')}</p>
           {application?.steps.map((step: any, index: number) => (
             <div className="flex gap-4 items-center" key={index}>
               <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4">
@@ -38,14 +41,16 @@ const ApplicationDetails = () => {
         <div className="flex pt-4 gap-4 items-center justify-center">
           <button className="save-button pl-8 pr-8 flex gap-4">
             <PlusIcon className="h-5 w-5" />
-            Solicita aplicatia
+            {t('details.request')}
           </button>
         </div>
       </div>
       <div className="flex flex-col gap-4 w-full h-full">
         <div className="w-full h-full bg-white shadow rounded-lg">
           <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">Descriere</span>
+            <span className="font-titilliumBold text-xl text-gray-800">
+              {t('details.description')}
+            </span>
           </div>
           <div className="w-full border-t border-gray-300" />
           <div className=" p-8 ">
@@ -54,7 +59,7 @@ const ApplicationDetails = () => {
         </div>
         <div className="w-full h-full bg-white shadow rounded-lg">
           <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">Video prezentare</span>
+            <span className="font-titilliumBold text-xl text-gray-800">{t('details.video')}</span>
           </div>
           <div className="w-full border-t border-gray-300" />
           <div className="p-8">
