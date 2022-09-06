@@ -1,4 +1,7 @@
 import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../common/helpers/format.helper';
+import i18n from '../../../../common/config/i18n';
+
+const translations = {};
 
 export const OrganizationLegalConfig: Record<string, any> = {
   legal_reprezentative_name: {

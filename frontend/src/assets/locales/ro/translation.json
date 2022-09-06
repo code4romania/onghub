@@ -71,6 +71,10 @@
       "congratulations": "Feclicitari",
       "success": "Ai completat cu succes formularul de aplicare pentru ONG Hub. Pe adresa de e-mail indicată, ai primit confirmarea aplicării și o copie a formularului completat. Te vom contacta în cel mai scurt timp pentru a continua procesul de implementare al ONG Hub pentru organizația ta.",
       "again": "Incearca din nou"
+    },
+    "filters": {
+      "incomplete": "Incomplet",
+      "updated": "Actualizat"
     }
   },
   "general": {
@@ -113,7 +117,56 @@
       "edit_relevant": "Editare alta persoana relevanta in organizatie",
       "add_relevant": "Adaugare alta persoana relevanta in organizatie"
     },
-    "create": {}
+    "header": {
+      "name": "Nume si prenume",
+      "role": "Rol",
+      "email": "Email",
+      "phone": "Telefon"
+    },
+    "legal_config": {
+      "name_required": "Numele reprezentantului legal este obligatoriu.",
+      "name_maxim": "Numele reprezentantului legal nu poate sa aiba mai mult de 100 de caractere.",
+      "name_minim": "Numele reprezentantului legal nu poate sa aiba mai putin de 5 caractere.",
+      "name_invalid": "Numele reprezentantului legal are un format invalid.",
+      "name": "Nume si prenume*",
+      "email_required": "Email-ul reprezentantului legal este obligatoriu.",
+      "email_maxim": "Email-ul reprezentantului legal nu poate sa aiba mai mult de 50 de caractere.",
+      "email_invalid": "Email-ul are un format incorect.",
+      "email": "Email*",
+      "phone_required": "Numarul de telefon al repzentantului legal este obligatoriu.",
+      "phone_maxim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai mult de 15 caractere.",
+      "phone_minim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai putin de 10 caractere.",
+      "phone_invalid": "Numarul de telefon are un format invalid.",
+      "phone": "Telefon"
+    },
+    "director_config": {
+      "name_required": "Numele directorului este obligatoriu",
+      "name_maxim": "Numele directorului nu poate sa aiba mai mult de 100 de caractere",
+      "name_minim": "Numele directorului nu poate sa aiba mai putin de 5 caractere.",
+      "name_invalid": "Numele directorului nu are un format valid.",
+      "name": "Nume si prenume*",
+      "email_required": "Email-ul directorului este obligatoriu.",
+      "email_maxim": "Email-ul directorului nu poate sa aiba mai mult de 50 de caractere.",
+      "email_invalid": "Email-ul are un format incorect.",
+      "email": "Email*",
+      "phone_required": "Telefonul directorului este invalid.",
+      "phone_maxim": "Numarul de telefon al directorului nu poate sa aiba mai mult de 15 caractere.",
+      "phone_minim": "Numarul de telefon al directorului nu poate sa aiba mai putin de 10 caractere.",
+      "phone_invalid": "Numarul de telefon are un format invalid.",
+      "phone": "Telefon"
+    },
+    "other_config": {
+      "other_required": "Numele este obligatoriu.",
+      "other_maxim": "Numele nu poate sa aiba mai mult de 100 de caractere.",
+      "other_minim": "Numele nu poate sa aiba mai putin de 5 caractere.",
+      "other_invalid": "Numele are un format invalid.",
+      "other": "Nume si prenume*",
+      "role_required": "Rolul este obligatoriu.",
+      "role_maxim": "Rolul nu poate sa aiba mai mult de 50 de caractere.",
+      "role_minim": "Rolul nu poate sa aiba mai putin de 3 caractere.",
+      "role_invalid": "Rolul are un format invalid.",
+      "role": "Rol*"
+    }
   },
   "financial": {
     "save_error": "Eroare la salvarea datelor financiare",
@@ -146,7 +199,9 @@
       "title": "Sumar",
       "volunteers": "Voluntari",
       "contractors": "Contractori",
-      "activity": "Raport activitate"
+      "activity": "Raport activitate",
+      "not_available": "Nu este disponibil",
+      "report": "Raport"
     },
     "partners": {
       "title": "Parteneri",
@@ -162,6 +217,20 @@
     },
     "modal": {
       "summary": "Sumar activitate"
+    },
+    "config": {
+      "volunt_negative": "Numarul de voluntari nu poate fi un numar negativ.",
+      "volunt_maxim": "Numarul de voluntari nu poate sa aiba mai mult de 6 cifre.",
+      "decimal": "Valori cu decimale nu sunt permise.",
+      "contr_negative": "Numarul de contractori nu poate fi un numar negativ.",
+      "contr_maxim": "Numarul de contractori nu poate sa aiba mai mult de 6 cifre.",
+      "link_invalid": "Formatul link-ului este invalid.",
+      "link": "Link raport activitate",
+      "volunteers": "Numar voluntari",
+      "contractors": "Numar contractori",
+      "volunteer_helper": "Lorem ipsum",
+      "contractor_helper": "Lorem ipsum",
+      "report_helper": "Lorem ipsum"
     }
   },
   "delete_row": {
@@ -220,6 +289,16 @@
       "registration": "Perioada de inregistrare",
       "users": "Numar de utilizatori",
       "status": "Status actualizare date"
+    },
+    "header": {
+      "ong": "ONG",
+      "users": "Utilizatori",
+      "register": "Inregistrare",
+      "access": "Acces",
+      "updated": "Ultima actualizare date",
+      "status": "Status actualizare",
+      "active": "Activ",
+      "restricted": "Restrictionat"
     }
   },
   "appstore": {

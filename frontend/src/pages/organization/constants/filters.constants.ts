@@ -1,11 +1,18 @@
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  incomplete: i18n.t('organization:filters.incomplete'),
+  updated: i18n.t('organization:filters.updated'),
+};
+
 export const OrganizationCompletionStatusOptions = [
   {
     status: 1,
-    label: 'Incomplet',
+    label: translations.incomplete,
   },
   {
     status: 0,
-    label: 'Actualizat',
+    label: translations.updated,
   },
 ];
 

@@ -1,4 +1,28 @@
 import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../../common/helpers/format.helper';
+import i18n from '../../../../../common/config/i18n';
+
+const translations = {
+  name: {
+    required: i18n.t('legal:director_config.name_required'),
+    maxim: i18n.t('legal:director_config.name_maxim'),
+    minim: i18n.t('legal:director_config.name_minim'),
+    invalid: i18n.t('legal:director_config.name_invalid'),
+    name: i18n.t('legal:director_config.name'),
+  },
+  email: {
+    required: i18n.t('legal:director_config.email_required'),
+    maxim: i18n.t('legal:director_config.email_maxim'),
+    invalid: i18n.t('legal:director_config.email_invalid'),
+    email: i18n.t('legal:director_config.email'),
+  },
+  phone: {
+    required: i18n.t('legal:director_config.phone_required'),
+    maxim: i18n.t('legal:director_config.phone_maxim'),
+    minim: i18n.t('legal:director_config.phone_minim'),
+    invalid: i18n.t('legal:director_config.phone_invalid'),
+    phone: i18n.t('legal:director_config.phone'),
+  },
+};
 
 export const DirectorConfig: Record<string, any> = {
   fullName: {
@@ -6,24 +30,24 @@ export const DirectorConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Director Name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Director name has a maximum length of 100 characters.',
+        message: translations.name.maxim,
       },
       minLength: {
         value: 5,
-        message: 'Director name has a minimum length of 5 characters.',
+        message: translations.name.minim,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Director name is invalid',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume*',
+      label: translations.name.name,
       helperText: '',
       placeholder: 'John Doe',
     },
@@ -33,20 +57,20 @@ export const DirectorConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Director Email is required.',
+        message: translations.email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Director Email has a maximum length of 50 characters.',
+        message: translations.email.maxim,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Email*',
+      label: translations.email.email,
       helperText: '',
       placeholder: 'example@email.com',
     },
@@ -56,24 +80,24 @@ export const DirectorConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Director Phone is required.',
+        message: translations.phone.required,
       },
       maxLength: {
         value: 15,
-        message: 'Director phone has a maximum length of 15 characters.',
+        message: translations.phone.maxim,
       },
       minLength: {
         value: 10,
-        message: 'Director phone has a minimum length of 10 characters.',
+        message: translations.phone.minim,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon',
+      label: translations.phone.phone,
       helperText: '',
       placeholder: '0721111111',
     },
