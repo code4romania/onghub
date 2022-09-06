@@ -6,11 +6,7 @@ import {
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import {
-  APPLICATION_HTTP_ERRORS_MESSAGES,
-  APPLICATION_ERROR_CODES,
-  APPLICATION_ERRORS,
-} from '../constants/application-error.constants';
+import { APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -20,7 +16,6 @@ import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
-import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -48,8 +43,7 @@ export class ApplicationService {
 
     if (!application) {
       throw new NotFoundException({
-        message: APPLICATION_HTTP_ERRORS_MESSAGES.APPLICATION,
-        errorCode: APPLICATION_ERROR_CODES.APP001,
+        ...APPLICATION_ERRORS.GET,
       });
     }
 
@@ -94,21 +88,37 @@ export class ApplicationService {
     organizationId: number,
     applicationId: number,
   ): Promise<ApplicationWithOngStatusDetails> {
-    return Promise.resolve({
-      id: 1,
-      status: OngApplicationStatus.ACTIVE,
-      name: 'Test',
-      logo: null,
-      shortdescription:
-        'Lorem ipsum, Lorem ipsum, Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-      type: ApplicationTypeEnum.SIMPLE,
-      steps: ['Step1', 'Step2'],
-      description:
-        'Lorem ipsum, Lorem ipsum, Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum',
-      website: 'www.google.com',
-      loginlink: 'www.google.com',
-      videolink: 'https://www.youtube.com/watch?v=kjrz7ZeCU8I',
-    });
+    const applicationWithDetails = await this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'application.id as id',
+        'ongApp.status as status',
+        'application.name as name',
+        'application.logo as logo',
+        'application.short_description as shortdescription',
+        'application.description as description',
+        'application.type as type',
+        'application.steps as steps',
+        'application.website as website',
+        'application.login_link as loginlink',
+        'application.video_link as videolink',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .where('application.id = :applicationId', { applicationId })
+      .getRawOne();
+
+    if (!applicationWithDetails) {
+      throw new NotFoundException({
+        ...APPLICATION_ERRORS.GET,
+      });
+    }
+
+    return applicationWithDetails as any;
   }
 
   public async update(
@@ -121,8 +131,7 @@ export class ApplicationService {
 
     if (!application) {
       throw new NotFoundException({
-        message: APPLICATION_HTTP_ERRORS_MESSAGES.APPLICATION,
-        errorCode: APPLICATION_ERROR_CODES.APP002,
+        ...APPLICATION_ERRORS.GET,
       });
     }
 
