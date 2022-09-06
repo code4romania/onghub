@@ -39,4 +39,11 @@ export class OrganizationApplicationController {
   ): Promise<{ success: boolean }> {
     return this.applicationService.deleteOneForOng(user.organizationId, id);
   }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: Number })
+  @Delete('application/:id/restrict')
+  restrict(@Param('id') id: number): Promise<{ success: boolean }> {
+    return this.applicationService.restrict(id);
+  }
 }

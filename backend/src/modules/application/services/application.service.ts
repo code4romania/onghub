@@ -144,4 +144,8 @@ export class ApplicationService {
   ): Promise<{ success: boolean }> {
     return Promise.resolve({ success: true });
   }
+
+  public async restrict(applicationId: number): Promise<{ success: boolean }> {
+    return Promise.resolve({ success: true });
+  }
 }
