@@ -11,13 +11,13 @@
       "load": "Logo-ul nu s-a putut incarca"
     },
     "delete_data": "Elimina date",
-    "statute_upload": "Incarca fisier",
     "view": "Vizualizeaza",
     "delete": "Sterge",
     "error": "Eroare!",
     "wrong": "Ceva nu a functionat cum trebuie",
     "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
-    "next": "Mai departe"
+    "next": "Mai departe",
+    "send": "Trimite"
   },
   "menu": {
     "informations": "Informatii",
@@ -85,8 +85,7 @@
       "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
     },
     "social": "Comunicare si social media",
-    "fundraising": "Strangere de fonduri",
-    "create": {}
+    "fundraising": "Strangere de fonduri"
   },
   "activity": {
     "title": "Activitatea organizatiei",
@@ -106,13 +105,15 @@
     "statute": "Statutul organizatiei",
     "document": "Document",
     "file_name": "Statut_Organizatie",
+    "statute_upload": "Incarca fisier",
     "modal": {
       "add": "Adauga",
       "edit_director": "Editare membru consiliul directoral",
       "add_director": "Adaugare membru consiliul directoral",
       "edit_relevant": "Editare alta persoana relevanta in organizatie",
       "add_relevant": "Adaugare alta persoana relevanta in organizatie"
-    }
+    },
+    "create": {}
   },
   "financial": {
     "save_error": "Eroare la salvarea datelor financiare",
