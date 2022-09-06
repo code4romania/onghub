@@ -7,6 +7,7 @@ import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
   ApplicationStatus,
+  ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
@@ -38,16 +39,18 @@ export const getApplications = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getOngApplications = async (): Promise<
-  PaginatedEntity<ApplicationWithOngStatusDetails>
-> => {
+export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationWithOngStatus>> => {
   const requestUrl = `/organization/application`;
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getApplicationById = (
+export const getOngApplicationById = (
   applicationId: string,
 ): Promise<ApplicationWithOngStatusDetails> => {
+  return API.get(`/organization/application/${applicationId}`).then((res) => res.data);
+};
+
+export const getApplicationById = (applicationId: string): Promise<Application> => {
   return API.get(`/application/${applicationId}`).then((res) => res.data);
 };
 

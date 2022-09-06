@@ -58,21 +58,25 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 export const createApplicationRequest = (
   createRequestDTO: CreateApplicationRequestDTO,
 ): Promise<Request> => {
-  return API.post(`/requests/application`, createRequestDTO).then(
+  return API.post(`/application/request`, createRequestDTO).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
 
 export const approveApplicationnRequest = (requestId: string) => {
-  return API.patch(`/requests/application/${requestId}/approve`);
+  return API.patch(`/application/request/${requestId}/approve`);
 };
 
 export const rejectApplicationnRequest = (requestId: string) => {
-  return API.patch(`/requests/application/${requestId}/reject`);
+  return API.patch(`/application/request/${requestId}/reject`);
+};
+
+export const abandonApplicationnRequest = (requestId: string) => {
+  return API.patch(`/application/request/${requestId}/abandon`);
 };
 
 export const getApplicationRequestById = (requestId: string) => {
-  return API.get(`/requests/application/${requestId}`).then((res) => res.data);
+  return API.get(`/application/request/${requestId}`).then((res) => res.data);
 };
 
 export const getApplicationRequests = async (
@@ -83,14 +87,14 @@ export const getApplicationRequests = async (
   search?: string,
   interval?: Date[],
 ): Promise<PaginatedEntity<IApplicationRequest>> => {
-  let requestUrl = `/requests/application?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+  let requestUrl = `/application/request?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
 
-  if (interval && interval.length === 2)
-    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
-      interval[1],
-    )}`;
+  // if (interval && interval.length === 2)
+  //   requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+  //     interval[1],
+  //   )}`;
 
   return API.get(requestUrl).then((res) => res.data);
 };

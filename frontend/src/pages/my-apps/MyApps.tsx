@@ -1,7 +1,16 @@
 import React from 'react';
+import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import ApplicationListCards from '../apps-store/components/ApplicationListCards';
 
 const MyApps = () => {
-  return <div>My apps</div>;
+  return (
+    <ContentWrapper
+      title="Aplicatiile mele"
+      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
+    >
+      <ApplicationListCards ong={true} />
+    </ContentWrapper>
+  );
 };
 
 export default MyApps;

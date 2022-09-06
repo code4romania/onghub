@@ -1,4 +1,5 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
+import { Application } from '../../../services/application/interfaces/Application.interface';
 import { IOrganizationFull } from '../../organization/interfaces/Organization.interface';
 import { IUser } from '../../users/interfaces/User.interface';
 import { RequestStatus } from '../enum/RequestStatus.enum';
@@ -15,6 +16,6 @@ export interface IApplicationRequest extends BaseEntity {
   organizationId: number;
   organization: Partial<IOrganizationFull>;
 
-  ongApplicationId: number;
-  ongApplication: OngApplication;
+  applicationId: number;
+  application: Partial<Application>;
 }

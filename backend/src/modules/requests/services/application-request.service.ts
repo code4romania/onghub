@@ -92,7 +92,6 @@ export class ApplicationRequestService {
   ): Promise<Pagination<ApplicationRequest>> {
     const paginationOptions = {
       ...options,
-      type: RequestType.REQUEST_APPLICATION_ACCESS,
     };
 
     return this.applicationRequestRepository.getManyPaginated(

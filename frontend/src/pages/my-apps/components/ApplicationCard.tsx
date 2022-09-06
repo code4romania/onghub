@@ -1,9 +1,10 @@
 import React from 'react';
-import { Application } from '../../../services/application/interfaces/Application.interface';
+import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
 import logo from '../../../assets/images/logo.svg';
 import { useNavigate } from 'react-router-dom';
+import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
 
-const ApplicationCard = ({ application }: { application: Application }) => {
+const ApplicationCard = ({ application }: { application: ApplicationWithOngStatus }) => {
   const navigate = useNavigate();
 
   const onMore = (e: any) => {
@@ -13,8 +14,8 @@ const ApplicationCard = ({ application }: { application: Application }) => {
 
   const onOpen = (e: any) => {
     e.preventDefault();
-    if (application.loginLink) {
-      window.location.href = application.loginLink;
+    if (application.loginlink) {
+      window.location.href = application.loginlink;
     }
   };
 
@@ -25,15 +26,17 @@ const ApplicationCard = ({ application }: { application: Application }) => {
       </div>
       <div className="flex flex-col gap-4 w-full">
         <p className="font-titilliumBold text-xl">Date ONG</p>
-        <p className="break-word Application__Card__Description"> {application.shortDescription}</p>
+        <p className="break-word Application__Card__Description"> {application.shortdescription}</p>
       </div>
-      <div className="flex gap-4">
-        <button className="edit-button px-6" onClick={onMore}>
-          Mai mult
+      <div className="flex gap-4 justify-center w-full">
+        <button className="edit-button w-full flex justify-center" onClick={onMore}>
+          <p className="text-center">Mai mult</p>
         </button>
-        <button className="save-button px-6" onClick={onOpen}>
-          Deschide
-        </button>
+        {application.status === OngApplicationStatus.ACTIVE && (
+          <button className="save-button w-full flex justify-center" onClick={onOpen}>
+            <p className="text-center">Deschide</p>
+          </button>
+        )}
       </div>
     </div>
   );

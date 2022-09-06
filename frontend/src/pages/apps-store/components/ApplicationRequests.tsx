@@ -12,8 +12,8 @@ import DateRangePicker from '../../../components/date-range-picker/DateRangePick
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import {
   useApplicationRequestsQuery,
-  useApproveOrganizationRequestMutation,
-  useRejectOrganizationRequestMutation,
+  useApproveApplicationRequestMutation,
+  useRejectApplicationRequestMutation,
 } from '../../../services/request/Request.queries';
 import { useApplicationRequests } from '../../../store/request/ApplicationRequests.selectors';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../../requests/constants/Request.modals';
@@ -34,8 +34,8 @@ const ApplicationRequests = () => {
   const navigate = useNavigate();
 
   const { mutateAsync: approveMutate, error: approveError } =
-    useApproveOrganizationRequestMutation();
-  const { mutateAsync: rejectMutate, error: rejectError } = useRejectOrganizationRequestMutation();
+    useApproveApplicationRequestMutation();
+  const { mutateAsync: rejectMutate, error: rejectError } = useRejectApplicationRequestMutation();
 
   const { applicationRequests: requests } = useApplicationRequests();
 
@@ -124,14 +124,14 @@ const ApplicationRequests = () => {
   };
 
   const onView = (data: IApplicationRequest) => {
-    navigate(`/application/${data.ongApplication.application.id}`);
+    navigate(`/application/${data.application.id}`);
   };
 
   const onApprove = async (data: IApplicationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        refetch(); // TODO: Redirect to /organizations/id
+        refetch();
       },
       onSettled: () => {
         setApproveModalOpen(false);

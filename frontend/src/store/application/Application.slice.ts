@@ -1,9 +1,6 @@
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import {
-  Application,
-  ApplicationWithOngStatusDetails,
-} from '../../services/application/interfaces/Application.interface';
+import { Application } from '../../services/application/interfaces/Application.interface';
 
 export const applicationsSlice = (set: any) => ({
   applications: {
@@ -19,10 +16,11 @@ export const applicationsSlice = (set: any) => ({
     },
   },
   selectedApplication: null,
+
   setApplications: (applications: PaginatedEntity<Application>) => {
     set({ applications });
   },
-  setSelectedApplication: (selectedApplication: ApplicationWithOngStatusDetails) => {
+  setSelectedApplication: (selectedApplication: Application) => {
     set({ selectedApplication });
   },
 });
