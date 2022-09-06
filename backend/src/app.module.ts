@@ -36,13 +36,13 @@ import { RolesGuard } from './common/guards/roles.guard';
     QueueProviderModule,
 
     // Business modules
-    OrganizationModule,
     MailModule,
     SharedModule,
     ApplicationModule,
     UserModule,
     AuthenticationModule,
     RequestsModule,
+    OrganizationModule,
   ],
   providers: [
     {
