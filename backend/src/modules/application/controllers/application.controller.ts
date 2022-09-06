@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,8 +8,14 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiTooManyRequestsResponse,
+} from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from '../../user/decorators/user.decorator';
@@ -20,6 +27,9 @@ import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { Application } from '../entities/application.entity';
 import { ApplicationService } from '../services/application.service';
 
+@ApiTooManyRequestsResponse()
+@UseInterceptors(ClassSerializerInterceptor)
+@ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}

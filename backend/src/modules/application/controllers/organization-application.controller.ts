@@ -1,5 +1,15 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
-import { ApiParam } from '@nestjs/swagger';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiParam,
+  ApiTooManyRequestsResponse,
+} from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
@@ -10,6 +20,9 @@ import {
 } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../services/application.service';
 
+@ApiTooManyRequestsResponse()
+@UseInterceptors(ClassSerializerInterceptor)
+@ApiBearerAuth()
 @Controller('organization')
 export class OrganizationApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
