@@ -4,10 +4,17 @@ import { IUser } from '../../users/interfaces/User.interface';
 import { RequestStatus } from '../enum/RequestStatus.enum';
 import { OngApplication } from './OngApplication.interface';
 
-export interface IRequest extends BaseEntity {
+export interface IOrganizationRequest extends BaseEntity {
   status: RequestStatus;
   user: IUser;
   organization: IOrganizationFull;
-  ongApplication: OngApplication | null;
-  createdOn: string;
+}
+
+export interface IApplicationRequest extends BaseEntity {
+  status: RequestStatus;
+  organizationId: number;
+  organization: Partial<IOrganizationFull>;
+
+  ongApplicationId: number;
+  ongApplication: OngApplication;
 }

@@ -1,7 +1,10 @@
 import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IRequest } from '../../pages/requests/interfaces/Request.interface';
+import {
+  IApplicationRequest,
+  IOrganizationRequest,
+} from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
 import {
   CreateApplicationRequestDTO,
@@ -36,13 +39,13 @@ export const useRequestsQuery = (
   search?: string,
   interval?: Date[],
 ) => {
-  const { setRequests } = useStore();
+  const { setOrganizationRequests } = useStore();
   return useQuery(
     ['requests', limit, page, orderBy, orderDirection, search, interval],
     () => getRequests(limit, page, orderBy, orderDirection, search, interval),
     {
-      onSuccess: (data: PaginatedEntity<IRequest>) => {
-        setRequests({
+      onSuccess: (data: PaginatedEntity<IOrganizationRequest>) => {
+        setOrganizationRequests({
           items: data.items,
           meta: { ...data.meta, orderByColumn: orderBy, orderDirection },
         });
@@ -70,7 +73,7 @@ export const useOrganizationRequest = (requestId: string) => {
     setOrganization,
   } = useStore();
   return useQuery(['request', requestId], () => getOrganizationRequestById(requestId), {
-    onSuccess: (data: IRequest) => {
+    onSuccess: (data: IOrganizationRequest) => {
       if (data.organization) {
         const {
           organizationGeneral,
@@ -109,13 +112,13 @@ export const useApplicationRequestsQuery = (
   search?: string,
   interval?: Date[],
 ) => {
-  const { setRequests } = useStore();
+  const { setApplicationRequests } = useStore();
   return useQuery(
     ['requests/applications', limit, page, orderBy, orderDirection, search, interval],
     () => getApplicationRequests(limit, page, orderBy, orderDirection, search, interval),
     {
-      onSuccess: (data: PaginatedEntity<IRequest>) => {
-        setRequests({
+      onSuccess: (data: PaginatedEntity<IApplicationRequest>) => {
+        setApplicationRequests({
           items: data.items,
           meta: { ...data.meta, orderByColumn: orderBy, orderDirection },
         });

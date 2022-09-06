@@ -15,7 +15,6 @@ import {
   ApplicationStatus,
 } from '../../../services/application/interfaces/Application.interface';
 import { useApplications } from '../../../store/selectors';
-import { IRequest } from '../../requests/interfaces/Request.interface';
 import { ApplicationStatusCollection } from '../constants/ApplicationStatus.constant';
 import { ApplicationTypeCollection, ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { ApplicationtListTableHeaders } from './ApplicationList.headers';
@@ -121,7 +120,7 @@ const ApplicationListTable = () => {
     );
   };
 
-  const onView = (data: IRequest) => {
+  const onView = (data: any) => {
     navigate(`/application/${data.id}`);
   };
 

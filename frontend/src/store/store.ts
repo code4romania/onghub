@@ -24,14 +24,18 @@ import {
 import { organizationSlice } from './organization/organization.slice';
 import { usersSlice } from './user/Users.slice';
 import { PaginatedEntity } from '../common/interfaces/paginated-entity.interface';
-import { IRequest } from '../pages/requests/interfaces/Request.interface';
-import { requestsSlice } from './request/Requests.slice';
+import {
+  IApplicationRequest,
+  IOrganizationRequest,
+} from '../pages/requests/interfaces/Request.interface';
+import { organizationRequestsSlice } from './request/OrganizationRequests';
 import { organizationsSlice } from './organization/organizations.slice';
 import {
   Application,
-  ApplicationResponse,
+  ApplicationWithOngStatusDetails,
 } from '../services/application/interfaces/Application.interface';
 import { applicationsSlice } from './application/Application.slice';
+import { applicationRequestsSlice } from './request/ApplicationRequests';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -74,21 +78,32 @@ interface UserState {
   setUsers: (users: PaginatedEntity<IUser>) => void;
 }
 
-interface RequestState {
-  requests: PaginatedEntity<IRequest>;
-  setRequests: (requests: PaginatedEntity<IRequest>) => void;
+interface OrganizationRequestState {
+  organizationRequests: PaginatedEntity<IOrganizationRequest>;
+  setOrganizationRequests: (organizationRequests: PaginatedEntity<IOrganizationRequest>) => void;
+}
+
+interface ApplicationRequestState {
+  applicationRequests: PaginatedEntity<IApplicationRequest>;
+  setApplicationRequests: (applicationRequests: PaginatedEntity<IApplicationRequest>) => void;
 }
 
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
   setApplications: (applications: PaginatedEntity<Application>) => void;
 
-  selectedApplication: ApplicationResponse | null;
-  setSelectedApplication: (application: ApplicationResponse) => void;
+  selectedApplication: ApplicationWithOngStatusDetails | null;
+  setSelectedApplication: (application: ApplicationWithOngStatusDetails) => void;
 }
 
 const useStore = create<
-  OrganizationState & NomenclatureState & UserState & ProfileState & RequestState & ApplicationState
+  OrganizationState &
+    NomenclatureState &
+    UserState &
+    ProfileState &
+    OrganizationRequestState &
+    ApplicationRequestState &
+    ApplicationState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -99,9 +114,10 @@ const useStore = create<
   ...nomenclatureSlice(set),
   ...profileSlice(set),
   ...usersSlice(set),
-  ...requestsSlice(set),
   ...organizationsSlice(set),
   ...applicationsSlice(set),
+  ...applicationRequestsSlice(set),
+  ...organizationRequestsSlice(set),
 }));
 
 export default useStore;

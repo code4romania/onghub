@@ -26,7 +26,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
 
-  const { applicationResponse } = useSelectedApplication();
+  const { selectedApplication: application } = useSelectedApplication();
 
   // Mutation
   const {
@@ -63,13 +63,13 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const type = watch('type');
 
   useEffect(() => {
-    if (applicationResponse?.application) {
+    if (application) {
       reset({
-        ...applicationResponse?.application,
-        steps: applicationResponse?.application.steps.map((step) => ({ step })),
+        ...application,
+        steps: application.steps.map((step) => ({ step })),
       });
     }
-  }, [applicationResponse?.application]);
+  }, [application]);
 
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
@@ -79,10 +79,10 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   };
 
   const handleEdit = async (data: any) => {
-    if (applicationResponse?.application) {
+    if (application) {
       const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
       const res = await updateApplication({
-        applicationId: applicationResponse?.application?.id?.toString(),
+        applicationId: application?.id?.toString(),
         applicationUpdatePayload: dto,
       });
       useSuccessToast('Aplicatie modificata cu succes!');
