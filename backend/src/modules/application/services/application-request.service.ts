@@ -15,6 +15,7 @@ import { ApplicationRequestRepository } from '../repositories/application-reques
 import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { APPLICATION_REQUEST_ERRORS } from '../constants/application-error.constants';
+import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 @Injectable()
 export class ApplicationRequestService {
@@ -28,7 +29,7 @@ export class ApplicationRequestService {
   public async create(
     organizationId: number,
     applicationId: number,
-  ): Promise<ApplicationRequest> {
+  ): Promise<{ success: boolean }> {
     // 1. check if application is active
     const application = await this.applicationRepository.get({
       where: { id: applicationId },
@@ -37,6 +38,12 @@ export class ApplicationRequestService {
     if (application.status !== ApplicationStatus.ACTIVE) {
       throw new BadRequestException({
         ...APPLICATION_REQUEST_ERRORS.CREATE.APPLICATION_STATUS,
+      });
+    }
+
+    if (application.type === ApplicationTypeEnum.INDEPENDENT) {
+      throw new BadRequestException({
+        ...APPLICATION_REQUEST_ERRORS.CREATE.APPLICATION_TYPE,
       });
     }
 
@@ -66,14 +73,36 @@ export class ApplicationRequestService {
       });
     }
 
-    // 4. create request app
-    await this.ongApplicationService.create(organizationId, applicationId);
-
-    // 5. create pending request
-    return this.applicationRequestRepository.save({
+    // 4. create request app - only for independent app the status is pending
+    await this.ongApplicationService.create(
       organizationId,
       applicationId,
-    });
+      application.type === ApplicationTypeEnum.STANDALONE
+        ? OngApplicationStatus.PENDING
+        : OngApplicationStatus.ACTIVE,
+    );
+
+    if (application.type === ApplicationTypeEnum.STANDALONE) {
+      try {
+        // 5. create pending request
+        await this.applicationRequestRepository.save({
+          organizationId,
+          applicationId,
+        });
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+        });
+        const err = error?.response;
+        throw new BadRequestException({
+          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+          error: err,
+        });
+      }
+    }
+
+    return { success: true };
   }
 
   public async findAll(

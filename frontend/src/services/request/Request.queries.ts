@@ -99,7 +99,6 @@ export const useOrganizationRequest = (requestId: string) => {
 };
 
 // Application
-
 export const useCreateApplicationRequestMutation = (onSuccess?: any, onError?: any) => {
   return useMutation((request: CreateApplicationRequestDTO) => createApplicationRequest(request), {
     onSuccess,

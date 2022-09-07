@@ -20,11 +20,13 @@ export class OngApplicationService {
   public async create(
     organizationId: number,
     applicationId: number,
+    status: OngApplicationStatus,
   ): Promise<OngApplication> {
     try {
       const ongApp = await this.ongApplicationRepository.save({
         organizationId,
         applicationId,
+        status,
       });
 
       return ongApp;

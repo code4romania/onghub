@@ -34,6 +34,10 @@ export const APPLICATION_REQUEST_ERRORS = {
       message: 'Application status must be active.',
       errorCode: 'APP_REQ_001',
     },
+    APPLICATION_TYPE: {
+      message: 'Cannot request an independent application.',
+      errorCode: 'APP_REQ_007',
+    },
     REQ_EXISTS: {
       message: 'There is already a pending request with the same data.',
       errorCode: 'APP_REQ_002',
@@ -41,6 +45,10 @@ export const APPLICATION_REQUEST_ERRORS = {
     APP_EXISTS: {
       message: 'The app is already asssigned to the organization.',
       errorCode: 'APP_REQ_003',
+    },
+    REQUEST: {
+      message: 'Error while creating the request.',
+      errorCode: 'APP_REQ_006',
     },
   },
   GET: {
