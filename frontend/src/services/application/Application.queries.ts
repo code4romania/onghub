@@ -8,6 +8,7 @@ import {
   createApplication,
   getApplicationById,
   getApplications,
+  getMyOngApplications,
   getOngApplicationById,
   getOngApplications,
   patchApplication,
@@ -58,20 +59,11 @@ export const useOngApplicationsQuery = () => {
   });
 };
 
-export const useApplicationQueryByRole = (applicationId: string, role: UserRole) => {
-  if (role === UserRole.SUPER_ADMIN) {
-    return useApplicationQuery(applicationId);
-  }
-
-  return useOngApplicationQuery(applicationId);
-};
-
-export const useOngApplicationQuery = (applicationId: string) => {
-  const { setSelectedOngApplication } = useStore();
-  return useQuery(['ongApplication', applicationId], () => getOngApplicationById(applicationId), {
-    enabled: !!applicationId,
-    onSuccess: (data: ApplicationWithOngStatusDetails) => {
-      setSelectedOngApplication(data);
+export const useMyOngApplicationsQuery = () => {
+  const { setOngApplications } = useStore();
+  return useQuery(['myOngApplications'], () => getMyOngApplications(), {
+    onSuccess: (data: ApplicationWithOngStatus) => {
+      setOngApplications(data);
     },
   });
 };

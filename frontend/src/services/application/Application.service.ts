@@ -44,6 +44,13 @@ export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationW
   return API.get(requestUrl).then((res) => res.data);
 };
 
+export const getMyOngApplications = async (): Promise<
+  PaginatedEntity<ApplicationWithOngStatus>
+> => {
+  const requestUrl = `/organization/application/profile`;
+  return API.get(requestUrl).then((res) => res.data);
+};
+
 export const getOngApplicationById = (
   applicationId: string,
 ): Promise<ApplicationWithOngStatusDetails> => {

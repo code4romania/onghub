@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import { Loading } from '../../../components/loading/Loading';
-import { useOngApplicationsQuery } from '../../../services/application/Application.queries';
+import {
+  useMyOngApplicationsQuery,
+  useOngApplicationsQuery,
+} from '../../../services/application/Application.queries';
 import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
 import { useOngApplications } from '../../../store/selectors';
 import ApplicationCard from '../../my-apps/components/ApplicationCard';
 
 const ApplicationListCards = ({ ong }: { ong?: boolean }) => {
-  const { isLoading, error } = useOngApplicationsQuery();
+  const { isLoading, error } = ong ? useMyOngApplicationsQuery() : useOngApplicationsQuery();
   const { ongApplications: applications } = useOngApplications();
 
   useEffect(() => {
