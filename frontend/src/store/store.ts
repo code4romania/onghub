@@ -32,10 +32,12 @@ import { organizationRequestsSlice } from './request/OrganizationRequests';
 import { organizationsSlice } from './organization/organizations.slice';
 import {
   Application,
+  ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../services/application/interfaces/Application.interface';
 import { applicationsSlice } from './application/Application.slice';
 import { applicationRequestsSlice } from './request/ApplicationRequests';
+import { ongApplicationSlice } from './application/OngApplication.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -88,12 +90,22 @@ interface ApplicationRequestState {
   setApplicationRequests: (applicationRequests: PaginatedEntity<IApplicationRequest>) => void;
 }
 
+// Super Admin
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
   setApplications: (applications: PaginatedEntity<Application>) => void;
 
-  selectedApplication: ApplicationWithOngStatusDetails | null;
-  setSelectedApplication: (application: ApplicationWithOngStatusDetails) => void;
+  selectedApplication: Application | null;
+  setSelectedApplication: (application: Application) => void;
+}
+
+// Admin
+interface OngApplicationState {
+  ongApplications: ApplicationWithOngStatus[];
+  setOngApplications: (applications: ApplicationWithOngStatus) => void;
+
+  selectedOngApplication: ApplicationWithOngStatusDetails | null;
+  setSelectedOngApplication: (application: ApplicationWithOngStatusDetails) => void;
 }
 
 const useStore = create<
@@ -103,7 +115,8 @@ const useStore = create<
     ProfileState &
     OrganizationRequestState &
     ApplicationRequestState &
-    ApplicationState
+    ApplicationState &
+    OngApplicationState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -116,6 +129,7 @@ const useStore = create<
   ...usersSlice(set),
   ...organizationsSlice(set),
   ...applicationsSlice(set),
+  ...ongApplicationSlice(set),
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
 }));

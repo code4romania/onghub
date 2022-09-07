@@ -8,7 +8,7 @@ export const ApplicationRequestsTableHeaders: TableColumn<IApplicationRequest>[]
     id: 'name',
     name: 'Aplicatie',
     grow: 3,
-    selector: (row: IApplicationRequest) => row.ongApplication?.application.name || '',
+    selector: (row: IApplicationRequest) => row.application?.name || '',
   },
   {
     id: 'ong',

@@ -38,10 +38,10 @@ import { RolesGuard } from './common/guards/roles.guard';
     // Business modules
     MailModule,
     SharedModule,
-    ApplicationModule,
     UserModule,
     AuthenticationModule,
     RequestsModule,
+    ApplicationModule,
     OrganizationModule,
   ],
   providers: [

@@ -11,12 +11,15 @@ import {
   CreateOrganizationRequestDTO,
 } from './interfaces/Request.dto';
 import {
+  abandonApplicationnRequest,
+  approveApplicationnRequest,
   approveOrganizationRequest,
   createApplicationRequest,
   createOrganizationRequest,
   getApplicationRequests,
   getOrganizationRequestById,
   getRequests,
+  rejectApplicationnRequest,
   rejectOrganizationRequest,
 } from './Request.service';
 
@@ -114,7 +117,7 @@ export const useApplicationRequestsQuery = (
 ) => {
   const { setApplicationRequests } = useStore();
   return useQuery(
-    ['requests/applications', limit, page, orderBy, orderDirection, search, interval],
+    ['applications/requests', limit, page, orderBy, orderDirection, search, interval],
     () => getApplicationRequests(limit, page, orderBy, orderDirection, search, interval),
     {
       onSuccess: (data: PaginatedEntity<IApplicationRequest>) => {
@@ -126,4 +129,16 @@ export const useApplicationRequestsQuery = (
       enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
+};
+
+export const useApproveApplicationRequestMutation = () => {
+  return useMutation((requestId: string) => approveApplicationnRequest(requestId));
+};
+
+export const useRejectApplicationRequestMutation = () => {
+  return useMutation((requestId: string) => rejectApplicationnRequest(requestId));
+};
+
+export const useAbandonApplicationRequestMutation = () => {
+  return useMutation((requestId: string) => abandonApplicationnRequest(requestId));
 };

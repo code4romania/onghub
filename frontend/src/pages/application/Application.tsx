@@ -5,7 +5,7 @@ import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
 import { useAuthContext } from '../../contexts/AuthContext';
-import { useApplication } from '../../services/application/Application.queries';
+import { useApplicationQueryByRole } from '../../services/application/Application.queries';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { APPLICATION_TABS } from './constants/ApplicationTabs';
 
@@ -16,7 +16,11 @@ const Application = () => {
   const { role } = useAuthContext();
   const params = useParams();
 
-  const { data: application, isLoading } = useApplication(params.id ? params?.id : '');
+  const {
+    data: application,
+    isLoading,
+    refetch: refecthApplication,
+  } = useApplicationQueryByRole(params.id ? params?.id : '', role ? role : UserRole.EMPLOYEE);
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_TABS.find(
@@ -81,7 +85,7 @@ const Application = () => {
           </nav>
         )}
       </div>
-      <Outlet />
+      <Outlet context={[application, refecthApplication]} />
     </ContentWrapper>
   );
 };

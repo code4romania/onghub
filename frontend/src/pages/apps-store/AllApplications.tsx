@@ -38,8 +38,8 @@ const AllApplications = () => {
         },
       }}
     >
-      <div className="pb-6 flex">
-        {role === UserRole.SUPER_ADMIN && (
+      {role === UserRole.SUPER_ADMIN && (
+        <div className="pb-6 flex">
           <nav
             className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
             aria-label="Tabs"
@@ -59,8 +59,8 @@ const AllApplications = () => {
               </a>
             ))}
           </nav>
-        )}
-      </div>
+        </div>
+      )}
       <Outlet />
     </ContentWrapper>
   );

@@ -1,17 +1,10 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
-import { IOrganization } from '../../../pages/organization/interfaces/Organization.interface';
 import { OngApplicationStatus } from '../../../pages/requests/interfaces/OngApplication.interface';
 
 export enum ApplicationStatus {
   ACTIVE = 'active',
   DISABLED = 'disabled',
-}
-
-export enum ApplicationPermission {
-  ACTIVE = 'active',
-  PENDING = 'pending',
-  RESTRICTED = 'restricted',
 }
 
 export interface Application extends BaseEntity {
@@ -33,6 +26,7 @@ export interface ApplicationWithOngStatus {
   name: string;
   logo: string;
   shortdescription: string;
+  loginlink: string;
   status: OngApplicationStatus;
 }
 
@@ -42,6 +36,5 @@ export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatu
   steps: string[];
   description: string;
   website: string;
-  loginlink: string;
   videolink: string;
 }

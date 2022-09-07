@@ -1,39 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { GlobeAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline';
 import logo from '../../../assets/images/logo.svg';
-import { useSelectedApplication } from '../../../store/selectors';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { UserRole } from '../../users/enums/UserRole.enum';
-import { ApplicationPermission } from '../../../services/application/interfaces/Application.interface';
 import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
 import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
-import { useCreateApplicationRequestMutation } from '../../../services/request/Request.queries';
+import {
+  useAbandonApplicationRequestMutation,
+  useCreateApplicationRequestMutation,
+} from '../../../services/request/Request.queries';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
+import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
+import { useOutletContext } from 'react-router-dom';
 
 const ApplicationDetails = () => {
   const [isConfirmationModalOpen, setConfirmaitonModalOpen] = useState(false);
-  const { selectedApplication: application } = useSelectedApplication();
+  const [application, refecthApplication] = useOutletContext<any>();
   const { role } = useAuthContext();
 
   // Mutation
-  const {
-    mutateAsync: mutateApplicationRequest,
-    error: createApplicationRequestError,
-    isLoading: createApplicationRequestLoading,
-  } = useCreateApplicationRequestMutation();
+  const { mutateAsync: mutateCreateApplicationRequest, error: createApplicationRequestError } =
+    useCreateApplicationRequestMutation();
+
+  const { mutateAsync: mutateAbandonApplicationRequest, error: abandonApplicationRequestError } =
+    useAbandonApplicationRequestMutation();
 
   useEffect(() => {
-    if (createApplicationRequestLoading) {
+    if (createApplicationRequestError || abandonApplicationRequestError) {
       useErrorToast('Solicitarea nu a putut fi trimisa');
     }
-  }, [createApplicationRequestLoading]);
+  }, [createApplicationRequestError, abandonApplicationRequestError]);
 
   // Actions
   const requestApplication = async () => {
     if (application) {
-      await mutateApplicationRequest({ applicationId: application?.id });
+      await mutateCreateApplicationRequest({ applicationId: application?.id });
       useSuccessToast('Solicitare trimisa cu success');
+      refecthApplication();
+    }
+  };
+
+  const abandonRequest = async () => {
+    if (application) {
+      await mutateAbandonApplicationRequest(application?.id);
+      useSuccessToast('Solicitare trimisa cu succes');
+      refecthApplication();
     }
   };
 
@@ -70,7 +82,7 @@ const ApplicationDetails = () => {
         {role === UserRole.ADMIN && (
           <div>
             {/* The application is not added */}
-            {!status && (
+            {!application?.status && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <button className="save-button pl-8 pr-8 flex gap-4" onClick={requestApplication}>
                   <PlusIcon className="h-5 w-5" />
@@ -79,14 +91,14 @@ const ApplicationDetails = () => {
               </div>
             )}
             {/* The application was restricted */}
-            {status === ApplicationPermission.RESTRICTED && (
+            {application?.status === OngApplicationStatus.RESTRICTED && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <p className="">Accesul la aplicatie a fost restrictionat.</p>
               </div>
             )}
             {/* The application is independent and active */}
             {application?.type === ApplicationTypeEnum.INDEPENDENT &&
-              status === ApplicationPermission.ACTIVE && (
+              application?.status === OngApplicationStatus.ACTIVE && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <p className="text-gray-700 font-titilliumBold">
                     Aplicația este adaugata automat la crearea contului ONG Hub si nu poate fi
@@ -96,7 +108,7 @@ const ApplicationDetails = () => {
               )}
             {/* The application is not independent and active */}
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              status === ApplicationPermission.ACTIVE && (
+              application?.status === OngApplicationStatus.ACTIVE && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
                     className="edit-button pl-8 pr-8 flex gap-4"
@@ -109,7 +121,7 @@ const ApplicationDetails = () => {
               )}
             {/* The application is not independent and pending */}
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              status === ApplicationPermission.PENDING && (
+              application?.status === OngApplicationStatus.PENDING && (
                 <div className="flex flex-col pt-4 gap-4 items-center justify-center">
                   <button className="save-button pl-8 pr-8 flex gap-4" disabled>
                     <PlusIcon className="h-5 w-5" />
@@ -124,7 +136,7 @@ const ApplicationDetails = () => {
       <div className="flex flex-col gap-4 w-full h-full">
         {role === UserRole.ADMIN && (
           <React.Fragment>
-            {status === ApplicationPermission.ACTIVE && (
+            {application?.status === OngApplicationStatus.ACTIVE && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <CheckCircleIcon className="text-green w-6 w-6" />
@@ -146,7 +158,7 @@ const ApplicationDetails = () => {
                 </div>
               </div>
             )}
-            {status === ApplicationPermission.PENDING && (
+            {application?.status === OngApplicationStatus.PENDING && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ClockIcon className="w-6 h-6  text-yellow-600" />
@@ -163,7 +175,7 @@ const ApplicationDetails = () => {
                     profilul tau de organizatie. Iti multumim!
                   </p>
                   <div>
-                    <button className="edit-button pl-8 pr-8 flex gap-4">
+                    <button className="edit-button pl-8 pr-8 flex gap-4" onClick={abandonRequest}>
                       <XIcon className="h-5 w-5" />
                       Anuleaza solicitare
                     </button>
@@ -171,7 +183,7 @@ const ApplicationDetails = () => {
                 </div>
               </div>
             )}
-            {status === ApplicationPermission.RESTRICTED && (
+            {application?.status === OngApplicationStatus.RESTRICTED && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />

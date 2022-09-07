@@ -3,3 +3,4 @@ export * from './nomenclature/nomenclature.selectors';
 export * from './user/User.selectors';
 export * from './request/OrganizationRequests.selectors';
 export * from './application/Application.selectors';
+export * from './application/OngApplication.selectors';
