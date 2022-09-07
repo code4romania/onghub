@@ -47,7 +47,20 @@
     },
     "inactive": "Ups! Contul tau este inactiv.",
     "no_access": "Lorem ipsum. Nu mai ai access in ONGHub. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
-    "back": "Inapoi la website"
+    "back": "Inapoi la website",
+    "config": {
+      "old": {
+        "required": "Parola veche este obligatorie.",
+        "invalid": "Parola veche nu are formatul valid.",
+        "label": "Parola curenta*"
+      },
+      "new": {
+        "required": "Parola noua este obligatorie",
+        "invalid": "Parola noua este invalida",
+        "label": "Parola noua*"
+      },
+      "match": "Confirma parola noua*"
+    }
   },
   "organization": {
     "error": "Organizatia nu s-a putut incarca",
@@ -560,6 +573,11 @@
   },
   "app": {
     "title": "Aplicatie",
+    "tabs": {
+      "description": "Descriere",
+      "list": "Lista ONG-uri",
+      "requests": "Solicitari"
+    },
     "details": {
       "website": "Vezi website",
       "how_to": "Cum poti folosi aplicatia pentru organizatia ta",
