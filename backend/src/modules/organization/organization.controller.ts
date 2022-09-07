@@ -33,13 +33,23 @@ import { Role } from '../user/enums/role.enum';
 import { OrganizationFilterDto } from './dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationView } from './entities/organization.view-entity';
+import { ExtractUser } from '../user/decorators/user.decorator';
+import { User } from '../user/entities/user.entity';
+import { ApplicationWithOngStatus } from '../application/interfaces/application-with-ong-status.interface';
+import { RestrictApplicationDto } from '../application/dto/restrict-application.dto';
+import { ApplicationService } from '../application/services/application.service';
+import { OngApplicationService } from '../application/services/ong-application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('organization')
 export class OrganizationController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private readonly applicationService: ApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
+  ) {}
 
   @ApiBody({ type: CreateOrganizationDto })
   @Post()
@@ -49,17 +59,62 @@ export class OrganizationController {
     return this.organizationService.create(createOrganizationDto);
   }
 
-  @ApiParam({ name: 'id', type: String })
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Organization> {
-    return this.organizationService.findWithRelations(+id);
-  }
-
   @Get('')
   findAll(
     @Query() filters: OrganizationFilterDto,
   ): Promise<Pagination<OrganizationView>> {
     return this.organizationService.findAll({ options: filters });
+  }
+
+  /**
+   * *****************************
+   * ******* ONG APPLICATION *****
+   * *****************************
+   */
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @Get('application')
+  findOrganizationApplications(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findAllForOng(user.organizationId);
+  }
+
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @Get('application/profile')
+  findOrganizationApplicationsForUser(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findAllForOngUser(user.organizationId);
+  }
+
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'id', type: Number })
+  @Delete('application/:id')
+  deleteOne(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<{ success: boolean }> {
+    return this.ongApplicationService.delete(id, user.organizationId);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: RestrictApplicationDto })
+  @Patch('application/:id/restrict')
+  restrict(
+    @Param('id') id: number,
+    @Body() restrictApplicationDto: RestrictApplicationDto,
+  ): Promise<{ success: boolean }> {
+    return this.ongApplicationService.restrict(
+      id,
+      restrictApplicationDto.organizationId,
+    );
+  }
+
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Organization> {
+    return this.organizationService.findWithRelations(+id);
   }
 
   @ApiBody({ type: UpdateOrganizationDto })
@@ -71,7 +126,11 @@ export class OrganizationController {
     return this.organizationService.update(+id, updateOrganizationDto);
   }
 
-  // @Public() -- NEEDED FOR CREATE FLOW
+  /**
+   * *******************
+   * *******UPLOADS*****
+   * ******************
+   */
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([

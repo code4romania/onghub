@@ -37,20 +37,6 @@ export class ApplicationService {
     });
   }
 
-  public async findOne(id: number): Promise<Application> {
-    const application = await this.applicationRepository.get({
-      where: { id },
-    });
-
-    if (!application) {
-      throw new NotFoundException({
-        ...APPLICATION_ERRORS.GET,
-      });
-    }
-
-    return application;
-  }
-
   public async findAll(
     options: ApplicationFilterDto,
   ): Promise<Pagination<Application>> {
@@ -111,7 +97,7 @@ export class ApplicationService {
       .execute();
   }
 
-  public async findOneForOng(
+  public async findOne(
     organizationId: number,
     applicationId: number,
   ): Promise<ApplicationWithOngStatusDetails> {
@@ -134,7 +120,7 @@ export class ApplicationService {
         'ong_application',
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
-        { organizationId },
+        { organizationId: organizationId },
       )
       .where('application.id = :applicationId', { applicationId })
       .getRawOne();

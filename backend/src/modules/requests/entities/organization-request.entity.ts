@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { Request } from './request.entity';
+import { Request } from '../../../common/base/request.entity';
 
 @Entity({ name: 'organization_request' })
 export class OrganizationRequest extends Request {

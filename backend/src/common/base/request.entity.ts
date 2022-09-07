@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Organization } from 'src/modules/organization/entities';
 import { Column, JoinColumn, OneToOne } from 'typeorm';
-import { RequestStatus } from '../enums/request-status.enum';
+import { RequestStatus } from '../../modules/requests/enums/request-status.enum';
 
 export abstract class Request extends BaseEntity {
   @Column({

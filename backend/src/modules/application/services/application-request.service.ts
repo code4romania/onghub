@@ -7,26 +7,21 @@ import {
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
-import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
-import { OrganizationService } from 'src/modules/organization/services';
-import { REQUEST_APP_ACCESS_FILTER_CONFIG } from '../constants/request-filters.config';
-import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
+import { REQUEST_ERRORS } from '../../requests/constants/requests-errors.constants';
 import { ApplicationRequestFilterDto } from '../dto/application-request-filters.dto';
 import { ApplicationRequest } from '../entities/application-request.entity';
-import { RequestStatus } from '../enums/request-status.enum';
-import { RequestType } from '../enums/request-type.enum';
+import { RequestStatus } from '../../requests/enums/request-status.enum';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
+import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
+import { ApplicationRepository } from '../repositories/application.repository';
 
 @Injectable()
 export class ApplicationRequestService {
   private readonly logger = new Logger(ApplicationRequestService.name);
-
   constructor(
     private readonly applicationRequestRepository: ApplicationRequestRepository,
-    private readonly organizationService: OrganizationService,
-    private readonly applicationService: ApplicationService,
+    private readonly applicationRepository: ApplicationRepository,
     private readonly ongApplicationService: OngApplicationService,
   ) {}
 
@@ -34,17 +29,10 @@ export class ApplicationRequestService {
     organizationId: number,
     applicationId: number,
   ): Promise<ApplicationRequest> {
-    // 1. check if organization is active
-    const organization = await this.organizationService.find(organizationId);
-
-    if (organization.status !== OrganizationStatus.ACTIVE) {
-      throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.ORGANIZATION_STATUS,
-      });
-    }
-
-    // 2. check if application is active
-    const application = await this.applicationService.findOne(applicationId);
+    // 1. check if application is active
+    const application = await this.applicationRepository.get({
+      where: { id: applicationId },
+    });
 
     if (application.status !== ApplicationStatus.ACTIVE) {
       throw new BadRequestException({
@@ -52,7 +40,7 @@ export class ApplicationRequestService {
       });
     }
 
-    // 3. check if there is aleady an pending request for
+    // 2. check if there is aleady an pending request for
     const request = await this.applicationRequestRepository.get({
       where: {
         organizationId,
@@ -67,7 +55,7 @@ export class ApplicationRequestService {
       });
     }
 
-    // 4. Check if the app is aleady assigned to the organization (either restricted or otherwise)
+    // 3. Check if the app is aleady assigned to the organization (either restricted or otherwise)
     const ongApp = await this.ongApplicationService.findOne({
       where: { organizationId, applicationId },
     });
@@ -78,10 +66,10 @@ export class ApplicationRequestService {
       });
     }
 
-    // 5. create request app
+    // 4. create request app
     await this.ongApplicationService.create(organizationId, applicationId);
 
-    // 6. create pending request
+    // 5. create pending request
     return this.applicationRequestRepository.save({
       organizationId,
       applicationId,
@@ -96,7 +84,7 @@ export class ApplicationRequestService {
     };
 
     return this.applicationRequestRepository.getManyPaginated(
-      REQUEST_APP_ACCESS_FILTER_CONFIG,
+      APPLICATION_REQUEST_FILTERS_CONFIG,
       paginationOptions,
     );
   }

@@ -1,6 +1,6 @@
 import { Application } from 'src/modules/application/entities/application.entity';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { Request } from './request.entity';
+import { Request } from '../../../common/base/request.entity';
 
 @Entity({ name: 'application_request' })
 export class ApplicationRequest extends Request {
