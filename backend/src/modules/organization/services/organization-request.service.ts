@@ -8,12 +8,12 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UserService } from 'src/modules/user/services/user.service';
-import { REQUEST_ERRORS } from '../../requests/constants/requests-errors.constants';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
-import { RequestStatus } from '../../../common/enums/request-status.enum';
+import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
 import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
+import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -71,7 +71,7 @@ export class OrganizationRequestService {
 
     if (!request) {
       throw new NotFoundException({
-        ...REQUEST_ERRORS.GET.NOT_FOUND,
+        ...ORGANIZATION_REQUEST_ERRORS.GET.NOT_FOUND,
       });
     }
 
@@ -86,7 +86,7 @@ export class OrganizationRequestService {
 
     if (foundProfile) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.USER_EXISTS,
+        ...ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
       });
     }
 
@@ -100,7 +100,7 @@ export class OrganizationRequestService {
 
     if (foundRequest) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+        ...ORGANIZATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
       });
     }
 
@@ -128,13 +128,13 @@ export class OrganizationRequestService {
 
     if (status !== RequestStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...ORGANIZATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 
     if (organization?.status !== OrganizationStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...ORGANIZATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 
@@ -160,7 +160,7 @@ export class OrganizationRequestService {
 
     if (found && found.status !== RequestStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...ORGANIZATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 

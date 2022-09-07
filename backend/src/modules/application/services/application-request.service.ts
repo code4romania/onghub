@@ -8,13 +8,13 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
-import { REQUEST_ERRORS } from '../../requests/constants/requests-errors.constants';
 import { ApplicationRequestFilterDto } from '../dto/application-request-filters.dto';
 import { ApplicationRequest } from '../entities/application-request.entity';
-import { RequestStatus } from '../../../common/enums/request-status.enum';
+import { RequestStatus } from '../../organization/enums/request-status.enum';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { ApplicationRepository } from '../repositories/application.repository';
+import { APPLICATION_REQUEST_ERRORS } from '../constants/application-error.constants';
 
 @Injectable()
 export class ApplicationRequestService {
@@ -36,7 +36,7 @@ export class ApplicationRequestService {
 
     if (application.status !== ApplicationStatus.ACTIVE) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.APPLICATION_STATUS,
+        ...APPLICATION_REQUEST_ERRORS.CREATE.APPLICATION_STATUS,
       });
     }
 
@@ -51,7 +51,7 @@ export class ApplicationRequestService {
 
     if (request) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.REQ_EXISTS,
+        ...APPLICATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
       });
     }
 
@@ -62,7 +62,7 @@ export class ApplicationRequestService {
 
     if (ongApp) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.CREATE.APP_EXISTS,
+        ...APPLICATION_REQUEST_ERRORS.CREATE.APP_EXISTS,
       });
     }
 
@@ -96,13 +96,13 @@ export class ApplicationRequestService {
 
     if (!request) {
       throw new NotFoundException({
-        ...REQUEST_ERRORS.GET.NOT_FOUND,
+        ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
       });
     }
 
     if (request.status !== RequestStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 
@@ -127,13 +127,13 @@ export class ApplicationRequestService {
 
     if (!request) {
       throw new NotFoundException({
-        ...REQUEST_ERRORS.GET.NOT_FOUND,
+        ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
       });
     }
 
     if (request.status !== RequestStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 
@@ -161,13 +161,13 @@ export class ApplicationRequestService {
 
     if (!request) {
       throw new NotFoundException({
-        ...REQUEST_ERRORS.GET.NOT_FOUND,
+        ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
       });
     }
 
     if (request.status !== RequestStatus.PENDING) {
       throw new BadRequestException({
-        ...REQUEST_ERRORS.UPDATE.NOT_PENDING,
+        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 
