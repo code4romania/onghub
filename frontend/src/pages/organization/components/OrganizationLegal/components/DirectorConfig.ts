@@ -3,24 +3,24 @@ import i18n from '../../../../../common/config/i18n';
 
 const translations = {
   name: {
-    required: i18n.t('legal:director_config.name_required'),
-    maxim: i18n.t('legal:director_config.name_maxim'),
-    minim: i18n.t('legal:director_config.name_minim'),
-    invalid: i18n.t('legal:director_config.name_invalid'),
-    name: i18n.t('legal:director_config.name'),
+    required: i18n.t('legal:director_config.name.required'),
+    maxim: i18n.t('legal:director_config.name.maxim'),
+    minim: i18n.t('legal:director_config.name.minim'),
+    invalid: i18n.t('legal:director_config.name.invalid'),
+    name: i18n.t('legal:director_config.name.label'),
   },
   email: {
-    required: i18n.t('legal:director_config.email_required'),
-    maxim: i18n.t('legal:director_config.email_maxim'),
-    invalid: i18n.t('legal:director_config.email_invalid'),
-    email: i18n.t('legal:director_config.email'),
+    required: i18n.t('legal:director_config.email.required'),
+    maxim: i18n.t('legal:director_config.email.maxim'),
+    invalid: i18n.t('legal:director_config.email.invalid'),
+    email: i18n.t('legal:director_config.email.label'),
   },
   phone: {
-    required: i18n.t('legal:director_config.phone_required'),
-    maxim: i18n.t('legal:director_config.phone_maxim'),
-    minim: i18n.t('legal:director_config.phone_minim'),
-    invalid: i18n.t('legal:director_config.phone_invalid'),
-    phone: i18n.t('legal:director_config.phone'),
+    required: i18n.t('legal:director_config.phone.required'),
+    maxim: i18n.t('legal:director_config.phone.maxim'),
+    minim: i18n.t('legal:director_config.phone.minim'),
+    invalid: i18n.t('legal:director_config.phone.invalid'),
+    phone: i18n.t('legal:director_config.phone.label'),
   },
 };
 

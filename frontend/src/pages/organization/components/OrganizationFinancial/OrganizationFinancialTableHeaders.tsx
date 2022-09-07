@@ -5,14 +5,26 @@ import { formatCurrency, formatDate } from '../../../../common/helpers/format.he
 import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
 import { FinancialType } from '../../enums/FinancialType.enum';
 import { CompletionStatus } from '../../enums/CompletionStatus.enum';
+import i18n from '../../../../common/config/i18n';
+
+const translations = {
+  report: i18n.t('financial:header.report'),
+  income: i18n.t('financial:header.income'),
+  expense: i18n.t('financial:header.expense'),
+  employees: i18n.t('financial:header.employees'),
+  year: i18n.t('common:year'),
+  updated: i18n.t('common:updatedOn'),
+  status: i18n.t('common:status'),
+  sum: i18n.t('financial:modal.sum'),
+};
 
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
   {
     id: 'reportName',
-    name: 'Raportare',
+    name: translations.report,
     cell: (row: IOrganizationFinancial) => (
       <span>
-        {row.type === FinancialType.INCOME ? 'Raportare Venituri' : 'Raportare Cheltuieli'}
+        {row.type === FinancialType.INCOME ? translations.income : translations.expense}
         {` ${row.year}`}
       </span>
     ),
@@ -20,35 +32,35 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'year',
-    name: 'An',
+    name: translations.year,
     selector: (row: IOrganizationFinancial) => row.year,
     sortable: true,
     grow: 0.5,
   },
   {
     id: 'numberOfEmployees',
-    name: 'Angajati',
+    name: translations.employees,
     selector: (row: IOrganizationFinancial) => row.numberOfEmployees,
     sortable: true,
     grow: 0.6,
   },
   {
     id: 'total',
-    name: 'Suma',
+    name: translations.sum,
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
     grow: 0.5,
   },
   {
     id: 'updatedOn',
-    name: 'Ultima actualizare',
+    name: translations.updated,
     selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn as string),
     sortable: true,
     grow: 1,
   },
   {
     id: 'status',
-    name: 'Status',
+    name: translations.status,
     cell: (row: IOrganizationFinancial) => (
       <StatusBadge
         status={

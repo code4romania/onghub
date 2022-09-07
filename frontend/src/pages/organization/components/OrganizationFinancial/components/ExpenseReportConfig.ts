@@ -1,4 +1,21 @@
 import { MAX_MONEY } from '../../../constants/values.constants';
+import i18n from '../../../../../common/config/i18n';
+
+const translations = {
+  minim: i18n.t('financial:common_config.minim'),
+  maxim: i18n.t('financial:common_config.maxim'),
+  net: i18n.t('financial:expense.net'),
+  cas: i18n.t('financial:expense.cas'),
+  economic: i18n.t('financial:expense.economic'),
+  administrative: i18n.t('financial:expense.administrative'),
+  transport: i18n.t('financial:expense.transport'),
+  catering: i18n.t('financial:expense.catering'),
+  production: i18n.t('financial:expense.production'),
+  software: i18n.t('financial:expense.software'),
+  advertising: i18n.t('financial:expense.advertising'),
+  taxes: i18n.t('financial:expense.taxes'),
+  expense: i18n.t('financial:expense.expense'),
+};
 
 export const ExpenseReportConfig: Record<string, any> = {
   netSalaries: {
@@ -6,16 +23,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Net Salaries cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Net Salaries has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Salarii nete (resurse umane)',
+      label: translations.net,
       placeholder: '1000 RON',
     },
   },
@@ -24,16 +41,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'CAS cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'CAS has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Contributii CAS (resurse umane)',
+      label: translations.cas,
       placeholder: '1000 RON',
     },
   },
@@ -42,16 +59,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Economic Activity Direct Expense cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Economic Activity Direct Expense has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Cheltuieli directe din activitatea aconomica',
+      label: translations.economic,
       placeholder: '1000 RON',
     },
   },
@@ -60,16 +77,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Administrative Expense cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Administrative Expense has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Cheltuieli administrative',
+      label: translations.administrative,
       placeholder: '1000 RON',
     },
   },
@@ -78,16 +95,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Transport and Accommodation cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Transport and Accommodation has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Transport si cazare',
+      label: translations.transport,
       placeholder: '1000 RON',
     },
   },
@@ -96,16 +113,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Catering cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Catering has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Catering',
+      label: translations.catering,
       placeholder: '1000 RON',
     },
   },
@@ -114,16 +131,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Production cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Production has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Productie',
+      label: translations.production,
       placeholder: '1000 RON',
     },
   },
@@ -132,16 +149,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Software Services cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Software Services has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Servicii Software',
+      label: translations.software,
       placeholder: '1000 RON',
     },
   },
@@ -150,16 +167,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Advertising cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Advertising has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Reclama si publicitate',
+      label: translations.advertising,
       placeholder: '1000 RON',
     },
   },
@@ -168,16 +185,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Other Taxes cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Other Taxes has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Alte taxe',
+      label: translations.taxes,
       placeholder: '1000 RON',
     },
   },
@@ -186,16 +203,16 @@ export const ExpenseReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Other Expense cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Other Expense has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Alte cheltuieli',
+      label: translations.expense,
       placeholder: '1000 RON',
     },
   },

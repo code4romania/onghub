@@ -89,14 +89,195 @@
       "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
     },
     "social": "Comunicare si social media",
-    "fundraising": "Strangere de fonduri"
+    "fundraising": "Strangere de fonduri",
+    "config": {
+      "url": "URL-ul are un format invalid",
+      "name": {
+        "required": "Numele organizatiei este obligatoriu",
+        "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Numele organizatiei poate sa aiba minim 3 caractere.",
+        "invalid": "Numele organizatiei are un format invalid.",
+        "label": "Denumirea organizatiei*",
+        "helper": "Denumirea oficiala conform cu Registrul ONG"
+      },
+      "alias": {
+        "required": "Aliasul organizatiei este obligatoriu",
+        "max": "Aliasul organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Aliasul organizatiei poate sa aiba minim 3 caractere.",
+        "invalid": "Aliasul organizatiei are un format invalid",
+        "label": "Alias organizatie*"
+      },
+      "type": {
+        "label": "Tip organizatie*",
+        "required": "Tipul organizatiei este obligatoriu",
+        "helper": "Lorem ipsum. Help text."
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul are un format invalid.",
+        "label": "E-mail contact organizatie*",
+        "helper": "Exemplu: contact@organizatie.ro"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "min": "Numarul de telefon poate sa aiba minim 10 caractere",
+        "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon contact organizatie",
+        "helper": "Exemplu: numarul telefonului de la sediu"
+      },
+      "year": {
+        "required": "Anul infintarii este obligatoriu.",
+        "max": "Anul infintarii poate sa aiba maxim 4 caractere",
+        "label": "Anul infintarii"
+      },
+      "cui": {
+        "required": "CUI-ul este obligatoriu",
+        "max": "CUI-ul poate sa aiba maxim 12 caractere",
+        "min": "CUI-ul poate sa aiba minim 2 caractere",
+        "invalid": "CUI-ul are un format invalid",
+        "label": "CUI/CIF*"
+      },
+      "raf": {
+        "required": "Numarul RAF este obligatoriu",
+        "max": "Numarul RAF poate sa aiba maxim 20 de caractere",
+        "min": "Numarul RAF poate sa aiba minim 8 caractere",
+        "invalid": "Numarul RAF are un format invalid",
+        "label": "Nr. Registrul Asociatiilor si Fundatiilor*"
+      },
+      "city": {
+        "required": "Orasul este obligatoriu",
+        "label": "Oras*"
+      },
+      "county": {
+        "required": "Judetul este obligatoriu",
+        "label": "Judet*"
+      },
+      "short": {
+        "required": "Descrierea scurta este obligatorie",
+        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
+        "label": "Descriere scurta organizatie*",
+        "helper": "Descrie organizatia ta in 50-250 de caractere. Descrierea va fi vizibila in alte aplciatii, dupa caz."
+      },
+      "long": {
+        "required": "Descrierea este obligatorie",
+        "max": "Descrierea poate sa aiba maxim 700 de caractere",
+        "min": "Descrierea poate sa aiba minim 200 de caractere",
+        "label": "Descriere extinsa organizatie*",
+        "helper": "Adauga o descriere cat mai cuprinzatoare a organizatiei tale. Maximum 700 de caractere."
+      },
+      "contact": {
+        "required": "Numele contactului este obligatoriu",
+        "max": "Numele contactului poate sa aiba maxim 100 de caractere",
+        "min": "Numele contactului poate sa aiba minim 5 caractere",
+        "invalid": "Numele contactului are un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "contact_email": {
+        "required": "Email-ul contactului este obligatoriu",
+        "max": "Email-ul contactului poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul contactului are un format invalid",
+        "label": "Email*"
+      },
+      "contact_phone": {
+        "required": "Numarul de telefon contactului este obligatoriu",
+        "max": "Numarul de telefon al contactului poate sa aiba maxim 15 caractere",
+        "min": "Numarul de telefon al contactului poate sa aiba minim 10 caractere",
+        "invalid": "Numarul de telefon al contactului are un format invalid",
+        "label": "Telefon*"
+      },
+      "website": {
+        "required": "Website-ul este obligatoriu",
+        "invalid": "Website-ul are un format invalid",
+        "label": "Website*"
+      },
+      "facebook": "Facebook este obligatoriu",
+      "donation": "Pagina de donatii",
+      "redirect": "Link catre contul de Redirectioneaza",
+      "sms": {
+        "length": "SMS-ul pentru donatii trebuie sa aiba 4 caractere",
+        "invalid": "SMS-ul pentru donatii are un format invalid",
+        "label": "Donatii prin SMS",
+        "helper": "Numarul la care se trimite SMS pentru a dona"
+      },
+      "keyword": {
+        "max": "Cuvantul cheie al SMS-ului poate sa aiba maxim 10 caractere",
+        "invalid": "Cuvantul cheie al SMS-ului are un format invalid",
+        "label": "Cuvant cheie SMS",
+        "helper": "Textul care se trimite prin SMS pentru a dona"
+      }
+    }
   },
   "activity": {
     "title": "Activitatea organizatiei",
     "domains": "Domenii si acoperire geografica",
     "fed_coal": "Federatii si coalitii",
     "branches": "Filiale si sucursale",
-    "other": "Alte informatii"
+    "other": "Alte informatii",
+    "config": {
+      "field": "Campul este obligatoriu.",
+      "domains": "Domenii de activitate*",
+      "domains_helper": "Minim 1 domeniu de activitate.",
+      "area": "Organizatia isi desfasoara activitatea pe plan:",
+      "area_helper": "Lorem ipsum. Alege din lista sau adauga valoare.",
+      "cities": "Localitati in care activeaza organizatia",
+      "cities_helper": "Cauta in lista",
+      "regions": "Regiuni in care activeaza organizatia*",
+      "regions_helper": "Lorem ipsum. Alege din lista sau adauga valoare.",
+      "federations": {
+        "part_of": "Organizatia apartine de una sau mai multe federatii?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Mentioneaza federatii*"
+      },
+      "coalitions": {
+        "part_of": "Organizatia apartine de una sau mai multe coalitii?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Mentioneaza coalitii*"
+      },
+      "international": {
+        "part_of": "Organizatia ta face parte dintr-o organizatie internationala?*",
+        "part_of_helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Numele organizatiei poate sa aiba mnim 3 caractere.",
+        "invalid": "Formatul este invalid.",
+        "label": "Denimurea organizatiei*",
+        "helper": "Denumirea oficiala conform cu registrul ONG."
+      },
+      "branches": {
+        "has_any": "Organizatia are filiale sau sucursale?*",
+        "has_any_helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Localitati in care organizatia are filiale sau sucursale*",
+        "helper": "Cauta in lista"
+      },
+      "social": {
+        "label": "Esti ONG acreditat pentru servicii sociale?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      },
+      "grants": {
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      },
+      "public": {
+        "label": "Esti declarat ONG de interes public?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      }
+    }
   },
   "legal": {
     "title": "Informatii Legale",
@@ -124,48 +305,64 @@
       "phone": "Telefon"
     },
     "legal_config": {
-      "name_required": "Numele reprezentantului legal este obligatoriu.",
-      "name_maxim": "Numele reprezentantului legal nu poate sa aiba mai mult de 100 de caractere.",
-      "name_minim": "Numele reprezentantului legal nu poate sa aiba mai putin de 5 caractere.",
-      "name_invalid": "Numele reprezentantului legal are un format invalid.",
-      "name": "Nume si prenume*",
-      "email_required": "Email-ul reprezentantului legal este obligatoriu.",
-      "email_maxim": "Email-ul reprezentantului legal nu poate sa aiba mai mult de 50 de caractere.",
-      "email_invalid": "Email-ul are un format incorect.",
-      "email": "Email*",
-      "phone_required": "Numarul de telefon al repzentantului legal este obligatoriu.",
-      "phone_maxim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai mult de 15 caractere.",
-      "phone_minim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai putin de 10 caractere.",
-      "phone_invalid": "Numarul de telefon are un format invalid.",
-      "phone": "Telefon"
+      "name": {
+        "required": "Numele reprezentantului legal este obligatoriu.",
+        "maxim": "Numele reprezentantului legal nu poate sa aiba mai mult de 100 de caractere.",
+        "minim": "Numele reprezentantului legal nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele reprezentantului legal are un format invalid.",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul reprezentantului legal este obligatoriu.",
+        "maxim": "Email-ul reprezentantului legal nu poate sa aiba mai mult de 50 de caractere.",
+        "invalid": "Email-ul are un format incorect.",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Numarul de telefon al repzentantului legal este obligatoriu.",
+        "maxim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai mult de 15 caractere.",
+        "minim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai putin de 10 caractere.",
+        "invalid": "Numarul de telefon are un format invalid.",
+        "label": "Telefon"
+      }
     },
     "director_config": {
-      "name_required": "Numele directorului este obligatoriu",
-      "name_maxim": "Numele directorului nu poate sa aiba mai mult de 100 de caractere",
-      "name_minim": "Numele directorului nu poate sa aiba mai putin de 5 caractere.",
-      "name_invalid": "Numele directorului nu are un format valid.",
-      "name": "Nume si prenume*",
-      "email_required": "Email-ul directorului este obligatoriu.",
-      "email_maxim": "Email-ul directorului nu poate sa aiba mai mult de 50 de caractere.",
-      "email_invalid": "Email-ul are un format incorect.",
-      "email": "Email*",
-      "phone_required": "Telefonul directorului este invalid.",
-      "phone_maxim": "Numarul de telefon al directorului nu poate sa aiba mai mult de 15 caractere.",
-      "phone_minim": "Numarul de telefon al directorului nu poate sa aiba mai putin de 10 caractere.",
-      "phone_invalid": "Numarul de telefon are un format invalid.",
-      "phone": "Telefon"
+      "name": {
+        "required": "Numele directorului este obligatoriu",
+        "maxim": "Numele directorului nu poate sa aiba mai mult de 100 de caractere",
+        "minim": "Numele directorului nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele directorului nu are un format valid.",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul directorului este obligatoriu.",
+        "maxim": "Email-ul directorului nu poate sa aiba mai mult de 50 de caractere.",
+        "invalid": "Email-ul are un format incorect.",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Telefonul directorului este invalid.",
+        "maxim": "Numarul de telefon al directorului nu poate sa aiba mai mult de 15 caractere.",
+        "minim": "Numarul de telefon al directorului nu poate sa aiba mai putin de 10 caractere.",
+        "invalid": "Numarul de telefon are un format invalid.",
+        "label": "Telefon"
+      }
     },
     "other_config": {
-      "other_required": "Numele este obligatoriu.",
-      "other_maxim": "Numele nu poate sa aiba mai mult de 100 de caractere.",
-      "other_minim": "Numele nu poate sa aiba mai putin de 5 caractere.",
-      "other_invalid": "Numele are un format invalid.",
-      "other": "Nume si prenume*",
-      "role_required": "Rolul este obligatoriu.",
-      "role_maxim": "Rolul nu poate sa aiba mai mult de 50 de caractere.",
-      "role_minim": "Rolul nu poate sa aiba mai putin de 3 caractere.",
-      "role_invalid": "Rolul are un format invalid.",
-      "role": "Rol*"
+      "name": {
+        "required": "Numele este obligatoriu.",
+        "maxim": "Numele nu poate sa aiba mai mult de 100 de caractere.",
+        "minim": "Numele nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele are un format invalid.",
+        "label": "Nume si prenume*"
+      },
+      "role": {
+        "required": "Rolul este obligatoriu.",
+        "maxim": "Rolul nu poate sa aiba mai mult de 50 de caractere.",
+        "minim": "Rolul nu poate sa aiba mai putin de 3 caractere.",
+        "invalid": "Rolul are un format invalid.",
+        "label": "Rol*"
+      }
     }
   },
   "financial": {
@@ -184,6 +381,38 @@
       "excess": "surplus",
       "income_report": "Raportare Venituri",
       "expense_report": "Raportare Cheltuieli"
+    },
+    "header": {
+      "report": "Raportare",
+      "income": "Raportare venituri",
+      "expense": "Raportare cheltuieli",
+      "employees": "Angajati"
+    },
+    "common_config": {
+      "minim": "Nu pot fi introduse valori negative.",
+      "maxim": "Nu pot fi introduse valori mai mari de 9 cifre."
+    },
+    "income": {
+      "membership": "Venituri din cotizatii",
+      "donations": "Venituri din donatii",
+      "percent": "Venituri 2%",
+      "sponsorship": "Venituri din sponsorizari",
+      "economic": "Venituri din activitatea economica",
+      "other": "Alte venituri",
+      "financial": "Venituri financiare"
+    },
+    "expense": {
+      "net": "Salarii nete (resurse umane)",
+      "cas": "Contributii CAS (resurse umane)",
+      "economic": "Cheltuieli directe din activitatea economica",
+      "administrative": "Cheltuieli administrative",
+      "transport": "Transport si cazare",
+      "catering": "Catering",
+      "production": "Productie",
+      "software": "Servicii software",
+      "advertising": "Reclame si publicitate",
+      "taxes": "Alte taxe",
+      "expense": "Alte cheltuieli"
     }
   },
   "open_data": {

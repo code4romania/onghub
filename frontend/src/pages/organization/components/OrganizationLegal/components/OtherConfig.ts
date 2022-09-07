@@ -2,19 +2,19 @@ import { NAME_REGEX } from '../../../../../common/helpers/format.helper';
 import i18n from '../../../../../common/config/i18n';
 
 const translations = {
-  other: {
-    required: i18n.t('legal:other_config.other_required'),
-    maxim: i18n.t('legal:other_config.other_maxim'),
-    minim: i18n.t('legal:other_config.other_minim'),
-    invalid: i18n.t('legal:other_config.other_invalid'),
-    other: i18n.t('legal:other_config.other'),
+  name: {
+    required: i18n.t('legal:other_config.name.required'),
+    maxim: i18n.t('legal:other_config.name.maxim'),
+    minim: i18n.t('legal:other_config.name.minim'),
+    invalid: i18n.t('legal:other_config.name.invalid'),
+    label: i18n.t('legal:other_config.name.label'),
   },
   role: {
-    required: i18n.t('legal:other_config.role_required'),
-    maxim: i18n.t('legal:other_config.role_maxim'),
-    minim: i18n.t('legal:other_config.role_minim'),
-    invalid: i18n.t('legal:other_config.role_invalid'),
-    role: i18n.t('legal:other_config.role'),
+    required: i18n.t('legal:other_config.role.required'),
+    maxim: i18n.t('legal:other_config.role.maxim'),
+    minim: i18n.t('legal:other_config.role.minim'),
+    invalid: i18n.t('legal:other_config.role.invalid'),
+    label: i18n.t('legal:other_config.role.label'),
   },
 };
 
@@ -24,24 +24,24 @@ export const OtherConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: translations.other.required,
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: translations.other.maxim,
+        message: translations.name.maxim,
       },
       minLength: {
         value: 5,
-        message: translations.other.minim,
+        message: translations.name.minim,
       },
       pattern: {
         value: NAME_REGEX,
-        message: translations.other.invalid,
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: translations.other.other,
+      label: translations.name.label,
       helperText: '',
       placeholder: 'John Doe',
     },
@@ -68,7 +68,7 @@ export const OtherConfig: Record<string, any> = {
     },
     config: {
       type: 'text',
-      label: translations.role.role,
+      label: translations.role.label,
       helperText: '',
       placeholder: 'Rol',
     },

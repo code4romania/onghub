@@ -1,7 +1,28 @@
 import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../common/helpers/format.helper';
 import i18n from '../../../../common/config/i18n';
 
-const translations = {};
+const translations = {
+  name: {
+    required: i18n.t('legal:legal_config.name.required'),
+    maxim: i18n.t('legal:legal_config.name.maxim'),
+    minim: i18n.t('legal:legal_config.name.minim'),
+    invalid: i18n.t('legal:legal_config.name.invalid'),
+    name: i18n.t('legal:legal_config.name.label'),
+  },
+  email: {
+    required: i18n.t('legal:legal_config.email.required'),
+    maxim: i18n.t('legal:legal_config.email.maxim'),
+    invalid: i18n.t('legal:legal_config.email.invalid'),
+    email: i18n.t('legal:legal_config.email.label'),
+  },
+  phone: {
+    required: i18n.t('legal:legal_config.phone.required'),
+    maxim: i18n.t('legal:legal_config.phone.required'),
+    minim: i18n.t('legal:legal_config.phone.minim'),
+    invalid: i18n.t('legal:legal_config.phone.invalid'),
+    phone: i18n.t('legal:legal_config.phone.label'),
+  },
+};
 
 export const OrganizationLegalConfig: Record<string, any> = {
   legal_reprezentative_name: {
@@ -9,24 +30,24 @@ export const OrganizationLegalConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Legal Representative name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Legal Representative name has a maximum length of 100 characters.',
+        message: translations.name.maxim,
       },
       minLength: {
         value: 5,
-        message: 'Legal Representative name has a minimum length of 5 characters.',
+        message: translations.name.minim,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Legal Representative name is invalid',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume*',
+      label: translations.name.name,
       helperText: '',
       placeholder: '',
     },
@@ -36,20 +57,20 @@ export const OrganizationLegalConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Legal Representative Email is required.',
+        message: translations.email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Legal Representative Email has a maximum length of 50 characters.',
+        message: translations.email.maxim,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Email*',
+      label: translations.email.email,
       helperText: '',
       placeholder: '',
     },
@@ -59,24 +80,24 @@ export const OrganizationLegalConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Legal Representative Phone is required.',
+        message: translations.phone.required,
       },
       maxLength: {
         value: 15,
-        message: 'Legal Representative phone has a maximum length of 15 characters.',
+        message: translations.phone.maxim,
       },
       minLength: {
         value: 10,
-        message: 'Legal Representative phone has a minimum length of 10 characters.',
+        message: translations.phone.minim,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon',
+      label: translations.phone.phone,
       helperText: '',
       placeholder: '',
     },
