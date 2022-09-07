@@ -54,7 +54,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     reValidateMode: 'onChange',
   });
 
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'steps',
   });
@@ -73,7 +73,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-    const res = await mutateApplication(dto);
+    await mutateApplication(dto);
     useSuccessToast('Aplicatie modificata cu succes!');
     navigate('/store');
   };
@@ -81,7 +81,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const handleEdit = async (data: any) => {
     if (application) {
       const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-      const res = await updateApplication({
+      await updateApplication({
         applicationId: application?.id?.toString(),
         applicationUpdatePayload: dto,
       });

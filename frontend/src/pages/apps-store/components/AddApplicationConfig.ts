@@ -112,6 +112,10 @@ export const AddAppConfig: Record<string, any> = {
   website: {
     key: 'website',
     rules: {
+      required: {
+        value: true,
+        message: 'Website is required.',
+      },
       pattern: {
         value: URL_REGEX,
         message: 'URL format must be valid',
@@ -144,6 +148,10 @@ export const AddAppConfig: Record<string, any> = {
   videoLink: {
     key: 'videoLink',
     rules: {
+      required: {
+        value: true,
+        message: 'Vide link is required.',
+      },
       pattern: {
         value: URL_REGEX,
         message: 'URL format must be valid',
