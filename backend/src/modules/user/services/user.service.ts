@@ -37,7 +37,6 @@ export class UserService {
   public async createAdmin(createUserDto: CreateUserDto) {
     return this.create({
       ...createUserDto,
-      status: UserStatus.PENDING,
       role: Role.ADMIN,
     });
   }
@@ -118,7 +117,7 @@ export class UserService {
   ): Promise<Pagination<User>> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
-      status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
+      status: [UserStatus.ACTIVE, UserStatus.RESTRICTED],
       ...options,
     };
 
@@ -214,32 +213,6 @@ export class UserService {
     return { updated, failed };
   }
 
-  async activateAdmin(user: User): Promise<User> {
-    try {
-      const { name, email, phone } = user;
-
-      // 1. create user in cognito and send invite
-      const cognitoId = await this.cognitoService.createUser({
-        name,
-        email,
-        phone,
-      });
-
-      // 2. Update the user with the correct status and cognito id
-      const userWithCognitoId = await this.userRepository.updateOne({
-        ...user,
-        status: UserStatus.ACTIVE,
-        cognitoId,
-      });
-      return userWithCognitoId;
-    } catch (error: any) {
-      throw new InternalServerErrorException({
-        ...USER_ERRORS.CREATE,
-        error,
-      });
-    }
-  }
-
   // ****************************************************
   // ***************** PRIVATE METHODS ******************
   // ****************************************************
@@ -262,18 +235,12 @@ export class UserService {
       await this.organizationService.findWithRelations(
         createUserDto.organizationId,
       );
-
-      let cognitoId = null;
-      // User should be pending for new organization not sending the invite imediately
-      if (createUserDto.status !== UserStatus.PENDING) {
-        // 3. Create user in Cognito
-        cognitoId = await this.cognitoService.createUser(createUserDto);
-      }
-
+      // 3. Create user in Cognito
+      const cognitoId = await this.cognitoService.createUser(createUserDto);
       // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
-        status: createUserDto.status || UserStatus.ACTIVE,
+        status: UserStatus.ACTIVE,
         cognitoId,
       });
       return user;

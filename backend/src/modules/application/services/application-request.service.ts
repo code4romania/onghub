@@ -11,7 +11,7 @@ import { OngApplicationService } from 'src/modules/application/services/ong-appl
 import { REQUEST_ERRORS } from '../../requests/constants/requests-errors.constants';
 import { ApplicationRequestFilterDto } from '../dto/application-request-filters.dto';
 import { ApplicationRequest } from '../entities/application-request.entity';
-import { RequestStatus } from '../../requests/enums/request-status.enum';
+import { RequestStatus } from '../../../common/enums/request-status.enum';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { ApplicationRepository } from '../repositories/application.repository';

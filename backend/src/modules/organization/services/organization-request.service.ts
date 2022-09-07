@@ -8,13 +8,12 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UserService } from 'src/modules/user/services/user.service';
-import { REQUEST_FILTER_CONFIG } from '../constants/request-filters.config';
-import { REQUEST_ERRORS } from '../constants/requests-errors.constants';
+import { REQUEST_ERRORS } from '../../requests/constants/requests-errors.constants';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
-import { RequestStatus } from '../enums/request-status.enum';
-import { RequestType } from '../enums/request-type.enum';
+import { RequestStatus } from '../../../common/enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
+import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -29,12 +28,11 @@ export class OrganizationRequestService {
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
       ...options,
-      type: RequestType.CREATE_ORGANIZATION,
       status: RequestStatus.PENDING,
     };
 
     return this.organizationRequestRepository.getManyPaginated(
-      REQUEST_FILTER_CONFIG,
+      ORGANIZATION_REQUEST_FILTER_CONFIG,
       paginationOptions,
     );
   }

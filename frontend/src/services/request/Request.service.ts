@@ -17,7 +17,7 @@ import { Request } from './interfaces/Request.interface';
 export const createOrganizationRequest = (
   createRequestDTO: CreateOrganizationRequestDTO,
 ): Promise<Request> => {
-  return API.post(`/requests/organization`, createRequestDTO).then(
+  return API.post(`/organization/request`, createRequestDTO).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
@@ -30,7 +30,7 @@ export const getRequests = async (
   search?: string,
   interval?: Date[],
 ): Promise<PaginatedEntity<IOrganizationRequest>> => {
-  let requestUrl = `/requests?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+  let requestUrl = `/organization/request?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
 
@@ -43,15 +43,15 @@ export const getRequests = async (
 };
 
 export const approveOrganizationRequest = (requestId: string) => {
-  return API.patch(`/requests/organization/${requestId}/approve`);
+  return API.patch(`/organization/request/${requestId}/approve`);
 };
 
 export const rejectOrganizationRequest = (requestId: string) => {
-  return API.patch(`/requests/organization/${requestId}/reject`);
+  return API.patch(`/organization/request/${requestId}/reject`);
 };
 
 export const getOrganizationRequestById = (requestId: string): Promise<Request> => {
-  return API.get(`/requests/organization/${requestId}`).then((res) => res.data);
+  return API.get(`/organization/request/${requestId}`).then((res) => res.data);
 };
 
 // Application

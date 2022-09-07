@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,7 +12,7 @@ import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
-    OrganizationModule,
+    forwardRef(() => OrganizationModule),
     LoggerModule.forRoot(),
   ],
   controllers: [ProfileController, AdminUserController],

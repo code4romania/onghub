@@ -18,8 +18,8 @@ import {
   ApiBearerAuth,
   ApiTooManyRequestsResponse,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
-import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from './entities';
 import { OrganizationService } from './services/organization.service';
@@ -39,6 +39,11 @@ import { ApplicationWithOngStatus } from '../application/interfaces/application-
 import { RestrictApplicationDto } from '../application/dto/restrict-application.dto';
 import { ApplicationService } from '../application/services/application.service';
 import { OngApplicationService } from '../application/services/ong-application.service';
+import { OrganizationRequestService } from './services/organization-request.service';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { OrganizationRequest } from './entities/organization-request.entity';
+import { Public } from 'src/common/decorators/public.decorator';
+import { CreateOrganizationRequestDto } from './dto/create-organization-request.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,21 +54,58 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly applicationService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
+    private readonly organizationRequestService: OrganizationRequestService,
   ) {}
-
-  @ApiBody({ type: CreateOrganizationDto })
-  @Post()
-  create(
-    @Body() createOrganizationDto: CreateOrganizationDto,
-  ): Promise<Organization> {
-    return this.organizationService.create(createOrganizationDto);
-  }
 
   @Get('')
   findAll(
     @Query() filters: OrganizationFilterDto,
   ): Promise<Pagination<OrganizationView>> {
     return this.organizationService.findAll({ options: filters });
+  }
+
+  /**
+   * *****************************
+   * ******* ONG REQUEST *****
+   * *****************************
+   */
+  @Roles(Role.SUPER_ADMIN)
+  @ApiQuery({ type: () => BaseFilterDto })
+  @Get('request')
+  async getOrganizationRequests(
+    @Query() filters: BaseFilterDto,
+  ): Promise<Pagination<OrganizationRequest>> {
+    return this.organizationRequestService.findAll(filters);
+  }
+
+  @Public()
+  @ApiBody({ type: CreateOrganizationRequestDto })
+  @Post('request')
+  create(@Body() createRequestDto: CreateOrganizationRequestDto): Promise<any> {
+    return this.organizationRequestService.create(createRequestDto);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get('request/:id')
+  findOneOrganizationRequest(
+    @Param('id') id: string,
+  ): Promise<OrganizationRequest> {
+    return this.organizationRequestService.findOne(+id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch('request/:id/approve')
+  approve(@Param('id') id: number): Promise<any> {
+    return this.organizationRequestService.approve(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch('request/:id/reject')
+  reject(@Param('id') id: number): Promise<any> {
+    return this.organizationRequestService.reject(id);
   }
 
   /**

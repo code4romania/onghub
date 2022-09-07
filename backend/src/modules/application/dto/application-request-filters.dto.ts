@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional } from 'class-validator';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { ApplicationTypeEnum } from 'src/modules/application/enums/ApplicationType.enum';
-import { RequestStatus } from '../../requests/enums/request-status.enum';
+import { RequestStatus } from '../../../common/enums/request-status.enum';
 
 export class ApplicationRequestFilterDto extends BaseFilterDto {
   @IsOptional()
