@@ -86,6 +86,31 @@ export class ApplicationService {
       .execute();
   }
 
+  public async findAllForOngUser(
+    organizationId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'application.id as id',
+        'application.logo as logo',
+        'application.name as name',
+        'application.short_description as shortdescription',
+        'application.login_link as loginlink',
+        'ongApp.status as status',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .execute();
+  }
+
   public async findOneForOng(
     organizationId: number,
     applicationId: number,

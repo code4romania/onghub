@@ -14,7 +14,6 @@ import {
   ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
-import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
@@ -41,6 +40,14 @@ export class OrganizationApplicationController {
   @Get('application')
   findAll(@ExtractUser() user: User): Promise<ApplicationWithOngStatus[]> {
     return this.applicationService.findAllForOng(user.organizationId);
+  }
+
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @Get('application/profile')
+  findAllForUser(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findAllForOngUser(user.organizationId);
   }
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
