@@ -63,16 +63,16 @@ export const createApplicationRequest = (
   );
 };
 
+export const abandonApplicationnRequest = (applicationId: string) => {
+  return API.delete(`/application/${applicationId}/request`);
+};
+
 export const approveApplicationnRequest = (requestId: string) => {
   return API.patch(`/application/request/${requestId}/approve`);
 };
 
 export const rejectApplicationnRequest = (requestId: string) => {
   return API.patch(`/application/request/${requestId}/reject`);
-};
-
-export const abandonApplicationnRequest = (requestId: string) => {
-  return API.patch(`/application/request/${requestId}/abandon`);
 };
 
 export const getApplicationRequestById = (requestId: string) => {

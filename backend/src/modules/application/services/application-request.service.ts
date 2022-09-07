@@ -185,18 +185,12 @@ export class ApplicationRequestService {
     organizationId: number,
   ): Promise<{ success: boolean }> {
     const request = await this.applicationRequestRepository.get({
-      where: { applicationId, organizationId },
+      where: { applicationId, organizationId, status: RequestStatus.PENDING },
     });
 
     if (!request) {
       throw new NotFoundException({
         ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
-      });
-    }
-
-    if (request.status !== RequestStatus.PENDING) {
-      throw new BadRequestException({
-        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
       });
     }
 

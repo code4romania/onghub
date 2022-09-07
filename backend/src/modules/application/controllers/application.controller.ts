@@ -113,16 +113,6 @@ export class ApplicationController {
     return this.applicationRequestService.reject(id);
   }
 
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Patch('request/:id/abandon')
-  abandonRequest(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<{ success: boolean }> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
-  }
-
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
@@ -131,6 +121,16 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
+  }
+
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id/request')
+  abandonRequest(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<{ success: boolean }> {
+    return this.applicationRequestService.abandon(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
