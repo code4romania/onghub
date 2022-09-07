@@ -3,6 +3,7 @@ import { ApplicationWithOngStatus } from '../../../services/application/interfac
 import logo from '../../../assets/images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
+import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
 
 const ApplicationCard = ({ application }: { application: ApplicationWithOngStatus }) => {
   const navigate = useNavigate();
@@ -25,14 +26,15 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         <img src={application.logo || logo} className="h-full w-full pt-10 pb-10"></img>
       </div>
       <div className="flex flex-col gap-4 w-full">
-        <p className="font-titilliumBold text-xl">Date ONG</p>
+        <p className="font-titilliumBold text-xl">{application.name}</p>
         <p className="break-word Application__Card__Description"> {application.shortdescription}</p>
       </div>
       <div className="flex gap-4 justify-center w-full">
         <button className="edit-button w-full flex justify-center" onClick={onMore}>
           <p className="text-center">Mai mult</p>
         </button>
-        {application.status === OngApplicationStatus.ACTIVE && (
+        {(application.status === OngApplicationStatus.ACTIVE ||
+          application.type === ApplicationTypeEnum.INDEPENDENT) && (
           <button className="save-button w-full flex justify-center" onClick={onOpen}>
             <p className="text-center">Deschide</p>
           </button>

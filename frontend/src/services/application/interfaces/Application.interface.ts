@@ -28,11 +28,11 @@ export interface ApplicationWithOngStatus {
   shortdescription: string;
   loginlink: string;
   status: OngApplicationStatus;
+  type: ApplicationTypeEnum;
 }
 
 // Full details
 export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatus {
-  type: ApplicationTypeEnum;
   steps: string[];
   description: string;
   website: string;

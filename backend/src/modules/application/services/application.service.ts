@@ -62,6 +62,7 @@ export class ApplicationService {
         'application.short_description as shortdescription',
         'application.login_link as loginlink',
         'ongApp.status as status',
+        'application.type as type',
       ])
       .leftJoin(
         'ong_application',
@@ -84,6 +85,7 @@ export class ApplicationService {
         'application.short_description as shortdescription',
         'application.login_link as loginlink',
         'ongApp.status as status',
+        'application.type as type',
       ])
       .leftJoin(
         'ong_application',
