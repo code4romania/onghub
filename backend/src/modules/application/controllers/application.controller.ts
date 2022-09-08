@@ -78,7 +78,6 @@ export class ApplicationController {
   async getApplicationRequests(
     @Query() filters: ApplicationRequestFilterDto,
   ): Promise<Pagination<ApplicationRequest>> {
-    console.log('herre');
     return this.applicationRequestService.findAll(filters);
   }
 

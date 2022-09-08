@@ -89,6 +89,8 @@ export class ApplicationRequestService {
           organizationId,
           applicationId,
         });
+
+        return { success: true };
       } catch (error) {
         this.logger.error({
           error: { error },
@@ -101,8 +103,6 @@ export class ApplicationRequestService {
         });
       }
     }
-
-    return { success: true };
   }
 
   public async findAll(
@@ -110,6 +110,7 @@ export class ApplicationRequestService {
   ): Promise<Pagination<ApplicationRequest>> {
     const paginationOptions = {
       ...options,
+      status: RequestStatus.PENDING,
     };
 
     return this.applicationRequestRepository.getManyPaginated(
@@ -141,10 +142,7 @@ export class ApplicationRequestService {
       OngApplicationStatus.ACTIVE,
     );
 
-    await this.applicationRequestRepository.update(
-      { id: requestId },
-      { status: RequestStatus.APPROVED },
-    );
+    await this.update(requestId, RequestStatus.APPROVED);
 
     return { success: true };
   }
@@ -166,16 +164,12 @@ export class ApplicationRequestService {
       });
     }
 
-    await this.ongApplicationService.update(
-      request.organizationId,
+    await this.ongApplicationService.delete(
       request.applicationId,
-      OngApplicationStatus.RESTRICTED,
+      request.organizationId,
     );
 
-    await this.applicationRequestRepository.update(
-      { id: requestId },
-      { status: RequestStatus.DECLINED },
-    );
+    await this.update(requestId, RequestStatus.DECLINED);
 
     return { success: true };
   }
@@ -199,8 +193,46 @@ export class ApplicationRequestService {
       organizationId,
     );
 
-    await this.applicationRequestRepository.remove({ id: request.id });
+    this.delete(request.id);
 
     return { success: true };
+  }
+
+  private async update(
+    requestId: number,
+    status: RequestStatus,
+  ): Promise<void> {
+    try {
+      await this.applicationRequestRepository.update(
+        { id: requestId },
+        { status },
+      );
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_REQUEST_ERRORS.UPDATE.REQUEST,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_REQUEST_ERRORS.UPDATE.REQUEST,
+        error: err,
+      });
+    }
+  }
+
+  private async delete(requestId: number): Promise<void> {
+    try {
+      await this.applicationRequestRepository.remove({ id: requestId });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_REQUEST_ERRORS.DELETE,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_REQUEST_ERRORS.DELETE,
+        error: err,
+      });
+    }
   }
 }
