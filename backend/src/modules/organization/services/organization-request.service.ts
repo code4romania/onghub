@@ -162,10 +162,13 @@ export class OrganizationRequestService {
       });
     }
 
-    // 2. Decline the request.
+    // 2. Delete pending organization
+    await this.organizationService.delete(found.organizationId);
+
+    // 3. Decline the request.
     await this.update(requestId, RequestStatus.DECLINED);
 
-    // TODO: 2. Send rejection by email
+    // TODO: 4. Send rejection by email
 
     return this.find(requestId);
   }
