@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Organization } from 'src/modules/organization/entities';
-import { Column, JoinColumn, OneToOne } from 'typeorm';
+import { Column, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { RequestStatus } from '../../modules/organization/enums/request-status.enum';
 
 export abstract class Request extends BaseEntity {
@@ -15,7 +15,7 @@ export abstract class Request extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'organization_id' })
   organizationId: number;
 
-  @OneToOne((type) => Organization)
+  @ManyToOne((type) => Organization)
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;
 }
