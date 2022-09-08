@@ -36,7 +36,7 @@ export const APPLICATION_REQUEST_FILTERS_CONFIG = {
     status: true,
     createdOn: true,
   },
-  searchableColumns: [],
+  searchableColumns: ['application.name'],
   defaultSortBy: 'createdOn',
   defaultOrderDirection: OrderDirection.ASC,
   relations: {

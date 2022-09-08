@@ -28,14 +28,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   const { selectedApplication: application } = useSelectedApplication();
 
-  // Mutation
+  // Create Mutation
   const {
     mutateAsync: mutateApplication,
     error: createApplicationError,
     isLoading: createApplicationLoading,
   } = useCreateApplicationMutation();
 
-  // Mutation
+  // Edit Mutation
   const {
     mutateAsync: updateApplication,
     error: updateApplicationError,
@@ -104,11 +104,11 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   useEffect(() => {
     if (createApplicationError) {
-      useErrorToast(createApplicationError as string);
+      useErrorToast((createApplicationError as any)?.response?.data.message);
     }
 
     if (updateApplicationError) {
-      useErrorToast(createApplicationError as string);
+      useErrorToast((createApplicationError as any)?.response?.data.message);
     }
   }, [createApplicationError, updateApplicationError]);
 

@@ -16,8 +16,11 @@ import {
   useRejectApplicationRequestMutation,
 } from '../../../services/request/Request.queries';
 import { useApplicationRequests } from '../../../store/request/ApplicationRequests.selectors';
-import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../../requests/constants/Request.modals';
 import { IApplicationRequest } from '../../requests/interfaces/Request.interface';
+import {
+  APPROVE_APPLICATION_MODAL_CONFIG,
+  REJECT_APPLICATION_MODAL_CONFIG,
+} from './ApplicationRequestModals';
 import { ApplicationRequestsTableHeaders } from './ApplicationRequests.headers';
 
 const ApplicationRequests = () => {
@@ -201,14 +204,14 @@ const ApplicationRequests = () => {
       </div>
       {isApproveModalOpen && selectedRow && (
         <ConfirmationModal
-          {...APPROVE_MODAL_CONFIG}
+          {...APPROVE_APPLICATION_MODAL_CONFIG}
           onClose={() => setApproveModalOpen(false)}
           onConfirm={() => onApprove(selectedRow)}
         />
       )}
       {isRejectModalOpen && selectedRow && (
         <ConfirmationModal
-          {...REJECT_MODAL_CONFIG}
+          {...REJECT_APPLICATION_MODAL_CONFIG}
           onClose={() => setRejectModalOpen(false)}
           onConfirm={() => onReject(selectedRow)}
         />

@@ -81,7 +81,7 @@ export const AddAppConfig: Record<string, any> = {
     },
     config: {
       type: 'text',
-      label: 'Descriere scurta',
+      label: 'Descriere scurta*',
       helperText: 'Maximum 250 de caractere',
       placeholder: '',
     },
@@ -136,6 +136,10 @@ export const AddAppConfig: Record<string, any> = {
         value: URL_REGEX,
         message: 'URL format must be valid',
       },
+      required: {
+        value: true,
+        message: 'Login lik is required.',
+      },
     },
     config: {
       type: 'text',
@@ -160,7 +164,8 @@ export const AddAppConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Link video prezentare*',
-      helperText: '',
+      helperText:
+        'URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)',
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
@@ -171,10 +176,6 @@ export const AddAppConfig: Record<string, any> = {
       required: {
         value: true,
         message: 'Step is required.',
-      },
-      pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: 'Format must be valid',
       },
     },
     config: {

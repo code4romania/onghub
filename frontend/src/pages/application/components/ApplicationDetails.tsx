@@ -82,11 +82,13 @@ const ApplicationDetails = () => {
         {role === UserRole.ADMIN && (
           <div>
             {/* The application is not added */}
-            {!application?.status && (
+            {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <button className="save-button pl-8 pr-8 flex gap-4" onClick={requestApplication}>
                   <PlusIcon className="h-5 w-5" />
-                  Solicita aplicatia
+                  {application.type === ApplicationTypeEnum.SIMPLE
+                    ? 'Adauga aplicatie'
+                    : 'Solicita aplicatia'}
                 </button>
               </div>
             )}
@@ -97,15 +99,14 @@ const ApplicationDetails = () => {
               </div>
             )}
             {/* The application is independent and active */}
-            {application?.type === ApplicationTypeEnum.INDEPENDENT &&
-              application?.status === OngApplicationStatus.ACTIVE && (
-                <div className="flex pt-4 gap-4 items-center justify-center">
-                  <p className="text-gray-700 font-titilliumBold">
-                    Aplicația este adaugata automat la crearea contului ONG Hub si nu poate fi
-                    dezactivata.
-                  </p>
-                </div>
-              )}
+            {application?.type === ApplicationTypeEnum.INDEPENDENT && (
+              <div className="flex pt-4 gap-4 items-center justify-center">
+                <p className="text-gray-700 font-titilliumBold">
+                  Aplicația este adaugata automat la crearea contului ONG Hub si nu poate fi
+                  dezactivata.
+                </p>
+              </div>
+            )}
             {/* The application is not independent and active */}
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
               application?.status === OngApplicationStatus.ACTIVE && (
@@ -136,28 +137,31 @@ const ApplicationDetails = () => {
       <div className="flex flex-col gap-4 w-full h-full">
         {role === UserRole.ADMIN && (
           <React.Fragment>
-            {application?.status === OngApplicationStatus.ACTIVE && (
-              <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 px-10 flex gap-2 items-center">
-                  <CheckCircleIcon className="text-green w-6 w-6" />
-                  <span className="font-titilliumBold text-xl text-gray-800">
-                    Aplicația este activă pentru organizația ta.
-                  </span>
-                </div>
-                <div className="w-full border-t border-gray-300" />
-                <div className="p-8 flex flex-col gap-4">
-                  <p className="break-all">
-                    Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile
-                    ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru
-                    detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact
-                    mentionat in profilul tau de organizatie. Iti multumim!
-                  </p>
-                  <div>
-                    <button className="save-button pl-8 pr-8 flex gap-4">Deschide aplicatia</button>
+            {application?.status === OngApplicationStatus.ACTIVE ||
+              (application?.type === ApplicationTypeEnum.INDEPENDENT && (
+                <div className="w-full h-full bg-white shadow rounded-lg">
+                  <div className="py-5 px-10 flex gap-2 items-center">
+                    <CheckCircleIcon className="text-green w-6 w-6" />
+                    <span className="font-titilliumBold text-xl text-gray-800">
+                      Aplicația este activă pentru organizația ta.
+                    </span>
+                  </div>
+                  <div className="w-full border-t border-gray-300" />
+                  <div className="p-8 flex flex-col gap-4">
+                    <p className="break-all">
+                      Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile
+                      ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru
+                      detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact
+                      mentionat in profilul tau de organizatie. Iti multumim!
+                    </p>
+                    <div>
+                      <button className="save-button pl-8 pr-8 flex gap-4">
+                        Deschide aplicatia
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              ))}
             {application?.status === OngApplicationStatus.PENDING && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
