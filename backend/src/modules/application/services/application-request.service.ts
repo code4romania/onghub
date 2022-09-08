@@ -193,7 +193,7 @@ export class ApplicationRequestService {
       organizationId,
     );
 
-    this.delete(request.id);
+    await this.delete(request.id);
 
     return { success: true };
   }
