@@ -7,6 +7,7 @@ export interface ApplicationWithOngStatus {
   logo: string;
   shortdescription: string;
   loginlink: string;
+  website: string;
   status: OngApplicationStatus;
   type: ApplicationTypeEnum;
 }
@@ -15,7 +16,6 @@ export interface ApplicationWithOngStatusDetails
   extends ApplicationWithOngStatus {
   steps: string[];
   description: string;
-  website: string;
   loginlink: string;
   videolink: string;
 }

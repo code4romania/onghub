@@ -17,6 +17,7 @@ import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
+import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -55,15 +56,7 @@ export class ApplicationService {
   ): Promise<ApplicationWithOngStatus[]> {
     return this.applicationRepository
       .getQueryBuilder()
-      .select([
-        'application.id as id',
-        'application.logo as logo',
-        'application.name as name',
-        'application.short_description as shortdescription',
-        'application.login_link as loginlink',
-        'ongApp.status as status',
-        'application.type as type',
-      ])
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
         'ong_application',
         'ongApp',
@@ -78,15 +71,7 @@ export class ApplicationService {
   ): Promise<ApplicationWithOngStatus[]> {
     return this.applicationRepository
       .getQueryBuilder()
-      .select([
-        'application.id as id',
-        'application.logo as logo',
-        'application.name as name',
-        'application.short_description as shortdescription',
-        'application.login_link as loginlink',
-        'ongApp.status as status',
-        'application.type as type',
-      ])
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
         'ong_application',
         'ongApp',
