@@ -47,11 +47,6 @@ export const AddAppConfig: Record<string, any> = {
         value: ApplicationTypeEnum.INDEPENDENT,
       },
       {
-        label: ApplicationTypeNaming[ApplicationTypeEnum.DATA_PULLING],
-        name: 'type',
-        value: ApplicationTypeEnum.DATA_PULLING,
-      },
-      {
         label: ApplicationTypeNaming[ApplicationTypeEnum.SIMPLE],
         name: 'type',
         value: ApplicationTypeEnum.SIMPLE,

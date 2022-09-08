@@ -33,7 +33,7 @@ const Application = () => {
 
   const onTabClick = (tab: IPageTab) => {
     setSelectedTab(tab.id);
-    navigate(tab.href);
+    navigate(tab.href, { replace: true });
   };
 
   const onApplicationEdit = () => {
@@ -44,12 +44,17 @@ const Application = () => {
     return <Loading />;
   }
 
+  const naivgateBack = () => {
+    // TEMPORARY - needs changes
+    navigate(-2);
+  };
+
   return (
     <ContentWrapper
       title={application?.name || ''}
       backButton={{
         btnLabel: 'Inapoi',
-        onBtnClick: () => navigate(-2),
+        onBtnClick: naivgateBack,
       }}
       editButton={{
         btnLabel: 'Editeaza',
@@ -58,14 +63,14 @@ const Application = () => {
       }}
       deleteButton={{
         btnLabel: 'Sterge',
-        onBtnClick: () => navigate(-2),
+        onBtnClick: () => alert('not implemented'),
         visible: role === UserRole.SUPER_ADMIN,
       }}
     >
       <div className="pb-6 flex">
         {role === UserRole.SUPER_ADMIN && (
           <nav
-            className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
+            className="flex flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
             aria-label="Tabs"
           >
             {APPLICATION_TABS.map((tab) => (

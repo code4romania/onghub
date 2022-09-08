@@ -4,6 +4,7 @@ import logo from '../../../assets/images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
 import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
+import { openInNewTab } from '../../../common/helpers/format.helper';
 
 const ApplicationCard = ({ application }: { application: ApplicationWithOngStatus }) => {
   const navigate = useNavigate();
@@ -15,8 +16,10 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
 
   const onOpen = (e: any) => {
     e.preventDefault();
-    if (application.loginlink) {
-      window.location.href = application.loginlink;
+    if (application.type === ApplicationTypeEnum.INDEPENDENT && application.website) {
+      openInNewTab(application.website);
+    } else if (application.loginlink) {
+      openInNewTab(application.loginlink);
     }
   };
 

@@ -149,7 +149,7 @@ const ApplicationRequests = () => {
         refetch();
       },
       onSettled: () => {
-        setApproveModalOpen(false);
+        setRejectModalOpen(false);
       },
     });
   };
