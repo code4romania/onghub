@@ -91,10 +91,10 @@ export const getApplicationRequests = async (
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
 
-  // if (interval && interval.length === 2)
-  //   requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
-  //     interval[1],
-  //   )}`;
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
 
   return API.get(requestUrl).then((res) => res.data);
 };

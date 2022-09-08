@@ -157,7 +157,7 @@ const ApplicationListTable = () => {
                 collection: ApplicationTypeCollection,
                 displayedAttribute: 'label',
               }}
-              selected={status}
+              selected={type}
               onChange={onTypeChange}
             />
           </div>
