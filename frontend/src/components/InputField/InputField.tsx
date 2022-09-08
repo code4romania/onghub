@@ -2,6 +2,7 @@ import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
+import { noScroll } from '../../common/helpers/scroll.helper';
 
 const InputField = (props: {
   config: Partial<InputFieldConfig>;
@@ -26,6 +27,7 @@ const InputField = (props: {
             onChange={props.config.onChange}
             onBlur={props.config.onBlur}
             className={classNames(
+              noScroll,
               props.config.error
                 ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
                 : 'focus:ring-indigo-500 focus:border-indigo-500',
