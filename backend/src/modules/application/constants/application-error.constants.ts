@@ -62,5 +62,13 @@ export const APPLICATION_REQUEST_ERRORS = {
       message: 'Could not update a Request with other status than pending.',
       errorCode: 'APP_REQ_005',
     },
+    REQUEST: {
+      message: 'Error while updateing the request.',
+      errorCode: 'APP_REQ_008',
+    },
+  },
+  DELETE: {
+    message: 'Error while deleting application request.',
+    errorCode: 'APP_REQ_009',
   },
 };
