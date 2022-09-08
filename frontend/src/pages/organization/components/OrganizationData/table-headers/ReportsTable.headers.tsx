@@ -17,6 +17,8 @@ const translations = {
   update: i18n.t('common:updatedOn'),
   not_available: i18n.t('open_data:report.not_available'),
   report: i18n.t('open_data:report.report'),
+  completed: i18n.t('common:completion_status.completed'),
+  incompleted: i18n.t('common:completion_status.incompleted'),
 };
 
 export const ReportsTableHeaders: TableColumn<Report>[] = [
@@ -69,7 +71,11 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
         status={
           row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
         }
-        value={row.status === CompletionStatus.COMPLETED ? 'completed' : 'notCompleted'}
+        value={
+          row.status === CompletionStatus.COMPLETED
+            ? translations.completed
+            : translations.incompleted
+        }
       />
     ),
     sortable: true,

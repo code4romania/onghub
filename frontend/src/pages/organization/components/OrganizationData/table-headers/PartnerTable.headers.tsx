@@ -13,6 +13,8 @@ const translations = {
   title: i18n.t('open_data:partners.title'),
   status: i18n.t('common:status'),
   update: i18n.t('common:updatedOn'),
+  completed: i18n.t('common:completion_status.completed'),
+  incompleted: i18n.t('common:completion_status.incompleted'),
 };
 
 export const PartnerTableHeaders: TableColumn<Partner>[] = [
@@ -44,7 +46,11 @@ export const PartnerTableHeaders: TableColumn<Partner>[] = [
         status={
           row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
         }
-        value={row.status === CompletionStatus.COMPLETED ? 'completed' : 'notCompleted'}
+        value={
+          row.status === CompletionStatus.COMPLETED
+            ? translations.completed
+            : translations.incompleted
+        }
       />
     ),
     sortable: true,

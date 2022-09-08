@@ -1,3 +1,12 @@
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  independent: i18n.t('appstore:type.independent'),
+  data: i18n.t('appstore:type.data'),
+  simple: i18n.t('appstore:type.simple'),
+  standalone: i18n.t('appstore:type.standalone'),
+};
+
 export enum ApplicationTypeEnum {
   INDEPENDENT = 'independent',
   DATA_PULLING = 'data_pulling',
@@ -6,10 +15,10 @@ export enum ApplicationTypeEnum {
 }
 
 export const ApplicationTypeNaming = {
-  [ApplicationTypeEnum.INDEPENDENT]: 'Website independent',
-  [ApplicationTypeEnum.DATA_PULLING]: 'Colecteaza date din ONGHub',
-  [ApplicationTypeEnum.SIMPLE]: 'Necesita login simplu',
-  [ApplicationTypeEnum.STANDALONE]: 'Necesita login cu configurare',
+  [ApplicationTypeEnum.INDEPENDENT]: translations.independent,
+  [ApplicationTypeEnum.DATA_PULLING]: translations.data,
+  [ApplicationTypeEnum.SIMPLE]: translations.simple,
+  [ApplicationTypeEnum.STANDALONE]: translations.standalone,
 };
 
 export const ApplicationTypeCollection = [

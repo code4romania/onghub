@@ -86,9 +86,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                             aria-hidden="true"
                           />
                           <div className="ml-2.5">
-                            <label className="text-gray-900 text-xm font-normal">
-                              id={item.name}
-                            </label>
+                            <label className="text-gray-900 text-xm font-normal">{item.name}</label>
                           </div>
                         </a>
                       )}
@@ -106,7 +104,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                           />
                           <div className="ml-2.5">
                             <label htmlFor="upload" className="text-gray-900 text-xm font-normal">
-                              id={item.name}
+                              {item.name}
                             </label>
                           </div>
                         </a>
@@ -134,7 +132,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                                   'text-xm font-normal',
                                 )}
                               >
-                                id={item.name}
+                                {item.name}
                               </label>
                             </div>
                           </a>

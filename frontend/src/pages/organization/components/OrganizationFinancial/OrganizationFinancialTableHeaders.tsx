@@ -16,6 +16,8 @@ const translations = {
   updated: i18n.t('common:updatedOn'),
   status: i18n.t('common:status'),
   sum: i18n.t('financial:modal.sum'),
+  completed: i18n.t('common:completion_status.completed'),
+  incompleted: i18n.t('common:completion_status.incompleted'),
 };
 
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
@@ -66,7 +68,11 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
         status={
           row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
         }
-        value={row.status === CompletionStatus.COMPLETED ? 'completed' : 'notCompleted'}
+        value={
+          row.status === CompletionStatus.COMPLETED
+            ? translations.completed
+            : translations.incompleted
+        }
       />
     ),
     sortable: true,

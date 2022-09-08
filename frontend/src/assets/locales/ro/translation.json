@@ -17,7 +17,14 @@
     "wrong": "Ceva nu a functionat cum trebuie",
     "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "next": "Mai departe",
-    "send": "Trimite"
+    "send": "Trimite",
+    "url": "URL-ul are un format invalid",
+    "processing": "Se proceseaza...",
+    "loading": "Se incarca...",
+    "completion_status": {
+      "completed": "Completat",
+      "incompleted": "Necompletat"
+    }
   },
   "menu": {
     "informations": "Informatii",
@@ -88,6 +95,28 @@
     "filters": {
       "incomplete": "Incomplet",
       "updated": "Actualizat"
+    },
+    "create_config": {
+      "name": {
+        "required": "Numele si prenumele sunt obligatorii",
+        "max": "Numele si prenumele nu pot avea mai mult de 100 de caractere",
+        "min": "Numele si prenumele nu pot avea mai putin de 3 caractere",
+        "invalid": "Numele si prenumele au un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "min": "Numarul de telefon nu poate sa aiba mai putin de 10 caractere",
+        "max": "Numarul de telefon nu poate sa aiba mai mult de 15 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon*"
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul nu poate sa aiba mai mult de 50 de caractere",
+        "invalid": "Email-ul are un format invalid",
+        "label": "E-mail"
+      }
     }
   },
   "general": {
@@ -104,7 +133,6 @@
     "social": "Comunicare si social media",
     "fundraising": "Strangere de fonduri",
     "config": {
-      "url": "URL-ul are un format invalid",
       "name": {
         "required": "Numele organizatiei este obligatoriu",
         "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
@@ -486,7 +514,7 @@
     "add": "Adauga Utilizator",
     "tabs": {
       "users": "Utilizatori",
-      "invites": "Invitatii"
+      "invites": "Invitatii trimise"
     },
     "create": {
       "success": "Utilizator create cu succes",
@@ -518,6 +546,44 @@
     },
     "create_org": {
       "title": "Persoana de contact in relatia cu ONGHub"
+    },
+    "filters": {
+      "active": "Activ",
+      "pending": "In asteptare",
+      "restricted": "Restrictionat"
+    },
+    "list_header": {
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "status": "Acces general",
+      "created": "Data adaugarii"
+    },
+    "status": {
+      "active": "Activ",
+      "restricted": "Restrictionat"
+    },
+    "config": {
+      "name": {
+        "required": "Numele este obligatoriu",
+        "max": "Numele poate sa aiba maxim 100 de caractere",
+        "min": "Numele poate sa aiba minim 5 caractere",
+        "invalid": "Numele are un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul are un format invalid",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
+        "min": "Numarul de telefon poate sa aiba minim 10 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon"
+      }
     }
   },
   "organizations": {
@@ -569,6 +635,63 @@
       "steps_descr": "Lorem ipsum",
       "step_add": "Adauga mai multi pasi",
       "step_delete": "Sterge pas"
+    },
+    "type": {
+      "independent": "Website independent",
+      "data": "Colecteaza date din ONGHub",
+      "simple": "Necesita login simplu",
+      "standalone": "Necesita login cu configurare"
+    },
+    "status": {
+      "active": "Activ",
+      "disabled": "Inactiv"
+    },
+    "header": {
+      "name": "Aplicatie",
+      "type": "Tip aplicatie",
+      "status": "Status"
+    },
+    "config": {
+      "name": {
+        "required": "Numele aplicatiei este obligatoriu",
+        "max": "Numele aplicatiei nu poate sa aiba mai mult de 100 de caractere",
+        "min": "Numele aplciatiei nu poate sa aiba mai putin de 3 caractere",
+        "invalid": "Numele aplicatiei are un format invalid",
+        "label": "Denumirea aplicatiei*",
+        "helper": "Alege o denumire de maxim 100 de caractere"
+      },
+      "type": {
+        "label": "Tipul aplicatiei*",
+        "required": "Tipul aplicatiei este obligatoriu"
+      },
+      "short": {
+        "required": "Descrierea scurta este obligatorie",
+        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
+        "label": "Descriere scurta",
+        "helper": "Maximum 250 de caractere"
+      },
+      "description": {
+        "required": "Descrierea este obligatorie",
+        "max": "Descrierea poate sa aiba maxim 700 de caractere",
+        "min": "Descrierea poate sa aiba minim 200 de caractere",
+        "label": "Descriere extinsa aplicatie*",
+        "helper": "Maximum 700 de caractere"
+      },
+      "website": {
+        "label": "Link catre website prezentare aplicatie*"
+      },
+      "login_link": {
+        "label": "Link login automat*"
+      },
+      "video_link": {
+        "label": "Link video prezentare*"
+      },
+      "step": {
+        "required": "Pasul este obligatoriu",
+        "invalid": "Pasul are un format invalid",
+        "label": "Pas"
+      }
     }
   },
   "app": {
@@ -585,5 +708,10 @@
       "description": "Descriere",
       "video": "Video prezentare"
     }
+  },
+  "header": {
+    "enter": "Intra in cont",
+    "my_account": "Contul meu",
+    "log_out": "Log out"
   }
 }
