@@ -176,12 +176,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                     );
                   }}
                 />
-                <RadioGroup
-                  control={control}
-                  readonly={readonly}
-                  errors={errors[AddAppConfig.type.key]}
-                  config={AddAppConfig.type}
-                />
+                {!edit && (
+                  <RadioGroup
+                    control={control}
+                    readonly={readonly}
+                    errors={errors[AddAppConfig.type.key]}
+                    config={AddAppConfig.type}
+                  />
+                )}
                 <Controller
                   key={AddAppConfig.shortDescription.key}
                   name={AddAppConfig.shortDescription.key}

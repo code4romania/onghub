@@ -79,7 +79,7 @@ const ApplicationListTable = () => {
         onClick: onView,
       },
       {
-        name: 'Restrictioneaza aplicatie',
+        name: 'Dezactiveaza temporar',
         icon: ShieldCheckIcon,
         onClick: () => alert('not implemented'),
         type: PopoverMenuRowType.REMOVE,

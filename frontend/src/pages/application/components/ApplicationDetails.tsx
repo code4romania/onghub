@@ -13,6 +13,7 @@ import {
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
 import { useOutletContext } from 'react-router-dom';
+import { openInNewTab } from '../../../common/helpers/format.helper';
 
 const ApplicationDetails = () => {
   const [isConfirmationModalOpen, setConfirmaitonModalOpen] = useState(false);
@@ -49,6 +50,15 @@ const ApplicationDetails = () => {
     }
   };
 
+  const onOpen = (e: any) => {
+    e.preventDefault();
+    if (application.type === ApplicationTypeEnum.INDEPENDENT && application.website) {
+      openInNewTab(application.website);
+    } else if (application.loginlink) {
+      openInNewTab(application.loginlink);
+    }
+  };
+
   return (
     <div className="flex gap-4 mr-1 mb-1 relative">
       <div className="flex flex-col rounded-lg bg-white shadow w-96 p-8 divide-y divide-gray-200 h-full">
@@ -60,7 +70,7 @@ const ApplicationDetails = () => {
             <p
               className="hover:text-blue-800 hover:cursor-pointer"
               onClick={() => {
-                window.location.href = application?.website || '';
+                openInNewTab(application.website);
               }}
             >
               Vezi website
@@ -137,31 +147,31 @@ const ApplicationDetails = () => {
       <div className="flex flex-col gap-4 w-full h-full">
         {role === UserRole.ADMIN && (
           <React.Fragment>
-            {application?.status === OngApplicationStatus.ACTIVE ||
-              (application?.type === ApplicationTypeEnum.INDEPENDENT && (
-                <div className="w-full h-full bg-white shadow rounded-lg">
-                  <div className="py-5 px-10 flex gap-2 items-center">
-                    <CheckCircleIcon className="text-green w-6 w-6" />
-                    <span className="font-titilliumBold text-xl text-gray-800">
-                      Aplicația este activă pentru organizația ta.
-                    </span>
-                  </div>
-                  <div className="w-full border-t border-gray-300" />
-                  <div className="p-8 flex flex-col gap-4">
-                    <p className="break-all">
-                      Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile
-                      ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru
-                      detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact
-                      mentionat in profilul tau de organizatie. Iti multumim!
-                    </p>
-                    <div>
-                      <button className="save-button pl-8 pr-8 flex gap-4">
-                        Deschide aplicatia
-                      </button>
-                    </div>
+            {(application?.status === OngApplicationStatus.ACTIVE ||
+              application?.type === ApplicationTypeEnum.INDEPENDENT) && (
+              <div className="w-full h-full bg-white shadow rounded-lg">
+                <div className="py-5 px-10 flex gap-2 items-center">
+                  <CheckCircleIcon className="text-green w-6 w-6" />
+                  <span className="font-titilliumBold text-xl text-gray-800">
+                    Aplicația este activă pentru organizația ta.
+                  </span>
+                </div>
+                <div className="w-full border-t border-gray-300" />
+                <div className="p-8 flex flex-col gap-4">
+                  <p className="break-all">
+                    Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile
+                    ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru
+                    detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact
+                    mentionat in profilul tau de organizatie. Iti multumim!
+                  </p>
+                  <div>
+                    <button className="save-button pl-8 pr-8 flex gap-4" onClick={onOpen}>
+                      Deschide aplicatia
+                    </button>
                   </div>
                 </div>
-              ))}
+              </div>
+            )}
             {application?.status === OngApplicationStatus.PENDING && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">

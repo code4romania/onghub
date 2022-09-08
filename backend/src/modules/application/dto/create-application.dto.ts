@@ -13,7 +13,7 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 export class CreateApplicationDto {
   @IsString()
   @IsNotEmpty()
-  @Matches(REGEX.NAME)
+  @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 100)
   name: string;
 

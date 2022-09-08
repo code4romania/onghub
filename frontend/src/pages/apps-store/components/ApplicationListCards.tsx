@@ -19,10 +19,6 @@ const ApplicationListCards = ({ ong }: { ong?: boolean }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    console.log(applications);
-  }, [applications]);
-
   if (isLoading) {
     return <Loading />;
   }
