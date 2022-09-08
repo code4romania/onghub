@@ -55,6 +55,12 @@ export const ORGANIZATION_ERRORS = {
     message: 'Organization is already ACTIVE',
     errorCode: 'ORG_013',
   },
+  DELETE: {
+    NOT_PENDING: {
+      message: 'Can only delete pending organizations',
+      errorCode: 'ORG_014',
+    },
+  },
 };
 
 export const PARTNER_ERRORS = {
@@ -86,6 +92,10 @@ export const ORGANIZATION_REQUEST_ERRORS = {
     NOT_PENDING: {
       message: 'Could not update a Request with other status than pending.',
       errorCode: 'REQ_003',
+    },
+    REQUEST: {
+      message: 'Could not update request.',
+      errorCode: 'REQ_005',
     },
   },
   GET: {

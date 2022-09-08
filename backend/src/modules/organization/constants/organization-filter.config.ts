@@ -20,25 +20,16 @@ export const ORGANIZATION_FILTERS_CONFIG = {
 export const ORGANIZATION_REQUEST_FILTER_CONFIG = {
   selectColumns: {
     id: true,
-    organization: {
-      id: true,
-      organizationGeneral: {
-        name: true,
-      },
-    },
+    organizationName: true,
     email: true,
     phone: true,
     name: true,
     createdOn: true,
     status: true,
   },
-  searchableColumns: ['organization.organizationGeneral.name', 'name'],
+  searchableColumns: ['organizationName', 'name'],
   defaultSortBy: 'createdOn',
   defaultOrderDirection: OrderDirection.ASC,
-  relations: {
-    organization: {
-      organizationGeneral: true,
-    },
-  },
+  relations: {},
   rangeColumn: 'createdOn',
 };

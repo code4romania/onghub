@@ -10,10 +10,10 @@ import { IOrganizationRequest } from '../interfaces/Request.interface';
 
 export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   {
-    id: 'organization',
+    id: 'organizationName',
     name: 'Organizatie',
-    sortable: false,
-    selector: (row: IOrganizationRequest) => row.organization.organizationGeneral?.name,
+    sortable: true,
+    selector: (row: IOrganizationRequest) => row.organizationName,
     grow: 3,
   },
   {

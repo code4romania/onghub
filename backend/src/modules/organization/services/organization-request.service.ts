@@ -113,6 +113,7 @@ export class OrganizationRequestService {
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
         phone: createReqDto.admin.phone,
+        organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
       });
     } catch (error) {
@@ -143,10 +144,7 @@ export class OrganizationRequestService {
     // 3. Create the ADMIN user
     await this.userService.createAdmin({ email, phone, name, organizationId });
     // 4. Update the request status
-    await this.organizationRequestRepository.update(
-      { id: requestId },
-      { status: RequestStatus.APPROVED },
-    );
+    await this.update(requestId, RequestStatus.APPROVED);
     // TODO 5. Send email with approval
 
     return this.find(requestId);
@@ -165,10 +163,7 @@ export class OrganizationRequestService {
     }
 
     // 2. Decline the request.
-    await this.organizationRequestRepository.update(
-      { id: requestId },
-      { status: RequestStatus.DECLINED },
-    );
+    await this.update(requestId, RequestStatus.DECLINED);
 
     // TODO: 2. Send rejection by email
 
@@ -180,5 +175,27 @@ export class OrganizationRequestService {
       where: { id },
       relations: ['organization'],
     });
+  }
+
+  private async update(
+    requestId: number,
+    status: RequestStatus,
+  ): Promise<void> {
+    try {
+      await this.organizationRequestRepository.update(
+        { id: requestId },
+        { status },
+      );
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_REQUEST_ERRORS.UPDATE.REQUEST,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ORGANIZATION_REQUEST_ERRORS.UPDATE.REQUEST,
+        error: err,
+      });
+    }
   }
 }

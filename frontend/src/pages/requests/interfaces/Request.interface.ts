@@ -8,6 +8,7 @@ export interface IOrganizationRequest extends BaseEntity {
   email: string;
   phone: string;
   name: string;
+  organizationName: string;
   organization: IOrganizationFull;
 }
 

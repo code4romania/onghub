@@ -469,4 +469,22 @@ export class OrganizationService {
       status: OrganizationStatus.ACTIVE,
     });
   }
+
+  public async delete(organizationId: number): Promise<void> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (organization.status !== OrganizationStatus.PENDING) {
+      throw new BadRequestException({
+        ...ORGANIZATION_ERRORS.DELETE.NOT_PENDING,
+      });
+    }
+
+    try {
+      // delete cascade
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
 }

@@ -34,7 +34,6 @@ const Request = () => {
   const {
     data: request,
     error,
-    refetch,
     isLoading: dataLoading,
   } = useOrganizationRequest(params.id ? params?.id : '');
 
@@ -76,7 +75,7 @@ const Request = () => {
     await approveMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests');
+        navigate('/requests', { replace: true });
       },
       onSettled: () => {
         setApproveModalOpen(false);
@@ -88,7 +87,7 @@ const Request = () => {
     await rejectMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests');
+        navigate('/requests', { replace: true });
       },
       onSettled: () => {
         setApproveModalOpen(false);
