@@ -13,6 +13,10 @@ export const patchOrganizationByProfile = (update: any): Promise<any> => {
   return API.patch(`/organization-profile`, { ...update }).then((res) => res.data);
 };
 
+export const patchOrganizationById = (id: number, update: any): Promise<any> => {
+  return API.patch(`/organization/${id}`, { ...update }).then((res) => res.data);
+};
+
 export const uploadOrganizationFilesByProfile = (files: FormData): Promise<any> => {
   return API.post(`/organization-profile/upload`, files, {
     headers: { 'Content-Type': 'multipart/form-data' },

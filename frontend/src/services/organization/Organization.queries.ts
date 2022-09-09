@@ -15,6 +15,7 @@ import {
   getOrganizationByProfile,
   getOrganizations,
   patchOrganization,
+  patchOrganizationById,
   patchOrganizationByProfile,
   uploadInvestors,
   uploadInvestorsByProfile,
