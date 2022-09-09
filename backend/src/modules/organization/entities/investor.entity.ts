@@ -30,6 +30,7 @@ export class Investor extends BaseEntity {
   @ManyToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.investors,
+    { onDelete: 'CASCADE' },
   )
   organizationReport: OrganizationReport;
 }

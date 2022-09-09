@@ -81,7 +81,8 @@ export class OrganizationActivity extends BaseEntity {
 
   @OneToOne(
     () => Organization,
-    (organization) => organization.organizationGeneral,
+    (organization) => organization.organizationActivity,
+    { onDelete: 'CASCADE' },
   )
   organization: Organization;
 

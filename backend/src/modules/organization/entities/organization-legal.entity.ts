@@ -25,6 +25,7 @@ export class OrganizationLegal extends BaseEntity {
   @OneToOne(
     () => Organization,
     (organization) => organization.organizationLegal,
+    { onDelete: 'CASCADE' },
   )
   organization: Organization;
 
