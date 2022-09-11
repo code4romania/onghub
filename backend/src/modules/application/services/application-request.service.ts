@@ -14,7 +14,10 @@ import { RequestStatus } from '../../organization/enums/request-status.enum';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { ApplicationRepository } from '../repositories/application.repository';
-import { APPLICATION_REQUEST_ERRORS } from '../constants/application-error.constants';
+import {
+  APPLICATION_ERRORS,
+  APPLICATION_REQUEST_ERRORS,
+} from '../constants/application-error.constants';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 @Injectable()
@@ -34,6 +37,10 @@ export class ApplicationRequestService {
     const application = await this.applicationRepository.get({
       where: { id: applicationId },
     });
+
+    if (!application) {
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
+    }
 
     if (application.status !== ApplicationStatus.ACTIVE) {
       throw new BadRequestException({
@@ -73,7 +80,7 @@ export class ApplicationRequestService {
       });
     }
 
-    // 4. create request app - only for independent app the status is pending
+    // 4. create request app - only for STANDALONE app the status is pending, the rest are active by default
     await this.ongApplicationService.create(
       organizationId,
       applicationId,
@@ -125,15 +132,13 @@ export class ApplicationRequestService {
     });
 
     if (!request) {
-      throw new NotFoundException({
-        ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
-      });
+      throw new NotFoundException(APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND);
     }
 
     if (request.status !== RequestStatus.PENDING) {
-      throw new BadRequestException({
-        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
-      });
+      throw new BadRequestException(
+        APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      );
     }
 
     await this.ongApplicationService.update(

@@ -31,7 +31,7 @@ export const ONG_APPLICATION_ERRORS = {
 export const APPLICATION_REQUEST_ERRORS = {
   CREATE: {
     APPLICATION_STATUS: {
-      message: 'Application status must be active.',
+      message: 'Cannot request an application that is not ACTIVE.',
       errorCode: 'APP_REQ_001',
     },
     APPLICATION_TYPE: {
@@ -59,11 +59,11 @@ export const APPLICATION_REQUEST_ERRORS = {
   },
   UPDATE: {
     NOT_PENDING: {
-      message: 'Could not update a Request with other status than pending.',
+      message: 'Could not update a Request that is not in status PENDING.',
       errorCode: 'APP_REQ_005',
     },
     REQUEST: {
-      message: 'Error while updateing the request.',
+      message: 'Error while updating the request.',
       errorCode: 'APP_REQ_008',
     },
   },

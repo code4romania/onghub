@@ -113,9 +113,7 @@ export class ApplicationService {
       .getRawOne();
 
     if (!applicationWithDetails) {
-      throw new NotFoundException({
-        ...APPLICATION_ERRORS.GET,
-      });
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
     }
 
     return applicationWithDetails as any;
