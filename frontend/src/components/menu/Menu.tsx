@@ -16,6 +16,22 @@ import { Trans } from '@lingui/react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
+export const getNavigationRoutes = (role: UserRole) => {
+  let routes = EMPLOYEE_ROUTES;
+  switch (role) {
+    case UserRole.ADMIN:
+      routes = ADMIN_ROUTES;
+      break;
+    case UserRole.SUPER_ADMIN:
+      routes = SUPER_ADMIN_ROUTES;
+      break;
+    default:
+      routes = EMPLOYEE_ROUTES;
+  }
+
+  return routes;
+};
+
 const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,22 +47,6 @@ const Menu = () => {
       setCurrentMenuItemId(exists ? exists.id : -1);
     }
   }, [location.pathname]);
-
-  const getNavigationRoutes = (role: UserRole) => {
-    let routes = EMPLOYEE_ROUTES;
-    switch (role) {
-      case UserRole.ADMIN:
-        routes = ADMIN_ROUTES;
-        break;
-      case UserRole.SUPER_ADMIN:
-        routes = SUPER_ADMIN_ROUTES;
-        break;
-      default:
-        routes = EMPLOYEE_ROUTES;
-    }
-
-    return routes;
-  };
 
   const handleMenuItemClick = (item: any) => {
     setCurrentMenuItemId(item.id);

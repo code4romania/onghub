@@ -7,6 +7,7 @@
     "@heroicons/react": "^1.0.6",
     "@lingui/core": "^3.14.0",
     "@lingui/react": "^3.14.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
