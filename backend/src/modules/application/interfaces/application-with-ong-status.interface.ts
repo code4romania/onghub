@@ -16,6 +16,5 @@ export interface ApplicationWithOngStatusDetails
   extends ApplicationWithOngStatus {
   steps: string[];
   description: string;
-  loginlink: string;
   videolink: string;
 }
