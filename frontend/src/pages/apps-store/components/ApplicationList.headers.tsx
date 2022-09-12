@@ -21,12 +21,14 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     name: translations.name,
     sortable: true,
     sortField: 'name',
+    grow: 3,
     selector: (row: Application) => row.name,
   },
   {
     id: 'type',
     sortable: false,
     name: translations.type,
+    grow: 2,
     selector: (row: Application) => ApplicationTypeNaming[row.type],
   },
   {

@@ -48,7 +48,6 @@ const CreateOrganizationGeneral = () => {
       reset({ ...organization.general, ...contact });
       setCounty(organization.general.county);
       setCity(organization.general.city);
-      console.log(organization.general.logo);
       // setFile(organization.general.logo);
     }
   }, [organization]);

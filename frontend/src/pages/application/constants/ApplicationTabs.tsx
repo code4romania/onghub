@@ -8,7 +8,6 @@ const translations = {
 };
 
 export const APPLICATION_TABS: IPageTab[] = [
-  { id: 0, name: translations.description, href: '' },
-  { id: 1, name: translations.list, href: 'installs' },
-  { id: 2, name: translations.requests, href: 'requests' },
+  { id: 0, name: 'Descriere', href: '' },
+  { id: 1, name: 'Lista ONG-uri', href: 'installs' },
 ];

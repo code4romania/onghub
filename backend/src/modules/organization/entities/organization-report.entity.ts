@@ -15,18 +15,21 @@ export class OrganizationReport extends BaseEntity {
 
   @OneToMany(() => Report, (report) => report.organizationReport, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'report_id' })
   reports: Report[];
 
   @OneToMany(() => Partner, (partner) => partner.organizationReport, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'partner_id' })
   partners: Partner[];
 
   @OneToMany(() => Investor, (investor) => investor.organizationReport, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'investor_id' })
   investors: Investor[];

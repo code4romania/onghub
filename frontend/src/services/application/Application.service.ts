@@ -4,7 +4,12 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import API from '../API';
 import { CreateApplicationDto } from './interfaces/Application.dto';
-import { Application, ApplicationStatus } from './interfaces/Application.interface';
+import {
+  Application,
+  ApplicationStatus,
+  ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
+} from './interfaces/Application.interface';
 
 export const createApplication = (
   createApplicationDto: CreateApplicationDto,
@@ -32,6 +37,26 @@ export const getApplications = async (
   if (type) requestUrl = `${requestUrl}&type=${type}`;
 
   return API.get(requestUrl).then((res) => res.data);
+};
+
+// Returns all the applications with ONGApp table entry as status (your ONG relationship with that Application)
+export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationWithOngStatus>> => {
+  const requestUrl = `/organization/application`;
+  return API.get(requestUrl).then((res) => res.data);
+};
+
+// Returns all the applications added to your ONG.
+export const getMyOngApplications = async (): Promise<
+  PaginatedEntity<ApplicationWithOngStatus>
+> => {
+  const requestUrl = `/organization/application/profile`;
+  return API.get(requestUrl).then((res) => res.data);
+};
+
+export const getOngApplicationById = (
+  applicationId: string,
+): Promise<ApplicationWithOngStatusDetails> => {
+  return API.get(`/organization/application/${applicationId}`).then((res) => res.data);
 };
 
 export const getApplicationById = (applicationId: string): Promise<Application> => {

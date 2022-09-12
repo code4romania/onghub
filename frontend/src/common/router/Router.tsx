@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
-import AppStore from '../../pages/apps-store/AppStore';
+import AllApplications from '../../pages/apps-store/AllApplications';
 import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
 import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
 import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
@@ -11,7 +11,6 @@ import CreateOrganizationUser from '../../pages/create-organziation/components/C
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
-import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity/OrganizationActivity';
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
@@ -31,8 +30,10 @@ import AddApplication from '../../pages/apps-store/components/AddApplication';
 import Application from '../../pages/application/Application';
 import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
-import ApplicationRequests from '../../pages/application/components/ApplicationRequests';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
+import MyApps from '../../pages/my-apps/MyApps';
+import ApplicationList from '../../pages/apps-store/components/ApplicationList';
+import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
@@ -90,15 +91,18 @@ const Router = () => {
             <Route index element={<Navigate to={'details'}></Navigate>} />
             <Route path="details" element={<ApplicationDetails />} />
             <Route path="installs" element={<ApplicationNGOList />} />
-            <Route path="requests" element={<ApplicationRequests />} />
           </Route>
           <Route path="application/:id/edit" element={<AddApplication edit={true} />} />
 
           <Route path="user" element={<UserCreate />} />
           <Route path="user/:id" element={<UserEdit />} />
-          <Route path="apps" element={<Apps />}></Route>
 
-          <Route path="store" element={<AppStore />}></Route>
+          <Route path="apps" element={<MyApps />}></Route>
+
+          <Route path={'store'} element={<AllApplications />}>
+            <Route index element={<ApplicationList />} />
+            <Route path="requests" element={<ApplicationRequests />} />
+          </Route>
           <Route path="store/new" element={<AddApplication />} />
 
           <Route path="account" element={<Account />} />

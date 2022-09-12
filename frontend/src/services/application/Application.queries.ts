@@ -7,10 +7,16 @@ import {
   createApplication,
   getApplicationById,
   getApplications,
+  getMyOngApplications,
+  getOngApplications,
   patchApplication,
 } from './Application.service';
 import { CreateApplicationDto } from './interfaces/Application.dto';
-import { Application, ApplicationStatus } from './interfaces/Application.interface';
+import {
+  Application,
+  ApplicationStatus,
+  ApplicationWithOngStatus,
+} from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
   return useMutation((applicationDto: CreateApplicationDto) => createApplication(applicationDto), {
@@ -30,7 +36,7 @@ export const useApplicationsQuery = (
 ) => {
   const { setApplications, applications } = useStore();
   return useQuery(
-    ['requests', limit, page, orderBy, orderDirection, search, status, type],
+    ['applications', limit, page, orderBy, orderDirection, search, status, type],
     () => getApplications(limit, page, orderBy, orderDirection, search, status, type),
     {
       onSuccess: (data: PaginatedEntity<Application>) => {
@@ -41,7 +47,28 @@ export const useApplicationsQuery = (
   );
 };
 
-export const useApplication = (applicationId: string) => {
+// As an Admin you will receive all the Applications + Status (your relationship with that application -> ONGApp table entry).
+export const useOngApplicationsQuery = () => {
+  const { setOngApplications } = useStore();
+  return useQuery(['ongApplications'], () => getOngApplications(), {
+    onSuccess: (data: ApplicationWithOngStatus) => {
+      setOngApplications(data);
+    },
+  });
+};
+
+// As an Admin you will receive your Applications (the ones added in your organization)
+export const useMyOngApplicationsQuery = () => {
+  const { setOngApplications } = useStore();
+  return useQuery(['myOngApplications'], () => getMyOngApplications(), {
+    onSuccess: (data: ApplicationWithOngStatus) => {
+      setOngApplications(data);
+    },
+  });
+};
+
+// As an SuperAdmin you will receive all the Applications (regardless of any status).
+export const useApplicationQuery = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,

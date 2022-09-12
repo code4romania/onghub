@@ -9,8 +9,8 @@ import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queri
 import { useUploadOrganizationFilesMutation } from '../../services/organization/Organization.queries';
 import { Loading } from '../../components/loading/Loading';
 import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
-import { useCreateRequestMutation } from '../../services/request/Request.queries';
-import { CreateRequestDTO } from '../../services/request/interfaces/Request.dto';
+import { useCreateOrganizationRequestMutation } from '../../services/request/Request.queries';
+import { CreateOrganizationRequestDTO } from '../../services/request/interfaces/Request.dto';
 import { createRequestDTOMapper } from './helper/CreateOrganization.helper';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +26,7 @@ const CreateOrganization = () => {
     mutateAsync: mutateRequest,
     error: requestError,
     isLoading: requestLoading,
-  } = useCreateRequestMutation();
+  } = useCreateOrganizationRequestMutation();
   const {
     mutate: filesMutation, // To be used for file uploading.
     error: filesError,
@@ -86,7 +86,7 @@ const CreateOrganization = () => {
       organization.activity &&
       organization.legal
     ) {
-      const dto: CreateRequestDTO = createRequestDTOMapper(organization);
+      const dto: CreateOrganizationRequestDTO = createRequestDTOMapper(organization);
 
       const saved = await mutateRequest({
         ...dto,

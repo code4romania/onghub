@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
@@ -29,6 +30,7 @@ import { OrganizationReportService } from './organization-report.service';
 
 @Injectable()
 export class OrganizationService {
+  private readonly logger = new Logger(OrganizationService.name);
   constructor(
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
@@ -468,5 +470,31 @@ export class OrganizationService {
       id: organizationId,
       status: OrganizationStatus.ACTIVE,
     });
+  }
+
+  public async delete(organizationId: number): Promise<void> {
+    const organization = await this.organizationRepository.get({
+      where: { id: organizationId },
+    });
+
+    if (organization.status !== OrganizationStatus.PENDING) {
+      throw new BadRequestException({
+        ...ORGANIZATION_ERRORS.DELETE.NOT_PENDING,
+      });
+    }
+
+    try {
+      await this.organizationRepository.remove({ id: organization.id });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.DELETE.ONG,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ORGANIZATION_ERRORS.DELETE.ONG,
+        error: err,
+      });
+    }
   }
 }

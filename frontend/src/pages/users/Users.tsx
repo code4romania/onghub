@@ -13,6 +13,7 @@ const Users = () => {
   const { t } = useTranslation('user');
 
   useEffect(() => {
+    // TODO: refactor user tabs to have a function that returns this logic.
     const found: IPageTab | undefined = USERS_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );

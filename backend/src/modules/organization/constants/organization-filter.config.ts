@@ -16,3 +16,20 @@ export const ORGANIZATION_FILTERS_CONFIG = {
   relations: {},
   rangeColumn: 'createdOn',
 };
+
+export const ORGANIZATION_REQUEST_FILTER_CONFIG = {
+  selectColumns: {
+    id: true,
+    organizationName: true,
+    email: true,
+    phone: true,
+    name: true,
+    createdOn: true,
+    status: true,
+  },
+  searchableColumns: ['organizationName', 'name'],
+  defaultSortBy: 'createdOn',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {},
+  rangeColumn: 'createdOn',
+};

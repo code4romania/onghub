@@ -7,6 +7,7 @@ import {
 import { FindOneOptions, UpdateResult } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 
 @Injectable()
@@ -16,14 +17,21 @@ export class OngApplicationService {
     private readonly ongApplicationRepository: OngApplicationRepository,
   ) {}
 
+  /**
+   * @description
+   * Se creeaza legatura dintre un ONG si o aplicatie si status-ul acelei legaturi, in acest moment o aplicatie este adaugata in "aplicatiile mele" pentru un ONG
+   * EX: Applicatie X este restrictionata pentru Organizatia Y
+   */
   public async create(
     organizationId: number,
     applicationId: number,
+    status: OngApplicationStatus,
   ): Promise<OngApplication> {
     try {
       const ongApp = await this.ongApplicationRepository.save({
         organizationId,
         applicationId,
+        status,
       });
 
       return ongApp;
@@ -37,34 +45,83 @@ export class OngApplicationService {
     }
   }
 
+  /**
+   * @description
+   * Se sterge legatura dintre o apicatie si un ONG iar aplicatia va fi stearsa din "aplicatiile mele" pentru un ONG
+   */
+  public async delete(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    const ongApplication = await this.ongApplicationRepository.get({
+      where: {
+        applicationId,
+        organizationId,
+      },
+    });
+
+    if (!ongApplication) {
+      throw new NotFoundException({
+        ...ONG_APPLICATION_ERRORS.GET,
+      });
+    }
+
+    try {
+      await this.ongApplicationRepository.remove({ id: ongApplication.id });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ONG_APPLICATION_ERRORS.DELETE,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ONG_APPLICATION_ERRORS.DELETE,
+        error: err,
+      });
+    }
+  }
+
   public async findOne(
     conditions: FindOneOptions<OngApplication>,
   ): Promise<OngApplication> {
     return this.ongApplicationRepository.get(conditions);
   }
 
-  public async findById(
-    id: number,
+  public async update(
     organizationId: number,
-  ): Promise<OngApplication> {
-    const application = await this.ongApplicationRepository.get({
-      where: { id, organizationId },
-      relations: ['application'],
+    applicationId: number,
+    status: OngApplicationStatus,
+  ): Promise<UpdateResult> {
+    const ongApplication = await this.ongApplicationRepository.get({
+      where: {
+        applicationId,
+        organizationId,
+      },
     });
 
-    if (!application) {
+    if (!ongApplication) {
       throw new NotFoundException({
-        ...ONG_APPLICATION_ERRORS.GET.NOT_FOUND,
+        ...ONG_APPLICATION_ERRORS.GET,
       });
     }
 
-    return application;
-  }
+    try {
+      const result = await this.ongApplicationRepository.update(
+        { organizationId, applicationId },
+        { status },
+      );
 
-  public async updateOne(
-    id: number,
-    updates: Partial<OngApplication>,
-  ): Promise<UpdateResult> {
-    return this.ongApplicationRepository.update({ id }, updates);
+      return result;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ONG_APPLICATION_ERRORS.UPDATE,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...ONG_APPLICATION_ERRORS.UPDATE,
+        error: err,
+      });
+    }
   }
 }

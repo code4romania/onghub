@@ -18,7 +18,7 @@ export class OrganizationLegal extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'legal_reprezentative_id' })
   legalReprezentativeId: number;
 
-  @OneToOne((type) => Contact, { cascade: true })
+  @OneToOne((type) => Contact, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'legal_reprezentative_id' })
   legalReprezentative: Contact;
 
