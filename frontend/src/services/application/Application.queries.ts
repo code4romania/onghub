@@ -18,11 +18,10 @@ import {
   ApplicationWithOngStatus,
 } from './interfaces/Application.interface';
 
-export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
-  return useMutation((applicationDto: CreateApplicationDto) => createApplication(applicationDto), {
-    onSuccess,
-    onError,
-  });
+export const useCreateApplicationMutation = () => {
+  return useMutation(({ application, logo }: { application: CreateApplicationDto; logo: File }) =>
+    createApplication(application, logo),
+  );
 };
 
 export const useApplicationsQuery = (

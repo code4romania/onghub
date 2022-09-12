@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { cleanupPayload } from '../../common/helpers/format.helper';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import API from '../API';
@@ -13,10 +14,29 @@ import {
 
 export const createApplication = (
   createApplicationDto: CreateApplicationDto,
+  logo: File,
 ): Promise<Application> => {
-  return API.post(`/application`, createApplicationDto).then(
-    (res: AxiosResponse<Application>) => res.data,
-  );
+  const { steps, ...data } = createApplicationDto;
+  // create form data payload
+  const payload = new FormData();
+  for (const prop in cleanupPayload(data)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.append(prop, (data as any)[prop] as string);
+  }
+  // map steps correcly as array
+  steps.forEach((step: { item: string }) => {
+    payload.append('steps[]', step.item);
+  });
+
+  // check if logo was attached and add file
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  // send request
+  return API.post(`/application`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res: AxiosResponse<Application>) => res.data);
 };
 
 export const getApplications = async (

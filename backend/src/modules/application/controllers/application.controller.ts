@@ -19,7 +19,6 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from '../../user/decorators/user.decorator';

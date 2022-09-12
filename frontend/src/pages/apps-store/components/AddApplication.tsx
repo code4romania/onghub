@@ -16,6 +16,7 @@ import {
   useCreateApplicationMutation,
   useUpdateApplicationMutation,
 } from '../../../services/application/Application.queries';
+import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import { useSelectedApplication } from '../../../store/selectors';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
@@ -49,12 +50,12 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     formState: { errors },
     reset,
     watch,
-  } = useForm({
+  } = useForm<CreateApplicationDto>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<CreateApplicationDto>({
     control,
     name: 'steps',
   });
@@ -66,14 +67,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     if (application) {
       reset({
         ...application,
-        steps: application.steps.map((step) => ({ step })),
+        steps: application.steps.map((step) => ({ item: step })),
       });
+      setLogo(application.logo);
     }
   }, [application]);
 
-  const handleSave = async (data: any) => {
-    const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-    await mutateApplication(dto);
+  const handleSave = async (data: CreateApplicationDto) => {
+    await mutateApplication({ application: data, logo: file as File });
     useSuccessToast('Aplicatie modificata cu succes!');
     navigate('/store');
   };
@@ -97,7 +98,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   useEffect(() => {
     if (!edit) {
       reset({
-        steps: [{ step: '' }],
+        steps: [{ item: '' }],
       });
     }
   }, []);
@@ -167,7 +168,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         config={{
                           ...AddAppConfig.name.config,
                           name: AddAppConfig.name.key,
-                          error: errors[AddAppConfig.name.key]?.message,
+                          error: errors.name?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}
@@ -180,7 +181,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                   <RadioGroup
                     control={control}
                     readonly={readonly}
-                    errors={errors[AddAppConfig.type.key]}
+                    errors={errors.type?.message}
                     config={AddAppConfig.type}
                   />
                 )}
@@ -195,7 +196,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         config={{
                           ...AddAppConfig.shortDescription.config,
                           name: AddAppConfig.shortDescription.key,
-                          error: errors[AddAppConfig.shortDescription.key]?.message,
+                          error: errors.shortDescription?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}
@@ -215,7 +216,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         config={{
                           ...AddAppConfig.description.config,
                           name: AddAppConfig.description.key,
-                          error: errors[AddAppConfig.description.key]?.message,
+                          error: errors.description?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}
@@ -235,7 +236,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         config={{
                           ...AddAppConfig.website.config,
                           name: AddAppConfig.website.key,
-                          error: errors[AddAppConfig.website.key]?.message,
+                          error: errors.website?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}
@@ -257,7 +258,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                           config={{
                             ...AddAppConfig.loginLink.config,
                             name: AddAppConfig.loginLink.key,
-                            error: errors[AddAppConfig.loginLink.key]?.message,
+                            error: errors.loginLink?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}
@@ -278,7 +279,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                         config={{
                           ...AddAppConfig.videoLink.config,
                           name: AddAppConfig.videoLink.key,
-                          error: errors[AddAppConfig.videoLink.key]?.message,
+                          error: errors.videoLink?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}
@@ -341,7 +342,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                   return (
                     <div className="flex gap-4 items-start" key={index}>
                       <Controller
-                        name={`steps.${index}.step`}
+                        name={`steps.${index}.item`}
                         control={control}
                         rules={AddAppConfig.step.rules}
                         render={({ field: { onChange, value } }) => {
@@ -374,7 +375,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                       className="save-button"
                       onClick={(e: any) => {
                         e.preventDefault();
-                        append({ step: '' });
+                        append({ item: '' });
                       }}
                     >
                       <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
