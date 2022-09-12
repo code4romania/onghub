@@ -1,13 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import RequestList from './components/RequestList';
 
 const Requests = () => {
+  const { t } = useTranslation('requests');
+
   return (
-    <ContentWrapper
-      title="Solicitari access"
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile. "
-    >
+    <ContentWrapper title={t('title')} subtitle={t('subtitle')}>
       <div className="pb-6 flex w-full">
         <RequestList />
       </div>

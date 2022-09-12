@@ -25,7 +25,7 @@ const RestrictedAccount = () => {
           </p>
           <div className="flex items-start flex-col sm:flex-row">
             <a className="mb-2" href={`mailto:${process.env.REACT_APP_CONTACT_EMAIL}`}>
-              <button className="save-button ">Trimite e-mail</button>
+              <button className="save-button ">{t('send_mail')}</button>
             </a>
 
             <button onClick={onGoBackToSite} className="edit-button mb-2 sm:ml-6">
@@ -34,7 +34,7 @@ const RestrictedAccount = () => {
           </div>
         </div>
         <div className="flex-1 flex flex-col items-center justify-center px-20 max-h-136 max-w-2xl">
-          <img src={restrictedImg} alt="Restricted Account" />
+          <img src={restrictedImg} alt={t('restricted')} />
         </div>
       </section>
     </>

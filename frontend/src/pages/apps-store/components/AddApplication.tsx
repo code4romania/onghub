@@ -328,7 +328,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                  {t('create.logo_descr')}
                 </p>
               </div>
               {/* End Logo */}

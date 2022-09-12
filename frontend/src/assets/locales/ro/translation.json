@@ -46,6 +46,7 @@
     "change_pass": "Schimba parola",
     "name": "Nume",
     "email": "E-mail cont",
+    "send_mail": "Trimite E-Mail",
     "wrong_pass": "Parolele nu se potrivesc",
     "close": {
       "acc": "Inchide contul",
@@ -67,12 +68,18 @@
         "label": "Parola noua*"
       },
       "match": "Confirma parola noua*"
-    }
+    },
+    "restricted": "Cont restrictionat"
   },
   "organization": {
     "error": "Organizatia nu s-a putut incarca",
     "my_org": "Organizatia mea",
     "descr": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "type": {
+      "association": "Asociatie",
+      "foundation": "Fundatie",
+      "federation": "Federatie"
+    },
     "tabs": {
       "general": "Date generale",
       "activity": "Activitatea organizatiei",
@@ -90,7 +97,17 @@
     "create": {
       "congratulations": "Feclicitari",
       "success": "Ai completat cu succes formularul de aplicare pentru ONG Hub. Pe adresa de e-mail indicată, ai primit confirmarea aplicării și o copie a formularului completat. Te vom contacta în cel mai scurt timp pentru a continua procesul de implementare al ONG Hub pentru organizația ta.",
-      "again": "Incearca din nou"
+      "again": "Incearca din nou",
+      "steps": {
+        "first": "Pasul 1",
+        "account": "Date cont",
+        "second": "Pasul 2",
+        "general": "Date generale",
+        "third": "Pasul 3",
+        "activity": "Activitate",
+        "fourth": "Pasul 4",
+        "legal": "Informatii legale"
+      }
     },
     "filters": {
       "incomplete": "Incomplet",
@@ -614,11 +631,15 @@
     "description": "Lorem ipsum",
     "add": "Adauga aplicatie",
     "all": "Toate aplicatiile",
+    "tabs": {
+      "overview": "Prezentare generala aplicatii",
+      "requests": "Cereri acces aplicatii"
+    },
     "list": {
       "load_error": "Eroare la incarcarea aplicatiilor",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
-      "restrict": "Restrictioneaza aplicatie",
+      "restrict": "Dezactiveaza temporar",
       "type": "Tip aplicatie",
       "status": "Status"
     },
@@ -679,19 +700,50 @@
         "helper": "Maximum 700 de caractere"
       },
       "website": {
-        "label": "Link catre website prezentare aplicatie*"
+        "label": "Link catre website prezentare aplicatie*",
+        "required": "Link-ul catre website este obligatoriu"
       },
       "login_link": {
-        "label": "Link login automat*"
+        "label": "Link login automat*",
+        "required": "Link-ul catre pagina de login este obligatoriu"
       },
       "video_link": {
-        "label": "Link video prezentare*"
+        "label": "Link video prezentare*",
+        "helper": "URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
+        "required": "Link-ul catre prezentarea video este obligatoriu"
       },
       "step": {
         "required": "Pasul este obligatoriu",
         "invalid": "Pasul are un format invalid",
         "label": "Pas"
       }
+    },
+    "request_modal": {
+      "approve": {
+        "title": "Aproba",
+        "description": "Esti sigur ca doresti sa aprobi solicitarea?",
+        "confirm": "Da, aprob solicitarea"
+      },
+      "reject": {
+        "title": "Respinge",
+        "description": "Esti sigur ca doresti sa respingi solicitarea?",
+        "confirm": "Respinge solicitarea"
+      }
+    },
+    "request_header": {
+      "name": "Aplicatie",
+      "ong": "Organizatie",
+      "created_on": "Data solicitarii"
+    },
+    "requests": {
+      "load_error": "Eroare la incarcarea solicitariilor.",
+      "status_error": "Eroare la schimbarea statusului",
+      "view": "Vizualizeaza aplicatie",
+      "aprove": "Aproba",
+      "reject": "Respinge",
+      "status_update": "Status actualizat",
+      "requests": "Solicitari",
+      "date_added": "Data adaugarii"
     }
   },
   "app": {
@@ -705,12 +757,85 @@
       "how_to": "Cum poti folosi aplicatia pentru organizatia ta",
       "request": "Solicita aplicatia",
       "description": "Descriere",
-      "video": "Video prezentare"
+      "video": "Video prezentare",
+      "request_error": "Solicitarea nu a putut fi trimisa",
+      "request_successful": "Solicitare trimisa cu succes",
+      "add": "Adauga aplicatie",
+      "restricted": "Accesul la aplicatie a fost restrictionat",
+      "auto": "Aplicatia este adaugata automat la crearea contului ONG Hub si nu poate fi dezactivata.",
+      "delete": "Elimina aplicatie",
+      "contact": "Te vom contacta in 24-48 de ore.",
+      "active": "Aplicatia este activa pentru organizatia ta.",
+      "define_active": "Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "open": "Deschide aplicatia",
+      "pending": "Solicitarea ta asteapta aprobare.",
+      "configure": "Aplicatia aceasta trebuie instalata si configurata conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "cancel": "Anuleaza solicitare",
+      "restore": "Contacteaza-ne pentru restituirea accesului!",
+      "close_button": "Elimina aplicatia",
+      "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
+      "close_description": "Veni, vidi, vici.",
+      "another_description": "Descriere aplicatie"
     }
   },
   "header": {
     "enter": "Intra in cont",
     "my_account": "Contul meu",
     "log_out": "Log out"
+  },
+  "my_apps": {
+    "title": "Aplicatiile mele",
+    "subtitle": "Lorem oppossum.",
+    "open": "Deschide",
+    "more": "Mai mult"
+  },
+  "requests": {
+    "title": "Solicitari acces",
+    "subtitle": "Lorem oppossum.",
+    "load_error": "Eroare la incarcarea solicitarilor",
+    "status_erorr": "Eroare la schimbarea statusului",
+    "status_update": "Status actualizat",
+    "description": "Lorem ipsum",
+    "reject": "Respinge",
+    "approve": "Aproba",
+    "view_form": "Vizualizeaza formular",
+    "requests": "Solicitari",
+    "created_on": "Data adaugarii",
+    "data_pending": "Datele de mai jos corespund unei solicitari in curs de aprobare.",
+    "modals": {
+      "approve": {
+        "title": "Aproba si trimite confirmarea",
+        "description": "In urma aprobarii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare si un link pe care il poate accesa pentru a finaliza procesul si a avea acces în platforma.Esti sigur ca aprobi?",
+        "confirm": "Da, aprob solicitarea"
+      },
+      "reject": {
+        "title": "Respinge si trimite email",
+        "description": "In urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare. Esti sigur ca respingi?",
+        "confirm": "Respinge solicitarea"
+      }
+    },
+    "constants": {
+      "approved": "Aprobat",
+      "rejected": "Respins",
+      "pending": "In procesare"
+    },
+    "header": {
+      "org_name": "Organizatie",
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "status": "Status",
+      "created_on": "Data adaugarii",
+      "status_error": "Eroare"
+    }
+  },
+  "routes": {
+    "dashboard": "Tablou de bord",
+    "organization": "Organizatia mea",
+    "apps": "Aplicatiile mele",
+    "users": "Utilizatori",
+    "store": "Toate aplicatiile",
+    "organizations": "ONG-uri",
+    "requests": "Solicitari Acces"
   }
 }

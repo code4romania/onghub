@@ -32,12 +32,16 @@ const translations = {
   },
   website: {
     label: i18n.t('appstore:config.website.label'),
+    required: i18n.t('appstore:config.website.required'),
   },
   login_link: {
     label: i18n.t('appstore:config.login_link.label'),
+    required: i18n.t('appstore:config.login_link.required'),
   },
   video_link: {
     label: i18n.t('appstore:config.video_link.label'),
+    helper: i18n.t('appstore:config.video_link.helper'),
+    required: i18n.t('appstore:config.video_link.required'),
   },
   step: {
     required: i18n.t('appstore:config.step.required'),
@@ -154,7 +158,7 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Website is required.',
+        message: translations.website.required,
       },
       pattern: {
         value: URL_REGEX,
@@ -178,7 +182,7 @@ export const AddAppConfig: Record<string, any> = {
       },
       required: {
         value: true,
-        message: 'Login link is required.',
+        message: translations.login_link.required,
       },
     },
     config: {
@@ -194,7 +198,7 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Video link is required.',
+        message: translations.video_link.required,
       },
       pattern: {
         value: URL_REGEX,
@@ -204,8 +208,7 @@ export const AddAppConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: translations.video_link.label,
-      helperText:
-        'URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)',
+      helperText: translations.video_link.helper,
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
