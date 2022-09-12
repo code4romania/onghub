@@ -83,14 +83,14 @@ export class ApplicationController {
   abandonRequest(
     @Param('id') id: number,
     @ExtractUser() user: User,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     return this.applicationRequestService.abandon(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
-  removeOne(@Param('id') id: number): Promise<{ success: boolean }> {
+  removeOne(@Param('id') id: number): Promise<void> {
     return this.applicationService.deleteOne(id);
   }
 }

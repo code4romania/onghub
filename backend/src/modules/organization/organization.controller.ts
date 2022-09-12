@@ -132,10 +132,7 @@ export class OrganizationController {
   @Roles(Role.ADMIN)
   @ApiParam({ name: 'id', type: Number })
   @Delete('application/:id')
-  deleteOne(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<{ success: boolean }> {
+  deleteOne(@Param('id') id: number, @ExtractUser() user: User): Promise<void> {
     return this.ongApplicationService.delete(id, user.organizationId);
   }
 
@@ -146,8 +143,8 @@ export class OrganizationController {
   restrict(
     @Param('id') id: number,
     @Body() restrictApplicationDto: RestrictApplicationDto,
-  ): Promise<{ success: boolean }> {
-    return this.ongApplicationService.restrict(
+  ): Promise<void> {
+    return this.applicationService.restrict(
       id,
       restrictApplicationDto.organizationId,
     );

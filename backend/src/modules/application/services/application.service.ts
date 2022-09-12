@@ -7,7 +7,10 @@ import {
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import { APPLICATION_ERRORS } from '../constants/application-error.constants';
+import {
+  APPLICATION_ERRORS,
+  ONG_APPLICATION_ERRORS,
+} from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -18,10 +21,15 @@ import {
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
 import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
+import { OngApplicationService } from './ong-application.service';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
 @Injectable()
 export class ApplicationService {
-  constructor(private readonly applicationRepository: ApplicationRepository) {}
+  constructor(
+    private readonly applicationRepository: ApplicationRepository,
+    private ongApplicationService: OngApplicationService,
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -51,6 +59,15 @@ export class ApplicationService {
     );
   }
 
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
+   * toate aplicatiile din hub si status lor in relatie cu organizatia din care face parte admin-ul
+   *
+   *  Metoda descrie lista de applicatii din ONG-HUB
+   *
+   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
+   */
   public async findAllForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
@@ -66,6 +83,13 @@ export class ApplicationService {
       .execute();
   }
 
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
+   * aplicatiile pentru o organizatie si status lor in relatie cu organizatia.
+   *
+   *  Metoda descrie lista de applicatii a unei organizatii
+   */
   public async findAllForOngUser(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
@@ -84,6 +108,13 @@ export class ApplicationService {
       .execute();
   }
 
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip admin ce intoarce o aplicatiile din ong-hub si status ei in relatie cu organizatia din care face parte admin-ul
+   * Metoda descrie pagina de detalii aplicatie din portal
+   *
+   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
+   */
   public async findOne(
     organizationId: number,
     applicationId: number,
@@ -139,8 +170,32 @@ export class ApplicationService {
     });
   }
 
+  public async restrict(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    const ongApplication = await this.ongApplicationService.findOne({
+      where: {
+        applicationId,
+        organizationId,
+      },
+    });
+
+    if (!ongApplication) {
+      throw new NotFoundException({
+        ...ONG_APPLICATION_ERRORS.GET,
+      });
+    }
+
+    await this.ongApplicationService.update(
+      organizationId,
+      organizationId,
+      OngApplicationStatus.RESTRICTED,
+    );
+  }
+
   // TODO: To be implemented
-  public async deleteOne(id: number): Promise<{ success: boolean }> {
+  public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
   }
 }

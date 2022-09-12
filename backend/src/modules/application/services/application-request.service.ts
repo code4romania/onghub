@@ -89,24 +89,26 @@ export class ApplicationRequestService {
         : OngApplicationStatus.ACTIVE,
     );
 
-    if (application.type === ApplicationTypeEnum.STANDALONE) {
-      try {
-        // 5. create pending request
-        await this.applicationRequestRepository.save({
-          organizationId,
-          applicationId,
-        });
-      } catch (error) {
-        this.logger.error({
-          error: { error },
-          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
-        });
-        const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
-          error: err,
-        });
-      }
+    if (application.type !== ApplicationTypeEnum.STANDALONE) {
+      return;
+    }
+
+    try {
+      // 5. create pending request
+      await this.applicationRequestRepository.save({
+        organizationId,
+        applicationId,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+        error: err,
+      });
     }
   }
 
@@ -176,7 +178,7 @@ export class ApplicationRequestService {
   public async abandon(
     applicationId: number,
     organizationId: number,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { applicationId, organizationId, status: RequestStatus.PENDING },
     });
@@ -193,8 +195,6 @@ export class ApplicationRequestService {
     );
 
     await this.delete(request.id);
-
-    return { success: true };
   }
 
   private async update(

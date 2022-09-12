@@ -17,6 +17,11 @@ export class OngApplicationService {
     private readonly ongApplicationRepository: OngApplicationRepository,
   ) {}
 
+  /**
+   * @description
+   * Se creeaza legatura dintre un ONG si o aplicatie si status-ul acelei legaturi, in acest moment o aplicatie este adaugata in "aplicatiile mele" pentru un ONG
+   * EX: Applicatie X este restrictionata pentru Organizatia Y
+   */
   public async create(
     organizationId: number,
     applicationId: number,
@@ -40,10 +45,14 @@ export class OngApplicationService {
     }
   }
 
+  /**
+   * @description
+   * Se sterge legatura dintre o apicatie si un ONG iar aplicatia va fi stearsa din "aplicatiile mele" pentru un ONG
+   */
   public async delete(
     applicationId: number,
     organizationId: number,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     const ongApplication = await this.ongApplicationRepository.get({
       where: {
         applicationId,
@@ -59,8 +68,6 @@ export class OngApplicationService {
 
     try {
       await this.ongApplicationRepository.remove({ id: ongApplication.id });
-
-      return { success: true };
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -69,43 +76,6 @@ export class OngApplicationService {
       const err = error?.response;
       throw new BadRequestException({
         ...ONG_APPLICATION_ERRORS.DELETE,
-        error: err,
-      });
-    }
-  }
-
-  public async restrict(
-    applicationId: number,
-    organizationId: number,
-  ): Promise<{ success: boolean }> {
-    const ongApplication = await this.ongApplicationRepository.get({
-      where: {
-        applicationId,
-        organizationId,
-      },
-    });
-
-    if (!ongApplication) {
-      throw new NotFoundException({
-        ...ONG_APPLICATION_ERRORS.GET,
-      });
-    }
-
-    try {
-      await this.ongApplicationRepository.update(
-        { id: ongApplication.id },
-        { status: OngApplicationStatus.RESTRICTED },
-      );
-
-      return { success: true };
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...ONG_APPLICATION_ERRORS.RESTRICT,
-      });
-      const err = error?.response;
-      throw new BadRequestException({
-        ...ONG_APPLICATION_ERRORS.RESTRICT,
         error: err,
       });
     }
