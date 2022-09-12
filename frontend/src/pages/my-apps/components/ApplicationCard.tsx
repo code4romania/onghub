@@ -18,8 +18,8 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
     e.preventDefault();
     if (application.type === ApplicationTypeEnum.INDEPENDENT && application.website) {
       openInNewTab(application.website);
-    } else if (application.loginlink) {
-      openInNewTab(application.loginlink);
+    } else if (application.loginLink) {
+      openInNewTab(application.loginLink);
     }
   };
 
@@ -30,7 +30,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
       </div>
       <div className="flex flex-col gap-4 w-full">
         <p className="font-titilliumBold text-xl">{application.name}</p>
-        <p className="break-word Application__Card__Description"> {application.shortdescription}</p>
+        <p className="break-word Application__Card__Description"> {application.shortDescription}</p>
       </div>
       <div className="flex gap-4 justify-center w-full">
         <button className="edit-button w-full flex justify-center" onClick={onMore}>

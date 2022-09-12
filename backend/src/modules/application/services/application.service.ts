@@ -126,13 +126,13 @@ export class ApplicationService {
         'ongApp.status as status',
         'application.name as name',
         'application.logo as logo',
-        'application.short_description as shortdescription',
+        'application.short_description as "shortDescription"',
         'application.description as description',
         'application.type as type',
         'application.steps as steps',
         'application.website as website',
-        'application.login_link as loginlink',
-        'application.video_link as videolink',
+        'application.login_link as "loginLink"',
+        'application.video_link as "videoLink"',
       ])
       .leftJoin(
         'ong_application',
