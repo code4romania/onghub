@@ -22,7 +22,6 @@ const Request = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
   const [selectedTab, setSelectedTab] = useState(0);
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
@@ -31,11 +30,7 @@ const Request = () => {
   useCountiesQuery();
 
   // load organization data
-  const {
-    data: request,
-    error,
-    isLoading: dataLoading,
-  } = useOrganizationRequest(params.id ? params?.id : '');
+  const { data: request, error, isLoading: dataLoading } = useOrganizationRequest(id || '');
 
   // apporve & reject
   const {

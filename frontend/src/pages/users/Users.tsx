@@ -11,6 +11,7 @@ const Users = () => {
   const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
+    // TODO: refactor user tabs to have a function that returns this logic.
     const found: IPageTab | undefined = USERS_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );

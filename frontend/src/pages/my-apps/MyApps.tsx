@@ -8,7 +8,7 @@ const MyApps = () => {
       title="Aplicatiile mele"
       subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
     >
-      <ApplicationListCards ong={true} />
+      <ApplicationListCards isOngView={true} />
     </ContentWrapper>
   );
 };

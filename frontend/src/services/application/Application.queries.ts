@@ -2,14 +2,12 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
-import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import useStore from '../../store/store';
 import {
   createApplication,
   getApplicationById,
   getApplications,
   getMyOngApplications,
-  getOngApplicationById,
   getOngApplications,
   patchApplication,
 } from './Application.service';
@@ -18,7 +16,6 @@ import {
   Application,
   ApplicationStatus,
   ApplicationWithOngStatus,
-  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
@@ -50,6 +47,7 @@ export const useApplicationsQuery = (
   );
 };
 
+// As an Admin you will receive all the Applications + Status (your relationship with that application -> ONGApp table entry).
 export const useOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['ongApplications'], () => getOngApplications(), {
@@ -59,6 +57,7 @@ export const useOngApplicationsQuery = () => {
   });
 };
 
+// As an Admin you will receive your Applications (the ones added in your organization)
 export const useMyOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['myOngApplications'], () => getMyOngApplications(), {
@@ -68,6 +67,7 @@ export const useMyOngApplicationsQuery = () => {
   });
 };
 
+// As an SuperAdmin you will receive all the Applications (regardless of any status).
 export const useApplicationQuery = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
