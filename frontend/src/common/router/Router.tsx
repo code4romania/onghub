@@ -34,6 +34,8 @@ import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount'
 import MyApps from '../../pages/my-apps/MyApps';
 import ApplicationList from '../../pages/apps-store/components/ApplicationList';
 import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
+import RoleGuard from '../guards/RoleGuard';
+import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
 const Router = () => {
   const { isAuthenticated, isRestricted } = useAuthContext();
@@ -105,7 +107,14 @@ const Router = () => {
 
           <Route path="account" element={<Account />} />
           <Route path="requests" element={<Requests />} />
-          <Route path="organizations" element={<Organizations />} />
+          <Route
+            path="organizations"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Organizations />
+              </RoleGuard>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to={'/'}></Navigate>}></Route>
       </Routes>
