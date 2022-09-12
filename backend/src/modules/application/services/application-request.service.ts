@@ -32,7 +32,7 @@ export class ApplicationRequestService {
   public async create(
     organizationId: number,
     applicationId: number,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     // 1. check if application is active
     const application = await this.applicationRepository.get({
       where: { id: applicationId },
@@ -96,8 +96,6 @@ export class ApplicationRequestService {
           organizationId,
           applicationId,
         });
-
-        return { success: true };
       } catch (error) {
         this.logger.error({
           error: { error },
@@ -126,7 +124,7 @@ export class ApplicationRequestService {
     );
   }
 
-  public async approve(requestId: number): Promise<{ success: boolean }> {
+  public async approve(requestId: number): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { id: requestId },
     });
@@ -148,11 +146,9 @@ export class ApplicationRequestService {
     );
 
     await this.update(requestId, RequestStatus.APPROVED);
-
-    return { success: true };
   }
 
-  public async reject(requestId: number): Promise<{ success: boolean }> {
+  public async reject(requestId: number): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { id: requestId },
     });
@@ -175,8 +171,6 @@ export class ApplicationRequestService {
     );
 
     await this.update(requestId, RequestStatus.DECLINED);
-
-    return { success: true };
   }
 
   public async abandon(

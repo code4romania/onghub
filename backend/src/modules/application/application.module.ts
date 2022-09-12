@@ -11,13 +11,14 @@ import { OngApplicationService } from './services/ong-application.service';
 import { ApplicationRequest } from './entities/application-request.entity';
 import { ApplicationRequestRepository } from './repositories/application-request.repository';
 import { ApplicationRequestService } from './services/application-request.service';
+import { ApplicationRequestController } from './controllers/application-request.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Application, OngApplication, ApplicationRequest]),
     SharedModule,
   ],
-  controllers: [ApplicationController],
+  controllers: [ApplicationRequestController, ApplicationController],
   providers: [
     ApplicationService,
     ApplicationRepository,
