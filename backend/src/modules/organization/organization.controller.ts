@@ -57,6 +57,7 @@ export class OrganizationController {
     private readonly organizationRequestService: OrganizationRequestService,
   ) {}
 
+  @Roles(Role.SUPER_ADMIN)
   @Get('')
   findAll(
     @Query() filters: OrganizationFilterDto,
@@ -81,7 +82,9 @@ export class OrganizationController {
   @Public()
   @ApiBody({ type: CreateOrganizationRequestDto })
   @Post('request')
-  create(@Body() createRequestDto: CreateOrganizationRequestDto): Promise<any> {
+  create(
+    @Body() createRequestDto: CreateOrganizationRequestDto,
+  ): Promise<OrganizationRequest> {
     return this.organizationRequestService.create(createRequestDto);
   }
 
@@ -97,14 +100,14 @@ export class OrganizationController {
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch('request/:id/approve')
-  approve(@Param('id') id: number): Promise<any> {
+  approve(@Param('id') id: number): Promise<OrganizationRequest> {
     return this.organizationRequestService.approve(id);
   }
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch('request/:id/reject')
-  reject(@Param('id') id: number): Promise<any> {
+  reject(@Param('id') id: number): Promise<OrganizationRequest> {
     return this.organizationRequestService.reject(id);
   }
 
