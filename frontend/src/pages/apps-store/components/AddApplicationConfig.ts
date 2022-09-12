@@ -180,10 +180,6 @@ export const AddAppConfig: Record<string, any> = {
         value: true,
         message: 'Login link is required.',
       },
-      required: {
-        value: true,
-        message: 'Login link is required.',
-      },
     },
     config: {
       type: 'text',

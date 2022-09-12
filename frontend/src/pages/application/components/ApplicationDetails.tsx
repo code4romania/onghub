@@ -76,12 +76,12 @@ const ApplicationDetails = () => {
                 openInNewTab(application.website);
               }}
             >
-              {t('details.website')}
+              Vezi website
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-4 pt-4 pb-4">
-          <p>{t('details.how_to')}</p>
+          <p>Cum poti folosi aplicatia pentru organizatia ta?</p>
           {application?.steps.map((step: any, index: number) => (
             <div className="flex gap-4 items-center" key={index}>
               <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4">
@@ -147,6 +147,57 @@ const ApplicationDetails = () => {
           </div>
         )}
       </div>
+      <div className="flex flex-col gap-4 w-full h-full">
+        {role === UserRole.ADMIN && (
+          <React.Fragment>
+            {(application?.status === OngApplicationStatus.ACTIVE ||
+              application?.type === ApplicationTypeEnum.INDEPENDENT) && (
+              <div className="w-full h-full bg-white shadow rounded-lg">
+                <div className="py-5 px-10 flex gap-2 items-center">
+                  <CheckCircleIcon className="text-green w-6 w-6" />
+                  <span className="font-titilliumBold text-xl text-gray-800">
+                    Aplicația este activă pentru organizația ta.
+                  </span>
+                </div>
+                <div className="w-full border-t border-gray-300" />
+                <div className="p-8 flex flex-col gap-4">
+                  <p className="break-all">
+                    Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile
+                    ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru
+                    detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact
+                    mentionat in profilul tau de organizatie. Iti multumim!
+                  </p>
+                  <div>
+                    <button className="save-button pl-8 pr-8 flex gap-4" onClick={onOpen}>
+                      Deschide aplicatia
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {application?.status === OngApplicationStatus.PENDING && (
+              <div className="w-full h-full bg-white shadow rounded-lg">
+                <div className="py-5 px-10 flex gap-2 items-center">
+                  <ClockIcon className="w-6 h-6  text-yellow-600" />
+                  <span className="font-titilliumBold text-xl text-gray-800 ">
+                    Solicitarea ta așteaptă aprobare.
+                  </span>
+                </div>
+                <div className="w-full border-t border-gray-300" />
+                <div className="p-8 flex flex-col gap-4">
+                  <p className="break-all">
+                    Aplicatia aceasta trebuie instalata si configurata conform cu nevoile ONG-ului
+                    tau. Un membru al echipei Code for Romania te va contacta pentru detalii
+                    suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in
+                    profilul tau de organizatie. Iti multumim!
+                  </p>
+                  <div>
+                    <button className="edit-button pl-8 pr-8 flex gap-4" onClick={abandonRequest}>
+                      <XIcon className="h-5 w-5" />
+                      Anuleaza solicitare
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
             {application?.status === OngApplicationStatus.RESTRICTED && (
@@ -167,9 +218,7 @@ const ApplicationDetails = () => {
         )}
         <div className="w-full h-full bg-white shadow rounded-lg">
           <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">
-              {t('details.description')}
-            </span>
+            <span className="font-titilliumBold text-xl text-gray-800">Descriere</span>
           </div>
           <div className="w-full border-t border-gray-300" />
           <div className=" p-8 ">
@@ -178,7 +227,7 @@ const ApplicationDetails = () => {
         </div>
         <div className="w-full h-full bg-white shadow rounded-lg">
           <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">{t('details.video')}</span>
+            <span className="font-titilliumBold text-xl text-gray-800">Video prezentare</span>
           </div>
           <div className="w-full border-t border-gray-300" />
           <div className="p-8">
