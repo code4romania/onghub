@@ -61,11 +61,6 @@ const Application = () => {
         onBtnClick: onApplicationEdit,
         visible: role === UserRole.SUPER_ADMIN,
       }}
-      deleteButton={{
-        btnLabel: 'Sterge',
-        onBtnClick: () => alert('not implemented'),
-        visible: role === UserRole.SUPER_ADMIN,
-      }}
     >
       <div className="pb-6 flex">
         {role === UserRole.SUPER_ADMIN && (

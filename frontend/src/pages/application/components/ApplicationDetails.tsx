@@ -16,7 +16,7 @@ import { useOutletContext } from 'react-router-dom';
 import { openInNewTab } from '../../../common/helpers/format.helper';
 
 const ApplicationDetails = () => {
-  const [isConfirmationModalOpen, setConfirmaitonModalOpen] = useState(false);
+  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [application, refecthApplication] = useOutletContext<any>();
   const { role } = useAuthContext();
 
@@ -123,7 +123,7 @@ const ApplicationDetails = () => {
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
                     className="edit-button pl-8 pr-8 flex gap-4"
-                    onClick={() => setConfirmaitonModalOpen(true)}
+                    onClick={() => setConfirmationModalOpen(true)}
                   >
                     <XIcon className="h-5 w-5" />
                     Elimina aplicatie
@@ -246,7 +246,7 @@ const ApplicationDetails = () => {
           closeBtnLabel="Inapoi"
           confirmBtnLabel="Inchide contul"
           onClose={() => {
-            setConfirmaitonModalOpen(false);
+            setConfirmationModalOpen(false);
           }}
           onConfirm={() => alert('not implemented')}
         />
