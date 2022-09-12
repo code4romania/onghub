@@ -59,7 +59,7 @@ export const APPLICATION_REQUEST_ERRORS = {
   },
   UPDATE: {
     NOT_PENDING: {
-      message: 'Could not update a Request that is not in status PENDING.',
+      message: 'Could not update a Request that is not in PENDING state',
       errorCode: 'APP_REQ_005',
     },
     REQUEST: {
