@@ -20,25 +20,44 @@ import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
-import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
+import {
+  APPLICATIONS_FILES_DIR,
+  ORGANIZATION_ALL_APPS_COLUMNS,
+} from '../constants/application.constants';
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     private readonly applicationRepository: ApplicationRepository,
-    private ongApplicationService: OngApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
+    logo: Express.Multer.File[],
   ): Promise<Application> {
     if (
       createApplicationDto.type !== ApplicationTypeEnum.INDEPENDENT &&
       !createApplicationDto.loginLink
     ) {
       throw new BadRequestException({ ...APPLICATION_ERRORS.CREATE.LOGIN });
+    }
+
+    if (logo && logo.length > 0) {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${APPLICATIONS_FILES_DIR}`,
+        logo,
+        createApplicationDto.name,
+      );
+
+      createApplicationDto = {
+        ...createApplicationDto,
+        logo: uploadedFile[0],
+      };
     }
 
     return this.applicationRepository.save({
