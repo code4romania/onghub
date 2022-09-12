@@ -698,8 +698,7 @@
     "title": "Aplicatie",
     "tabs": {
       "description": "Descriere",
-      "list": "Lista ONG-uri",
-      "requests": "Solicitari"
+      "list": "Lista ONG-uri"
     },
     "details": {
       "website": "Vezi website",

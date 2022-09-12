@@ -76,7 +76,7 @@ const ApplicationDetails = () => {
                 openInNewTab(application.website);
               }}
             >
-              Vezi website
+              {t('website')}
             </p>
           </div>
         </div>
