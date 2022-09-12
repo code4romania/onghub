@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
   NotImplementedException,
 } from '@nestjs/common';
@@ -30,6 +31,7 @@ import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class ApplicationService {
+  private readonly logger = new Logger(ApplicationService.name);
   constructor(
     private readonly applicationRepository: ApplicationRepository,
     private readonly ongApplicationService: OngApplicationService,
@@ -48,16 +50,28 @@ export class ApplicationService {
     }
 
     if (logo && logo.length > 0) {
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        `${APPLICATIONS_FILES_DIR}`,
-        logo,
-        createApplicationDto.name,
-      );
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${APPLICATIONS_FILES_DIR}`,
+          logo,
+          createApplicationDto.name,
+        );
 
-      createApplicationDto = {
-        ...createApplicationDto,
-        logo: uploadedFile[0],
-      };
+        createApplicationDto = {
+          ...createApplicationDto,
+          logo: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...APPLICATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        throw new BadRequestException({
+          ...APPLICATION_ERRORS.UPLOAD,
+          error: err,
+        });
+      }
     }
 
     return this.applicationRepository.save({
@@ -166,12 +180,24 @@ export class ApplicationService {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
     }
 
-    return applicationWithDetails as any;
+    // generate public url for logo
+    let logo = null;
+    if (applicationWithDetails.logo) {
+      logo = await this.fileManagerService.generatePresignedURL(
+        applicationWithDetails.logo,
+      );
+    }
+
+    return {
+      ...applicationWithDetails,
+      logo,
+    };
   }
 
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
+    logo: Express.Multer.File[],
   ): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },
@@ -181,6 +207,35 @@ export class ApplicationService {
       throw new NotFoundException({
         ...APPLICATION_ERRORS.GET,
       });
+    }
+
+    // check for logo and update
+    if (application.logo && logo && logo.length > 0) {
+      try {
+        await this.fileManagerService.deleteFiles([application.logo]);
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${APPLICATIONS_FILES_DIR}`,
+          logo,
+          application.name,
+        );
+
+        return this.applicationRepository.save({
+          id,
+          ...updateApplicationDto,
+          logo: uploadedFile[0],
+        });
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...APPLICATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        throw new BadRequestException({
+          ...APPLICATION_ERRORS.UPLOAD,
+          error: err,
+        });
+      }
     }
 
     return this.applicationRepository.save({

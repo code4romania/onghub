@@ -9,6 +9,10 @@ export const APPLICATION_ERRORS = {
     message: 'Application Not Found',
     errorCode: 'APP_002',
   },
+  UPLOAD: {
+    message: 'Error while uploading logo',
+    errorCode: 'APP_003',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {

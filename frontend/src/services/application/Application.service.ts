@@ -16,27 +16,22 @@ export const createApplication = (
   createApplicationDto: CreateApplicationDto,
   logo: File,
 ): Promise<Application> => {
-  const { steps, ...data } = createApplicationDto;
-  // create form data payload
-  const payload = new FormData();
-  for (const prop in cleanupPayload(data)) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    payload.append(prop, (data as any)[prop] as string);
-  }
-  // map steps correcly as array
-  steps.forEach((step: { item: string }) => {
-    payload.append('steps[]', step.item);
-  });
-
-  // check if logo was attached and add file
-  if (logo) {
-    payload.append('logo', logo);
-  }
-
+  const payload = generateApplicationFormDataPayload(createApplicationDto, logo);
   // send request
   return API.post(`/application`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res: AxiosResponse<Application>) => res.data);
+};
+
+export const updateApplication = (
+  applicationId: string,
+  applicationUpdatePayload: Partial<CreateApplicationDto>,
+  logo: File,
+): Promise<Application> => {
+  const payload = generateApplicationFormDataPayload(applicationUpdatePayload, logo);
+  return API.patch(`/application/${applicationId}`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
 };
 
 export const getApplications = async (
@@ -83,11 +78,27 @@ export const getApplicationById = (applicationId: string): Promise<Application> 
   return API.get(`/application/${applicationId}`).then((res) => res.data);
 };
 
-export const patchApplication = (
-  applicationId: string,
-  applicationUpdatePayload: Partial<Application>,
-): Promise<Application> => {
-  return API.patch(`/application/${applicationId}`, applicationUpdatePayload).then(
-    (res) => res.data,
-  );
+const generateApplicationFormDataPayload = (
+  applicationDto: Partial<CreateApplicationDto>,
+  logo: File,
+): FormData => {
+  // we remove the logo and steps
+  const { steps, ...data } = applicationDto;
+  // create form data payload
+  const payload = new FormData();
+  for (const prop in cleanupPayload(data)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.append(prop, (data as any)[prop] as string);
+  }
+  // map steps correcly as array
+  steps?.forEach((step: { item: string }) => {
+    payload.append('steps[]', step.item);
+  });
+
+  // check if logo was attached and add file
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  return payload;
 };

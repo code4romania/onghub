@@ -9,7 +9,7 @@ import {
   getApplications,
   getMyOngApplications,
   getOngApplications,
-  patchApplication,
+  updateApplication,
 } from './Application.service';
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
@@ -82,9 +82,11 @@ export const useUpdateApplicationMutation = () => {
     ({
       applicationId,
       applicationUpdatePayload,
+      logo,
     }: {
       applicationId: string;
-      applicationUpdatePayload: Partial<Application>;
-    }) => patchApplication(applicationId, applicationUpdatePayload),
+      applicationUpdatePayload: Partial<CreateApplicationDto>;
+      logo: File;
+    }) => updateApplication(applicationId, applicationUpdatePayload, logo),
   );
 };

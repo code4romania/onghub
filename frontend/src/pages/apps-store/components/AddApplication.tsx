@@ -26,23 +26,6 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const [readonly, setReadonly] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
-
-  const { selectedApplication: application } = useSelectedApplication();
-
-  // Create Mutation
-  const {
-    mutateAsync: mutateApplication,
-    error: createApplicationError,
-    isLoading: createApplicationLoading,
-  } = useCreateApplicationMutation();
-
-  // Edit Mutation
-  const {
-    mutateAsync: updateApplication,
-    error: updateApplicationError,
-    isLoading: updateApplicationLoading,
-  } = useUpdateApplicationMutation();
-
   // React Hook Form
   const {
     handleSubmit,
@@ -54,14 +37,34 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-
   const { fields, append, remove } = useFieldArray<CreateApplicationDto>({
     control,
     name: 'steps',
   });
-
   // watchers
   const type = watch('type');
+
+  const { selectedApplication: application } = useSelectedApplication();
+  // Create Mutation
+  const {
+    mutateAsync: mutateApplication,
+    error: createApplicationError,
+    isLoading: createApplicationLoading,
+  } = useCreateApplicationMutation();
+  // Edit Mutation
+  const {
+    mutateAsync: updateApplication,
+    error: updateApplicationError,
+    isLoading: updateApplicationLoading,
+  } = useUpdateApplicationMutation();
+
+  useEffect(() => {
+    if (!edit) {
+      reset({
+        steps: [{ item: '' }],
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (application) {
@@ -73,45 +76,51 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     }
   }, [application]);
 
+  useEffect(() => {
+    if (createApplicationError) {
+      useErrorToast('Eroare la crearea aplicatiei');
+    }
+
+    if (updateApplicationError) {
+      useErrorToast('Eroare la editarea aplicatiei');
+    }
+  }, [createApplicationError, updateApplicationError]);
+
   const handleSave = async (data: CreateApplicationDto) => {
-    await mutateApplication({ application: data, logo: file as File });
-    useSuccessToast('Aplicatie modificata cu succes!');
-    navigate('/store');
+    await mutateApplication(
+      { application: data, logo: file as File },
+      {
+        onSuccess: () => {
+          useSuccessToast('Aplicatie adaugata cu succes!');
+          navigate('/store');
+        },
+      },
+    );
   };
 
-  const handleEdit = async (data: any) => {
+  const handleEdit = async (data: Partial<CreateApplicationDto>) => {
+    // don't set the logo path
+    const { logo, ...payload } = data;
     if (application) {
-      const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-      await updateApplication({
-        applicationId: application?.id?.toString(),
-        applicationUpdatePayload: dto,
-      });
-      useSuccessToast('Aplicatie modificata cu succes!');
-      navigate(-1);
+      await updateApplication(
+        {
+          applicationId: application.id?.toString(),
+          applicationUpdatePayload: payload,
+          logo: file as File,
+        },
+        {
+          onSuccess: () => {
+            useSuccessToast('Aplicatie modificata cu succes!');
+            navigate(-1);
+          },
+        },
+      );
     }
   };
 
   const startEdit = () => {
     setReadonly(false);
   };
-
-  useEffect(() => {
-    if (!edit) {
-      reset({
-        steps: [{ item: '' }],
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (createApplicationError) {
-      useErrorToast((createApplicationError as any)?.response?.data.message);
-    }
-
-    if (updateApplicationError) {
-      useErrorToast((createApplicationError as any)?.response?.data.message);
-    }
-  }, [createApplicationError, updateApplicationError]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {

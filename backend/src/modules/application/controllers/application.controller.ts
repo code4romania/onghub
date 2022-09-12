@@ -64,13 +64,16 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'logo', maxCount: 1 }]))
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UpdateApplicationDto })
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateApplicationDto: UpdateApplicationDto,
+    @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ) {
-    return this.applicationService.update(+id, updateApplicationDto);
+    return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
