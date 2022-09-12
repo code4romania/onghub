@@ -13,6 +13,10 @@ export const APPLICATION_ERRORS = {
     message: 'Error while uploading logo',
     errorCode: 'APP_003',
   },
+  GENERATE_URL: {
+    message: 'Error while generating url',
+    errorCode: 'APP_004',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {

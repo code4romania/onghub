@@ -104,7 +104,7 @@ export class ApplicationService {
   public async findAllForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
@@ -114,6 +114,8 @@ export class ApplicationService {
         { organizationId },
       )
       .execute();
+
+    return this.mapLogoToApplications(applications);
   }
 
   /**
@@ -126,7 +128,7 @@ export class ApplicationService {
   public async findAllForOngUser(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
@@ -139,6 +141,8 @@ export class ApplicationService {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
       .execute();
+
+    return this.mapLogoToApplications(applications);
   }
 
   /**
@@ -271,5 +275,39 @@ export class ApplicationService {
   // TODO: To be implemented
   public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
+  }
+
+  /**
+   * @description
+   * Map public files URLS for all applications which have logo as path
+   */
+  private async mapLogoToApplications(
+    applications: ApplicationWithOngStatus[],
+  ): Promise<ApplicationWithOngStatus[]> {
+    try {
+      const applicationsWithLogo = applications.map(
+        async (app: ApplicationWithOngStatus) => {
+          if (app.logo !== null) {
+            const logo = await this.fileManagerService.generatePresignedURL(
+              app.logo,
+            );
+            return { ...app, logo };
+          }
+          return app;
+        },
+      );
+
+      return Promise.all(applicationsWithLogo);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_ERRORS.GENERATE_URL,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_ERRORS.GENERATE_URL,
+        error: err,
+      });
+    }
   }
 }
