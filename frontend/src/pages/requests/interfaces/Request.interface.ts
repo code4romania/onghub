@@ -1,11 +1,21 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
+import { Application } from '../../../services/application/interfaces/Application.interface';
 import { IOrganizationFull } from '../../organization/interfaces/Organization.interface';
-import { IUser } from '../../users/interfaces/User.interface';
 import { RequestStatus } from '../enum/RequestStatus.enum';
 
-export interface IRequest extends BaseEntity {
+export interface IOrganizationRequest extends BaseEntity {
   status: RequestStatus;
-  user: IUser;
+  email: string;
+  phone: string;
+  name: string;
+  organizationName: string;
   organization: IOrganizationFull;
-  createdOn: string;
+}
+
+export interface IApplicationRequest extends BaseEntity {
+  status: RequestStatus;
+  organizationId: number;
+  organization: Partial<IOrganizationFull>;
+  applicationId: number;
+  application: Partial<Application>;
 }

@@ -55,6 +55,16 @@ export const ORGANIZATION_ERRORS = {
     message: 'Organization is already ACTIVE',
     errorCode: 'ORG_013',
   },
+  DELETE: {
+    NOT_PENDING: {
+      message: 'Can only delete pending organizations',
+      errorCode: 'ORG_014',
+    },
+    ONG: {
+      message: 'Error while deleting the organization',
+      errorCode: 'ORG_015',
+    },
+  },
 };
 
 export const PARTNER_ERRORS = {
@@ -68,5 +78,34 @@ export const INVESTOR_ERRORS = {
   GET: {
     message: 'Investor not found',
     errorCode: 'INV_001',
+  },
+};
+
+export const ORGANIZATION_REQUEST_ERRORS = {
+  CREATE: {
+    USER_EXISTS: {
+      message: 'User email already exists.',
+      errorCode: 'REQ_001',
+    },
+    REQ_EXISTS: {
+      message: 'There is already a pending request with the same data.',
+      errorCode: 'REQ_002',
+    },
+  },
+  UPDATE: {
+    NOT_PENDING: {
+      message: 'Could not update a Request with other status than pending.',
+      errorCode: 'REQ_003',
+    },
+    REQUEST: {
+      message: 'Could not update request.',
+      errorCode: 'REQ_005',
+    },
+  },
+  GET: {
+    NOT_FOUND: {
+      message: 'Request not found',
+      errorCode: 'REQ_004',
+    },
   },
 };

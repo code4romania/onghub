@@ -8,6 +8,7 @@ import { OrganizationFinancial } from './organization-financial.entity';
 import { OrganizationGeneral } from './organization-general.entity';
 import { OrganizationLegal } from './organization-legal.entity';
 import { OrganizationReport } from './organization-report.entity';
+import { OrganizationRequest } from './organization-request.entity';
 
 @Entity()
 export class Organization extends BaseEntity {
@@ -37,7 +38,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationGeneral,
     (organizationGeneral) => organizationGeneral.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_general_id' })
   organizationGeneral: OrganizationGeneral;
@@ -53,7 +54,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationActivity,
     (organizationActivity) => organizationActivity.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_activity_id' })
   organizationActivity: OrganizationActivity;
@@ -69,7 +70,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationLegal,
     (organizationLegal) => organizationLegal.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
@@ -77,7 +78,7 @@ export class Organization extends BaseEntity {
   @OneToMany(
     () => OrganizationFinancial,
     (organizationFinancial) => organizationFinancial.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_financial_id' })
   organizationFinancial: OrganizationFinancial[];
@@ -93,11 +94,16 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.organization,
-    { cascade: true },
+    { cascade: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'organization_report_id' })
   organizationReport: OrganizationReport;
 
   @OneToMany((type) => User, (user) => user.organization)
   users: User[];
+
+  @OneToMany((type) => OrganizationRequest, (request) => request.organization, {
+    onDelete: 'SET NULL',
+  })
+  requests: OrganizationRequest[];
 }

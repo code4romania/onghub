@@ -6,40 +6,40 @@ import {
   RequestStatusBadgeMapper,
   REQUEST_STATUS_NAME,
 } from '../constants/RequestStatus.constants';
-import { IRequest } from '../interfaces/Request.interface';
+import { IOrganizationRequest } from '../interfaces/Request.interface';
 
-export const RequestListTableHeaders: TableColumn<IRequest>[] = [
+export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   {
-    id: 'organization',
+    id: 'organizationName',
     name: 'Organizatie',
-    sortable: false,
-    selector: (row: IRequest) => row.organization.organizationGeneral?.name,
+    sortable: true,
+    selector: (row: IOrganizationRequest) => row.organizationName,
     grow: 3,
   },
   {
     id: 'name',
     name: 'Nume',
     sortable: false,
-    selector: (row: IRequest) => row.user.name,
+    selector: (row: IOrganizationRequest) => row.name,
   },
   {
     id: 'email',
     name: 'Email',
     sortable: false,
-    selector: (row: IRequest) => row.user.email,
+    selector: (row: IOrganizationRequest) => row.email,
   },
   {
     id: 'phone',
     name: 'Telefon',
     sortable: false,
-    selector: (row: IRequest) => row.user.phone,
+    selector: (row: IOrganizationRequest) => row.phone,
   },
   {
     id: 'status',
     sortable: true,
     sortField: 'status',
     name: 'Status',
-    cell: (row: IRequest) => (
+    cell: (row: IOrganizationRequest) => (
       <StatusBadge
         status={RequestStatusBadgeMapper(row.status)}
         value={REQUEST_STATUS_NAME[row.status] || 'Status errorr'}
@@ -50,6 +50,6 @@ export const RequestListTableHeaders: TableColumn<IRequest>[] = [
     id: 'createdOn',
     name: 'Data adaugarii',
     sortable: true,
-    selector: (row: IRequest) => formatDate(row?.createdOn as string),
+    selector: (row: IOrganizationRequest) => formatDate(row?.createdOn as string),
   },
 ];

@@ -26,16 +26,16 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
 
-  const { application } = useSelectedApplication();
+  const { selectedApplication: application } = useSelectedApplication();
 
-  // Mutation
+  // Create Mutation
   const {
     mutateAsync: mutateApplication,
     error: createApplicationError,
     isLoading: createApplicationLoading,
   } = useCreateApplicationMutation();
 
-  // Mutation
+  // Edit Mutation
   const {
     mutateAsync: updateApplication,
     error: updateApplicationError,
@@ -54,7 +54,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     reValidateMode: 'onChange',
   });
 
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'steps',
   });
@@ -63,15 +63,17 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const type = watch('type');
 
   useEffect(() => {
-    console.log(application);
     if (application) {
-      reset({ ...application, steps: application.steps.map((step) => ({ step })) });
+      reset({
+        ...application,
+        steps: application.steps.map((step) => ({ step })),
+      });
     }
   }, [application]);
 
   const handleSave = async (data: any) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-    const res = await mutateApplication(dto);
+    await mutateApplication(dto);
     useSuccessToast('Aplicatie modificata cu succes!');
     navigate('/store');
   };
@@ -79,7 +81,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
   const handleEdit = async (data: any) => {
     if (application) {
       const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
-      const res = await updateApplication({
+      await updateApplication({
         applicationId: application?.id?.toString(),
         applicationUpdatePayload: dto,
       });
@@ -102,11 +104,11 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   useEffect(() => {
     if (createApplicationError) {
-      useErrorToast(createApplicationError as string);
+      useErrorToast((createApplicationError as any)?.response?.data.message);
     }
 
     if (updateApplicationError) {
-      useErrorToast(createApplicationError as string);
+      useErrorToast((createApplicationError as any)?.response?.data.message);
     }
   }, [createApplicationError, updateApplicationError]);
 
@@ -174,12 +176,14 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                     );
                   }}
                 />
-                <RadioGroup
-                  control={control}
-                  readonly={readonly}
-                  errors={errors[AddAppConfig.type.key]}
-                  config={AddAppConfig.type}
-                />
+                {!edit && (
+                  <RadioGroup
+                    control={control}
+                    readonly={readonly}
+                    errors={errors[AddAppConfig.type.key]}
+                    config={AddAppConfig.type}
+                  />
+                )}
                 <Controller
                   key={AddAppConfig.shortDescription.key}
                   name={AddAppConfig.shortDescription.key}
@@ -240,6 +244,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                     );
                   }}
                 />
+                {/* Website-urile independente nu au LINK de login. */}
                 {type !== ApplicationTypeEnum.INDEPENDENT && (
                   <Controller
                     key={AddAppConfig.loginLink.key}

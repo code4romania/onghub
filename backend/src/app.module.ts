@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -18,7 +18,6 @@ import { UserModule } from './modules/user/user.module';
 import { AuthenticationModule } from './modules/authentication/auth.module';
 import { JwtAuthGuard } from './modules/authentication/jwt-auth.guard';
 import { UserStatusGuard } from './common/guards/user-status.guard';
-import { RequestsModule } from './modules/requests/requests.module';
 import { RolesGuard } from './common/guards/roles.guard';
 
 @Module({
@@ -36,13 +35,12 @@ import { RolesGuard } from './common/guards/roles.guard';
     QueueProviderModule,
 
     // Business modules
-    OrganizationModule,
     MailModule,
     SharedModule,
-    ApplicationModule,
     UserModule,
     AuthenticationModule,
-    RequestsModule,
+    ApplicationModule,
+    OrganizationModule,
   ],
   providers: [
     {

@@ -47,11 +47,6 @@ export const AddAppConfig: Record<string, any> = {
         value: ApplicationTypeEnum.INDEPENDENT,
       },
       {
-        label: ApplicationTypeNaming[ApplicationTypeEnum.DATA_PULLING],
-        name: 'type',
-        value: ApplicationTypeEnum.DATA_PULLING,
-      },
-      {
         label: ApplicationTypeNaming[ApplicationTypeEnum.SIMPLE],
         name: 'type',
         value: ApplicationTypeEnum.SIMPLE,
@@ -81,7 +76,7 @@ export const AddAppConfig: Record<string, any> = {
     },
     config: {
       type: 'text',
-      label: 'Descriere scurta',
+      label: 'Descriere scurta*',
       helperText: 'Maximum 250 de caractere',
       placeholder: '',
     },
@@ -112,6 +107,10 @@ export const AddAppConfig: Record<string, any> = {
   website: {
     key: 'website',
     rules: {
+      required: {
+        value: true,
+        message: 'Website is required.',
+      },
       pattern: {
         value: URL_REGEX,
         message: 'URL format must be valid',
@@ -132,6 +131,10 @@ export const AddAppConfig: Record<string, any> = {
         value: URL_REGEX,
         message: 'URL format must be valid',
       },
+      required: {
+        value: true,
+        message: 'Login link is required.',
+      },
     },
     config: {
       type: 'text',
@@ -144,6 +147,10 @@ export const AddAppConfig: Record<string, any> = {
   videoLink: {
     key: 'videoLink',
     rules: {
+      required: {
+        value: true,
+        message: 'Video link is required.',
+      },
       pattern: {
         value: URL_REGEX,
         message: 'URL format must be valid',
@@ -152,7 +159,8 @@ export const AddAppConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: 'Link video prezentare*',
-      helperText: '',
+      helperText:
+        'URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)',
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
@@ -163,10 +171,6 @@ export const AddAppConfig: Record<string, any> = {
       required: {
         value: true,
         message: 'Step is required.',
-      },
-      pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: 'Format must be valid',
       },
     },
     config: {

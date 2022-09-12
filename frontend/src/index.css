@@ -106,3 +106,11 @@
 .Toastify__toast-theme--colored.Toastify__toast--error {
   @apply bg-red-500 !important;
 }
+
+.Application__Card__Description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}

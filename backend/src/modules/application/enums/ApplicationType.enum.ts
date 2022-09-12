@@ -1,6 +1,6 @@
 export enum ApplicationTypeEnum {
-  INDEPENDENT = 'independent',
-  DATA_PULLING = 'data_pulling',
-  SIMPLE = 'simple',
-  STANDALONE = 'standalone',
+  INDEPENDENT = 'independent', // w/o LOGIN
+  DATA_PULLING = 'data_pulling', // Pulling data from ONG Hub
+  SIMPLE = 'simple', // Simple login
+  STANDALONE = 'standalone', // Configured on premise on the client's infrastructure
 }

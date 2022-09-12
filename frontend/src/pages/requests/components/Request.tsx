@@ -10,9 +10,9 @@ import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
 import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import {
-  useApproveRequestMutation,
-  useRejectRequestMutation,
-  useRequest,
+  useApproveOrganizationRequestMutation,
+  useRejectOrganizationRequestMutation,
+  useOrganizationRequest,
 } from '../../../services/request/Request.queries';
 import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
@@ -22,7 +22,6 @@ const Request = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
   const [selectedTab, setSelectedTab] = useState(0);
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
@@ -31,24 +30,19 @@ const Request = () => {
   useCountiesQuery();
 
   // load organization data
-  const {
-    data: request,
-    error,
-    refetch,
-    isLoading: dataLoading,
-  } = useRequest(params.id ? params?.id : '');
+  const { data: request, error, isLoading: dataLoading } = useOrganizationRequest(id || '');
 
   // apporve & reject
   const {
     mutateAsync: approveMutate,
     error: approveError,
     isLoading: approveLoading,
-  } = useApproveRequestMutation();
+  } = useApproveOrganizationRequestMutation();
   const {
     mutateAsync: rejectMutate,
     error: rejectError,
     isLoading: rejectLoading,
-  } = useRejectRequestMutation();
+  } = useRejectOrganizationRequestMutation();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -76,7 +70,7 @@ const Request = () => {
     await approveMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests');
+        navigate('/requests', { replace: true });
       },
       onSettled: () => {
         setApproveModalOpen(false);
@@ -88,7 +82,7 @@ const Request = () => {
     await rejectMutate(id as string, {
       onSuccess: () => {
         useSuccessToast('Status actualizat.');
-        navigate('/requests');
+        navigate('/requests', { replace: true });
       },
       onSettled: () => {
         setApproveModalOpen(false);
