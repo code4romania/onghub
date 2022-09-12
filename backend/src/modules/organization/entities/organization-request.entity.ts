@@ -13,6 +13,6 @@ export class OrganizationRequest extends Request {
   @Column({ type: 'varchar', name: 'phone' })
   phone: string;
 
-  @Column({ type: 'varchar', name: 'organization_name', nullable: true })
+  @Column({ type: 'varchar', name: 'organization_name' })
   organizationName: string;
 }
