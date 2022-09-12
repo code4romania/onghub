@@ -3,6 +3,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { ISendMailOptions } from '@nestjs-modules/mailer';
+import { MAIL_TEMPLATES } from '../enums/mail-type.enum';
 
 @Injectable()
 export class MailService {
