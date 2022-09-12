@@ -4,7 +4,7 @@ import logo from './../../assets/images/logo.svg';
 import profileImg from './../../assets/images/profile.svg';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { Menu, Transition } from '@headlessui/react';
-import { CogIcon, LogoutIcon } from '@heroicons/react/outline';
+import { CogIcon, LogoutIcon, MenuIcon } from '@heroicons/react/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
@@ -18,9 +18,18 @@ const Header = () => {
   return (
     <header className="bg-white">
       <nav className=" px-10  py-4" aria-label="Top">
-        <div className="w-full flex items-center justify-between">
-          <div className="flex items-center">
-            <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
+        <div className="w-full flex gap-4 justify-between items-center">
+          <div className="flex gap-4">
+            {isAuthenticated && (
+              <div className="flex sm:hidden items-center">
+                <button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                  <MenuIcon className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+            <div className="flex items-center">
+              <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
+            </div>
           </div>
           {!isAuthenticated && !isRestricted && (
             <button

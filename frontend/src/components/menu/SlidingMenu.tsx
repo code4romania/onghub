@@ -9,7 +9,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
 
 export default function Example() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useContext(AuthContext);
