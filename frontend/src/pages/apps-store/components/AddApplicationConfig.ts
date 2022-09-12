@@ -133,7 +133,7 @@ export const AddAppConfig: Record<string, any> = {
       },
       required: {
         value: true,
-        message: 'Login lik is required.',
+        message: 'Login link is required.',
       },
     },
     config: {
@@ -149,7 +149,7 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Vide link is required.',
+        message: 'Video link is required.',
       },
       pattern: {
         value: URL_REGEX,

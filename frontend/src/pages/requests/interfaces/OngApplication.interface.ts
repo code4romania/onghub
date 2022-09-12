@@ -11,7 +11,7 @@ export interface OngApplication {
   organizationId: number;
   organization: IOrganization;
 
-  applicaiontId: number;
+  applicationId: number;
   application: Application;
 
   status: OngApplicationStatus;

@@ -9,8 +9,8 @@ import { ApplicationWithOngStatus } from '../../../services/application/interfac
 import { useOngApplications } from '../../../store/selectors';
 import ApplicationCard from '../../my-apps/components/ApplicationCard';
 
-const ApplicationListCards = ({ ong }: { ong?: boolean }) => {
-  const { isLoading, error } = ong ? useMyOngApplicationsQuery() : useOngApplicationsQuery();
+const ApplicationListCards = ({ isOngView }: { isOngView?: boolean }) => {
+  const { isLoading, error } = isOngView ? useMyOngApplicationsQuery() : useOngApplicationsQuery();
   const { ongApplications: applications } = useOngApplications();
 
   useEffect(() => {

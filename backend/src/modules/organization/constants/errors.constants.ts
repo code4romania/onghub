@@ -60,6 +60,10 @@ export const ORGANIZATION_ERRORS = {
       message: 'Can only delete pending organizations',
       errorCode: 'ORG_014',
     },
+    ONG: {
+      message: 'Error while deleting the organization',
+      errorCode: 'ORG_015',
+    },
   },
 };
 

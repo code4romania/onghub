@@ -14,7 +14,10 @@ import { RequestStatus } from '../../organization/enums/request-status.enum';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { APPLICATION_REQUEST_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { ApplicationRepository } from '../repositories/application.repository';
-import { APPLICATION_REQUEST_ERRORS } from '../constants/application-error.constants';
+import {
+  APPLICATION_ERRORS,
+  APPLICATION_REQUEST_ERRORS,
+} from '../constants/application-error.constants';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 @Injectable()
@@ -29,11 +32,15 @@ export class ApplicationRequestService {
   public async create(
     organizationId: number,
     applicationId: number,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     // 1. check if application is active
     const application = await this.applicationRepository.get({
       where: { id: applicationId },
     });
+
+    if (!application) {
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
+    }
 
     if (application.status !== ApplicationStatus.ACTIVE) {
       throw new BadRequestException({
@@ -73,7 +80,7 @@ export class ApplicationRequestService {
       });
     }
 
-    // 4. create request app - only for independent app the status is pending
+    // 4. create request app - only for STANDALONE app the status is pending, the rest are active by default
     await this.ongApplicationService.create(
       organizationId,
       applicationId,
@@ -82,26 +89,26 @@ export class ApplicationRequestService {
         : OngApplicationStatus.ACTIVE,
     );
 
-    if (application.type === ApplicationTypeEnum.STANDALONE) {
-      try {
-        // 5. create pending request
-        await this.applicationRequestRepository.save({
-          organizationId,
-          applicationId,
-        });
+    if (application.type !== ApplicationTypeEnum.STANDALONE) {
+      return;
+    }
 
-        return { success: true };
-      } catch (error) {
-        this.logger.error({
-          error: { error },
-          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
-        });
-        const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
-          error: err,
-        });
-      }
+    try {
+      // 5. create pending request
+      await this.applicationRequestRepository.save({
+        organizationId,
+        applicationId,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_REQUEST_ERRORS.CREATE.REQUEST,
+        error: err,
+      });
     }
   }
 
@@ -119,21 +126,19 @@ export class ApplicationRequestService {
     );
   }
 
-  public async approve(requestId: number): Promise<{ success: boolean }> {
+  public async approve(requestId: number): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { id: requestId },
     });
 
     if (!request) {
-      throw new NotFoundException({
-        ...APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND,
-      });
+      throw new NotFoundException(APPLICATION_REQUEST_ERRORS.GET.NOT_FOUND);
     }
 
     if (request.status !== RequestStatus.PENDING) {
-      throw new BadRequestException({
-        ...APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
-      });
+      throw new BadRequestException(
+        APPLICATION_REQUEST_ERRORS.UPDATE.NOT_PENDING,
+      );
     }
 
     await this.ongApplicationService.update(
@@ -143,11 +148,9 @@ export class ApplicationRequestService {
     );
 
     await this.update(requestId, RequestStatus.APPROVED);
-
-    return { success: true };
   }
 
-  public async reject(requestId: number): Promise<{ success: boolean }> {
+  public async reject(requestId: number): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { id: requestId },
     });
@@ -170,14 +173,12 @@ export class ApplicationRequestService {
     );
 
     await this.update(requestId, RequestStatus.DECLINED);
-
-    return { success: true };
   }
 
   public async abandon(
     applicationId: number,
     organizationId: number,
-  ): Promise<{ success: boolean }> {
+  ): Promise<void> {
     const request = await this.applicationRequestRepository.get({
       where: { applicationId, organizationId, status: RequestStatus.PENDING },
     });
@@ -193,9 +194,7 @@ export class ApplicationRequestService {
       organizationId,
     );
 
-    this.delete(request.id);
-
-    return { success: true };
+    await this.delete(request.id);
   }
 
   private async update(
