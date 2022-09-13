@@ -1,3 +1,4 @@
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
@@ -8,7 +9,7 @@ export interface ApplicationWithOngStatus {
   shortDescription: string;
   loginLink: string;
   website: string;
-  status: OngApplicationStatus;
+  status: OngApplicationStatus | ApplicationStatus;
   type: ApplicationTypeEnum;
 }
 

@@ -28,6 +28,7 @@ import {
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -115,7 +116,9 @@ export class ApplicationService {
       )
       .execute();
 
-    return this.mapLogoToApplications(applications);
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
   }
 
   /**
@@ -142,7 +145,9 @@ export class ApplicationService {
       })
       .execute();
 
-    return this.mapLogoToApplications(applications);
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
   }
 
   /**
@@ -171,6 +176,7 @@ export class ApplicationService {
         'application.login_link as "loginLink"',
         'application.video_link as "videoLink"',
         'application.management_url as "managementUrl"',
+        'application.status as "applicationStatus"',
       ])
       .leftJoin(
         'ong_application',
@@ -193,10 +199,10 @@ export class ApplicationService {
       );
     }
 
-    return {
+    return this.mapApplicationStatus({
       ...applicationWithDetails,
       logo,
-    };
+    }) as ApplicationWithOngStatusDetails;
   }
 
   public async update(
@@ -310,5 +316,31 @@ export class ApplicationService {
         error: err,
       });
     }
+  }
+
+  /**
+   * @description
+   * Map correct application status meaning that if the application status meaning that if an ong application has an active staus but the application itself is disabeled
+   * the user will receive the disabled status.
+   *
+   * The ong application restricted status will always overcome the application disabled status as the user dosen't need to know if the application is disabled as long as he is restricted from using it.
+   */
+  private mapApplicationStatus(
+    application: ApplicationWithOngStatus & {
+      applicationStatus: ApplicationStatus;
+    },
+  ): ApplicationWithOngStatus | ApplicationWithOngStatusDetails {
+    const { applicationStatus, status, ...applicationRemains } = application;
+
+    const finalStatus =
+      applicationStatus === ApplicationStatus.DISABLED &&
+      status !== OngApplicationStatus.RESTRICTED
+        ? ApplicationStatus.DISABLED
+        : status;
+
+    return {
+      ...applicationRemains,
+      status: finalStatus,
+    };
   }
 }

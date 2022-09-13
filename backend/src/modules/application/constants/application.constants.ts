@@ -6,6 +6,7 @@ export const ORGANIZATION_ALL_APPS_COLUMNS = [
   'application.login_link as "loginLink"',
   'application.website as website',
   'ongApp.status as status',
+  'application.status as "applicationStatus"',
   'application.type as type',
 ];
 
