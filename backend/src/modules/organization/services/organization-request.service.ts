@@ -14,6 +14,8 @@ import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
 import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
+import { MailService } from 'src/mail/services/mail.service';
+import { MAIL_TEMPLATES, MAIL_ADDRESSES } from 'src/mail/enums/mail.enum';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -23,6 +25,7 @@ export class OrganizationRequestService {
     private readonly organizationRequestRepository: OrganizationRequestRepository,
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
+    private readonly mailService: MailService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -109,6 +112,26 @@ export class OrganizationRequestService {
         createReqDto.organization,
       );
 
+      // Mail notifications
+      // Admin
+      const mailOptionsAdmin = {
+        to: createReqDto.admin.email,
+        from: MAIL_ADDRESSES.NOTIF,
+        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
+      };
+      this.mailService.sendEmail(mailOptionsAdmin);
+
+      // Super-Admin
+      const superAdmin = await this.userService.findOne({
+        where: { role: 'super-admin' },
+      });
+      const mailOptionsSuper = {
+        to: superAdmin.email,
+        from: MAIL_ADDRESSES.NOTIF,
+        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
+      };
+      this.mailService.sendEmail(mailOptionsSuper);
+
       return this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
@@ -147,6 +170,13 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.APPROVED);
     // TODO 5. Send email with approval
 
+    const mailOptions = {
+      to: email,
+      from: MAIL_ADDRESSES.NOTIF,
+      template: MAIL_TEMPLATES.ORGANIZATION_APPROVAL,
+    };
+    this.mailService.sendEmail(mailOptions);
+
     return this.find(requestId);
   }
 
@@ -169,6 +199,12 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // TODO: 4. Send rejection by email
+    const mailOptions = {
+      to: found.email,
+      from: MAIL_ADDRESSES.NOTIF,
+      template: MAIL_TEMPLATES.ORGANIZATION_REJECTION,
+    };
+    this.mailService.sendEmail(mailOptions);
 
     return this.find(requestId);
   }
