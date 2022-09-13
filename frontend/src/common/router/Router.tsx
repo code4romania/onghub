@@ -37,9 +37,10 @@ import ApplicationRequests from '../../pages/apps-store/components/ApplicationRe
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import EditApplication from '../../pages/apps-store/components/EditApplication';
+import ApplicationWithOngList from '../../pages/application/ApplicationWithOngList';
 
 const Router = () => {
-  const { isAuthenticated, isRestricted } = useAuthContext();
+  const { isAuthenticated, isRestricted, role } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -90,22 +91,28 @@ const Router = () => {
           <Route path="user" element={<UserCreate />} />
           <Route path="user/:id" element={<UserEdit />} />
 
-          <Route path={'application/:id'} element={<Application />}>
-            <Route index element={<Navigate to={'details'}></Navigate>} />
-            <Route path="details" element={<ApplicationDetails />} />
-            <Route path="installs" element={<ApplicationNGOList />} />
-          </Route>
+          {role === UserRole.SUPER_ADMIN ? (
+            <Route path={'application/:id'} element={<ApplicationWithOngList />}>
+              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route path="details" element={<ApplicationDetails />} />
+              <Route path="installs" element={<ApplicationNGOList />} />
+            </Route>
+          ) : (
+            <Route path={'application/:id'} element={<Application />}>
+              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route path="details" element={<ApplicationDetails />} />
+            </Route>
+          )}
 
           <Route path="application/:id/edit" element={<EditApplication />} />
-
-          <Route path="apps" element={<MyApps />}></Route>
 
           <Route path={'store'} element={<AllApplications />}>
             <Route index element={<ApplicationList />} />
             <Route path="requests" element={<ApplicationRequests />} />
           </Route>
-
           <Route path="store/new" element={<AddApplication />} />
+
+          <Route path="apps" element={<MyApps />}></Route>
 
           <Route path="account" element={<Account />} />
           <Route path="requests" element={<Requests />} />
