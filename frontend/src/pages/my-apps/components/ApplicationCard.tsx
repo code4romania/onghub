@@ -25,7 +25,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
 
   return (
     <div className="bg-white rounded-xl shadow flex flex-col gap-4 items-center justify-between w-80 h-[28rem] p-8">
-      <div className="w-full">
+      <div className="w-full max-h-[50%]">
         <img src={application.logo || logo} className="h-full w-full pt-10 pb-10"></img>
       </div>
       <div className="flex flex-col gap-4 w-full">
