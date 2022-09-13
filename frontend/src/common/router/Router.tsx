@@ -36,6 +36,7 @@ import ApplicationList from '../../pages/apps-store/components/ApplicationList';
 import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
+import EditApplication from '../../pages/apps-store/components/EditApplication';
 
 const Router = () => {
   const { isAuthenticated, isRestricted } = useAuthContext();
@@ -86,16 +87,16 @@ const Router = () => {
             <Route index element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
           </Route>
+          <Route path="user" element={<UserCreate />} />
+          <Route path="user/:id" element={<UserEdit />} />
 
           <Route path={'application/:id'} element={<Application />}>
             <Route index element={<Navigate to={'details'}></Navigate>} />
             <Route path="details" element={<ApplicationDetails />} />
             <Route path="installs" element={<ApplicationNGOList />} />
           </Route>
-          <Route path="application/:id/edit" element={<AddApplication edit={true} />} />
 
-          <Route path="user" element={<UserCreate />} />
-          <Route path="user/:id" element={<UserEdit />} />
+          <Route path="application/:id/edit" element={<EditApplication />} />
 
           <Route path="apps" element={<MyApps />}></Route>
 
@@ -103,6 +104,7 @@ const Router = () => {
             <Route index element={<ApplicationList />} />
             <Route path="requests" element={<ApplicationRequests />} />
           </Route>
+
           <Route path="store/new" element={<AddApplication />} />
 
           <Route path="account" element={<Account />} />

@@ -221,9 +221,11 @@ export class ApplicationService {
     }
 
     // check for logo and update
-    if (application.logo && logo && logo.length > 0) {
+    if (logo && logo.length > 0) {
       try {
-        await this.fileManagerService.deleteFiles([application.logo]);
+        if (application.logo) {
+          await this.fileManagerService.deleteFiles([application.logo]);
+        }
 
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,
