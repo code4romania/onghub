@@ -45,6 +45,9 @@ export class Application extends BaseEntity {
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
 
+  @Column({ type: 'text', name: 'management_url', nullable: true })
+  managementUrl: string;
+
   @OneToMany(() => OngApplication, (ongApp) => ongApp.application)
   ongApplications: OngApplication[];
 }

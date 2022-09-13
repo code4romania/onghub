@@ -7,6 +7,7 @@ export interface CreateApplicationDto {
   description: string;
   videoLink: string;
   loginLink: string;
+  managementUrl?: string;
   website: string;
   logo: string;
   steps: { item: string }[];

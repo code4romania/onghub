@@ -134,6 +134,6 @@ export const openInNewTab = (url: string): void => {
  */
 export const cleanupPayload = (payload: any) => {
   return Object.keys(payload)
-    .filter((k) => payload[k] !== null && payload[k] !== '' && payload[k] !== undefined)
+    .filter((k) => payload[k] !== null && payload[k] !== undefined)
     .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
 };

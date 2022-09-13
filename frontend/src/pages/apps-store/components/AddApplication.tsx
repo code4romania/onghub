@@ -137,7 +137,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
 
   return (
     <ContentWrapper
-      title={'Adauga aplicatie'}
+      title={edit ? 'Editeaza aplicatie' : 'Adauga aplicatie'}
       subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
       backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate(-1) }}
     >
@@ -289,6 +289,26 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
                           ...AddAppConfig.videoLink.config,
                           name: AddAppConfig.videoLink.key,
                           error: errors.videoLink?.message,
+                          defaultValue: value,
+                          onChange: onChange,
+                        }}
+                        readonly={readonly}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  key={AddAppConfig.managementUrl.key}
+                  name={AddAppConfig.managementUrl.key}
+                  rules={AddAppConfig.managementUrl.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <InputField
+                        config={{
+                          ...AddAppConfig.managementUrl.config,
+                          name: AddAppConfig.managementUrl.key,
+                          error: errors.managementUrl?.message,
                           defaultValue: value,
                           onChange: onChange,
                         }}

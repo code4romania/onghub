@@ -37,4 +37,5 @@ export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatu
   steps: string[];
   description: string;
   videoLink: string;
+  managementUrl?: string;
 }

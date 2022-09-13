@@ -170,6 +170,7 @@ export class ApplicationService {
         'application.website as website',
         'application.login_link as "loginLink"',
         'application.video_link as "videoLink"',
+        'application.management_url as "managementUrl"',
       ])
       .leftJoin(
         'ong_application',

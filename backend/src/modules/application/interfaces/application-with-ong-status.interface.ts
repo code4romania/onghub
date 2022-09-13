@@ -17,4 +17,5 @@ export interface ApplicationWithOngStatusDetails
   steps: string[];
   description: string;
   videoLink: string;
+  managementUrl: string;
 }
