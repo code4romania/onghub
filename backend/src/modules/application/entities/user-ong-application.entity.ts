@@ -24,7 +24,7 @@ export class UserOngApplication extends BaseEntity {
     type: 'enum',
     enum: UserOngApplicationStatus,
     name: 'status',
-    default: UserOngApplicationStatus.PENDING,
+    default: UserOngApplicationStatus.ACTIVE,
   })
   status: UserOngApplicationStatus;
 }

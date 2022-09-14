@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
 import InputField from '../../../../components/InputField/InputField';
+import { Loading } from '../../../../components/loading/Loading';
+import { useMyOngApplicationsQuery } from '../../../../services/application/Application.queries';
 import { useCreateUserMutation } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
@@ -13,6 +15,13 @@ import { UserCreateConfig } from './UserCreateConfig';
 const UserCreate = () => {
   const navigate = useNavigate();
   const { organization } = useSelectedOrganization();
+  const [access, setAccess] = useState<any>({});
+
+  const {
+    data: applications,
+    isLoading: isLoadingApplications,
+    error: ongApplicationsError,
+  } = useMyOngApplicationsQuery();
   const createUserMutation = useCreateUserMutation();
 
   const {
@@ -24,10 +33,20 @@ const UserCreate = () => {
     reValidateMode: 'onChange',
   });
 
+  useEffect(() => {
+    if (ongApplicationsError) {
+      useErrorToast(`Could not load applications`);
+    }
+  }, [ongApplicationsError]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
+    const applicationIds = Object.getOwnPropertyNames(access)
+      .map((accessId) => accessId)
+      .filter((accessId) => access[accessId]);
+
     createUserMutation.mutate(
-      { ...data, organizationId: organization?.id as number },
+      { ...data, organizationId: organization?.id as number, applicationIds },
       {
         onSuccess: () => {
           useSuccessToast('User successfully created');
@@ -122,7 +141,14 @@ const UserCreate = () => {
             </div>
           </form>
         </CardPanel>
-        <ApplicationAccessManagement />
+        {isLoadingApplications ? (
+          <Loading />
+        ) : (
+          <ApplicationAccessManagement
+            applications={applications || []}
+            onAccessChange={setAccess}
+          />
+        )}
       </div>
     </ContentWrapper>
   );

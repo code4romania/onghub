@@ -33,6 +33,7 @@ export class AdminUserController {
       email: body.email,
       name: body.name,
       phone: body.phone,
+      applicationIds: body.applicationIds,
       organizationId: body.organizationId,
     });
   }

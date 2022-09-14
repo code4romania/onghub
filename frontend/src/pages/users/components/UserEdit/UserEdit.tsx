@@ -137,7 +137,7 @@ const UserEdit = () => {
             </div>
           </form>
         </CardPanel>
-        <ApplicationAccessManagement />
+        {/* <ApplicationAccessManagement /> */}
       </div>
     </ContentWrapper>
   );

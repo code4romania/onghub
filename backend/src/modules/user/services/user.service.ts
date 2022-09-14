@@ -20,6 +20,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
+    private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
 
   // ****************************************************
@@ -42,10 +44,38 @@ export class UserService {
   }
 
   public async createEmployee(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
+    const { applicationIds, ...userData } = createUserDto;
+
+    // 1. create user and send invite
+    const user = await this.create({
+      ...userData,
       role: Role.EMPLOYEE,
     });
+
+    if (applicationIds?.length === 0) {
+      return user;
+    }
+
+    // 2. grant access to applications
+    try {
+      await this.userOngApplicationService.createMany(
+        user.organizationId,
+        applicationIds,
+        user.id,
+      );
+
+      return user;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.ACCESS,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...USER_ERRORS.ACCESS,
+        error: err,
+      });
+    }
   }
 
   public async getById(

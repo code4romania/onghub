@@ -3,4 +3,5 @@ export interface IUserPayload {
   email: string;
   phone: string;
   organizationId: number;
+  applicationIds: number[];
 }

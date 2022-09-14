@@ -28,6 +28,15 @@ export const ONG_APPLICATION_ERRORS = {
   },
 };
 
+export const USER_ONG_APPLICATION_ERRORS = {
+  GET: {
+    NOT_FOUND: {
+      message: 'Application not found',
+      errorCode: 'USER_ONG_APP_002',
+    },
+  },
+};
+
 export const APPLICATION_REQUEST_ERRORS = {
   CREATE: {
     APPLICATION_STATUS: {

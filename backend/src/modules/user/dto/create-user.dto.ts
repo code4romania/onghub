@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -36,4 +37,8 @@ export class CreateUserDto {
 
   @IsNumber()
   organizationId: number;
+
+  @IsOptional()
+  @IsArray()
+  applicationIds?: number[];
 }

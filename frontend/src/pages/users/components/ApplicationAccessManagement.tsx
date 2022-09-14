@@ -1,29 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Toggle from '../../../components/toggle/Toggle';
+import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
 
-const ApplicationAccessManagement = () => {
-  const [enabled, setEnabled] = useState(false);
+interface ApplicationAccessManagementProps {
+  applications: ApplicationWithOngStatus[];
+  onAccessChange: (access: any) => void;
+}
 
-  const applications = [
-    {
-      id: 1,
-      name: 'Redirectioneaza',
-    },
-    {
-      id: 2,
-      name: 'Teo',
-    },
-  ];
+interface ApplicationToggleProps {
+  applicationId: number;
+  initialStatus: boolean;
+  onApplicationStatusChange: (applicationId: number, enabled: boolean) => void;
+}
+
+const ApplicationToggle = ({
+  applicationId,
+  initialStatus,
+  onApplicationStatusChange,
+}: ApplicationToggleProps) => {
+  const [enabled, setEnabled] = useState<boolean>(initialStatus);
+
+  useEffect(() => {
+    onApplicationStatusChange(applicationId, enabled);
+  }, [enabled]);
+
+  return <Toggle enabled={enabled} setEnabled={setEnabled} />;
+};
+
+const ApplicationAccessManagement = ({
+  applications,
+  onAccessChange,
+}: ApplicationAccessManagementProps) => {
+  const [accessTree, setAccessTree] = useState<any>({});
+
+  useEffect(() => {
+    let newAccess = {};
+    applications.forEach((application) => {
+      newAccess = {
+        ...newAccess,
+        [application.id]: false,
+      };
+    });
+    setAccessTree(newAccess);
+  }, [applications]);
+
+  useEffect(() => {
+    onAccessChange(accessTree);
+  }, [accessTree]);
+
+  const enableAccess = (applicationId: number, enabled: boolean) => {
+    setAccessTree({
+      ...accessTree,
+      [applicationId]: enabled,
+    });
+  };
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
         <span className="font-titilliumBold text-xl text-gray-800">Access</span>
         <div className="flex items-center justify-between">
-          <span className="font-robotoBold text-gray-800 text-base font-bold mr-4">
+          {/* <span className="font-robotoBold text-gray-800 text-base font-bold mr-4">
             Access ONGHub
           </span>
-          <Toggle enabled={enabled} setEnabled={setEnabled} />
+          <Toggle enabled={enabled} setEnabled={setEnabled} /> */}
         </div>
       </div>
       <div className="w-full border-t border-gray-300" />
@@ -46,7 +86,11 @@ const ApplicationAccessManagement = () => {
                   {application.name}
                 </td>
                 <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                  <Toggle enabled={enabled} setEnabled={setEnabled} />
+                  <ApplicationToggle
+                    initialStatus={false}
+                    applicationId={application.id}
+                    onApplicationStatusChange={enableAccess}
+                  />
                 </td>
               </tr>
             ))}

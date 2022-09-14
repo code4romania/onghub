@@ -51,7 +51,7 @@ export const useApplicationsQuery = (
 export const useOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['ongApplications'], () => getOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });
@@ -61,7 +61,7 @@ export const useOngApplicationsQuery = () => {
 export const useMyOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['myOngApplications'], () => getMyOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });

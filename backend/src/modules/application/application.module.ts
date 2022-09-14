@@ -37,6 +37,10 @@ import { UserOngApplicationService } from './services/user-ong-application.servi
     UserOngApplicationRepository,
     UserOngApplicationService,
   ],
-  exports: [OngApplicationService, ApplicationService],
+  exports: [
+    OngApplicationService,
+    ApplicationService,
+    UserOngApplicationService,
+  ],
 })
 export class ApplicationModule {}
