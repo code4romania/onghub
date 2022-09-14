@@ -7,6 +7,7 @@ import ContentWrapper from '../../../../components/content-wrapper/ContentWrappe
 import InputField from '../../../../components/InputField/InputField';
 import { useCreateUserMutation } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
+import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from './UserCreateConfig';
 
 const UserCreate = () => {
@@ -47,7 +48,7 @@ const UserCreate = () => {
     disponibile."
       backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
     >
-      <div className="flex">
+      <div className="flex flex-col gap-6">
         <CardPanel
           title="Trimite invitatie"
           btnLabel="Trimite invitatie"
@@ -121,6 +122,7 @@ const UserCreate = () => {
             </div>
           </form>
         </CardPanel>
+        <ApplicationAccessManagement />
       </div>
     </ContentWrapper>
   );

@@ -9,6 +9,7 @@ import {
   useUpdateUserMutation,
   useSelectedUserQuery,
 } from '../../../../services/user/User.queries';
+import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from '../UserCreate/UserCreateConfig';
 
 const UserEdit = () => {
@@ -136,6 +137,7 @@ const UserEdit = () => {
             </div>
           </form>
         </CardPanel>
+        <ApplicationAccessManagement />
       </div>
     </ContentWrapper>
   );
