@@ -365,7 +365,7 @@ const CreateOrganizationGeneral = () => {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  {t('logo.descr')}
+                  {t('logo.description')}
                 </p>
               </div>
               {/* End Logo */}
@@ -373,7 +373,7 @@ const CreateOrganizationGeneral = () => {
             <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('contact.descr')}
+                {t('contact.description')}
               </p>
               <ContactForm
                 control={control}

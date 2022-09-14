@@ -31,27 +31,27 @@
     "collapse": "Restrange meniul"
   },
   "pagination": {
-    "rowsPerPage": "Randuri pe pagina",
-    "rangeSeparatorText": "din"
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
   },
   "empty": {
     "table": "Nu exista date in tabel"
   },
   "account": {
     "password": "Parola a fost schimbata cu success.",
-    "my_acc": "Contul meu",
-    "acc_descr": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "my_account": "Contul meu",
+    "account_description": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "settings": "Setari cont",
-    "settings_descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "change_pass": "Schimba parola",
+    "settings_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "change_password": "Schimba parola",
     "name": "Nume",
     "email": "E-mail cont",
     "send_mail": "Trimite E-Mail",
-    "wrong_pass": "Parolele nu se potrivesc",
+    "wrong_password": "Parolele nu se potrivesc",
     "close": {
-      "acc": "Inchide contul",
+      "account": "Inchide contul",
       "title": "Ești sigur că dorești închiderea contului?",
-      "descr": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
+      "description": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tau este inactiv.",
     "no_access": "Lorem ipsum. Nu mai ai access in ONGHub. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
@@ -73,8 +73,8 @@
   },
   "organization": {
     "error": "Organizatia nu s-a putut incarca",
-    "my_org": "Organizatia mea",
-    "descr": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "my_organization": "Organizatia mea",
+    "description": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
     "type": {
       "association": "Asociatie",
       "foundation": "Fundatie",
@@ -141,11 +141,11 @@
     "logo": {
       "name": "Logo organizatie",
       "upload": "Incarca logo",
-      "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
     },
     "contact": {
       "name": "Persoana de contact in relatia cu ONGHub",
-      "descr": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
     },
     "social": "Comunicare si social media",
     "fundraising": "Strangere de fonduri",

@@ -64,8 +64,8 @@ const Account = () => {
     <div>
       <div className="flex items-start justify-between pt-1 pr-1 pb-6">
         <div className="flex flex-col">
-          <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_acc')}</p>
-          <p className="text-gray-400 pt-6">{t('acc_descr')}</p>
+          <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_account')}</p>
+          <p className="text-gray-400 pt-6">{t('account_description')}</p>
         </div>
         <button
           type="button"
@@ -74,7 +74,7 @@ const Account = () => {
             setAccountDeleteModal(true);
           }}
         >
-          {t('close.acc')}
+          {t('close.account')}
         </button>
       </div>
       <div className="w-full bg-white shadow rounded-lg ">
@@ -101,7 +101,7 @@ const Account = () => {
               className={classNames(readonly ? 'edit-button' : 'save-button')}
               onClick={readonly ? startChangePassword : handleSubmit(onChangePassword)}
             >
-              {readonly ? t('change_pass') : t('save', { ns: 'common' })}
+              {readonly ? t('change_password') : t('save', { ns: 'common' })}
             </button>
           </div>
         </div>
@@ -109,7 +109,7 @@ const Account = () => {
         <div className="w-full border-t border-gray-300" />
         {readonly && (
           <div className="p-5 sm:p-10 flex flex-col">
-            <span>{t('settings_descr')}</span>
+            <span>{t('settings_description')}</span>
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
                 <span className="text-gray-700">{t('name')}</span>
@@ -174,7 +174,7 @@ const Account = () => {
                 name={AccountConfig.matchPassword.key}
                 rules={{
                   ...AccountConfig.matchPassword.rules,
-                  validate: (value) => value === newPassword || t('wrong_pass'),
+                  validate: (value) => value === newPassword || t('wrong_password'),
                 }}
                 control={control}
                 render={({ field: { onChange, value } }) => {
@@ -199,9 +199,9 @@ const Account = () => {
       {isAccountDeleteModalOpen && (
         <ConfirmationModal
           title={t('close.title')}
-          description={t('close.descr')}
+          description={t('close.description')}
           closeBtnLabel={t('back', { ns: 'common' })}
-          confirmBtnLabel={t('close.acc')}
+          confirmBtnLabel={t('close.account')}
           onClose={() => {
             setAccountDeleteModal(false);
           }}

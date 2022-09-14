@@ -50,8 +50,8 @@ const DataTableComponent = ({
         pagination={pagination}
         paginationServer={pagination}
         paginationComponentOptions={{
-          rowsPerPageText: (t('rowsPerPage') as string) || '',
-          rangeSeparatorText: (t('rangeSeparatorText') as string) || '',
+          rowsPerPageText: (t('rows_per_page') as string) || '',
+          rangeSeparatorText: (t('range_separator_text') as string) || '',
         }}
         responsive
         sortIcon={<ChevronDownIcon />}

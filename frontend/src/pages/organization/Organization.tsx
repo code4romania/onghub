@@ -44,8 +44,8 @@ const Organization = () => {
 
   return (
     <div>
-      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_org')}</p>
-      <p className="text-gray-400 pt-6">{t('descr')}</p>
+      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
+      <p className="text-gray-400 pt-6">{t('description')}</p>
       <div className="pb-6 flex">
         <nav
           className="flex pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
