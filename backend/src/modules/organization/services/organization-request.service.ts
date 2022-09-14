@@ -114,23 +114,21 @@ export class OrganizationRequestService {
 
       // Mail notifications
       // Admin
-      const mailOptionsAdmin = {
+      this.mailService.sendEmail({
         to: createReqDto.admin.email,
         from: MAIL_ADDRESSES.NOTIF,
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
-      };
-      this.mailService.sendEmail(mailOptionsAdmin);
+      });
 
       // Super-Admin
       const superAdmin = await this.userService.findOne({
         where: { role: 'super-admin' },
       });
-      const mailOptionsSuper = {
+      this.mailService.sendEmail({
         to: superAdmin.email,
         from: MAIL_ADDRESSES.NOTIF,
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
-      };
-      this.mailService.sendEmail(mailOptionsSuper);
+      });
 
       return this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
@@ -169,13 +167,11 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // TODO 5. Send email with approval
-
-    const mailOptions = {
+    this.mailService.sendEmail({
       to: email,
       from: MAIL_ADDRESSES.NOTIF,
       template: MAIL_TEMPLATES.ORGANIZATION_APPROVAL,
-    };
-    this.mailService.sendEmail(mailOptions);
+    });
 
     return this.find(requestId);
   }
@@ -199,12 +195,11 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // TODO: 4. Send rejection by email
-    const mailOptions = {
+    this.mailService.sendEmail({
       to: found.email,
       from: MAIL_ADDRESSES.NOTIF,
       template: MAIL_TEMPLATES.ORGANIZATION_REJECTION,
-    };
-    this.mailService.sendEmail(mailOptions);
+    });
 
     return this.find(requestId);
   }
