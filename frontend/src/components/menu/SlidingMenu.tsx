@@ -8,8 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
 
-export default function Example() {
-  const [open, setOpen] = useState(false);
+export default function SlidingMenu({isOpen, setSlidingMenuOpen}: {isOpen: boolean, setSlidingMenuOpen:any}) {
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useContext(AuthContext);
@@ -24,14 +23,16 @@ export default function Example() {
     }
   }, [location.pathname]);
 
+
   const handleMenuItemClick = (item: any) => {
+    setSlidingMenuOpen(false);
     setCurrentMenuItemId(item.id);
     navigate(`${item.href}`);
   };
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={setSlidingMenuOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -50,8 +51,8 @@ export default function Example() {
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
-                enterFrom="translate-x-4"
-                enterTo="translate-x-32"
+                enterFrom="translate-x-[-18rem]"
+                enterTo="translate-x-0"
                 leave="transform transition ease-in-out duration-500 sm:duration-700"
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-[-18rem]"
@@ -70,7 +71,7 @@ export default function Example() {
                       <button
                         type="button"
                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                        onClick={() => setOpen(false)}
+                        onClick={() => setSlidingMenuOpen(false)}
                       >
                         <XIcon className="w-6 h-6" />
                         <span className="sr-only">Close panel</span>

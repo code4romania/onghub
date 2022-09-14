@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
 import { Auth } from 'aws-amplify';
 
-const Header = () => {
+const Header = ({openSlidingMenu}: {openSlidingMenu?: any}) => {
   const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
@@ -22,7 +22,8 @@ const Header = () => {
           <div className="flex gap-4">
             {isAuthenticated && (
               <div className="flex sm:hidden items-center">
-                <button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                <button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                onClick={() => openSlidingMenu(true)}>
                   <MenuIcon className="w-5 h-5" />
                 </button>
               </div>

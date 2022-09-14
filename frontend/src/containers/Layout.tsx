@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Menu from '../components/menu/Menu';
-import Example from '../components/menu/SlidingMenu';
+import SlidingMenu from '../components/menu/SlidingMenu';
 
 // Compoment that serves as the layout for the app. Everything will be rendered with a header and a side menu.
 const Layout = () => {
+  const [isSlidingMenuOpen, setSlidingMenuOpen] = useState<boolean>(false);
+
   return (
     <div className="w-screen h-screen max-w-full ">
-      <Example />
-      <Header />
+      <Header openSlidingMenu={setSlidingMenuOpen}/>
+      <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen}/>
       <div className="flex p-6">
-        <div className="menu">
+        <div className="menu hidden sm:flex">
           <Menu />
         </div>
         <div className="content overflow-scroll w-full pl-6">
