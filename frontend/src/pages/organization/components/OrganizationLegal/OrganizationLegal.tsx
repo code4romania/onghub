@@ -28,9 +28,13 @@ import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal'
 import { getPublicFileUrl } from '../../../../services/files/File.service';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { REQUEST_LOCATION } from '../../constants/location.constants';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const OrganizationLegal = () => {
+  const location = useLocation();
+
   const [isEditMode, setEditMode] = useState(false);
   const [organizationStatute, setOrganizationStatute] = useState<string | null>(null);
   // directors
@@ -45,9 +49,12 @@ const OrganizationLegal = () => {
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
-  const { organizationLegal } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } =
-    useOrganizationByProfileMutation();
+  const { organizationLegal, organization } = useSelectedOrganization();
+  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
+    REQUEST_LOCATION,
+  )
+    ? useOrganizationMutation()
+    : useOrganizationByProfileMutation();
   const { mutate: uploadFiles, error: uploadFilesError } =
     useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
@@ -226,6 +233,7 @@ const OrganizationLegal = () => {
     };
 
     updateOrganization({
+      id: organization?.id,
       organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
     });
 

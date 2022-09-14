@@ -5,6 +5,7 @@ export enum OngApplicationStatus {
   ACTIVE = 'active',
   PENDING = 'pending',
   RESTRICTED = 'restricted',
+  DISABLED = 'disabled',
 }
 
 export interface OngApplication {

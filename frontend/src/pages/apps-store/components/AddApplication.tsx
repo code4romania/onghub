@@ -78,7 +78,7 @@ const AddApplication = ({ edit }: { edit?: boolean }) => {
     const dto = { ...data, steps: data.steps.map((step: any) => step.step) };
     await mutateApplication(dto);
     useSuccessToast(t('success'));
-    navigate('/store');
+    navigate('/all-apps');
   };
 
   const handleEdit = async (data: any) => {

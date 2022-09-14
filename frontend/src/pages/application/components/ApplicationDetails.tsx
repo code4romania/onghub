@@ -201,6 +201,20 @@ const ApplicationDetails = () => {
                 </div>
               </div>
             )}
+            {application?.status === OngApplicationStatus.DISABLED && (
+              <div className="w-full h-full bg-white shadow rounded-lg">
+                <div className="py-5 px-10 flex gap-2 items-center">
+                  <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
+                  <span className="font-titilliumBold text-xl text-gray-800 ">
+                    Accesul la aplicatie este indisponibil momentan
+                  </span>
+                </div>
+                <div className="w-full border-t border-gray-300" />
+                <div className="p-8 flex flex-col gap-4">
+                  <p className="break-all">Vom reveni cu noutati in curand.</p>
+                </div>
+              </div>
+            )}
           </React.Fragment>
         )}
         <div className="w-full h-full bg-white shadow rounded-lg">

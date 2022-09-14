@@ -4,12 +4,15 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { USERS_TABS } from './constants/Tabs.constants';
+import { UserRole } from './enums/UserRole.enum';
 
 const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { role } = useAuthContext();
   const { t } = useTranslation('user');
 
   useEffect(() => {
@@ -34,6 +37,7 @@ const Users = () => {
       addButton={{
         btnLabel: t('add'),
         onBtnClick: () => navigate('/user'),
+        visible: role === UserRole.ADMIN,
       }}
     >
       <div className="pb-6 flex">

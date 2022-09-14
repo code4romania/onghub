@@ -10,6 +10,7 @@ import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
 import {
   useOrganizationByProfileMutation,
+  useOrganizationMutation,
   useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
@@ -21,6 +22,9 @@ import { useErrorToast } from '../../../../common/hooks/useToast';
 import { getPublicFileUrl } from '../../../../services/files/File.service';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useLocation } from 'react-router-dom';
+import { REQUEST_LOCATION } from '../../constants/location.constants';
+import { REQUEST_STATUS_NAME } from '../../../requests/constants/RequestStatus.constants';
 import { useTranslation } from 'react-i18next';
 
 const OrganizationGeneral = () => {
@@ -30,9 +34,16 @@ const OrganizationGeneral = () => {
   const [file, setFile] = useState<File | null>(null);
   const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
+
+  const location = useLocation();
+
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } =
-    useOrganizationByProfileMutation();
+  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
+    REQUEST_LOCATION,
+  )
+    ? useOrganizationMutation()
+    : useOrganizationByProfileMutation();
+
   const { mutate: uploadFiltes, error: uploadFilesError } =
     useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);

@@ -15,7 +15,10 @@ import {
   useRegionsQuery,
 } from '../../../../services/nomenclature/Nomenclature.queries';
 import InputField from '../../../../components/InputField/InputField';
-import { useOrganizationByProfileMutation } from '../../../../services/organization/Organization.queries';
+import {
+  useOrganizationByProfileMutation,
+  useOrganizationMutation,
+} from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
   emptyArrayToNull,
@@ -29,12 +32,18 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { REQUEST_LOCATION } from '../../constants/location.constants';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const OrganizationActivity = () => {
-  const { organizationActivity } = useSelectedOrganization();
+  const { organization, organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
-  const { mutate, error } = useOrganizationByProfileMutation();
+  const location = useLocation();
+  const { mutate, error } = location.pathname.includes(REQUEST_LOCATION)
+    ? useOrganizationMutation()
+    : useOrganizationByProfileMutation();
+
   const { role } = useContext(AuthContext);
 
   // React i18n
@@ -86,6 +95,7 @@ const OrganizationActivity = () => {
     };
 
     mutate({
+      id: organization?.id,
       organization: { activity: emptyArrayToNull(activity) },
     });
   };
