@@ -60,8 +60,8 @@ const ApplicationDetails = () => {
   };
 
   return (
-    <div className="flex gap-4 mr-1 mb-1 relative">
-      <div className="flex flex-col rounded-lg bg-white shadow w-96 p-8 divide-y divide-gray-200 h-full">
+    <div className="flex gap-4 mr-1 mb-1 relative sm:flex-row flex-col">
+      <div className="flex flex-col rounded-lg bg-white shadow md:w-96 p-8 divide-y divide-gray-200 h-full">
         <div className="flex flex-col gap-4 min-h-full">
           <img src={application?.logo || logo} className="h-full w-full pt-10 pb-10" />
           <p className="font-titilliumBold text-black text-xl tracking-wide">{application?.name}</p>
