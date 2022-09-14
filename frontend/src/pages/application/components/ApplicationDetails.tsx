@@ -211,7 +211,7 @@ const ApplicationDetails = () => {
                 </div>
               </div>
             )}
-            {application?.status === OngApplicationStatus.DEACTIVATED && (
+            {application?.status === OngApplicationStatus.DISABLED && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
