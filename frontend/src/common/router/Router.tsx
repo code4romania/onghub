@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
-import AppStore from '../../pages/apps-store/AppStore';
+import AllApplications from '../../pages/apps-store/AllApplications';
 import CreateOrganizationActivity from '../../pages/create-organziation/components/CreateOrganizationActivity';
 import CreateOrganizationGeneral from '../../pages/create-organziation/components/CreateOrganizationGeneral';
 import CreateOrganizationLegal from '../../pages/create-organziation/components/CreateOrganizationLegal';
@@ -11,7 +11,6 @@ import CreateOrganizationUser from '../../pages/create-organziation/components/C
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
-import Apps from '../../pages/my-apps/Apps';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity/OrganizationActivity';
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
@@ -31,8 +30,10 @@ import AddApplication from '../../pages/apps-store/components/AddApplication';
 import Application from '../../pages/application/Application';
 import ApplicationDetails from '../../pages/application/components/ApplicationDetails';
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
-import ApplicationRequests from '../../pages/application/components/ApplicationRequests';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
+import MyApps from '../../pages/my-apps/MyApps';
+import ApplicationList from '../../pages/apps-store/components/ApplicationList';
+import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 
@@ -42,11 +43,12 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public URLs */}
         <Route
           path="/login"
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
         />
-        <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
+
         <Route path="new" element={<CreateOrganization />}>
           <Route index element={<Navigate to={'/new/account'}></Navigate>} />
           <Route path="account" element={<CreateOrganizationUser />} />
@@ -54,6 +56,12 @@ const Router = () => {
           <Route path="activity" element={<CreateOrganizationActivity />} />
           <Route path="legal" element={<CreateOrganizationLegal />} />
         </Route>
+        {/* End of Public URLS */}
+
+        {/* Logged in users but Restricted */}
+        <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
+
+        {/* Logged in Users */}
         <Route
           path="/"
           element={
@@ -62,6 +70,115 @@ const Router = () => {
             </AuthGuard>
           }
         >
+          {/* Admin and Employee */}
+          <Route
+            path="apps"
+            element={
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                <MyApps />
+              </RoleGuard>
+            }
+          ></Route>
+
+          {/* Admin only */}
+          <Route
+            path="user"
+            element={
+              <RoleGuard roles={[UserRole.ADMIN]}>
+                <UserCreate />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="user/:id"
+            element={
+              <RoleGuard roles={[UserRole.ADMIN]}>
+                <UserEdit />
+              </RoleGuard>
+            }
+          />
+
+          {/* SuperAdmin and Admin */}
+          <Route
+            path={'all-apps'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN, UserRole.ADMIN]}>
+                <AllApplications />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<ApplicationList />} />
+            <Route
+              path="requests"
+              element={
+                // Special Route just for SuperAdmin
+                <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                  <ApplicationRequests />
+                </RoleGuard>
+              }
+            />
+          </Route>
+          <Route
+            path="users"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN, UserRole.ADMIN]}>
+                <Users />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<UserList />}></Route>
+            <Route path="invites" element={<UserInvites />}></Route>
+          </Route>
+
+          {/* SuperAdmin Only */}
+          <Route
+            path="requests"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Requests />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path={'requests/:id'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Request />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<Navigate to={'general'}></Navigate>} />
+            <Route path="general" element={<OrganizationGeneral />} />
+            <Route path="activity" element={<OrganizationActivity />} />
+            <Route path="legal" element={<OrganizationLegal />} />
+            <Route path="financial" element={<OrganizationFinancial />} />
+            <Route path="data" element={<OrganizationData />} />
+          </Route>
+          <Route
+            path="organizations"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Organizations />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="all-apps/new"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <AddApplication />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="application/:id/edit"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <AddApplication edit={true} />
+              </RoleGuard>
+            }
+          />
+          {/* SuperAdmin, Admin and Employee */}
           <Route index element={<Dashboard />}></Route>
           <Route path={'organization'} element={<Organization />}>
             <Route index element={<Navigate to={'general'}></Navigate>} />
@@ -72,46 +189,15 @@ const Router = () => {
             <Route path="data" element={<OrganizationData />} />
           </Route>
 
-          <Route path={'requests/:id'} element={<Request />}>
-            <Route index element={<Navigate to={'general'}></Navigate>} />
-            <Route path="general" element={<OrganizationGeneral />} />
-            <Route path="activity" element={<OrganizationActivity />} />
-            <Route path="legal" element={<OrganizationLegal />} />
-            <Route path="financial" element={<OrganizationFinancial />} />
-            <Route path="data" element={<OrganizationData />} />
-          </Route>
-
-          <Route path="users" element={<Users />}>
-            <Route index element={<UserList />}></Route>
-            <Route path="invites" element={<UserInvites />}></Route>
-          </Route>
-
           <Route path={'application/:id'} element={<Application />}>
             <Route index element={<Navigate to={'details'}></Navigate>} />
             <Route path="details" element={<ApplicationDetails />} />
             <Route path="installs" element={<ApplicationNGOList />} />
-            <Route path="requests" element={<ApplicationRequests />} />
           </Route>
-          <Route path="application/:id/edit" element={<AddApplication edit={true} />} />
-
-          <Route path="user" element={<UserCreate />} />
-          <Route path="user/:id" element={<UserEdit />} />
-          <Route path="apps" element={<Apps />}></Route>
-
-          <Route path="store" element={<AppStore />}></Route>
-          <Route path="store/new" element={<AddApplication />} />
-
           <Route path="account" element={<Account />} />
-          <Route path="requests" element={<Requests />} />
-          <Route
-            path="organizations"
-            element={
-              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                <Organizations />
-              </RoleGuard>
-            }
-          />
         </Route>
+
+        {/* Wild Card */}
         <Route path="*" element={<Navigate to={'/'}></Navigate>}></Route>
       </Routes>
     </BrowserRouter>

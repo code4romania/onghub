@@ -1,9 +1,9 @@
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IRequest } from '../../pages/requests/interfaces/Request.interface';
+import { IApplicationRequest } from '../../pages/requests/interfaces/Request.interface';
 
-export const requestsSlice = (set: any) => ({
-  requests: {
+export const applicationRequestsSlice = (set: any) => ({
+  applicationRequests: {
     items: [],
     meta: {
       currentPage: 1,
@@ -15,9 +15,9 @@ export const requestsSlice = (set: any) => ({
       orderDirection: OrderDirection.ASC,
     },
   },
-  setRequests: (requests: PaginatedEntity<IRequest>) => {
-    set({ requests });
+  setApplicationRequests: (applicationRequests: PaginatedEntity<IApplicationRequest>) => {
+    set({ applicationRequests });
   },
 });
 
-export default { requestsSlice };
+export default { applicationRequestsSlice };

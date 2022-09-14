@@ -7,9 +7,6 @@ import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queri
 import { useOrganizationByProfileQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
-import { ExclamationIcon } from '@heroicons/react/solid';
-import { CheckIcon, XIcon } from '@heroicons/react/outline';
-import { OrganizationStatus } from './enums/OrganizationStatus.enum';
 
 const Organization = () => {
   const navigate = useNavigate();

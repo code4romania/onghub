@@ -6,7 +6,11 @@ export interface CreateRequestAdminDTO {
   phone: string;
 }
 
-export interface CreateRequestDTO {
+export interface CreateOrganizationRequestDTO {
   admin: CreateRequestAdminDTO;
   organization: ICreateOrganizationPayload;
+}
+
+export interface CreateApplicationRequestDTO {
+  applicationId: number;
 }

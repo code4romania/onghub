@@ -12,7 +12,7 @@ import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organization.dto';
 
-class CreateRequestUserDto {
+class CreateUserRequestDto {
   @IsString()
   @IsNotEmpty()
   @Length(10, 100)
@@ -30,11 +30,11 @@ class CreateRequestUserDto {
   phone: string;
 }
 
-export class CreateRequestDto {
+export class CreateOrganizationRequestDto {
   /* Request Admin */
-  @Type(() => CreateRequestUserDto)
+  @Type(() => CreateUserRequestDto)
   @ValidateNested()
-  admin: CreateRequestUserDto;
+  admin: CreateUserRequestDto;
 
   @Type(() => CreateOrganizationDto)
   @ValidateNested()

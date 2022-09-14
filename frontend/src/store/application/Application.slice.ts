@@ -16,6 +16,7 @@ export const applicationsSlice = (set: any) => ({
     },
   },
   selectedApplication: null,
+
   setApplications: (applications: PaginatedEntity<Application>) => {
     set({ applications });
   },

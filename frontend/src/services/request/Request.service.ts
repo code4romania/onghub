@@ -2,13 +2,22 @@ import { AxiosResponse } from 'axios';
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IRequest } from '../../pages/requests/interfaces/Request.interface';
+import {
+  IApplicationRequest,
+  IOrganizationRequest,
+} from '../../pages/requests/interfaces/Request.interface';
 import API from '../API';
-import { CreateRequestDTO } from './interfaces/Request.dto';
+import {
+  CreateApplicationRequestDTO,
+  CreateOrganizationRequestDTO,
+} from './interfaces/Request.dto';
 import { Request } from './interfaces/Request.interface';
 
-export const createRequest = (createRequestDTO: CreateRequestDTO): Promise<Request> => {
-  return API.post(`/requests/organization`, createRequestDTO).then(
+// Organization
+export const createOrganizationRequest = (
+  createRequestDTO: CreateOrganizationRequestDTO,
+): Promise<Request> => {
+  return API.post(`/organization/request`, createRequestDTO).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
@@ -20,8 +29,8 @@ export const getRequests = async (
   orderDirection: OrderDirection,
   search?: string,
   interval?: Date[],
-): Promise<PaginatedEntity<IRequest>> => {
-  let requestUrl = `/requests?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+): Promise<PaginatedEntity<IOrganizationRequest>> => {
+  let requestUrl = `/organization/request?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
 
@@ -33,14 +42,59 @@ export const getRequests = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const approveRequest = (requestId: string) => {
-  return API.patch(`/requests/organization/${requestId}/approve`);
+export const approveOrganizationRequest = (requestId: string) => {
+  return API.patch(`/organization/request/${requestId}/approve`);
 };
 
-export const rejectRequest = (requestId: string) => {
-  return API.patch(`/requests/organization/${requestId}/reject`);
+export const rejectOrganizationRequest = (requestId: string) => {
+  return API.patch(`/organization/request/${requestId}/reject`);
 };
 
-export const getRequestById = (requestId: string) => {
-  return API.get(`/requests/organization/${requestId}`).then((res) => res.data);
+export const getOrganizationRequestById = (requestId: string): Promise<Request> => {
+  return API.get(`/organization/request/${requestId}`).then((res) => res.data);
+};
+
+// Application
+export const createApplicationRequest = (
+  createRequestDTO: CreateApplicationRequestDTO,
+): Promise<Request> => {
+  return API.post(`/application/request`, createRequestDTO).then(
+    (res: AxiosResponse<Request>) => res.data,
+  );
+};
+
+export const abandonApplicationnRequest = (applicationId: string) => {
+  return API.delete(`/application/${applicationId}/request`);
+};
+
+export const approveApplicationnRequest = (requestId: string) => {
+  return API.patch(`/application/request/${requestId}/approve`);
+};
+
+export const rejectApplicationnRequest = (requestId: string) => {
+  return API.patch(`/application/request/${requestId}/reject`);
+};
+
+export const getApplicationRequestById = (requestId: string) => {
+  return API.get(`/application/request/${requestId}`).then((res) => res.data);
+};
+
+export const getApplicationRequests = async (
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+  interval?: Date[],
+): Promise<PaginatedEntity<IApplicationRequest>> => {
+  let requestUrl = `/application/request?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
+
+  return API.get(requestUrl).then((res) => res.data);
 };
