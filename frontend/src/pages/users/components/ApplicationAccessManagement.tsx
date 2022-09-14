@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Toggle from '../../../components/toggle/Toggle';
 import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
+import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
 
 interface ApplicationAccessManagementProps {
   applications: ApplicationWithOngStatus[];
@@ -80,20 +81,22 @@ const ApplicationAccessManagement = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {applications.map((application) => (
-              <tr key={application.id}>
-                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                  {application.name}
-                </td>
-                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                  <ApplicationToggle
-                    initialStatus={false}
-                    applicationId={application.id}
-                    onApplicationStatusChange={enableAccess}
-                  />
-                </td>
-              </tr>
-            ))}
+            {applications
+              .filter((application) => application.type !== ApplicationTypeEnum.INDEPENDENT)
+              .map((application) => (
+                <tr key={application.id}>
+                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                    {application.name}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                    <ApplicationToggle
+                      initialStatus={false}
+                      applicationId={application.id}
+                      onApplicationStatusChange={enableAccess}
+                    />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
