@@ -84,7 +84,10 @@ const ApplicationAccessManagement = ({
           <tbody className="divide-y divide-gray-200 bg-white">
             {applications.map((application) => (
               <tr key={application.id}>
-                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 flex flex-row items-center">
+                  <div className="h-10 w-10 mr-3">
+                    <img src={application.logo} className="h-full w-full rounded-full" />
+                  </div>
                   {application.name}
                 </td>
                 <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
