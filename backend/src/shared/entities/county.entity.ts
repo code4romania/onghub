@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { OrganizationGeneral } from 'src/modules/organization/entities';
 import {
   Column,
   CreateDateColumn,
@@ -60,11 +59,4 @@ export class County {
     select: false,
   })
   updatedOn: Date;
-
-  @OneToMany(
-    () => OrganizationGeneral,
-    (organizationGeneral) => organizationGeneral.county,
-    { onDelete: 'SET NULL' },
-  )
-  organizationGeneral: OrganizationGeneral;
 }

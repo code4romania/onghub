@@ -1,8 +1,5 @@
 import { Exclude } from 'class-transformer';
-import {
-  OrganizationActivity,
-  OrganizationGeneral,
-} from 'src/modules/organization/entities';
+import { OrganizationActivity } from 'src/modules/organization/entities';
 import {
   Column,
   CreateDateColumn,
@@ -12,7 +9,6 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -63,11 +59,4 @@ export class City {
     select: false,
   })
   updatedOn: Date;
-
-  @OneToMany(
-    () => OrganizationGeneral,
-    (organizationGeneral) => organizationGeneral.city,
-    { onDelete: 'SET NULL' },
-  )
-  organizationGeneral: OrganizationGeneral;
 }
