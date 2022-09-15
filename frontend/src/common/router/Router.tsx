@@ -36,9 +36,11 @@ import ApplicationList from '../../pages/apps-store/components/ApplicationList';
 import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
+import EditApplication from '../../pages/apps-store/components/EditApplication';
+import ApplicationWithOngList from '../../pages/application/ApplicationWithOngList';
 
 const Router = () => {
-  const { isAuthenticated, isRestricted } = useAuthContext();
+  const { isAuthenticated, isRestricted, role } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -118,6 +120,7 @@ const Router = () => {
               }
             />
           </Route>
+
           <Route
             path="users"
             element={
@@ -174,7 +177,7 @@ const Router = () => {
             path="application/:id/edit"
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                <AddApplication edit={true} />
+                <EditApplication />
               </RoleGuard>
             }
           />
@@ -189,11 +192,18 @@ const Router = () => {
             <Route path="data" element={<OrganizationData />} />
           </Route>
 
-          <Route path={'application/:id'} element={<Application />}>
-            <Route index element={<Navigate to={'details'}></Navigate>} />
-            <Route path="details" element={<ApplicationDetails />} />
-            <Route path="installs" element={<ApplicationNGOList />} />
-          </Route>
+          {role === UserRole.SUPER_ADMIN ? (
+            <Route path={'application/:id'} element={<ApplicationWithOngList />}>
+              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route path="details" element={<ApplicationDetails />} />
+              <Route path="installs" element={<ApplicationNGOList />} />
+            </Route>
+          ) : (
+            <Route path={'application/:id'} element={<Application />}>
+              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route path="details" element={<ApplicationDetails />} />
+            </Route>
+          )}
           <Route path="account" element={<Account />} />
         </Route>
 
