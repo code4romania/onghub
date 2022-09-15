@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import { FindManyOptions, FindOneOptions, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -69,6 +69,10 @@ export class UserService {
 
   public async findOne(options: FindOneOptions): Promise<User> {
     return this.userRepository.get(options);
+  }
+
+  public async findMany(options: FindManyOptions): Promise<User[]> {
+    return this.userRepository.getMany(options);
   }
 
   public async updateById(

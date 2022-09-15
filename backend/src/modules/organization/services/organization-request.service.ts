@@ -15,7 +15,8 @@ import { OrganizationRequestRepository } from '../repositories/organization-requ
 import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES, MAIL_ADDRESSES } from 'src/mail/enums/mail.enum';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -26,6 +27,7 @@ export class OrganizationRequestService {
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private configService: ConfigService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -116,17 +118,20 @@ export class OrganizationRequestService {
       // Admin
       this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        from: MAIL_ADDRESSES.NOTIF,
+        from: this.configService.get('NOTIFICATION_ADDRESS'),
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
       });
 
       // Super-Admin
-      const superAdmin = await this.userService.findOne({
+      const superAdmin = await this.userService.findMany({
         where: { role: 'super-admin' },
       });
+      const emailSAdmins = superAdmin.map((item) => {
+        return item.email;
+      });
       this.mailService.sendEmail({
-        to: superAdmin.email,
-        from: MAIL_ADDRESSES.NOTIF,
+        to: emailSAdmins,
+        from: this.configService.get('NOTIFICATION_ADDRESS'),
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
       });
 
@@ -166,11 +171,11 @@ export class OrganizationRequestService {
     await this.userService.createAdmin({ email, phone, name, organizationId });
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
-    // TODO 5. Send email with approval
+    // 5. Send email with approval
     this.mailService.sendEmail({
       to: email,
-      from: MAIL_ADDRESSES.NOTIF,
-      template: MAIL_TEMPLATES.ORGANIZATION_APPROVAL,
+      from: this.configService.get('NOTIFICATION_ADDRESS'),
+      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_APPROVAL,
     });
 
     return this.find(requestId);
@@ -178,9 +183,7 @@ export class OrganizationRequestService {
 
   public async reject(requestId: number) {
     // 1. Check if request is pending
-    const found = await this.organizationRequestRepository.get({
-      where: { id: requestId },
-    });
+    const found = await this.find(requestId);
 
     if (found && found.status !== RequestStatus.PENDING) {
       throw new BadRequestException({
@@ -194,11 +197,11 @@ export class OrganizationRequestService {
     // 3. Decline the request.
     await this.update(requestId, RequestStatus.DECLINED);
 
-    // TODO: 4. Send rejection by email
+    // 4. Send rejection by email
     this.mailService.sendEmail({
       to: found.email,
-      from: MAIL_ADDRESSES.NOTIF,
-      template: MAIL_TEMPLATES.ORGANIZATION_REJECTION,
+      from: this.configService.get('NOTIFICATION_ADDRESS'),
+      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_REJECTION,
     });
 
     return this.find(requestId);
