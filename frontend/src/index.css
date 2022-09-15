@@ -114,3 +114,18 @@
   overflow: hidden;
   width: 100%;
 }
+
+.ribbon {
+  transform: rotate(-45deg);
+  position: absolute;
+  left: -3.5rem;
+  background-color: #374159;
+  padding: 0.5rem 4.5rem;
+  color: white;
+  overflow: hidden;
+}
+
+.ribbon p {
+  font-size: 16px;
+  margin: 0;
+}
