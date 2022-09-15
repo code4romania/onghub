@@ -1,3 +1,4 @@
+// Postgres needs double quotes for alis in order to convert to camelcase otherwise it will automatically convert it to lowercase
 export const ORGANIZATION_ALL_APPS_COLUMNS = [
   'application.id as id',
   'application.logo as logo',
