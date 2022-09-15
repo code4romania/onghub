@@ -19,7 +19,7 @@ const Application = () => {
   }
 
   const naivgateBack = () => {
-    navigate('/store');
+    navigate('/all-apps');
   };
 
   return (
