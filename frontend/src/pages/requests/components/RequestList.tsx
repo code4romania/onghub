@@ -130,8 +130,8 @@ const RequestList = () => {
   const onApprove = async (data: IOrganizationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
-        refetch(); // TODO: Redirect to /organizations/id
+        useSuccessToast('Solicitare solutionata.');
+        refetch();
       },
       onSettled: () => {
         setApproveModalOpen(false);
@@ -142,11 +142,11 @@ const RequestList = () => {
   const onReject = async (data: IOrganizationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
+        useSuccessToast('Solicitare solutionata.');
         refetch();
       },
       onSettled: () => {
-        setApproveModalOpen(false);
+        setRejectModalOpen(false);
       },
     });
   };

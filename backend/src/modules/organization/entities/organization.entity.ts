@@ -38,7 +38,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationGeneral,
     (organizationGeneral) => organizationGeneral.organization,
-    { cascade: true, onDelete: 'CASCADE' },
+    { cascade: true },
   )
   @JoinColumn({ name: 'organization_general_id' })
   organizationGeneral: OrganizationGeneral;
@@ -54,7 +54,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationActivity,
     (organizationActivity) => organizationActivity.organization,
-    { cascade: true, onDelete: 'CASCADE' },
+    { cascade: true },
   )
   @JoinColumn({ name: 'organization_activity_id' })
   organizationActivity: OrganizationActivity;
@@ -70,7 +70,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationLegal,
     (organizationLegal) => organizationLegal.organization,
-    { cascade: true, onDelete: 'CASCADE' },
+    { cascade: true },
   )
   @JoinColumn({ name: 'organization_legal_id' })
   organizationLegal: OrganizationLegal;
@@ -78,7 +78,7 @@ export class Organization extends BaseEntity {
   @OneToMany(
     () => OrganizationFinancial,
     (organizationFinancial) => organizationFinancial.organization,
-    { cascade: true, onDelete: 'CASCADE' },
+    { cascade: true },
   )
   @JoinColumn({ name: 'organization_financial_id' })
   organizationFinancial: OrganizationFinancial[];
@@ -94,7 +94,7 @@ export class Organization extends BaseEntity {
   @OneToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.organization,
-    { cascade: true, onDelete: 'CASCADE' },
+    { cascade: true },
   )
   @JoinColumn({ name: 'organization_report_id' })
   organizationReport: OrganizationReport;
@@ -102,8 +102,6 @@ export class Organization extends BaseEntity {
   @OneToMany((type) => User, (user) => user.organization)
   users: User[];
 
-  @OneToMany((type) => OrganizationRequest, (request) => request.organization, {
-    onDelete: 'SET NULL',
-  })
+  @OneToMany((type) => OrganizationRequest, (request) => request.organization)
   requests: OrganizationRequest[];
 }

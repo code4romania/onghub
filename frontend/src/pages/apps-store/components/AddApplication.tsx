@@ -48,7 +48,7 @@ const AddApplication = () => {
       {
         onSuccess: () => {
           useSuccessToast('Aplicatie adaugata cu succes!');
-          navigate('/store');
+          navigate('/all-apps');
         },
       },
     );
