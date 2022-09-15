@@ -6,6 +6,7 @@ import API from '../API';
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
+  ApplicationAccess,
   ApplicationStatus,
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
@@ -51,6 +52,14 @@ export const getMyOngApplications = async (): Promise<
 > => {
   const requestUrl = `/organization/application/profile`;
   return API.get(requestUrl).then((res) => res.data);
+};
+
+export const getApplicationsForCreateUser = async (): Promise<ApplicationAccess[]> => {
+  return API.get('/application/organization').then((res) => res.data);
+};
+
+export const getApplicationsForEditUser = async (userId: string): Promise<ApplicationAccess[]> => {
+  return API.get(`/application/organization/${userId}`).then((res) => res.data);
 };
 
 export const getOngApplicationById = (

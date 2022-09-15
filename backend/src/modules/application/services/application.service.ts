@@ -23,6 +23,8 @@ import {
 import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
+import { ApplicationAccess } from '../interfaces/application-access.interface';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -68,7 +70,7 @@ export class ApplicationService {
    *
    * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
    */
-  public async findAllForOng(
+  public async findApplications(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
     return this.applicationRepository
@@ -90,7 +92,7 @@ export class ApplicationService {
    *
    *  Metoda descrie lista de applicatii a unei organizatii
    */
-  public async findAllForOngUser(
+  public async findApplicationsForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
     return this.applicationRepository
@@ -104,6 +106,75 @@ export class ApplicationService {
       .where('ongApp.organizationId = :organizationId', { organizationId })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .execute();
+  }
+
+  /**
+   * @description
+   * Toate applicatiile unui ong in relatie cu access-ul unui utilzator de tip employee
+   */
+  public async findApplicationsForOngWithAccessStatus(
+    organizationId: number,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'ongApp.id as id',
+        'application.logo as logo',
+        'application.name as name',
+        'NULL as status',
+        'application.type as type',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .execute();
+  }
+
+  /**
+   * @description
+   * Toate applicatiile unui ong in cu statusul de access al unui utilzator
+   */
+  public async findActiveApplicationsForOngUserWithAccessStatus(
+    organizationId: number,
+    userId: number,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'ongApp.id as id',
+        'application.logo as logo',
+        'application.name as name',
+        'userOngApp.status as status',
+        'application.type as type',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.applicationId = ongApp.id and userOngApp.userId = :userId',
+        { userId },
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
       })
       .execute();
   }

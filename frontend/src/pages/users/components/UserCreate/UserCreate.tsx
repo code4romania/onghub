@@ -6,9 +6,10 @@ import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
 import InputField from '../../../../components/InputField/InputField';
 import { Loading } from '../../../../components/loading/Loading';
-import { useMyOngApplicationsQuery } from '../../../../services/application/Application.queries';
+import { userApplicationsForCreateUser } from '../../../../services/application/Application.queries';
 import { useCreateUserMutation } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
+import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from './UserCreateConfig';
 
@@ -17,11 +18,14 @@ const UserCreate = () => {
   const { organization } = useSelectedOrganization();
   const [access, setAccess] = useState<any>({});
 
+  // requst applications
   const {
     data: applications,
     isLoading: isLoadingApplications,
     error: ongApplicationsError,
-  } = useMyOngApplicationsQuery();
+  } = userApplicationsForCreateUser();
+
+  // user create
   const createUserMutation = useCreateUserMutation();
 
   const {
@@ -41,19 +45,21 @@ const UserCreate = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    const applicationIds = Object.getOwnPropertyNames(access)
-      .map((accessId) => accessId)
-      .filter((accessId) => access[accessId]);
+    const applicationAccess = Object.getOwnPropertyNames(access)
+      .filter((applicationId) => access[applicationId])
+      .map((applicationId) => ({
+        applicationId: applicationId,
+        status: UserOngApplicationStatus.ACTIVE,
+      }));
 
     createUserMutation.mutate(
-      { ...data, organizationId: organization?.id as number, applicationIds },
+      { ...data, organizationId: organization?.id as number, applicationAccess },
       {
         onSuccess: () => {
           useSuccessToast('User successfully created');
           navigate('/users');
         },
-        onError: (error: unknown) => {
-          console.error(error);
+        onError: () => {
           useErrorToast('Could not create the user');
         },
       },

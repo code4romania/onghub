@@ -12,6 +12,7 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { Access } from 'src/modules/application/interfaces/application-access.interface';
 import { Role } from '../enums/role.enum';
 
 export class CreateUserDto {
@@ -40,5 +41,5 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsArray()
-  applicationIds?: number[];
+  applicationAccess?: Access[];
 }

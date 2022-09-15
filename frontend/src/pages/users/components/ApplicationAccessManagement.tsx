@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Toggle from '../../../components/toggle/Toggle';
-import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
-import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
+import { ApplicationAccess } from '../../../services/application/interfaces/Application.interface';
+import { UserOngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
 
 interface ApplicationAccessManagementProps {
-  applications: ApplicationWithOngStatus[];
+  applications: ApplicationAccess[];
   onAccessChange: (access: any) => void;
 }
 
@@ -39,9 +39,10 @@ const ApplicationAccessManagement = ({
     applications.forEach((application) => {
       newAccess = {
         ...newAccess,
-        [application.id]: false,
+        [application.id]: application.status === UserOngApplicationStatus.ACTIVE,
       };
     });
+
     setAccessTree(newAccess);
   }, [applications]);
 
@@ -81,22 +82,20 @@ const ApplicationAccessManagement = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {applications
-              .filter((application) => application.type !== ApplicationTypeEnum.INDEPENDENT)
-              .map((application) => (
-                <tr key={application.id}>
-                  <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                    {application.name}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                    <ApplicationToggle
-                      initialStatus={false}
-                      applicationId={application.id}
-                      onApplicationStatusChange={enableAccess}
-                    />
-                  </td>
-                </tr>
-              ))}
+            {applications.map((application) => (
+              <tr key={application.id}>
+                <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                  {application.name}
+                </td>
+                <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <ApplicationToggle
+                    initialStatus={application.status === UserOngApplicationStatus.ACTIVE}
+                    applicationId={application.id}
+                    onApplicationStatusChange={enableAccess}
+                  />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

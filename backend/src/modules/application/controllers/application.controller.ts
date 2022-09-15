@@ -25,6 +25,7 @@ import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { Application } from '../entities/application.entity';
+import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
@@ -65,6 +66,29 @@ export class ApplicationController {
     @Body() updateApplicationDto: UpdateApplicationDto,
   ) {
     return this.applicationService.update(+id, updateApplicationDto);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get('organization')
+  findAvailableApplicationsForOng(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findApplicationsForOngWithAccessStatus(
+      user.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'userId', type: String })
+  @Get('organization/:userId')
+  findAvailableApplicationsForOngUser(
+    @ExtractUser() user: User,
+    @Param('userId') userId: number,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
+      user.organizationId,
+      userId,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)

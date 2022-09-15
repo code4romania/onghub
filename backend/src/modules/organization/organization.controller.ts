@@ -121,7 +121,7 @@ export class OrganizationController {
   findApplications(
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findAllForOng(user.organizationId);
+    return this.applicationService.findApplications(user.organizationId);
   }
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
@@ -129,15 +129,7 @@ export class OrganizationController {
   findApplicationsForOng(
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findAllForOngUser(user.organizationId);
-  }
-
-  @Roles(Role.ADMIN)
-  @Get('application/profile/:userId')
-  findApplicationsForOngUser(
-    @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return Promise.resolve([]);
+    return this.applicationService.findApplicationsForOng(user.organizationId);
   }
 
   @Roles(Role.ADMIN)

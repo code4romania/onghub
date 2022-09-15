@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { In } from 'typeorm';
+import { DeepPartial, DeleteResult, FindOptionsWhere, In } from 'typeorm';
 import { USER_ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { UserOngApplication } from '../entities/user-ong-application.entity';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
@@ -33,20 +33,14 @@ export class UserOngApplicationService {
   }
 
   public async createMany(
-    organizationId: number,
-    applicationIds: number[],
-    userId: number,
+    entities: DeepPartial<UserOngApplication>[],
   ): Promise<UserOngApplication[]> {
-    const ongApplications = await this.ongApplicationService.findMany({
-      where: { organizationId, applicationId: In(applicationIds) },
-    });
+    return this.userOngApplicationRepository.saveMany(entities);
+  }
 
-    const valuesToInsert = ongApplications.map((app) => ({
-      applicationId: app.id,
-      organizationId,
-      userId,
-    }));
-
-    return this.userOngApplicationRepository.saveMany(valuesToInsert);
+  public async remove(
+    options: FindOptionsWhere<UserOngApplication>,
+  ): Promise<DeleteResult> {
+    return this.userOngApplicationRepository.remove(options);
   }
 }

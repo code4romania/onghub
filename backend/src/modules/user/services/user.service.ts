@@ -21,6 +21,7 @@ import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
+import { Access } from 'src/modules/application/interfaces/application-access.interface';
 
 @Injectable()
 export class UserService {
@@ -44,7 +45,7 @@ export class UserService {
   }
 
   public async createEmployee(createUserDto: CreateUserDto) {
-    const { applicationIds, ...userData } = createUserDto;
+    const { applicationAccess, ...userData } = createUserDto;
 
     // 1. create user and send invite
     const user = await this.create({
@@ -52,30 +53,17 @@ export class UserService {
       role: Role.EMPLOYEE,
     });
 
-    if (applicationIds?.length === 0) {
+    if (applicationAccess?.length === 0) {
       return user;
     }
 
-    // 2. grant access to applications
-    try {
-      await this.userOngApplicationService.createMany(
-        user.organizationId,
-        applicationIds,
-        user.id,
-      );
+    this.assignApplications(
+      applicationAccess,
+      user.id,
+      userData.organizationId,
+    );
 
-      return user;
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...USER_ERRORS.ACCESS,
-      });
-      const err = error?.response;
-      throw new BadRequestException({
-        ...USER_ERRORS.ACCESS,
-        error: err,
-      });
-    }
+    return user;
   }
 
   public async getById(
@@ -107,14 +95,28 @@ export class UserService {
     organizationId?: number,
   ): Promise<User> {
     try {
-      // 1. Chekc if the user exists
+      const { applicationAccess, ...userData } = payload;
+
+      // 1. Check if the user exists
       const user = await this.getById(id, organizationId);
 
       // 2. Update cognito user data
-      await this.cognitoService.updateUser(user.email, payload);
+      await this.cognitoService.updateUser(user.email, userData);
 
-      // 3. Update db user data
-      return this.update(id, payload);
+      // 3. Remove current user applications
+      await this.userOngApplicationService.remove({ userId: id });
+
+      if (applicationAccess?.length > 0) {
+        // 4. assign applications
+        await this.assignApplications(
+          applicationAccess,
+          user.id,
+          user.organizationId,
+        );
+      }
+
+      // 5. Update db user data
+      return this.update(id, userData);
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -124,6 +126,13 @@ export class UserService {
       const err = error?.response;
       switch (err?.errorCode) {
         // 1. USR_007: User not found or doesn't have an organizationId
+        case USER_ERRORS.GET.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.GET,
+            error: err,
+          });
+        }
+        // 2. USR_007: User not found or doesn't have an organizationId
         case USER_ERRORS.GET.errorCode: {
           throw new BadRequestException({
             ...USER_ERRORS.GET,
@@ -285,8 +294,8 @@ export class UserService {
             error: err,
           });
         }
-        // 2. USR_008: There is already a user with the same email address
-        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+        // 2. USR_011: Error on assigning applications
+        case USER_ERRORS.ACCESS.errorCode: {
           throw error;
         }
         // 3. USR_001: Something unexpected happened
@@ -297,6 +306,36 @@ export class UserService {
           });
         }
       }
+    }
+  }
+
+  private async assignApplications(
+    applicationAccess: Access[],
+    userId: number,
+    organizationId: number,
+  ) {
+    // 2. grant access to applications
+    try {
+      const valuesToInsert = applicationAccess.map(
+        ({ applicationId, status }) => ({
+          applicationId,
+          organizationId,
+          userId,
+          status,
+        }),
+      );
+
+      await this.userOngApplicationService.createMany(valuesToInsert);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.ACCESS,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...USER_ERRORS.ACCESS,
+        error: err,
+      });
     }
   }
 }

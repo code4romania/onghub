@@ -7,6 +7,8 @@ import {
   createApplication,
   getApplicationById,
   getApplications,
+  getApplicationsForCreateUser,
+  getApplicationsForEditUser,
   getMyOngApplications,
   getOngApplications,
   patchApplication,
@@ -75,6 +77,16 @@ export const useApplicationQuery = (applicationId: string) => {
     onSuccess: (data: Application) => {
       setSelectedApplication(data);
     },
+  });
+};
+
+export const userApplicationsForCreateUser = () => {
+  return useQuery(['application'], () => getApplicationsForCreateUser());
+};
+
+export const useApplicationsForEditUserQuery = (userId: string) => {
+  return useQuery(['application', userId], () => getApplicationsForEditUser(userId), {
+    enabled: !!userId,
   });
 };
 
