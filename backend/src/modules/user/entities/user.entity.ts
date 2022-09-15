@@ -39,7 +39,7 @@ export class User extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'organization_id' })
   organizationId: number;
 
-  @ManyToOne((type) => Organization)
+  @ManyToOne((type) => Organization, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;
 }
