@@ -36,6 +36,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
         label: item,
         value: item,
         name: 'area',
+        id: item,
       })),
     ],
   },

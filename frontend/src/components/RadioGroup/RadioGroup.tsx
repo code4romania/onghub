@@ -10,6 +10,7 @@ const RadioGroup = (props: {
   errors: any;
   readonly: boolean;
   config: IRadioGroupConfig;
+  id?: string;
 }) => {
   return (
     <div>
@@ -20,7 +21,7 @@ const RadioGroup = (props: {
         control={props.control}
         render={({ field: { onChange, value } }) => {
           return (
-            <fieldset className="flex flex-col gap-y-4 gap-x-4">
+            <fieldset id={`${props.id}__input`} className="flex flex-col gap-y-4 gap-x-4">
               {props.readonly && (
                 <span>
                   {props.config.radioConfigs.find(
@@ -35,6 +36,7 @@ const RadioGroup = (props: {
                       ...radioConfig,
                       name: props.config.key,
                       onChange: onChange,
+                      id: `${props.id}__input`,
                     }}
                     checked={str2bool(radioConfig.value) === str2bool(value)}
                     key={index}
@@ -50,7 +52,7 @@ const RadioGroup = (props: {
         </p>
       )}
       {!props.readonly && props.errors && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${props.id}`}>
           {props.errors.message}
         </p>
       )}
