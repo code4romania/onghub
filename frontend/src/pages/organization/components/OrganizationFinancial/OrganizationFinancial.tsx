@@ -16,6 +16,7 @@ import CardPanel from '../../../../components/card-panel/CardPanel';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
@@ -25,15 +26,16 @@ const OrganizationFinancial = () => {
   const { organizationFinancial } = useSelectedOrganization();
   const { mutate, isLoading, error } = useOrganizationByProfileMutation();
   const { role } = useContext(AuthContext);
+  const { t } = useTranslation(['financial', 'organization', 'common']);
 
   useEffect(() => {
-    if (error) useErrorToast('Error while saving financial data');
+    if (error) useErrorToast(t('save_error'));
   }, [error]);
 
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
     const employeeMenuItems = [
       {
-        name: 'view',
+        name: t('view', { ns: 'common' }),
         icon: EyeIcon,
         onClick: onView,
       },
@@ -41,12 +43,12 @@ const OrganizationFinancial = () => {
 
     const adminMenuItems = [
       {
-        name: 'view',
+        name: t('view', { ns: 'common' }),
         icon: EyeIcon,
         onClick: onView,
       },
       {
-        name: 'edit',
+        name: t('edit', { ns: 'common' }),
         icon: PencilIcon,
         onClick: onEdit,
       },
@@ -99,11 +101,11 @@ const OrganizationFinancial = () => {
   };
 
   return (
-    <CardPanel title="Date Financiare">
+    <CardPanel title={t('title')}>
       <>
         <div className="pt-1 pb-6">
           <p className="text-base font-normal text-gray-900">
-            Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+            {t('data_update', { ns: 'organization' })}
           </p>
         </div>
         <DataTableComponent

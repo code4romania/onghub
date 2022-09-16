@@ -1,5 +1,6 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
@@ -13,6 +14,7 @@ const UserCreate = () => {
   const navigate = useNavigate();
   const { organization } = useSelectedOrganization();
   const createUserMutation = useCreateUserMutation();
+  const { t } = useTranslation(['user', 'common']);
 
   const {
     handleSubmit,
@@ -29,12 +31,12 @@ const UserCreate = () => {
       { ...data, organizationId: organization?.id as number },
       {
         onSuccess: () => {
-          useSuccessToast('User successfully created');
+          useSuccessToast(t('create.success'));
           navigate('/users');
         },
         onError: (error: unknown) => {
           console.error(error);
-          useErrorToast('Could not create the user');
+          useErrorToast(t('create.failure'));
         },
       },
     );
@@ -42,15 +44,14 @@ const UserCreate = () => {
 
   return (
     <ContentWrapper
-      title="Adauga Utilizator"
-      subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-    disponibile."
-      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
+      title={t('add')}
+      subtitle={t('subtitle')}
+      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/users') }}
     >
       <div className="flex">
         <CardPanel
-          title="Trimite invitatie"
-          btnLabel="Trimite invitatie"
+          title={t('create.invite')}
+          btnLabel={t('create.invite')}
           loading={createUserMutation.isLoading}
           onSave={handleSubmit(onSubmit)}
         >

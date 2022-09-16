@@ -8,7 +8,7 @@ import { str2bool } from '../../common/helpers/format.helper';
 const RadioGroup = (props: {
   control: any;
   errors: any;
-  readonly: boolean;
+  readonly?: boolean;
   config: IRadioGroupConfig;
   id?: string;
 }) => {

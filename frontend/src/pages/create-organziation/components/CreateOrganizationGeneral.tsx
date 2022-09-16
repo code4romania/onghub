@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import ContactForm from '../../../components/Contact/Contact';
@@ -21,6 +22,8 @@ const CreateOrganizationGeneral = () => {
   const [file, setFile] = useState<File | null>(null);
 
   const [organization, setOrganization] = useOutletContext<any>();
+
+  const { t } = useTranslation(['general', 'common']);
 
   // queries
   useCitiesQuery(county?.id);
@@ -88,10 +91,7 @@ const CreateOrganizationGeneral = () => {
       <div className="w-full " />
       <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader
-            title="Date generale"
-            subTitle="This information will be displayed publicly so be careful what you share"
-          />
+          <SectionHeader title={t('title')} subTitle={t('information', { ns: 'common' })} />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller
@@ -338,7 +338,7 @@ const CreateOrganizationGeneral = () => {
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-                  Logo organizatie
+                  {t('logo.name')}
                 </label>
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
@@ -360,7 +360,7 @@ const CreateOrganizationGeneral = () => {
                         htmlFor="uploadPhoto"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        Incarca logo
+                        {t('logo.upload')}
                       </label>
                       <input
                         className="h-0 w-0"
@@ -374,17 +374,15 @@ const CreateOrganizationGeneral = () => {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                  {t('logo.description')}
                 </p>
               </div>
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">
-                Persoana de contact in relatia cu ONGHub
-              </span>
+              <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                {t('contact.description')}
               </p>
               <ContactForm
                 control={control}
@@ -398,9 +396,9 @@ const CreateOrganizationGeneral = () => {
               />
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Comunicare si social media</span>
+              <span className="text-xl font-bold text-gray-900">{t('social')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'common' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller
@@ -532,9 +530,9 @@ const CreateOrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Fundraising</span>
+              <span className="text-xl font-bold text-gray-900">{t('fundraising')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'common' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller
@@ -634,7 +632,7 @@ const CreateOrganizationGeneral = () => {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
           >
-            Mai departe
+            {t('next', { ns: 'common' })}
           </button>
           <button
             id="create-organization-general--button-back"
@@ -642,7 +640,7 @@ const CreateOrganizationGeneral = () => {
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}
           >
-            Inapoi
+            {t('back', { ns: 'common' })}
           </button>
         </div>
       </div>

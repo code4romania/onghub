@@ -9,6 +9,7 @@ import { useUserMutation } from '../../services/user/User.queries';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -26,6 +27,7 @@ const Account = () => {
   const [isAccountDeleteModalOpen, setAccountDeleteModal] = useState(false);
   const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
   const { profile } = useUser();
+  const { t } = useTranslation(['account', 'common']);
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
@@ -44,7 +46,7 @@ const Account = () => {
       })
       .then(() => {
         setReadonly(true);
-        useSuccessToast('Password has been changed successfully.');
+        useSuccessToast(t('password'));
       })
       .catch((err) => {
         // TODO: Better error handling
@@ -62,11 +64,8 @@ const Account = () => {
     <div>
       <div className="flex items-start justify-between pt-1 pr-1 pb-6">
         <div className="flex flex-col">
-          <p className="text-gray-800 font-titilliumBold text-3xl">Contul meu</p>
-          <p className="text-gray-400 pt-6">
-            Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa
-            aplicațiile disponibile.
-          </p>
+          <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_account')}</p>
+          <p className="text-gray-400 pt-6">{t('account_description')}</p>
         </div>
         <button
           type="button"
@@ -75,13 +74,13 @@ const Account = () => {
             setAccountDeleteModal(true);
           }}
         >
-          {'Inchide contul'}
+          {t('close.account')}
         </button>
       </div>
       <div className="w-full bg-white shadow rounded-lg ">
         <div className="py-5 px-10 flex justify-between align-center">
           <span className="font-titilliumBold text-xl text-gray-800 flex items-center">
-            Setari cont
+            {t('settings')}
           </span>
           <div className="flex gap-4">
             {!readonly && (
@@ -102,7 +101,7 @@ const Account = () => {
               className={classNames(readonly ? 'edit-button' : 'save-button')}
               onClick={readonly ? startChangePassword : handleSubmit(onChangePassword)}
             >
-              {readonly ? 'Schimba parola' : 'Salveaza modificari'}
+              {readonly ? t('change_password') : t('save', { ns: 'common' })}
             </button>
           </div>
         </div>
@@ -110,17 +109,14 @@ const Account = () => {
         <div className="w-full border-t border-gray-300" />
         {readonly && (
           <div className="p-5 sm:p-10 flex flex-col">
-            <span>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
-            </span>
+            <span>{t('settings_description')}</span>
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
-                <span className="text-gray-700">Nume</span>
+                <span className="text-gray-700">{t('name')}</span>
                 <span className="text-gray-800 font-titilliumBold">{profile?.name}</span>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="text-gray-700">E-mail cont</span>
+                <span className="text-gray-700">{t('email')}</span>
                 <span className="text-gray-800 font-titilliumBold">{profile?.email} </span>
               </div>
             </div>
@@ -178,7 +174,7 @@ const Account = () => {
                 name={AccountConfig.matchPassword.key}
                 rules={{
                   ...AccountConfig.matchPassword.rules,
-                  validate: (value) => value === newPassword || 'Passwords do not match',
+                  validate: (value) => value === newPassword || t('wrong_password'),
                 }}
                 control={control}
                 render={({ field: { onChange, value } }) => {
@@ -202,13 +198,10 @@ const Account = () => {
       </div>
       {isAccountDeleteModalOpen && (
         <ConfirmationModal
-          title="Ești sigur că dorești închiderea contului?"
-          description="Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
-          puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești
-          să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te
-          va contacta pentru a finaliza procesul."
-          closeBtnLabel="Inapoi"
-          confirmBtnLabel="Inchide contul"
+          title={t('close.title')}
+          description={t('close.description')}
+          closeBtnLabel={t('back', { ns: 'common' })}
+          confirmBtnLabel={t('close.account')}
           onClose={() => {
             setAccountDeleteModal(false);
           }}

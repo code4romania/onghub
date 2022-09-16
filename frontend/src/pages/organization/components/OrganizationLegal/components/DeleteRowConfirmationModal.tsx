@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useTranslation } from 'react-i18next';
 
 interface DeleteRowConfirmationModalProps {
   onClose: () => void;
@@ -7,6 +8,7 @@ interface DeleteRowConfirmationModalProps {
 }
 
 const DeleteRowConfirmationModal = ({ onClose, onConfirm }: DeleteRowConfirmationModalProps) => {
+  const { t } = useTranslation(['delete_row', 'common']);
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -37,27 +39,23 @@ const DeleteRowConfirmationModal = ({ onClose, onConfirm }: DeleteRowConfirmatio
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
-                      Stergeti randul?
+                      {t('delete')}
                     </Dialog.Title>
                     <div className="mt-6">
-                      <p className="text-base text-gray-900 font-normal">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio
-                        placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque
-                        corporis error enim numquam, magnam cum explicabo voluptas officiis.
-                      </p>
+                      <p className="text-base text-gray-900 font-normal">{t('information')}</p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
                   <button type="button" className="red-button" onClick={onConfirm}>
-                    Sterge
+                    {t('delete', { ns: 'common' })}
                   </button>
                   <button
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
                     onClick={onClose}
                   >
-                    Nu Sterge
+                    {t('no_delete')}
                   </button>
                 </div>
               </Dialog.Panel>

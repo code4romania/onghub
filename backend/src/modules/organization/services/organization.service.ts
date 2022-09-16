@@ -8,7 +8,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { In } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
@@ -16,7 +16,18 @@ import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.co
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization, OrganizationReport } from '../entities';
+import {
+  Contact,
+  Investor,
+  Organization,
+  OrganizationActivity,
+  OrganizationFinancial,
+  OrganizationGeneral,
+  OrganizationLegal,
+  OrganizationReport,
+  Partner,
+  Report,
+} from '../entities';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
@@ -32,6 +43,7 @@ import { OrganizationReportService } from './organization-report.service';
 export class OrganizationService {
   private readonly logger = new Logger(OrganizationService.name);
   constructor(
+    private readonly dataSource: DataSource,
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
     private readonly organizationActivityService: OrganizationActivityService,
@@ -473,9 +485,7 @@ export class OrganizationService {
   }
 
   public async delete(organizationId: number): Promise<void> {
-    const organization = await this.organizationRepository.get({
-      where: { id: organizationId },
-    });
+    const organization = await this.findWithRelations(organizationId);
 
     if (organization.status !== OrganizationStatus.PENDING) {
       throw new BadRequestException({
@@ -483,9 +493,83 @@ export class OrganizationService {
       });
     }
 
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    await queryRunner.startTransaction();
+
     try {
-      await this.organizationRepository.remove({ id: organization.id });
+      // 1. delete organization
+      await queryRunner.manager.delete(Organization, organizationId);
+
+      // 2. delete report
+      const reportIds = organization.organizationReport.reports.map(
+        (report) => report.id,
+      );
+      await queryRunner.manager.delete(Report, reportIds);
+
+      const inverstorIds = organization.organizationReport.investors.map(
+        (investor) => investor.id,
+      );
+      await queryRunner.manager.delete(Investor, inverstorIds);
+
+      const partnerIds = organization.organizationReport.partners.map(
+        (partner) => partner.id,
+      );
+      await queryRunner.manager.delete(Partner, partnerIds);
+
+      await queryRunner.manager.delete(
+        OrganizationReport,
+        organization.organizationReportId,
+      );
+
+      // 3. delete financial
+      const organizationFinancialIds = organization.organizationFinancial.map(
+        (financial) => financial.id,
+      );
+      await queryRunner.manager.delete(
+        OrganizationFinancial,
+        organizationFinancialIds,
+      );
+
+      // 4. delete delete legal
+      await queryRunner.manager.delete(
+        Contact,
+        organization.organizationLegal.legalReprezentativeId,
+      );
+
+      const directorsIds = organization.organizationLegal.directors.map(
+        (director) => director.id,
+      );
+      await queryRunner.manager.delete(Contact, directorsIds);
+
+      await queryRunner.manager.delete(
+        OrganizationLegal,
+        organization.organizationLegalId,
+      );
+
+      // 5. delete activity
+      await queryRunner.manager.delete(
+        OrganizationActivity,
+        organization.organizationActivityId,
+      );
+
+      // 6. delete general
+      await queryRunner.manager.delete(
+        OrganizationGeneral,
+        organization.organizationGeneralId,
+      );
+
+      await queryRunner.manager.delete(
+        Contact,
+        organization.organizationGeneral.contactId,
+      );
+
+      await queryRunner.commitTransaction();
     } catch (error) {
+      // since we have errors lets rollback the changes we made
+      await queryRunner.rollbackTransaction();
+
       this.logger.error({
         error: { error },
         ...ORGANIZATION_ERRORS.DELETE.ONG,
@@ -495,6 +579,9 @@ export class OrganizationService {
         ...ORGANIZATION_ERRORS.DELETE.ONG,
         error: err,
       });
+    } finally {
+      // you need to release a queryRunner which was manually instantiated
+      await queryRunner.release();
     }
   }
 }

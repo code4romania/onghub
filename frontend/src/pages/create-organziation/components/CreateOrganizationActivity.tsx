@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   str2bool,
@@ -32,6 +33,8 @@ const CreateOrganizationActivity = () => {
   const [organization, setOrganization] = useOutletContext<any>();
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation(['activity', 'common']);
 
   const [readonly] = useState(false);
   const {
@@ -96,9 +99,9 @@ const CreateOrganizationActivity = () => {
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
         <div className="flex flex-col gap-4 ">
           <div>
-            <span className="text-xl font-bold text-gray-900">Domenii si acoperire geografica</span>
+            <span className="text-xl font-bold text-gray-900">{t('domains')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <Controller
@@ -178,9 +181,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Federatii si coalitii</span>
+            <span className="text-xl font-bold text-gray-900">{t('fed_coal')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
@@ -281,9 +284,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Filiale si sucursale</span>
+            <span className="text-xl font-bold text-gray-900">{t('branches')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
@@ -321,9 +324,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">Alte informatii</span>
+            <span className="text-xl font-bold text-gray-900">{t('other')}</span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              This information will be displayed publicly so be careful what you share.
+              {t('information', { ns: 'common' })}
             </p>
           </div>
           <RadioGroup
@@ -355,7 +358,7 @@ const CreateOrganizationActivity = () => {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
           >
-            Mai departe
+            {t('next', { ns: 'common' })}
           </button>
           <button
             id="create-organization-activity--button-back"
@@ -363,7 +366,7 @@ const CreateOrganizationActivity = () => {
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}
           >
-            Inapoi
+            {t('back', { ns: 'common' })}
           </button>
         </div>
       </div>

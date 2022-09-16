@@ -8,14 +8,17 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from '../../user/decorators/user.decorator';
@@ -48,23 +51,29 @@ export class ApplicationController {
   }
 
   @Roles(Role.SUPER_ADMIN)
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'logo', maxCount: 1 }]))
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: CreateApplicationDto })
   @Post()
   create(
     @Body() createApplicationDto: CreateApplicationDto,
+    @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ): Promise<Application> {
-    return this.applicationService.create(createApplicationDto);
+    return this.applicationService.create(createApplicationDto, logo);
   }
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'logo', maxCount: 1 }]))
+  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UpdateApplicationDto })
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateApplicationDto: UpdateApplicationDto,
+    @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ) {
-    return this.applicationService.update(+id, updateApplicationDto);
+    return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)

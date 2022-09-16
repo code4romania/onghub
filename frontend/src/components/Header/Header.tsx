@@ -9,11 +9,14 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
 import { Auth } from 'aws-amplify';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
+
+  const { t } = useTranslation('header');
 
   return (
     <header className="bg-white">
@@ -27,7 +30,7 @@ const Header = () => {
               className="bg-yellow-600 px-6 py-2 shadow rounded-full text-black font-titilliumBold"
               onClick={(e) => Auth.federatedSignIn()}
             >
-              INTRA IN CONT
+              {t('enter')}
             </button>
           )}
           {isAuthenticated && (
@@ -63,7 +66,7 @@ const Header = () => {
                             onClick={() => navigate('/account')}
                           >
                             <CogIcon className="mr-3 h-5 w-5 text-gray-800 " aria-hidden="true" />
-                            Contul meu
+                            {t('my_account')}
                           </a>
                         )}
                       </Menu.Item>
@@ -80,7 +83,7 @@ const Header = () => {
                               className="mr-3 h-5 w-5 text-gray-800 "
                               aria-hidden="true"
                             />
-                            Log out
+                            {t('log_out')}
                           </a>
                         )}
                       </Menu.Item>
