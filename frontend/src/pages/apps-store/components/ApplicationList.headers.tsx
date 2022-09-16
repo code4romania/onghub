@@ -7,11 +7,18 @@ import {
   APPLICATION_STATUS_NAME,
 } from '../constants/ApplicationStatus.constant';
 import { ApplicationTypeNaming } from '../constants/ApplicationType.enum';
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  name: i18n.t('appstore:header.name'),
+  type: i18n.t('appstore:header.type'),
+  status: i18n.t('appstore:header.status'),
+};
 
 export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'name',
-    name: 'Aplicatie',
+    name: translations.name,
     sortable: true,
     sortField: 'name',
     grow: 3,
@@ -20,7 +27,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'type',
     sortable: false,
-    name: 'Tip aplicatie',
+    name: translations.type,
     grow: 2,
     selector: (row: Application) => ApplicationTypeNaming[row.type],
   },
@@ -28,7 +35,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     id: 'status',
     sortable: true,
     sortField: 'status',
-    name: 'Status',
+    name: translations.status,
     cell: (row: Application) => (
       <StatusBadge
         status={ApplicationStatusBadgeMapper(row.status)}

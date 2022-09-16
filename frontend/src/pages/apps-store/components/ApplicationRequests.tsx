@@ -1,6 +1,7 @@
 import { EyeIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
@@ -34,6 +35,8 @@ const ApplicationRequests = () => {
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<IApplicationRequest | null>(null);
 
+  const { t } = useTranslation('appstore');
+
   const navigate = useNavigate();
 
   const { mutateAsync: approveMutate, error: approveError } =
@@ -62,27 +65,27 @@ const ApplicationRequests = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Error while loading the requests.');
+      useErrorToast(t('requests.load_error'));
     } else if (approveError || rejectError) {
-      useErrorToast('Error while changing the status');
+      useErrorToast(t('requests.status_error'));
     }
   }, [error, approveError, rejectError]);
 
   const buildRequestsActionColumn = (): TableColumn<IApplicationRequest> => {
     const activeRequestsMenuItems = [
       {
-        name: 'Vizualizeaza aplicatie',
+        name: t('requests.view'),
         icon: EyeIcon,
         onClick: onView,
       },
       {
-        name: 'Aproba',
+        name: t('requests.aprove'),
         icon: ShieldCheckIcon,
         onClick: onOpenApprove,
         type: PopoverMenuRowType.SUCCESS,
       },
       {
-        name: 'Respinge',
+        name: t('requests.reject'),
         icon: XIcon,
         onClick: onOpenReject,
         type: PopoverMenuRowType.REMOVE,
@@ -133,7 +136,7 @@ const ApplicationRequests = () => {
   const onApprove = async (data: IApplicationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
+        useSuccessToast(t('requests.status_update'));
         refetch();
       },
       onSettled: () => {
@@ -145,7 +148,7 @@ const ApplicationRequests = () => {
   const onReject = async (data: IApplicationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
+        useSuccessToast(t('requests.status_update'));
         refetch();
       },
       onSettled: () => {
@@ -178,13 +181,13 @@ const ApplicationRequests = () => {
       >
         <div className="flex gap-x-6">
           <div className="basis-1/4">
-            <DateRangePicker label="Data adaugarii" onChange={onDateChange} />
+            <DateRangePicker label={t('requests.date_added')} onChange={onDateChange} />
           </div>
         </div>
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Solicitari</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('requests.requests')}</p>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent

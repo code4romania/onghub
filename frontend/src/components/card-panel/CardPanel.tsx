@@ -1,5 +1,6 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CardPanelProps {
   title: string;
@@ -10,6 +11,8 @@ interface CardPanelProps {
 }
 
 const CardPanel = ({ title, children, btnLabel, loading, onSave }: CardPanelProps) => {
+  const { t } = useTranslation('common');
+
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
@@ -17,7 +20,7 @@ const CardPanel = ({ title, children, btnLabel, loading, onSave }: CardPanelProp
         {onSave && (
           <button type="button" className="save-button" onClick={onSave} disabled={loading}>
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            {loading ? 'Processing...' : `${btnLabel || 'Salveaza modificari'}`}
+            {loading ? t('processing') : `${btnLabel || t('save')}`}
           </button>
         )}
       </div>

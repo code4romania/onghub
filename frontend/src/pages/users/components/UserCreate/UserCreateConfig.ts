@@ -1,4 +1,28 @@
 import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../common/helpers/format.helper';
+import i18n from '../../../../common/config/i18n';
+
+const translations = {
+  name: {
+    required: i18n.t('user:config.name.required'),
+    max: i18n.t('user:config.name.max'),
+    min: i18n.t('user:config.name.min'),
+    invalid: i18n.t('user:config.name.invalid'),
+    label: i18n.t('user:config.name.label'),
+  },
+  email: {
+    required: i18n.t('user:config.email.required'),
+    max: i18n.t('user:config.email.max'),
+    invalid: i18n.t('user:config.email.invalid'),
+    label: i18n.t('user:config.email.label'),
+  },
+  phone: {
+    required: i18n.t('user:config.phone.required'),
+    max: i18n.t('user:config.phone.max'),
+    min: i18n.t('user:config.phone.min'),
+    invalid: i18n.t('user:config.phone.invalid'),
+    label: i18n.t('user:config.phone.label'),
+  },
+};
 
 export const UserCreateConfig: Record<string, any> = {
   name: {
@@ -6,24 +30,24 @@ export const UserCreateConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Name has a maximum length of 100 characters.',
+        message: translations.name.max,
       },
       minLength: {
         value: 5,
-        message: 'Name has a minimum length of 5 characters.',
+        message: translations.name.min,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Name is invalid',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume*',
+      label: translations.name.label,
       helperText: '',
       placeholder: '',
     },
@@ -33,20 +57,20 @@ export const UserCreateConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Email is required.',
+        message: translations.email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Email has a maximum length of 50 characters.',
+        message: translations.email.max,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Email*',
+      label: translations.email.label,
       helperText: '',
       placeholder: '',
     },
@@ -56,24 +80,24 @@ export const UserCreateConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Phone is required.',
+        message: translations.phone.required,
       },
       maxLength: {
         value: 15,
-        message: 'Phone has a maximum length of 15 characters.',
+        message: translations.phone.max,
       },
       minLength: {
-        value: 12,
-        message: 'Phone has a minimum length of 12 characters.',
+        value: 10,
+        message: translations.phone.min,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon',
+      label: translations.phone.label,
       helperText: '',
       placeholder: '',
     },

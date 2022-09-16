@@ -128,3 +128,12 @@ export const openInNewTab = (url: string): void => {
   const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
   if (newWindow) newWindow.opener = null;
 };
+
+/**
+ * delete all undefined, empty string and null properties from object
+ */
+export const cleanupPayload = (payload: any) => {
+  return Object.keys(payload)
+    .filter((k) => payload[k] !== null && payload[k] !== undefined)
+    .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
+};

@@ -1,3 +1,11 @@
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  association: i18n.t('organization:type.association'),
+  foundation: i18n.t('organization:type.foundation'),
+  federation: i18n.t('organization:type.federation'),
+};
+
 export enum OrganizationTypeEnum {
   ASSOCIATION = 'association',
   FOUNDATION = 'foundation',
@@ -12,7 +20,7 @@ export const OrganizationTypeNaming = {
 };
 */
 export const OrganizationTypeNaming = {
-  association: 'Asociatie',
-  foundation: 'Fundatie',
-  federation: 'Federatie',
+  association: translations.association,
+  foundation: translations.foundation,
+  federation: translations.federation,
 };
