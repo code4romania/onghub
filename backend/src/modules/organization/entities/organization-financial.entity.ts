@@ -11,6 +11,7 @@ export class OrganizationFinancial extends BaseEntity {
   @ManyToOne(
     () => Organization,
     (organization) => organization.organizationFinancial,
+    { onDelete: 'CASCADE' },
   )
   organization: Organization;
 

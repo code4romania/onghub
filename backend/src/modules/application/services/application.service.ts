@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
   NotImplementedException,
 } from '@nestjs/common';
@@ -20,30 +21,62 @@ import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
-import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
+import {
+  APPLICATIONS_FILES_DIR,
+  ORGANIZATION_ALL_APPS_COLUMNS,
+} from '../constants/application.constants';
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationView } from '../entities/application-view.entity';
 import { ApplicationViewRepository } from '../repositories/application-view.repository';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class ApplicationService {
+  private readonly logger = new Logger(ApplicationService.name);
   constructor(
     private readonly applicationRepository: ApplicationRepository,
     private readonly applicationViewRepository: ApplicationViewRepository,
     private readonly ongApplicationService: OngApplicationService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
+    logo: Express.Multer.File[],
   ): Promise<Application> {
     if (
       createApplicationDto.type !== ApplicationTypeEnum.INDEPENDENT &&
       !createApplicationDto.loginLink
     ) {
       throw new BadRequestException({ ...APPLICATION_ERRORS.CREATE.LOGIN });
+    }
+
+    if (logo && logo.length > 0) {
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${APPLICATIONS_FILES_DIR}`,
+          logo,
+          createApplicationDto.name,
+        );
+
+        createApplicationDto = {
+          ...createApplicationDto,
+          logo: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...APPLICATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        throw new BadRequestException({
+          ...APPLICATION_ERRORS.UPLOAD,
+          error: err,
+        });
+      }
     }
 
     return this.applicationRepository.save({
@@ -76,7 +109,7 @@ export class ApplicationService {
   public async findApplications(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
@@ -86,6 +119,10 @@ export class ApplicationService {
         { organizationId },
       )
       .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
   }
 
   /**
@@ -98,7 +135,7 @@ export class ApplicationService {
   public async findApplicationsForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
@@ -111,6 +148,10 @@ export class ApplicationService {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
       .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
   }
 
   /**
@@ -200,13 +241,15 @@ export class ApplicationService {
         'ongApp.status as status',
         'application.name as name',
         'application.logo as logo',
-        'application.short_description as shortdescription',
+        'application.short_description as "shortDescription"',
         'application.description as description',
         'application.type as type',
         'application.steps as steps',
         'application.website as website',
-        'application.login_link as loginlink',
-        'application.video_link as videolink',
+        'application.login_link as "loginLink"',
+        'application.video_link as "videoLink"',
+        'application.management_url as "managementUrl"',
+        'application.status as "applicationStatus"',
       ])
       .leftJoin(
         'ong_application',
@@ -221,12 +264,24 @@ export class ApplicationService {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
     }
 
-    return applicationWithDetails as any;
+    // generate public url for logo
+    let logo = null;
+    if (applicationWithDetails.logo) {
+      logo = await this.fileManagerService.generatePresignedURL(
+        applicationWithDetails.logo,
+      );
+    }
+
+    return this.mapApplicationStatus({
+      ...applicationWithDetails,
+      logo,
+    }) as ApplicationWithOngStatusDetails;
   }
 
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
+    logo: Express.Multer.File[],
   ): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },
@@ -236,6 +291,37 @@ export class ApplicationService {
       throw new NotFoundException({
         ...APPLICATION_ERRORS.GET,
       });
+    }
+
+    // check for logo and update
+    if (logo && logo.length > 0) {
+      try {
+        if (application.logo) {
+          await this.fileManagerService.deleteFiles([application.logo]);
+        }
+
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${APPLICATIONS_FILES_DIR}`,
+          logo,
+          application.name,
+        );
+
+        return this.applicationRepository.save({
+          id,
+          ...updateApplicationDto,
+          logo: uploadedFile[0],
+        });
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...APPLICATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        throw new BadRequestException({
+          ...APPLICATION_ERRORS.UPLOAD,
+          error: err,
+        });
+      }
     }
 
     return this.applicationRepository.save({
@@ -271,5 +357,65 @@ export class ApplicationService {
   // TODO: To be implemented
   public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
+  }
+
+  /**
+   * @description
+   * Map public files URLS for all applications which have logo as path
+   */
+  private async mapLogoToApplications(
+    applications: ApplicationWithOngStatus[],
+  ): Promise<ApplicationWithOngStatus[]> {
+    try {
+      const applicationsWithLogo = applications.map(
+        async (app: ApplicationWithOngStatus) => {
+          if (app.logo !== null) {
+            const logo = await this.fileManagerService.generatePresignedURL(
+              app.logo,
+            );
+            return { ...app, logo };
+          }
+          return app;
+        },
+      );
+
+      return Promise.all(applicationsWithLogo);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...APPLICATION_ERRORS.GENERATE_URL,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...APPLICATION_ERRORS.GENERATE_URL,
+        error: err,
+      });
+    }
+  }
+
+  /**
+   * @description
+   * Map correct application status meaning that if the application status meaning that if an ong application has an active staus but the application itself is disabeled
+   * the user will receive the disabled status.
+   *
+   * The ong application restricted status will always overcome the application disabled status as the user dosen't need to know if the application is disabled as long as he is restricted from using it.
+   */
+  private mapApplicationStatus(
+    application: ApplicationWithOngStatus & {
+      applicationStatus: ApplicationStatus;
+    },
+  ): ApplicationWithOngStatus | ApplicationWithOngStatusDetails {
+    const { applicationStatus, status, ...applicationRemains } = application;
+
+    const finalStatus =
+      applicationStatus === ApplicationStatus.DISABLED &&
+      status !== OngApplicationStatus.RESTRICTED
+        ? ApplicationStatus.DISABLED
+        : status;
+
+    return {
+      ...applicationRemains,
+      status: finalStatus,
+    };
   }
 }

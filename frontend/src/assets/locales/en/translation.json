@@ -1,0 +1,51 @@
+{
+  "common": {
+    "year": "Year",
+    "status": "Status",
+    "updatedOn": "Last update",
+    "save": "Save changes",
+    "back": "Back"
+  },
+  "menu": {
+    "informations": "Informations",
+    "collapse": "Collapse menu"
+  },
+  "pagination": {
+    "rowsPerPage": "Rows per page",
+    "rangeSeparatorText": "from"
+  },
+  "empty": {
+    "table": "There is no data in the table"
+  },
+  "account": {
+    "password": "Password was changed successfully",
+    "my_acc": "My account",
+    "acc_descr": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "settings": "Account settings",
+    "settings_descr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "change_pass": "Change password",
+    "name": "Name",
+    "email": "Account e-mail",
+    "wrong_pass": "Passwords do not match",
+    "close": {
+      "acc": "Close account",
+      "title": "Are you sure you want to close your account?",
+      "descr": "Closing your ONG Hub account will restrict your access to the applciations within this hub. Lorem Ipsum. If you wish to permanently close your account, press the button below and our team will contact you to finalise the process."
+    }
+  },
+  "open_data": {
+    "report": {
+      "volunteers": "Volunteers",
+      "contractors": "Contractors",
+      "activity": "Activity report"
+    },
+    "partners": {
+      "list": "Partner list",
+      "count": "Number of partners"
+    },
+    "investors": {
+      "list": "Investor list",
+      "count": "Number of investors"
+    }
+  }
+}

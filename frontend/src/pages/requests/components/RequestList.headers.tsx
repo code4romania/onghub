@@ -7,30 +7,41 @@ import {
   REQUEST_STATUS_NAME,
 } from '../constants/RequestStatus.constants';
 import { IOrganizationRequest } from '../interfaces/Request.interface';
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  organization_name: i18n.t('requests:header.org_name'),
+  name: i18n.t('requests:header.name'),
+  email: i18n.t('requests:header.email'),
+  phone: i18n.t('requests:header.phone'),
+  status: i18n.t('requests:header.status'),
+  created_on: i18n.t('requests:header.created_on'),
+  status_error: i18n.t('requests:header.status_error'),
+};
 
 export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   {
     id: 'organizationName',
-    name: 'Organizatie',
+    name: translations.organization_name,
     sortable: true,
     selector: (row: IOrganizationRequest) => row.organizationName,
     grow: 3,
   },
   {
     id: 'name',
-    name: 'Nume',
+    name: translations.name,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.name,
   },
   {
     id: 'email',
-    name: 'Email',
+    name: translations.email,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.email,
   },
   {
     id: 'phone',
-    name: 'Telefon',
+    name: translations.phone,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.phone,
   },
@@ -38,17 +49,17 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     id: 'status',
     sortable: true,
     sortField: 'status',
-    name: 'Status',
+    name: translations.status,
     cell: (row: IOrganizationRequest) => (
       <StatusBadge
         status={RequestStatusBadgeMapper(row.status)}
-        value={REQUEST_STATUS_NAME[row.status] || 'Status errorr'}
+        value={REQUEST_STATUS_NAME[row.status] || translations.status_error}
       />
     ),
   },
   {
     id: 'createdOn',
-    name: 'Data adaugarii',
+    name: translations.created_on,
     sortable: true,
     selector: (row: IOrganizationRequest) => formatDate(row?.createdOn as string),
   },

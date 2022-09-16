@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
@@ -28,6 +29,7 @@ const UserEdit = () => {
 
   const updateUserMutation = useUpdateUserMutation();
   const { data: user, error } = useSelectedUserQuery(id as string);
+  const { t } = useTranslation(['user', 'common']);
 
   const {
     handleSubmit,
@@ -47,7 +49,7 @@ const UserEdit = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast(`Could not load user with id ${id}`);
+      useErrorToast(`${t('edit.load_error')} ${id}`);
     }
 
     if (applicationsError) {
@@ -68,10 +70,10 @@ const UserEdit = () => {
       { userId: id as string, payload: { ...data, applicationAccess } },
       {
         onSuccess: () => {
-          useSuccessToast('User successfully updated');
+          useSuccessToast(t('edit.success'));
         },
         onError: () => {
-          useErrorToast('Could not update the user');
+          useErrorToast(t('edit.failure'));
         },
       },
     );
@@ -79,14 +81,13 @@ const UserEdit = () => {
 
   return (
     <ContentWrapper
-      title="Editeaza"
-      subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-    disponibile."
-      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/users') }}
+      title={t('edit', { ns: 'common' })}
+      subtitle={t('subtitle')}
+      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/users') }}
     >
       <div className="flex flex-col gap-6">
         <CardPanel
-          title="Editeaza"
+          title={t('edit', { ns: 'common' })}
           loading={updateUserMutation.isLoading}
           onSave={handleSubmit(onSubmit)}
         >

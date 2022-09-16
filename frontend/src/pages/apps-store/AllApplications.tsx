@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
@@ -11,6 +12,7 @@ const AllApplications = () => {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(0);
   const { role } = useAuthContext();
+  const { t } = useTranslation('appstore');
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_STORE_TABS.find(
@@ -28,11 +30,11 @@ const AllApplications = () => {
 
   return (
     <ContentWrapper
-      title="Toate aplicatiile"
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
+      title={t('all')}
+      subtitle={t('description')}
       addButton={{
         visible: role === UserRole.SUPER_ADMIN,
-        btnLabel: 'Adauga aplicatie',
+        btnLabel: t('add'),
         onBtnClick: () => {
           navigate('new');
         },

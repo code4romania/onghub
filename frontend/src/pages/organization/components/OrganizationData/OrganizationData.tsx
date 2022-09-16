@@ -29,6 +29,7 @@ import readXlsxFile from 'read-excel-file';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 const OrganizationData = () => {
   // static links for partners and investors tables
@@ -40,6 +41,7 @@ const OrganizationData = () => {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
   const { role } = useContext(AuthContext);
+  const { t } = useTranslation(['open_data', 'organization', 'common']);
 
   const { organizationReport } = useSelectedOrganization();
   const {
@@ -80,7 +82,7 @@ const OrganizationData = () => {
       deleteInvestorError ||
       deletePartnerError
     )
-      useErrorToast('Could not load open data');
+      useErrorToast(t('load_error'));
   }, [
     updateReportError,
     uploadPartnersError,
@@ -97,12 +99,12 @@ const OrganizationData = () => {
   const buildReportActionColumn = (): TableColumn<Report> => {
     const menuItems = [
       {
-        name: 'Editeaza',
+        name: t('edit', { ns: 'common' }),
         icon: PencilIcon,
         onClick: onEditReport,
       },
       {
-        name: 'Elimina date',
+        name: t('delete_data', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onDeleteReport,
         type: PopoverMenuRowType.REMOVE,
@@ -120,7 +122,7 @@ const OrganizationData = () => {
   const buildPartnersActionColumn = (): TableColumn<Partner> => {
     const employeeMenuItems = [
       {
-        name: 'Descarca lista',
+        name: t('download'),
         icon: DownloadIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
@@ -129,19 +131,19 @@ const OrganizationData = () => {
 
     const adminMenuItems = [
       {
-        name: 'Descarca lista',
+        name: t('download'),
         icon: DownloadIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
-        name: 'Incarca lista noua',
+        name: t('upload'),
         icon: UploadIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
       },
       {
-        name: 'Elimina lista',
+        name: t('delete'),
         icon: TrashIcon,
         onClick: onDeletePartner,
         type: PopoverMenuRowType.REMOVE,
@@ -164,7 +166,7 @@ const OrganizationData = () => {
   const buildInvestorsActionColumn = (): TableColumn<Investor> => {
     const employeeMenuItems = [
       {
-        name: 'Descarca lista',
+        name: t('download'),
         icon: DownloadIcon,
         onClick: onDownloadFile,
         isDownload: true,
@@ -173,19 +175,19 @@ const OrganizationData = () => {
 
     const adminMenuItems = [
       {
-        name: 'Descarca lista',
+        name: t('download'),
         icon: DownloadIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
-        name: 'Incarca lista noua',
+        name: t('upload'),
         icon: UploadIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
       },
       {
-        name: 'Elimina lista',
+        name: t('delete'),
         icon: TrashIcon,
         onClick: onDeleteInvestor,
         type: PopoverMenuRowType.REMOVE,
@@ -213,9 +215,8 @@ const OrganizationData = () => {
   const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
-    if (data.report?.startsWith('www')) {
-      data.report = 'http://' + data.report;
-    }
+    data.report = 'http://' + data.report;
+
     updateReport({
       organization: {
         report: {
@@ -244,10 +245,10 @@ const OrganizationData = () => {
         const url = await getPublicFileUrl(row.path);
         triggerDownload(url);
       } else {
-        useErrorToast('No file uploaded');
+        useErrorToast(t('no_file'));
       }
     } catch (error) {
-      useErrorToast('Could not download file');
+      useErrorToast(t('download_error'));
     }
   };
 
@@ -272,7 +273,7 @@ const OrganizationData = () => {
     try {
       const rows = await readXlsxFile(file);
       if (rows.length <= 2) {
-        useErrorToast('The file you uploaded contains no data!');
+        useErrorToast(t('no_data'));
         return;
       }
       const data = new FormData();
@@ -281,7 +282,7 @@ const OrganizationData = () => {
       uploadPartners({ partnerId, data });
       setSelectedPartner(null);
     } catch (error) {
-      useErrorToast('Invalid file format.');
+      useErrorToast(t('invalid'));
       return;
     }
   };
@@ -290,7 +291,7 @@ const OrganizationData = () => {
     try {
       const rows = await readXlsxFile(file);
       if (rows.length <= 2) {
-        useErrorToast('The file you uploaded contains no data!');
+        useErrorToast(t('no_data'));
         return;
       }
       const data = new FormData();
@@ -299,18 +300,18 @@ const OrganizationData = () => {
       uploadInvestors({ investorId, data });
       setSelectedInvestor(null);
     } catch (error) {
-      useErrorToast('Invalid file format.');
+      useErrorToast(t('invalid'));
       return;
     }
   };
 
   return (
     <div className="flex flex-col gap-y-6">
-      <CardPanel title="Sumar">
+      <CardPanel title={t('report.title')}>
         <>
           <div className="pt-1 pb-6">
             <p className="text-base font-normal text-gray-900">
-              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+              {t('data_update', { ns: 'organization' })}
             </p>
           </div>
           <DataTableComponent
@@ -324,18 +325,18 @@ const OrganizationData = () => {
           />
         </>
       </CardPanel>
-      <CardPanel title="Parteneri">
+      <CardPanel title={t('partners.title')}>
         <>
           <div className="pt-1 pb-6">
             <p className="text-base font-normal text-gray-900 flex">
-              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+              {t('data_update', { ns: 'organization' })}
               <a
                 href={partnersLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download
               >
                 <DownloadIcon className="w-5 h-5" />
-                Descarca model de tabel parteneri
+                {t('partners.download')}
               </a>
             </p>
           </div>
@@ -346,18 +347,18 @@ const OrganizationData = () => {
           />
         </>
       </CardPanel>
-      <CardPanel title="Finantatori">
+      <CardPanel title={t('investors.title')}>
         <>
           <div className="pt-1 pb-6">
             <p className="text-base font-normal text-gray-900 flex">
-              Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.
+              {t('data_update', { ns: 'organization' })}
               <a
                 href={investorsLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download
               >
                 <DownloadIcon className="w-5 h-5" />
-                Descarca model de tabel finantatori
+                {t('investors.download')}
               </a>
             </p>
           </div>

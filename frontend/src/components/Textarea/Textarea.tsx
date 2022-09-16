@@ -2,7 +2,7 @@ import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { TextAreaConfig } from './TextareaConfig.interface';
 
-const Textarea = (props: { config: Partial<TextAreaConfig>; readonly: boolean }) => {
+const Textarea = (props: { config: Partial<TextAreaConfig>; readonly?: boolean }) => {
   return (
     <div className="relative w-full">
       {props.config.label && (

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from '@lingui/react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 
 export enum BadgeStatus {
@@ -35,7 +34,7 @@ const StatusBadge = ({ status, value }: StatusBadgeProps) => {
       >
         <circle cx={4} cy={4} r={3} />
       </svg>
-      <Trans id={value} />
+      {value}
     </span>
   );
 };
