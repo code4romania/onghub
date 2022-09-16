@@ -25,12 +25,15 @@ import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationStatus } from '../enums/application-status.enum';
+import { ApplicationView } from '../entities/application-view.entity';
+import { ApplicationViewRepository } from '../repositories/application-view.repository';
 
 @Injectable()
 export class ApplicationService {
   constructor(
     private readonly applicationRepository: ApplicationRepository,
-    private ongApplicationService: OngApplicationService,
+    private readonly applicationViewRepository: ApplicationViewRepository,
+    private readonly ongApplicationService: OngApplicationService,
   ) {}
 
   public async create(
@@ -50,12 +53,12 @@ export class ApplicationService {
 
   public async findAll(
     options: ApplicationFilterDto,
-  ): Promise<Pagination<Application>> {
+  ): Promise<Pagination<ApplicationView>> {
     const paginationOptions: any = {
       ...options,
     };
 
-    return this.applicationRepository.getManyPaginated(
+    return this.applicationViewRepository.getManyPaginated(
       APPLICATION_FILTERS_CONFIG,
       paginationOptions,
     );
