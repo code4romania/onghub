@@ -1,5 +1,5 @@
 import { Application } from 'src/modules/application/entities/application.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Request } from '../../../shared/entities/request.entity';
 
 @Entity({ name: 'application_request' })

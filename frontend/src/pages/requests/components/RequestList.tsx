@@ -145,11 +145,15 @@ const RequestList = () => {
   const onReject = async (data: IOrganizationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
+<<<<<<< HEAD
         useSuccessToast(t('status_update'));
+=======
+        useSuccessToast('Solicitare solutionata.');
+>>>>>>> develop
         refetch();
       },
       onSettled: () => {
-        setApproveModalOpen(false);
+        setRejectModalOpen(false);
       },
     });
   };

@@ -45,6 +45,10 @@ export class CreateApplicationDto {
 
   @IsOptional()
   @IsString()
+  managementUrl: string;
+
+  @IsOptional()
+  @IsString()
   @IsNotEmpty()
   logo: string;
 

@@ -55,8 +55,8 @@ const ApplicationDetails = () => {
     e.preventDefault();
     if (application.type === ApplicationTypeEnum.INDEPENDENT && application.website) {
       openInNewTab(application.website);
-    } else if (application.loginlink) {
-      openInNewTab(application.loginlink);
+    } else if (application.loginLink) {
+      openInNewTab(application.loginLink);
     }
   };
 
@@ -236,7 +236,7 @@ const ApplicationDetails = () => {
           <div className="p-8">
             <iframe
               className="h-96 w-full"
-              src={application?.videolink}
+              src={application?.videoLink}
               frameBorder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

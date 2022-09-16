@@ -213,6 +213,22 @@ export const AddAppConfig: Record<string, any> = {
       addOn: InputFieldHttpAddon,
     },
   },
+  managementUrl: {
+    key: 'managementUrl',
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: 'URL format must be valid',
+      },
+    },
+    config: {
+      type: 'text',
+      label: 'Link pentru pulling app',
+      helperText: '',
+      placeholder: '',
+      addOn: InputFieldHttpAddon,
+    },
+  },
   step: {
     key: 'step',
     rules: {
