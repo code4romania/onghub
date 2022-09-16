@@ -1,4 +1,22 @@
 import { NAME_REGEX } from '../../../../../common/helpers/format.helper';
+import i18n from '../../../../../common/config/i18n';
+
+const translations = {
+  name: {
+    required: i18n.t('legal:other_config.name.required'),
+    maxim: i18n.t('legal:other_config.name.maxim'),
+    minim: i18n.t('legal:other_config.name.minim'),
+    invalid: i18n.t('legal:other_config.name.invalid'),
+    label: i18n.t('legal:other_config.name.label'),
+  },
+  role: {
+    required: i18n.t('legal:other_config.role.required'),
+    maxim: i18n.t('legal:other_config.role.maxim'),
+    minim: i18n.t('legal:other_config.role.minim'),
+    invalid: i18n.t('legal:other_config.role.invalid'),
+    label: i18n.t('legal:other_config.role.label'),
+  },
+};
 
 export const OtherConfig: Record<string, any> = {
   fullName: {
@@ -6,24 +24,24 @@ export const OtherConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Name has a maximum length of 100 characters.',
+        message: translations.name.maxim,
       },
       minLength: {
         value: 5,
-        message: 'Name has a minimum length of 5 characters.',
+        message: translations.name.minim,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Name is invalid',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume*',
+      label: translations.name.label,
       helperText: '',
       placeholder: 'John Doe',
     },
@@ -33,24 +51,24 @@ export const OtherConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Role is required.',
+        message: translations.role.required,
       },
       maxLength: {
         value: 50,
-        message: 'Role has a maximum length of 50 characters.',
+        message: translations.role.maxim,
       },
       minLength: {
         value: 3,
-        message: 'Role has a minimum length of 3 characters.',
+        message: translations.role.minim,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Role is invalid',
+        message: translations.role.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Rol*',
+      label: translations.role.label,
       helperText: '',
       placeholder: 'Rol',
     },

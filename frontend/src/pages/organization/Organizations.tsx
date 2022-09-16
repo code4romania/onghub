@@ -1,6 +1,7 @@
 import { BanIcon, EyeIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useTranslation } from 'react-i18next';
 import { PaginationConfig } from '../../common/config/pagination.config';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../common/hooks/useToast';
@@ -31,6 +32,8 @@ const Organizations = () => {
 
   const { organizations } = useOrganizations();
 
+  const { t } = useTranslation(['organizations', 'common']);
+
   const { isLoading, error: getOrganizationsError } = useOrganizationsQuery(
     rowsPerPage as number,
     page as number,
@@ -52,7 +55,7 @@ const Organizations = () => {
   }, []);
 
   useEffect(() => {
-    if (getOrganizationsError) useErrorToast('Error while loading the organizations');
+    if (getOrganizationsError) useErrorToast(t('load_error'));
   }, [getOrganizationsError]);
 
   /**
@@ -106,12 +109,12 @@ const Organizations = () => {
   const buildOrganizationsActionColumn = (): TableColumn<IOrganizationView> => {
     const activeOrganizationsMenuItems = [
       {
-        name: 'Vizualizeaza ONG',
+        name: t('view'),
         icon: EyeIcon,
         onClick: () => console.log('To be implemented'),
       },
       {
-        name: 'Restrictioneaza Temporar',
+        name: t('restrict'),
         icon: BanIcon,
         onClick: () => console.log('To be implemented'),
         type: PopoverMenuRowType.REMOVE,
@@ -129,10 +132,7 @@ const Organizations = () => {
   };
 
   return (
-    <ContentWrapper
-      title="ONG-uri"
-      subtitle="Administreaza aici accesul pentru organizatiile din sistem. "
-    >
+    <ContentWrapper title={t('title')} subtitle={t('administer')}>
       <DataTableFilters
         onSearch={onSearch}
         searchValue={searchWord}
@@ -141,7 +141,7 @@ const Organizations = () => {
         <div className="flex gap-x-6">
           <div className="basis-1/4">
             <DateRangePicker
-              label="Perioada Inregistrare"
+              label={t('filter.registration')}
               defaultValue={createdOnRange.length > 0 ? createdOnRange : undefined}
               onChange={onDateChange}
             />
@@ -149,7 +149,7 @@ const Organizations = () => {
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Numar utilizatori',
+                label: t('filter.users'),
                 collection: OrganizationsUsersCountOptions,
                 displayedAttribute: 'label',
               }}
@@ -160,7 +160,7 @@ const Organizations = () => {
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Status Actualizare Date',
+                label: t('filter.status'),
                 collection: OrganizationCompletionStatusOptions,
                 displayedAttribute: 'label',
               }}
@@ -172,7 +172,7 @@ const Organizations = () => {
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Lista ONG-uri</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('list')}</p>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent

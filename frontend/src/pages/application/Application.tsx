@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
@@ -7,6 +8,7 @@ import { useApplicationQuery } from '../../services/application/Application.quer
 const Application = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { t } = useTranslation(['app', 'common']);
 
   const {
     data: application,
@@ -24,9 +26,9 @@ const Application = () => {
 
   return (
     <ContentWrapper
-      title={application?.name || ''}
+      title={t('title')}
       backButton={{
-        btnLabel: 'Inapoi',
+        btnLabel: t('back', { ns: 'common' }),
         onBtnClick: naivgateBack,
       }}
     >

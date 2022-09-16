@@ -7,11 +7,13 @@ import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queri
 import { useOrganizationByProfileQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
+import { useTranslation } from 'react-i18next';
 
 const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { t } = useTranslation('organization');
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
@@ -29,7 +31,7 @@ const Organization = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast('Could not load Organization');
+    if (error) useErrorToast(t('error'));
   }, [error]);
 
   const onTabClick = (tab: IPageTab) => {
@@ -39,11 +41,8 @@ const Organization = () => {
 
   return (
     <div>
-      <p className="text-gray-800 font-titilliumBold text-3xl">Organizatia mea</p>
-      <p className="text-gray-400 pt-6">
-        Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-        disponibile.
-      </p>
+      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
+      <p className="text-gray-400 pt-6">{t('description')}</p>
       <div className="pb-6 flex">
         <nav
           className="flex pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"

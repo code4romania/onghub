@@ -1,6 +1,7 @@
 import { PencilIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
@@ -12,6 +13,7 @@ import ApplicationForm from './ApplicationForm';
 const AddApplication = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
+  const { t } = useTranslation(['appstore', 'common']);
   // React Hook Form
   const {
     handleSubmit,
@@ -38,7 +40,7 @@ const AddApplication = () => {
 
   useEffect(() => {
     if (createApplicationError) {
-      useErrorToast('Eroare la crearea aplicatiei');
+      useErrorToast(t('create.error'));
     }
   }, [createApplicationError]);
 
@@ -47,7 +49,7 @@ const AddApplication = () => {
       { application: data, logo: file as File },
       {
         onSuccess: () => {
-          useSuccessToast('Aplicatie adaugata cu succes!');
+          useSuccessToast(t('create.success'));
           navigate('/all-apps');
         },
       },
@@ -60,19 +62,17 @@ const AddApplication = () => {
 
   return (
     <ContentWrapper
-      title="Adauga aplicatie"
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
-      backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('/store') }}
+      title={t('add')}
+      subtitle={t('create.description')}
+      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/store') }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 px-10 flex justify-between">
-          <span className="font-titilliumBold text-xl text-gray-800">
-            Generare pagina aplicatie
-          </span>
+          <span className="font-titilliumBold text-xl text-gray-800">{t('create.generate')}</span>
 
           <button type="button" className="save-button" onClick={handleSubmit(onSubmit)}>
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-            Salveaza modificari
+            {t('save', { ns: 'common' })}
           </button>
         </div>
 

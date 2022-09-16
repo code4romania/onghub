@@ -1,6 +1,58 @@
 import { ALPHANUMERIC_REGEX, URL_REGEX } from '../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
 import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  name: {
+    required: i18n.t('appstore:config.name.required'),
+    max: i18n.t('appstore:config.name.max'),
+    min: i18n.t('appstore:config.name.min'),
+    invalid: i18n.t('appstore:config.name.invalid'),
+    label: i18n.t('appstore:config.name.label'),
+    helper: i18n.t('appstore:config.name.helper'),
+  },
+  type: {
+    label: i18n.t('appstore:config.type.label'),
+    required: i18n.t('appstore:config.type.required'),
+  },
+  short: {
+    required: i18n.t('appstore:config.short.required'),
+    max: i18n.t('appstore:config.short.max'),
+    min: i18n.t('appstore:config.short.min'),
+    label: i18n.t('appstore:config.short.label'),
+    helper: i18n.t('appstore:config.short.helper'),
+  },
+  description: {
+    required: i18n.t('appstore:config.description.required'),
+    max: i18n.t('appstore:config.description.max'),
+    min: i18n.t('appstore:config.description.min'),
+    label: i18n.t('appstore:config.description.label'),
+    helper: i18n.t('appstore:config.description.helper'),
+  },
+  website: {
+    label: i18n.t('appstore:config.website.label'),
+    required: i18n.t('appstore:config.website.required'),
+  },
+  login_link: {
+    label: i18n.t('appstore:config.login_link.label'),
+    required: i18n.t('appstore:config.login_link.required'),
+  },
+  video_link: {
+    label: i18n.t('appstore:config.video_link.label'),
+    helper: i18n.t('appstore:config.video_link.helper'),
+    required: i18n.t('appstore:config.video_link.required'),
+  },
+  management: {
+    label: i18n.t('appstore:config.video_link.label'),
+  },
+  step: {
+    required: i18n.t('appstore:config.step.required'),
+    invalid: i18n.t('appstore:config.step.invalid'),
+    label: i18n.t('appstore:config.step.label'),
+  },
+  url: i18n.t('common:url'),
+};
 
 export const AddAppConfig: Record<string, any> = {
   name: {
@@ -8,35 +60,35 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Application Name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Application Name has a maximum length of 100 characters.',
+        message: translations.name.max,
       },
       minLength: {
         value: 3,
-        message: 'Application Name has a minimum length of 3 characters.',
+        message: translations.name.min,
       },
       pattern: {
         value: ALPHANUMERIC_REGEX,
-        message: 'Invalid format',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Denumirea aplicatiei*',
-      helperText: 'Alege o denumire de maximum 100 de caractere',
+      label: translations.name.label,
+      helperText: translations.name.helper,
       placeholder: '',
     },
   },
   type: {
     key: 'type',
-    label: 'Tipul aplicatie*',
+    label: translations.type.label,
     rules: {
       required: {
         value: true,
-        message: 'Type is required.',
+        message: translations.type.required,
       },
     },
     helperText: '',
@@ -63,21 +115,21 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Short description is required.',
+        message: translations.short.required,
       },
       maxLength: {
         value: 250,
-        message: 'Short description has a maximum length of 250 characters.',
+        message: translations.short.max,
       },
       minLength: {
         value: 50,
-        message: 'Short description has a minimum length of 50 characters.',
+        message: translations.short.min,
       },
     },
     config: {
       type: 'text',
-      label: 'Descriere scurta*',
-      helperText: 'Maximum 250 de caractere',
+      label: translations.short.label,
+      helperText: translations.short.helper,
       placeholder: '',
     },
   },
@@ -86,21 +138,21 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Description is required.',
+        message: translations.description.required,
       },
       maxLength: {
         value: 700,
-        message: 'Description has a maximum length of 1000 characters.',
+        message: translations.description.max,
       },
       minLength: {
         value: 200,
-        message: 'Description has a minimum length of 200 characters.',
+        message: translations.description.min,
       },
     },
     config: {
       type: 'text',
-      label: 'Descriere exstinsa organizatiei*',
-      helperText: 'Maximum 1000 de caractere',
+      label: translations.description.label,
+      helperText: translations.description.helper,
       placeholder: '',
     },
   },
@@ -109,16 +161,16 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Website is required.',
+        message: translations.website.required,
       },
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Link catre website prezentare aplicatie*',
+      label: translations.website.label,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -129,16 +181,16 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
       required: {
         value: true,
-        message: 'Login link is required.',
+        message: translations.login_link.required,
       },
     },
     config: {
       type: 'text',
-      label: 'Link login automat*',
+      label: translations.login_link.label,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -149,18 +201,17 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Video link is required.',
+        message: translations.video_link.required,
       },
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Link video prezentare*',
-      helperText:
-        'URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)',
+      label: translations.video_link.label,
+      helperText: translations.video_link.helper,
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
@@ -170,12 +221,12 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Link pentru pulling app',
+      label: translations.management.label,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -186,12 +237,12 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Step is required.',
+        message: translations.step.required,
       },
     },
     config: {
       type: 'text',
-      label: 'Pas',
+      label: translations.step.label,
       helperText: '',
       placeholder: '',
     },

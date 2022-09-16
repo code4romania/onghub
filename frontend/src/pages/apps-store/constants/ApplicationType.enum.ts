@@ -1,3 +1,11 @@
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  independent: i18n.t('appstore:type.independent'),
+  simple: i18n.t('appstore:type.simple'),
+  standalone: i18n.t('appstore:type.standalone'),
+};
+
 export enum ApplicationTypeEnum {
   INDEPENDENT = 'independent',
   SIMPLE = 'simple',

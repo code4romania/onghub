@@ -1,6 +1,7 @@
 import { EyeIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
@@ -31,6 +32,8 @@ const RequestList = () => {
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<IOrganizationRequest | null>(null);
 
+  const { t } = useTranslation('requests');
+
   const navigate = useNavigate();
 
   const { mutateAsync: approveMutate, error: approveError } =
@@ -59,27 +62,27 @@ const RequestList = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Error while loading the requests.');
+      useErrorToast(t('load_error'));
     } else if (approveError || rejectError) {
-      useErrorToast('Error while changing the status');
+      useErrorToast(t('status_error'));
     }
   }, [error, approveError, rejectError]);
 
   const buildRequestsActionColumn = (): TableColumn<IOrganizationRequest> => {
     const activeRequestsMenuItems = [
       {
-        name: 'Vizualizeaza formular',
+        name: t('view_form'),
         icon: EyeIcon,
         onClick: onView,
       },
       {
-        name: 'Aproba',
+        name: t('approve'),
         icon: ShieldCheckIcon,
         onClick: onOpenApprove,
         type: PopoverMenuRowType.SUCCESS,
       },
       {
-        name: 'Respinge',
+        name: t('reject'),
         icon: XIcon,
         onClick: onOpenReject,
         type: PopoverMenuRowType.REMOVE,
@@ -130,8 +133,8 @@ const RequestList = () => {
   const onApprove = async (data: IOrganizationRequest) => {
     await approveMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Solicitare solutionata.');
-        refetch();
+        useSuccessToast(t('status_update'));
+        refetch(); // TODO: Redirect to /organizations/id
       },
       onSettled: () => {
         setApproveModalOpen(false);
@@ -142,7 +145,8 @@ const RequestList = () => {
   const onReject = async (data: IOrganizationRequest) => {
     await rejectMutate(data.id.toString(), {
       onSuccess: () => {
-        useSuccessToast('Solicitare solutionata.');
+        useSuccessToast(t('status_update'));
+        useSuccessToast(t('solved'));
         refetch();
       },
       onSettled: () => {
@@ -175,13 +179,13 @@ const RequestList = () => {
       >
         <div className="flex gap-x-6">
           <div className="basis-1/4">
-            <DateRangePicker label="Data adaugarii" onChange={onDateChange} />
+            <DateRangePicker label={t('created_on')} onChange={onDateChange} />
           </div>
         </div>
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Solicitari</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('requests')}</p>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent

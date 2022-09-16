@@ -1,6 +1,7 @@
 /* eslint-disable no-constant-condition */
 import { ExclamationIcon, XIcon, CheckIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
@@ -25,6 +26,8 @@ const Request = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
+
+  const { t } = useTranslation(['requests', 'organization', 'common']);
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
@@ -55,9 +58,9 @@ const Request = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Could not load Organization');
+      useErrorToast(t('error', { ns: 'organization' }));
     } else if (approveError || rejectError) {
-      useErrorToast('Error while changing the status');
+      useErrorToast(t('status_error'));
     }
   }, [error, approveError, rejectError]);
 
@@ -69,7 +72,7 @@ const Request = () => {
   const onApprove = async () => {
     await approveMutate(id as string, {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
+        useSuccessToast(t('status_update'));
         navigate('/requests', { replace: true });
       },
       onSettled: () => {
@@ -81,7 +84,7 @@ const Request = () => {
   const onReject = async () => {
     await rejectMutate(id as string, {
       onSuccess: () => {
-        useSuccessToast('Status actualizat.');
+        useSuccessToast(t('status_update'));
         navigate('/requests', { replace: true });
       },
       onSettled: () => {
@@ -98,9 +101,11 @@ const Request = () => {
     <div>
       <ContentWrapper
         title={request?.organization.organizationGeneral.name || ''}
-        subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-    disponibile."
-        backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate('requests') }}
+        subtitle={t('description')}
+        backButton={{
+          btnLabel: t('back', { ns: 'common' }),
+          onBtnClick: () => navigate('requests'),
+        }}
       >
         <div>
           {request?.status === RequestStatus.PENDING && (
@@ -108,7 +113,7 @@ const Request = () => {
               <div className="flex gap-4">
                 <ExclamationIcon className="text-orange h-7 w-7" />
                 <p className="text-gray-800 font-titilliumBold rounded-md  text-xl hover:bg-green-tab lg:whitespace-nowrap">
-                  Datele de mai jos corespund unei solicitari in curs de aprobare.
+                  {t('data_pending')}
                 </p>
               </div>
               <div className="flex gap-4">
@@ -117,14 +122,14 @@ const Request = () => {
                   className="red-button gap-2"
                   onClick={() => setRejectModalOpen(true)}
                 >
-                  <XIcon className="w-5 h-5" /> Respinge
+                  <XIcon className="w-5 h-5" /> {t('reject')}
                 </button>
                 <button
                   type="button"
                   className="save-button gap-2"
                   onClick={() => setApproveModalOpen(true)}
                 >
-                  <CheckIcon className="w-5 h-5" /> Aproba
+                  <CheckIcon className="w-5 h-5" /> {t('approve')}
                 </button>
               </div>
             </div>

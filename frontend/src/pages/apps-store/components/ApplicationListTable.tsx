@@ -1,6 +1,7 @@
 import { EyeIcon, ShieldCheckIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
@@ -30,6 +31,8 @@ const ApplicationListTable = () => {
 
   const navigate = useNavigate();
 
+  const { t } = useTranslation('appstore');
+
   const { isLoading, error } = useApplicationsQuery(
     rowsPerPage as number,
     page as number,
@@ -53,19 +56,19 @@ const ApplicationListTable = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Error while loading the applications.');
+      useErrorToast(t('list.load_error'));
     }
   }, [error]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
       {
-        name: 'Vizualizeaza aplicatie',
+        name: t('list.view'),
         icon: EyeIcon,
         onClick: onView,
       },
       {
-        name: 'Activeaza aplicatie',
+        name: t('list.activate'),
         icon: ShieldCheckIcon,
         onClick: () => alert('not implemented'),
         type: PopoverMenuRowType.SUCCESS,
@@ -74,12 +77,12 @@ const ApplicationListTable = () => {
 
     const activeApplicationMenu = [
       {
-        name: 'Vizualizeaza aplicatie',
+        name: t('list.view'),
         icon: EyeIcon,
         onClick: onView,
       },
       {
-        name: 'Dezactiveaza temporar',
+        name: t('list.restrict'),
         icon: ShieldCheckIcon,
         onClick: () => alert('not implemented'),
         type: PopoverMenuRowType.REMOVE,
@@ -153,7 +156,7 @@ const ApplicationListTable = () => {
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Tip aplicatie',
+                label: t('list.type'),
                 collection: ApplicationTypeCollection,
                 displayedAttribute: 'label',
               }}
@@ -164,7 +167,7 @@ const ApplicationListTable = () => {
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Status',
+                label: t('list.status'),
                 collection: ApplicationStatusCollection,
                 displayedAttribute: 'label',
               }}
@@ -176,7 +179,7 @@ const ApplicationListTable = () => {
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Toate aplicatiile</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('all')}</p>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
