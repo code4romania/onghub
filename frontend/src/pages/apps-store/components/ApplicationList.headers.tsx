@@ -7,7 +7,7 @@ import {
   ApplicationStatusBadgeMapper,
   APPLICATION_STATUS_NAME,
 } from '../constants/ApplicationStatus.constant';
-import { ApplicationTypeNaming } from '../constants/ApplicationType.enum';
+import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 import i18n from '../../../common/config/i18n';
 
 const translations = {
@@ -30,14 +30,16 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: true,
     name: 'Numar ONGuri',
     grow: 1,
-    selector: (row: Application) => row.organizationCount,
+    selector: (row: Application) =>
+      row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.organizationCount,
   },
   {
     id: 'userCount',
     sortable: true,
     name: 'Utilizatori',
     grow: 1,
-    selector: (row: Application) => row.userCount,
+    selector: (row: Application) =>
+      row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.userCount,
   },
   {
     id: 'type',

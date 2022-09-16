@@ -91,10 +91,20 @@ export class ApplicationService {
       ...options,
     };
 
-    return this.applicationViewRepository.getManyPaginated(
+    const applications = await this.applicationViewRepository.getManyPaginated(
       APPLICATION_FILTERS_CONFIG,
       paginationOptions,
     );
+
+    // Map the logo url
+    const items = await this.mapLogoToApplications<ApplicationView>(
+      applications.items,
+    );
+
+    return {
+      ...applications,
+      items,
+    };
   }
 
   /**
@@ -122,7 +132,9 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications(applicationsWithStatus);
+    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   /**
@@ -151,7 +163,9 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications(applicationsWithStatus);
+    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   /**
@@ -363,21 +377,19 @@ export class ApplicationService {
    * @description
    * Map public files URLS for all applications which have logo as path
    */
-  private async mapLogoToApplications(
-    applications: ApplicationWithOngStatus[],
-  ): Promise<ApplicationWithOngStatus[]> {
+  private async mapLogoToApplications<T extends { logo: string }>(
+    applications: T[],
+  ): Promise<T[]> {
     try {
-      const applicationsWithLogo = applications.map(
-        async (app: ApplicationWithOngStatus) => {
-          if (app.logo !== null) {
-            const logo = await this.fileManagerService.generatePresignedURL(
-              app.logo,
-            );
-            return { ...app, logo };
-          }
-          return app;
-        },
-      );
+      const applicationsWithLogo = applications.map(async (app: T) => {
+        if (app.logo !== null) {
+          const logo = await this.fileManagerService.generatePresignedURL(
+            app.logo,
+          );
+          return { ...app, logo };
+        }
+        return app;
+      });
 
       return Promise.all(applicationsWithLogo);
     } catch (error) {
