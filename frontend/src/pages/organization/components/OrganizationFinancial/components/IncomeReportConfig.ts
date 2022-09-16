@@ -1,4 +1,17 @@
 import { MAX_MONEY } from '../../../constants/values.constants';
+import i18n from '../../../../../common/config/i18n';
+
+const translations = {
+  minim: i18n.t('financial:common_config.minim'),
+  maxim: i18n.t('financial:common_config.maxim'),
+  membership: i18n.t('financial:income.membership'),
+  donations: i18n.t('financial:income.donations'),
+  percent: i18n.t('financial:income.percent'),
+  sponsorship: i18n.t('financial:income.sponsorship'),
+  economic: i18n.t('financial:income.economic'),
+  other: i18n.t('financial:income.other'),
+  financial: i18n.t('financial:income.financial'),
+};
 
 export const IncomeReportConfig: Record<string, any> = {
   membershipFeeIncome: {
@@ -6,16 +19,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Membership Fee Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Membership Fee Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri din cotizatii',
+      label: translations.membership,
       placeholder: '1000 RON',
     },
   },
@@ -24,16 +37,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Donations Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Donations Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri din donatii',
+      label: translations.donations,
       placeholder: '1000 RON',
     },
   },
@@ -42,16 +55,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: '2% Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: '2% Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri 2%',
+      label: translations.percent,
       placeholder: '1000 RON',
     },
   },
@@ -60,16 +73,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Sponsorship Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Sponsorship Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri din sponsorizari',
+      label: translations.sponsorship,
       placeholder: '1000 RON',
     },
   },
@@ -78,16 +91,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Economic Activity Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Economic Activity Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri din activitatea economica',
+      label: translations.economic,
       placeholder: '1000 RON',
     },
   },
@@ -96,16 +109,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Other Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Other Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Alte venituri',
+      label: translations.other,
       placeholder: '1000 RON',
     },
   },
@@ -114,16 +127,16 @@ export const IncomeReportConfig: Record<string, any> = {
     rules: {
       min: {
         value: 0,
-        message: 'Financial Income cannot have negative values',
+        message: translations.minim,
       },
       max: {
         value: MAX_MONEY,
-        message: 'Finacial Income has a limit of 1 billion.',
+        message: translations.maxim,
       },
     },
     config: {
       type: 'number',
-      label: 'Venituri financiare',
+      label: translations.financial,
       placeholder: '1000 RON',
     },
   },

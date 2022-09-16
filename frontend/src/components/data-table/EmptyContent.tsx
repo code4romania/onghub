@@ -1,12 +1,10 @@
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { useTranslation } from 'react-i18next';
 
 const EmptyContent = () => {
-  return (
-    <span>
-      <Trans id="table.empty" />
-    </span>
-  );
+  const { t } = useTranslation('empty');
+
+  return <span>{t('table')}</span>;
 };
 
 export default EmptyContent;

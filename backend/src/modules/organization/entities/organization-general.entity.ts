@@ -77,13 +77,16 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'integer', nullable: true, name: 'contact_id' })
   contactId: number;
 
-  @OneToOne(() => Contact, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => Contact, {
+    cascade: true,
+  })
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
   @OneToOne(
     () => Organization,
     (organization) => organization.organizationGeneral,
+    { onDelete: 'CASCADE' },
   )
   organization: Organization;
 
