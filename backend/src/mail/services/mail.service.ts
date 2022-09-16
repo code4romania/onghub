@@ -10,9 +10,7 @@ export class MailService {
   constructor(
     @InjectQueue(QUEUES.MAILS) private emailQueue: Queue<ISendMailOptions>,
     private configService: ConfigService,
-  ) {
-    this.sendEmail({ to: 'hehe@yahoo.com' });
-  }
+  ) {}
 
   async sendEmail(email: ISendMailOptions) {
     return this.emailQueue.add({
