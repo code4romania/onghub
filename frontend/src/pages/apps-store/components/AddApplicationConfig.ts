@@ -43,6 +43,9 @@ const translations = {
     helper: i18n.t('appstore:config.video_link.helper'),
     required: i18n.t('appstore:config.video_link.required'),
   },
+  management: {
+    label: i18n.t('appstore:config.video_link.label'),
+  },
   step: {
     required: i18n.t('appstore:config.step.required'),
     invalid: i18n.t('appstore:config.step.invalid'),
@@ -218,12 +221,12 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Link pentru pulling app',
+      label: translations.management.label,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,

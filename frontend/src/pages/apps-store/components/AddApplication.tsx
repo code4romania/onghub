@@ -13,6 +13,7 @@ import ApplicationForm from './ApplicationForm';
 const AddApplication = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
+  const { t } = useTranslation(['appstore', 'common']);
   // React Hook Form
   const {
     handleSubmit,
@@ -39,7 +40,7 @@ const AddApplication = () => {
 
   useEffect(() => {
     if (createApplicationError) {
-      useErrorToast('Eroare la crearea aplicatiei');
+      useErrorToast(t('create.error'));
     }
   }, [createApplicationError]);
 
@@ -48,7 +49,7 @@ const AddApplication = () => {
       { application: data, logo: file as File },
       {
         onSuccess: () => {
-          useSuccessToast('Aplicatie adaugata cu succes!');
+          useSuccessToast(t('create.success'));
           navigate('/all-apps');
         },
       },
@@ -67,13 +68,7 @@ const AddApplication = () => {
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 px-10 flex justify-between">
-          <span className="font-titilliumBold text-xl text-gray-800">
-<<<<<<< HEAD
-            {edit ? t('create.edit') : t('create.generate')}
-=======
-            Generare pagina aplicatie
->>>>>>> develop
-          </span>
+          <span className="font-titilliumBold text-xl text-gray-800">{t('create.generate')}</span>
 
           <button type="button" className="save-button" onClick={handleSubmit(onSubmit)}>
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />

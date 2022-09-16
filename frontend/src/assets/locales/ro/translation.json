@@ -644,7 +644,8 @@
       "status": "Status"
     },
     "create": {
-      "success": "Aplicatie modificata cu succes",
+      "error": "Eroare la crearea aplicatiei",
+      "success": "Aplicatie creata cu succes",
       "description": "Lorem ipsum",
       "edit": "Editare pagina aplicatie",
       "generate": "Generare pagina aplicatie",
@@ -711,6 +712,9 @@
         "label": "Link video prezentare*",
         "helper": "URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
         "required": "Link-ul catre prezentarea video este obligatoriu"
+      },
+      "management": {
+        "label": "Link pentru pulling app"
       },
       "step": {
         "required": "Pasul este obligatoriu",
@@ -795,6 +799,7 @@
     "load_error": "Eroare la incarcarea solicitarilor",
     "status_erorr": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
+    "solved": "Solicitare solutionata",
     "description": "Lorem ipsum",
     "reject": "Respinge",
     "approve": "Aproba",
