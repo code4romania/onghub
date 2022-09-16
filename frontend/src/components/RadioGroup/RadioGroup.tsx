@@ -52,7 +52,7 @@ const RadioGroup = (props: {
         </p>
       )}
       {!props.readonly && props.errors && (
-        <p className="mt-1 text-sm text-red-600" id={`${props.id}`}>
+        <p className="mt-1 text-sm text-red-600" id={`${props.id}__error`}>
           {props.errors.message}
         </p>
       )}

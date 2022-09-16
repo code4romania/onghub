@@ -194,6 +194,7 @@ const CreateOrganizationGeneral = () => {
                   return (
                     <Select
                       config={{
+                        id: 'create-organization-general--year-created',
                         ...OrganizationGeneralConfig.yearCreated.config,
                       }}
                       selected={value}
@@ -255,6 +256,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general--county',
                           ...OrganizationGeneralConfig.county.config,
                           collection: counties,
                           displayedAttribute: 'name',
@@ -279,6 +281,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general--city',
                           ...OrganizationGeneralConfig.city.config,
                           collection: cities || [],
                           displayedAttribute: 'name',
@@ -357,7 +360,7 @@ const CreateOrganizationGeneral = () => {
                   {!readonly && (
                     <>
                       <label
-                        htmlFor="uploadPhoto"
+                        htmlFor="create-organization-general--logo-upload"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
                         {t('logo.upload')}
@@ -365,7 +368,7 @@ const CreateOrganizationGeneral = () => {
                       <input
                         className="h-0 w-0"
                         name="uploadPhoto"
-                        id="uploadPhoto"
+                        id="create-organization-general--logo-upload"
                         type="file"
                         accept="image/png, image/jpeg, image/svg"
                         onChange={onChangeFile}
@@ -393,6 +396,7 @@ const CreateOrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
+                id="create-organization-general--"
               />
             </div>
             <div className="pt-8">

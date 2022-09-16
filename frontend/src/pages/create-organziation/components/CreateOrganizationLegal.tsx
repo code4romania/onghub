@@ -256,6 +256,7 @@ const CreateOrganizationLegal = () => {
                   OrganizationLegalConfig.legal_reprezentative_email,
                   OrganizationLegalConfig.legal_reprezentative_phone,
                 ]}
+                id="create-organization-legal--"
               />
             </form>
           </section>
@@ -279,6 +280,7 @@ const CreateOrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                id="create-organization-legal--button-add-director"
                 type="button"
                 className="add-button max-w-[12rem]"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
@@ -296,6 +298,7 @@ const CreateOrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                id="create-organization-legal--button-add-other"
                 type="button"
                 className="add-button max-w-[12rem]"
                 onClick={setIsOtherModalOpen.bind(null, true)}
@@ -312,7 +315,7 @@ const CreateOrganizationLegal = () => {
               {isEditMode && organizationStatute === null && (
                 <>
                   <label
-                    htmlFor="uploadPhoto"
+                    htmlFor="create-organization-legal--statute-upload"
                     className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     {t('statute_upload')}
@@ -320,7 +323,7 @@ const CreateOrganizationLegal = () => {
                   <input
                     className="h-0 w-0"
                     name="uploadPhoto"
-                    id="uploadPhoto"
+                    id="create-organization-legal--statute-upload"
                     type="file"
                     onChange={onChangeFile}
                   />
@@ -353,6 +356,7 @@ const CreateOrganizationLegal = () => {
                 setIsDirectorModalOpen(false);
                 setSelectedDirector(null);
               }}
+              idTest="create-organization-legal--director_modal--"
             />
           )}
           {isOtherModalOpen && (
@@ -364,6 +368,7 @@ const CreateOrganizationLegal = () => {
                 setIsOtherModalOpen(false);
                 setSelectedOther(null);
               }}
+              idTest="create-organization-legal--director-modal--"
             />
           )}
           {isDeleteDirectorModalOpen && (

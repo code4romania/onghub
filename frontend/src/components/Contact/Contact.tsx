@@ -11,6 +11,7 @@ interface ContactFormProps {
   readonly: boolean;
   configs: IInputConfig[];
   className?: string;
+  id?: string;
 }
 
 const ContactForm = (props: ContactFormProps) => {
@@ -31,6 +32,7 @@ const ContactForm = (props: ContactFormProps) => {
                   error: props.errors[config?.key]?.message,
                   defaultValue: value,
                   onChange: onChange,
+                  id: props.id + config.key,
                 }}
                 readonly={props.readonly}
               />
