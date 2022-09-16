@@ -16,7 +16,6 @@ import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-fi
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -27,7 +26,6 @@ export class OrganizationRequestService {
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
-    private configService: ConfigService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -118,7 +116,6 @@ export class OrganizationRequestService {
       // Admin
       this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        from: this.configService.get('NOTIFICATION_ADDRESS'),
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
       });
 
@@ -131,7 +128,6 @@ export class OrganizationRequestService {
       });
       this.mailService.sendEmail({
         to: emailSAdmins,
-        from: this.configService.get('NOTIFICATION_ADDRESS'),
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
       });
 
@@ -174,7 +170,6 @@ export class OrganizationRequestService {
     // 5. Send email with approval
     this.mailService.sendEmail({
       to: email,
-      from: this.configService.get('NOTIFICATION_ADDRESS'),
       template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_APPROVAL,
     });
 
@@ -200,7 +195,6 @@ export class OrganizationRequestService {
     // 4. Send rejection by email
     this.mailService.sendEmail({
       to: found.email,
-      from: this.configService.get('NOTIFICATION_ADDRESS'),
       template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_REJECTION,
     });
 
