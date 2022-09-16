@@ -27,7 +27,7 @@ export const createApplication = (
 export const updateApplication = (
   applicationId: string,
   applicationUpdatePayload: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): Promise<Application> => {
   const payload = generateApplicationFormDataPayload(applicationUpdatePayload, logo);
   return API.patch(`/application/${applicationId}`, payload, {
@@ -89,7 +89,7 @@ export const getApplicationById = (applicationId: string): Promise<Application> 
 
 const generateApplicationFormDataPayload = (
   applicationDto: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): FormData => {
   // we remove the logo and steps
   const { steps, ...data } = applicationDto;

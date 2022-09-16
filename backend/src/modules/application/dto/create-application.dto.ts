@@ -8,6 +8,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 export class CreateApplicationDto {
@@ -24,6 +25,10 @@ export class CreateApplicationDto {
   @IsString()
   @Length(50, 250)
   shortDescription: string;
+
+  @IsEnum(ApplicationStatus)
+  @IsOptional()
+  status?: ApplicationStatus;
 
   @IsString()
   @Length(200, 1000)

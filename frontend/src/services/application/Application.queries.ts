@@ -99,7 +99,7 @@ export const useUpdateApplicationMutation = () => {
     }: {
       applicationId: string;
       applicationUpdatePayload: Partial<CreateApplicationDto>;
-      logo: File;
+      logo?: File;
     }) => updateApplication(applicationId, applicationUpdatePayload, logo),
   );
 };
