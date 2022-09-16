@@ -129,7 +129,12 @@ export class OrganizationController {
   findApplicationsForOng(
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplicationsForOng(user.organizationId);
+    return user.role === Role.ADMIN
+      ? this.applicationService.findApplicationsForOng(user.organizationId)
+      : this.applicationService.findApplicationsForOngEmployee(
+          user.organizationId,
+          user.id,
+        );
   }
 
   @Roles(Role.ADMIN)

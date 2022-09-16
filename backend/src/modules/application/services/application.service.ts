@@ -147,6 +147,7 @@ export class ApplicationService {
   public async findApplicationsForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
+    // 1. Get all aplications for ONG
     const applications = await this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
@@ -156,6 +157,43 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
+  }
+
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip employee ce intoarce o lista cu
+   * aplicatiile la care acesta are access
+   */
+  public async findApplicationsForOngEmployee(
+    organizationId: number,
+    userId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    // 1. Get all aplications for ONG
+    const applications = await this.applicationRepository
+      .getQueryBuilder()
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.applicationId = ongApp.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('userOngApp.userId = :userId', { userId })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
