@@ -18,6 +18,7 @@ import {
   Application,
   ApplicationStatus,
   ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = (onSuccess?: any, onError?: any) => {
@@ -74,7 +75,7 @@ export const useApplicationQuery = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
-    onSuccess: (data: Application) => {
+    onSuccess: (data: ApplicationWithOngStatusDetails) => {
       setSelectedApplication(data);
     },
   });

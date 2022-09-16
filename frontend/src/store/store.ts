@@ -94,8 +94,8 @@ interface ApplicationRequestState {
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
   setApplications: (applications: PaginatedEntity<Application>) => void;
-  selectedApplication: Application | null;
-  setSelectedApplication: (application: Application) => void;
+  selectedApplication: ApplicationWithOngStatusDetails | null;
+  setSelectedApplication: (application: ApplicationWithOngStatusDetails) => void;
 }
 
 // Admin
