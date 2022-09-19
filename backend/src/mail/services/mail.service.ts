@@ -14,7 +14,7 @@ export class MailService {
 
   async sendEmail(email: ISendMailOptions) {
     return this.emailQueue.add({
-      from: this.configService.get('NOTIFICATION_ADDRESS'),
+      from: this.configService.get('MAIL_FROM'),
       ...email,
     });
   }

@@ -16,6 +16,7 @@ import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-fi
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { Role } from 'src/modules/user/enums/role.enum';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -121,7 +122,7 @@ export class OrganizationRequestService {
 
       // Super-Admin
       const superAdmin = await this.userService.findMany({
-        where: { role: 'super-admin' },
+        where: { role: Role.SUPER_ADMIN },
       });
       const emailSAdmins = superAdmin.map((item) => {
         return item.email;
