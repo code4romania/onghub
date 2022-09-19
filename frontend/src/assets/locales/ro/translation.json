@@ -576,6 +576,12 @@
       "status": "Acces general",
       "created": "Data adaugarii"
     },
+    "invites_header": {
+      "name": "Nume",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "added_on": "Data adaugarii"
+    },
     "status": {
       "active": "Activ",
       "restricted": "Restrictionat"
