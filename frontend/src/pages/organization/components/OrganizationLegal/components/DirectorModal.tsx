@@ -12,10 +12,10 @@ interface DirectorModalProps {
   isEdit?: boolean;
   onClose: () => void;
   onSave: (data: Partial<Contact>) => void;
-  idTest?: string;
+  id?: string;
 }
 
-const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, idTest }: DirectorModalProps) => {
+const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorModalProps) => {
   const {
     handleSubmit,
     control,
@@ -89,7 +89,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, idTest }: Direct
                     errors={errors}
                     readonly={false}
                     configs={[DirectorConfig.fullName, DirectorConfig.email, DirectorConfig.phone]}
-                    id={idTest}
+                    id={id}
                   />
                 </form>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
@@ -113,7 +113,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, idTest }: Direct
                   )}
                   {!isEdit && (
                     <button
-                      id={`${idTest}button-add`}
+                      id={`${id}__button-add`}
                       type="button"
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={handleSubmit(onSave)}

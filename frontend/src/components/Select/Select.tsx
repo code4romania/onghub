@@ -72,7 +72,7 @@ const Select = (props: {
                           )
                         }
                         value={item}
-                        itemID={`${props.config.id}__${item}`}
+                        itemID={`${props.config.id}__select-${item}`}
                       >
                         {({ selected, active }) => (
                           <>
