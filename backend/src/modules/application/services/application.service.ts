@@ -30,6 +30,10 @@ import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { ApplicationStatus } from '../enums/application-status.enum';
+import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
+import { User } from 'src/modules/user/entities/user.entity';
+import { Role } from 'src/modules/user/enums/role.enum';
+import { OrganizationApplicationFilter } from '../enums/organization-application-filter.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -94,92 +98,35 @@ export class ApplicationService {
     );
   }
 
-  /**
-   * @description
-   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
-   * toate aplicatiile din hub si status lor in relatie cu organizatia din care face parte admin-ul
-   *
-   *  Metoda descrie lista de applicatii din ONG-HUB
-   *
-   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
-   */
-  public async findApplications(
-    organizationId: number,
-  ): Promise<ApplicationWithOngStatus[]> {
-    const applications = await this.applicationRepository
-      .getQueryBuilder()
-      .select(ORGANIZATION_ALL_APPS_COLUMNS)
-      .leftJoin(
-        'ong_application',
-        'ongApp',
-        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
-        { organizationId },
-      )
-      .execute();
+  public async findOrganizationAplications(
+    user: User,
+    filters: OrganizationApplicationFilterDto,
+  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
+    const { status, filter } = filters;
 
-    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+    // ADMIN Handling
+    if (user.role === Role.ADMIN) {
+      // ALL active applications assigned to an ONG available to be assigned to a user
+      if (status === ApplicationStatus.ACTIVE) {
+        return this.findApplicationsForOngWithAccessStatus(user.organizationId);
+      }
 
-    return this.mapLogoToApplications(applicationsWithStatus);
-  }
+      // ALL applications with status for ONG
+      if (filter === OrganizationApplicationFilter.ALL || !filter) {
+        return this.findApplications(user.organizationId);
+      }
 
-  /**
-   * @description
-   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
-   * aplicatiile pentru o organizatie si status lor in relatie cu organizatia.
-   *
-   *  Metoda descrie lista de applicatii a unei organizatii
-   */
-  public async findApplicationsForOng(
-    organizationId: number,
-  ): Promise<ApplicationWithOngStatus[]> {
-    const applications = await this.applicationRepository
-      .getQueryBuilder()
-      .select(ORGANIZATION_ALL_APPS_COLUMNS)
-      .leftJoin(
-        'ong_application',
-        'ongApp',
-        'ongApp.applicationId = application.id',
-      )
-      .where('ongApp.organizationId = :organizationId', { organizationId })
-      .orWhere('application.type = :type', {
-        type: ApplicationTypeEnum.INDEPENDENT,
-      })
-      .execute();
+      // ALL applications assigned to an ONG and the ONG Status
+      if (filter === OrganizationApplicationFilter.MINE) {
+        // return all ONG application with ong status
+        return this.findApplicationsForOng(user.organizationId);
+      }
+    }
 
-    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
-
-    return this.mapLogoToApplications(applicationsWithStatus);
-  }
-
-  /**
-   * @description
-   * Toate applicatiile unui ong in relatie cu access-ul unui utilzator de tip employee
-   */
-  public async findApplicationsForOngWithAccessStatus(
-    organizationId: number,
-  ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
-      .getQueryBuilder()
-      .select([
-        'ongApp.id as id',
-        'application.logo as logo',
-        'application.name as name',
-        'NULL as status',
-        'application.type as type',
-      ])
-      .leftJoin(
-        'ong_application',
-        'ongApp',
-        'ongApp.applicationId = application.id',
-      )
-      .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
-      })
-      .andWhere('application.status = :status', {
-        status: ApplicationStatus.ACTIVE,
-      })
-      .execute();
+    // USER Handling
+    if (user.role === Role.EMPLOYEE) {
+      throw new NotImplementedException();
+    }
   }
 
   /**
@@ -354,6 +301,94 @@ export class ApplicationService {
   // TODO: To be implemented
   public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
+  }
+
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
+   * toate aplicatiile din hub si status lor in relatie cu organizatia din care face parte admin-ul
+   *
+   *  Metoda descrie lista de applicatii din ONG-HUB
+   *
+   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
+   */
+  private async findApplications(
+    organizationId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    const applications = await this.applicationRepository
+      .getQueryBuilder()
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
+  }
+
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip admin ce intoarce o lista cu
+   * aplicatiile pentru o organizatie si status lor in relatie cu organizatia.
+   *
+   *  Metoda descrie lista de applicatii a unei organizatii
+   */
+  private async findApplicationsForOng(
+    organizationId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    const applications = await this.applicationRepository
+      .getQueryBuilder()
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications(applicationsWithStatus);
+  }
+
+  /**
+   * @description
+   * Toate applicatiile unui ong in relatie cu access-ul unui utilzator de tip employee
+   */
+  private async findApplicationsForOngWithAccessStatus(
+    organizationId: number,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationRepository
+      .getQueryBuilder()
+      .select([
+        'ongApp.id as id',
+        'application.logo as logo',
+        'application.name as name',
+        'NULL as status',
+        'application.type as type',
+      ])
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .execute();
   }
 
   /**

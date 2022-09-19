@@ -41,6 +41,7 @@ import { UserOngApplicationService } from './services/user-ong-application.servi
     OngApplicationService,
     ApplicationService,
     UserOngApplicationService,
+    ApplicationRequestService,
   ],
 })
 export class ApplicationModule {}

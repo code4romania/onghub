@@ -77,29 +77,6 @@ export class ApplicationController {
     return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
-  @Roles(Role.ADMIN)
-  @Get('organization')
-  findAvailableApplicationsForOng(
-    @ExtractUser() user: User,
-  ): Promise<ApplicationAccess[]> {
-    return this.applicationService.findApplicationsForOngWithAccessStatus(
-      user.organizationId,
-    );
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'userId', type: String })
-  @Get('organization/:userId')
-  findAvailableApplicationsForOngUser(
-    @ExtractUser() user: User,
-    @Param('userId') userId: number,
-  ): Promise<ApplicationAccess[]> {
-    return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
-      user.organizationId,
-      userId,
-    );
-  }
-
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
@@ -112,12 +89,15 @@ export class ApplicationController {
 
   @Roles(Role.ADMIN)
   @ApiParam({ name: 'id', type: String })
-  @Delete(':id/request')
-  abandonRequest(
-    @Param('id') id: number,
+  @Post(':id/request')
+  createApplicationRequest(
+    @Param('id') applicationId: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
+    return this.applicationRequestService.create(
+      user.organizationId,
+      applicationId,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
