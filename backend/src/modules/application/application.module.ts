@@ -17,6 +17,8 @@ import { UserOngApplicationRepository } from './repositories/user-ong-applicatio
 import { UserOngApplicationService } from './services/user-ong-application.service';
 import { ApplicationView } from './entities/application-view.entity';
 import { ApplicationViewRepository } from './repositories/application-view.repository';
+import { ApplicationOngView } from './entities/application-ong-view.entity';
+import { ApplicationOngViewRepository } from './repositories/application-ong-view.repository';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { ApplicationViewRepository } from './repositories/application-view.repos
       ApplicationRequest,
       UserOngApplication,
       ApplicationView,
+      ApplicationOngView,
     ]),
     SharedModule,
   ],
@@ -40,6 +43,7 @@ import { ApplicationViewRepository } from './repositories/application-view.repos
     UserOngApplicationRepository,
     UserOngApplicationService,
     ApplicationViewRepository,
+    ApplicationOngViewRepository,
   ],
   exports: [
     OngApplicationService,

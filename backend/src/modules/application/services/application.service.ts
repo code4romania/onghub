@@ -16,7 +16,10 @@ import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
+import {
+  APPLICATION_FILTERS_CONFIG,
+  APPLICATION_ONG_FILTERS_CONFIG,
+} from '../constants/application-filters.config';
 import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
@@ -32,6 +35,9 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationView } from '../entities/application-view.entity';
 import { ApplicationViewRepository } from '../repositories/application-view.repository';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
+import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @Injectable()
 export class ApplicationService {
@@ -39,6 +45,7 @@ export class ApplicationService {
   constructor(
     private readonly applicationRepository: ApplicationRepository,
     private readonly applicationViewRepository: ApplicationViewRepository,
+    private readonly applicationOngViewRepository: ApplicationOngViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
   ) {}
@@ -330,6 +337,32 @@ export class ApplicationService {
     }) as ApplicationWithOngStatusDetails;
   }
 
+  public async findOrganizationsByApplicationId(
+    applicationId: number,
+    options: BaseFilterDto,
+  ): Promise<Pagination<ApplicationOngView>> {
+    const paginationOptions: any = {
+      ...options,
+      applicationId,
+    };
+
+    const applications =
+      await this.applicationOngViewRepository.getManyPaginated(
+        APPLICATION_ONG_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+    // Map the logo url
+    const items = await this.mapLogoToApplications<ApplicationOngView>(
+      applications.items,
+    );
+
+    return {
+      ...applications,
+      items,
+    };
+  }
+
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
@@ -420,7 +453,7 @@ export class ApplicationService {
   ): Promise<T[]> {
     try {
       const applicationsWithLogo = applications.map(async (app: T) => {
-        if (app.logo !== null) {
+        if (app.logo) {
           const logo = await this.fileManagerService.generatePresignedURL(
             app.logo,
           );
