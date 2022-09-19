@@ -1,3 +1,4 @@
+import { ShieldCheckIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -7,8 +8,10 @@ import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
+import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import { useApplicationOrganizationQuery } from '../../../services/application/Application.queries';
+import { ApplicationOrganization } from '../../../services/application/interfaces/Application.interface';
 import { useSelectedApplication } from '../../../store/selectors';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
 import { OngApplicationStatusOptions } from '../constants/filter.constants';
@@ -50,6 +53,48 @@ const ApplicationNGOList = () => {
     if (error) useErrorToast(t('list.load_error'));
   }, [error]);
 
+  const buildApplicationActionColumns = (): TableColumn<ApplicationOrganization> => {
+    const restrictedApplicationMenu = [
+      {
+        name: t('list.activate'),
+        icon: ShieldCheckIcon,
+        onClick: onActivateApplication,
+        type: PopoverMenuRowType.INFO,
+      },
+      {
+        name: t('list.remove'),
+        icon: TrashIcon,
+        onClick: onRemoveApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    const activeApplicationMenu = [
+      {
+        name: t('list.restrict'),
+        icon: ShieldCheckIcon,
+        onClick: onRestrictApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: ApplicationOrganization) => (
+        <PopoverMenu
+          row={row}
+          menuItems={
+            row.status === OngApplicationStatus.ACTIVE
+              ? activeApplicationMenu
+              : restrictedApplicationMenu
+          }
+        />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
   /**
    * PAGINATION
    */
@@ -86,6 +131,18 @@ const ApplicationNGOList = () => {
     setSearchWord(null);
   };
 
+  const onRemoveApplication = () => {
+    console.log('not implemented');
+  };
+
+  const onActivateApplication = () => {
+    console.log('not implemented');
+  };
+
+  const onRestrictApplication = () => {
+    console.log('not implemented');
+  };
+
   return (
     <>
       <DataTableFilters
@@ -113,7 +170,7 @@ const ApplicationNGOList = () => {
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={[...ApplicationNGOListTableHeaders]}
+            columns={[...ApplicationNGOListTableHeaders, buildApplicationActionColumns()]}
             data={applicationOrganizations.items}
             loading={isLoading}
             pagination

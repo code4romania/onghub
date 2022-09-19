@@ -792,7 +792,10 @@
     },
     "list": {
       "load_error": "Eroare la incarcarea organizatiilor",
-      "title": "Lista ONG-uri"
+      "title": "Lista ONG-uri",
+      "activate": "Activeaza aplicatie",
+      "restrict": "Dezactiveaza aplicatie",
+      "remove": "Elimina definitiv"
     }
   },
   "header": {
