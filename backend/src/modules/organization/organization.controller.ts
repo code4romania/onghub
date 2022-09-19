@@ -65,6 +65,12 @@ export class OrganizationController {
     return this.organizationService.findAll({ options: filters });
   }
 
+  @Roles(Role.SUPER_ADMIN)
+  @Patch(':id/restrict')
+  restrictOrganization(@Param('id') id: number): Promise<Organization> {
+    return this.organizationService.restrict(id);
+  }
+
   /**
    * *****************************
    * ******* ONG REQUEST *****
