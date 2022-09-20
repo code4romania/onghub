@@ -19,12 +19,18 @@ import { UserFilterDto } from './dto/user-filter.dto';
 import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
+import { UserListDto } from './dto/user-list.dto';
+import { CognitoUserService } from './services/cognito.service';
+import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
 @ApiBearerAuth()
 export class AdminUserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly cognitoService: CognitoUserService,
+  ) {}
 
   @ApiBody({ type: CreateUserDto })
   @Post('')
@@ -46,6 +52,12 @@ export class AdminUserController {
     return this.userService.findAll(filters, user.organizationId);
   }
 
+  @ApiQuery({ type: () => UserListDto })
+  @Get('cognito-users')
+  async getUsers(@Query() body: UserListDto): Promise<UserType[]> {
+    return this.cognitoService.getUsers(body);
+  }
+
   @ApiParam({ name: 'id', type: Number })
   @Get(':id')
   async getOne(
@@ -53,6 +65,12 @@ export class AdminUserController {
     @ExtractUser() user: User,
   ): Promise<User> {
     return this.userService.getById(userId);
+  }
+
+  @ApiQuery({ name: 'email', type: String })
+  @Post('resend-invite')
+  async resendInvite(@Query('email') email: string) {
+    return this.cognitoService.resendInvite(email);
   }
 
   @ApiBody({ type: Number, isArray: true })

@@ -8,10 +8,14 @@ import {
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
+  ListUsersCommand,
+  ListUsersCommandOutput,
+  MessageActionType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserListDto } from '../dto/user-list.dto';
 
 @Injectable()
 export class CognitoUserService {
@@ -43,6 +47,38 @@ export class CognitoUserService {
       createUserCommand,
     );
     return data.User.Username;
+  }
+
+  async getUsers(userListDto: UserListDto) {
+    const listUsersCommand = new ListUsersCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Filter: userListDto.filter,
+      Limit: userListDto.limit,
+      AttributesToGet: userListDto.attributes,
+      PaginationToken: userListDto.pagination,
+    });
+
+    const data: ListUsersCommandOutput = await this.cognitoProvider.send(
+      listUsersCommand,
+    );
+
+    return data.Users;
+  }
+
+  async resendInvite(email: string) {
+    console.log(email);
+    const resendUserInvite = new AdminCreateUserCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Username: email,
+      DesiredDeliveryMediums: [DeliveryMediumType.EMAIL],
+      MessageAction: MessageActionType.RESEND,
+    });
+
+    const data: AdminCreateUserCommandOutput = await this.cognitoProvider.send(
+      resendUserInvite,
+    );
+
+    return data.User;
   }
 
   async updateUser(email: string, { name, phone }: UpdateUserDto) {
