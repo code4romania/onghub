@@ -10,6 +10,7 @@ const Select = (props: {
     label: string;
     collection: any[];
     displayedAttribute: string;
+    id?: string;
   };
   selected?: any;
   error?: string | any;
@@ -35,7 +36,10 @@ const Select = (props: {
             )}
             {!props.readonly && (
               <div className=" relative">
-                <Listbox.Button className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <Listbox.Button
+                  itemID={props.config.id}
+                  className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
                   <span className="block truncate">
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
@@ -68,6 +72,7 @@ const Select = (props: {
                           )
                         }
                         value={item}
+                        itemID={`${props.config.id}__select-${item}`}
                       >
                         {({ selected, active }) => (
                           <>
@@ -104,7 +109,7 @@ const Select = (props: {
         )}
       </Listbox>
       {props.error && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${props.config.id}__error`}>
           {props.error}
         </p>
       )}
