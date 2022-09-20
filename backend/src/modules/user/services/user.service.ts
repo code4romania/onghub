@@ -321,8 +321,8 @@ export class UserService {
     // 2. grant access to applications
     try {
       const valuesToInsert = applicationAccess.map(
-        ({ applicationId, status }) => ({
-          applicationId,
+        ({ ongApplicationId, status }) => ({
+          ongApplicationId,
           organizationId,
           userId,
           status,
