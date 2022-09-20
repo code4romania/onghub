@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import { FindManyOptions, FindOneOptions, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -57,7 +57,7 @@ export class UserService {
       return user;
     }
 
-    this.assignApplications(
+    await this.assignApplications(
       applicationAccess,
       user.id,
       userData.organizationId,
@@ -89,6 +89,10 @@ export class UserService {
     return this.userRepository.get(options);
   }
 
+  public async findMany(options: FindManyOptions): Promise<User[]> {
+    return this.userRepository.getMany(options);
+  }
+
   public async updateById(
     id: number,
     payload: UpdateUserDto,
@@ -101,7 +105,11 @@ export class UserService {
       const user = await this.getById(id, organizationId);
 
       // 2. Update cognito user data
-      await this.cognitoService.updateUser(user.email, userData);
+      await this.cognitoService.updateUser(user.email, {
+        phone: user.phone,
+        name: user.name,
+        ...userData,
+      });
 
       // 3. Remove current user applications
       await this.userOngApplicationService.remove({ userId: id });
@@ -317,8 +325,8 @@ export class UserService {
     // 2. grant access to applications
     try {
       const valuesToInsert = applicationAccess.map(
-        ({ applicationId, status }) => ({
-          applicationId,
+        ({ ongApplicationId, status }) => ({
+          ongApplicationId,
           organizationId,
           userId,
           status,

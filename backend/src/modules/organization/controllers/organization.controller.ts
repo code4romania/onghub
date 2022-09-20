@@ -20,30 +20,26 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { Organization } from './entities';
-import { OrganizationService } from './services/organization.service';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
+import { OrganizationService } from '../services/organization.service';
 import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
-} from './constants/open-api.schema';
+} from '../constants/open-api.schema';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../user/enums/role.enum';
-import { OrganizationFilterDto } from './dto/organization-filter.dto';
+import { Role } from '../../user/enums/role.enum';
+import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { OrganizationView } from './entities/organization.view-entity';
-import { ExtractUser } from '../user/decorators/user.decorator';
-import { User } from '../user/entities/user.entity';
-import { ApplicationWithOngStatus } from '../application/interfaces/application-with-ong-status.interface';
-import { RestrictApplicationDto } from '../application/dto/restrict-application.dto';
-import { ApplicationService } from '../application/services/application.service';
-import { OngApplicationService } from '../application/services/ong-application.service';
-import { OrganizationRequestService } from './services/organization-request.service';
+import { OrganizationView } from '../entities/organization.view-entity';
+import { ApplicationService } from '../../application/services/application.service';
+import { OngApplicationService } from '../../application/services/ong-application.service';
+import { OrganizationRequestService } from '../services/organization-request.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { OrganizationRequest } from './entities/organization-request.entity';
+import { OrganizationRequest } from '../entities/organization-request.entity';
 import { Public } from 'src/common/decorators/public.decorator';
-import { CreateOrganizationRequestDto } from './dto/create-organization-request.dto';
+import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -109,53 +105,6 @@ export class OrganizationController {
   @Patch('request/:id/reject')
   reject(@Param('id') id: number): Promise<OrganizationRequest> {
     return this.organizationRequestService.reject(id);
-  }
-
-  /**
-   * *****************************
-   * ******* ONG APPLICATION *****
-   * *****************************
-   */
-  @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @Get('application')
-  findApplications(
-    @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplications(user.organizationId);
-  }
-
-  @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @Get('application/profile')
-  findApplicationsForOng(
-    @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return user.role === Role.ADMIN
-      ? this.applicationService.findApplicationsForOng(user.organizationId)
-      : this.applicationService.findApplicationsForOngEmployee(
-          user.organizationId,
-          user.id,
-        );
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: Number })
-  @Delete('application/:id')
-  deleteOne(@Param('id') id: number, @ExtractUser() user: User): Promise<void> {
-    return this.ongApplicationService.delete(id, user.organizationId);
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: Number })
-  @ApiBody({ type: RestrictApplicationDto })
-  @Patch('application/:id/restrict')
-  restrict(
-    @Param('id') id: number,
-    @Body() restrictApplicationDto: RestrictApplicationDto,
-  ): Promise<void> {
-    return this.applicationService.restrict(
-      id,
-      restrictApplicationDto.organizationId,
-    );
   }
 
   @ApiParam({ name: 'id', type: String })

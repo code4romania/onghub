@@ -27,7 +27,7 @@ export class UserOngApplicationService {
     }
 
     return this.userOngApplicationRepository.save({
-      applicationId: ongApplication.id,
+      ongApplicationId: ongApplication.id,
       userId,
     });
   }

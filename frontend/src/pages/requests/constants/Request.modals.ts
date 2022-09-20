@@ -4,12 +4,12 @@ const translations = {
   approve: {
     title: i18n.t('requests:modals.approve.title'),
     description: i18n.t('requests:modals.approve.description'),
-    confirm: i18n.t('requests:modals.approve.description'),
+    confirm: i18n.t('requests:modals.approve.confirm'),
   },
   reject: {
     title: i18n.t('requests:modals.reject.title'),
     description: i18n.t('requests:modals.reject.description'),
-    confirm: i18n.t('requests:modals.reject.description'),
+    confirm: i18n.t('requests:modals.reject.confirm'),
   },
   back: i18n.t('common:back'),
 };

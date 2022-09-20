@@ -18,6 +18,7 @@ export interface ServerSelectConfig {
   readonly: boolean;
   onChange: any;
   loadOptions: any;
+  id?: string;
 }
 
 const ServerSelect = ({
@@ -31,6 +32,7 @@ const ServerSelect = ({
   helperText,
   error,
   readonly,
+  id,
 }: ServerSelectConfig) => {
   const debouncedLoadOptions = debounce(loadOptions, 500, {
     leading: false,
@@ -52,12 +54,14 @@ const ServerSelect = ({
               readonly={readonly}
               selected={false}
               onClick={() => {}}
+              id={id}
             />
           ))}
         </div>
       )}
       {!readonly && (
         <AsyncSelect
+          id={`${id}__input`}
           cacheOptions
           placeholder={placeholder}
           classNamePrefix="reactselect"
@@ -74,7 +78,7 @@ const ServerSelect = ({
         </p>
       )}
       {error && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${id}__input-error`}>
           {error}
         </p>
       )}
