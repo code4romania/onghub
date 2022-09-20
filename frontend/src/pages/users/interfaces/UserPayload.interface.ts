@@ -5,5 +5,5 @@ export interface IUserPayload {
   email: string;
   phone: string;
   organizationId: number;
-  applicationAccess: { applicationId: number; status: UserOngApplicationStatus }[];
+  applicationAccess: { ongApplicationId: number; status: UserOngApplicationStatus }[];
 }

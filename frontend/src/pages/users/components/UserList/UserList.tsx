@@ -24,6 +24,8 @@ import { UserListTableHeaders } from './table-headers/UserListTable.headers';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
+import { useAuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../enums/UserRole.enum';
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ const UserList = () => {
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
+  const { role } = useAuthContext();
 
   const { users } = useUser();
 
@@ -85,17 +88,22 @@ const UserList = () => {
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
       {
-        name: t('edit', { ns: 'common' }),
-        icon: PencilIcon,
-        onClick: onEdit,
-      },
-      {
         name: t('list.restrict'),
         icon: BanIcon,
         onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
+
+    // For now onlt admin can edit an user
+    if (role === UserRole.ADMIN) {
+      activeUserMenuItems.unshift({
+        name: t('edit', { ns: 'common' }),
+        icon: PencilIcon,
+        onClick: onEdit,
+        type: PopoverMenuRowType.INFO,
+      });
+    }
 
     const restrictedUserMenuItems = [
       {

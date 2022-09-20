@@ -13,4 +13,5 @@ export interface InputFieldConfig {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: ChangeEventHandler<HTMLInputElement>;
   addOn?: Function;
+  id?: string;
 }

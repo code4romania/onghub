@@ -36,6 +36,7 @@ const InputField = (props: {
             defaultValue={props.config.defaultValue}
             aria-invalid={props.config.error ? 'true' : 'false'}
             disabled={props.disabled}
+            id={`${props.config.id}__input`}
           />
         )}
         {props.config.error && (
@@ -50,7 +51,7 @@ const InputField = (props: {
         </p>
       )}
       {props.config.error && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${props.config.id}__input-error`}>
           {props.config.error}
         </p>
       )}

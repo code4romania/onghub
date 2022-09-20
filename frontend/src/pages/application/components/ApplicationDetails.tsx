@@ -37,7 +37,7 @@ const ApplicationDetails = () => {
   // Actions
   const requestApplication = async () => {
     if (application) {
-      await mutateCreateApplicationRequest({ applicationId: application?.id });
+      await mutateCreateApplicationRequest(application?.id);
       useSuccessToast(t('details.request_successful'));
       refecthApplication();
     }

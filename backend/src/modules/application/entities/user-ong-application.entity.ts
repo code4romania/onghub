@@ -13,11 +13,11 @@ export class UserOngApplication extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'integer', name: 'application_id' })
-  applicationId: number;
+  @Column({ type: 'integer', name: 'ong_application_id' })
+  ongApplicationId: number;
 
   @ManyToOne((type) => OngApplication)
-  @JoinColumn({ name: 'application_id' })
+  @JoinColumn({ name: 'ong_application_id' })
   application: OngApplication;
 
   @Column({

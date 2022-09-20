@@ -62,7 +62,7 @@ const UserEdit = () => {
     const applicationAccess = Object.getOwnPropertyNames(access)
       .filter((applicationId) => access[applicationId])
       .map((applicationId) => ({
-        applicationId: applicationId,
+        ongApplicationId: applicationId,
         status: UserOngApplicationStatus.ACTIVE,
       }));
 

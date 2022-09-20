@@ -12,7 +12,7 @@ import { ApplicationStatus } from '../enums/application-status.enum';
   COUNT(DISTINCT("user_ong_application".user_id)) as "userCount"
   FROM "application" 
   LEFT JOIN "ong_application" "ong_application" ON "ong_application".application_id = "application".id
-  LEFT JOIN "user_ong_application" "user_ong_application" ON "user_ong_application".application_id = "ong_application".id
+  LEFT JOIN "user_ong_application" "user_ong_application" ON "user_ong_application".ong_application_id = "ong_application".id
   GROUP BY "application".id
   `,
 })
