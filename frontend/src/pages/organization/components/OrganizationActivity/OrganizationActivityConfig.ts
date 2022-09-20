@@ -100,6 +100,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
         label: item,
         value: item,
         name: 'area',
+        id: item,
       })),
     ],
   },
@@ -135,6 +136,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.federations.part_of,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -172,6 +174,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.coalitions.part_of,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -209,6 +212,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.international.part_of,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -259,6 +263,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.branches.has_any,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -293,6 +298,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.social.label,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -316,6 +322,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.grants.label,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },
@@ -338,6 +345,7 @@ export const OrganizationActivityConfig: Record<string, any> = {
     label: translations.public.label,
     rules: {
       required: {
+        value: true,
         message: translations.field,
       },
     },

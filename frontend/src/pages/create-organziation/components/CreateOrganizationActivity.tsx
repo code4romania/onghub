@@ -112,6 +112,7 @@ const CreateOrganizationActivity = () => {
             render={({ field: { onChange, value } }) => {
               return (
                 <ChipSelection
+                  id="create-organization-activity__domains"
                   {...OrganizationActivityConfig.domains.config}
                   values={[...domains]}
                   defaultItems={value}
@@ -127,6 +128,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.area.key]}
             config={OrganizationActivityConfig.area}
+            id="create-organization-activity__area"
           />
           {area == OrganizationAreaEnum.LOCAL && (
             <Controller
@@ -137,6 +139,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <ServerSelect
+                    id="create-organization-activity__cities"
                     value={value}
                     label={OrganizationActivityConfig.cities.label}
                     isMulti={true}
@@ -161,6 +164,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
+                    id="create-organziation-activity__regions"
                     value={value}
                     label={OrganizationActivityConfig.regions.config.label}
                     isClearable={false}
@@ -187,6 +191,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
             config={OrganizationActivityConfig.isPartOfFederation}
+            id="create-organization-activity__part-federation"
           />
           {(isPartOfFederation === 'true' || isPartOfFederation === true) && (
             <Controller
@@ -197,6 +202,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
+                    id="create-organization-activity__federations"
                     value={value}
                     label={OrganizationActivityConfig.federations.config.label}
                     isClearable={false}
@@ -215,6 +221,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfCoalition.key]}
             config={OrganizationActivityConfig.isPartOfCoalition}
+            id="create-organization-activity__part-coalition"
           />
           {(isPartOfCoalition == 'true' || isPartOfCoalition === true) && (
             <Controller
@@ -225,6 +232,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
+                    id="create-organization-activity__coalitions"
                     value={value}
                     label={OrganizationActivityConfig.coalitions.config.label}
                     isClearable={false}
@@ -244,6 +252,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfInternationalOrganization.key]}
             config={OrganizationActivityConfig.isPartOfInternationalOrganization}
+            id="create-organization-activity__part-international"
           />
 
           {(isPartOfInternationalOrganization == 'true' ||
@@ -264,6 +273,7 @@ const CreateOrganizationActivity = () => {
                           ?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'create-organization-activity__international-name',
                     }}
                     readonly={readonly}
                   />
@@ -284,6 +294,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.hasBranches.key]}
             config={OrganizationActivityConfig.hasBranches}
+            id="create-organization-activity__has-branches"
           />
           {(hasBranches === 'true' || hasBranches === true) && (
             <Controller
@@ -294,6 +305,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <ServerSelect
+                    id="create-organization-activity__branches"
                     value={value}
                     label={OrganizationActivityConfig.branches.label}
                     isMulti={true}
@@ -322,22 +334,26 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isSocialServiceViable.key]}
             config={OrganizationActivityConfig.isSocialServiceViable}
+            id="create-organization-activity__social-viable"
           />
           <RadioGroup
             control={control}
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.offersGrants.key]}
             config={OrganizationActivityConfig.offersGrants}
+            id="create-organization-activity__offers-grants"
           />
           <RadioGroup
             control={control}
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPublicIntrestOrganization.key]}
             config={OrganizationActivityConfig.isPublicIntrestOrganization}
+            id="create-organization-activity__public-interest"
           />
         </div>
         <div className="pt-5 sm:pt-6 sm:flex sm:flex-row-reverse">
           <button
+            id="create-organization-activity__button-next"
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
@@ -345,6 +361,7 @@ const CreateOrganizationActivity = () => {
             {t('next', { ns: 'common' })}
           </button>
           <button
+            id="create-organization-activity__button-back"
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}

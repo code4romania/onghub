@@ -15,6 +15,7 @@ export interface MultiSelectConfig {
   readonly: boolean;
   onChange: any;
   options: any[];
+  id?: string;
 }
 
 const MultiSelect = ({
@@ -27,6 +28,7 @@ const MultiSelect = ({
   error,
   readonly,
   options,
+  id,
 }: MultiSelectConfig) => {
   return (
     <div>
@@ -44,6 +46,7 @@ const MultiSelect = ({
               readonly={true}
               selected={false}
               onClick={() => {}}
+              id={id}
             />
           ))}
         </div>
@@ -57,6 +60,7 @@ const MultiSelect = ({
           isMulti={true}
           defaultValue={value}
           options={options}
+          id={id}
         />
       )}
       {!error && helperText && (
@@ -65,7 +69,7 @@ const MultiSelect = ({
         </p>
       )}
       {error && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${id}__input-error`}>
           {error}
         </p>
       )}
