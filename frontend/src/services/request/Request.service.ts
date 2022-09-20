@@ -7,10 +7,7 @@ import {
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import API from '../API';
-import {
-  CreateApplicationRequestDTO,
-  CreateOrganizationRequestDTO,
-} from './interfaces/Request.dto';
+import { CreateOrganizationRequestDTO } from './interfaces/Request.dto';
 import { Request } from './interfaces/Request.interface';
 
 // Organization
@@ -55,16 +52,14 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 };
 
 // Application
-export const createApplicationRequest = (
-  createRequestDTO: CreateApplicationRequestDTO,
-): Promise<Request> => {
-  return API.post(`/application/request`, createRequestDTO).then(
+export const createApplicationRequest = (applicationId: number): Promise<Request> => {
+  return API.post(`organization/application/${applicationId}/request`).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
 
 export const abandonApplicationnRequest = (applicationId: string) => {
-  return API.delete(`/application/${applicationId}/request`);
+  return API.delete(`/organization/application/${applicationId}/request`);
 };
 
 export const approveApplicationnRequest = (requestId: string) => {

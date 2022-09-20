@@ -18,18 +18,18 @@ import {
   ApiTooManyRequestsResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { Organization } from './entities';
-import { OrganizationService } from './services/organization.service';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
+import { OrganizationService } from '../services/organization.service';
 import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
-} from './constants/open-api.schema';
-import { ExtractUser } from '../user/decorators/user.decorator';
-import { User } from '../user/entities/user.entity';
+} from '../constants/open-api.schema';
+import { ExtractUser } from '../../user/decorators/user.decorator';
+import { User } from '../../user/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../user/enums/role.enum';
+import { Role } from '../../user/enums/role.enum';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)

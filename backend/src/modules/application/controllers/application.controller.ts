@@ -29,7 +29,6 @@ import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationView } from '../entities/application-view.entity';
 import { Application } from '../entities/application.entity';
-import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
@@ -39,10 +38,7 @@ import { ApplicationService } from '../services/application.service';
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+  constructor(private readonly applicationService: ApplicationService) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -78,29 +74,6 @@ export class ApplicationController {
     return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
-  @Roles(Role.ADMIN)
-  @Get('organization')
-  findAvailableApplicationsForOng(
-    @ExtractUser() user: User,
-  ): Promise<ApplicationAccess[]> {
-    return this.applicationService.findApplicationsForOngWithAccessStatus(
-      user.organizationId,
-    );
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'userId', type: String })
-  @Get('organization/:userId')
-  findAvailableApplicationsForOngUser(
-    @ExtractUser() user: User,
-    @Param('userId') userId: number,
-  ): Promise<ApplicationAccess[]> {
-    return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
-      user.organizationId,
-      userId,
-    );
-  }
-
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
@@ -109,16 +82,6 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Delete(':id/request')
-  abandonRequest(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)

@@ -6,10 +6,7 @@ import {
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
-import {
-  CreateApplicationRequestDTO,
-  CreateOrganizationRequestDTO,
-} from './interfaces/Request.dto';
+import { CreateOrganizationRequestDTO } from './interfaces/Request.dto';
 import {
   abandonApplicationnRequest,
   approveApplicationnRequest,
@@ -100,7 +97,7 @@ export const useOrganizationRequest = (requestId: string) => {
 
 // Application
 export const useCreateApplicationRequestMutation = (onSuccess?: any, onError?: any) => {
-  return useMutation((request: CreateApplicationRequestDTO) => createApplicationRequest(request), {
+  return useMutation((applicationId: number) => createApplicationRequest(applicationId), {
     onSuccess,
     onError,
   });

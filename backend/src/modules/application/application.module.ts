@@ -45,6 +45,7 @@ import { ApplicationViewRepository } from './repositories/application-view.repos
     OngApplicationService,
     ApplicationService,
     UserOngApplicationService,
+    ApplicationRequestService,
   ],
 })
 export class ApplicationModule {}
