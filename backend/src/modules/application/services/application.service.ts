@@ -33,8 +33,8 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
-import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
+import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 
 @Injectable()
 export class ApplicationService {
@@ -160,7 +160,7 @@ export class ApplicationService {
 
     // USER Handling
     if (user.role === Role.EMPLOYEE) {
-      throw new NotImplementedException();
+      this.findApplicationsForOngEmployee(user.organizationId, user.id);
     }
   }
 
