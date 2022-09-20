@@ -35,6 +35,11 @@ export abstract class BaseDAO<T> {
     return this.repository.save(record);
   }
 
+  saveMany(entitiesLike: DeepPartial<T>[]): Promise<T[]> {
+    const records = this.repository.create(entitiesLike);
+    return this.repository.save(records);
+  }
+
   async updateOne(updates: DeepPartial<T>): Promise<T> {
     const record = await this.repository.preload(updates);
 

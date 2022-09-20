@@ -1,6 +1,9 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
-import { OngApplicationStatus } from '../../../pages/requests/interfaces/OngApplication.interface';
+import {
+  OngApplicationStatus,
+  UserOngApplicationStatus,
+} from '../../../pages/requests/interfaces/OngApplication.interface';
 
 export enum ApplicationStatus {
   ACTIVE = 'active',
@@ -30,6 +33,14 @@ export interface ApplicationWithOngStatus {
   status: OngApplicationStatus;
   type: ApplicationTypeEnum;
   website: string;
+}
+
+export interface ApplicationAccess {
+  id: number;
+  name: string;
+  logo: string;
+  status: UserOngApplicationStatus;
+  type: ApplicationTypeEnum;
 }
 
 // Full details

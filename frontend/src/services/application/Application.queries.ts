@@ -7,6 +7,8 @@ import {
   createApplication,
   getApplicationById,
   getApplications,
+  getApplicationsForCreateUser,
+  getApplicationsForEditUser,
   getMyOngApplications,
   getOngApplications,
   updateApplication,
@@ -50,7 +52,7 @@ export const useApplicationsQuery = (
 export const useOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['ongApplications'], () => getOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });
@@ -60,7 +62,7 @@ export const useOngApplicationsQuery = () => {
 export const useMyOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['myOngApplications'], () => getMyOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });
@@ -74,6 +76,16 @@ export const useApplicationQuery = (applicationId: string) => {
     onSuccess: (data: Application) => {
       setSelectedApplication(data);
     },
+  });
+};
+
+export const userApplicationsForCreateUser = () => {
+  return useQuery(['application'], () => getApplicationsForCreateUser());
+};
+
+export const useApplicationsForEditUserQuery = (userId: string) => {
+  return useQuery(['application', userId], () => getApplicationsForEditUser(userId), {
+    enabled: !!userId,
   });
 };
 

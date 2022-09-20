@@ -101,8 +101,7 @@ interface ApplicationState {
 // Admin
 interface OngApplicationState {
   ongApplications: ApplicationWithOngStatus[];
-  setOngApplications: (applications: ApplicationWithOngStatus) => void;
-
+  setOngApplications: (applications: ApplicationWithOngStatus[]) => void;
   selectedOngApplication: ApplicationWithOngStatusDetails | null;
   setSelectedOngApplication: (application: ApplicationWithOngStatusDetails) => void;
 }

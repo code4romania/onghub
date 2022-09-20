@@ -37,10 +37,7 @@ import { ApplicationService } from '../services/application.service';
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+  constructor(private readonly applicationService: ApplicationService) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -84,16 +81,6 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Delete(':id/request')
-  abandonRequest(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
