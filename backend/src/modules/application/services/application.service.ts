@@ -33,8 +33,8 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
-import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
+import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 
 @Injectable()
 export class ApplicationService {
@@ -160,7 +160,7 @@ export class ApplicationService {
 
     // USER Handling
     if (user.role === Role.EMPLOYEE) {
-      throw new NotImplementedException();
+      return this.findApplicationsForOngEmployee(user.organizationId, user.id);
     }
   }
 
@@ -200,6 +200,43 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+  }
+
+  /**
+   * @description
+   * Metoda destinata utilizatorilor de tip employee ce intoarce o lista cu
+   * aplicatiile la care acesta are access
+   */
+  public async findApplicationsForOngEmployee(
+    organizationId: number,
+    userId: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    // 1. Get all aplications for ONG
+    const applications = await this.applicationRepository
+      .getQueryBuilder()
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.applicationId = ongApp.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('userOngApp.userId = :userId', { userId })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .execute();
+
+    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
+
+    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   /**
