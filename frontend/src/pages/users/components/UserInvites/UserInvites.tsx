@@ -1,16 +1,15 @@
-import { ReplyIcon, TrashIcon } from '@heroicons/react/outline';
+import { ReplyIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
-import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
-import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
-import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
-import { useRemoveUserMutation, useUsersQuery } from '../../../../services/user/User.queries';
+import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import { useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
@@ -26,7 +25,6 @@ const UserInvites = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
-  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
 
   const { t } = useTranslation('user');
 
@@ -41,7 +39,6 @@ const UserInvites = () => {
     status?.status,
     range,
   );
-  const removeUserMutation = useRemoveUserMutation();
 
   useEffect(() => {
     if (users?.meta) {
@@ -51,14 +48,8 @@ const UserInvites = () => {
   });
 
   useEffect(() => {
-    if (selectedUser) setIsConfirmRemoveModalOpen(true);
-  }, [selectedUser]);
-
-  useEffect(() => {
     if (error) useErrorToast('Eroare la incarcarea invitatiilor');
-
-    if (removeUserMutation.error) useErrorToast('Eroare la stergerea invitatiei');
-  }, [error, removeUserMutation.error]);
+  }, [error]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const userMenuItems = [
@@ -66,12 +57,6 @@ const UserInvites = () => {
         name: 'Retrimite',
         icon: ReplyIcon,
         onClick: setSelectedUser,
-      },
-      {
-        name: 'Sterge',
-        icon: TrashIcon,
-        onClick: setSelectedUser,
-        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -96,24 +81,6 @@ const UserInvites = () => {
   };
 
   /**
-   * ROW ACTIONS
-   */
-  const onDelete = () => {
-    if (selectedUser) {
-      removeUserMutation.mutate(selectedUser.id, {
-        onSuccess: () => {
-          useSuccessToast(`${t('list.remove_success')} ${selectedUser.name}`);
-          refetch();
-        },
-        onSettled: () => {
-          setSelectedUser(null);
-        },
-      });
-    }
-    setIsConfirmRemoveModalOpen(false);
-  };
-
-  /**
    * FILTERS
    */
   const onSearch = (searchWord: string) => {
@@ -130,11 +97,6 @@ const UserInvites = () => {
     setStatus(null);
     setRange([]);
     setSearchWord(null);
-  };
-
-  const onCancelUserRemoval = () => {
-    setIsConfirmRemoveModalOpen(false);
-    setSelectedUser(null);
   };
 
   return (
@@ -171,16 +133,6 @@ const UserInvites = () => {
             onSort={onSort}
           />
         </div>
-        {isConfirmRemoveModalOpen && (
-          <ConfirmationModal
-            title="Confirm"
-            description="Description"
-            closeBtnLabel="Back"
-            confirmBtnLabel="Delete"
-            onClose={onCancelUserRemoval}
-            onConfirm={onDelete}
-          />
-        )}
       </div>
     </div>
   );
