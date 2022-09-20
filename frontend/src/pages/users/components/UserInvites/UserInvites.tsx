@@ -1,34 +1,32 @@
-import { ReplyIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import { useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
-import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
 import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ReplyIcon } from '@heroicons/react/outline';
 
-const UserInvites = () => {
+const UserList = () => {
   const navigate = useNavigate();
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
-  const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
 
-  const { t } = useTranslation('user');
-
   const { users } = useUser();
+
+  const { t } = useTranslation(['user', 'common']);
 
   const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
@@ -36,7 +34,7 @@ const UserInvites = () => {
     orderByColumn as string,
     orderDirection as OrderDirection,
     searchWord as string,
-    status?.status,
+    undefined,
     range,
   );
 
@@ -45,24 +43,24 @@ const UserInvites = () => {
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
     }
-  });
+  }, []);
 
   useEffect(() => {
-    if (error) useErrorToast('Eroare la incarcarea invitatiilor');
+    if (error) useErrorToast(t('list.load_error'));
   }, [error]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
-    const userMenuItems = [
+    const pendingUserMenuItems = [
       {
-        name: 'Retrimite',
+        name: t('edit', { ns: 'common' }),
         icon: ReplyIcon,
-        onClick: setSelectedUser,
+        onClick: onEdit,
       },
     ];
 
     return {
       name: '',
-      cell: (row: IUser) => <PopoverMenu row={row} menuItems={userMenuItems} />,
+      cell: (row: IUser) => <PopoverMenu row={row} menuItems={pendingUserMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
@@ -81,6 +79,14 @@ const UserInvites = () => {
   };
 
   /**
+   * ROW ACTIONS
+   */
+
+  const onEdit = (row: IUser) => {
+    navigate(`/user/${row.id}`);
+  };
+
+  /**
    * FILTERS
    */
   const onSearch = (searchWord: string) => {
@@ -94,7 +100,6 @@ const UserInvites = () => {
   };
 
   const onResetFilters = () => {
-    setStatus(null);
     setRange([]);
     setSearchWord(null);
   };
@@ -109,7 +114,7 @@ const UserInvites = () => {
         <div className="flex gap-x-6">
           <div className="basis-1/4">
             <DateRangePicker
-              label="Date"
+              label={t('list.date')}
               defaultValue={range.length > 0 ? range : undefined}
               onChange={onDateChange}
             />
@@ -130,6 +135,8 @@ const UserInvites = () => {
             data={users.items}
             loading={isLoading}
             sortServer
+            paginationPerPage={users.meta.itemsPerPage}
+            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             onSort={onSort}
           />
         </div>
@@ -138,4 +145,4 @@ const UserInvites = () => {
   );
 };
 
-export default UserInvites;
+export default UserList;
