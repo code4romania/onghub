@@ -6,13 +6,9 @@ export const APPLICATION_FILTERS_CONFIG = {
     name: true,
     status: true,
     type: true,
-    steps: true,
-    shortDescription: true,
-    description: true,
-    website: true,
-    loginLink: true,
-    videoLink: true,
     logo: true,
+    organizationCount: true,
+    userCount: true,
   },
   searchableColumns: ['name'],
   defaultSortBy: 'name',
@@ -46,4 +42,19 @@ export const APPLICATION_REQUEST_FILTERS_CONFIG = {
     application: true,
   },
   rangeColumn: 'createdOn',
+};
+
+export const APPLICATION_ONG_FILTERS_CONFIG = {
+  selectColumns: {
+    organizationId: true,
+    name: true,
+    logo: true,
+    userCount: true,
+    createdOn: true,
+    status: true,
+  },
+  searchableColumns: ['name'],
+  defaultSortBy: 'name',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {},
 };

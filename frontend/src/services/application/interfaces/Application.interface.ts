@@ -1,4 +1,3 @@
-import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
 import {
   OngApplicationStatus,
@@ -10,17 +9,14 @@ export enum ApplicationStatus {
   DISABLED = 'disabled',
 }
 
-export interface Application extends BaseEntity {
+export interface Application {
+  id: number;
   name: string;
   type: ApplicationTypeEnum;
   status: ApplicationStatus;
-  shortDescription: string;
-  description: string;
-  videoLink: string;
-  loginLink: string;
-  website: string;
   logo: string;
-  steps: string[];
+  organizationCount: number;
+  userCount: number;
 }
 
 // For Cards List
@@ -49,4 +45,14 @@ export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatu
   description: string;
   videoLink: string;
   managementUrl?: string;
+}
+
+export interface ApplicationOrganization {
+  applicationId: number;
+  organizationId: number;
+  name: string;
+  logo: string;
+  userCount: number;
+  createdOn: Date;
+  status: OngApplicationStatus;
 }

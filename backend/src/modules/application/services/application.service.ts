@@ -16,7 +16,10 @@ import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
+import {
+  APPLICATION_FILTERS_CONFIG,
+  APPLICATION_ONG_FILTERS_CONFIG,
+} from '../constants/application-filters.config';
 import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
@@ -28,18 +31,25 @@ import {
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
-import { ApplicationStatus } from '../enums/application-status.enum';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { OrganizationApplicationFilter } from '../enums/organization-application-filter.enum';
+import { ApplicationStatus } from '../enums/application-status.enum';
+import { ApplicationView } from '../entities/application-view.entity';
+import { ApplicationViewRepository } from '../repositories/application-view.repository';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
+import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @Injectable()
 export class ApplicationService {
   private readonly logger = new Logger(ApplicationService.name);
   constructor(
     private readonly applicationRepository: ApplicationRepository,
+    private readonly applicationViewRepository: ApplicationViewRepository,
+    private readonly applicationOngViewRepository: ApplicationOngViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
   ) {}
@@ -87,15 +97,25 @@ export class ApplicationService {
 
   public async findAll(
     options: ApplicationFilterDto,
-  ): Promise<Pagination<Application>> {
+  ): Promise<Pagination<ApplicationView>> {
     const paginationOptions: any = {
       ...options,
     };
 
-    return this.applicationRepository.getManyPaginated(
+    const applications = await this.applicationViewRepository.getManyPaginated(
       APPLICATION_FILTERS_CONFIG,
       paginationOptions,
     );
+
+    // Map the logo url
+    const items = await this.mapLogoToApplications<ApplicationView>(
+      applications.items,
+    );
+
+    return {
+      ...applications,
+      items,
+    };
   }
 
   public async findOrganizationAplications(
@@ -220,6 +240,32 @@ export class ApplicationService {
       ...applicationWithDetails,
       logo,
     }) as ApplicationWithOngStatusDetails;
+  }
+
+  public async findOrganizationsByApplicationId(
+    applicationId: number,
+    options: BaseFilterDto,
+  ): Promise<Pagination<ApplicationOngView>> {
+    const paginationOptions: any = {
+      ...options,
+      applicationId,
+    };
+
+    const applications =
+      await this.applicationOngViewRepository.getManyPaginated(
+        APPLICATION_ONG_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+    // Map the logo url
+    const items = await this.mapLogoToApplications<ApplicationOngView>(
+      applications.items,
+    );
+
+    return {
+      ...applications,
+      items,
+    };
   }
 
   public async update(
@@ -395,21 +441,19 @@ export class ApplicationService {
    * @description
    * Map public files URLS for all applications which have logo as path
    */
-  private async mapLogoToApplications(
-    applications: ApplicationWithOngStatus[],
-  ): Promise<ApplicationWithOngStatus[]> {
+  private async mapLogoToApplications<T extends { logo: string }>(
+    applications: T[],
+  ): Promise<T[]> {
     try {
-      const applicationsWithLogo = applications.map(
-        async (app: ApplicationWithOngStatus) => {
-          if (app.logo !== null) {
-            const logo = await this.fileManagerService.generatePresignedURL(
-              app.logo,
-            );
-            return { ...app, logo };
-          }
-          return app;
-        },
-      );
+      const applicationsWithLogo = applications.map(async (app: T) => {
+        if (app.logo) {
+          const logo = await this.fileManagerService.generatePresignedURL(
+            app.logo,
+          );
+          return { ...app, logo };
+        }
+        return app;
+      });
 
       return Promise.all(applicationsWithLogo);
     } catch (error) {

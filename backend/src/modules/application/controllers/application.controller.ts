@@ -27,11 +27,15 @@ import { Role } from '../../user/enums/role.enum';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
+import { ApplicationView } from '../entities/application-view.entity';
 import { Application } from '../entities/application.entity';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -47,7 +51,7 @@ export class ApplicationController {
   @Get('')
   getAll(
     @Query() filters: ApplicationFilterDto,
-  ): Promise<Pagination<Application>> {
+  ): Promise<Pagination<ApplicationView>> {
     return this.applicationService.findAll(filters);
   }
 
@@ -85,6 +89,19 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/organization')
+  findOrganizationsByApplicationId(
+    @Param('id') id: number,
+    @Query() filters: ApplicationOrganizationFilterDto,
+  ): Promise<Pagination<ApplicationOngView>> {
+    return this.applicationService.findOrganizationsByApplicationId(
+      id,
+      filters,
+    );
   }
 
   @Roles(Role.ADMIN)

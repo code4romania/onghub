@@ -10,7 +10,10 @@ import DataTableFilters from '../../../components/data-table-filters/DataTableFi
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
-import { useApplicationsQuery } from '../../../services/application/Application.queries';
+import {
+  useApplicationsQuery,
+  useUpdateApplicationMutation,
+} from '../../../services/application/Application.queries';
 import {
   Application,
   ApplicationStatus,
@@ -33,7 +36,7 @@ const ApplicationListTable = () => {
 
   const { t } = useTranslation('appstore');
 
-  const { isLoading, error } = useApplicationsQuery(
+  const { isLoading, error, refetch } = useApplicationsQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -42,6 +45,12 @@ const ApplicationListTable = () => {
     status?.status,
     type?.type,
   );
+
+  const {
+    mutateAsync: updateApplication,
+    error: updateApplicationError,
+    isLoading: updateApplicationLoading,
+  } = useUpdateApplicationMutation();
 
   const { applications } = useApplications();
 
@@ -58,7 +67,11 @@ const ApplicationListTable = () => {
     if (error) {
       useErrorToast(t('list.load_error'));
     }
-  }, [error]);
+
+    if (updateApplicationError) {
+      useErrorToast(t('list.access_error'));
+    }
+  }, [error, updateApplicationError]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
@@ -70,7 +83,7 @@ const ApplicationListTable = () => {
       {
         name: t('list.activate'),
         icon: ShieldCheckIcon,
-        onClick: () => alert('not implemented'),
+        onClick: onActivateApplication,
         type: PopoverMenuRowType.SUCCESS,
       },
     ];
@@ -84,7 +97,7 @@ const ApplicationListTable = () => {
       {
         name: t('list.restrict'),
         icon: ShieldCheckIcon,
-        onClick: () => alert('not implemented'),
+        onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
@@ -123,7 +136,7 @@ const ApplicationListTable = () => {
     );
   };
 
-  const onView = (data: any) => {
+  const onView = (data: { id: number }) => {
     navigate(`/application/${data.id}`);
   };
 
@@ -137,6 +150,28 @@ const ApplicationListTable = () => {
 
   const onTypeChange = (selected: { type: ApplicationTypeEnum; label: string }) => {
     setType(selected);
+  };
+
+  const onActivateApplication = (row: Application) => {
+    update(row.id.toString(), ApplicationStatus.ACTIVE);
+  };
+
+  const onRestrictApplication = (row: Application) => {
+    update(row.id.toString(), ApplicationStatus.DISABLED);
+  };
+
+  const update = async (applicationId: string, status: ApplicationStatus) => {
+    await updateApplication(
+      {
+        applicationId,
+        applicationUpdatePayload: { status },
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      },
+    );
   };
 
   const onResetFilters = () => {
@@ -185,7 +220,7 @@ const ApplicationListTable = () => {
           <DataTableComponent
             columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
             data={applications.items}
-            loading={isLoading}
+            loading={isLoading || updateApplicationLoading}
             pagination
             sortServer
             paginationPerPage={applications.meta.itemsPerPage}

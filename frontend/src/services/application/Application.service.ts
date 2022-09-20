@@ -3,11 +3,13 @@ import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { cleanupPayload } from '../../common/helpers/format.helper';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
+import { OngApplicationStatus } from '../../pages/requests/interfaces/OngApplication.interface';
 import API from '../API';
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
   ApplicationAccess,
+  ApplicationOrganization,
   ApplicationStatus,
   ApplicationWithOngStatus,
 } from './interfaces/Application.interface';
@@ -26,7 +28,7 @@ export const createApplication = (
 export const updateApplication = (
   applicationId: string,
   applicationUpdatePayload: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): Promise<Application> => {
   const payload = generateApplicationFormDataPayload(applicationUpdatePayload, logo);
   return API.patch(`/application/${applicationId}`, payload, {
@@ -80,9 +82,27 @@ export const getApplicationById = (applicationId: string): Promise<Application> 
   return API.get(`/application/${applicationId}`).then((res) => res.data);
 };
 
+export const getApplicationOrganizations = (
+  applicationId: string,
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+  status?: OngApplicationStatus,
+): Promise<PaginatedEntity<ApplicationOrganization>> => {
+  let requestUrl = `/application/${applicationId}/organization?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (status) requestUrl = `${requestUrl}&status=${status}`;
+
+  return API.get(requestUrl).then((res) => res.data);
+};
+
 const generateApplicationFormDataPayload = (
   applicationDto: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): FormData => {
   // we remove the logo and steps
   const { steps, ...data } = applicationDto;
