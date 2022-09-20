@@ -33,12 +33,15 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
+import { ApplicationTableView } from '../entities/application-table-view.entity';
 
 @Injectable()
 export class ApplicationService {
   private readonly logger = new Logger(ApplicationService.name);
   constructor(
     private readonly applicationRepository: ApplicationRepository,
+    private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
   ) {}
@@ -86,15 +89,26 @@ export class ApplicationService {
 
   public async findAll(
     options: ApplicationFilterDto,
-  ): Promise<Pagination<Application>> {
+  ): Promise<Pagination<ApplicationTableView>> {
     const paginationOptions: any = {
       ...options,
     };
 
-    return this.applicationRepository.getManyPaginated(
-      APPLICATION_FILTERS_CONFIG,
-      paginationOptions,
+    const applications =
+      await this.applicationTableViewRepository.getManyPaginated(
+        APPLICATION_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+    // Map the logo url
+    const items = await this.mapLogoToApplications<ApplicationTableView>(
+      applications.items,
     );
+
+    return {
+      ...applications,
+      items,
+    };
   }
 
   /**
@@ -122,7 +136,9 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications(applicationsWithStatus);
+    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   public async findOrganizationAplications(
@@ -244,7 +260,7 @@ export class ApplicationService {
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
-    logo: Express.Multer.File[],
+    logo?: Express.Multer.File[],
   ): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },
@@ -386,21 +402,19 @@ export class ApplicationService {
    * @description
    * Map public files URLS for all applications which have logo as path
    */
-  private async mapLogoToApplications(
-    applications: ApplicationWithOngStatus[],
-  ): Promise<ApplicationWithOngStatus[]> {
+  private async mapLogoToApplications<T extends { logo: string }>(
+    applications: T[],
+  ): Promise<T[]> {
     try {
-      const applicationsWithLogo = applications.map(
-        async (app: ApplicationWithOngStatus) => {
-          if (app.logo !== null) {
-            const logo = await this.fileManagerService.generatePresignedURL(
-              app.logo,
-            );
-            return { ...app, logo };
-          }
-          return app;
-        },
-      );
+      const applicationsWithLogo = applications.map(async (app: T) => {
+        if (app.logo !== null) {
+          const logo = await this.fileManagerService.generatePresignedURL(
+            app.logo,
+          );
+          return { ...app, logo };
+        }
+        return app;
+      });
 
       return Promise.all(applicationsWithLogo);
     } catch (error) {

@@ -637,6 +637,7 @@
     },
     "list": {
       "load_error": "Eroare la incarcarea aplicatiilor",
+      "access_error": "Eroare la modificarea accesului",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
       "restrict": "Dezactiveaza temporar",

@@ -26,12 +26,20 @@ export const createApplication = (
 export const updateApplication = (
   applicationId: string,
   applicationUpdatePayload: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): Promise<Application> => {
   const payload = generateApplicationFormDataPayload(applicationUpdatePayload, logo);
   return API.patch(`/application/${applicationId}`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
+};
+
+export const activateApplication = (applicationId: string): Promise<Application> => {
+  return API.patch(`/application/${applicationId}/activate`).then((res) => res.data);
+};
+
+export const deactivateApplication = (applicationId: string): Promise<Application> => {
+  return API.patch(`/application/${applicationId}/deactivate`).then((res) => res.data);
 };
 
 export const getApplications = async (
@@ -82,7 +90,7 @@ export const getApplicationById = (applicationId: string): Promise<Application> 
 
 const generateApplicationFormDataPayload = (
   applicationDto: Partial<CreateApplicationDto>,
-  logo: File,
+  logo?: File,
 ): FormData => {
   // we remove the logo and steps
   const { steps, ...data } = applicationDto;

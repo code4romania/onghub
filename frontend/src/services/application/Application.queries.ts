@@ -4,7 +4,9 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import useStore from '../../store/store';
 import {
+  activateApplication,
   createApplication,
+  deactivateApplication,
   getApplicationById,
   getApplications,
   getApplicationsForCreateUser,
@@ -18,6 +20,7 @@ import {
   Application,
   ApplicationStatus,
   ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = () => {
@@ -73,7 +76,7 @@ export const useApplicationQuery = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
-    onSuccess: (data: Application) => {
+    onSuccess: (data: ApplicationWithOngStatusDetails) => {
       setSelectedApplication(data);
     },
   });
@@ -98,7 +101,19 @@ export const useUpdateApplicationMutation = () => {
     }: {
       applicationId: string;
       applicationUpdatePayload: Partial<CreateApplicationDto>;
-      logo: File;
+      logo?: File;
     }) => updateApplication(applicationId, applicationUpdatePayload, logo),
+  );
+};
+
+export const useActivateApplication = () => {
+  return useMutation(({ applicationId }: { applicationId: string }) =>
+    activateApplication(applicationId),
+  );
+};
+
+export const useDectivateApplication = () => {
+  return useMutation(({ applicationId }: { applicationId: string }) =>
+    deactivateApplication(applicationId),
   );
 };
