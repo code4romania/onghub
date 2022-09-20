@@ -71,7 +71,7 @@ export const getOrganizations = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getOrganization = (id: number): Promise<any> => {
+export const getOrganization = (id: string): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
 };
 

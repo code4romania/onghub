@@ -81,11 +81,13 @@
       "federation": "Federatie"
     },
     "tabs": {
+      "overview": "Overview",
       "general": "Date generale",
       "activity": "Activitatea organizatiei",
       "legal": "Informatii legale",
       "financial": "Informatii financiare",
-      "open_data": "Open data"
+      "open_data": "Open data",
+      "my_applications": "Applicatiile mele"
     },
     "save_error": "Organizatia nu s-a putut salva",
     "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.",

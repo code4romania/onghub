@@ -79,7 +79,7 @@ export const useOrganizationsQuery = (
   );
 };
 
-export const useOrganizationQuery = (id: number) => {
+export const useOrganizationQuery = (id: string) => {
   const {
     setOrganizationGeneral,
     setOrganizationActivity,

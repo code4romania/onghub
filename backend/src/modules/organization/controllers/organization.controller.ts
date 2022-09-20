@@ -107,6 +107,7 @@ export class OrganizationController {
     return this.organizationRequestService.reject(id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {

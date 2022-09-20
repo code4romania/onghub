@@ -38,6 +38,8 @@ import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import EditApplication from '../../pages/apps-store/components/EditApplication';
 import ApplicationWithOngList from '../../pages/application/ApplicationWithOngList';
+import OrganizationProfile from '../../pages/organization/OrganizationProfile';
+import OrganizationApplications from '../../pages/organization/components/OrganizationApplications/OrganizationApplications';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -165,6 +167,15 @@ const Router = () => {
               </RoleGuard>
             }
           />
+
+          <Route
+            path="organizations/:id"
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Organizations />
+              </RoleGuard>
+            }
+          />
           <Route
             path="all-apps/new"
             element={
@@ -181,9 +192,34 @@ const Router = () => {
               </RoleGuard>
             }
           />
-          {/* SuperAdmin, Admin and Employee */}
+          {/* Admin and Employee */}
           <Route index element={<Dashboard />}></Route>
-          <Route path={'organization'} element={<Organization />}>
+
+          <Route
+            path={'organizations/:id'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <Organization />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<Navigate to={'overview'}></Navigate>} />
+            <Route path="overview" element={<div>Overview</div>} />
+            <Route path="general" element={<OrganizationGeneral />} />
+            <Route path="activity" element={<OrganizationActivity />} />
+            <Route path="legal" element={<OrganizationLegal />} />
+            <Route path="financial" element={<OrganizationFinancial />} />
+            <Route path="data" element={<OrganizationData />} />
+            <Route path="applications" element={<OrganizationApplications />} />
+          </Route>
+          <Route
+            path={'organization'}
+            element={
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                <OrganizationProfile />
+              </RoleGuard>
+            }
+          >
             <Route index element={<Navigate to={'general'}></Navigate>} />
             <Route path="general" element={<OrganizationGeneral />} />
             <Route path="activity" element={<OrganizationActivity />} />
@@ -193,13 +229,27 @@ const Router = () => {
           </Route>
 
           {role === UserRole.SUPER_ADMIN ? (
-            <Route path={'application/:id'} element={<ApplicationWithOngList />}>
+            <Route
+              path={'application/:id'}
+              element={
+                <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                  <ApplicationWithOngList />
+                </RoleGuard>
+              }
+            >
               <Route index element={<Navigate to={'details'}></Navigate>} />
               <Route path="details" element={<ApplicationDetails />} />
               <Route path="installs" element={<ApplicationNGOList />} />
             </Route>
           ) : (
-            <Route path={'application/:id'} element={<Application />}>
+            <Route
+              path={'application/:id'}
+              element={
+                <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                  <Application />
+                </RoleGuard>
+              }
+            >
               <Route index element={<Navigate to={'details'}></Navigate>} />
               <Route path="details" element={<ApplicationDetails />} />
             </Route>
