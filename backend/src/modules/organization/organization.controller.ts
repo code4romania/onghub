@@ -65,6 +65,7 @@ export class OrganizationController {
     return this.organizationService.findAll({ options: filters });
   }
 
+  @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)
   @Patch(':id/restrict')
   restrictOrganization(@Param('id') id: number): Promise<Organization> {

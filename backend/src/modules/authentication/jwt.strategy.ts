@@ -1,10 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { passportJwtSecret } from 'jwks-rsa';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { UserService } from '../user/services/user.service';
@@ -36,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     if (user.organization.status === OrganizationStatus.RESTRICTED) {
-      throw new ForbiddenException();
+      throw new UnauthorizedException();
     }
 
     return user;
