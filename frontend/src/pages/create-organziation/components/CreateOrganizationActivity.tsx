@@ -112,7 +112,7 @@ const CreateOrganizationActivity = () => {
             render={({ field: { onChange, value } }) => {
               return (
                 <ChipSelection
-                  id="create-organization-activity--domains"
+                  id="create-organization-activity__domains"
                   {...OrganizationActivityConfig.domains.config}
                   values={[...domains]}
                   defaultItems={value}
@@ -128,7 +128,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.area.key]}
             config={OrganizationActivityConfig.area}
-            id="create-organization-activity--area"
+            id="create-organization-activity__area"
           />
           {area == OrganizationAreaEnum.LOCAL && (
             <Controller
@@ -139,7 +139,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <ServerSelect
-                    id="create-organization-activity--cities"
+                    id="create-organization-activity__cities"
                     value={value}
                     label={OrganizationActivityConfig.cities.label}
                     isMulti={true}
@@ -164,7 +164,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
-                    id="create-organziation-activity--regions"
+                    id="create-organziation-activity__regions"
                     value={value}
                     label={OrganizationActivityConfig.regions.config.label}
                     isClearable={false}
@@ -191,7 +191,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
             config={OrganizationActivityConfig.isPartOfFederation}
-            id="create-organization-activity--part-federation"
+            id="create-organization-activity__part-federation"
           />
           {(isPartOfFederation === 'true' || isPartOfFederation === true) && (
             <Controller
@@ -202,7 +202,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
-                    id="create-organization-activity--federations"
+                    id="create-organization-activity__federations"
                     value={value}
                     label={OrganizationActivityConfig.federations.config.label}
                     isClearable={false}
@@ -221,7 +221,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfCoalition.key]}
             config={OrganizationActivityConfig.isPartOfCoalition}
-            id="create-organization-activity--part-coalition"
+            id="create-organization-activity__part-coalition"
           />
           {(isPartOfCoalition == 'true' || isPartOfCoalition === true) && (
             <Controller
@@ -232,7 +232,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <MultiSelect
-                    id="create-organization-activity--coalitions"
+                    id="create-organization-activity__coalitions"
                     value={value}
                     label={OrganizationActivityConfig.coalitions.config.label}
                     isClearable={false}
@@ -252,7 +252,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPartOfInternationalOrganization.key]}
             config={OrganizationActivityConfig.isPartOfInternationalOrganization}
-            id="create-organization-activity--part-international"
+            id="create-organization-activity__part-international"
           />
 
           {(isPartOfInternationalOrganization == 'true' ||
@@ -273,7 +273,7 @@ const CreateOrganizationActivity = () => {
                           ?.message,
                       defaultValue: value,
                       onChange: onChange,
-                      id: 'create-organization-activity--international-name',
+                      id: 'create-organization-activity__international-name',
                     }}
                     readonly={readonly}
                   />
@@ -294,7 +294,7 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.hasBranches.key]}
             config={OrganizationActivityConfig.hasBranches}
-            id="create-organization-activity--has-branches"
+            id="create-organization-activity__has-branches"
           />
           {(hasBranches === 'true' || hasBranches === true) && (
             <Controller
@@ -305,7 +305,7 @@ const CreateOrganizationActivity = () => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <ServerSelect
-                    id="create-organization-activity--branches"
+                    id="create-organization-activity__branches"
                     value={value}
                     label={OrganizationActivityConfig.branches.label}
                     isMulti={true}
@@ -334,21 +334,21 @@ const CreateOrganizationActivity = () => {
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isSocialServiceViable.key]}
             config={OrganizationActivityConfig.isSocialServiceViable}
-            id="create-organization-activity--social-viable"
+            id="create-organization-activity__social-viable"
           />
           <RadioGroup
             control={control}
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.offersGrants.key]}
             config={OrganizationActivityConfig.offersGrants}
-            id="create-organization-activity--offers-grants"
+            id="create-organization-activity__offers-grants"
           />
           <RadioGroup
             control={control}
             readonly={readonly}
             errors={errors[OrganizationActivityConfig.isPublicIntrestOrganization.key]}
             config={OrganizationActivityConfig.isPublicIntrestOrganization}
-            id="create-organization-activity--public-interest"
+            id="create-organization-activity__public-interest"
           />
         </div>
         <div className="pt-5 sm:pt-6 sm:flex sm:flex-row-reverse">

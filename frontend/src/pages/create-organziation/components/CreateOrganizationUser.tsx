@@ -69,7 +69,7 @@ const CreateOrganizationUser = () => {
                         error: errors[CreateOrganizationUserConfig.name.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
-                        id: 'create-organization-account--name',
+                        id: 'create-organization-account__name',
                       }}
                       readonly={readonly}
                     />
@@ -91,7 +91,7 @@ const CreateOrganizationUser = () => {
                           error: errors[CreateOrganizationUserConfig.email.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
-                          id: 'create-organization-account--email',
+                          id: 'create-organization-account__email',
                         }}
                         readonly={readonly}
                       />
@@ -112,7 +112,7 @@ const CreateOrganizationUser = () => {
                           error: errors[CreateOrganizationUserConfig.phone.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
-                          id: 'create-organization-account--phone',
+                          id: 'create-organization-account__phone',
                         }}
                         readonly={readonly}
                       />
