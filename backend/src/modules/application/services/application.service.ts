@@ -160,7 +160,7 @@ export class ApplicationService {
 
     // USER Handling
     if (user.role === Role.EMPLOYEE) {
-      this.findApplicationsForOngEmployee(user.organizationId, user.id);
+      return this.findApplicationsForOngEmployee(user.organizationId, user.id);
     }
   }
 
