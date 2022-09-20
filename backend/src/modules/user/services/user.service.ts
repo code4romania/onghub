@@ -57,7 +57,7 @@ export class UserService {
       return user;
     }
 
-    this.assignApplications(
+    await this.assignApplications(
       applicationAccess,
       user.id,
       userData.organizationId,
@@ -101,7 +101,11 @@ export class UserService {
       const user = await this.getById(id, organizationId);
 
       // 2. Update cognito user data
-      await this.cognitoService.updateUser(user.email, userData);
+      await this.cognitoService.updateUser(user.email, {
+        phone: user.phone,
+        name: user.name,
+        ...userData,
+      });
 
       // 3. Remove current user applications
       await this.userOngApplicationService.remove({ userId: id });

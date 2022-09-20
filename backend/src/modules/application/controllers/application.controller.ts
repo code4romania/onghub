@@ -87,19 +87,6 @@ export class ApplicationController {
     return this.applicationService.findOne(user.organizationId, id);
   }
 
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Post(':id/request')
-  createApplicationRequest(
-    @Param('id') applicationId: number,
-    @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.create(
-      user.organizationId,
-      applicationId,
-    );
-  }
-
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')

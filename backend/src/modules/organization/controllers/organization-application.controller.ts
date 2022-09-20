@@ -6,6 +6,7 @@ import {
   ClassSerializerInterceptor,
   Delete,
   Query,
+  Post,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -55,6 +56,19 @@ export class OrganizationApplicationController {
     return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
       user.organizationId,
       userId,
+    );
+  }
+
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Post(':id/request')
+  createApplicationRequest(
+    @Param('id') applicationId: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.applicationRequestService.create(
+      user.organizationId,
+      applicationId,
     );
   }
 
