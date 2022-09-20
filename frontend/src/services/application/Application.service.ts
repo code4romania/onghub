@@ -56,7 +56,7 @@ export const getApplications = async (
 
 // Returns all the applications with ONGApp table entry as status (your ONG relationship with that Application)
 export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationWithOngStatus>> => {
-  const requestUrl = `/organization/application`;
+  const requestUrl = `/organization/application/all`;
   return API.get(requestUrl).then((res) => res.data);
 };
 

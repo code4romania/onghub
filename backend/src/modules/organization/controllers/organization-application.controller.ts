@@ -47,6 +47,14 @@ export class OrganizationApplicationController {
   }
 
   @Roles(Role.ADMIN)
+  @Get('all')
+  findAllApplications(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
+    return this.applicationService.findApplications(user.organizationId);
+  }
+
+  @Roles(Role.ADMIN)
   @ApiParam({ name: 'id', type: Number })
   @Get('user/:id')
   findOrganizationApplicationsWithStatusForEmployee(
