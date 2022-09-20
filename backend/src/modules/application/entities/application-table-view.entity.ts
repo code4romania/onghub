@@ -2,7 +2,7 @@ import { ApplicationType } from 'aws-sdk/clients/appflow';
 import { ViewEntity, ViewColumn } from 'typeorm';
 import { ApplicationStatus } from '../enums/application-status.enum';
 
-@ViewEntity('ApplicationView', {
+@ViewEntity('ApplicationTableView', {
   expression: `SELECT "application".id as "id",
   "application".logo as "logo", 
   "application".name as "name",
@@ -16,7 +16,7 @@ import { ApplicationStatus } from '../enums/application-status.enum';
   GROUP BY "application".id
   `,
 })
-export class ApplicationView {
+export class ApplicationTableView {
   @ViewColumn()
   id: number;
 
