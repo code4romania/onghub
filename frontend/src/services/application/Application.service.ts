@@ -34,6 +34,14 @@ export const updateApplication = (
   }).then((res) => res.data);
 };
 
+export const activateApplication = (applicationId: string): Promise<Application> => {
+  return API.patch(`/application/${applicationId}/activate`).then((res) => res.data);
+};
+
+export const deactivateApplication = (applicationId: string): Promise<Application> => {
+  return API.patch(`/application/${applicationId}/deactivate`).then((res) => res.data);
+};
+
 export const getApplications = async (
   limit: number,
   page: number,

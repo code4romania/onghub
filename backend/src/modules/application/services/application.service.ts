@@ -259,7 +259,7 @@ export class ApplicationService {
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
-    logo: Express.Multer.File[],
+    logo?: Express.Multer.File[],
   ): Promise<Application> {
     const application = await this.applicationRepository.get({
       where: { id },

@@ -32,6 +32,7 @@ import { Application } from '../entities/application.entity';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -72,6 +73,24 @@ export class ApplicationController {
     @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ) {
     return this.applicationService.update(id, updateApplicationDto, logo);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/activate')
+  activate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.ACTIVE,
+    });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/deactivate')
+  deactivate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.DISABLED,
+    });
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
