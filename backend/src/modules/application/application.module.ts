@@ -15,8 +15,8 @@ import { ApplicationRequestController } from './controllers/application-request.
 import { UserOngApplication } from './entities/user-ong-application.entity';
 import { UserOngApplicationRepository } from './repositories/user-ong-application.repository';
 import { UserOngApplicationService } from './services/user-ong-application.service';
-import { ApplicationView } from './entities/application-view.entity';
-import { ApplicationViewRepository } from './repositories/application-view.repository';
+import { ApplicationTableView } from './entities/application-table-view.entity';
+import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { ApplicationViewRepository } from './repositories/application-view.repos
       OngApplication,
       ApplicationRequest,
       UserOngApplication,
-      ApplicationView,
+      ApplicationTableView,
     ]),
     SharedModule,
   ],
@@ -39,7 +39,7 @@ import { ApplicationViewRepository } from './repositories/application-view.repos
     ApplicationRequestService,
     UserOngApplicationRepository,
     UserOngApplicationService,
-    ApplicationViewRepository,
+    ApplicationTableViewRepository,
   ],
   exports: [
     OngApplicationService,
