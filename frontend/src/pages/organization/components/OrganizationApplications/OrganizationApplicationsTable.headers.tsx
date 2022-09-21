@@ -15,6 +15,7 @@ const translations = {
   type: i18n.t('appstore:header.type'),
   status: i18n.t('appstore:header.status'),
   active: i18n.t('appstore:status.active'),
+  createdOn: i18n.t('common:createdOn'),
 };
 
 export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOngStatus>[] = [
@@ -42,7 +43,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
   {
     id: 'createdOn',
     sortable: true,
-    name: 'Data adaugarii',
+    name: translations.createdOn,
     grow: 1,
     selector: (row: ApplicationWithOngStatus) => formatDate(row.createdOn),
   },

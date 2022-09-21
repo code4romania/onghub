@@ -7,6 +7,7 @@ import { OrganizationApplicationRequest } from '../../../../services/application
 
 const translations = {
   name: i18n.t('appstore:header.name'),
+  createdOn: i18n.t('common:created_on'),
 };
 
 export const OrganizationApplicationRequestsTableHeaders: TableColumn<OrganizationApplicationRequest>[] =
@@ -24,7 +25,7 @@ export const OrganizationApplicationRequestsTableHeaders: TableColumn<Organizati
     {
       id: 'createdOn',
       sortable: true,
-      name: 'Data adaugarii',
+      name: translations.createdOn,
       grow: 1,
       selector: (row: OrganizationApplicationRequest) => formatDate(row.createdOn),
     },

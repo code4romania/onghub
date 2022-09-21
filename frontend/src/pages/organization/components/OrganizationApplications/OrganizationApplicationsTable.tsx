@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
@@ -16,6 +17,8 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
   const [applications, setApplications] = useState<ApplicationWithOngStatus[]>([]);
+
+  const { t } = useTranslation(['applications', 'common']);
 
   const { isLoading: isApplicationsLoading, error: applicationsError } =
     useOrganizationApplicationsQuery(organizationId);
@@ -38,7 +41,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
 
   useEffect(() => {
     if (applicationsError) {
-      useErrorToast('Eroare la incarcarea applicatiilor');
+      useErrorToast(t('error.get_applications'));
     }
   }, [applicationsError]);
 
@@ -67,7 +70,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Type',
+                label: t('app_type'),
                 collection: ApplicationTypeCollection,
                 displayedAttribute: 'label',
               }}
@@ -79,7 +82,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Aplicatii in folosinta</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('active_apps')}</p>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent

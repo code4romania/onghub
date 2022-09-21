@@ -3,6 +3,7 @@
     "year": "An",
     "status": "Status",
     "updatedOn": "Ultima actualizare",
+    "createdOn": "Data adaugarii",
     "save": "Salveaza modificari",
     "back": "Inapoi",
     "edit": "Editeaza",
@@ -522,6 +523,15 @@
       "volunteer_helper": "Lorem ipsum",
       "contractor_helper": "Lorem ipsum",
       "report_helper": "Lorem ipsum"
+    }
+  },
+  "applications": {
+    "active_apps": "Aplicatii in folosinta",
+    "pending_app_requests": "Solicitari applicatii",
+    "app_type": "Tip aplicatie",
+    "error": {
+      "get_applications": "Eroare la incarcarea aplicatiilor",
+      "get_requests": "Eroare la incarcarea requesturilor"
     }
   },
   "delete_row": {
