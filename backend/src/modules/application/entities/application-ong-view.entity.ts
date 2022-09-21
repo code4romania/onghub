@@ -14,7 +14,7 @@ import { OngApplicationStatus } from '../enums/ong-application-status.enum';
   LEFT JOIN "ong_application" "ong_application" ON "ong_application".organization_id = "organization".id
   LEFT JOIN "application" "application" ON "application".id = "ong_application".application_id
   LEFT JOIN "organization_general" "organization_general" ON "organization_general".id = "organization".organization_general_id
-  LEFT JOIN "user_ong_application" "user_ong_application" ON "user_ong_application".application_id = "ong_application".id
+  LEFT JOIN "user_ong_application" "user_ong_application" ON "user_ong_application".ong_application_id = "ong_application".id
   GROUP BY "organization".id, "organization_general".id, "ong_application".id, "application".id`,
 })
 export class ApplicationOngView {
