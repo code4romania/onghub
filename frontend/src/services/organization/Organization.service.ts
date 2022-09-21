@@ -3,6 +3,7 @@ import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import API from '../API';
+import { ApplicationWithOngStatus } from '../application/interfaces/Application.interface';
 
 /**EMPLOYEE && ADMIN */
 export const getOrganizationByProfile = (): Promise<any> => {
@@ -73,6 +74,10 @@ export const getOrganizations = async (
 
 export const getOrganization = (id: string): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
+};
+
+export const getOrganizationApplications = (id: string): Promise<ApplicationWithOngStatus[]> => {
+  return API.get(`/organization/${id}/applications`).then((res) => res.data);
 };
 
 export const patchOrganization = (id: number, update: any): Promise<any> => {

@@ -39,6 +39,7 @@ import {
 import { applicationsSlice } from './application/Application.slice';
 import { applicationRequestsSlice } from './request/ApplicationRequests';
 import { ongApplicationSlice } from './application/OngApplication.slice';
+import { organizationApplications } from './organization/organization-applications.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -48,6 +49,7 @@ interface OrganizationState {
   organizationActivity: any;
   organizationReport: IOrganizationReport | null;
   organizationLegal: IOrganizationLegal | null;
+  organizationApplications: ApplicationWithOngStatus[];
   setOrganization: (organization: IOrganization) => void;
   setOrganizationActivity: (organizationActivity: any) => void;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
@@ -55,6 +57,7 @@ interface OrganizationState {
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
   setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
+  setOrganizationApplications: (applications: ApplicationWithOngStatus[]) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -135,6 +138,7 @@ const useStore = create<
   ...ongApplicationSlice(set),
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
+  ...organizationApplications(set),
 }));
 
 export default useStore;

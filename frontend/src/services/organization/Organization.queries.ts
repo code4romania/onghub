@@ -12,6 +12,7 @@ import {
   deletePartners,
   deletePartnersByProfile,
   getOrganization,
+  getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
   patchOrganization,
@@ -28,6 +29,7 @@ import { Person } from '../../common/interfaces/person.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ApplicationWithOngStatus } from '../application/interfaces/Application.interface';
 
 interface OrganizationPayload {
   id?: number;
@@ -75,6 +77,20 @@ export const useOrganizationsQuery = (
         });
       },
       enabled: !!(limit && page && orderBy && orderDirection),
+    },
+  );
+};
+
+export const useOrganizationApplicationsQuery = (organizationId: string) => {
+  const { setOrganizationApplications } = useStore();
+  return useQuery(
+    ['organizations', organizationId],
+    () => getOrganizationApplications(organizationId),
+    {
+      onSuccess: (data: ApplicationWithOngStatus[]) => {
+        setOrganizationApplications(data);
+      },
+      enabled: !!organizationId,
     },
   );
 };

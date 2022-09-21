@@ -671,7 +671,9 @@
     },
     "status": {
       "active": "Activ",
-      "disabled": "Inactiv"
+      "disabled": "Inactiv",
+      "restricted": "Restrictionat",
+      "pending": "In asteptare"
     },
     "header": {
       "name": "Aplicatie",

@@ -29,6 +29,7 @@ export interface ApplicationWithOngStatus {
   status: OngApplicationStatus;
   type: ApplicationTypeEnum;
   website: string;
+  createdOn: Date;
 }
 
 export interface ApplicationAccess {
