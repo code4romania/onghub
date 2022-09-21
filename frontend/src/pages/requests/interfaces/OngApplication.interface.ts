@@ -8,6 +8,11 @@ export enum OngApplicationStatus {
   DISABLED = 'disabled',
 }
 
+export enum UserOngApplicationStatus {
+  ACTIVE = 'active',
+  RESTRICTED = 'restricted',
+}
+
 export interface OngApplication {
   organizationId: number;
   organization: IOrganization;

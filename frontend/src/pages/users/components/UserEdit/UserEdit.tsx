@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,15 +6,27 @@ import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToas
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
 import InputField from '../../../../components/InputField/InputField';
+import { Loading } from '../../../../components/loading/Loading';
+import { useApplicationsForEditUserQuery } from '../../../../services/application/Application.queries';
 import {
   useUpdateUserMutation,
   useSelectedUserQuery,
 } from '../../../../services/user/User.queries';
+import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from '../UserCreate/UserCreateConfig';
 
 const UserEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [access, setAccess] = useState<any>({});
+
+  const {
+    isLoading: isLoadingApplications,
+    error: applicationsError,
+    data: applications,
+  } = useApplicationsForEditUserQuery(id as string);
+
   const updateUserMutation = useUpdateUserMutation();
   const { data: user, error } = useSelectedUserQuery(id as string);
   const { t } = useTranslation(['user', 'common']);
@@ -39,18 +51,28 @@ const UserEdit = () => {
     if (error) {
       useErrorToast(`${t('edit.load_error')} ${id}`);
     }
-  }, [error]);
+
+    if (applicationsError) {
+      useErrorToast('Error while loading the applications');
+    }
+  }, [error, applicationsError]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
+    const applicationAccess = Object.getOwnPropertyNames(access)
+      .filter((applicationId) => access[applicationId])
+      .map((applicationId) => ({
+        ongApplicationId: applicationId,
+        status: UserOngApplicationStatus.ACTIVE,
+      }));
+
     updateUserMutation.mutate(
-      { userId: id as string, payload: data },
+      { userId: id as string, payload: { ...data, applicationAccess } },
       {
         onSuccess: () => {
           useSuccessToast(t('edit.success'));
         },
-        onError: (error: unknown) => {
-          console.error(error);
+        onError: () => {
           useErrorToast(t('edit.failure'));
         },
       },
@@ -63,7 +85,7 @@ const UserEdit = () => {
       subtitle={t('subtitle')}
       backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/users') }}
     >
-      <div className="flex">
+      <div className="flex flex-col gap-6">
         <CardPanel
           title={t('edit', { ns: 'common' })}
           loading={updateUserMutation.isLoading}
@@ -137,6 +159,14 @@ const UserEdit = () => {
             </div>
           </form>
         </CardPanel>
+        {isLoadingApplications ? (
+          <Loading />
+        ) : (
+          <ApplicationAccessManagement
+            applications={applications || []}
+            onAccessChange={setAccess}
+          />
+        )}
       </div>
     </ContentWrapper>
   );

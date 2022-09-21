@@ -27,26 +27,24 @@ import { Role } from '../../user/enums/role.enum';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
+import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
-import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+  constructor(private readonly applicationService: ApplicationService) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
   getAll(
     @Query() filters: ApplicationFilterDto,
-  ): Promise<Pagination<Application>> {
+  ): Promise<Pagination<ApplicationTableView>> {
     return this.applicationService.findAll(filters);
   }
 
@@ -76,6 +74,24 @@ export class ApplicationController {
     return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/activate')
+  activate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.ACTIVE,
+    });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/deactivate')
+  deactivate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.DISABLED,
+    });
+  }
+
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
@@ -84,16 +100,6 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Delete(':id/request')
-  abandonRequest(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)

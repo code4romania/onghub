@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -6,13 +6,27 @@ import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToas
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
 import InputField from '../../../../components/InputField/InputField';
+import { Loading } from '../../../../components/loading/Loading';
+import { userApplicationsForCreateUser } from '../../../../services/application/Application.queries';
 import { useCreateUserMutation } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
+import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from './UserCreateConfig';
 
 const UserCreate = () => {
   const navigate = useNavigate();
   const { organization } = useSelectedOrganization();
+  const [access, setAccess] = useState<any>({});
+
+  // requst applications
+  const {
+    data: applications,
+    isLoading: isLoadingApplications,
+    error: ongApplicationsError,
+  } = userApplicationsForCreateUser();
+
+  // user create
   const createUserMutation = useCreateUserMutation();
   const { t } = useTranslation(['user', 'common']);
 
@@ -25,17 +39,29 @@ const UserCreate = () => {
     reValidateMode: 'onChange',
   });
 
+  useEffect(() => {
+    if (ongApplicationsError) {
+      useErrorToast(`Could not load applications`);
+    }
+  }, [ongApplicationsError]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
+    const applicationAccess = Object.getOwnPropertyNames(access)
+      .filter((applicationId) => access[applicationId])
+      .map((applicationId) => ({
+        ongApplicationId: applicationId,
+        status: UserOngApplicationStatus.ACTIVE,
+      }));
+
     createUserMutation.mutate(
-      { ...data, organizationId: organization?.id as number },
+      { ...data, organizationId: organization?.id as number, applicationAccess },
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
           navigate('/users');
         },
-        onError: (error: unknown) => {
-          console.error(error);
+        onError: () => {
           useErrorToast(t('create.failure'));
         },
       },
@@ -48,7 +74,7 @@ const UserCreate = () => {
       subtitle={t('subtitle')}
       backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/users') }}
     >
-      <div className="flex">
+      <div className="flex flex-col gap-6">
         <CardPanel
           title={t('create.invite')}
           btnLabel={t('create.invite')}
@@ -122,6 +148,14 @@ const UserCreate = () => {
             </div>
           </form>
         </CardPanel>
+        {isLoadingApplications ? (
+          <Loading />
+        ) : (
+          <ApplicationAccessManagement
+            applications={applications || []}
+            onAccessChange={setAccess}
+          />
+        )}
       </div>
     </ContentWrapper>
   );

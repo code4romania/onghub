@@ -1,5 +1,4 @@
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
-
 export interface CreateApplicationDto {
   name: string;
   type: ApplicationTypeEnum;

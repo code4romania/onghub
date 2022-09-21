@@ -1,12 +1,13 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
+import NameWithLogo from '../../../components/name-with-logo/NameWithLogo';
 import StatusBadge from '../../../components/status-badge/StatusBadge';
 import { Application } from '../../../services/application/interfaces/Application.interface';
 import {
   ApplicationStatusBadgeMapper,
   APPLICATION_STATUS_NAME,
 } from '../constants/ApplicationStatus.constant';
-import { ApplicationTypeNaming } from '../constants/ApplicationType.enum';
+import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 import i18n from '../../../common/config/i18n';
 
 const translations = {
@@ -22,7 +23,23 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: true,
     sortField: 'name',
     grow: 3,
-    selector: (row: Application) => row.name,
+    cell: (row: Application) => <NameWithLogo logo={row.logo} name={row.name} />,
+  },
+  {
+    id: 'organizationCount',
+    sortable: true,
+    name: 'Numar ONGuri',
+    grow: 1,
+    selector: (row: Application) =>
+      row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.organizationCount,
+  },
+  {
+    id: 'userCount',
+    sortable: true,
+    name: 'Utilizatori',
+    grow: 1,
+    selector: (row: Application) =>
+      row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.userCount,
   },
   {
     id: 'type',

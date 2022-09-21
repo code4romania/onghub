@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { OrganizationController } from './organization.controller';
+import { OrganizationController } from './controllers/organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   OrganizationGeneral,
@@ -36,12 +36,13 @@ import {
   ReportService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
-import { OrganizationProfileController } from './organization-profile.controller';
+import { OrganizationProfileController } from './controllers/organization-profile.controller';
 import { ApplicationModule } from '../application/application.module';
 import { OrganizationRequest } from './entities/organization-request.entity';
 import { OrganizationRequestRepository } from './repositories/organization-request.repository';
 import { OrganizationRequestService } from './services/organization-request.service';
 import { UserModule } from '../user/user.module';
+import { OrganizationApplicationController } from './controllers/organization-application.controller';
 
 @Module({
   imports: [
@@ -62,7 +63,11 @@ import { UserModule } from '../user/user.module';
     ApplicationModule,
     UserModule,
   ],
-  controllers: [OrganizationController, OrganizationProfileController],
+  controllers: [
+    OrganizationApplicationController,
+    OrganizationController,
+    OrganizationProfileController,
+  ],
   providers: [
     ContactService,
     OrganizationService,
