@@ -43,3 +43,18 @@ export const APPLICATION_REQUEST_FILTERS_CONFIG = {
   },
   rangeColumn: 'createdOn',
 };
+
+export const APPLICATION_ONG_FILTERS_CONFIG = {
+  selectColumns: {
+    organizationId: true,
+    name: true,
+    logo: true,
+    userCount: true,
+    createdOn: true,
+    status: true,
+  },
+  searchableColumns: ['name'],
+  defaultSortBy: 'name',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {},
+};

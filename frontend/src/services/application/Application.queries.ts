@@ -2,12 +2,14 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
+import { OngApplicationStatus } from '../../pages/requests/interfaces/OngApplication.interface';
 import useStore from '../../store/store';
 import {
   activateApplication,
   createApplication,
   deactivateApplication,
   getApplicationById,
+  getApplicationOrganizations,
   getApplications,
   getApplicationsForCreateUser,
   getApplicationsForEditUser,
@@ -18,6 +20,7 @@ import {
 import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
+  ApplicationOrganization,
   ApplicationStatus,
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
@@ -80,6 +83,41 @@ export const useApplicationQuery = (applicationId: string) => {
       setSelectedApplication(data);
     },
   });
+};
+
+// As an SuperAdmin get NGO LIST for an organization
+export const useApplicationOrganizationQuery = (
+  applicationId: string,
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+  status?: OngApplicationStatus,
+) => {
+  const { setApplicationOrganizations, applicationOrganizations } = useStore();
+  return useQuery(
+    ['application', applicationId, limit, page, orderBy, orderDirection, search, status],
+    () =>
+      getApplicationOrganizations(
+        applicationId,
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        status,
+      ),
+    {
+      enabled: !!(!!applicationId && limit && page && orderBy && orderDirection),
+      onSuccess: (data: PaginatedEntity<ApplicationOrganization>) => {
+        setApplicationOrganizations({
+          items: data.items,
+          meta: { ...applicationOrganizations.meta, ...data.meta },
+        });
+      },
+    },
+  );
 };
 
 export const userApplicationsForCreateUser = () => {

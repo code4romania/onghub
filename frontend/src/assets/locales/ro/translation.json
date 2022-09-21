@@ -24,7 +24,9 @@
     "completion_status": {
       "completed": "Completat",
       "incompleted": "Necompletat"
-    }
+    },
+    "restricted": "Restrictionat",
+    "active": "Activ"
   },
   "menu": {
     "informations": "Informatii",
@@ -781,6 +783,19 @@
       "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
       "close_description": "Veni, vidi, vici.",
       "another_description": "Descriere aplicatie"
+    },
+    "list_header": {
+      "name": "ONG",
+      "user_count": "Utilizatori Individuali",
+      "created_on": "Data adaugare",
+      "access": "Access"
+    },
+    "list": {
+      "load_error": "Eroare la incarcarea organizatiilor",
+      "title": "Lista ONG-uri",
+      "activate": "Activeaza aplicatie",
+      "restrict": "Dezactiveaza aplicatie",
+      "remove": "Elimina definitiv"
     }
   },
   "header": {

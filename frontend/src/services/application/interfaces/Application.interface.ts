@@ -46,3 +46,13 @@ export interface ApplicationWithOngStatusDetails extends ApplicationWithOngStatu
   videoLink: string;
   managementUrl?: string;
 }
+
+export interface ApplicationOrganization {
+  applicationId: number;
+  organizationId: number;
+  name: string;
+  logo: string;
+  userCount: number;
+  createdOn: Date;
+  status: OngApplicationStatus;
+}
