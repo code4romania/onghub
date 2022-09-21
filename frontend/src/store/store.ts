@@ -35,6 +35,7 @@ import {
   ApplicationOrganization,
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
+  OrganizationApplicationRequest,
 } from '../services/application/interfaces/Application.interface';
 import { applicationsSlice } from './application/Application.slice';
 import { applicationRequestsSlice } from './request/ApplicationRequests';
@@ -50,6 +51,7 @@ interface OrganizationState {
   organizationReport: IOrganizationReport | null;
   organizationLegal: IOrganizationLegal | null;
   organizationApplications: ApplicationWithOngStatus[];
+  organizationApplicationRequests: OrganizationApplicationRequest[];
   setOrganization: (organization: IOrganization) => void;
   setOrganizationActivity: (organizationActivity: any) => void;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
@@ -58,6 +60,9 @@ interface OrganizationState {
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
   setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
   setOrganizationApplications: (applications: ApplicationWithOngStatus[]) => void;
+  setOrganizationApplicationRequests: (
+    organizationApplicationRequests: OrganizationApplicationRequest[],
+  ) => void;
 }
 interface NomenclatureState {
   counties: County[];

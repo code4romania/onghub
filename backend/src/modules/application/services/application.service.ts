@@ -108,9 +108,10 @@ export class ApplicationService {
       );
 
     // Map the logo url
-    const items = await this.mapLogoToApplications<ApplicationTableView>(
-      applications.items,
-    );
+    const items =
+      await this.fileManagerService.mapLogoToEntity<ApplicationTableView>(
+        applications.items,
+      );
 
     return {
       ...applications,
@@ -143,7 +144,7 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
   }
@@ -241,7 +242,7 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
   }
@@ -317,9 +318,10 @@ export class ApplicationService {
       );
 
     // Map the logo url
-    const items = await this.mapLogoToApplications<ApplicationOngView>(
-      applications.items,
-    );
+    const items =
+      await this.fileManagerService.mapLogoToEntity<ApplicationOngView>(
+        applications.items,
+      );
 
     return {
       ...applications,
@@ -434,7 +436,9 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications(applicationsWithStatus);
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   /**
@@ -466,38 +470,6 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
-  }
-
-  /**
-   * @description
-   * Map public files URLS for all applications which have logo as path
-   */
-  private async mapLogoToApplications<T extends { logo: string }>(
-    applications: T[],
-  ): Promise<T[]> {
-    try {
-      const applicationsWithLogo = applications.map(async (app: T) => {
-        if (app.logo) {
-          const logo = await this.fileManagerService.generatePresignedURL(
-            app.logo,
-          );
-          return { ...app, logo };
-        }
-        return app;
-      });
-
-      return Promise.all(applicationsWithLogo);
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...APPLICATION_ERRORS.GENERATE_URL,
-      });
-      const err = error?.response;
-      throw new BadRequestException({
-        ...APPLICATION_ERRORS.GENERATE_URL,
-        error: err,
-      });
-    }
   }
 
   /**

@@ -40,6 +40,8 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
+import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
+import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -50,6 +52,7 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
     private readonly applicationService: ApplicationService,
+    private readonly applicationRequestService: ApplicationRequestService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -104,6 +107,15 @@ export class OrganizationController {
   @Patch('request/:id/reject')
   reject(@Param('id') id: number): Promise<OrganizationRequest> {
     return this.organizationRequestService.reject(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/application-requests')
+  findOrganizationApplicationRequests(
+    @Param('id') id: number,
+  ): Promise<OrganizationApplicationRequest[]> {
+    return this.applicationRequestService.findRequestsByOrganizationId(id);
   }
 
   @Roles(Role.SUPER_ADMIN)

@@ -57,3 +57,10 @@ export interface ApplicationOrganization {
   createdOn: Date;
   status: OngApplicationStatus;
 }
+
+export interface OrganizationApplicationRequest {
+  id: number;
+  name: string;
+  logo: string;
+  createdOn: Date;
+}

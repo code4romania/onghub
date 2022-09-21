@@ -12,6 +12,7 @@ import {
   deletePartners,
   deletePartnersByProfile,
   getOrganization,
+  getOrganizationApplicationRequests,
   getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
@@ -29,7 +30,10 @@ import { Person } from '../../common/interfaces/person.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { ApplicationWithOngStatus } from '../application/interfaces/Application.interface';
+import {
+  ApplicationWithOngStatus,
+  OrganizationApplicationRequest,
+} from '../application/interfaces/Application.interface';
 
 interface OrganizationPayload {
   id?: number;
@@ -84,11 +88,25 @@ export const useOrganizationsQuery = (
 export const useOrganizationApplicationsQuery = (organizationId: string) => {
   const { setOrganizationApplications } = useStore();
   return useQuery(
-    ['organizations', organizationId],
+    ['applications', organizationId],
     () => getOrganizationApplications(organizationId),
     {
       onSuccess: (data: ApplicationWithOngStatus[]) => {
         setOrganizationApplications(data);
+      },
+      enabled: !!organizationId,
+    },
+  );
+};
+
+export const useOrganizationApplicationRequestsQuery = (organizationId: string) => {
+  const { setOrganizationApplicationRequests } = useStore();
+  return useQuery(
+    ['requests', organizationId],
+    () => getOrganizationApplicationRequests(organizationId),
+    {
+      onSuccess: (data: OrganizationApplicationRequest[]) => {
+        setOrganizationApplicationRequests(data);
       },
       enabled: !!organizationId,
     },

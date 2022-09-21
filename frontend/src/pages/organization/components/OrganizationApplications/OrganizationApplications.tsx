@@ -9,7 +9,7 @@ const OrganizationApplications = () => {
   return (
     <div className="w-full h-full flex flex-col gap-5">
       <OrganizationApplicationsTable organizationId={id as string} />
-      {/* <OrganizationApplicationAccessRequestTable organizationId={id as string} /> */}
+      <OrganizationApplicationAccessRequestTable organizationId={id as string} />
     </div>
   );
 };

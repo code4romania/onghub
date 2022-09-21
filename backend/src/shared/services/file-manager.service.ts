@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   Logger,
   PayloadTooLargeException,
@@ -8,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { v4 as uuid } from 'uuid';
+import { FILE_ERRORS } from '../constants/file-errors.constants';
 import {
   FILE_URL_EXPIRATION_TIME,
   MAX_UPLOAD_SIZE,
@@ -105,5 +107,35 @@ export class FileManagerService {
           .promise(),
       ),
     );
+  }
+
+  /**
+   * @description
+   * Map public files URLS for all entities which have logo as path
+   */
+  public async mapLogoToEntity<T extends { logo: string }>(
+    applications: T[],
+  ): Promise<T[]> {
+    try {
+      const entitiesWithLogo = applications.map(async (app: T) => {
+        if (app.logo) {
+          const logo = await this.generatePresignedURL(app.logo);
+          return { ...app, logo };
+        }
+        return app;
+      });
+
+      return Promise.all(entitiesWithLogo);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...FILE_ERRORS.GENERATE_URL,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...FILE_ERRORS.GENERATE_URL,
+        error: err,
+      });
+    }
   }
 }

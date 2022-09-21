@@ -40,7 +40,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     ),
   },
   {
-    id: 'type',
+    id: 'createdOn',
     sortable: true,
     name: 'Data adaugarii',
     grow: 1,
