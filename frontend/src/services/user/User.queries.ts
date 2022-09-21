@@ -1,6 +1,7 @@
 import {
   createUser,
   deleteUser,
+  getCognitoUsers,
   getProfile,
   getUserById,
   getUsers,
@@ -16,6 +17,7 @@ import { IUser } from '../../pages/users/interfaces/User.interface';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
+import { IInvite } from '../../pages/users/interfaces/Invite.interface';
 
 export const useProfileQuery = (queryOptions?: any) => {
   const { setProfile, setOrganization } = useStore();
@@ -52,6 +54,18 @@ export const useUsersQuery = (
       enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
+};
+
+export const useCognitoUsersQuery = (payload: object) => {
+  const { setInvites } = useStore();
+  return useQuery(['cognito-users', payload], () => getCognitoUsers(payload), {
+    onSuccess: (data: PaginatedEntity<IInvite>) => {
+      setInvites({
+        items: data.items,
+        meta: { ...data.meta },
+      });
+    },
+  });
 };
 
 export const useSelectedUserQuery = (userId: string) => {

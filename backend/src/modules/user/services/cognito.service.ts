@@ -65,7 +65,7 @@ export class CognitoUserService {
     return data.Users;
   }
 
-  async resendInvite(email: string) {
+  async resendInvite(email: string): Promise<void> {
     console.log(email);
     const resendUserInvite = new AdminCreateUserCommand({
       UserPoolId: CognitoConfig.userPoolId,
@@ -77,8 +77,6 @@ export class CognitoUserService {
     const data: AdminCreateUserCommandOutput = await this.cognitoProvider.send(
       resendUserInvite,
     );
-
-    return data.User;
   }
 
   async updateUser(email: string, { name, phone }: UpdateUserDto) {

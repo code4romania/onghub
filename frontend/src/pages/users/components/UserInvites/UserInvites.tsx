@@ -7,7 +7,7 @@ import DataTableFilters from '../../../../components/data-table-filters/DataTabl
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
-import { useUsersQuery } from '../../../../services/user/User.queries';
+import { useCognitoUsersQuery, useUsersQuery } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { IUser } from '../../interfaces/User.interface';
 import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
@@ -23,33 +23,39 @@ const UserList = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
+  const [AttributesToGet, setAttributesToGet] = useState<string[]>();
+  const [Filter, setFilter] = useState<string>();
 
-  const { users } = useUser();
+  const { users, invites } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
 
-  const { isLoading, error, refetch } = useUsersQuery(
-    rowsPerPage as number,
-    page as number,
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-    searchWord as string,
-    undefined,
-    range,
-  );
+  // const { isLoading, error, refetch } = useUsersQuery(
+  //   rowsPerPage as number,
+  //   page as number,
+  //   orderByColumn as string,
+  //   orderDirection as OrderDirection,
+  //   searchWord as string,
+  //   undefined,
+  //   range,
+  // );
+  const { isLoading, error, refetch } = useCognitoUsersQuery({
+    AttributesToGet: ['name', 'email', 'phone_number'],
+    Filter: 'cognito:user_status = "FORCE_CHANGE_PASSWORD"',
+  });
 
   useEffect(() => {
-    if (users?.meta) {
-      setPage(users.meta.currentPage);
-      setRowsPerPage(users.meta.itemsPerPage);
-      setOrderByColumn(users.meta.orderByColumn);
-      setOrderDirection(users.meta.orderDirection);
+    if (invites?.meta) {
+      setPage(invites.meta.currentPage);
+      setRowsPerPage(invites.meta.itemsPerPage);
+      setOrderByColumn(invites.meta.orderByColumn);
+      setOrderDirection(invites.meta.orderDirection);
     }
   }, []);
 
-  useEffect(() => {
-    if (error) useErrorToast(t('list.load_error'));
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) useErrorToast(t('list.load_error'));
+  // }, [error]);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const pendingUserMenuItems = [
@@ -134,10 +140,10 @@ const UserList = () => {
         <div className="pb-5 px-10">
           <DataTableComponent
             columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
-            data={users.items}
+            data={invites.items}
             loading={isLoading}
             sortServer
-            paginationPerPage={users.meta.itemsPerPage}
+            paginationPerPage={invites.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             onSort={onSort}
           />

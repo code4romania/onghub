@@ -39,6 +39,8 @@ import {
 import { applicationsSlice } from './application/Application.slice';
 import { applicationRequestsSlice } from './request/ApplicationRequests';
 import { ongApplicationSlice } from './application/OngApplication.slice';
+import { IInvite } from '../pages/users/interfaces/Invite.interface';
+import { invitesSlice } from './user/Invites.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -81,6 +83,11 @@ interface UserState {
   setUsers: (users: PaginatedEntity<IUser>) => void;
 }
 
+interface InviteState {
+  invites: PaginatedEntity<IInvite>;
+  setInvites: (invites: PaginatedEntity<IInvite>) => void;
+}
+
 interface OrganizationRequestState {
   organizationRequests: PaginatedEntity<IOrganizationRequest>;
   setOrganizationRequests: (organizationRequests: PaginatedEntity<IOrganizationRequest>) => void;
@@ -119,7 +126,8 @@ const useStore = create<
     OrganizationRequestState &
     ApplicationRequestState &
     ApplicationState &
-    OngApplicationState
+    OngApplicationState &
+    InviteState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -135,6 +143,7 @@ const useStore = create<
   ...ongApplicationSlice(set),
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
+  ...invitesSlice(set),
 }));
 
 export default useStore;

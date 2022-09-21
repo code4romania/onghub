@@ -26,6 +26,14 @@ export const removeUserById = async (id: number): Promise<any> => {
   return API.delete(`/user/${id}`).then((res) => res.data);
 };
 
+export const resendInvite = async (email: string): Promise<any> => {
+  return API.post(`/user/resend-invite`, email).then((res) => res.data);
+};
+
+export const getCognitoUsers = async (payload: object): Promise<any> => {
+  return API.get(`/user/cognito-users`, payload).then((res) => res.data);
+};
+
 export const getUsers = async (
   limit: number,
   page: number,
