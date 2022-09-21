@@ -32,6 +32,8 @@ import { Application } from '../entities/application.entity';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../services/application.service';
 import { ApplicationStatus } from '../enums/application-status.enum';
+import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -90,6 +92,19 @@ export class ApplicationController {
     return this.applicationService.update(id, {
       status: ApplicationStatus.DISABLED,
     });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/organization')
+  findOrganizationsByApplicationId(
+    @Param('id') id: number,
+    @Query() filters: ApplicationOrganizationFilterDto,
+  ): Promise<Pagination<ApplicationOngView>> {
+    return this.applicationService.findOrganizationsByApplicationId(
+      id,
+      filters,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
