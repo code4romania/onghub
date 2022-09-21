@@ -27,31 +27,26 @@ import { Role } from '../../user/enums/role.enum';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
-import { ApplicationView } from '../entities/application-view.entity';
+import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
-import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
-import { ApplicationRequestService } from '../services/application-request.service';
 import { ApplicationService } from '../services/application.service';
-import { ApplicationOngView } from '../entities/application-ong-view.entity';
-import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+  constructor(private readonly applicationService: ApplicationService) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
   getAll(
     @Query() filters: ApplicationFilterDto,
-  ): Promise<Pagination<ApplicationView>> {
+  ): Promise<Pagination<ApplicationTableView>> {
     return this.applicationService.findAll(filters);
   }
 
@@ -81,14 +76,22 @@ export class ApplicationController {
     return this.applicationService.update(id, updateApplicationDto, logo);
   }
 
-  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
-  @Get(':id')
-  findOne(
-    @Param('id') id: number,
-    @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatusDetails> {
-    return this.applicationService.findOne(user.organizationId, id);
+  @Patch(':id/activate')
+  activate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.ACTIVE,
+    });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/deactivate')
+  deactivate(@Param('id') id: number) {
+    return this.applicationService.update(id, {
+      status: ApplicationStatus.DISABLED,
+    });
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -104,17 +107,14 @@ export class ApplicationController {
     );
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
-  @Post(':id/request')
-  createApplicationRequest(
-    @Param('id') applicationId: number,
+  @Get(':id')
+  findOne(
+    @Param('id') id: number,
     @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.create(
-      user.organizationId,
-      applicationId,
-    );
+  ): Promise<ApplicationWithOngStatusDetails> {
+    return this.applicationService.findOne(user.organizationId, id);
   }
 
   @Roles(Role.SUPER_ADMIN)

@@ -11,8 +11,9 @@ import DataTableComponent from '../../../components/data-table/DataTableComponen
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import {
+  useActivateApplication,
   useApplicationsQuery,
-  useUpdateApplicationMutation,
+  useDectivateApplication,
 } from '../../../services/application/Application.queries';
 import {
   Application,
@@ -47,10 +48,16 @@ const ApplicationListTable = () => {
   );
 
   const {
-    mutateAsync: updateApplication,
-    error: updateApplicationError,
-    isLoading: updateApplicationLoading,
-  } = useUpdateApplicationMutation();
+    mutateAsync: activateApplication,
+    error: activateApplicationError,
+    isLoading: activateApplicationLoading,
+  } = useActivateApplication();
+
+  const {
+    mutateAsync: deactivateApplication,
+    error: deactivateApplicationError,
+    isLoading: deactivateApplicationLoading,
+  } = useDectivateApplication();
 
   const { applications } = useApplications();
 
@@ -68,10 +75,10 @@ const ApplicationListTable = () => {
       useErrorToast(t('list.load_error'));
     }
 
-    if (updateApplicationError) {
+    if (activateApplicationError || deactivateApplicationError) {
       useErrorToast(t('list.access_error'));
     }
-  }, [error, updateApplicationError]);
+  }, [error, deactivateApplicationError, activateApplicationError]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
@@ -153,23 +160,19 @@ const ApplicationListTable = () => {
   };
 
   const onActivateApplication = (row: Application) => {
-    update(row.id.toString(), ApplicationStatus.ACTIVE);
+    activateApplication(
+      { applicationId: row.id.toString() },
+      {
+        onSuccess: () => refetch(),
+      },
+    );
   };
 
   const onRestrictApplication = (row: Application) => {
-    update(row.id.toString(), ApplicationStatus.DISABLED);
-  };
-
-  const update = async (applicationId: string, status: ApplicationStatus) => {
-    await updateApplication(
+    deactivateApplication(
+      { applicationId: row.id.toString() },
       {
-        applicationId,
-        applicationUpdatePayload: { status },
-      },
-      {
-        onSuccess: () => {
-          refetch();
-        },
+        onSuccess: () => refetch(),
       },
     );
   };
@@ -220,7 +223,7 @@ const ApplicationListTable = () => {
           <DataTableComponent
             columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
             data={applications.items}
-            loading={isLoading || updateApplicationLoading}
+            loading={isLoading || activateApplicationLoading || deactivateApplicationLoading}
             pagination
             sortServer
             paginationPerPage={applications.meta.itemsPerPage}

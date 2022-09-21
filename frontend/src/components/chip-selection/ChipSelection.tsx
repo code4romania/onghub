@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CheckIcon from '@heroicons/react/solid/CheckIcon';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { ChipItem } from '../../common/interfaces/chip-item.interface';
+import ProgressSteps from '../../pages/create-organziation/components/ProgressSteps';
 
 interface ChipSelectionProps {
   title: string;
@@ -11,6 +12,7 @@ interface ChipSelectionProps {
   error?: string;
   defaultItems: number[];
   onItemsChange: (items: number[]) => void;
+  id?: string;
 }
 
 interface ChipProps {
@@ -18,9 +20,10 @@ interface ChipProps {
   selected?: boolean;
   readonly?: boolean;
   onClick: (itemId: number) => void;
+  id?: string;
 }
 
-export const Chip = ({ item, selected, readonly, onClick }: ChipProps) => {
+export const Chip = ({ item, selected, readonly, onClick, id }: ChipProps) => {
   return (
     <span
       className={classNames(
@@ -28,6 +31,7 @@ export const Chip = ({ item, selected, readonly, onClick }: ChipProps) => {
         'h-9 inline-flex items-center px-5 py-2.5 rounded-full  text-sm  text-gray-800 cursor-pointer',
       )}
       onClick={() => !readonly && onClick(item.id)}
+      id={`${id}__input-${item.name}`}
     >
       {item.name}
       {selected && <CheckIcon className="w-5 h-5 ml-2.5 text-green" />}
@@ -43,6 +47,7 @@ const ChipSelection = ({
   values,
   error,
   readonly,
+  id,
 }: ChipSelectionProps) => {
   const [selectedItems, setSelectedItems] = useState<number[]>(defaultItems);
 
@@ -70,9 +75,10 @@ const ChipSelection = ({
   return (
     <div>
       <div className="form-item-label">{title}</div>
-      <div className="py-2 flex gap-x-2 gap-y-2 flex-wrap">
+      <div id={`${id}__input`} className="py-2 flex gap-x-2 gap-y-2 flex-wrap">
         {values.map((item) => (
           <Chip
+            id={id}
             key={item.id}
             item={item}
             readonly={readonly}

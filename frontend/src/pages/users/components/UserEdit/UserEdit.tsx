@@ -62,7 +62,7 @@ const UserEdit = () => {
     const applicationAccess = Object.getOwnPropertyNames(access)
       .filter((applicationId) => access[applicationId])
       .map((applicationId) => ({
-        applicationId: applicationId,
+        ongApplicationId: applicationId,
         status: UserOngApplicationStatus.ACTIVE,
       }));
 
@@ -162,10 +162,14 @@ const UserEdit = () => {
         {isLoadingApplications ? (
           <Loading />
         ) : (
-          <ApplicationAccessManagement
-            applications={applications || []}
-            onAccessChange={setAccess}
-          />
+          <>
+            {applications && applications.length > 0 && (
+              <ApplicationAccessManagement
+                applications={applications || []}
+                onAccessChange={setAccess}
+              />
+            )}
+          </>
         )}
       </div>
     </ContentWrapper>

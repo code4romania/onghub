@@ -10,6 +10,6 @@ export interface ApplicationAccess {
 }
 
 export interface Access {
-  applicationId: number;
+  ongApplicationId: number;
   status: UserOngApplicationStatus;
 }

@@ -67,6 +67,9 @@ class EnvironmentVariables {
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
   AWS_S3_BUCKET_NAME: string;
+
+  @IsString()
+  MAIL_FROM: string;
 }
 
 export function validate(config: Record<string, unknown>) {

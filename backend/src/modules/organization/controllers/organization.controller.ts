@@ -33,8 +33,6 @@ import { Role } from '../../user/enums/role.enum';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationView } from '../entities/organization.view-entity';
-import { ApplicationService } from '../../application/services/application.service';
-import { OngApplicationService } from '../../application/services/ong-application.service';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
@@ -48,8 +46,6 @@ import { CreateOrganizationRequestDto } from '../dto/create-organization-request
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
-    private readonly applicationService: ApplicationService,
-    private readonly ongApplicationService: OngApplicationService,
     private readonly organizationRequestService: OrganizationRequestService,
   ) {}
 

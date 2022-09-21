@@ -53,7 +53,7 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 
 // Application
 export const createApplicationRequest = (applicationId: number): Promise<Request> => {
-  return API.post(`/application/${applicationId}/request`).then(
+  return API.post(`organization/application/${applicationId}/request`).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
