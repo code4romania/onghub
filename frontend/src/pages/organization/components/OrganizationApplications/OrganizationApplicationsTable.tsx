@@ -1,8 +1,12 @@
+import { BanIcon, RefreshIcon } from '@heroicons/react/outline';
+import { TrashIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
+import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
 import { ApplicationWithOngStatus } from '../../../../services/application/interfaces/Application.interface';
 import { useOrganizationApplicationsQuery } from '../../../../services/organization/Organization.queries';
@@ -11,7 +15,8 @@ import {
   ApplicationTypeCollection,
   ApplicationTypeEnum,
 } from '../../../apps-store/constants/ApplicationType.enum';
-import { OrganizationApplicationsTableHeaders } from './OrganizationApplicationsTable.headers';
+import { OngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import { OrganizationApplicationsTableHeaders } from './table-headers/OrganizationApplicationsTable.headers';
 
 const OrganizationApplicationsTable = ({ organizationId }: { organizationId: string }) => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
@@ -44,6 +49,60 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       useErrorToast(t('error.get_applications'));
     }
   }, [applicationsError]);
+
+  const buildApplicationActionColumn = (): TableColumn<ApplicationWithOngStatus> => {
+    const restrictedApplicationMenu = [
+      {
+        name: 'Reda accesul',
+        icon: RefreshIcon,
+        onClick: onActivateApplication,
+        type: PopoverMenuRowType.INFO,
+      },
+      {
+        name: 'Elimina definitiv',
+        icon: TrashIcon,
+        onClick: onRemoveApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    const activeApplicationMenu = [
+      {
+        name: 'Restrictioneaza temporar',
+        icon: BanIcon,
+        onClick: onRestrictApplicatoin,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    return {
+      name: '',
+      cell: (row: ApplicationWithOngStatus) => (
+        <PopoverMenu
+          row={row}
+          menuItems={
+            row.status === OngApplicationStatus.ACTIVE
+              ? activeApplicationMenu
+              : restrictedApplicationMenu
+          }
+        />
+      ),
+      width: '50px',
+      allowOverflow: true,
+    };
+  };
+
+  const onActivateApplication = (row: ApplicationWithOngStatus) => {
+    console.log('to be implemented');
+  };
+
+  const onRemoveApplication = (row: ApplicationWithOngStatus) => {
+    console.log('to be implemented');
+  };
+
+  const onRestrictApplicatoin = (row: ApplicationWithOngStatus) => {
+    console.log('to be implemented');
+  };
 
   const onSearch = (searchWord: string) => {
     setSearchWord(searchWord);
@@ -86,7 +145,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
-            columns={OrganizationApplicationsTableHeaders}
+            columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
             data={applications}
             loading={isApplicationsLoading}
           />

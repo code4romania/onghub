@@ -1,14 +1,14 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import i18n from '../../../../common/config/i18n';
-import { formatDate } from '../../../../common/helpers/format.helper';
-import NameWithLogo from '../../../../components/name-with-logo/NameWithLogo';
-import StatusBadge from '../../../../components/status-badge/StatusBadge';
-import { ApplicationWithOngStatus } from '../../../../services/application/interfaces/Application.interface';
+import i18n from '../../../../../common/config/i18n';
+import { formatDate } from '../../../../../common/helpers/format.helper';
+import NameWithLogo from '../../../../../components/name-with-logo/NameWithLogo';
+import StatusBadge from '../../../../../components/status-badge/StatusBadge';
+import { ApplicationWithOngStatus } from '../../../../../services/application/interfaces/Application.interface';
 import {
   OngApplicationStatusBadgeMapper,
   ONG_APPLICATION_STATUS,
-} from '../../../apps-store/constants/ApplicationStatus.constant';
+} from '../../../../apps-store/constants/ApplicationStatus.constant';
 
 const translations = {
   name: i18n.t('appstore:header.name'),

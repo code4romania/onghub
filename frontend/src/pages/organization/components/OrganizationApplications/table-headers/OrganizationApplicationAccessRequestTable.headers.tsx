@@ -1,9 +1,9 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import i18n from '../../../../common/config/i18n';
-import { formatDate } from '../../../../common/helpers/format.helper';
-import NameWithLogo from '../../../../components/name-with-logo/NameWithLogo';
-import { OrganizationApplicationRequest } from '../../../../services/application/interfaces/Application.interface';
+import i18n from '../../../../../common/config/i18n';
+import { formatDate } from '../../../../../common/helpers/format.helper';
+import NameWithLogo from '../../../../../components/name-with-logo/NameWithLogo';
+import { OrganizationApplicationRequest } from '../../../../../services/application/interfaces/Application.interface';
 
 const translations = {
   name: i18n.t('appstore:header.name'),
