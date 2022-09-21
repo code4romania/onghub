@@ -10,4 +10,5 @@ export interface TextAreaConfig {
   defaultValue?: string;
   error?: string | any;
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+  id?: string;
 }

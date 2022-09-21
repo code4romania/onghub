@@ -108,6 +108,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.name.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-name',
                       }}
                       readonly={readonly}
                     />
@@ -128,6 +129,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.alias.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-alias',
                       }}
                       readonly={readonly}
                     />
@@ -139,6 +141,7 @@ const CreateOrganizationGeneral = () => {
                 readonly={readonly}
                 errors={errors[OrganizationGeneralConfig.type.key]}
                 config={OrganizationGeneralConfig.type}
+                id="create-organization-general__type"
               />
               <Controller
                 key={OrganizationGeneralConfig.email.key}
@@ -154,6 +157,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.email.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-email',
                       }}
                       readonly={readonly}
                     />
@@ -174,6 +178,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.phone.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-phone',
                       }}
                       readonly={readonly}
                     />
@@ -189,6 +194,7 @@ const CreateOrganizationGeneral = () => {
                   return (
                     <Select
                       config={{
+                        id: 'create-organization-general__year-created',
                         ...OrganizationGeneralConfig.yearCreated.config,
                       }}
                       selected={value}
@@ -212,6 +218,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.cui.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-cui',
                       }}
                       readonly={readonly}
                     />
@@ -232,6 +239,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-raf',
                       }}
                       readonly={readonly}
                     />
@@ -248,6 +256,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general__county',
                           ...OrganizationGeneralConfig.county.config,
                           collection: counties,
                           displayedAttribute: 'name',
@@ -272,6 +281,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general__city',
                           ...OrganizationGeneralConfig.city.config,
                           collection: cities || [],
                           displayedAttribute: 'name',
@@ -299,6 +309,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__short-description',
                       }}
                       readonly={readonly}
                     />
@@ -319,6 +330,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.description.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__description',
                       }}
                       readonly={readonly}
                     />
@@ -348,7 +360,7 @@ const CreateOrganizationGeneral = () => {
                   {!readonly && (
                     <>
                       <label
-                        htmlFor="uploadPhoto"
+                        htmlFor="create-organization-general__logo-upload"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
                         {t('logo.upload')}
@@ -356,7 +368,7 @@ const CreateOrganizationGeneral = () => {
                       <input
                         className="h-0 w-0"
                         name="uploadPhoto"
-                        id="uploadPhoto"
+                        id="create-organization-general__logo-upload"
                         type="file"
                         accept="image/png, image/jpeg, image/svg"
                         onChange={onChangeFile}
@@ -384,6 +396,7 @@ const CreateOrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
+                id="create-organization-general"
               />
             </div>
             <div className="pt-8">
@@ -406,6 +419,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.website.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__website',
                         }}
                         readonly={readonly}
                       />
@@ -426,6 +440,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.facebook.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__facebook',
                         }}
                         readonly={readonly}
                       />
@@ -446,6 +461,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.instagram.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__instagram',
                         }}
                         readonly={readonly}
                       />
@@ -466,6 +482,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.twitter.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__twitter',
                         }}
                         readonly={readonly}
                       />
@@ -486,6 +503,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.linkedin.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__linkedin',
                         }}
                         readonly={readonly}
                       />
@@ -506,6 +524,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.tiktok.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__tiktok',
                         }}
                         readonly={readonly}
                       />
@@ -534,6 +553,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.donationWebsite.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__donation-website',
                         }}
                         readonly={readonly}
                       />
@@ -554,6 +574,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.redirectLink.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__redirect-link',
                         }}
                         readonly={readonly}
                       />
@@ -575,6 +596,7 @@ const CreateOrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationSMS.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'create-organization-general__donation-sms',
                           }}
                           readonly={readonly}
                         />
@@ -595,6 +617,7 @@ const CreateOrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationKeyword.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'create-organization-general__donation-keyword',
                           }}
                           readonly={readonly}
                         />
@@ -608,6 +631,7 @@ const CreateOrganizationGeneral = () => {
         </div>
         <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
           <button
+            id="create-organization-general__button-next"
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
@@ -615,6 +639,7 @@ const CreateOrganizationGeneral = () => {
             {t('next', { ns: 'common' })}
           </button>
           <button
+            id="create-organization-general__button-back"
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}

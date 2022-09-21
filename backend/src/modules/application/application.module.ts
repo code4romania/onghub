@@ -12,10 +12,21 @@ import { ApplicationRequest } from './entities/application-request.entity';
 import { ApplicationRequestRepository } from './repositories/application-request.repository';
 import { ApplicationRequestService } from './services/application-request.service';
 import { ApplicationRequestController } from './controllers/application-request.controller';
+import { UserOngApplication } from './entities/user-ong-application.entity';
+import { UserOngApplicationRepository } from './repositories/user-ong-application.repository';
+import { UserOngApplicationService } from './services/user-ong-application.service';
+import { ApplicationTableView } from './entities/application-table-view.entity';
+import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Application, OngApplication, ApplicationRequest]),
+    TypeOrmModule.forFeature([
+      Application,
+      OngApplication,
+      ApplicationRequest,
+      UserOngApplication,
+      ApplicationTableView,
+    ]),
     SharedModule,
   ],
   controllers: [ApplicationRequestController, ApplicationController],
@@ -26,7 +37,15 @@ import { ApplicationRequestController } from './controllers/application-request.
     OngApplicationService,
     ApplicationRequestRepository,
     ApplicationRequestService,
+    UserOngApplicationRepository,
+    UserOngApplicationService,
+    ApplicationTableViewRepository,
   ],
-  exports: [OngApplicationService, ApplicationService],
+  exports: [
+    OngApplicationService,
+    ApplicationService,
+    UserOngApplicationService,
+    ApplicationRequestService,
+  ],
 })
 export class ApplicationModule {}

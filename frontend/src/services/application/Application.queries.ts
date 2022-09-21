@@ -4,9 +4,13 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import useStore from '../../store/store';
 import {
+  activateApplication,
   createApplication,
+  deactivateApplication,
   getApplicationById,
   getApplications,
+  getApplicationsForCreateUser,
+  getApplicationsForEditUser,
   getMyOngApplications,
   getOngApplications,
   updateApplication,
@@ -16,6 +20,7 @@ import {
   Application,
   ApplicationStatus,
   ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
 } from './interfaces/Application.interface';
 
 export const useCreateApplicationMutation = () => {
@@ -50,7 +55,7 @@ export const useApplicationsQuery = (
 export const useOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['ongApplications'], () => getOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });
@@ -60,7 +65,7 @@ export const useOngApplicationsQuery = () => {
 export const useMyOngApplicationsQuery = () => {
   const { setOngApplications } = useStore();
   return useQuery(['myOngApplications'], () => getMyOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus) => {
+    onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
   });
@@ -71,9 +76,19 @@ export const useApplicationQuery = (applicationId: string) => {
   const { setSelectedApplication } = useStore();
   return useQuery(['application', applicationId], () => getApplicationById(applicationId), {
     enabled: !!applicationId,
-    onSuccess: (data: Application) => {
+    onSuccess: (data: ApplicationWithOngStatusDetails) => {
       setSelectedApplication(data);
     },
+  });
+};
+
+export const userApplicationsForCreateUser = () => {
+  return useQuery(['application'], () => getApplicationsForCreateUser());
+};
+
+export const useApplicationsForEditUserQuery = (userId: string) => {
+  return useQuery(['application', userId], () => getApplicationsForEditUser(userId), {
+    enabled: !!userId,
   });
 };
 
@@ -86,7 +101,19 @@ export const useUpdateApplicationMutation = () => {
     }: {
       applicationId: string;
       applicationUpdatePayload: Partial<CreateApplicationDto>;
-      logo: File;
+      logo?: File;
     }) => updateApplication(applicationId, applicationUpdatePayload, logo),
+  );
+};
+
+export const useActivateApplication = () => {
+  return useMutation(({ applicationId }: { applicationId: string }) =>
+    activateApplication(applicationId),
+  );
+};
+
+export const useDectivateApplication = () => {
+  return useMutation(({ applicationId }: { applicationId: string }) =>
+    deactivateApplication(applicationId),
   );
 };

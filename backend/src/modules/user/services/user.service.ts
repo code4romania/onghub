@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import { FindManyOptions, FindOneOptions, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -20,6 +20,8 @@ import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
+import { Access } from 'src/modules/application/interfaces/application-access.interface';
 
 @Injectable()
 export class UserService {
@@ -28,6 +30,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
+    private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
 
   // ****************************************************
@@ -42,10 +45,25 @@ export class UserService {
   }
 
   public async createEmployee(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
+    const { applicationAccess, ...userData } = createUserDto;
+
+    // 1. create user and send invite
+    const user = await this.create({
+      ...userData,
       role: Role.EMPLOYEE,
     });
+
+    if (applicationAccess?.length === 0) {
+      return user;
+    }
+
+    await this.assignApplications(
+      applicationAccess,
+      user.id,
+      userData.organizationId,
+    );
+
+    return user;
   }
 
   public async getById(
@@ -71,20 +89,42 @@ export class UserService {
     return this.userRepository.get(options);
   }
 
+  public async findMany(options: FindManyOptions): Promise<User[]> {
+    return this.userRepository.getMany(options);
+  }
+
   public async updateById(
     id: number,
     payload: UpdateUserDto,
     organizationId?: number,
   ): Promise<User> {
     try {
-      // 1. Chekc if the user exists
+      const { applicationAccess, ...userData } = payload;
+
+      // 1. Check if the user exists
       const user = await this.getById(id, organizationId);
 
       // 2. Update cognito user data
-      await this.cognitoService.updateUser(user.email, payload);
+      await this.cognitoService.updateUser(user.email, {
+        phone: user.phone,
+        name: user.name,
+        ...userData,
+      });
 
-      // 3. Update db user data
-      return this.update(id, payload);
+      // 3. Remove current user applications
+      await this.userOngApplicationService.remove({ userId: id });
+
+      if (applicationAccess?.length > 0) {
+        // 4. assign applications
+        await this.assignApplications(
+          applicationAccess,
+          user.id,
+          user.organizationId,
+        );
+      }
+
+      // 5. Update db user data
+      return this.update(id, userData);
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -94,6 +134,13 @@ export class UserService {
       const err = error?.response;
       switch (err?.errorCode) {
         // 1. USR_007: User not found or doesn't have an organizationId
+        case USER_ERRORS.GET.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.GET,
+            error: err,
+          });
+        }
+        // 2. USR_007: User not found or doesn't have an organizationId
         case USER_ERRORS.GET.errorCode: {
           throw new BadRequestException({
             ...USER_ERRORS.GET,
@@ -255,8 +302,8 @@ export class UserService {
             error: err,
           });
         }
-        // 2. USR_008: There is already a user with the same email address
-        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+        // 2. USR_011: Error on assigning applications
+        case USER_ERRORS.ACCESS.errorCode: {
           throw error;
         }
         // 3. USR_001: Something unexpected happened
@@ -267,6 +314,36 @@ export class UserService {
           });
         }
       }
+    }
+  }
+
+  private async assignApplications(
+    applicationAccess: Access[],
+    userId: number,
+    organizationId: number,
+  ) {
+    // 2. grant access to applications
+    try {
+      const valuesToInsert = applicationAccess.map(
+        ({ ongApplicationId, status }) => ({
+          ongApplicationId,
+          organizationId,
+          userId,
+          status,
+        }),
+      );
+
+      await this.userOngApplicationService.createMany(valuesToInsert);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.ACCESS,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...USER_ERRORS.ACCESS,
+        error: err,
+      });
     }
   }
 }

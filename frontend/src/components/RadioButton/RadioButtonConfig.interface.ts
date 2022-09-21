@@ -5,4 +5,5 @@ export interface RadioButtonConfig {
   name: string;
   value: any;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  id?: string;
 }

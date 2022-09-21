@@ -37,7 +37,7 @@ const ApplicationDetails = () => {
   // Actions
   const requestApplication = async () => {
     if (application) {
-      await mutateCreateApplicationRequest({ applicationId: application?.id });
+      await mutateCreateApplicationRequest(application?.id);
       useSuccessToast(t('details.request_successful'));
       refecthApplication();
     }
@@ -92,7 +92,7 @@ const ApplicationDetails = () => {
           ))}
         </div>
 
-        {role === UserRole.ADMIN && (
+        {role !== UserRole.SUPER_ADMIN && (
           <div>
             {/* The application is not added */}
             {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
@@ -119,7 +119,8 @@ const ApplicationDetails = () => {
             )}
             {/* The application is not independent and active */}
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              application?.status === OngApplicationStatus.ACTIVE && (
+              application?.status === OngApplicationStatus.ACTIVE &&
+              role !== UserRole.EMPLOYEE && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
                     className="edit-button pl-8 pr-8 flex gap-4"
@@ -145,13 +146,14 @@ const ApplicationDetails = () => {
         )}
       </div>
       <div className="flex flex-col gap-4 w-full h-full">
-        {role === UserRole.ADMIN && (
+        {role !== UserRole.SUPER_ADMIN && (
           <React.Fragment>
             {(application?.status === OngApplicationStatus.ACTIVE ||
-              application?.type === ApplicationTypeEnum.INDEPENDENT) && (
+              (application?.type === ApplicationTypeEnum.INDEPENDENT &&
+                application.status !== OngApplicationStatus.DISABLED)) && (
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
-                  <CheckCircleIcon className="text-green w-6 w-6" />
+                  <CheckCircleIcon className="text-green w-6" />
                   <span className="font-titilliumBold text-xl text-gray-800">
                     {t('details.active')}
                   </span>
