@@ -40,6 +40,8 @@ const UserList = () => {
 
   useEffect(() => {
     if (users?.meta) {
+      setPage(users.meta.currentPage);
+      setRowsPerPage(users.meta.itemsPerPage);
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
     }
