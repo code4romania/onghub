@@ -15,6 +15,8 @@ import { ApplicationRequestController } from './controllers/application-request.
 import { UserOngApplication } from './entities/user-ong-application.entity';
 import { UserOngApplicationRepository } from './repositories/user-ong-application.repository';
 import { UserOngApplicationService } from './services/user-ong-application.service';
+import { ApplicationOngView } from './entities/application-ong-view.entity';
+import { ApplicationOngViewRepository } from './repositories/application-ong-view.repository';
 import { ApplicationTableView } from './entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
 
@@ -26,6 +28,7 @@ import { ApplicationTableViewRepository } from './repositories/application-table
       ApplicationRequest,
       UserOngApplication,
       ApplicationTableView,
+      ApplicationOngView,
     ]),
     SharedModule,
   ],
@@ -40,6 +43,7 @@ import { ApplicationTableViewRepository } from './repositories/application-table
     UserOngApplicationRepository,
     UserOngApplicationService,
     ApplicationTableViewRepository,
+    ApplicationOngViewRepository,
   ],
   exports: [
     OngApplicationService,

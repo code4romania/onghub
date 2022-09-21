@@ -32,6 +32,7 @@ import { organizationRequestsSlice } from './request/OrganizationRequests';
 import { organizationsSlice } from './organization/organizations.slice';
 import {
   Application,
+  ApplicationOrganization,
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../services/application/interfaces/Application.interface';
@@ -96,6 +97,10 @@ interface ApplicationState {
   setApplications: (applications: PaginatedEntity<Application>) => void;
   selectedApplication: ApplicationWithOngStatusDetails | null;
   setSelectedApplication: (application: ApplicationWithOngStatusDetails) => void;
+  applicationOrganizations: PaginatedEntity<ApplicationOrganization>;
+  setApplicationOrganizations: (
+    applicationOrganizations: PaginatedEntity<ApplicationOrganization>,
+  ) => void;
 }
 
 // Admin
