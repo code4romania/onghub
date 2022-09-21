@@ -38,6 +38,8 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
+import { ApplicationService } from 'src/modules/application/services/application.service';
+import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -47,6 +49,7 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
+    private readonly applicationService: ApplicationService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -105,11 +108,21 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @Get(':id/applications')
+  findOrganizationApplications(
+    @Param('id') id: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findApplicationsForOng(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findWithRelations(+id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
   @Patch(':id')
   update(
@@ -124,6 +137,7 @@ export class OrganizationController {
    * *******UPLOADS*****
    * ******************
    */
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -150,6 +164,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
   @ApiBody({
@@ -170,6 +185,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
   @ApiBody({
@@ -190,6 +206,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @ApiParam({ name: 'partnerId', type: String })
   @Delete(':id/partners/:partnerId')
@@ -200,6 +217,7 @@ export class OrganizationController {
     return this.organizationService.deletePartner(+id, +partnerId);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @ApiParam({ name: 'investorId', type: String })
   @Delete(':id/investors/:investorId')

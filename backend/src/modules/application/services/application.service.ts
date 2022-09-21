@@ -415,7 +415,7 @@ export class ApplicationService {
    *
    *  Metoda descrie lista de applicatii a unei organizatii
    */
-  private async findApplicationsForOng(
+  public async findApplicationsForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
     const applications = await this.applicationRepository
