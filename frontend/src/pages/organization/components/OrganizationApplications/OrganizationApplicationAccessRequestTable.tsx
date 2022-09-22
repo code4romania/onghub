@@ -1,22 +1,37 @@
 import { ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import { OrganizationApplicationRequest } from '../../../../services/application/interfaces/Application.interface';
 import { useOrganizationApplicationRequestsQuery } from '../../../../services/organization/Organization.queries';
+import {
+  useApproveApplicationRequestMutation,
+  useRejectApplicationRequestMutation,
+} from '../../../../services/request/Request.queries';
 import { OrganizationApplicationRequestsTableHeaders } from './table-headers/OrganizationApplicationAccessRequestTable.headers';
 
 const OrganizationApplicationRequestsTable = ({ organizationId }: { organizationId: string }) => {
+  const [rejectionCandidate, setRejectionCandidate] = useState<number | null>(null);
   const { t } = useTranslation(['applications', 'common']);
 
+  // query
   const {
     data: organizationApplicationRequests,
     isLoading: isApplicationRequestsLoading,
     error: applicationRequestsError,
+    refetch: reloadRequests,
   } = useOrganizationApplicationRequestsQuery(organizationId);
+
+  // mutation
+  const { mutateAsync: approve, isLoading: isApprovingRequest } =
+    useApproveApplicationRequestMutation();
+
+  const { mutateAsync: reject, isLoading: isRejectingRequest } =
+    useRejectApplicationRequestMutation();
 
   useEffect(() => {
     if (applicationRequestsError) {
@@ -27,13 +42,13 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
   const buildApplicationRequestActionColumn = (): TableColumn<OrganizationApplicationRequest> => {
     const applicationRequestOptions = [
       {
-        name: 'Aproba',
+        name: t('options.approve_request'),
         icon: ShieldCheckIcon,
         onClick: onApprove,
         type: PopoverMenuRowType.SUCCESS,
       },
       {
-        name: 'Respinge',
+        name: t('options.reject_request'),
         icon: XIcon,
         onClick: onReject,
         type: PopoverMenuRowType.REMOVE,
@@ -51,11 +66,24 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
   };
 
   const onApprove = (row: OrganizationApplicationRequest) => {
-    console.log('not implemented');
+    approve(row.id.toString(), {
+      onSuccess: () => reloadRequests(),
+      onError: () => useErrorToast(t('error.approve_request')),
+    });
   };
 
   const onReject = (row: OrganizationApplicationRequest) => {
-    console.log('not implemented');
+    setRejectionCandidate(row.id);
+  };
+
+  const onConfirmReject = () => {
+    if (rejectionCandidate !== null) {
+      reject(rejectionCandidate.toString(), {
+        onSuccess: () => reloadRequests(),
+        onError: () => useErrorToast(t('error.reject_request')),
+        onSettled: () => setRejectionCandidate(null),
+      });
+    }
   };
 
   return (
@@ -70,9 +98,19 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
             buildApplicationRequestActionColumn(),
           ]}
           data={organizationApplicationRequests || []}
-          loading={isApplicationRequestsLoading}
+          loading={isApplicationRequestsLoading || isRejectingRequest || isApprovingRequest}
         />
       </div>
+      {rejectionCandidate && (
+        <ConfirmationModal
+          title={t('reject_request_modal.title')}
+          description={t('reject_request_modal.description')}
+          closeBtnLabel={t('common:back')}
+          confirmBtnLabel={t('common:delete')}
+          onClose={setRejectionCandidate.bind(null, null)}
+          onConfirm={onConfirmReject}
+        />
+      )}
     </div>
   );
 };
