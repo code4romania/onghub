@@ -3,6 +3,7 @@
     "year": "An",
     "status": "Status",
     "updatedOn": "Ultima actualizare",
+    "createdOn": "Data adaugarii",
     "save": "Salveaza modificari",
     "back": "Inapoi",
     "edit": "Editeaza",
@@ -83,11 +84,13 @@
       "federation": "Federatie"
     },
     "tabs": {
+      "overview": "Overview",
       "general": "Date generale",
       "activity": "Activitatea organizatiei",
       "legal": "Informatii legale",
       "financial": "Informatii financiare",
-      "open_data": "Open data"
+      "open_data": "Open data",
+      "my_applications": "Applicatiile mele"
     },
     "save_error": "Organizatia nu s-a putut salva",
     "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.",
@@ -522,6 +525,35 @@
       "report_helper": "Lorem ipsum"
     }
   },
+  "applications": {
+    "active_apps": "Aplicatii in folosinta",
+    "pending_app_requests": "Solicitari applicatii",
+    "app_type": "Tip aplicatie",
+    "error": {
+      "get_applications": "Eroare la incarcarea aplicatiilor",
+      "get_requests": "Eroare la incarcarea requesturilor",
+      "restrict_application": "Eroare la restrictionarea accesului",
+      "restore_application": "Eroare la redarea accesului",
+      "remove_application": "Eroare la stergerea applicatiei",
+      "approve_request": "Eroare la aprobarea requestului",
+      "reject_request": "Eroare la respingerea requestului"
+    },
+    "options": {
+      "restore_access": "Reda accesul",
+      "restrict_access": "Restrictioneaza accesul",
+      "remove_application": "Elimina applicatia",
+      "approve_request": "Aproba",
+      "reject_request": "Respinge"
+    },
+    "remove_app_modal": {
+      "title": "Esti sigur ca doresti stergerea aplicatiei",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+    },
+    "reject_request_modal": {
+      "title": "Esti sigur ca doresti respingerea requestului",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+    }
+  },
   "delete_row": {
     "delete": "Stergeti randul?",
     "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
@@ -669,7 +701,9 @@
     },
     "status": {
       "active": "Activ",
-      "disabled": "Inactiv"
+      "disabled": "Inactiv",
+      "restricted": "Restrictionat",
+      "pending": "In asteptare"
     },
     "header": {
       "name": "Aplicatie",

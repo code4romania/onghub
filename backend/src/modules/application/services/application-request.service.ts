@@ -19,6 +19,8 @@ import {
   APPLICATION_REQUEST_ERRORS,
 } from '../constants/application-error.constants';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
 
 @Injectable()
 export class ApplicationRequestService {
@@ -27,6 +29,7 @@ export class ApplicationRequestService {
     private readonly applicationRequestRepository: ApplicationRequestRepository,
     private readonly applicationRepository: ApplicationRepository,
     private readonly ongApplicationService: OngApplicationService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async create(
@@ -123,6 +126,35 @@ export class ApplicationRequestService {
     return this.applicationRequestRepository.getManyPaginated(
       APPLICATION_REQUEST_FILTERS_CONFIG,
       paginationOptions,
+    );
+  }
+
+  public async findRequestsByOrganizationId(
+    organizationId: number,
+  ): Promise<OrganizationApplicationRequest[]> {
+    const applicationRequests = await this.applicationRequestRepository
+      .getQueryBuilder()
+      .select([
+        'application-request.id as id',
+        'application.logo as logo',
+        'application.name as name',
+        'application-request.created_on as "createdOn"',
+      ])
+      .leftJoin(
+        'application',
+        'application',
+        'application.id = application-request.applicationId',
+      )
+      .where('application-request.organizationId = :organizationId', {
+        organizationId,
+      })
+      .andWhere('application-request.status = :status', {
+        status: RequestStatus.PENDING,
+      })
+      .execute();
+
+    return this.fileManagerService.mapLogoToEntity<OrganizationApplicationRequest>(
+      applicationRequests,
     );
   }
 

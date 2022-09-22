@@ -15,6 +15,9 @@ import {
   getApplicationsForEditUser,
   getMyOngApplications,
   getOngApplications,
+  removeOngApplication,
+  restoreApplication,
+  restrictApplication,
   updateApplication,
 } from './Application.service';
 import { CreateApplicationDto } from './interfaces/Application.dto';
@@ -153,5 +156,26 @@ export const useActivateApplication = () => {
 export const useDectivateApplication = () => {
   return useMutation(({ applicationId }: { applicationId: string }) =>
     deactivateApplication(applicationId),
+  );
+};
+
+export const useRestrictApplicationMutation = () => {
+  return useMutation(
+    ({ applicationId, organizationId }: { applicationId: number; organizationId: string }) =>
+      restrictApplication(applicationId, organizationId),
+  );
+};
+
+export const useRestoreApplicationMutation = () => {
+  return useMutation(
+    ({ applicationId, organizationId }: { applicationId: number; organizationId: string }) =>
+      restoreApplication(applicationId, organizationId),
+  );
+};
+
+export const useRemovOngApplication = () => {
+  return useMutation(
+    ({ applicationId, organizationId }: { applicationId: number; organizationId: string }) =>
+      removeOngApplication(applicationId, organizationId),
   );
 };

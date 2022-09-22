@@ -33,13 +33,15 @@ import { Role } from '../../user/enums/role.enum';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationView } from '../entities/organization.view-entity';
-import { ApplicationService } from '../../application/services/application.service';
-import { OngApplicationService } from '../../application/services/ong-application.service';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
+import { ApplicationService } from 'src/modules/application/services/application.service';
+import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
+import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
+import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -48,9 +50,9 @@ import { CreateOrganizationRequestDto } from '../dto/create-organization-request
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
-    private readonly applicationService: ApplicationService,
-    private readonly ongApplicationService: OngApplicationService,
     private readonly organizationRequestService: OrganizationRequestService,
+    private readonly applicationService: ApplicationService,
+    private readonly applicationRequestService: ApplicationRequestService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -107,12 +109,14 @@ export class OrganizationController {
     return this.organizationRequestService.reject(id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findWithRelations(+id);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
   @Patch(':id')
   update(
@@ -127,6 +131,7 @@ export class OrganizationController {
    * *******UPLOADS*****
    * ******************
    */
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -153,6 +158,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))
   @ApiBody({
@@ -173,6 +179,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'investors', maxCount: 1 }]))
   @ApiBody({
@@ -193,6 +200,7 @@ export class OrganizationController {
     );
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @ApiParam({ name: 'partnerId', type: String })
   @Delete(':id/partners/:partnerId')
@@ -203,6 +211,7 @@ export class OrganizationController {
     return this.organizationService.deletePartner(+id, +partnerId);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @ApiParam({ name: 'investorId', type: String })
   @Delete(':id/investors/:investorId')
