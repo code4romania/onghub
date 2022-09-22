@@ -30,19 +30,19 @@ const UserList = () => {
 
   const { t } = useTranslation(['user', 'common']);
 
-  // const { isLoading, error, refetch } = useUsersQuery(
-  //   rowsPerPage as number,
-  //   page as number,
-  //   orderByColumn as string,
-  //   orderDirection as OrderDirection,
-  //   searchWord as string,
-  //   undefined,
-  //   range,
-  // );
-  const { isLoading, error, refetch } = useCognitoUsersQuery({
-    AttributesToGet: ['name', 'email', 'phone_number'],
-    Filter: 'cognito:user_status = "FORCE_CHANGE_PASSWORD"',
-  });
+  const { isLoading, error, refetch } = useUsersQuery(
+    rowsPerPage as number,
+    page as number,
+    orderByColumn as string,
+    orderDirection as OrderDirection,
+    searchWord as string,
+    undefined,
+    range,
+  );
+  // const { isLoading, error, refetch } = useCognitoUsersQuery({
+  //   AttributesToGet: ['name', 'email', 'phone_number'],
+  //   Filter: 'cognito:user_status = "FORCE_CHANGE_PASSWORD"',
+  // });
 
   useEffect(() => {
     if (invites?.meta) {
@@ -140,7 +140,7 @@ const UserList = () => {
         <div className="pb-5 px-10">
           <DataTableComponent
             columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
-            data={invites.items}
+            data={users.items}
             loading={isLoading}
             sortServer
             paginationPerPage={invites.meta.itemsPerPage}
