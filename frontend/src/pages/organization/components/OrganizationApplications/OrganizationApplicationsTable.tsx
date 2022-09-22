@@ -190,7 +190,9 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
         <div className="pb-5 px-10">
           <DataTableComponent
             columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
-            data={applications}
+            data={applications.filter(
+              (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
+            )}
             loading={
               isApplicationsLoading ||
               isRestoringAppccess ||
