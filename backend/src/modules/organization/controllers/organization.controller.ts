@@ -212,4 +212,11 @@ export class OrganizationController {
   ) {
     return this.organizationService.deleteInvestor(+id, +investorId);
   }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Post(':id/new-report-entries')
+  createNewReportEntries(@Param('id') id: string) {
+    return this.organizationService.createNewReportingEntries(id);
+  }
 }
