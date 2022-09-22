@@ -230,7 +230,7 @@ export class ApplicationService {
       .leftJoin(
         'user_ong_application',
         'userOngApp',
-        'userOngApp.applicationId = ongApp.id',
+        'userOngApp.ongApplicationId = ongApp.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
       .andWhere('userOngApp.userId = :userId', { userId })
