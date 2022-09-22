@@ -8,10 +8,7 @@ import {
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import {
-  APPLICATION_ERRORS,
-  ONG_APPLICATION_ERRORS,
-} from '../constants/application-error.constants';
+import { APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -385,23 +382,21 @@ export class ApplicationService {
     applicationId: number,
     organizationId: number,
   ): Promise<void> {
-    const ongApplication = await this.ongApplicationService.findOne({
-      where: {
-        applicationId,
-        organizationId,
-      },
-    });
-
-    if (!ongApplication) {
-      throw new NotFoundException({
-        ...ONG_APPLICATION_ERRORS.GET,
-      });
-    }
-
     await this.ongApplicationService.update(
       organizationId,
-      organizationId,
+      applicationId,
       OngApplicationStatus.RESTRICTED,
+    );
+  }
+
+  public async restore(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    await this.ongApplicationService.update(
+      organizationId,
+      applicationId,
+      OngApplicationStatus.ACTIVE,
     );
   }
 
@@ -429,9 +424,6 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .orWhere('application.type = :type', {
-        type: ApplicationTypeEnum.INDEPENDENT,
-      })
       .execute();
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);

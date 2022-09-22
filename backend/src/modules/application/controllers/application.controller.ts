@@ -16,6 +16,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiParam,
+  ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -29,11 +30,15 @@ import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
-import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
+import {
+  ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
+} from '../interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../services/application.service';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
+import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -78,6 +83,15 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @Get('organization/:id')
+  findOrganizationApplications(
+    @Param('id') id: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findApplicationsForOng(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @Patch(':id/activate')
   activate(@Param('id') id: number) {
     return this.applicationService.update(id, {
@@ -92,6 +106,28 @@ export class ApplicationController {
     return this.applicationService.update(id, {
       status: ApplicationStatus.DISABLED,
     });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationAccessFilterDto })
+  @Patch(':id/restrict')
+  restrict(
+    @Param('id') id: number,
+    @Query() filter: ApplicationAccessFilterDto,
+  ) {
+    return this.applicationService.restrict(id, filter.organizationId);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationAccessFilterDto })
+  @Patch(':id/restore')
+  restore(
+    @Param('id') id: number,
+    @Query() filter: ApplicationAccessFilterDto,
+  ) {
+    return this.applicationService.restore(id, filter.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)

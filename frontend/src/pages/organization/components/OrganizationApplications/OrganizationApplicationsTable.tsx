@@ -8,9 +8,12 @@ import DataTableFilters from '../../../../components/data-table-filters/DataTabl
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
+import {
+  useRestoreApplicationMutation,
+  useRestrictApplicationMutation,
+} from '../../../../services/application/Application.queries';
 import { ApplicationWithOngStatus } from '../../../../services/application/interfaces/Application.interface';
 import { useOrganizationApplicationsQuery } from '../../../../services/organization/Organization.queries';
-import { useSelectedOrganization } from '../../../../store/selectors';
 import {
   ApplicationTypeCollection,
   ApplicationTypeEnum,
@@ -25,21 +28,40 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
 
   const { t } = useTranslation(['applications', 'common']);
 
-  const { isLoading: isApplicationsLoading, error: applicationsError } =
-    useOrganizationApplicationsQuery(organizationId);
+  // table data
+  const {
+    data: organizationApplications,
+    isLoading: isApplicationsLoading,
+    error: applicationsError,
+    refetch: reloadApplications,
+  } = useOrganizationApplicationsQuery(organizationId);
 
-  const { organizationApplications } = useSelectedOrganization();
+  // actions
+  const {
+    mutateAsync: restore,
+    isLoading: isRestoringAppccess,
+    error: restoretAccessError,
+  } = useRestoreApplicationMutation();
+
+  const {
+    mutateAsync: restrict,
+    isLoading: isRestrictingAppccess,
+    error: restrictAccessError,
+  } = useRestrictApplicationMutation();
 
   useEffect(() => {
-    setApplications(organizationApplications);
+    if (organizationApplications) setApplications(organizationApplications);
   }, [organizationApplications]);
 
   useEffect(() => {
-    setApplications(organizationApplications.filter((app) => app.name.includes(searchWord || '')));
+    if (organizationApplications)
+      setApplications(
+        organizationApplications.filter((app) => app.name.includes(searchWord || '')),
+      );
   }, [searchWord]);
 
   useEffect(() => {
-    if (type) {
+    if (type && organizationApplications) {
       setApplications(organizationApplications.filter((app) => app.type === type?.type));
     }
   }, [type]);
@@ -48,7 +70,15 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
     if (applicationsError) {
       useErrorToast(t('error.get_applications'));
     }
-  }, [applicationsError]);
+
+    if (restoretAccessError) {
+      console.log('eroare la restore access');
+    }
+
+    if (restrictAccessError) {
+      console.log('eroare la restrict access');
+    }
+  }, [applicationsError, restoretAccessError, restrictAccessError]);
 
   const buildApplicationActionColumn = (): TableColumn<ApplicationWithOngStatus> => {
     const restrictedApplicationMenu = [
@@ -70,7 +100,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       {
         name: 'Restrictioneaza temporar',
         icon: BanIcon,
-        onClick: onRestrictApplicatoin,
+        onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
@@ -93,14 +123,14 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   };
 
   const onActivateApplication = (row: ApplicationWithOngStatus) => {
-    console.log('to be implemented');
+    restore({ organizationId, applicationId: row.id }, { onSuccess: () => reloadApplications() });
+  };
+
+  const onRestrictApplication = (row: ApplicationWithOngStatus) => {
+    restrict({ organizationId, applicationId: row.id }, { onSuccess: () => reloadApplications() });
   };
 
   const onRemoveApplication = (row: ApplicationWithOngStatus) => {
-    console.log('to be implemented');
-  };
-
-  const onRestrictApplicatoin = (row: ApplicationWithOngStatus) => {
     console.log('to be implemented');
   };
 
@@ -115,7 +145,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const onResetFilters = () => {
     setSearchWord(null);
     setType(null);
-    setApplications(organizationApplications);
+    setApplications(organizationApplications || []);
   };
 
   return (
@@ -147,7 +177,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
           <DataTableComponent
             columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
             data={applications}
-            loading={isApplicationsLoading}
+            loading={isApplicationsLoading || isRestoringAppccess || isRestrictingAppccess}
           />
         </div>
       </div>

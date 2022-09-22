@@ -6,10 +6,6 @@ export const useSelectedOrganization = () => {
   const organizationActivity = useStore((state) => state.organizationActivity);
   const organizationReport = useStore((state) => state.organizationReport);
   const organizationLegal = useStore((state) => state.organizationLegal);
-  const organizationApplications = useStore((state) => state.organizationApplications);
-  const organizationApplicationRequests = useStore(
-    (state) => state.organizationApplicationRequests,
-  );
   const organization = useStore((state) => state.organization);
 
   return {
@@ -19,8 +15,6 @@ export const useSelectedOrganization = () => {
     organizationFinancial,
     organizationReport,
     organizationLegal,
-    organizationApplications,
-    organizationApplicationRequests,
   };
 };
 

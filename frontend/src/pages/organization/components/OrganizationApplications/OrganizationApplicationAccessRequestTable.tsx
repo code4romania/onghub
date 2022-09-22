@@ -7,16 +7,16 @@ import DataTableComponent from '../../../../components/data-table/DataTableCompo
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import { OrganizationApplicationRequest } from '../../../../services/application/interfaces/Application.interface';
 import { useOrganizationApplicationRequestsQuery } from '../../../../services/organization/Organization.queries';
-import { useSelectedOrganization } from '../../../../store/selectors';
 import { OrganizationApplicationRequestsTableHeaders } from './table-headers/OrganizationApplicationAccessRequestTable.headers';
 
 const OrganizationApplicationRequestsTable = ({ organizationId }: { organizationId: string }) => {
   const { t } = useTranslation(['applications', 'common']);
 
-  const { isLoading: isApplicationRequestsLoading, error: applicationRequestsError } =
-    useOrganizationApplicationRequestsQuery(organizationId);
-
-  const { organizationApplicationRequests } = useSelectedOrganization();
+  const {
+    data: organizationApplicationRequests,
+    isLoading: isApplicationRequestsLoading,
+    error: applicationRequestsError,
+  } = useOrganizationApplicationRequestsQuery(organizationId);
 
   useEffect(() => {
     if (applicationRequestsError) {
@@ -69,7 +69,7 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
             ...OrganizationApplicationRequestsTableHeaders,
             buildApplicationRequestActionColumn(),
           ]}
-          data={organizationApplicationRequests}
+          data={organizationApplicationRequests || []}
           loading={isApplicationRequestsLoading}
         />
       </div>

@@ -108,6 +108,18 @@ export const getApplicationOrganizations = (
   return API.get(requestUrl).then((res) => res.data);
 };
 
+export const restrictApplication = (applicationId: number, organizationId: string) => {
+  return API.patch(`/application/${applicationId}/restrict?organizationId=${organizationId}`).then(
+    (res) => res.data,
+  );
+};
+
+export const restoreApplication = (applicationId: number, organizationId: string) => {
+  return API.patch(`/application/${applicationId}/restore?organizationId=${organizationId}`).then(
+    (res) => res.data,
+  );
+};
+
 const generateApplicationFormDataPayload = (
   applicationDto: Partial<CreateApplicationDto>,
   logo?: File,

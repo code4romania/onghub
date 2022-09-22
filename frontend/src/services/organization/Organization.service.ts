@@ -80,13 +80,13 @@ export const getOrganization = (id: string): Promise<any> => {
 };
 
 export const getOrganizationApplications = (id: string): Promise<ApplicationWithOngStatus[]> => {
-  return API.get(`/organization/${id}/applications`).then((res) => res.data);
+  return API.get(`/application/organization/${id}`).then((res) => res.data);
 };
 
 export const getOrganizationApplicationRequests = (
   id: string,
 ): Promise<OrganizationApplicationRequest[]> => {
-  return API.get(`/organization/${id}/application-requests`).then((res) => res.data);
+  return API.get(`/application/request/organization/${id}`).then((res) => res.data);
 };
 
 export const patchOrganization = (id: number, update: any): Promise<any> => {

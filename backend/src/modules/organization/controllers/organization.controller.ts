@@ -111,24 +111,6 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
-  @Get(':id/application-requests')
-  findOrganizationApplicationRequests(
-    @Param('id') id: number,
-  ): Promise<OrganizationApplicationRequest[]> {
-    return this.applicationRequestService.findRequestsByOrganizationId(id);
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Get(':id/applications')
-  findOrganizationApplications(
-    @Param('id') id: number,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplicationsForOng(id);
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Organization> {
     return this.organizationService.findWithRelations(+id);
