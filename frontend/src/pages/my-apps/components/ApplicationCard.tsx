@@ -34,7 +34,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
           <p>Indisponibil</p>
         </div>
       )}
-      <div className="w-full max-h-[50%]">
+      <div className="max-h-[50%]">
         <img src={application.logo || logo} className="h-full w-full pt-10 pb-10"></img>
       </div>
       <div className="flex flex-col gap-4 w-full">
