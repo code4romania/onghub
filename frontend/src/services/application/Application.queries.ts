@@ -15,6 +15,7 @@ import {
   getApplicationsForEditUser,
   getMyOngApplications,
   getOngApplications,
+  removeOngApplication,
   restoreApplication,
   restrictApplication,
   updateApplication,
@@ -169,5 +170,12 @@ export const useRestoreApplicationMutation = () => {
   return useMutation(
     ({ applicationId, organizationId }: { applicationId: number; organizationId: string }) =>
       restoreApplication(applicationId, organizationId),
+  );
+};
+
+export const useRemovOngApplication = () => {
+  return useMutation(
+    ({ applicationId, organizationId }: { applicationId: number; organizationId: string }) =>
+      removeOngApplication(applicationId, organizationId),
   );
 };

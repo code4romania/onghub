@@ -138,7 +138,7 @@ export class ApplicationRequestService {
         'application-request.id as id',
         'application.logo as logo',
         'application.name as name',
-        'application-request.created_on as createdOn',
+        'application-request.created_on as "createdOn"',
       ])
       .leftJoin(
         'application',

@@ -531,7 +531,19 @@
     "app_type": "Tip aplicatie",
     "error": {
       "get_applications": "Eroare la incarcarea aplicatiilor",
-      "get_requests": "Eroare la incarcarea requesturilor"
+      "get_requests": "Eroare la incarcarea requesturilor",
+      "restrict_application": "Eroare la restrictionarea accesului",
+      "restore_application": "Eroare la redarea accesului",
+      "remove_application": "Eroare la stergerea applicatiei"
+    },
+    "options": {
+      "restore_access": "Reda accesul",
+      "restrict_access": "Restrictioneaza accesul",
+      "remove_application": "Elimina applicatia"
+    },
+    "remove_app_modal": {
+      "title": "Esti sigur ca doresti stergerea aplicatiei",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
     }
   },
   "delete_row": {

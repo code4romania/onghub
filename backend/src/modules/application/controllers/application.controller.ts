@@ -39,13 +39,17 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
+import { OngApplicationService } from '../services/ong-application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(private readonly applicationService: ApplicationService) {}
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -151,6 +155,17 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'organizationId', type: String })
+  @Delete(':id/organization/:organizationId')
+  removeOneFoOng(
+    @Param('id') id: number,
+    @Param('organizationId') organizationId: number,
+  ): Promise<void> {
+    return this.ongApplicationService.delete(id, organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)

@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../../common/hooks/useToast';
+import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import Select from '../../../../components/Select/Select';
 import {
+  useRemovOngApplication,
   useRestoreApplicationMutation,
   useRestrictApplicationMutation,
 } from '../../../../services/application/Application.queries';
@@ -25,6 +27,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
   const [applications, setApplications] = useState<ApplicationWithOngStatus[]>([]);
+  const [removalCandidate, setRemovaCandidate] = useState<ApplicationWithOngStatus | null>(null);
 
   const { t } = useTranslation(['applications', 'common']);
 
@@ -37,17 +40,12 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   } = useOrganizationApplicationsQuery(organizationId);
 
   // actions
-  const {
-    mutateAsync: restore,
-    isLoading: isRestoringAppccess,
-    error: restoretAccessError,
-  } = useRestoreApplicationMutation();
+  const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
 
-  const {
-    mutateAsync: restrict,
-    isLoading: isRestrictingAppccess,
-    error: restrictAccessError,
-  } = useRestrictApplicationMutation();
+  const { mutateAsync: restrict, isLoading: isRestrictingAccess } =
+    useRestrictApplicationMutation();
+
+  const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
 
   useEffect(() => {
     if (organizationApplications) setApplications(organizationApplications);
@@ -70,26 +68,18 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
     if (applicationsError) {
       useErrorToast(t('error.get_applications'));
     }
-
-    if (restoretAccessError) {
-      console.log('eroare la restore access');
-    }
-
-    if (restrictAccessError) {
-      console.log('eroare la restrict access');
-    }
-  }, [applicationsError, restoretAccessError, restrictAccessError]);
+  }, [applicationsError]);
 
   const buildApplicationActionColumn = (): TableColumn<ApplicationWithOngStatus> => {
     const restrictedApplicationMenu = [
       {
-        name: 'Reda accesul',
+        name: t('options.restore_access'),
         icon: RefreshIcon,
         onClick: onActivateApplication,
         type: PopoverMenuRowType.INFO,
       },
       {
-        name: 'Elimina definitiv',
+        name: t('options.remove_application'),
         icon: TrashIcon,
         onClick: onRemoveApplication,
         type: PopoverMenuRowType.REMOVE,
@@ -98,7 +88,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
 
     const activeApplicationMenu = [
       {
-        name: 'Restrictioneaza temporar',
+        name: t('options.restrict_access'),
         icon: BanIcon,
         onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
@@ -123,15 +113,39 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   };
 
   const onActivateApplication = (row: ApplicationWithOngStatus) => {
-    restore({ organizationId, applicationId: row.id }, { onSuccess: () => reloadApplications() });
+    restore(
+      { organizationId, applicationId: row.id },
+      {
+        onSuccess: () => reloadApplications(),
+        onError: () => useErrorToast(t('error.restore_application')),
+      },
+    );
   };
 
   const onRestrictApplication = (row: ApplicationWithOngStatus) => {
-    restrict({ organizationId, applicationId: row.id }, { onSuccess: () => reloadApplications() });
+    restrict(
+      { organizationId, applicationId: row.id },
+      {
+        onSuccess: () => reloadApplications(),
+        onError: () => useErrorToast(t('error.restrict_application')),
+      },
+    );
   };
 
   const onRemoveApplication = (row: ApplicationWithOngStatus) => {
-    console.log('to be implemented');
+    setRemovaCandidate(row);
+  };
+
+  const onConfirmDelete = () => {
+    if (removalCandidate)
+      remove(
+        { applicationId: removalCandidate.id, organizationId },
+        {
+          onSuccess: () => reloadApplications(),
+          onSettled: () => setRemovaCandidate(null),
+          onError: () => useErrorToast(t('error.remove_application')),
+        },
+      );
   };
 
   const onSearch = (searchWord: string) => {
@@ -177,9 +191,24 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
           <DataTableComponent
             columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
             data={applications}
-            loading={isApplicationsLoading || isRestoringAppccess || isRestrictingAppccess}
+            loading={
+              isApplicationsLoading ||
+              isRestoringAppccess ||
+              isRestrictingAccess ||
+              isRemovingApplication
+            }
           />
         </div>
+        {removalCandidate && (
+          <ConfirmationModal
+            title={t('remove_app_modal.title')}
+            description={t('remove_app_modal.description')}
+            closeBtnLabel={t('common:back')}
+            confirmBtnLabel={t('common:delete')}
+            onClose={setRemovaCandidate.bind(null, null)}
+            onConfirm={onConfirmDelete}
+          />
+        )}
       </div>
     </>
   );

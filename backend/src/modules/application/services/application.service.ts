@@ -38,6 +38,7 @@ import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
+import { UserOngApplicationService } from './user-ong-application.service';
 
 @Injectable()
 export class ApplicationService {
@@ -48,6 +49,7 @@ export class ApplicationService {
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
+    private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
 
   public async create(
@@ -424,6 +426,9 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
       .execute();
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
