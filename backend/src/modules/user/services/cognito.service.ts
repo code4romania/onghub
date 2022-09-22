@@ -16,6 +16,7 @@ import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserListDto } from '../dto/user-list.dto';
+import { IInvites } from '../interfaces/invites.interface';
 
 @Injectable()
 export class CognitoUserService {
@@ -49,7 +50,7 @@ export class CognitoUserService {
     return data.User.Username;
   }
 
-  async getUsers(userListDto: UserListDto) {
+  async getCognitoUsers(userListDto: UserListDto) {
     const listUsersCommand = new ListUsersCommand({
       UserPoolId: CognitoConfig.userPoolId,
       Filter: userListDto.filter,
@@ -62,7 +63,19 @@ export class CognitoUserService {
       listUsersCommand,
     );
 
-    return data.Users;
+    const invitedUsers: IInvites[] = [];
+
+    // TODO: update for general use
+    data.Users.map((item) => {
+      invitedUsers.push({
+        name: item.Attributes[0].Value,
+        phone: item.Attributes[1].Value,
+        email: item.Attributes[2].Value,
+        createdOn: item.UserCreateDate,
+      });
+    });
+
+    return invitedUsers;
   }
 
   async resendInvite(email: string): Promise<void> {

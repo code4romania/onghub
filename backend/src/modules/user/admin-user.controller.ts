@@ -55,8 +55,8 @@ export class AdminUserController {
 
   @ApiQuery({ type: () => UserListDto })
   @Get('cognito-users')
-  async getUsers(@Query() body: UserListDto): Promise<UserType[]> {
-    return this.cognitoService.getUsers(body);
+  async getUsers(@Query() body: UserListDto) {
+    return this.cognitoService.getCognitoUsers(body);
   }
 
   @ApiParam({ name: 'id', type: Number })
