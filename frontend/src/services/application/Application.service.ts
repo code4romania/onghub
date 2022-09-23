@@ -127,7 +127,7 @@ export const removeOngApplication = (applicationId: number, organizationId: stri
 };
 
 export const removeOngApplicationRequest = (applicationId: number) => {
-  return API.delete(`/application/${applicationId}/organization`).then((res) => res.data);
+  return API.delete(`/organization/application/${applicationId}`).then((res) => res.data);
 };
 
 const generateApplicationFormDataPayload = (

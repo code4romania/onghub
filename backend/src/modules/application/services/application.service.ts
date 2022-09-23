@@ -41,6 +41,7 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { OrganizationService } from 'src/modules/organization/services';
 
 @Injectable()
 export class ApplicationService {
@@ -53,6 +54,7 @@ export class ApplicationService {
     private readonly fileManagerService: FileManagerService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   public async create(
@@ -427,12 +429,17 @@ export class ApplicationService {
         where: { role: Role.SUPER_ADMIN },
       });
 
+      const organziation = await this.organizationService.findWithRelations(
+        organizationId,
+      );
+
       // send email to admin to delete the application
       this.mailService.sendEmail({
         to: superAdmins.map((user) => user.email),
         template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
         context: {
           applicationName: application.name,
+          organizationName: organziation.organizationGeneral.name,
         },
       });
 
