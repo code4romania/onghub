@@ -1,8 +1,6 @@
 import {
-  Body,
   ClassSerializerInterceptor,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
@@ -24,6 +22,7 @@ import { Role } from '../../user/enums/role.enum';
 import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 
+@Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -33,7 +32,6 @@ export class ApplicationRequestController {
     private readonly applicationRequestService: ApplicationRequestService,
   ) {}
 
-  @Roles(Role.SUPER_ADMIN)
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('')
   async getApplicationRequests(
@@ -42,7 +40,6 @@ export class ApplicationRequestController {
     return this.applicationRequestService.findAll(filters);
   }
 
-  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get('organization/:id')
   findOrganizationApplicationRequests(
@@ -51,14 +48,12 @@ export class ApplicationRequestController {
     return this.applicationRequestService.findRequestsByOrganizationId(id);
   }
 
-  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/approve')
   approveApplicationRequest(@Param('id') id: number): Promise<void> {
     return this.applicationRequestService.approve(id);
   }
 
-  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/reject')
   rejectApplicationRequest(@Param('id') id: number): Promise<void> {
