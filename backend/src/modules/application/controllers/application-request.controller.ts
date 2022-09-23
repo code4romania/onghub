@@ -1,5 +1,4 @@
 import {
-  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
@@ -41,7 +40,6 @@ export class ApplicationRequestController {
     return this.applicationRequestService.findAll(filters);
   }
 
-  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get('organization/:id')
   findOrganizationApplicationRequests(

@@ -5,4 +5,5 @@ export enum MAIL_TEMPLATES {
   ORGANIZATION_REQUEST_REJECTION = './profile-organization-rejection',
   DELETE_ORGANIZATION_ADMIN = './delete-organization-admin',
   DELETE_ORGANIZATION_SUPER = './delete-organization-super',
+  DELETE_ONG_APPLICATION_REQUEST = './delete-ong-application-request',
 }

@@ -38,7 +38,10 @@ import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
-import { UserOngApplicationService } from './user-ong-application.service';
+import { UserService } from 'src/modules/user/services/user.service';
+import { MailService } from 'src/mail/services/mail.service';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { OrganizationService } from 'src/modules/organization/services';
 
 @Injectable()
 export class ApplicationService {
@@ -49,7 +52,9 @@ export class ApplicationService {
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
-    private readonly userOngApplicationService: UserOngApplicationService,
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   public async create(
@@ -179,7 +184,7 @@ export class ApplicationService {
     organizationId: number,
     userId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -207,6 +212,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**
@@ -402,7 +411,50 @@ export class ApplicationService {
     );
   }
 
-  // TODO: To be implemented
+  public async deleteOngApplicationRequest(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    const application = await this.applicationRepository.get({
+      where: { id: applicationId },
+    });
+
+    if (!application) {
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
+    }
+
+    // 1. If application is for standalone send email to admin
+    if (application.type === ApplicationTypeEnum.STANDALONE) {
+      const superAdmins = await this.userService.findMany({
+        where: { role: Role.SUPER_ADMIN },
+      });
+
+      const organziation = await this.organizationService.findWithRelations(
+        organizationId,
+      );
+
+      // send email to admin to delete the application
+      this.mailService.sendEmail({
+        to: superAdmins.map((user) => user.email),
+        template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
+        context: {
+          applicationName: application.name,
+          organizationName: organziation.organizationGeneral.name,
+        },
+      });
+
+      // mark the app as to be removed
+      this.ongApplicationService.update(
+        organizationId,
+        applicationId,
+        OngApplicationStatus.PENDING_REMOVAL,
+      );
+    } else {
+      // 2. delete the application
+      return this.ongApplicationService.delete(applicationId, organizationId);
+    }
+  }
+
   public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
   }
@@ -445,7 +497,7 @@ export class ApplicationService {
   private async findApplicationsForOngWithAccessStatus(
     organizationId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -467,6 +519,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**

@@ -20,7 +20,6 @@ import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { ApplicationWithOngStatus } from '../../application/interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../../application/services/application.service';
-import { OngApplicationService } from '../../application/services/ong-application.service';
 import { OrganizationApplicationFilterDto } from 'src/modules/application/dto/organization-application.filters.dto';
 import { ApplicationAccess } from 'src/modules/application/interfaces/application-access.interface';
 import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
@@ -32,7 +31,6 @@ import { ApplicationRequestService } from 'src/modules/application/services/appl
 export class OrganizationApplicationController {
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly ongApplicationService: OngApplicationService,
     private readonly applicationRequestService: ApplicationRequestService,
   ) {}
 
@@ -91,9 +89,15 @@ export class OrganizationApplicationController {
   }
 
   @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: Number })
+  @ApiParam({ name: 'id', type: String })
   @Delete(':id')
-  deleteOne(@Param('id') id: number, @ExtractUser() user: User): Promise<void> {
-    return this.ongApplicationService.delete(id, user.organizationId);
+  removeOneFoOngUser(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.applicationService.deleteOngApplicationRequest(
+      id,
+      user.organizationId,
+    );
   }
 }
