@@ -6,11 +6,17 @@ import { useParams } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
-import { useApplicationOrganizationQuery } from '../../../services/application/Application.queries';
+import {
+  useApplicationOrganizationQuery,
+  useRemovOngApplication,
+  useRestoreApplicationMutation,
+  useRestrictApplicationMutation,
+} from '../../../services/application/Application.queries';
 import { ApplicationOrganization } from '../../../services/application/interfaces/Application.interface';
 import { useSelectedApplication } from '../../../store/selectors';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
@@ -25,10 +31,16 @@ const ApplicationNGOList = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: OngApplicationStatus; label: string } | null>();
+  const [removalCandidate, setRemovalCandidate] = useState<ApplicationOrganization | null>(null);
 
-  const { t } = useTranslation(['app', 'common']);
+  const { t } = useTranslation(['app', 'applications', 'common']);
 
-  const { isLoading, error } = useApplicationOrganizationQuery(
+  // query
+  const {
+    isLoading,
+    error,
+    refetch: reloadApplications,
+  } = useApplicationOrganizationQuery(
     id as string,
     rowsPerPage as number,
     page as number,
@@ -37,6 +49,14 @@ const ApplicationNGOList = () => {
     searchWord as string,
     status?.status,
   );
+
+  // actions
+  const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
+
+  const { mutateAsync: restrict, isLoading: isRestrictingAccess } =
+    useRestrictApplicationMutation();
+
+  const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
 
   const { applicationOrganizations } = useSelectedApplication();
 
@@ -131,16 +151,47 @@ const ApplicationNGOList = () => {
     setSearchWord(null);
   };
 
-  const onRemoveApplication = () => {
-    console.log('not implemented');
+  const onActivateApplication = (row: ApplicationOrganization) => {
+    if (id) {
+      restore(
+        { organizationId: row.organizationId.toString(), applicationId: +id },
+        {
+          onSuccess: () => reloadApplications(),
+          onError: () => useErrorToast(t('error.restore_application')),
+        },
+      );
+    }
   };
 
-  const onActivateApplication = () => {
-    console.log('not implemented');
+  const onRestrictApplication = (row: ApplicationOrganization) => {
+    if (id) {
+      restrict(
+        { organizationId: row.organizationId.toString(), applicationId: +id },
+        {
+          onSuccess: () => reloadApplications(),
+          onError: () => useErrorToast(t('error.restrict_application')),
+        },
+      );
+    }
   };
 
-  const onRestrictApplication = () => {
-    console.log('not implemented');
+  const onRemoveApplication = (row: ApplicationOrganization) => {
+    setRemovalCandidate(row);
+  };
+
+  const onConfirmDelete = () => {
+    if (removalCandidate && id)
+      remove(
+        {
+          organizationId: removalCandidate.organizationId.toString(),
+          applicationId: +id,
+        },
+        {
+          onSuccess: () => reloadApplications(),
+          onSettled: () => setRemovalCandidate(null),
+          onError: () => useErrorToast(t('error.remove_application')),
+        },
+      );
   };
 
   return (
@@ -172,7 +223,9 @@ const ApplicationNGOList = () => {
           <DataTableComponent
             columns={[...ApplicationNGOListTableHeaders, buildApplicationActionColumns()]}
             data={applicationOrganizations.items}
-            loading={isLoading}
+            loading={
+              isLoading || isRemovingApplication || isRestoringAppccess || isRestrictingAccess
+            }
             pagination
             sortServer
             paginationPerPage={applicationOrganizations.meta.itemsPerPage}
@@ -183,6 +236,16 @@ const ApplicationNGOList = () => {
             onSort={onSort}
           />
         </div>
+        {removalCandidate && (
+          <ConfirmationModal
+            title={t('applications:remove_app_modal.title')}
+            description={t('applications:remove_app_modal.description')}
+            closeBtnLabel={t('common:back')}
+            confirmBtnLabel={t('common:delete')}
+            onClose={setRemovalCandidate.bind(null, null)}
+            onConfirm={onConfirmDelete}
+          />
+        )}
       </div>
     </>
   );
