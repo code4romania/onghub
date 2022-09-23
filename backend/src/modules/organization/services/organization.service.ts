@@ -484,6 +484,19 @@ export class OrganizationService {
     });
   }
 
+  public async restrict(organizationId: number) {
+    const organization = await this.find(organizationId);
+
+    if (organization.status === OrganizationStatus.RESTRICTED) {
+      throw new BadRequestException(ORGANIZATION_ERRORS.RESTRICT);
+    }
+
+    return this.organizationRepository.updateOne({
+      id: organizationId,
+      status: OrganizationStatus.RESTRICTED,
+    });
+  }
+
   public async delete(organizationId: number): Promise<void> {
     const organization = await this.findWithRelations(organizationId);
 
