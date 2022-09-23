@@ -179,7 +179,7 @@ export class ApplicationService {
     organizationId: number,
     userId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -207,6 +207,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**
@@ -445,7 +449,7 @@ export class ApplicationService {
   private async findApplicationsForOngWithAccessStatus(
     organizationId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -467,6 +471,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**
