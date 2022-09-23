@@ -1,8 +1,8 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { formatDate } from '../../../../../common/helpers/format.helper';
-import { IUser } from '../../../interfaces/User.interface';
 import i18n from '../../../../../common/config/i18n';
+import { IInvite } from '../../../interfaces/Invite.interface';
 
 const translations = {
   name: i18n.t('user:invites_header.name'),
@@ -11,29 +11,29 @@ const translations = {
   added_on: i18n.t('user:invites_header.added_on'),
 };
 
-export const UserInvitesTableHeaders: TableColumn<IUser>[] = [
+export const UserInvitesTableHeaders: TableColumn<IInvite>[] = [
   {
     id: 'name',
     name: translations.name,
     sortable: true,
-    selector: (row: IUser) => row.name,
+    selector: (row: IInvite) => row.name,
   },
   {
     id: 'email',
     name: translations.email,
     sortable: true,
-    selector: (row: IUser) => row.email,
+    selector: (row: IInvite) => row.email,
   },
   {
     id: 'phone',
     name: translations.phone,
     sortable: true,
-    selector: (row: IUser) => row.phone,
+    selector: (row: IInvite) => row.phone,
   },
   {
     id: 'createdOn',
     name: translations.added_on,
     sortable: true,
-    selector: (row: IUser) => formatDate(row?.createdOn as string),
+    selector: (row: IInvite) => formatDate(row?.createdOn),
   },
 ];

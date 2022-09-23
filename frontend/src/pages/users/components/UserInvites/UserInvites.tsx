@@ -1,81 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
-import { PaginationConfig } from '../../../../common/config/pagination.config';
-import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
-import { useErrorToast } from '../../../../common/hooks/useToast';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu from '../../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
-import { useCognitoUsersQuery, useUsersQuery } from '../../../../services/user/User.queries';
+import {
+  useCognitoUsersQuery,
+  useRemoveUserMutation,
+} from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
-import { IUser } from '../../interfaces/User.interface';
 import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ReplyIcon } from '@heroicons/react/outline';
+import { ReplyIcon, TrashIcon } from '@heroicons/react/outline';
+import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
+import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
+import { IInvite } from '../../interfaces/Invite.interface';
+import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 
-const UserList = () => {
-  const navigate = useNavigate();
-  const [page, setPage] = useState<number>();
-  const [rowsPerPage, setRowsPerPage] = useState<number>();
+const UserInvites = () => {
+  const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
+  const [selectedInvite, setSelectedInvite] = useState<IInvite | null>(null);
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
-  const [AttributesToGet, setAttributesToGet] = useState<string[]>();
-  const [Filter, setFilter] = useState<string>();
 
-  const { users, invites } = useUser();
+  const { invites } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
 
-  const { isLoading, error, refetch } = useUsersQuery(
-    rowsPerPage as number,
-    page as number,
+  const { isLoading, error, refetch } = useCognitoUsersQuery(
     orderByColumn as string,
     orderDirection as OrderDirection,
     searchWord as string,
-    undefined,
     range,
   );
-  // const { isLoading, error, refetch } = useCognitoUsersQuery({
-  //   AttributesToGet: ['name', 'email', 'phone_number'],
-  //   Filter: 'cognito:user_status = "FORCE_CHANGE_PASSWORD"',
-  // });
 
   useEffect(() => {
-    if (invites?.meta) {
-      setPage(invites.meta.currentPage);
-      setRowsPerPage(invites.meta.itemsPerPage);
-      setOrderByColumn(invites.meta.orderByColumn);
-      setOrderDirection(invites.meta.orderDirection);
-    }
-  }, []);
+    if (error) useErrorToast(t('list.load_error'));
+  }, [error]);
 
-  // useEffect(() => {
-  //   if (error) useErrorToast(t('list.load_error'));
-  // }, [error]);
+  useEffect(() => {
+    if (selectedInvite) setIsConfirmRemoveModalOpen(true);
+  }, [selectedInvite]);
 
-  const buildUserActionColumn = (): TableColumn<IUser> => {
+  const removeUserMutation = useRemoveUserMutation();
+
+  const buildUserActionColumn = (): TableColumn<IInvite> => {
     const pendingUserMenuItems = [
       {
         name: t('edit', { ns: 'common' }),
         icon: ReplyIcon,
-        onClick: onEdit,
+        onClick: setSelectedInvite,
+      },
+      {
+        name: t('delete', { ns: 'common' }),
+        icon: TrashIcon,
+        onClick: setSelectedInvite,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
     return {
       name: '',
-      cell: (row: IUser) => <PopoverMenu row={row} menuItems={pendingUserMenuItems} />,
+      cell: (row: IInvite) => <PopoverMenu row={row} menuItems={pendingUserMenuItems} />,
       width: '50px',
       allowOverflow: true,
     };
   };
 
   /**
-   * PAGINATION
+   * ROW ACTIONS
+   */
+
+  const onDelete = () => {
+    if (selectedInvite) {
+      removeUserMutation.mutate(selectedInvite.id, {
+        onSuccess: () => {
+          useSuccessToast(`${t('list.remove_success')} ${selectedInvite.name}`);
+          refetch();
+        },
+        onSettled: () => {
+          setSelectedInvite(null);
+        },
+      });
+    }
+    setIsConfirmRemoveModalOpen(false);
+  };
+
+  const onCancelUserRemoval = () => {
+    setIsConfirmRemoveModalOpen(false);
+    setSelectedInvite(null);
+  };
+
+  /**
+   * FILTERS
    */
   const onSort = (column: TableColumn<string>, direction: SortOrder) => {
     setOrderByColumn(column.id as string);
@@ -86,17 +105,6 @@ const UserList = () => {
     );
   };
 
-  /**
-   * ROW ACTIONS
-   */
-
-  const onEdit = (row: IUser) => {
-    navigate(`/user/${row.id}`);
-  };
-
-  /**
-   * FILTERS
-   */
   const onSearch = (searchWord: string) => {
     setSearchWord(searchWord);
   };
@@ -140,17 +148,24 @@ const UserList = () => {
         <div className="pb-5 px-10">
           <DataTableComponent
             columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
-            data={users.items}
+            data={invites}
             loading={isLoading}
-            sortServer
-            paginationPerPage={invites.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             onSort={onSort}
           />
         </div>
+        {isConfirmRemoveModalOpen && (
+          <ConfirmationModal
+            title={t('list.confirmation')}
+            description={t('list.description')}
+            closeBtnLabel={t('back', { ns: 'common' })}
+            confirmBtnLabel={t('delete', { ns: 'common' })}
+            onClose={onCancelUserRemoval}
+            onConfirm={onDelete}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-export default UserList;
+export default UserInvites;

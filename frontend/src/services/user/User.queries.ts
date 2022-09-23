@@ -56,16 +56,23 @@ export const useUsersQuery = (
   );
 };
 
-export const useCognitoUsersQuery = (payload: object) => {
+export const useCognitoUsersQuery = (
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+  interval?: Date[],
+) => {
   const { setInvites } = useStore();
-  return useQuery(['cognito-users', payload], () => getCognitoUsers(payload), {
-    onSuccess: (data: PaginatedEntity<IInvite>) => {
-      setInvites({
-        items: data.items,
-        meta: { ...data.meta },
-      });
+  return useQuery(
+    ['cognito-users', orderBy, orderDirection, search, interval],
+    () => getCognitoUsers(orderBy, orderDirection, search, interval),
+    {
+      onSuccess: (data: IInvite[]) => {
+        setInvites(data);
+      },
+      enabled: !!(orderBy && orderDirection),
     },
-  });
+  );
 };
 
 export const useSelectedUserQuery = (userId: string) => {

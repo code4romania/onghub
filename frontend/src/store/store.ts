@@ -84,8 +84,8 @@ interface UserState {
 }
 
 interface InviteState {
-  invites: PaginatedEntity<IInvite>;
-  setInvites: (invites: PaginatedEntity<IInvite>) => void;
+  invites: IInvite[];
+  setInvites: (invites: IInvite[]) => void;
 }
 
 interface OrganizationRequestState {

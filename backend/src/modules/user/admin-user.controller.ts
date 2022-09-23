@@ -9,7 +9,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  PartialType,
+} from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from './decorators/user.decorator';
@@ -19,9 +25,8 @@ import { UserFilterDto } from './dto/user-filter.dto';
 import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
-import { UserListDto } from './dto/user-list.dto';
 import { CognitoUserService } from './services/cognito.service';
-import { UserType } from '@aws-sdk/client-cognito-identity-provider';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
@@ -53,10 +58,13 @@ export class AdminUserController {
     return this.userService.findAll(filters, user.organizationId);
   }
 
-  @ApiQuery({ type: () => UserListDto })
+  @ApiQuery({ type: () => PartialType(BaseFilterDto) })
   @Get('cognito-users')
-  async getUsers(@Query() body: UserListDto) {
-    return this.cognitoService.getCognitoUsers(body);
+  async getInvites(
+    @ExtractUser() user: User,
+    @Query() filters: Partial<BaseFilterDto>,
+  ) {
+    return this.userService.getInvitedUsers(filters, user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
@@ -15,8 +15,7 @@ import {
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserListDto } from '../dto/user-list.dto';
-import { IInvites } from '../interfaces/invites.interface';
+import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
 
 @Injectable()
 export class CognitoUserService {
@@ -50,32 +49,17 @@ export class CognitoUserService {
     return data.User.Username;
   }
 
-  async getCognitoUsers(userListDto: UserListDto) {
+  async getCognitoUsers(status: CognitoUserStatus) {
     const listUsersCommand = new ListUsersCommand({
       UserPoolId: CognitoConfig.userPoolId,
-      Filter: userListDto.filter,
-      Limit: userListDto.limit,
-      AttributesToGet: userListDto.attributes,
-      PaginationToken: userListDto.pagination,
+      Filter: `cognito:user_status = "${status}"`,
     });
 
     const data: ListUsersCommandOutput = await this.cognitoProvider.send(
       listUsersCommand,
     );
 
-    const invitedUsers: IInvites[] = [];
-
-    // TODO: update for general use
-    data.Users.map((item) => {
-      invitedUsers.push({
-        name: item.Attributes[0].Value,
-        phone: item.Attributes[1].Value,
-        email: item.Attributes[2].Value,
-        createdOn: item.UserCreateDate,
-      });
-    });
-
-    return invitedUsers;
+    return data.Users;
   }
 
   async resendInvite(email: string): Promise<void> {

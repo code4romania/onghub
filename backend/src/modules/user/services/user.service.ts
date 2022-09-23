@@ -8,7 +8,15 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindManyOptions, FindOneOptions, UpdateResult } from 'typeorm';
+import {
+  Between,
+  FindManyOptions,
+  FindOneOptions,
+  FindOptionsOrder,
+  ILike,
+  In,
+  UpdateResult,
+} from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -22,6 +30,12 @@ import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
 import { Access } from 'src/modules/application/interfaces/application-access.interface';
+import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
+import { IInvites } from '../interfaces/invites.interface';
+import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { format } from 'date-fns';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 @Injectable()
 export class UserService {
@@ -182,6 +196,111 @@ export class UserService {
       where: { cognitoId },
       relations: ['organization'],
     });
+  }
+
+  async getInvitedUsers(
+    options: Partial<BaseFilterDto>,
+    organizationId?: number,
+  ) {
+    const {
+      limit,
+      page,
+      search,
+      orderBy,
+      orderDirection,
+      start,
+      end,
+      ...filters
+    } = options;
+    const config = INVITE_FILTERS_CONFIG;
+    const data = await this.cognitoService.getCognitoUsers(
+      CognitoUserStatus.FORCE_CHANGE_PASSWORD,
+    );
+    // const invitedUsers: IInvites[] = [];
+    const emails: string[] = [];
+
+    data.map((item) => {
+      emails.push(item.Attributes[3].Value);
+    });
+
+    // const users = await this.findMany({
+    //   where: organizationId
+    //     ? { organizationId, email: In(emails) }
+    //     : { email: In(emails) },
+    // });
+
+    // filters (and where)
+    const orWhereQuery = [];
+    const andWhereQuery: any = {};
+
+    // handle range
+    if (config.rangeColumn && start && end) {
+      andWhereQuery[config.rangeColumn] = Between(
+        format(
+          typeof start === 'string' ? new Date(start) : start,
+          'yyyy-MM-dd HH:MM:SS',
+        ),
+        format(
+          typeof end === 'string' ? new Date(end) : end,
+          'yyyy-MM-dd HH:MM:SS',
+        ),
+      );
+    }
+
+    // search query
+    if (search) {
+      const where = config.searchableColumns.map((column: string) => ({
+        ...andWhereQuery,
+        [column]: ILike(`%${search}%`),
+      }));
+      orWhereQuery.push(...where);
+    } else {
+      if (Object.keys(andWhereQuery).length > 0)
+        orWhereQuery.push(andWhereQuery);
+    }
+
+    // order conditions
+    const orderOptions: FindOptionsOrder<any> = {
+      [options.orderBy || config.defaultSortBy]:
+        options.orderDirection || OrderDirection.ASC,
+    };
+
+    // full query
+    let query: FindManyOptions<User> = {
+      select: config.selectColumns,
+      relations: config.relations,
+      order: orderOptions,
+    };
+
+    if (orWhereQuery.length > 0) {
+      query = {
+        ...query,
+        where: orWhereQuery,
+      };
+    }
+
+    const response = await this.findMany({
+      where: organizationId
+        ? { organizationId, email: In(emails) }
+        : { email: In(emails) },
+      ...query,
+    });
+
+    return response;
+
+    // for (let i = 0; i < emails.length; i++) {
+    //   if (users[i]) {
+    //     invitedUsers.push({
+    //       id: users[i].id,
+    //       name: users[i].name,
+    //       phone: users[i].phone,
+    //       email: users[i].email,
+    //       createdOn: users[i].createdOn,
+    //     });
+    //   }
+    // }
+
+    // return invitedUsers;
   }
 
   async remove(user: User): Promise<string> {
