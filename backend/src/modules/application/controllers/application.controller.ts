@@ -157,6 +157,19 @@ export class ApplicationController {
     return this.applicationService.findOne(user.organizationId, id);
   }
 
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id/organization')
+  removeOneFoOngUser(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.applicationService.deleteOngApplicationRequest(
+      id,
+      user.organizationId,
+    );
+  }
+
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @ApiParam({ name: 'organizationId', type: String })

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { GlobeAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline';
 import logo from '../../../assets/images/logo.svg';
 import { useAuthContext } from '../../../contexts/AuthContext';
@@ -15,39 +15,48 @@ import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.i
 import { useOutletContext } from 'react-router-dom';
 import { openInNewTab } from '../../../common/helpers/format.helper';
 import { useTranslation } from 'react-i18next';
+import { useRemovOngApplicationRequest } from '../../../services/application/Application.queries';
 
 const ApplicationDetails = () => {
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [application, refecthApplication] = useOutletContext<any>();
   const { role } = useAuthContext();
 
+  const { t } = useTranslation(['app', 'common']);
+
   // Mutation
-  const { mutateAsync: mutateCreateApplicationRequest, error: createApplicationRequestError } =
-    useCreateApplicationRequestMutation();
+  const { mutateAsync: mutateCreateApplicationRequest } = useCreateApplicationRequestMutation();
 
-  const { mutateAsync: mutateAbandonApplicationRequest, error: abandonApplicationRequestError } =
-    useAbandonApplicationRequestMutation();
+  const { mutateAsync: mutateAbandonApplicationRequest } = useAbandonApplicationRequestMutation();
 
-  useEffect(() => {
-    if (createApplicationRequestError || abandonApplicationRequestError) {
-      useErrorToast(t('details.request_error'));
-    }
-  }, [createApplicationRequestError, abandonApplicationRequestError]);
+  const { mutateAsync: removeOngApplication } = useRemovOngApplicationRequest();
 
   // Actions
   const requestApplication = async () => {
     if (application) {
-      await mutateCreateApplicationRequest(application?.id);
-      useSuccessToast(t('details.request_successful'));
-      refecthApplication();
+      await mutateCreateApplicationRequest(application?.id, {
+        onSuccess: () => {
+          useSuccessToast(t('details.request_successful'));
+          refecthApplication();
+        },
+        onError: () => {
+          useErrorToast(t('details.request_error'));
+        },
+      });
     }
   };
 
   const abandonRequest = async () => {
     if (application) {
-      await mutateAbandonApplicationRequest(application?.id);
-      useSuccessToast(t('details.request_successful'));
-      refecthApplication();
+      await mutateAbandonApplicationRequest(application?.id, {
+        onSuccess: () => {
+          useSuccessToast(t('details.request_successful'));
+          refecthApplication();
+        },
+        onError: () => {
+          useErrorToast(t('details.request_error'));
+        },
+      });
     }
   };
 
@@ -60,7 +69,22 @@ const ApplicationDetails = () => {
     }
   };
 
-  const { t } = useTranslation(['app', 'common']);
+  const removeApplication = () => {
+    removeOngApplication(
+      { applicationId: application?.id },
+      {
+        onSuccess: () => {
+          refecthApplication();
+        },
+        onError: () => {
+          useErrorToast(t('details.request_error'));
+        },
+        onSettled: () => {
+          setConfirmationModalOpen(false);
+        },
+      },
+    );
+  };
 
   return (
     <div className="flex gap-4 mr-1 mb-1 relative">
@@ -115,6 +139,12 @@ const ApplicationDetails = () => {
             {application?.type === ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <p className="text-gray-700 font-titilliumBold">{t('details.auto')}</p>
+              </div>
+            )}
+            {/* The application is independent and active */}
+            {application?.status === OngApplicationStatus.PENDING_REMOVAL && (
+              <div className="flex pt-4 gap-4 items-center justify-center">
+                <p className="text-gray-700 font-titilliumBold">{t('details.pending_removal')}</p>
               </div>
             )}
             {/* The application is not independent and active */}
@@ -256,7 +286,7 @@ const ApplicationDetails = () => {
           onClose={() => {
             setConfirmationModalOpen(false);
           }}
-          onConfirm={() => alert('not implemented')}
+          onConfirm={removeApplication}
         />
       )}
     </div>

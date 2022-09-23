@@ -38,6 +38,7 @@ export const OngApplicationStatusBadgeMapper = (status: OngApplicationStatus) =>
     case OngApplicationStatus.RESTRICTED: {
       return BadgeStatus.ERROR;
     }
+    case OngApplicationStatus.PENDING_REMOVAL:
     case OngApplicationStatus.PENDING: {
       return BadgeStatus.WARNING;
     }
@@ -54,6 +55,7 @@ export const ONG_APPLICATION_STATUS: Record<OngApplicationStatus, string> = {
   [OngApplicationStatus.DISABLED]: translations.disabled,
   [OngApplicationStatus.RESTRICTED]: translations.restricted,
   [OngApplicationStatus.PENDING]: translations.pending,
+  [OngApplicationStatus.PENDING_REMOVAL]: translations.pending,
 };
 
 export const ApplicationStatusCollection = [
