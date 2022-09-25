@@ -14,7 +14,7 @@ import { ApplicationModule } from '../application/application.module';
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => OrganizationModule),
-    ApplicationModule,
+    forwardRef(() => ApplicationModule),
     LoggerModule.forRoot(),
   ],
   controllers: [ProfileController, AdminUserController],

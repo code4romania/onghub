@@ -154,10 +154,10 @@ export class UserService {
             error: err,
           });
         }
-        // 2. USR_007: User not found or doesn't have an organizationId
-        case USER_ERRORS.GET.errorCode: {
+        // 2. USR_011: Error whil granting access to application
+        case USER_ERRORS.ACCESS.errorCode: {
           throw new BadRequestException({
-            ...USER_ERRORS.GET,
+            ...USER_ERRORS.ACCESS,
             error: err,
           });
         }

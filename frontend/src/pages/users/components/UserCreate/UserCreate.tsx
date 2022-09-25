@@ -151,10 +151,14 @@ const UserCreate = () => {
         {isLoadingApplications ? (
           <Loading />
         ) : (
-          <ApplicationAccessManagement
-            applications={applications || []}
-            onAccessChange={setAccess}
-          />
+          <>
+            {applications && applications.length > 0 && (
+              <ApplicationAccessManagement
+                applications={applications || []}
+                onAccessChange={setAccess}
+              />
+            )}
+          </>
         )}
       </div>
     </ContentWrapper>

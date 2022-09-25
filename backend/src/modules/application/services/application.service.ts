@@ -8,10 +8,7 @@ import {
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import {
-  APPLICATION_ERRORS,
-  ONG_APPLICATION_ERRORS,
-} from '../constants/application-error.constants';
+import { APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -31,16 +28,20 @@ import {
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { ApplicationStatus } from '../enums/application-status.enum';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
+import { UserService } from 'src/modules/user/services/user.service';
+import { MailService } from 'src/mail/services/mail.service';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { OrganizationService } from 'src/modules/organization/services';
 
 @Injectable()
 export class ApplicationService {
@@ -51,6 +52,9 @@ export class ApplicationService {
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly fileManagerService: FileManagerService,
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   public async create(
@@ -108,9 +112,10 @@ export class ApplicationService {
       );
 
     // Map the logo url
-    const items = await this.mapLogoToApplications<ApplicationTableView>(
-      applications.items,
-    );
+    const items =
+      await this.fileManagerService.mapLogoToEntity<ApplicationTableView>(
+        applications.items,
+      );
 
     return {
       ...applications,
@@ -143,7 +148,7 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
   }
@@ -179,7 +184,7 @@ export class ApplicationService {
     organizationId: number,
     userId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -207,6 +212,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
+
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**
@@ -230,7 +239,7 @@ export class ApplicationService {
       .leftJoin(
         'user_ong_application',
         'userOngApp',
-        'userOngApp.applicationId = ongApp.id',
+        'userOngApp.ongApplicationId = ongApp.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
       .andWhere('userOngApp.userId = :userId', { userId })
@@ -241,7 +250,7 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications<ApplicationWithOngStatus>(
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
   }
@@ -317,9 +326,10 @@ export class ApplicationService {
       );
 
     // Map the logo url
-    const items = await this.mapLogoToApplications<ApplicationOngView>(
-      applications.items,
-    );
+    const items =
+      await this.fileManagerService.mapLogoToEntity<ApplicationOngView>(
+        applications.items,
+      );
 
     return {
       ...applications,
@@ -383,27 +393,68 @@ export class ApplicationService {
     applicationId: number,
     organizationId: number,
   ): Promise<void> {
-    const ongApplication = await this.ongApplicationService.findOne({
-      where: {
-        applicationId,
-        organizationId,
-      },
-    });
-
-    if (!ongApplication) {
-      throw new NotFoundException({
-        ...ONG_APPLICATION_ERRORS.GET,
-      });
-    }
-
     await this.ongApplicationService.update(
       organizationId,
-      organizationId,
+      applicationId,
       OngApplicationStatus.RESTRICTED,
     );
   }
 
-  // TODO: To be implemented
+  public async restore(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    await this.ongApplicationService.update(
+      organizationId,
+      applicationId,
+      OngApplicationStatus.ACTIVE,
+    );
+  }
+
+  public async deleteOngApplicationRequest(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    const application = await this.applicationRepository.get({
+      where: { id: applicationId },
+    });
+
+    if (!application) {
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
+    }
+
+    // 1. If application is for standalone send email to admin
+    if (application.type === ApplicationTypeEnum.STANDALONE) {
+      const superAdmins = await this.userService.findMany({
+        where: { role: Role.SUPER_ADMIN },
+      });
+
+      const organziation = await this.organizationService.findWithRelations(
+        organizationId,
+      );
+
+      // send email to admin to delete the application
+      this.mailService.sendEmail({
+        to: superAdmins.map((user) => user.email),
+        template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
+        context: {
+          applicationName: application.name,
+          organizationName: organziation.organizationGeneral.name,
+        },
+      });
+
+      // mark the app as to be removed
+      this.ongApplicationService.update(
+        organizationId,
+        applicationId,
+        OngApplicationStatus.PENDING_REMOVAL,
+      );
+    } else {
+      // 2. delete the application
+      return this.ongApplicationService.delete(applicationId, organizationId);
+    }
+  }
+
   public async deleteOne(id: number): Promise<void> {
     throw new NotImplementedException();
   }
@@ -415,7 +466,7 @@ export class ApplicationService {
    *
    *  Metoda descrie lista de applicatii a unei organizatii
    */
-  private async findApplicationsForOng(
+  public async findApplicationsForOng(
     organizationId: number,
   ): Promise<ApplicationWithOngStatus[]> {
     const applications = await this.applicationRepository
@@ -434,7 +485,9 @@ export class ApplicationService {
 
     const applicationsWithStatus = applications.map(this.mapApplicationStatus);
 
-    return this.mapLogoToApplications(applicationsWithStatus);
+    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
+      applicationsWithStatus,
+    );
   }
 
   /**
@@ -444,7 +497,7 @@ export class ApplicationService {
   private async findApplicationsForOngWithAccessStatus(
     organizationId: number,
   ): Promise<ApplicationAccess[]> {
-    return this.applicationRepository
+    const applications = await this.applicationRepository
       .getQueryBuilder()
       .select([
         'ongApp.id as id',
@@ -466,38 +519,10 @@ export class ApplicationService {
         status: ApplicationStatus.ACTIVE,
       })
       .execute();
-  }
 
-  /**
-   * @description
-   * Map public files URLS for all applications which have logo as path
-   */
-  private async mapLogoToApplications<T extends { logo: string }>(
-    applications: T[],
-  ): Promise<T[]> {
-    try {
-      const applicationsWithLogo = applications.map(async (app: T) => {
-        if (app.logo) {
-          const logo = await this.fileManagerService.generatePresignedURL(
-            app.logo,
-          );
-          return { ...app, logo };
-        }
-        return app;
-      });
-
-      return Promise.all(applicationsWithLogo);
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...APPLICATION_ERRORS.GENERATE_URL,
-      });
-      const err = error?.response;
-      throw new BadRequestException({
-        ...APPLICATION_ERRORS.GENERATE_URL,
-        error: err,
-      });
-    }
+    return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
+      applications,
+    );
   }
 
   /**

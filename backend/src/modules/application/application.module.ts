@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationController } from './controllers/application.controller';
 import { Application } from './entities/application.entity';
@@ -19,6 +19,8 @@ import { ApplicationOngView } from './entities/application-ong-view.entity';
 import { ApplicationOngViewRepository } from './repositories/application-ong-view.repository';
 import { ApplicationTableView } from './entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
+import { UserModule } from '../user/user.module';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { ApplicationTableViewRepository } from './repositories/application-table
       ApplicationOngView,
     ]),
     SharedModule,
+    UserModule,
+    forwardRef(() => OrganizationModule),
   ],
   controllers: [ApplicationRequestController, ApplicationController],
   providers: [

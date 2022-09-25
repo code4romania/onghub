@@ -24,7 +24,6 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { useLocation } from 'react-router-dom';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
-import { REQUEST_STATUS_NAME } from '../../../requests/constants/RequestStatus.constants';
 import { useTranslation } from 'react-i18next';
 
 const OrganizationGeneral = () => {

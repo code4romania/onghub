@@ -2,6 +2,7 @@ import { BanIcon, EyeIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../common/config/pagination.config';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../common/hooks/useToast';
@@ -21,6 +22,7 @@ import { IOrganizationView } from './interfaces/Organization.interface';
 import { OrganizationsTableHeaders } from './table-headers/OrganizationsTable.headers';
 
 const Organizations = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -111,7 +113,7 @@ const Organizations = () => {
       {
         name: t('view'),
         icon: EyeIcon,
-        onClick: () => console.log('To be implemented'),
+        onClick: onViewOrganization,
       },
       {
         name: t('restrict'),
@@ -129,6 +131,11 @@ const Organizations = () => {
       width: '50px',
       allowOverflow: true,
     };
+  };
+
+  const onViewOrganization = (row: IOrganizationView) => {
+    console.log('row', row);
+    navigate(`/organizations/${row.id}`);
   };
 
   return (

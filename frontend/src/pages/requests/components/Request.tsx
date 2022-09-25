@@ -104,7 +104,7 @@ const Request = () => {
         subtitle={t('description')}
         backButton={{
           btnLabel: t('back', { ns: 'common' }),
-          onBtnClick: () => navigate('requests'),
+          onBtnClick: () => navigate('/requests'),
         }}
       >
         <div>

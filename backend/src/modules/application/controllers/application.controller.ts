@@ -16,6 +16,7 @@ import {
   ApiBody,
   ApiConsumes,
   ApiParam,
+  ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -29,16 +30,26 @@ import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
-import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
+import {
+  ApplicationWithOngStatus,
+  ApplicationWithOngStatusDetails,
+} from '../interfaces/application-with-ong-status.interface';
 import { ApplicationService } from '../services/application.service';
 import { ApplicationStatus } from '../enums/application-status.enum';
+import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
+import { ApplicationOngView } from '../entities/application-ong-view.entity';
+import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
+import { OngApplicationService } from '../services/ong-application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('application')
 export class ApplicationController {
-  constructor(private readonly applicationService: ApplicationService) {}
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -76,6 +87,15 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @Get('organization/:id')
+  findOrganizationApplications(
+    @Param('id') id: number,
+  ): Promise<ApplicationWithOngStatus[]> {
+    return this.applicationService.findApplicationsForOng(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @Patch(':id/activate')
   activate(@Param('id') id: number) {
     return this.applicationService.update(id, {
@@ -92,6 +112,41 @@ export class ApplicationController {
     });
   }
 
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationAccessFilterDto })
+  @Patch(':id/restrict')
+  restrict(
+    @Param('id') id: number,
+    @Query() filter: ApplicationAccessFilterDto,
+  ) {
+    return this.applicationService.restrict(id, filter.organizationId);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationAccessFilterDto })
+  @Patch(':id/restore')
+  restore(
+    @Param('id') id: number,
+    @Query() filter: ApplicationAccessFilterDto,
+  ) {
+    return this.applicationService.restore(id, filter.organizationId);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/organization')
+  findOrganizationsByApplicationId(
+    @Param('id') id: number,
+    @Query() filters: ApplicationOrganizationFilterDto,
+  ): Promise<Pagination<ApplicationOngView>> {
+    return this.applicationService.findOrganizationsByApplicationId(
+      id,
+      filters,
+    );
+  }
+
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
@@ -100,6 +155,17 @@ export class ApplicationController {
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
     return this.applicationService.findOne(user.organizationId, id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'organizationId', type: String })
+  @Delete(':id/organization/:organizationId')
+  removeOneFoOng(
+    @Param('id') id: number,
+    @Param('organizationId') organizationId: number,
+  ): Promise<void> {
+    return this.ongApplicationService.delete(id, organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
