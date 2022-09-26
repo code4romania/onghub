@@ -95,6 +95,22 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       message: 'There is already a pending request with the same data.',
       errorCode: 'REQ_002',
     },
+    NAME_EXISTS: {
+      message: 'An user with this email address already exists',
+      errorCode: 'REQ_006',
+    },
+    CUI_EXISTS: {
+      message: 'An organization with this cui already exists',
+      errorCode: 'REQ_007',
+    },
+    RAF_NUMBER_EXISTS: {
+      message: 'An organization with this rafNumber already exists',
+      errorCode: 'REQ_008',
+    },
+    ORGANIZATION_NAME_EXISTS: {
+      message: 'An organization with this name already exists',
+      errorCode: 'REQ_009',
+    },
   },
   UPDATE: {
     NOT_PENDING: {

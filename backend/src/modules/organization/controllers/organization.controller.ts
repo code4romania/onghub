@@ -38,10 +38,6 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
-import { ApplicationService } from 'src/modules/application/services/application.service';
-import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
-import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
-import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -51,8 +47,6 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -91,6 +85,15 @@ export class OrganizationController {
     @Body() createRequestDto: CreateOrganizationRequestDto,
   ): Promise<OrganizationRequest> {
     return this.organizationRequestService.create(createRequestDto);
+  }
+
+  @Public()
+  @ApiBody({ type: CreateOrganizationRequestDto })
+  @Post('request/validate')
+  validate(
+    @Body() createRequestDto: Partial<CreateOrganizationRequestDto>,
+  ): Promise<void> {
+    return this.organizationRequestService.validate(createRequestDto);
   }
 
   @Roles(Role.SUPER_ADMIN)

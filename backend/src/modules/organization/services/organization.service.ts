@@ -10,7 +10,10 @@ import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import {
+  ORGANIZATION_ERRORS,
+  ORGANIZATION_REQUEST_ERRORS,
+} from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
@@ -595,6 +598,43 @@ export class OrganizationService {
     } finally {
       // you need to release a queryRunner which was manually instantiated
       await queryRunner.release();
+    }
+  }
+
+  public async validateOrganizationGeneral(
+    cui: string,
+    rafNumber: string,
+    name: string,
+  ): Promise<void> {
+    const organizationWithName = await this.organizationGeneralService.findOne({
+      where: { name },
+    });
+
+    if (organizationWithName) {
+      throw new BadRequestException(
+        ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+      );
+    }
+
+    const organizationWithCUI = await this.organizationGeneralService.findOne({
+      where: { cui },
+    });
+
+    if (organizationWithCUI) {
+      throw new BadRequestException(
+        ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS,
+      );
+    }
+
+    const organizationWithRafNumber =
+      await this.organizationGeneralService.findOne({
+        where: { rafNumber },
+      });
+
+    if (organizationWithRafNumber) {
+      throw new BadRequestException(
+        ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+      );
     }
   }
 }

@@ -82,6 +82,37 @@ export class OrganizationRequestService {
     return request;
   }
 
+  public async validate(
+    createRequestDto: Partial<CreateOrganizationRequestDto>,
+  ): Promise<void> {
+    const { admin, organization } = createRequestDto;
+
+    // 1. validate admin
+    if (admin) {
+      const user = this.userService.findOne({ where: { email: admin.email } });
+
+      if (user) {
+        throw new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+        );
+      }
+    }
+
+    // 2. validate organization
+    if (organization) {
+      // 2.1 validate organization general
+      if (organization.general) {
+        const { cui, rafNumber, name } = organization.general;
+
+        await this.organizationService.validateOrganizationGeneral(
+          cui,
+          rafNumber,
+          name,
+        );
+      }
+    }
+  }
+
   public async create(createReqDto: CreateOrganizationRequestDto) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
