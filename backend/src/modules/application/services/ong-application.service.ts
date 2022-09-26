@@ -75,10 +75,7 @@ export class OngApplicationService {
 
       await this.ongApplicationRepository.remove({ id: ongApplication.id });
     } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...ONG_APPLICATION_ERRORS.DELETE,
-      });
+      this.logger.error({ error: { error }, ...ONG_APPLICATION_ERRORS.DELETE });
       const err = error?.response;
       throw new BadRequestException({
         ...ONG_APPLICATION_ERRORS.DELETE,
