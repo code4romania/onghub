@@ -6,6 +6,7 @@ import {
   getUserById,
   getUsers,
   removeUserById,
+  resendInvite,
   restoreUserAccess,
   restrictUserAccess,
   updateUser,
@@ -56,23 +57,13 @@ export const useUsersQuery = (
   );
 };
 
-export const useCognitoUsersQuery = (
-  orderBy: string,
-  orderDirection: OrderDirection,
-  search?: string,
-  interval?: Date[],
-) => {
+export const useCognitoUsersQuery = (search?: string, interval?: Date[]) => {
   const { setInvites } = useStore();
-  return useQuery(
-    ['cognito-users', orderBy, orderDirection, search, interval],
-    () => getCognitoUsers(orderBy, orderDirection, search, interval),
-    {
-      onSuccess: (data: IInvite[]) => {
-        setInvites(data);
-      },
-      enabled: !!(orderBy && orderDirection),
+  return useQuery(['cognito-users', search, interval], () => getCognitoUsers(search, interval), {
+    onSuccess: (data: IInvite[]) => {
+      setInvites(data);
     },
-  );
+  });
 };
 
 export const useSelectedUserQuery = (userId: string) => {
@@ -108,4 +99,8 @@ export const useUserMutation = () => {
       setProfile(null);
     },
   });
+};
+
+export const useResendInviteMutation = () => {
+  return useMutation((id: number) => resendInvite(id));
 };

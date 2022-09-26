@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SortOrder, TableColumn } from 'react-data-table-component';
+import { TableColumn } from 'react-data-table-component';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
@@ -7,6 +7,7 @@ import DateRangePicker from '../../../../components/date-range-picker/DateRangeP
 import {
   useCognitoUsersQuery,
   useRemoveUserMutation,
+  useResendInviteMutation,
 } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
 import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
@@ -15,13 +16,10 @@ import { ReplyIcon, TrashIcon } from '@heroicons/react/outline';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { IInvite } from '../../interfaces/Invite.interface';
-import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 
 const UserInvites = () => {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
   const [selectedInvite, setSelectedInvite] = useState<IInvite | null>(null);
-  const [orderByColumn, setOrderByColumn] = useState<string>();
-  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
 
@@ -29,29 +27,28 @@ const UserInvites = () => {
 
   const { t } = useTranslation(['user', 'common']);
 
-  const { isLoading, error, refetch } = useCognitoUsersQuery(
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-    searchWord as string,
-    range,
-  );
+  const { isLoading, error, refetch } = useCognitoUsersQuery(searchWord as string, range);
+  const removeUserMutation = useRemoveUserMutation();
+  const resendInviteMutation = useResendInviteMutation();
 
   useEffect(() => {
-    if (error) useErrorToast(t('list.load_error'));
-  }, [error]);
+    if (error) useErrorToast(t('invites.load_error'));
+
+    if (resendInviteMutation.error) useErrorToast(t('invites.resend_error'));
+
+    if (removeUserMutation.error) useErrorToast(t('invites.remove_error'));
+  }, [error, resendInviteMutation.error, removeUserMutation.error]);
 
   useEffect(() => {
     if (selectedInvite) setIsConfirmRemoveModalOpen(true);
   }, [selectedInvite]);
 
-  const removeUserMutation = useRemoveUserMutation();
-
   const buildUserActionColumn = (): TableColumn<IInvite> => {
     const pendingUserMenuItems = [
       {
-        name: t('edit', { ns: 'common' }),
+        name: t('invites.resend'),
         icon: ReplyIcon,
-        onClick: setSelectedInvite,
+        onClick: onResendInvite,
       },
       {
         name: t('delete', { ns: 'common' }),
@@ -72,12 +69,11 @@ const UserInvites = () => {
   /**
    * ROW ACTIONS
    */
-
   const onDelete = () => {
     if (selectedInvite) {
       removeUserMutation.mutate(selectedInvite.id, {
         onSuccess: () => {
-          useSuccessToast(`${t('list.remove_success')} ${selectedInvite.name}`);
+          useSuccessToast(`${t('invites.remove_success')} ${selectedInvite.name}`);
           refetch();
         },
         onSettled: () => {
@@ -93,18 +89,18 @@ const UserInvites = () => {
     setSelectedInvite(null);
   };
 
+  const onResendInvite = (row: IInvite) => {
+    resendInviteMutation.mutate(row.id, {
+      onSuccess: () => {
+        useSuccessToast(t('invites.resend_success'));
+        refetch();
+      },
+    });
+  };
+
   /**
    * FILTERS
    */
-  const onSort = (column: TableColumn<string>, direction: SortOrder) => {
-    setOrderByColumn(column.id as string);
-    setOrderDirection(
-      direction.toLocaleUpperCase() === OrderDirection.ASC
-        ? OrderDirection.ASC
-        : OrderDirection.DESC,
-    );
-  };
-
   const onSearch = (searchWord: string) => {
     setSearchWord(searchWord);
   };
@@ -139,7 +135,7 @@ const UserInvites = () => {
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">{t('title')}</p>
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('invites.title')}</p>
           {/* Uncomment once download will be implemented */}
           {/* <button type="button" className="edit-button">
             Descarca Tabel
@@ -150,13 +146,12 @@ const UserInvites = () => {
             columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
             data={invites}
             loading={isLoading}
-            onSort={onSort}
           />
         </div>
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
-            title={t('list.confirmation')}
-            description={t('list.description')}
+            title={t('invites.confirmation')}
+            description={t('invites.description')}
             closeBtnLabel={t('back', { ns: 'common' })}
             confirmBtnLabel={t('delete', { ns: 'common' })}
             onClose={onCancelUserRemoval}

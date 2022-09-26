@@ -27,22 +27,21 @@ export const removeUserById = async (id: number): Promise<any> => {
   return API.delete(`/user/${id}`).then((res) => res.data);
 };
 
-// export const resendInvite = async (email: string): Promise<any> => {
-//   return API.post(`/user/resend-invite`, email).then((res) => res.data);
-// };
+export const resendInvite = async (id: number): Promise<any> => {
+  return API.patch(`/user/${id}/resend-invite`).then((res) => res.data);
+};
 
-export const getCognitoUsers = async (
-  orderBy: string,
-  orderDirection: OrderDirection,
-  search?: string,
-  interval?: Date[],
-): Promise<IInvite[]> => {
-  let requestUrl = `/user/cognito-users?orderBy=${orderBy}&orderDirection=${orderDirection}`;
+export const getCognitoUsers = async (search?: string, interval?: Date[]): Promise<IInvite[]> => {
+  let requestUrl = `/user/cognito-users`;
 
-  if (search) requestUrl = `${requestUrl}&search=${search}`;
-
-  if (interval && interval.length === 2)
-    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+  if (search && interval && interval.length === 2) {
+    requestUrl = `${requestUrl}?search=${search}&start=${formatISO9075(
+      interval[0],
+    )}&end=${formatISO9075(interval[1])}`;
+  } else if (search) {
+    requestUrl = `${requestUrl}?search=${search}`;
+  } else if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}?start=${formatISO9075(interval[0])}&end=${formatISO9075(
       interval[1],
     )}`;
 

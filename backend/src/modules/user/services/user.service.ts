@@ -202,16 +202,7 @@ export class UserService {
     options: Partial<BaseFilterDto>,
     organizationId?: number,
   ) {
-    const {
-      limit,
-      page,
-      search,
-      orderBy,
-      orderDirection,
-      start,
-      end,
-      ...filters
-    } = options;
+    const { search, start, end, ...filters } = options;
     const config = INVITE_FILTERS_CONFIG;
     const data = await this.cognitoService.getCognitoUsers(
       CognitoUserStatus.FORCE_CHANGE_PASSWORD,
@@ -222,12 +213,6 @@ export class UserService {
     data.map((item) => {
       emails.push(item.Attributes[3].Value);
     });
-
-    // const users = await this.findMany({
-    //   where: organizationId
-    //     ? { organizationId, email: In(emails) }
-    //     : { email: In(emails) },
-    // });
 
     // filters (and where)
     const orWhereQuery = [];
@@ -259,17 +244,10 @@ export class UserService {
         orWhereQuery.push(andWhereQuery);
     }
 
-    // order conditions
-    const orderOptions: FindOptionsOrder<any> = {
-      [options.orderBy || config.defaultSortBy]:
-        options.orderDirection || OrderDirection.ASC,
-    };
-
     // full query
     let query: FindManyOptions<User> = {
       select: config.selectColumns,
       relations: config.relations,
-      order: orderOptions,
     };
 
     if (orWhereQuery.length > 0) {
@@ -287,20 +265,6 @@ export class UserService {
     });
 
     return response;
-
-    // for (let i = 0; i < emails.length; i++) {
-    //   if (users[i]) {
-    //     invitedUsers.push({
-    //       id: users[i].id,
-    //       name: users[i].name,
-    //       phone: users[i].phone,
-    //       email: users[i].email,
-    //       createdOn: users[i].createdOn,
-    //     });
-    //   }
-    // }
-
-    // return invitedUsers;
   }
 
   async remove(user: User): Promise<string> {
@@ -377,6 +341,11 @@ export class UserService {
       }
     }
     return { updated, failed };
+  }
+
+  async resendUserInvite(userId: number) {
+    const user = await this.getById(userId);
+    this.cognitoService.resendInvite(user.email);
   }
 
   // ****************************************************

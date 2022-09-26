@@ -76,10 +76,10 @@ export class AdminUserController {
     return this.userService.getById(userId);
   }
 
-  @ApiQuery({ name: 'email', type: String })
-  @Post('resend-invite')
-  async resendInvite(@Query('email') email: string) {
-    return this.cognitoService.resendInvite(email);
+  @ApiParam({ name: 'id', type: Number })
+  @Patch(':id/resend-invite')
+  async resendInvite(@Param('id') id: number) {
+    return this.userService.resendUserInvite(id);
   }
 
   @ApiBody({ type: Number, isArray: true })
