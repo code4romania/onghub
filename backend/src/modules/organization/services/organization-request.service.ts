@@ -202,6 +202,28 @@ export class OrganizationRequestService {
     return this.find(requestId);
   }
 
+  public async sendRestrictRequest(organizationId: number) {
+    const organization = await this.organizationService.findWithRelations(
+      organizationId,
+    );
+    const superAdmins = await this.userService.findMany({
+      where: { role: Role.SUPER_ADMIN },
+    });
+    const emailSAdmins = superAdmins.map((item) => {
+      return item.email;
+    });
+
+    this.mailService.sendEmail({
+      to: emailSAdmins,
+      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
+      context: {
+        orgName: organization.organizationGeneral.name,
+      },
+    });
+
+    return organization.organizationGeneral.name;
+  }
+
   private find(id: number): Promise<OrganizationRequest> {
     return this.organizationRequestRepository.get({
       where: { id },

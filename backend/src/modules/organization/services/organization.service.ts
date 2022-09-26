@@ -5,6 +5,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MailService } from 'src/mail/services/mail.service';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -54,6 +57,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
+    private readonly mailService: MailService,
   ) {}
 
   public async create(
@@ -239,6 +243,7 @@ export class OrganizationService {
         'organizationReport.reports',
         'organizationReport.partners',
         'organizationReport.investors',
+        'users',
       ],
     });
 
@@ -485,11 +490,27 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.find(organizationId);
+    const organization = await this.findWithRelations(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
       throw new BadRequestException(ORGANIZATION_ERRORS.RESTRICT);
     }
+
+    const admins = organization.users.filter(
+      (item) => item.role === Role.ADMIN,
+    );
+
+    const adminEmails = admins.map((item) => {
+      return item.email;
+    });
+
+    this.mailService.sendEmail({
+      to: adminEmails,
+      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      context: {
+        orgName: organization.organizationGeneral.name,
+      },
+    });
 
     return this.organizationRepository.updateOne({
       id: organizationId,

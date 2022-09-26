@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
@@ -8,12 +8,16 @@ import { useOrganizationByProfileQuery } from '../../services/organization/Organ
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
+import { UserRole } from '../users/enums/UserRole.enum';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const OrganizationProfile = () => {
+  const [readonly, setReadonly] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { t } = useTranslation('organization');
+  const { role } = useContext(AuthContext);
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
@@ -42,6 +46,11 @@ const OrganizationProfile = () => {
   return (
     <div>
       <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
+      {role !== UserRole.EMPLOYEE && (
+        <button type="button" className="red-button">
+          {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
+        </button>
+      )}
       <p className="text-gray-400 pt-6">{t('description')}</p>
       <div className="pb-6 flex">
         <nav

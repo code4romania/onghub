@@ -18,6 +18,7 @@ import {
   getOrganizations,
   patchOrganization,
   patchOrganizationByProfile,
+  restrictOrganization,
   uploadInvestors,
   uploadInvestorsByProfile,
   uploadOrganizationFiles,
@@ -241,6 +242,10 @@ export const useDeleteInvestorMutation = () => {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
+};
+
+export const useRestrictOrganizationMutation = () => {
+  return useMutation((id: number) => restrictOrganization(id));
 };
 
 /**EMPLOYEE & ADMIN */

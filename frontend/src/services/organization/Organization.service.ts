@@ -118,3 +118,7 @@ export const deletePartners = (id: number, partnerId: number): Promise<any> => {
 export const deleteInvestors = (id: number, investorId: number): Promise<any> => {
   return API.delete(`/organization/${id}/investors/${investorId}`).then((res) => res.data);
 };
+
+export const restrictOrganization = (id: number): Promise<any> => {
+  return API.patch(`/organization/${id}/restrict`).then((res) => res.data);
+};

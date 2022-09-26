@@ -18,6 +18,7 @@ import {
   getRequests,
   rejectApplicationnRequest,
   rejectOrganizationRequest,
+  restrictOrganizationRequest,
 } from './Request.service';
 
 // Organization
@@ -93,6 +94,10 @@ export const useOrganizationRequest = (requestId: string) => {
       }
     },
   });
+};
+
+export const useRestrictOrganizationRequestMutation = () => {
+  return useMutation((organizationId: number) => restrictOrganizationRequest(organizationId));
 };
 
 // Application
