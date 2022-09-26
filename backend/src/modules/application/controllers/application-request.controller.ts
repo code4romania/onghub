@@ -1,5 +1,4 @@
 import {
-  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
@@ -20,6 +19,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { ApplicationRequestFilterDto } from 'src/modules/application/dto/application-request-filters.dto';
 import { ApplicationRequest } from 'src/modules/application/entities/application-request.entity';
 import { Role } from '../../user/enums/role.enum';
+import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
 import { ApplicationRequestService } from '../services/application-request.service';
 
 @Roles(Role.SUPER_ADMIN)
@@ -38,6 +38,14 @@ export class ApplicationRequestController {
     @Query() filters: ApplicationRequestFilterDto,
   ): Promise<Pagination<ApplicationRequest>> {
     return this.applicationRequestService.findAll(filters);
+  }
+
+  @ApiParam({ name: 'id', type: String })
+  @Get('organization/:id')
+  findOrganizationApplicationRequests(
+    @Param('id') id: number,
+  ): Promise<OrganizationApplicationRequest[]> {
+    return this.applicationRequestService.findRequestsByOrganizationId(id);
   }
 
   @ApiParam({ name: 'id', type: String })

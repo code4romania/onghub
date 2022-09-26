@@ -65,18 +65,22 @@ export const ORGANIZATION_ERRORS = {
       errorCode: 'ORG_015',
     },
   },
+  RESTRICT: {
+    message: 'Organization is already RESTRICTED',
+    errorCode: 'ORG_016',
+  },
   CREATE_NEW_REPORTING_ENTRIES: {
     ALREADY_EXIST: {
       message: 'The reporting entries for this ONG are already existing',
-      errorCode: 'ORG_016',
+      errorCode: 'ORG_017',
     },
     ANAF_ERRORED: {
       message: 'The ANAF service responded with error',
-      errorCode: 'ORG_017',
+      errorCode: 'ORG_018',
     },
     ADD_NEW: {
       message: 'Saving the new entries in DB, failed',
-      errorCode: 'ORG_018',
+      errorCode: 'ORG_019',
     },
   },
 };

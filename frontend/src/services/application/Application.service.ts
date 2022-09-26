@@ -74,7 +74,7 @@ export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationW
 export const getMyOngApplications = async (): Promise<
   PaginatedEntity<ApplicationWithOngStatus>
 > => {
-  const requestUrl = `/organization/application?filter=mine`;
+  const requestUrl = `/organization/application`;
   return API.get(requestUrl).then((res) => res.data);
 };
 
@@ -106,6 +106,28 @@ export const getApplicationOrganizations = (
   if (status) requestUrl = `${requestUrl}&status=${status}`;
 
   return API.get(requestUrl).then((res) => res.data);
+};
+
+export const restrictApplication = (applicationId: number, organizationId: string) => {
+  return API.patch(`/application/${applicationId}/restrict?organizationId=${organizationId}`).then(
+    (res) => res.data,
+  );
+};
+
+export const restoreApplication = (applicationId: number, organizationId: string) => {
+  return API.patch(`/application/${applicationId}/restore?organizationId=${organizationId}`).then(
+    (res) => res.data,
+  );
+};
+
+export const removeOngApplication = (applicationId: number, organizationId: string) => {
+  return API.delete(`/application/${applicationId}/organization/${organizationId}`).then(
+    (res) => res.data,
+  );
+};
+
+export const removeOngApplicationRequest = (applicationId: number) => {
+  return API.delete(`/organization/application/${applicationId}`).then((res) => res.data);
 };
 
 const generateApplicationFormDataPayload = (

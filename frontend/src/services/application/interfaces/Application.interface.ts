@@ -29,6 +29,7 @@ export interface ApplicationWithOngStatus {
   status: OngApplicationStatus;
   type: ApplicationTypeEnum;
   website: string;
+  createdOn: Date;
 }
 
 export interface ApplicationAccess {
@@ -55,4 +56,11 @@ export interface ApplicationOrganization {
   userCount: number;
   createdOn: Date;
   status: OngApplicationStatus;
+}
+
+export interface OrganizationApplicationRequest {
+  id: number;
+  name: string;
+  logo: string;
+  createdOn: Date;
 }

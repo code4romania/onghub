@@ -12,6 +12,8 @@ import {
   deletePartners,
   deletePartnersByProfile,
   getOrganization,
+  getOrganizationApplicationRequests,
+  getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
   patchOrganization,
@@ -79,7 +81,27 @@ export const useOrganizationsQuery = (
   );
 };
 
-export const useOrganizationQuery = (id: number) => {
+export const useOrganizationApplicationsQuery = (organizationId: string) => {
+  return useQuery(
+    ['applications', organizationId],
+    () => getOrganizationApplications(organizationId),
+    {
+      enabled: !!organizationId,
+    },
+  );
+};
+
+export const useOrganizationApplicationRequestsQuery = (organizationId: string) => {
+  return useQuery(
+    ['requests', organizationId],
+    () => getOrganizationApplicationRequests(organizationId),
+    {
+      enabled: !!organizationId,
+    },
+  );
+};
+
+export const useOrganizationQuery = (id: string) => {
   const {
     setOrganizationGeneral,
     setOrganizationActivity,
