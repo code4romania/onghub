@@ -22,8 +22,6 @@ export class AnafService {
 
     companyCUI = companyCUI.replace('RO', '');
 
-    console.log(`${ANAF_URL}?an=${year}&cui=${companyCUI}`);
-
     const company = this.httpService
       .get(ANAF_URL + `?an=${year}&cui=${companyCUI}`)
       .pipe(

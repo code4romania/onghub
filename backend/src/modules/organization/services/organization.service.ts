@@ -596,8 +596,6 @@ export class OrganizationService {
     // 1. Check if the NGO already has the data we try to add
     const organization = await this.findWithRelations(+organizationId);
 
-    // console.log(organization.organizationReport.investors.length);
-    // console.log(JSON.stringify(organization));
     const { reports, partners, investors } = organization.organizationReport;
 
     const hasDataFromYear = (
