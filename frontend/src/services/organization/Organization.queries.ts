@@ -7,6 +7,7 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
+  activateOrganization,
   deleteInvestors,
   deleteInvestorsByProfile,
   deletePartners,
@@ -246,6 +247,10 @@ export const useDeleteInvestorMutation = () => {
 
 export const useRestrictOrganizationMutation = () => {
   return useMutation((id: number) => restrictOrganization(id));
+};
+
+export const useActivateOrganizationMutation = () => {
+  return useMutation((id: number) => activateOrganization(id));
 };
 
 /**EMPLOYEE & ADMIN */

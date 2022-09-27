@@ -122,3 +122,7 @@ export const deleteInvestors = (id: number, investorId: number): Promise<any> =>
 export const restrictOrganization = (id: number): Promise<any> => {
   return API.patch(`/organization/${id}/restrict`).then((res) => res.data);
 };
+
+export const activateOrganization = (id: number): Promise<any> => {
+  return API.patch(`organization/${id}/activate`).then((res) => res.data);
+};

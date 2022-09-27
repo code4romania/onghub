@@ -202,7 +202,7 @@ export class OrganizationRequestService {
     return this.find(requestId);
   }
 
-  public async sendRestrictRequest(organizationId: number) {
+  public async sendRestrictRequest(organizationId: number): Promise<void> {
     const organization = await this.organizationService.findWithRelations(
       organizationId,
     );
@@ -213,7 +213,7 @@ export class OrganizationRequestService {
       return item.email;
     });
 
-    this.mailService.sendEmail({
+    await this.mailService.sendEmail({
       to: emailSAdmins,
       template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
       context: {
@@ -221,7 +221,7 @@ export class OrganizationRequestService {
       },
     });
 
-    return organization.organizationGeneral.name;
+    return;
   }
 
   private find(id: number): Promise<OrganizationRequest> {

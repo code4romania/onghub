@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { useErrorToast } from '../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useOrganizationByProfileQuery } from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
@@ -10,20 +10,27 @@ import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { AuthContext } from '../../contexts/AuthContext';
+import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
+import { useRestrictOrganizationRequestMutation } from '../../services/request/Request.queries';
+import { useSelectedOrganization } from '../../store/selectors';
 
 const OrganizationProfile = () => {
-  const [readonly, setReadonly] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { t } = useTranslation('organization');
   const { role } = useContext(AuthContext);
+  const [isOrganizationDeleteModalOpen, setOrganizationDeleteModal] = useState(false);
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
 
   // load organization data
-  const { error } = useOrganizationByProfileQuery();
+  const { error, refetch } = useOrganizationByProfileQuery();
+
+  const restrictOrganizationRequestMutation = useRestrictOrganizationRequestMutation();
+
+  const organization = useSelectedOrganization();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -36,21 +43,38 @@ const OrganizationProfile = () => {
 
   useEffect(() => {
     if (error) useErrorToast(t('error'));
-  }, [error]);
+
+    if (restrictOrganizationRequestMutation.error) useErrorToast(t('restrict.request_error'));
+  }, [error, restrictOrganizationRequestMutation.error]);
 
   const onTabClick = (tab: IPageTab) => {
     setSelectedTab(tab.id);
     navigate(tab.href);
   };
 
+  const onRestrict = () => {
+    if (organization.organization)
+      restrictOrganizationRequestMutation.mutate(organization.organization.id, {
+        onSuccess: () => {
+          useSuccessToast(t('restrict.request_success'));
+          refetch();
+        },
+      });
+    setOrganizationDeleteModal(false);
+  };
+
   return (
     <div>
-      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
       {role !== UserRole.EMPLOYEE && (
-        <button type="button" className="red-button">
-          {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
+        <button
+          type="button"
+          className="red-button button_restrict_org"
+          onClick={() => setOrganizationDeleteModal(true)}
+        >
+          {t('restrict.confirm')}
         </button>
       )}
+      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
       <p className="text-gray-400 pt-6">{t('description')}</p>
       <div className="pb-6 flex">
         <nav
@@ -74,6 +98,18 @@ const OrganizationProfile = () => {
         </nav>
       </div>
       <Outlet />
+      {isOrganizationDeleteModalOpen && (
+        <ConfirmationModal
+          title={t('restrict.title')}
+          description={t('restrict.description')}
+          closeBtnLabel={t('back', { ns: 'common' })}
+          confirmBtnLabel={t('restrict.confirm')}
+          onClose={() => {
+            setOrganizationDeleteModal(false);
+          }}
+          onConfirm={onRestrict}
+        />
+      )}
     </div>
   );
 };

@@ -52,7 +52,9 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 };
 
 export const restrictOrganizationRequest = (organizationId: number): Promise<any> => {
-  return API.post(`/organization/request/${organizationId}/restrict`).then((res) => res.data);
+  return API.post(`/organization-profile/request/${organizationId}/restrict`).then(
+    (res) => res.data,
+  );
 };
 
 // Application

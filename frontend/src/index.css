@@ -57,7 +57,7 @@
   }
 
   .red-button {
-    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto sm:text-sm;
+    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto sm:text-sm;
   }
 }
 
@@ -128,4 +128,14 @@
 .ribbon p {
   font-size: 16px;
   margin: 0;
+}
+
+.button_restrict_org {
+  padding: 13px 25px;
+  float: right;
+  background: #ffffff;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  margin: 5px 5px 0 0;
 }

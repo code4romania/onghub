@@ -64,6 +64,13 @@ export class OrganizationController {
     return this.organizationService.restrict(id);
   }
 
+  @ApiParam({ name: 'id', type: Number })
+  @Roles(Role.SUPER_ADMIN)
+  @Patch(':id/activate')
+  activate(@Param('id') id: number) {
+    return this.organizationService.activate(id);
+  }
+
   /**
    * *****************************
    * ******* ONG REQUEST *****
@@ -125,13 +132,6 @@ export class OrganizationController {
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
     return this.organizationService.update(+id, updateOrganizationDto);
-  }
-
-  @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: Number })
-  @Post('request/:id/restrict')
-  restrictRequest(@Param('id') id: number) {
-    return this.organizationRequestService.sendRestrictRequest(id);
   }
 
   /**
