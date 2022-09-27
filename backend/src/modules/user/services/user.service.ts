@@ -12,7 +12,6 @@ import {
   Between,
   FindManyOptions,
   FindOneOptions,
-  FindOptionsOrder,
   ILike,
   In,
   UpdateResult,
@@ -31,11 +30,10 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
 import { Access } from 'src/modules/application/interfaces/application-access.interface';
 import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
-import { IInvites } from '../interfaces/invites.interface';
 import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
-import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 
 @Injectable()
 export class UserService {
@@ -201,17 +199,17 @@ export class UserService {
   async getInvitedUsers(
     options: Partial<BaseFilterDto>,
     organizationId?: number,
-  ) {
-    const { search, start, end, ...filters } = options;
+  ): Promise<User[]> {
+    const { search, start, end } = options;
     const config = INVITE_FILTERS_CONFIG;
     const data = await this.cognitoService.getCognitoUsers(
       CognitoUserStatus.FORCE_CHANGE_PASSWORD,
     );
-    // const invitedUsers: IInvites[] = [];
-    const emails: string[] = [];
 
-    data.map((item) => {
-      emails.push(item.Attributes[3].Value);
+    const emails: string[] = data.map((item: UserType) => {
+      return item.Attributes.find((obj) => {
+        if (obj.Name === 'email') return obj.Value;
+      }).Value;
     });
 
     // filters (and where)
@@ -343,9 +341,11 @@ export class UserService {
     return { updated, failed };
   }
 
-  async resendUserInvite(userId: number) {
+  async resendUserInvite(userId: number): Promise<void> {
     const user = await this.getById(userId);
-    this.cognitoService.resendInvite(user.email);
+    await this.cognitoService.resendInvite(user.email);
+
+    return;
   }
 
   // ****************************************************

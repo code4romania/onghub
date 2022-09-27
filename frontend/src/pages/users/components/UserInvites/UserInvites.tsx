@@ -5,7 +5,7 @@ import DataTableComponent from '../../../../components/data-table/DataTableCompo
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import {
-  useCognitoUsersQuery,
+  useInviteesQuery,
   useRemoveUserMutation,
   useResendInviteMutation,
 } from '../../../../services/user/User.queries';
@@ -19,7 +19,9 @@ import { IInvite } from '../../interfaces/Invite.interface';
 
 const UserInvites = () => {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
-  const [selectedInvite, setSelectedInvite] = useState<IInvite | null>(null);
+  const [selectedInviteeForDeletion, setSelectedInviteeForDeletion] = useState<IInvite | null>(
+    null,
+  );
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
 
@@ -27,7 +29,7 @@ const UserInvites = () => {
 
   const { t } = useTranslation(['user', 'common']);
 
-  const { isLoading, error, refetch } = useCognitoUsersQuery(searchWord as string, range);
+  const { isLoading, error, refetch } = useInviteesQuery(searchWord as string, range);
   const removeUserMutation = useRemoveUserMutation();
   const resendInviteMutation = useResendInviteMutation();
 
@@ -40,8 +42,8 @@ const UserInvites = () => {
   }, [error, resendInviteMutation.error, removeUserMutation.error]);
 
   useEffect(() => {
-    if (selectedInvite) setIsConfirmRemoveModalOpen(true);
-  }, [selectedInvite]);
+    if (selectedInviteeForDeletion) setIsConfirmRemoveModalOpen(true);
+  }, [selectedInviteeForDeletion]);
 
   const buildUserActionColumn = (): TableColumn<IInvite> => {
     const pendingUserMenuItems = [
@@ -53,7 +55,7 @@ const UserInvites = () => {
       {
         name: t('delete', { ns: 'common' }),
         icon: TrashIcon,
-        onClick: setSelectedInvite,
+        onClick: setSelectedInviteeForDeletion,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
@@ -70,14 +72,14 @@ const UserInvites = () => {
    * ROW ACTIONS
    */
   const onDelete = () => {
-    if (selectedInvite) {
-      removeUserMutation.mutate(selectedInvite.id, {
+    if (selectedInviteeForDeletion) {
+      removeUserMutation.mutate(selectedInviteeForDeletion.id, {
         onSuccess: () => {
-          useSuccessToast(`${t('invites.remove_success')} ${selectedInvite.name}`);
+          useSuccessToast(`${t('invites.remove_success')} ${selectedInviteeForDeletion.name}`);
           refetch();
         },
         onSettled: () => {
-          setSelectedInvite(null);
+          setSelectedInviteeForDeletion(null);
         },
       });
     }
@@ -86,7 +88,7 @@ const UserInvites = () => {
 
   const onCancelUserRemoval = () => {
     setIsConfirmRemoveModalOpen(false);
-    setSelectedInvite(null);
+    setSelectedInviteeForDeletion(null);
   };
 
   const onResendInvite = (row: IInvite) => {

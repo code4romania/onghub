@@ -11,6 +11,7 @@ import {
   ListUsersCommand,
   ListUsersCommandOutput,
   MessageActionType,
+  UserType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -49,7 +50,7 @@ export class CognitoUserService {
     return data.User.Username;
   }
 
-  async getCognitoUsers(status: CognitoUserStatus) {
+  async getCognitoUsers(status: CognitoUserStatus): Promise<UserType[]> {
     const listUsersCommand = new ListUsersCommand({
       UserPoolId: CognitoConfig.userPoolId,
       Filter: `cognito:user_status = "${status}"`,
@@ -70,7 +71,9 @@ export class CognitoUserService {
       MessageAction: MessageActionType.RESEND,
     });
 
-    this.cognitoProvider.send(resendUserInvite);
+    await this.cognitoProvider.send(resendUserInvite);
+
+    return;
   }
 
   async updateUser(email: string, { name, phone }: UpdateUserDto) {

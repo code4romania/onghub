@@ -59,11 +59,11 @@ export class AdminUserController {
   }
 
   @ApiQuery({ type: () => PartialType(BaseFilterDto) })
-  @Get('cognito-users')
+  @Get('invitees')
   async getInvites(
     @ExtractUser() user: User,
     @Query() filters: Partial<BaseFilterDto>,
-  ) {
+  ): Promise<User[]> {
     return this.userService.getInvitedUsers(filters, user.organizationId);
   }
 
@@ -78,7 +78,7 @@ export class AdminUserController {
 
   @ApiParam({ name: 'id', type: Number })
   @Patch(':id/resend-invite')
-  async resendInvite(@Param('id') id: number) {
+  async resendInvite(@Param('id') id: number): Promise<void> {
     return this.userService.resendUserInvite(id);
   }
 

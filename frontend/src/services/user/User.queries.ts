@@ -1,7 +1,7 @@
 import {
   createUser,
   deleteUser,
-  getCognitoUsers,
+  getInvitees,
   getProfile,
   getUserById,
   getUsers,
@@ -57,9 +57,9 @@ export const useUsersQuery = (
   );
 };
 
-export const useCognitoUsersQuery = (search?: string, interval?: Date[]) => {
+export const useInviteesQuery = (search?: string, interval?: Date[]) => {
   const { setInvites } = useStore();
-  return useQuery(['cognito-users', search, interval], () => getCognitoUsers(search, interval), {
+  return useQuery(['invitees', search, interval], () => getInvitees(search, interval), {
     onSuccess: (data: IInvite[]) => {
       setInvites(data);
     },

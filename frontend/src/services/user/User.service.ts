@@ -31,17 +31,13 @@ export const resendInvite = async (id: number): Promise<any> => {
   return API.patch(`/user/${id}/resend-invite`).then((res) => res.data);
 };
 
-export const getCognitoUsers = async (search?: string, interval?: Date[]): Promise<IInvite[]> => {
-  let requestUrl = `/user/cognito-users`;
+export const getInvitees = async (search?: string, interval?: Date[]): Promise<IInvite[]> => {
+  let requestUrl = `/user/invitees?orderDirection=ASC`;
 
-  if (search && interval && interval.length === 2) {
-    requestUrl = `${requestUrl}?search=${search}&start=${formatISO9075(
-      interval[0],
-    )}&end=${formatISO9075(interval[1])}`;
-  } else if (search) {
-    requestUrl = `${requestUrl}?search=${search}`;
-  } else if (interval && interval.length === 2)
-    requestUrl = `${requestUrl}?start=${formatISO9075(interval[0])}&end=${formatISO9075(
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
       interval[1],
     )}`;
 
