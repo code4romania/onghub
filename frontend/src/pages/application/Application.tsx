@@ -13,15 +13,15 @@ const Application = () => {
   const {
     data: application,
     isLoading,
-    refetch: refecthApplication,
+    refetch: refetchApplication,
   } = useApplicationQuery(id as string);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  const naivgateBack = () => {
-    navigate('/all-apps');
+  const navigateBack = () => {
+    navigate('/apps');
   };
 
   return (
@@ -29,10 +29,10 @@ const Application = () => {
       title={t('title')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: naivgateBack,
+        onBtnClick: navigateBack,
       }}
     >
-      <Outlet context={[application, refecthApplication]} />
+      <Outlet context={[application, refetchApplication]} />
     </ContentWrapper>
   );
 };
