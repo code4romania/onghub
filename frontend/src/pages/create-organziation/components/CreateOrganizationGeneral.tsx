@@ -52,12 +52,6 @@ const CreateOrganizationGeneral = () => {
     }
   }, [organization]);
 
-  useEffect(() => {
-    if (county && !readonly) {
-      setValue('city', null);
-    }
-  }, [cities]);
-
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
