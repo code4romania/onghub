@@ -69,7 +69,7 @@ const Account = () => {
           <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_account')}</p>
           <p className="text-gray-400 pt-6">{t('account_description')}</p>
         </div>
-        {role !== UserRole.SUPER_ADMIN && (
+        {role === UserRole.EMPLOYEE && (
           <button
             type="button"
             className="red-button"
