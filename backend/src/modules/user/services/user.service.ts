@@ -207,9 +207,7 @@ export class UserService {
     );
 
     const emails: string[] = data.map((item: UserType) => {
-      return item.Attributes.find((obj) => {
-        if (obj.Name === 'email') return obj.Value;
-      }).Value;
+      return item.Attributes.find((attr) => attr.Name === 'email').Value;
     });
 
     // filters (and where)

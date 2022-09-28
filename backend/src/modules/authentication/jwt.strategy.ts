@@ -5,6 +5,7 @@ import { passportJwtSecret } from 'jwks-rsa';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { UserService } from '../user/services/user.service';
 import { OrganizationStatus } from '../organization/enums/organization-status.enum';
+import { UserStatus } from '../user/enums/user-status.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -32,6 +33,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     if (user?.organization?.status === OrganizationStatus.RESTRICTED) {
+      throw new UnauthorizedException();
+    }
+
+    if (user?.status === UserStatus.RESTRICTED) {
       throw new UnauthorizedException();
     }
 
