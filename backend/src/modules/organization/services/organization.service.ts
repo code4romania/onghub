@@ -280,6 +280,7 @@ export class OrganizationService {
     if (updateOrganizationDto.financial) {
       return this.organizationFinancialService.update(
         updateOrganizationDto.financial,
+        id,
       );
     }
 
@@ -287,6 +288,7 @@ export class OrganizationService {
       return this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
+        id,
       );
     }
 

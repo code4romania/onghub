@@ -10,6 +10,7 @@ import {
 import {
   InvestorRepository,
   OrganizationReportRepository,
+  OrganizationRepository,
   PartnerRepository,
 } from '../repositories';
 import { OrganizationReport } from '../entities';
@@ -28,6 +29,7 @@ export class OrganizationReportService {
     private readonly investorRepository: InvestorRepository,
     private readonly reportService: ReportService,
     private readonly fileManagerService: FileManagerService,
+    private readonly organizationRepository: OrganizationRepository,
   ) {}
 
   public async findOne(id: number): Promise<OrganizationReport> {
@@ -40,6 +42,7 @@ export class OrganizationReportService {
   public async update(
     id: number,
     updateOrganizationReportDto: UpdateOrganizationReportDto,
+    organizationId: number,
   ): Promise<OrganizationReport> {
     const { reportId, numberOfContractors, numberOfVolunteers, report } =
       updateOrganizationReportDto;
@@ -60,6 +63,11 @@ export class OrganizationReportService {
       numberOfContractors: Math.floor(numberOfContractors) ?? null,
       numberOfVolunteers: Math.floor(numberOfVolunteers) ?? null,
       report: report || null,
+    });
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
     });
 
     return this.findOne(id);
@@ -98,6 +106,11 @@ export class OrganizationReportService {
       numberOfPartners,
       status: CompletionStatus.COMPLETED,
     });
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
   }
 
   public async updateInvestor(
@@ -132,6 +145,11 @@ export class OrganizationReportService {
       path: uploadedFile[0],
       numberOfInvestors,
       status: CompletionStatus.COMPLETED,
+    });
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
     });
   }
 
