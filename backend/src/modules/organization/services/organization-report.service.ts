@@ -40,7 +40,6 @@ export class OrganizationReportService {
   public async update(
     id: number,
     updateOrganizationReportDto: UpdateOrganizationReportDto,
-    organizationId: number,
   ): Promise<OrganizationReport> {
     const { reportId, numberOfContractors, numberOfVolunteers, report } =
       updateOrganizationReportDto;
@@ -54,7 +53,7 @@ export class OrganizationReportService {
       });
     }
 
-    this.reportService.update(reportId, {
+    await this.reportService.update(reportId, {
       status: report
         ? CompletionStatus.COMPLETED
         : CompletionStatus.NOT_COMPLETED,
