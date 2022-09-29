@@ -10,7 +10,7 @@ const RestrictedAccount = () => {
   const { t } = useTranslation('account');
 
   const onGoBackToSite = () => {
-    setAuthState({ isAuthenticated: false, isRestricted: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false, isOrganizationRestricted: true });
   };
 
   return (

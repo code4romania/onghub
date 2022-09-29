@@ -10,6 +10,10 @@ function AuthGuard({ children }: any) {
     return <Navigate to="/restricted" state={{ from: location }} replace />;
   }
 
+  if (auth.isOrganizationRestricted) {
+    return <Navigate to="/restricted-organization" state={{ from: location }} replace />;
+  }
+
   if (!auth.isAuthenticated) {
     // Redirect them to the /login page, but save the current location they were
     // trying to go to when they were redirected. This allows us to send them

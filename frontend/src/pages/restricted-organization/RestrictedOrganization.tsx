@@ -7,10 +7,10 @@ import restrictedImg from './../../assets/images/Wavy_Tech-08_Single-04 modified
 const RestrictedOrganization = () => {
   const { setAuthState } = useAuthContext();
 
-  const { t } = useTranslation('account');
+  const { t } = useTranslation('organization');
 
   const onGoBackToSite = () => {
-    setAuthState({ isAuthenticated: false, isRestricted: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false, isOrganizationRestricted: false });
   };
 
   return (

@@ -78,6 +78,11 @@
     "error": "Organizatia nu s-a putut incarca",
     "my_organization": "Organizatia mea",
     "description": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "no_access": "Lorem ipsum. Organizatia ta a fost restrictionata. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
+    "inactive": "Ups! Organizatia ta este inactiva.",
+    "back": "Inapoi la website",
+    "send_mail": "Trimite E-Mail",
+    "restricted": "Organizatie restrictionata",
     "type": {
       "association": "Asociatie",
       "foundation": "Fundatie",

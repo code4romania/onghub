@@ -43,7 +43,7 @@ import OrganizationApplications from '../../pages/organization/components/Organi
 import RestrictedOrganization from '../../pages/restricted-organization/RestrictedOrganization';
 
 const Router = () => {
-  const { isAuthenticated, isRestricted, role } = useAuthContext();
+  const { isAuthenticated, isRestricted, isOrganizationRestricted, role } = useAuthContext();
 
   return (
     <BrowserRouter>
@@ -67,10 +67,10 @@ const Router = () => {
         <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
 
         {/* Logged in user but Restricted Organization */}
-        {/* <Route
+        <Route
           path="/restricted-organization"
-          element={!isRestricted ? <Login /> : <RestrictedOrganization />}
-        /> */}
+          element={!isOrganizationRestricted ? <Login /> : <RestrictedOrganization />}
+        />
 
         {/* Logged in Users */}
         <Route
