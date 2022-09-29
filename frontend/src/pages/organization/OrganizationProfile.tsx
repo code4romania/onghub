@@ -64,16 +64,18 @@ const OrganizationProfile = () => {
 
   return (
     <div>
-      {role !== UserRole.EMPLOYEE && (
-        <button
-          type="button"
-          className="red-button button_restrict_org"
-          onClick={() => setOrganizationDeleteModal(true)}
-        >
-          {t('restrict.confirm')}
-        </button>
-      )}
-      <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</p>
+      <div className="flex justify-between mt-1">
+        <span className="text-gray-800 font-titilliumBold text-3xl">{t('my_organization')}</span>
+        {role !== UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className="delete-button mr-1"
+            onClick={() => setOrganizationDeleteModal(true)}
+          >
+            {t('restrict.confirm')}
+          </button>
+        )}
+      </div>
       <p className="text-gray-400 pt-6">{t('description')}</p>
       <div className="pb-6 flex">
         <nav

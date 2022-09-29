@@ -40,6 +40,7 @@ import EditApplication from '../../pages/apps-store/components/EditApplication';
 import ApplicationWithOngList from '../../pages/application/ApplicationWithOngList';
 import OrganizationProfile from '../../pages/organization/OrganizationProfile';
 import OrganizationApplications from '../../pages/organization/components/OrganizationApplications/OrganizationApplications';
+import RestrictedOrganization from '../../pages/restricted-organization/RestrictedOrganization';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -64,6 +65,12 @@ const Router = () => {
 
         {/* Logged in users but Restricted */}
         <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
+
+        {/* Logged in user but Restricted Organization */}
+        {/* <Route
+          path="/restricted-organization"
+          element={!isRestricted ? <Login /> : <RestrictedOrganization />}
+        /> */}
 
         {/* Logged in Users */}
         <Route
