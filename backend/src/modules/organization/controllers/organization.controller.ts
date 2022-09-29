@@ -92,7 +92,7 @@ export class OrganizationController {
   @Post('request/validate')
   validate(
     @Body() createRequestDto: Partial<CreateOrganizationRequestDto>,
-  ): Promise<void> {
+  ): Promise<any[]> {
     return this.organizationRequestService.validate(createRequestDto);
   }
 

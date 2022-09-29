@@ -84,17 +84,18 @@ export class OrganizationRequestService {
 
   public async validate(
     createRequestDto: Partial<CreateOrganizationRequestDto>,
-  ): Promise<void> {
+  ): Promise<any[]> {
     const { admin, organization } = createRequestDto;
+    const errors = [];
 
     // 1. validate admin
     if (admin) {
-      const user = this.userService.findOne({ where: { email: admin.email } });
+      const user = this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
 
       if (user) {
-        throw new BadRequestException(
+       errors.push(new BadRequestException(
           ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
-        );
+        ))
       }
     }
 
@@ -104,13 +105,14 @@ export class OrganizationRequestService {
       if (organization.general) {
         const { cui, rafNumber, name } = organization.general;
 
-        await this.organizationService.validateOrganizationGeneral(
+        errors.push(await this.organizationService.validateOrganizationGeneral(
           cui,
           rafNumber,
           name,
-        );
+        ));
       }
     }
+    return errors;
   }
 
   public async create(createReqDto: CreateOrganizationRequestDto) {
