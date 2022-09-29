@@ -1,10 +1,12 @@
 import {
   createUser,
   deleteUser,
+  getInvitees,
   getProfile,
   getUserById,
   getUsers,
   removeUserById,
+  resendInvite,
   restoreUserAccess,
   restrictUserAccess,
   updateUser,
@@ -16,6 +18,7 @@ import { IUser } from '../../pages/users/interfaces/User.interface';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
+import { IInvite } from '../../pages/users/interfaces/Invite.interface';
 
 export const useProfileQuery = (queryOptions?: any) => {
   const { setProfile, setOrganization } = useStore();
@@ -54,6 +57,15 @@ export const useUsersQuery = (
   );
 };
 
+export const useInviteesQuery = (search?: string, interval?: Date[]) => {
+  const { setInvites } = useStore();
+  return useQuery(['invitees', search, interval], () => getInvitees(search, interval), {
+    onSuccess: (data: IInvite[]) => {
+      setInvites(data);
+    },
+  });
+};
+
 export const useSelectedUserQuery = (userId: string) => {
   return useQuery(['user', userId], () => getUserById(userId), { enabled: !!userId });
 };
@@ -87,4 +99,8 @@ export const useUserMutation = () => {
       setProfile(null);
     },
   });
+};
+
+export const useResendInviteMutation = () => {
+  return useMutation((id: number) => resendInvite(id));
 };

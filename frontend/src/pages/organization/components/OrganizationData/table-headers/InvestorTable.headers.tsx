@@ -12,7 +12,7 @@ const translations = {
   year: i18n.t('common:year'),
   count: i18n.t('open_data:investors.count'),
   status: i18n.t('common:status'),
-  update: i18n.t('common:updatedOn'),
+  update: i18n.t('common:updated_on'),
   completed: i18n.t('common:completion_status.completed'),
   incompleted: i18n.t('common:completion_status.incompleted'),
 };

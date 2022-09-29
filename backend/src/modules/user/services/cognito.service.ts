@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
@@ -8,10 +8,15 @@ import {
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   DeliveryMediumType,
+  ListUsersCommand,
+  ListUsersCommandOutput,
+  MessageActionType,
+  UserType,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
 
 @Injectable()
 export class CognitoUserService {
@@ -43,6 +48,32 @@ export class CognitoUserService {
       createUserCommand,
     );
     return data.User.Username;
+  }
+
+  async getCognitoUsers(status: CognitoUserStatus): Promise<UserType[]> {
+    const listUsersCommand = new ListUsersCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Filter: `cognito:user_status = "${status}"`,
+    });
+
+    const data: ListUsersCommandOutput = await this.cognitoProvider.send(
+      listUsersCommand,
+    );
+
+    return data.Users;
+  }
+
+  async resendInvite(email: string): Promise<void> {
+    const resendUserInvite = new AdminCreateUserCommand({
+      UserPoolId: CognitoConfig.userPoolId,
+      Username: email,
+      DesiredDeliveryMediums: [DeliveryMediumType.EMAIL],
+      MessageAction: MessageActionType.RESEND,
+    });
+
+    await this.cognitoProvider.send(resendUserInvite);
+
+    return;
   }
 
   async updateUser(email: string, { name, phone }: UpdateUserDto) {
