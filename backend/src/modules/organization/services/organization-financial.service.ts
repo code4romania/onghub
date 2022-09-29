@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationFinancialDto } from '../dto/update-organization-financial.dto';
-import {
-  OrganizationFinancialRepository,
-  OrganizationRepository,
-} from '../repositories';
+import { OrganizationFinancialRepository } from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
@@ -14,12 +11,10 @@ import { FinancialInformation } from 'src/shared/services/anaf.service';
 export class OrganizationFinancialService {
   constructor(
     private readonly organizationFinancialRepository: OrganizationFinancialRepository,
-    private readonly organizationRepository: OrganizationRepository,
   ) {}
 
   public async update(
     updateOrganizationFinancialDto: UpdateOrganizationFinancialDto,
-    organizationId: number,
   ) {
     const organizationFinancial =
       await this.organizationFinancialRepository.get({
@@ -36,11 +31,6 @@ export class OrganizationFinancialService {
         ...ORGANIZATION_ERRORS.ANAF,
       });
     }
-
-    await this.organizationRepository.updateOne({
-      id: organizationId,
-      syncedOn: new Date(),
-    });
 
     return this.organizationFinancialRepository.save({
       ...organizationFinancial,

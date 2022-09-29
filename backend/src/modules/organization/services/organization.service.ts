@@ -278,18 +278,32 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.financial) {
-      return this.organizationFinancialService.update(
-        updateOrganizationDto.financial,
+      const organizationFinancial =
+        await this.organizationFinancialService.update(
+          updateOrganizationDto.financial,
+        );
+
+      await this.organizationRepository.updateOne({
         id,
-      );
+        syncedOn: new Date(),
+      });
+
+      return organizationFinancial;
     }
 
     if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
+      const organizationReport = await this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
         id,
       );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationReport;
     }
 
     return null;
@@ -387,6 +401,11 @@ export class OrganizationService {
       files,
     );
 
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
+
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -414,6 +433,11 @@ export class OrganizationService {
       organizationId,
       files,
     );
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
