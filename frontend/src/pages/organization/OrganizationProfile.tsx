@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { AuthContext } from '../../contexts/AuthContext';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
-import { useRestrictOrganizationRequestMutation } from '../../services/request/Request.queries';
+import { useRestrictOrganizationRequestMutation } from '../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../store/selectors';
 
 const OrganizationProfile = () => {
@@ -26,11 +26,11 @@ const OrganizationProfile = () => {
   useCountiesQuery();
 
   // load organization data
-  const { error, refetch } = useOrganizationByProfileQuery();
+  const { error } = useOrganizationByProfileQuery();
 
   const restrictOrganizationRequestMutation = useRestrictOrganizationRequestMutation();
 
-  const organization = useSelectedOrganization();
+  const { organization } = useSelectedOrganization();
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_TABS.find(
@@ -52,12 +52,11 @@ const OrganizationProfile = () => {
     navigate(tab.href);
   };
 
-  const onRestrict = () => {
-    if (organization.organization)
-      restrictOrganizationRequestMutation.mutate(organization.organization.id, {
+  const onDelete = () => {
+    if (organization)
+      restrictOrganizationRequestMutation.mutate(undefined, {
         onSuccess: () => {
           useSuccessToast(t('restrict.request_success'));
-          refetch();
         },
       });
     setOrganizationDeleteModal(false);
@@ -107,7 +106,7 @@ const OrganizationProfile = () => {
           onClose={() => {
             setOrganizationDeleteModal(false);
           }}
-          onConfirm={onRestrict}
+          onConfirm={onDelete}
         />
       )}
     </div>

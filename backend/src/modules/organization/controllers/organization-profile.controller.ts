@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   UploadedFiles,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
@@ -17,6 +18,7 @@ import {
   ApiBearerAuth,
   ApiTooManyRequestsResponse,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
@@ -62,10 +64,11 @@ export class OrganizationProfileController {
   }
 
   @Roles(Role.ADMIN)
-  @ApiParam({ name: 'id', type: Number })
-  @Post('request/:id/restrict')
-  restrictRequest(@Param('id') id: number): Promise<void> {
-    return this.organizationRequestService.sendRestrictRequest(id);
+  @Post('close')
+  closeRequest(@ExtractUser() user: User) {
+    return this.organizationRequestService.sendRestrictRequest(
+      user.organizationId,
+    );
   }
 
   // @Public() -- NEEDED FOR CREATE FLOW

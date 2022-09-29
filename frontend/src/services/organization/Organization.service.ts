@@ -43,6 +43,10 @@ export const deleteInvestorsByProfile = (investorId: number): Promise<any> => {
   return API.delete(`/organization-profile/investors/${investorId}`).then((res) => res.data);
 };
 
+export const restrictOrganizationRequest = (): Promise<any> => {
+  return API.post(`/organization-profile/close`).then((res) => res.data);
+};
+
 /**
  * SUPER ADMIN
  */

@@ -65,7 +65,7 @@ export const ORGANIZATION_ERRORS = {
       errorCode: 'ORG_015',
     },
   },
-  RESTRICT: {
+  ALREADY_RESTRICTED: {
     message: 'Organization is already RESTRICTED',
     errorCode: 'ORG_016',
   },

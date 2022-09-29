@@ -17,6 +17,7 @@ import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -203,25 +204,33 @@ export class OrganizationRequestService {
   }
 
   public async sendRestrictRequest(organizationId: number): Promise<void> {
-    const organization = await this.organizationService.findWithRelations(
-      organizationId,
-    );
-    const superAdmins = await this.userService.findMany({
-      where: { role: Role.SUPER_ADMIN },
-    });
-    const emailSAdmins = superAdmins.map((item) => {
-      return item.email;
-    });
+    try {
+      const organization = await this.organizationService.findWithUsers(
+        organizationId,
+      );
+      const superAdmins = await this.userService.findMany({
+        where: { role: Role.SUPER_ADMIN },
+      });
+      const emailSAdmins = superAdmins.map((item) => {
+        return item.email;
+      });
 
-    await this.mailService.sendEmail({
-      to: emailSAdmins,
-      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
-      context: {
-        orgName: organization.organizationGeneral.name,
-      },
-    });
+      await this.mailService.sendEmail({
+        to: emailSAdmins,
+        template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
+        context: {
+          orgName: organization.organizationGeneral.name,
+        },
+      });
 
-    return;
+      return;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...MAIL_ERRORS.RESTRICT_SADMINS,
+      });
+      throw error;
+    }
   }
 
   private find(id: number): Promise<OrganizationRequest> {

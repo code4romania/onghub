@@ -243,8 +243,22 @@ export class OrganizationService {
         'organizationReport.reports',
         'organizationReport.partners',
         'organizationReport.investors',
-        'users',
       ],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
+  public async findWithUsers(id: number): Promise<Organization> {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+      relations: ['users', 'organizationGeneral'],
     });
 
     if (!organization) {
@@ -490,10 +504,10 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.findWithRelations(organizationId);
+    const organization = await this.findWithUsers(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
-      throw new BadRequestException(ORGANIZATION_ERRORS.RESTRICT);
+      throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
     }
 
     const admins = organization.users.filter(
@@ -504,7 +518,12 @@ export class OrganizationService {
       return item.email;
     });
 
-    this.mailService.sendEmail({
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      status: OrganizationStatus.RESTRICTED,
+    });
+
+    await this.mailService.sendEmail({
       to: adminEmails,
       template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
       context: {
@@ -512,10 +531,7 @@ export class OrganizationService {
       },
     });
 
-    return this.organizationRepository.updateOne({
-      id: organizationId,
-      status: OrganizationStatus.RESTRICTED,
-    });
+    return organization;
   }
 
   public async delete(organizationId: number): Promise<void> {
