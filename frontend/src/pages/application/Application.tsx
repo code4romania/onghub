@@ -21,7 +21,7 @@ const Application = () => {
   }
 
   const navigateBack = () => {
-    navigate('/apps');
+    navigate(-2);
   };
 
   return (
