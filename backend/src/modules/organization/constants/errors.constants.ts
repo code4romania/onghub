@@ -83,6 +83,10 @@ export const ORGANIZATION_ERRORS = {
       errorCode: 'ORG_019',
     },
   },
+  RESTRICTED: {
+    message: 'Organization is restricted',
+    errorCode: 'ORG_020',
+  },
 };
 
 export const PARTNER_ERRORS = {

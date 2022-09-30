@@ -6,8 +6,6 @@ import { useProfileQuery } from './services/user/User.queries';
 import { UserStatus } from './pages/users/enums/UserStatus.enum';
 import { Loading } from './components/loading/Loading';
 import { UserRole } from './pages/users/enums/UserRole.enum';
-import { useOrganizationQuery } from './services/organization/Organization.queries';
-import { OrganizationStatus } from './pages/organization/enums/OrganizationStatus.enum';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
@@ -35,12 +33,6 @@ const AuthProvider = ({ children }: any) => {
       try {
         await Auth.currentAuthenticatedUser();
         const { data: profile } = await refetchUserProfile();
-        // const maybeOrganizationId = profile?.organization.id.toLocaleString();
-        // const organizationId: string = maybeOrganizationId !== undefined ? maybeOrganizationId : '';
-        // const organization = useOrganizationQuery(organizationId).data;
-        // if (organization?.status !== OrganizationStatus.ACTIVE) {
-        //   setAuthState({ ...authState, isOrganizationRestricted: true });
-        // }
         if (profile?.status === UserStatus.ACTIVE) {
           setAuthState({
             ...authState,
