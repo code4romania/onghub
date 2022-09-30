@@ -605,15 +605,16 @@ export class OrganizationService {
     cui: string,
     rafNumber: string,
     name: string,
-  ): Promise<void> {
+  ): Promise<any[]> {
+    const errors = [];
     const organizationWithName = await this.organizationGeneralService.findOne({
       where: { name },
     });
 
     if (organizationWithName) {
-      throw new BadRequestException(
+      errors.push(new BadRequestException(
         ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
-      );
+      ));
     }
 
     const organizationWithCUI = await this.organizationGeneralService.findOne({
@@ -621,20 +622,22 @@ export class OrganizationService {
     });
 
     if (organizationWithCUI) {
-      throw new BadRequestException(
+      errors.push(new BadRequestException(
         ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS,
-      );
+      ));
     }
 
     const organizationWithRafNumber =
-      await this.organizationGeneralService.findOne({
+      this.organizationGeneralService.findOne({
         where: { rafNumber },
       });
 
     if (organizationWithRafNumber) {
-      throw new BadRequestException(
+      errors.push( new BadRequestException(
         ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
-      );
+      ));
     }
+
+    return errors;
   }
 }

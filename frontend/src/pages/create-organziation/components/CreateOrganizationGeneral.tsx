@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import ContactForm from '../../../components/Contact/Contact';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -10,9 +11,11 @@ import SectionHeader from '../../../components/section-header/SectionHeader';
 import Select from '../../../components/Select/Select';
 import Textarea from '../../../components/Textarea/Textarea';
 import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { useNomenclature } from '../../../store/selectors';
 import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationErrors.constant';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -27,6 +30,11 @@ const CreateOrganizationGeneral = () => {
 
   // queries
   useCitiesQuery(county?.id);
+  const {
+    mutateAsync: validationMutate,
+    error: validationError,
+    isLoading: validationLoading,
+  } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
 
@@ -67,23 +75,32 @@ const CreateOrganizationGeneral = () => {
     }
   };
 
-  const handleSave = (data: any) => {
-    const contact = {
-      ...data.contact,
-      fullName: data.contact_fullName,
-      phone: data.contact_phone,
-      email: data.contact_email,
-    };
+  const handleSave = async (data: any) => {
+    try {
+      const contact = {
+        ...data.contact,
+        fullName: data.contact_fullName,
+        phone: data.contact_phone,
+        email: data.contact_email,
+      };
+  
+      const organizationGeneral = {
+        ...data,
+        contact,
+        logo: file,
+      };
 
-    const organizationGeneral = {
-      ...data,
-      contact,
-      logo: file,
-    };
-
-    setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
-
-    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
+      await validationMutate({ organization: {general: organizationGeneral }}); // Throws errors
+  
+      setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
+  
+      navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
+    } catch (err: any) {
+      const response = err.response?.data?.message;
+      if (Array.isArray(response)) {
+        response.forEach((r: any, index: number) => useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()));
+      }
+    }
   };
 
   return (
@@ -653,3 +670,4 @@ const CreateOrganizationGeneral = () => {
 };
 
 export default CreateOrganizationGeneral;
+

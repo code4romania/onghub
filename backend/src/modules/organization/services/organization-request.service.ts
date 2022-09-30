@@ -88,9 +88,10 @@ export class OrganizationRequestService {
     const { admin, organization } = createRequestDto;
     const errors = [];
 
+
     // 1. validate admin
     if (admin) {
-      const user = this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
+      const user = await this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
 
       if (user) {
        errors.push(new BadRequestException(
@@ -105,14 +106,19 @@ export class OrganizationRequestService {
       if (organization.general) {
         const { cui, rafNumber, name } = organization.general;
 
-        errors.push(await this.organizationService.validateOrganizationGeneral(
+        errors.push(...await this.organizationService.validateOrganizationGeneral(
           cui,
           rafNumber,
           name,
         ));
       }
     }
-    return errors;
+
+    if (errors.length) {
+      throw new BadRequestException(errors);
+    } else {
+      return []
+    }
   }
 
   public async create(createReqDto: CreateOrganizationRequestDto) {
