@@ -3,9 +3,10 @@ import { Auth } from 'aws-amplify';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
-import { UserStatus } from './pages/users/enums/UserStatus.enum';
 import { Loading } from './components/loading/Loading';
 import { UserRole } from './pages/users/enums/UserRole.enum';
+import { ORGANIZATION_ERRORS, USER_ERRORS } from './common/constants/error.constants';
+import { useErrorToast } from './common/hooks/useToast';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
@@ -32,17 +33,27 @@ const AuthProvider = ({ children }: any) => {
     (async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        const { data: profile } = await refetchUserProfile();
-        if (profile?.status === UserStatus.ACTIVE) {
-          setAuthState({
-            ...authState,
-            isAuthenticated: true,
-          });
-          setRole(profile?.role as UserRole);
-        } else {
-          setAuthState({ ...authState, isRestricted: true });
+        const { data: profile, error } = await refetchUserProfile();
+        if (!profile) throw error;
+
+        setAuthState({
+          ...authState,
+          isAuthenticated: true,
+        });
+        setRole(profile?.role as UserRole);
+      } catch (error: any) {
+        const err = error?.response?.data;
+        switch (err.code) {
+          case ORGANIZATION_ERRORS.RESTRICT:
+            setAuthState({ ...authState, isOrganizationRestricted: true });
+            break;
+          case USER_ERRORS.RESTRICT:
+            setAuthState({ ...authState, isRestricted: true });
+            break;
+          case USER_ERRORS.NOT_FOUND:
+            useErrorToast('User not found');
+            break;
         }
-      } catch (error) {
         logout();
       } finally {
         setIsLoading(false);
