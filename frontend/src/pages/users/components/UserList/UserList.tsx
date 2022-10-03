@@ -236,11 +236,11 @@ const UserList = () => {
   const onExport = () => {
     const userData = users.items.map((item) => {
       return {
-        Name: item.name,
+        Nume: item.name,
         Email: item.email,
-        Phone: item.phone,
+        Telefon: item.phone,
         Status: item.status,
-        'Added on': item.createdOn?.slice(0, 10),
+        'Adaugat pe': item.createdOn?.slice(0, 10),
       };
     });
     const ws = XLSX.utils.json_to_sheet(userData);
