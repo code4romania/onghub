@@ -7,7 +7,7 @@ import {
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import API from '../API';
-import { CreateOrganizationRequestDTO } from './interfaces/Request.dto';
+import { CreateOrganizationRequestDTO, ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
 import { Request } from './interfaces/Request.interface';
 
 // Organization
@@ -18,6 +18,10 @@ export const createOrganizationRequest = (
     (res: AxiosResponse<Request>) => res.data,
   );
 };
+
+export const validateOrganizationRequest = async (createOrganizationRequestDTO: Partial<ValidateCreateOrganizationRequest>) => {
+  return API.post('organization/request/validate', createOrganizationRequestDTO).then(res => res.data);
+}
 
 export const getRequests = async (
   limit: number,

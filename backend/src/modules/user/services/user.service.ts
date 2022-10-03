@@ -97,11 +97,11 @@ export class UserService {
     return user;
   }
 
-  public async findOne(options: FindOneOptions): Promise<User> {
+  public async findOne(options: FindOneOptions<User>): Promise<User> {
     return this.userRepository.get(options);
   }
 
-  public async findMany(options: FindManyOptions): Promise<User[]> {
+  public async findMany(options: FindManyOptions<User>): Promise<User[]> {
     return this.userRepository.getMany(options);
   }
 
