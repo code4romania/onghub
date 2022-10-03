@@ -222,8 +222,6 @@ export class OrganizationRequestService {
           orgName: organization.organizationGeneral.name,
         },
       });
-
-      return;
     } catch (error) {
       this.logger.error({
         error: { error },

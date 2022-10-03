@@ -5,12 +5,12 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import restrictedImg from './../../assets/images/Wavy_Tech-08_Single-04 modified 1.svg';
 
 const RestrictedAccount = () => {
-  const { setAuthState } = useAuthContext();
+  const { setAuthState, restrictedReason } = useAuthContext();
 
-  const { t } = useTranslation('account');
+  const { t } = useTranslation(restrictedReason);
 
   const onGoBackToSite = () => {
-    setAuthState({ isAuthenticated: false, isRestricted: false, isOrganizationRestricted: true });
+    setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
   };
 
   return (

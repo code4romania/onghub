@@ -575,6 +575,7 @@
     "title": "Utilizatori",
     "subtitle": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
     "add": "Adauga Utilizator",
+    "not_found": "Utilizatorul nu exista in baza de date",
     "tabs": {
       "users": "Utilizatori",
       "invites": "Invitatii trimise"

@@ -7,14 +7,16 @@ import { Loading } from './components/loading/Loading';
 import { UserRole } from './pages/users/enums/UserRole.enum';
 import { ORGANIZATION_ERRORS, USER_ERRORS } from './common/constants/error.constants';
 import { useErrorToast } from './common/hooks/useToast';
+import { useTranslation } from 'react-i18next';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     isRestricted: false,
-    isOrganizationRestricted: false,
+    restrictedReason: '',
   });
   const [role, setRole] = useState<UserRole | null>(null);
+  const { t } = useTranslation('user');
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
   const { refetch: refetchUserProfile, error: fetchUserError } = useProfileQuery({
@@ -25,7 +27,7 @@ const AuthProvider = ({ children }: any) => {
 
   const logout: any = async () => {
     await Auth.signOut();
-    setAuthState({ isAuthenticated: false, isRestricted: false, isOrganizationRestricted: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
     setRole(null);
   };
 
@@ -44,14 +46,22 @@ const AuthProvider = ({ children }: any) => {
       } catch (error: any) {
         const err = error?.response?.data;
         switch (err.code) {
-          case ORGANIZATION_ERRORS.RESTRICT:
-            setAuthState({ ...authState, isOrganizationRestricted: true });
-            break;
           case USER_ERRORS.RESTRICT:
-            setAuthState({ ...authState, isRestricted: true });
+            setAuthState({
+              ...authState,
+              isRestricted: true,
+              restrictedReason: 'account',
+            });
+            break;
+          case ORGANIZATION_ERRORS.RESTRICT:
+            setAuthState({
+              ...authState,
+              isRestricted: true,
+              restrictedReason: 'organization',
+            });
             break;
           case USER_ERRORS.NOT_FOUND:
-            useErrorToast('User not found');
+            useErrorToast(t('user.not_found'));
             break;
         }
         logout();

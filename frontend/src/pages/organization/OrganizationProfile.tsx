@@ -9,7 +9,7 @@ import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../users/enums/UserRole.enum';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 import { useRestrictOrganizationRequestMutation } from '../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../store/selectors';
@@ -19,7 +19,7 @@ const OrganizationProfile = () => {
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { t } = useTranslation('organization');
-  const { role } = useContext(AuthContext);
+  const { role } = useAuthContext();
   const [isOrganizationDeleteModalOpen, setOrganizationDeleteModal] = useState(false);
 
   // TODO: Load nomenclature data on app init

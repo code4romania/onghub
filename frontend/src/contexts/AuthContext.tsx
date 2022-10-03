@@ -4,13 +4,13 @@ import { UserRole } from '../pages/users/enums/UserRole.enum';
 export const AuthContext = createContext({
   isAuthenticated: false,
   isRestricted: false,
-  isOrganizationRestricted: false,
+  restrictedReason: '',
   role: null as UserRole | null,
   setAuthState: {} as Dispatch<
     SetStateAction<{
       isAuthenticated: boolean;
       isRestricted: boolean;
-      isOrganizationRestricted: boolean;
+      restrictedReason: string;
     }>
   >,
   logout: () => null,
