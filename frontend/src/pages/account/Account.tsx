@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import InputField from '../../components/InputField/InputField';
@@ -6,7 +6,7 @@ import { AccountConfig } from './AccountConfig';
 import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import { useUserMutation } from '../../services/user/User.queries';
-import { AuthContext, useAuthContext } from '../../contexts/AuthContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ const Account = () => {
   const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
   const { profile } = useUser();
   const { t } = useTranslation(['account', 'common']);
-  const { role } = useContext(AuthContext);
+  const { role } = useAuthContext();
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
