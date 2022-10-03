@@ -125,11 +125,11 @@ export class OrganizationRequestService {
       const superAdmin = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSAdmins = superAdmin.map((item) => {
+      const emailSuperAdmins = superAdmin.map((item) => {
         return item.email;
       });
       this.mailService.sendEmail({
-        to: emailSAdmins,
+        to: emailSuperAdmins,
         template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
       });
 
@@ -211,12 +211,12 @@ export class OrganizationRequestService {
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSAdmins = superAdmins.map((item) => {
+      const emailSuperAdmins = superAdmins.map((item) => {
         return item.email;
       });
 
       await this.mailService.sendEmail({
-        to: emailSAdmins,
+        to: emailSuperAdmins,
         template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
         context: {
           orgName: organization.organizationGeneral.name,
@@ -225,7 +225,7 @@ export class OrganizationRequestService {
     } catch (error) {
       this.logger.error({
         error: { error },
-        ...MAIL_ERRORS.RESTRICT_SADMINS,
+        ...MAIL_ERRORS.RESTRICT_FOR_SUPERADMINS,
       });
       throw error;
     }
