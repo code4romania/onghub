@@ -61,7 +61,7 @@ const CreateOrganizationGeneral = () => {
   }, [organization]);
 
   useEffect(() => {
-    if (county && !readonly) {
+    if (county && !readonly && !city) {
       setValue('city', null);
     }
   }, [cities]);

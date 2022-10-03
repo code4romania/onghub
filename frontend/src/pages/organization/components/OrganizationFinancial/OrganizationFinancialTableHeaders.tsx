@@ -13,7 +13,7 @@ const translations = {
   expense: i18n.t('financial:header.expense'),
   employees: i18n.t('financial:header.employees'),
   year: i18n.t('common:year'),
-  updated: i18n.t('common:updatedOn'),
+  updated: i18n.t('common:updated_on'),
   status: i18n.t('common:status'),
   sum: i18n.t('financial:modal.sum'),
   completed: i18n.t('common:completion_status.completed'),

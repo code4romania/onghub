@@ -2,6 +2,7 @@ import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
+import { IInvite } from '../../pages/users/interfaces/Invite.interface';
 import { IUser } from '../../pages/users/interfaces/User.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 import API from '../API';
@@ -24,6 +25,23 @@ export const restoreUserAccess = async (payload: number[]): Promise<any> => {
 
 export const removeUserById = async (id: number): Promise<any> => {
   return API.delete(`/user/${id}`).then((res) => res.data);
+};
+
+export const resendInvite = async (id: number): Promise<any> => {
+  return API.patch(`/user/${id}/resend-invite`).then((res) => res.data);
+};
+
+export const getInvitees = async (search?: string, interval?: Date[]): Promise<IInvite[]> => {
+  let requestUrl = `/user/invitees?orderDirection=ASC`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
+
+  return API.get(requestUrl).then((res) => res.data);
 };
 
 export const getUsers = async (

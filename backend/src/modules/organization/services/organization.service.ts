@@ -3,7 +3,9 @@ import {
   NotFoundException,
   BadRequestException,
   Logger,
+  InternalServerErrorException,
 } from '@nestjs/common';
+
 import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
@@ -33,7 +35,6 @@ import {
 } from '../entities';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
-import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -143,10 +144,12 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
+    const lastYear = new Date().getFullYear() - 1;
+
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
-      new Date().getFullYear() - 1,
+      lastYear,
     );
 
     // create the parent entry with default values
@@ -166,24 +169,15 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial: [
-        {
-          type: FinancialType.EXPENSE,
-          year: new Date().getFullYear() - 1,
-          total: financialInformation?.totalExpense,
-          numberOfEmployees: financialInformation?.numberOfEmployees,
-        },
-        {
-          type: FinancialType.INCOME,
-          year: new Date().getFullYear() - 1,
-          total: financialInformation?.totalIncome,
-          numberOfEmployees: financialInformation?.numberOfEmployees,
-        },
-      ],
+      organizationFinancial:
+        this.organizationFinancialService.generateFinancialReportsData(
+          lastYear,
+          financialInformation,
+        ),
       organizationReport: {
-        reports: [{}],
-        partners: [{}],
-        investors: [{}],
+        reports: [{ year: lastYear }],
+        partners: [{ year: lastYear }],
+        investors: [{ year: lastYear }],
       },
     });
   }
@@ -612,9 +606,11 @@ export class OrganizationService {
     });
 
     if (organizationWithName) {
-      errors.push(new BadRequestException(
-        ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
-      ));
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        ),
+      );
     }
 
     const organizationWithCUI = await this.organizationGeneralService.findOne({
@@ -622,22 +618,102 @@ export class OrganizationService {
     });
 
     if (organizationWithCUI) {
-      errors.push(new BadRequestException(
-        ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS,
-      ));
+      errors.push(
+        new BadRequestException(ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS),
+      );
     }
 
-    const organizationWithRafNumber =
-      this.organizationGeneralService.findOne({
-        where: { rafNumber },
-      });
+    const organizationWithRafNumber = this.organizationGeneralService.findOne({
+      where: { rafNumber },
+    });
 
     if (organizationWithRafNumber) {
-      errors.push( new BadRequestException(
-        ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
-      ));
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+        ),
+      );
     }
 
     return errors;
+  }
+
+  /**
+   * Once every year, 1st of June we request new data to be completed by the NGOs for the past year
+   *
+   * Preconditions:
+   *
+   *  - The NGO does not have the Financial data, Reports, Parteners, Investors entries already added for the year we request it
+   *
+   *  1. We query ANAF and create 2 new entries to be completed in the Financial section (Expenses, Income)
+   *  2. Create 3 new entires for Reports, Parteners, Investors (Open Data)
+   *  3. Send notification email to the NGO Admin to take action
+   */
+  public async createNewReportingEntries(organizationId: string) {
+    const year = new Date().getFullYear() - 2;
+    // 1. Check if the NGO already has the data we try to add
+    const organization = await this.findWithRelations(+organizationId);
+
+    const { reports, partners, investors } = organization.organizationReport;
+
+    const hasDataFromYear = (
+      data: OrganizationFinancial[] | Report[] | Partner[] | Investor[],
+    ) => data.some((entry) => entry.year === year);
+
+    if (
+      hasDataFromYear(organization.organizationFinancial) ||
+      hasDataFromYear(reports) ||
+      hasDataFromYear(partners) ||
+      hasDataFromYear(investors)
+    ) {
+      throw new BadRequestException(
+        ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ALREADY_EXIST,
+      );
+    }
+
+    // 2. Get data from ANAF
+    let financialFromAnaf = null;
+    try {
+      financialFromAnaf = await this.anafService.getFinancialInformation(
+        organization.organizationGeneral.cui,
+        year,
+      );
+    } catch (err) {
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ANAF_ERRORED,
+        error: err,
+      });
+    }
+
+    // 2.1. Generate the financial reports
+    const newFinancialReport =
+      this.organizationFinancialService.generateFinancialReportsData(
+        year,
+        financialFromAnaf,
+      );
+
+    // 3. Update the ORG in DB including financial data and reports (reports, partners, investors) cascaded
+    try {
+      const orgUpdated = await this.organizationRepository.save({
+        ...organization,
+        organizationFinancial: [
+          ...organization.organizationFinancial,
+          ...newFinancialReport,
+        ],
+        organizationReport: {
+          ...organization.organizationReport,
+          reports: [...organization.organizationReport.reports, { year }],
+          partners: [...organization.organizationReport.partners, { year }],
+          investors: [...organization.organizationReport.investors, { year }],
+        },
+      });
+
+      return orgUpdated;
+    } catch (err) {
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ADD_NEW,
+        error: err,
+      });
+    }
   }
 }

@@ -4,7 +4,7 @@ import { ANAF_URL } from 'src/common/constants/anaf.constants';
 import { lastValueFrom, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-interface FinancialInformation {
+export interface FinancialInformation {
   numberOfEmployees: number;
   totalIncome: number;
   totalExpense: number;
@@ -27,7 +27,7 @@ export class AnafService {
       .pipe(
         map((res) => res.data.i),
         catchError((err) => {
-          this.logger.error('ANAF error');
+          this.logger.error('ANAF error', err);
           return of(null);
         }),
       );
@@ -35,6 +35,7 @@ export class AnafService {
     return lastValueFrom(company);
   }
 
+  // TODO: move in organization.service something. No business logic allowed here.
   public async getFinancialInformation(
     cui: string,
     year: number,
@@ -56,9 +57,9 @@ export class AnafService {
     });
 
     return {
-      numberOfEmployees: employees['val_indicator'],
-      totalExpense: expense['val_indicator'],
-      totalIncome: income['val_indicator'],
+      numberOfEmployees: employees?.val_indicator,
+      totalExpense: expense?.val_indicator,
+      totalIncome: income?.val_indicator,
     };
   }
 }

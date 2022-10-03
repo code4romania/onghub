@@ -12,7 +12,7 @@ const translations = {
   count: i18n.t('open_data:partners.count'),
   title: i18n.t('open_data:partners.title'),
   status: i18n.t('common:status'),
-  update: i18n.t('common:updatedOn'),
+  update: i18n.t('common:updated_on'),
   completed: i18n.t('common:completion_status.completed'),
   incompleted: i18n.t('common:completion_status.incompleted'),
 };

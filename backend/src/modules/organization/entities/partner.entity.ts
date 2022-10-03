@@ -5,7 +5,7 @@ import { OrganizationReport } from './organization-report.entity';
 
 @Entity('partner')
 export class Partner extends BaseEntity {
-  @Column({ type: 'integer', name: 'year', default: new Date().getFullYear() })
+  @Column({ type: 'integer', name: 'year', nullable: false })
   year: number;
 
   @Column({
