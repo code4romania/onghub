@@ -8,6 +8,7 @@ import {
   DeepRequired,
   UseFormWatch,
 } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -41,6 +42,8 @@ const ApplicationForm = ({
     name: 'steps',
   });
 
+  const { t } = useTranslation('appstore');
+
   // watchers
   const type = watch('type');
 
@@ -57,10 +60,7 @@ const ApplicationForm = ({
   return (
     <div className="p-5 sm:p-10 flex">
       <div className="flex flex-col gap-4 w-full">
-        <SectionHeader
-          title="Date generale"
-          subTitle="This information will be displayed publicly so be careful what you share"
-        />
+        <SectionHeader title={t('form.title')} subTitle={t('form.subtitle')} />
         <form className="space-y-8 xxl:w-1/3 xl:w-1/2 divide-y divide-gray-200 divide-">
           <div className="flex flex-col gap-4">
             <Controller
@@ -85,7 +85,7 @@ const ApplicationForm = ({
             {!isEditApplication && (
               <RadioGroup
                 control={control}
-                errors={errors.type?.message}
+                errors={errors.steps?.message}
                 config={AddAppConfig.type}
               />
             )}
@@ -210,7 +210,7 @@ const ApplicationForm = ({
           {/*  Logo */}
           <div className="sm:col-span-6 gap-4 flex flex-col">
             <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-              Logo organizatie
+              {t('form.logo')}
             </label>
 
             <div className="mt-1 flex items-center">
@@ -232,7 +232,7 @@ const ApplicationForm = ({
                   htmlFor="uploadPhoto"
                   className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Incarca logo
+                  {t('form.upload_logo')}
                 </label>
                 <input
                   className="h-0 w-0"
@@ -245,15 +245,12 @@ const ApplicationForm = ({
               </>
             </div>
             <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-              Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+              {t('form.upload_description')}
             </p>
           </div>
           {/* End Logo */}
           <div className="flex flex-col gap-4 pt-4">
-            <SectionHeader
-              title="Pasi pentru adaugarea aplicatiei"
-              subTitle="This information will be displayed publicly so be careful what you share"
-            />
+            <SectionHeader title={t('form.steps_title')} subTitle={t('form.steps_subtitle')} />
             {fields.map((item, index) => {
               return (
                 <div className="flex gap-4 items-start" key={index}>
@@ -293,7 +290,7 @@ const ApplicationForm = ({
                 }}
               >
                 <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Adauga mai multi pasi
+                {t('form.more_steps')}
               </button>
               <button
                 className="add-button"
@@ -303,7 +300,7 @@ const ApplicationForm = ({
                 }}
               >
                 <XIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                Sterge pas
+                {t('form.delete_step')}
               </button>
             </div>
           </div>

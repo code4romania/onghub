@@ -118,7 +118,7 @@ export const AddAppConfig: Record<string, any> = {
         message: translations.short.required,
       },
       maxLength: {
-        value: 250,
+        value: 120,
         message: translations.short.max,
       },
       minLength: {

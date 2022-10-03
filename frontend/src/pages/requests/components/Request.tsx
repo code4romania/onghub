@@ -29,6 +29,10 @@ const Request = () => {
 
   const { t } = useTranslation(['requests', 'organization', 'common']);
 
+  const organizationTabs: IPageTab[] = ORGANIZATION_TABS.filter(
+    (tab) => tab.href !== 'financial' && tab.href !== 'data',
+  );
+
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
 
@@ -139,7 +143,7 @@ const Request = () => {
               className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
               aria-label="Tabs"
             >
-              {ORGANIZATION_TABS.map((tab) => (
+              {organizationTabs.map((tab) => (
                 <a
                   key={tab.name}
                   onClick={() => onTabClick(tab)}

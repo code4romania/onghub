@@ -22,7 +22,7 @@ export class CreateApplicationDto {
   type: ApplicationTypeEnum;
 
   @IsString()
-  @Length(50, 250)
+  @Length(50, 120)
   shortDescription: string;
 
   @IsString()
