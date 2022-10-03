@@ -26,6 +26,7 @@ import ConfirmationModal from '../../../../components/confim-removal-modal/Confi
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
+import * as XLSX from 'xlsx';
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -43,6 +44,8 @@ const UserList = () => {
   const { users } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
+
+  // const XLSX = require('xlsx');
 
   const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
@@ -227,6 +230,25 @@ const UserList = () => {
     setSelectedUser(null);
   };
 
+  /**
+   * ACTIONS
+   */
+  const onExport = () => {
+    const userData = users.items.map((item) => {
+      return {
+        Name: item.name,
+        Email: item.email,
+        Phone: item.phone,
+        Status: item.status,
+        'Added on': item.createdOn?.slice(0, 10),
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(userData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+    XLSX.writeFile(wb, 'users.xlsx');
+  };
+
   return (
     <div>
       <DataTableFilters
@@ -258,10 +280,9 @@ const UserList = () => {
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold text-xl">{t('title')}</p>
-          {/* Uncomment once download will be implemented */}
-          {/* <button type="button" className="edit-button">
+          <button type="button" className="edit-button" onClick={onExport}>
             Descarca Tabel
-          </button> */}
+          </button>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
