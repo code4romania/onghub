@@ -2,7 +2,6 @@ import { MailerOptions } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Injectable } from '@nestjs/common';
-import { join } from 'path';
 
 @Injectable()
 export class EmailConfigService {
