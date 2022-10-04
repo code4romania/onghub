@@ -10,7 +10,3 @@ provider:
 functions:
   permissionCheck:
     handler: handler.permissionCheck
-    events:
-      - httpApi:
-          path: /
-          method: get

@@ -8,7 +8,7 @@ const appsMap = {
 };
 
 const client = new SimpleHMACAuth.Client('API_KEY_TEST', 'SECRET_TO_BE_ADDED_HERE', {
-  host: '41c0-188-27-124-130.ngrok.io',
+  host: 'onghub-api.wearetribus.com', // TODO: add host in .env 
   // port: 3001,
   ssl: true,
   verbose: true
