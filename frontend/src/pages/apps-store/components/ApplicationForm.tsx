@@ -85,7 +85,7 @@ const ApplicationForm = ({
             {!isEditApplication && (
               <RadioGroup
                 control={control}
-                errors={errors.steps?.message}
+                errors={errors.type?.message}
                 config={AddAppConfig.type}
               />
             )}
