@@ -1,8 +1,4 @@
-import {
-  ALPHANUMERIC_REGEX,
-  EMAIL_REGEX,
-  PHONE_REGEX,
-} from '../../../common/helpers/format.helper';
+import { NAME_REGEX, EMAIL_REGEX, PHONE_REGEX } from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
 
 const translations = {
@@ -45,7 +41,7 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
         message: translations.name.min,
       },
       pattern: {
-        value: ALPHANUMERIC_REGEX,
+        value: NAME_REGEX,
         message: translations.name.invalid,
       },
     },

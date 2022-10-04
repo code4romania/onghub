@@ -44,7 +44,7 @@ const translations = {
     required: i18n.t('appstore:config.video_link.required'),
   },
   management: {
-    label: i18n.t('appstore:config.video_link.label'),
+    label: i18n.t('appstore:config.management.label'),
   },
   step: {
     required: i18n.t('appstore:config.step.required'),

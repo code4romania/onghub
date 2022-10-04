@@ -608,7 +608,6 @@
     },
     "filters": {
       "active": "Activ",
-      "pending": "In asteptare",
       "restricted": "Restrictionat"
     },
     "list_header": {
