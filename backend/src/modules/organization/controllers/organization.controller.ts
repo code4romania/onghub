@@ -42,6 +42,7 @@ import { ApplicationService } from 'src/modules/application/services/application
 import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
 import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
 import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
+import { OrganizationStatisticsService } from '../services/organization-statistics.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -53,7 +54,8 @@ export class OrganizationController {
     private readonly organizationRequestService: OrganizationRequestService,
     private readonly applicationService: ApplicationService,
     private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+    private readonly organizationStatisticsService: OrganizationStatisticsService,
+  ) { }
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -234,5 +236,25 @@ export class OrganizationController {
   @Post(':id/new-report-entries')
   createNewReportEntries(@Param('id') id: string) {
     return this.organizationService.createNewReportingEntries(id);
+  }
+
+  /**
+   * **********************
+   * *******STATISTICS*****
+   * **********************
+   */
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Post('statistics')
+  getSuperAdminStatistics() {
+    return this.organizationStatisticsService.getAllOrganizationsStatistics();
+  }
+
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @ApiParam({ name: 'id', type: String })
+  @Post(':id/statistics')
+  getAdminStatistics(@Param('id') id: string) {
+    return this.organizationStatisticsService.getOrganizationStatistics(+id);
   }
 }

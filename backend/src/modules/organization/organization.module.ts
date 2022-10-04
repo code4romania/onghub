@@ -43,6 +43,7 @@ import { OrganizationRequestRepository } from './repositories/organization-reque
 import { OrganizationRequestService } from './services/organization-request.service';
 import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
+import { OrganizationStatisticsService } from './services/organization-statistics.service';
 
 @Module({
   imports: [
@@ -89,7 +90,9 @@ import { OrganizationApplicationController } from './controllers/organization-ap
     OrganizationViewRepository,
     OrganizationRequestRepository,
     OrganizationRequestService,
+    OrganizationStatisticsService,
   ],
   exports: [OrganizationService],
 })
-export class OrganizationModule {}
+
+export class OrganizationModule { }
