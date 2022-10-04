@@ -2,6 +2,7 @@ import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { OrganizationFinancialStatus } from '../enums/organization-financial-status.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationActivity } from './organization-activity.entity';
 import { OrganizationFinancial } from './organization-financial.entity';
@@ -26,6 +27,14 @@ export class Organization extends BaseEntity {
     default: OrganizationStatus.PENDING,
   })
   status: OrganizationStatus;
+
+  @Column({
+    type: 'enum',
+    enum: OrganizationFinancialStatus,
+    name: 'financial_status',
+    default: OrganizationFinancialStatus.NOT_COMPLETED,
+  })
+  financialStatus: OrganizationFinancialStatus;
 
   @Exclude()
   @Column({
