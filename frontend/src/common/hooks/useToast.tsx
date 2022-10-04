@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 
-const useErrorToast = (message: string) => {
-  const errorToastId = 'errorToast';
+const useErrorToast = (message: string, id?: string) => {
+  const errorToastId = id || 'errorToast';
 
   if (toast.isActive(errorToastId)) {
     toast.dismiss(errorToastId);

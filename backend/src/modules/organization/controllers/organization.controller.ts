@@ -52,8 +52,6 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
-    private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
     private readonly organizationStatisticsService: OrganizationStatisticsService,
   ) { }
 
@@ -93,6 +91,15 @@ export class OrganizationController {
     @Body() createRequestDto: CreateOrganizationRequestDto,
   ): Promise<OrganizationRequest> {
     return this.organizationRequestService.create(createRequestDto);
+  }
+
+  @Public()
+  @ApiBody({ type: CreateOrganizationRequestDto })
+  @Post('request/validate')
+  validate(
+    @Body() createRequestDto: Partial<CreateOrganizationRequestDto>,
+  ): Promise<any[]> {
+    return this.organizationRequestService.validate(createRequestDto);
   }
 
   @Roles(Role.SUPER_ADMIN)
