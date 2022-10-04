@@ -1,23 +1,28 @@
-import { BanIcon, EyeIcon } from '@heroicons/react/outline';
+import { BanIcon, EyeIcon, RefreshIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../common/config/pagination.config';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
-import { useErrorToast } from '../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import DataTableFilters from '../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../components/data-table/DataTableComponent';
 import DateRangePicker from '../../components/date-range-picker/DateRangePicker';
 import PopoverMenu, { PopoverMenuRowType } from '../../components/popover-menu/PopoverMenu';
 import Select from '../../components/Select/Select';
-import { useOrganizationsQuery } from '../../services/organization/Organization.queries';
+import {
+  useActivateOrganizationMutation,
+  useOrganizationsQuery,
+  useRestrictOrganizationMutation,
+} from '../../services/organization/Organization.queries';
 import { useOrganizations } from '../../store/selectors';
 import {
   OrganizationCompletionStatusOptions,
   OrganizationsUsersCountOptions,
 } from './constants/filters.constants';
+import { OrganizationStatus } from './enums/OrganizationStatus.enum';
 import { IOrganizationView } from './interfaces/Organization.interface';
 import { OrganizationsTableHeaders } from './table-headers/OrganizationsTable.headers';
 
@@ -36,7 +41,11 @@ const Organizations = () => {
 
   const { t } = useTranslation(['organizations', 'common']);
 
-  const { isLoading, error: getOrganizationsError } = useOrganizationsQuery(
+  const {
+    isLoading,
+    error: getOrganizationsError,
+    refetch,
+  } = useOrganizationsQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -46,6 +55,9 @@ const Organizations = () => {
     createdOnRange,
     usersRange?.status as string,
   );
+
+  const restrictOrganizationMutation = useRestrictOrganizationMutation();
+  const activateOrganizationMutation = useActivateOrganizationMutation();
 
   useEffect(() => {
     if (organizations?.meta) {
@@ -58,7 +70,15 @@ const Organizations = () => {
 
   useEffect(() => {
     if (getOrganizationsError) useErrorToast(t('load_error'));
-  }, [getOrganizationsError]);
+
+    if (restrictOrganizationMutation.error) useErrorToast(t('restrict_error'));
+
+    if (activateOrganizationMutation.error) useErrorToast(t('activate_error'));
+  }, [
+    getOrganizationsError,
+    restrictOrganizationMutation.error,
+    activateOrganizationMutation.error,
+  ]);
 
   /**
    * FILTERS
@@ -118,15 +138,35 @@ const Organizations = () => {
       {
         name: t('restrict'),
         icon: BanIcon,
-        onClick: () => console.log('To be implemented'),
+        onClick: onRestrictOrganization,
         type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
+    const restrictedOrganizationMenuItems = [
+      {
+        name: t('view'),
+        icon: EyeIcon,
+        onClick: onViewOrganization,
+      },
+      {
+        name: t('activate'),
+        icon: RefreshIcon,
+        onClick: onActivateOrganization,
       },
     ];
 
     return {
       name: '',
       cell: (row: IOrganizationView) => (
-        <PopoverMenu row={row} menuItems={activeOrganizationsMenuItems} />
+        <PopoverMenu
+          row={row}
+          menuItems={
+            row.status === OrganizationStatus.ACTIVE
+              ? activeOrganizationsMenuItems
+              : restrictedOrganizationMenuItems
+          }
+        />
       ),
       width: '50px',
       allowOverflow: true,
@@ -136,6 +176,24 @@ const Organizations = () => {
   const onViewOrganization = (row: IOrganizationView) => {
     console.log('row', row);
     navigate(`/organizations/${row.id}`);
+  };
+
+  const onRestrictOrganization = (row: IOrganizationView) => {
+    restrictOrganizationMutation.mutate(row.id, {
+      onSuccess: () => {
+        useSuccessToast(t('restrict_success'));
+        refetch();
+      },
+    });
+  };
+
+  const onActivateOrganization = (row: IOrganizationView) => {
+    activateOrganizationMutation.mutate(row.id, {
+      onSuccess: () => {
+        useSuccessToast(t('activate_success'));
+        refetch();
+      },
+    });
   };
 
   return (

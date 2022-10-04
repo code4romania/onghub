@@ -30,13 +30,17 @@ import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../../user/enums/role.enum';
+import { OrganizationRequestService } from '../services/organization-request.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('organization-profile')
 export class OrganizationProfileController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private readonly organizationRequestService: OrganizationRequestService,
+  ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @Get()
@@ -54,6 +58,14 @@ export class OrganizationProfileController {
     return this.organizationService.update(
       user.organizationId,
       updateOrganizationDto,
+    );
+  }
+
+  @Roles(Role.ADMIN)
+  @Post('close')
+  requestClose(@ExtractUser() user: User) {
+    return this.organizationRequestService.sendRestrictRequest(
+      user.organizationId,
     );
   }
 

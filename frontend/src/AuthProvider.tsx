@@ -3,16 +3,20 @@ import { Auth } from 'aws-amplify';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
-import { UserStatus } from './pages/users/enums/UserStatus.enum';
 import { Loading } from './components/loading/Loading';
 import { UserRole } from './pages/users/enums/UserRole.enum';
+import { ORGANIZATION_ERRORS, USER_ERRORS } from './common/constants/error.constants';
+import { useErrorToast } from './common/hooks/useToast';
+import { useTranslation } from 'react-i18next';
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     isRestricted: false,
+    restrictedReason: '',
   });
   const [role, setRole] = useState<UserRole | null>(null);
+  const { t } = useTranslation('user');
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
   const { refetch: refetchUserProfile, error: fetchUserError } = useProfileQuery({
@@ -23,7 +27,7 @@ const AuthProvider = ({ children }: any) => {
 
   const logout: any = async () => {
     await Auth.signOut();
-    setAuthState({ isAuthenticated: false, isRestricted: false });
+    setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
     setRole(null);
   };
 
@@ -31,14 +35,35 @@ const AuthProvider = ({ children }: any) => {
     (async () => {
       try {
         await Auth.currentAuthenticatedUser();
-        const { data: profile } = await refetchUserProfile();
-        if (profile?.status === UserStatus.ACTIVE) {
-          setAuthState({ isRestricted: false, isAuthenticated: true });
-          setRole(profile?.role as UserRole);
-        } else {
-          setAuthState({ ...authState, isRestricted: true });
+        const { data: profile, error } = await refetchUserProfile();
+        if (!profile) throw error;
+
+        setAuthState({
+          ...authState,
+          isAuthenticated: true,
+        });
+        setRole(profile?.role as UserRole);
+      } catch (error: any) {
+        const err = error?.response?.data;
+        switch (err.code) {
+          case USER_ERRORS.RESTRICT:
+            setAuthState({
+              ...authState,
+              isRestricted: true,
+              restrictedReason: 'account',
+            });
+            break;
+          case ORGANIZATION_ERRORS.RESTRICT:
+            setAuthState({
+              ...authState,
+              isRestricted: true,
+              restrictedReason: 'organization',
+            });
+            break;
+          case USER_ERRORS.NOT_FOUND:
+            useErrorToast(t('user.not_found'));
+            break;
         }
-      } catch (error) {
         logout();
       } finally {
         setIsLoading(false);
