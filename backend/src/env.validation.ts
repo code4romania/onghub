@@ -70,6 +70,9 @@ class EnvironmentVariables {
 
   @IsString()
   MAIL_FROM: string;
+
+  @IsString()
+  ASSETS_ENDPOINT: string;
 }
 
 export function validate(config: Record<string, unknown>) {

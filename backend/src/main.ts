@@ -7,10 +7,14 @@ import { GlobalExceptionFilter } from './common/exceptions/filters/global-except
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { createQueueMonitoring } from 'src/libs/bull-board';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.use(helmet());
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
+  app.use(helmet({
+    crossOriginResourcePolicy: false,
+  }));
 
   app.enableCors();
 
@@ -28,6 +32,8 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.use('/admin/queues', createQueueMonitoring(app).getRouter());
+
+  app.useStaticAssets(join(__dirname, '..', 'src', 'assets'));
 
   // Create swagger module only local or development
   if (!(process.env.NODE_ENV === Environment.Production)) {
