@@ -74,9 +74,11 @@
     <div id="content">
       <h1>{{title}}</h1>
       <p class="p1">{{subtitle}}</p>
+      {{#if cta}}
       <a href={{cta.link}} target="_blank">
         <button type="button">{{cta.label}}</button>
       </a>
+      {{/if}}
       <p class="p2 mt-3">If you have any questions, reach out to us at hello@onghub.com. Need help? Check out our <a
           href="/" target="_blank">FAQs</a> and
         <a href="/" target="_blank">Terms and conditions</a>.
