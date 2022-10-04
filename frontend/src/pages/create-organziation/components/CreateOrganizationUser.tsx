@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import InputField from '../../../components/InputField/InputField';
 import SectionHeader from '../../../components/section-header/SectionHeader';
+import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { CreateOrganizationUserConfig } from '../configs/CreateOrganizationUserConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationErrors.constant';
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
@@ -28,20 +31,34 @@ const CreateOrganizationUser = () => {
     reValidateMode: 'onChange',
   });
 
+  const {
+    mutateAsync: validationMutate,
+    error: validationError,
+    isLoading: validationLoading,
+  } = useCreateOrganizationRequestValidationMutation();
+
   useEffect(() => {
     if (organization && organization.admin) {
       reset({ ...organization.admin });
     }
   }, [organization]);
 
-  const handleSave = (data: any) => {
-    const admin = {
-      ...data,
-    };
+  const handleSave = async (data: any) => {
+    try {
+      await validationMutate({ admin: {...data} }); // Throws errors
 
-    setOrganization((org: any) => ({ ...org, admin }));
+      const admin = {
+        ...data,
+      };
 
-    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
+      setOrganization((org: any) => ({ ...org, admin }));
+      navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
+    } catch (err: any) {
+      const response = err.response?.data?.message;
+      if (Array.isArray(response)) {
+        response.forEach((r: any, index: number) => useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()));
+      }
+    }
   };
 
   return (

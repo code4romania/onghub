@@ -15,7 +15,7 @@ const translations = {
   type: i18n.t('appstore:header.type'),
   status: i18n.t('appstore:header.status'),
   active: i18n.t('appstore:status.active'),
-  createdOn: i18n.t('common:createdOn'),
+  createdOn: i18n.t('common:created_on'),
 };
 
 export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOngStatus>[] = [

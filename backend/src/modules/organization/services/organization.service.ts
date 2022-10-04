@@ -12,7 +12,10 @@ import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import {
+  ORGANIZATION_ERRORS,
+  ORGANIZATION_REQUEST_ERRORS,
+} from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
@@ -32,7 +35,6 @@ import {
 } from '../entities';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
-import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -591,6 +593,49 @@ export class OrganizationService {
       // you need to release a queryRunner which was manually instantiated
       await queryRunner.release();
     }
+  }
+
+  public async validateOrganizationGeneral(
+    cui: string,
+    rafNumber: string,
+    name: string,
+  ): Promise<any[]> {
+    const errors = [];
+    const organizationWithName = await this.organizationGeneralService.findOne({
+      where: { name },
+    });
+
+    if (organizationWithName) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithCUI = await this.organizationGeneralService.findOne({
+      where: { cui },
+    });
+
+    if (organizationWithCUI) {
+      errors.push(
+        new BadRequestException(ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS),
+      );
+    }
+
+    const organizationWithRafNumber = this.organizationGeneralService.findOne({
+      where: { rafNumber },
+    });
+
+    if (organizationWithRafNumber) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    return errors;
   }
 
   /**

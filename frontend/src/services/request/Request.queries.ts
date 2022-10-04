@@ -6,7 +6,7 @@ import {
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
-import { CreateOrganizationRequestDTO } from './interfaces/Request.dto';
+import { CreateOrganizationRequestDTO, ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
 import {
   abandonApplicationnRequest,
   approveApplicationnRequest,
@@ -18,12 +18,23 @@ import {
   getRequests,
   rejectApplicationnRequest,
   rejectOrganizationRequest,
+  validateOrganizationRequest,
 } from './Request.service';
 
 // Organization
 export const useCreateOrganizationRequestMutation = (onSuccess?: any, onError?: any) => {
   return useMutation(
     (request: CreateOrganizationRequestDTO) => createOrganizationRequest(request),
+    {
+      onSuccess,
+      onError,
+    },
+  );
+};
+
+export const useCreateOrganizationRequestValidationMutation = (onSuccess?: any, onError?: any) => {
+  return useMutation(
+    (request: Partial<ValidateCreateOrganizationRequest>) => validateOrganizationRequest(request),
     {
       onSuccess,
       onError,
