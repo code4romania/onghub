@@ -316,7 +316,6 @@ export class OrganizationService {
       const organizationReport = await this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
-        id,
       );
 
       await this.organizationRepository.updateOne({
