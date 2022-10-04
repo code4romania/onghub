@@ -72,7 +72,7 @@ class EnvironmentVariables {
   MAIL_FROM: string;
 
   @IsString()
-  ASSETS_ENDPOINT: string;
+  AWS_S3_BUCKET_NAME_PUBLIC: string;
 }
 
 export function validate(config: Record<string, unknown>) {

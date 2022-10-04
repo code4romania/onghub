@@ -43,6 +43,8 @@ export class EmailConfigService {
   }
 
   createAssetUrl = (assetName: string) => {
-    return join(this.configService.get('ASSETS_ENDPOINT'), assetName);
-  }
+    return `${this.configService.get(
+      'AWS_S3_BUCKET_NAME_PUBLIC',
+    )}/${assetName}`;
+  };
 }
