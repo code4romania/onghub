@@ -10,7 +10,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { DataSource, In } from 'typeorm';
+import { DataSource, FindManyOptions, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
@@ -670,5 +670,9 @@ export class OrganizationService {
         error: err,
       });
     }
+  }
+
+  public async getMany(findConditions: FindManyOptions<Organization>): Promise<Organization[]> {
+    return this.organizationRepository.getMany(findConditions);
   }
 }

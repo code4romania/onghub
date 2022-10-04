@@ -42,6 +42,7 @@ import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class ApplicationService {
@@ -490,6 +491,10 @@ export class ApplicationService {
     );
   }
 
+  public async getMany(options: FindManyOptions<Application>): Promise<Application[]> {
+   return this.applicationRepository.getMany(options);
+  }
+
   /**
    * @description
    * Toate applicatiile unui ong in relatie cu access-ul unui utilzator de tip employee
@@ -550,4 +555,5 @@ export class ApplicationService {
       status: finalStatus,
     };
   }
+  
 }

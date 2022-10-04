@@ -17,6 +17,7 @@ import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { FindManyOptions } from 'typeorm';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -200,6 +201,10 @@ export class OrganizationRequestService {
     });
 
     return this.find(requestId);
+  }
+
+  public async findMany(findConditions: FindManyOptions<OrganizationRequest>): Promise<OrganizationRequest[]> {
+    return this.organizationRequestRepository.getMany(findConditions);
   }
 
   private find(id: number): Promise<OrganizationRequest> {
