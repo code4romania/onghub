@@ -45,8 +45,6 @@ const UserList = () => {
 
   const { t } = useTranslation(['user', 'common']);
 
-  // const XLSX = require('xlsx');
-
   const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
     page as number,
