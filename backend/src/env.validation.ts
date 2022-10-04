@@ -5,6 +5,7 @@ import {
   validateSync,
   IsString,
   IsOptional,
+  Length,
 } from 'class-validator';
 
 export enum Environment {
@@ -70,6 +71,10 @@ class EnvironmentVariables {
 
   @IsString()
   MAIL_FROM: string;
+
+  @IsString()
+  @Length(32)
+  ENCRYPTION_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {
