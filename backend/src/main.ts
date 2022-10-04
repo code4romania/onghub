@@ -10,11 +10,7 @@ import { createQueueMonitoring } from 'src/libs/bull-board';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
-  app.use(
-    helmet({
-      crossOriginResourcePolicy: false,
-    }),
-  );
+  app.use(helmet());
 
   app.enableCors();
 
