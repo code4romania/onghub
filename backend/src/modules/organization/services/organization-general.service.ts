@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { FindOneOptions } from 'typeorm';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
+import { OrganizationGeneral } from '../entities';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 import { ContactService } from './contact.service';
 
@@ -32,5 +34,11 @@ export class OrganizationGeneralService {
       where: { id },
       relations: ['city', 'county', 'contact'],
     });
+  }
+
+  public async findOne(
+    options: FindOneOptions<OrganizationGeneral>,
+  ): Promise<OrganizationGeneral> {
+    return this.organizationGeneralRepository.get(options);
   }
 }

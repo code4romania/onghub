@@ -7,12 +7,18 @@ import {
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MailService } from 'src/mail/services/mail.service';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import {
+  ORGANIZATION_ERRORS,
+  ORGANIZATION_REQUEST_ERRORS,
+} from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
@@ -32,7 +38,6 @@ import {
 } from '../entities';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
-import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -56,6 +61,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
+    private readonly mailService: MailService,
   ) {}
 
   public async create(
@@ -246,6 +252,21 @@ export class OrganizationService {
     return organization;
   }
 
+  public async findWithUsers(id: number): Promise<Organization> {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+      relations: ['users', 'organizationGeneral'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
   /**
    * Update organization will only update one child at the time
    * TODO: Review if we put this in organization
@@ -278,16 +299,32 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.financial) {
-      return this.organizationFinancialService.update(
-        updateOrganizationDto.financial,
-      );
+      const organizationFinancial =
+        await this.organizationFinancialService.update(
+          updateOrganizationDto.financial,
+        );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationFinancial;
     }
 
     if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
+      const organizationReport = await this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
+        id,
       );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationReport;
     }
 
     return null;
@@ -385,6 +422,11 @@ export class OrganizationService {
       files,
     );
 
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
+
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -412,6 +454,11 @@ export class OrganizationService {
       organizationId,
       files,
     );
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -480,16 +527,34 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.find(organizationId);
+    const organization = await this.findWithUsers(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
-      throw new BadRequestException(ORGANIZATION_ERRORS.RESTRICT);
+      throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
     }
 
-    return this.organizationRepository.updateOne({
+    const admins = organization.users.filter(
+      (item) => item.role === Role.ADMIN,
+    );
+
+    const adminEmails = admins.map((item) => {
+      return item.email;
+    });
+
+    await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
+
+    await this.mailService.sendEmail({
+      to: adminEmails,
+      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      context: {
+        orgName: organization.organizationGeneral.name,
+      },
+    });
+
+    return organization;
   }
 
   public async delete(organizationId: number): Promise<void> {
@@ -591,6 +656,49 @@ export class OrganizationService {
       // you need to release a queryRunner which was manually instantiated
       await queryRunner.release();
     }
+  }
+
+  public async validateOrganizationGeneral(
+    cui: string,
+    rafNumber: string,
+    name: string,
+  ): Promise<any[]> {
+    const errors = [];
+    const organizationWithName = await this.organizationGeneralService.findOne({
+      where: { name },
+    });
+
+    if (organizationWithName) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithCUI = await this.organizationGeneralService.findOne({
+      where: { cui },
+    });
+
+    if (organizationWithCUI) {
+      errors.push(
+        new BadRequestException(ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS),
+      );
+    }
+
+    const organizationWithRafNumber = this.organizationGeneralService.findOne({
+      where: { rafNumber },
+    });
+
+    if (organizationWithRafNumber) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    return errors;
   }
 
   /**

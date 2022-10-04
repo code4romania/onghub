@@ -43,4 +43,8 @@ export const USER_ERRORS = {
     message: 'Could not grant access to applications',
     errorCode: 'USR_011',
   },
+  RESTRICTED: {
+    message: 'User is restricted',
+    errorCode: 'USR_012',
+  },
 };
