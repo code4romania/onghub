@@ -7,6 +7,7 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
+  activateOrganization,
   deleteInvestors,
   deleteInvestorsByProfile,
   deletePartners,
@@ -18,6 +19,8 @@ import {
   getOrganizations,
   patchOrganization,
   patchOrganizationByProfile,
+  restrictOrganization,
+  restrictOrganizationRequest,
   uploadInvestors,
   uploadInvestorsByProfile,
   uploadOrganizationFiles,
@@ -243,6 +246,14 @@ export const useDeleteInvestorMutation = () => {
   );
 };
 
+export const useRestrictOrganizationMutation = () => {
+  return useMutation((id: number) => restrictOrganization(id));
+};
+
+export const useActivateOrganizationMutation = () => {
+  return useMutation((id: number) => activateOrganization(id));
+};
+
 /**EMPLOYEE & ADMIN */
 
 export const useOrganizationByProfileQuery = () => {
@@ -373,4 +384,8 @@ export const useDeleteInvestorByProfileMutation = () => {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
+};
+
+export const useRestrictOrganizationRequestMutation = () => {
+  return useMutation(() => restrictOrganizationRequest());
 };
