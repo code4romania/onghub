@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
-  str2bool,
   mapCitiesToSelect,
-  mapNameToSelect,
   mapGroupsToSelect,
+  mapNameToSelect,
+  str2bool,
 } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
 import InputField from '../../../components/InputField/InputField';
@@ -14,10 +14,10 @@ import MultiSelect from '../../../components/multi-select/MultiSelect';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import ServerSelect from '../../../components/server-select/ServerSelect';
 import {
-  useDomainsQuery,
-  useRegionsQuery,
-  useFederationsQuery,
   useCoalitionsQuery,
+  useDomainsQuery,
+  useFederationsQuery,
+  useRegionsQuery,
 } from '../../../services/nomenclature/Nomenclature.queries';
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
 import { useNomenclature } from '../../../store/selectors';

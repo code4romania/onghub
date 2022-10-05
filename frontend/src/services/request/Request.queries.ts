@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ICreateOrganizationPayload } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
 import {
   IApplicationRequest,
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import useStore from '../../store/store';
-import { CreateOrganizationRequestDTO, ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
+import { ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
 import {
   abandonApplicationnRequest,
   approveApplicationnRequest,
@@ -22,13 +23,16 @@ import {
 } from './Request.service';
 
 // Organization
-export const useCreateOrganizationRequestMutation = (onSuccess?: any, onError?: any) => {
+export const useCreateOrganizationRequestMutation = () => {
   return useMutation(
-    (request: CreateOrganizationRequestDTO) => createOrganizationRequest(request),
-    {
-      onSuccess,
-      onError,
-    },
+    ({
+      organization,
+      logo,
+    }: {
+      organization: ICreateOrganizationPayload;
+      logo?: File | null;
+      organizationStatute?: File | null;
+    }) => createOrganizationRequest(organization, logo),
   );
 };
 

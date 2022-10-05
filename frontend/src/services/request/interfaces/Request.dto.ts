@@ -9,12 +9,12 @@ export interface CreateRequestAdminDTO {
 
 export interface CreateOrganizationRequestDTO {
   admin: CreateRequestAdminDTO;
-  organization: ICreateOrganizationPayload;
+  // organization: ICreateOrganizationPayload;
 }
 
 export interface ValidateCreateOrganizationRequest {
   admin: CreateRequestAdminDTO;
   organization: {
     general: IOrganizationGeneral;
-  }
+  };
 }

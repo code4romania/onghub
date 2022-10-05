@@ -20,7 +20,6 @@ import {
   patchOrganizationByProfile,
   uploadInvestors,
   uploadInvestorsByProfile,
-  uploadOrganizationFiles,
   uploadOrganizationFilesByProfile,
   uploadPartners,
   uploadPartnersByProfile,
@@ -170,31 +169,6 @@ export const useOrganizationMutation = () => {
         }
         if (organization.report) {
           setOrganizationReport(data as IOrganizationReport);
-        }
-      },
-    },
-  );
-};
-
-export const useUploadOrganizationFilesMutation = () => {
-  const { setOrganizationGeneral, setOrganizationLegal, organizationGeneral, organizationLegal } =
-    useStore();
-  return useMutation(
-    ({ id, data }: { id: number; data: FormData }) => uploadOrganizationFiles(id, data),
-    {
-      onSuccess: (data: {
-        organizationGeneral: IOrganizationGeneral;
-        organizationLegal: IOrganizationLegal;
-      }) => {
-        if (organizationGeneral) {
-          setOrganizationGeneral({ ...organizationGeneral, logo: data.organizationGeneral.logo });
-        }
-
-        if (organizationLegal) {
-          setOrganizationLegal({
-            ...organizationLegal,
-            organizationStatute: data.organizationLegal?.organizationStatute,
-          });
         }
       },
     },

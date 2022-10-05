@@ -21,7 +21,6 @@ import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
   useUploadOrganizationFilesByProfileMutation,
-  useUploadOrganizationFilesMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';

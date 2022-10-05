@@ -1,41 +1,23 @@
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Header/Header';
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
-import ProgressSteps from './components/ProgressSteps';
-import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
-import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { useUploadOrganizationFilesMutation } from '../../services/organization/Organization.queries';
 import { Loading } from '../../components/loading/Loading';
-import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
+import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestMutation } from '../../services/request/Request.queries';
-import { CreateOrganizationRequestDTO } from '../../services/request/interfaces/Request.dto';
-import { createRequestDTOMapper } from './helper/CreateOrganization.helper';
-import { useTranslation } from 'react-i18next';
+import ProgressSteps from './components/ProgressSteps';
+import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
+import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 
 const CreateOrganization = () => {
-  const [organization, setOrganization] = useState<ICreateOrganizationPayload>({
-    admin: null,
-    general: null,
-    activity: null,
-    legal: null,
-  });
-
-  const {
-    mutateAsync: mutateRequest,
-    error: requestError,
-    isLoading: requestLoading,
-  } = useCreateOrganizationRequestMutation();
-  const {
-    mutate: filesMutation, // To be used for file uploading.
-    error: filesError,
-    isLoading: filesLoading,
-  } = useUploadOrganizationFilesMutation();
-
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [organization, setOrganization] = useState<ICreateOrganizationPayload | null>(null);
+  const [logo, setLogo] = useState<File | null>(null);
+
+  const { mutateAsync: mutateRequest, isLoading: requestLoading } =
+    useCreateOrganizationRequestMutation();
 
   const { t } = useTranslation(['organization', 'common']);
 
@@ -52,64 +34,14 @@ const CreateOrganization = () => {
     if (organization) {
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify(organization));
     }
+
+    if (organization?.legal) {
+      submit();
+    }
   }, [organization]);
 
-  useEffect(() => {
-    if (organization.legal) {
-      sendOrganization();
-    }
-  }, [organization.legal]);
-
-  useEffect(() => {
-    if (requestError) {
-      setError(`${(requestError as any)?.response?.data?.message}`);
-    }
-
-    if (filesError) {
-      setError(t('logo.load', { ns: 'common' }));
-    }
-  }, [requestError, filesError]);
-
-  useEffect(() => {
-    if (requestLoading || filesLoading) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [requestLoading, filesLoading]);
-
-  const sendOrganization = async () => {
-    if (
-      organization &&
-      organization.admin &&
-      organization.general &&
-      organization.activity &&
-      organization.legal
-    ) {
-      const dto: CreateOrganizationRequestDTO = createRequestDTOMapper(organization);
-
-      const saved = await mutateRequest({
-        ...dto,
-      });
-
-      // PENDING DECISION - PUBLIC ENDPOINT NEEDED
-      // Data uploading
-      // const data = new FormData();
-
-      // if (organization.legal.organizationStatute) {
-      //   data.append(CREATE_FILE_STATUTE, organization.legal.organizationStatute);
-      // }
-
-      // if (organization.general.logo) {
-      //   data.append(CREATE_FILE_LOGO, organization.general.logo);
-      // }
-
-      // await filesMutation.mutateAsync({ id: 13 as number, data });
-      // End Data uploading
-
-      localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
-      setSuccess(true);
-    }
+  const submit = async () => {
+    if (organization) await mutateRequest({ organization, logo });
   };
 
   const reset = () => {
@@ -117,7 +49,7 @@ const CreateOrganization = () => {
     setError('');
   };
 
-  if (loading) {
+  if (requestLoading) {
     return <Loading />;
   }
 
@@ -127,7 +59,9 @@ const CreateOrganization = () => {
       <div className="flex p-6">
         <div className="content overflow-scroll w-full pl-6 flex flex-col gap-4">
           <ProgressSteps disabled={success} />
-          {!success && !error && <Outlet context={[organization, setOrganization]} />}
+          {!success && !error && (
+            <Outlet context={[organization, setOrganization, logo, setLogo]} />
+          )}
           {success && (
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
               <div className="flex items-center justify-start pb-6 gap-4">

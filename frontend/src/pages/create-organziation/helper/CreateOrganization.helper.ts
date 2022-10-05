@@ -3,7 +3,7 @@ import { CreateOrganizationRequestDTO } from '../../../services/request/interfac
 
 export const createRequestDTOMapper = (data: any): CreateOrganizationRequestDTO | any => {
   const dto = {
-    admin: { ...emptyStringToNull(data.admin), organizationId: -1 },
+    admin: { ...emptyStringToNull(data.admin) },
     organization: {
       general: {
         ...emptyStringToNull(data.general),
