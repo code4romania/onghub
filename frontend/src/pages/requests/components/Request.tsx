@@ -15,9 +15,9 @@ import {
   useRejectOrganizationRequestMutation,
   useOrganizationRequest,
 } from '../../../services/request/Request.queries';
-import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
 import { RequestStatus } from '../enum/RequestStatus.enum';
+import { ORGANIZATION_REQUEST_TABS } from '../constants/tabs.constans';
 
 const Request = () => {
   const { id } = useParams();
@@ -28,10 +28,6 @@ const Request = () => {
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
 
   const { t } = useTranslation(['requests', 'organization', 'common']);
-
-  const organizationTabs: IPageTab[] = ORGANIZATION_TABS.filter(
-    (tab) => tab.href !== 'financial' && tab.href !== 'data',
-  );
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
@@ -52,7 +48,7 @@ const Request = () => {
   } = useRejectOrganizationRequestMutation();
 
   useEffect(() => {
-    const found: IPageTab | undefined = ORGANIZATION_TABS.find(
+    const found: IPageTab | undefined = ORGANIZATION_REQUEST_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
@@ -143,7 +139,7 @@ const Request = () => {
               className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
               aria-label="Tabs"
             >
-              {organizationTabs.map((tab) => (
+              {ORGANIZATION_REQUEST_TABS.map((tab) => (
                 <a
                   key={tab.name}
                   onClick={() => onTabClick(tab)}
