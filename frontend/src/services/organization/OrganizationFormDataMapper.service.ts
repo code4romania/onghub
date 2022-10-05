@@ -49,24 +49,24 @@ export const mapOrganizationActivityToFormData = (
     activity;
 
   // map all arays first
-  branches?.forEach((branch: { label: string; value: number }) => {
-    payload.append(`${organizationActivityKey}[branches][]`, branch.value.toString());
+  branches?.forEach((branch: number) => {
+    payload.append(`${organizationActivityKey}[branches][]`, branch.toString());
   });
 
-  cities?.forEach((city: { label: string; value: number }) => {
-    payload.append(`${organizationActivityKey}[cities][]`, city.value.toString());
+  cities?.forEach((city: number) => {
+    payload.append(`${organizationActivityKey}[cities][]`, city.toString());
   });
 
-  coalitions?.forEach((coalition: { label: string; value: number }) => {
-    payload.append(`${organizationActivityKey}[coalitions][]`, coalition.value.toString());
+  coalitions?.forEach((coalition: number) => {
+    payload.append(`${organizationActivityKey}[coalitions][]`, coalition.toString());
   });
 
-  federations?.forEach((federation: { label: string; value: number }) => {
-    payload.append(`${organizationActivityKey}[federations][]`, federation.value.toString());
+  federations?.forEach((federation: number) => {
+    payload.append(`${organizationActivityKey}[federations][]`, federation.toString());
   });
 
-  regions?.forEach((region: { label: string; value: number }) => {
-    payload.append(`${organizationActivityKey}[regions][]`, region.value.toString());
+  regions?.forEach((region: number) => {
+    payload.append(`${organizationActivityKey}[regions][]`, region.toString());
   });
 
   domains?.forEach((domain: number) => {

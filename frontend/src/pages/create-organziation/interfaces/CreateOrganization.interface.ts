@@ -50,19 +50,19 @@ export interface ICreateOrganizationGeneral {
 export interface ICreateOrganizationActivity {
   area: OrganizationAreaEnum;
   isPartOfFederation: boolean;
-  federations: { value: number; label: string }[];
+  federations: number[];
   isPartOfCoalition: boolean;
-  coalitions: { value: number; label: string }[];
+  coalitions: number[];
   isPartOfInternationalOrganization: boolean;
   internationalOrganizationName: string;
   isSocialServiceViable: boolean;
   offersGrants: boolean;
   isPublicIntrestOrganization: boolean;
   hasBranches: boolean;
-  branches: { value: number; label: string }[];
+  branches: number[];
   domains: number[];
-  regions: { value: number; label: string }[];
-  cities: { value: number; label: string }[];
+  regions: number[];
+  cities: number[];
 }
 
 export interface ICreateOrganizationLegal {

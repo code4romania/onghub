@@ -6,6 +6,7 @@ import {
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
+  mapSelectToValue,
   str2bool,
 } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
@@ -73,6 +74,12 @@ const CreateOrganizationActivity = () => {
       offersGrants: str2bool(data.offersGrants),
       hasBranches: str2bool(data.hasBranches),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
+
+      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
+      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
+      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
+      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
+      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
     setOrganization((org: any) => ({ ...org, activity }));
