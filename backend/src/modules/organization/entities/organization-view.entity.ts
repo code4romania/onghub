@@ -1,4 +1,4 @@
-import { ViewEntity, ViewColumn } from 'typeorm';
+import { ViewColumn, ViewEntity } from 'typeorm';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 
 @ViewEntity('OrganizationView', {
