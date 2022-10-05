@@ -6,7 +6,7 @@ interface IMailOptions {
   context: {
     title: string;
     subtitle: (data1?: string, data2?: string) => string;
-    cta?: { link: (data: string) => string; label: string };
+    cta?: { link: (link?: string) => string; label: string };
   };
 }
 
@@ -29,7 +29,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: () =>
         'O noua solicitare de creare de profil in ONG Hub a fost creata in sistem.',
       cta: {
-        link: (link) => `${link}`,
+        link: (requestId) => `onghub.ro/requests/${requestId}/general`,
         label: 'Solicitare creare',
       },
     },
@@ -42,7 +42,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: () =>
         `Profilul tau ONG Hub a fost creat cu succes. Incepand de acum vei putea intra in cont si vei avea acces la toate aplicatiile disponibile pro-bono in ecosistemul dedicat societatii civile. Daca ai nevoie de ajutor, ne gasesti la ${process.env.MAIL_CONTACT}.`,
       cta: {
-        link: (link) => `${link}`,
+        link: () => `www.onghub.ro/profile`,
         label: 'Organizatia ta',
       },
     },
@@ -72,10 +72,6 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       title: 'Inchidere Organizatie - Solicitare noua',
       subtitle: (organizationName) =>
         `Administratorul organizatiei ${organizationName} doreste stergerea organizatiei sale.`,
-      cta: {
-        link: (link) => `${link}`,
-        label: 'Solicitare stergere',
-      },
     },
   },
   ORGANIZATION_APPLICATION_REQUEST_DELETE: {
@@ -86,7 +82,8 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: (organizationName, applicationName) =>
         `Administratorul organizatiei ${organizationName} doreste stergerea aplicatiei ${applicationName} din organizatia sa.`,
       cta: {
-        link: (link) => `${link}`,
+        link: (organizationId) =>
+          `onghub.ro/organizations/${organizationId}/applications`,
         label: 'Organizatia',
       },
     },

@@ -448,7 +448,7 @@ export class ApplicationService {
             ),
           cta: {
             link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
-              'www.google.com',
+              organizationId.toString(),
             ),
             label:
               MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta

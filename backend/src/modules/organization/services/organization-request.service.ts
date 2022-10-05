@@ -185,7 +185,7 @@ export class OrganizationRequestService {
             MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
           cta: {
             link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
-              'www.google.com',
+              foundRequest.id.toString(),
             ),
             label:
               MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.label,
