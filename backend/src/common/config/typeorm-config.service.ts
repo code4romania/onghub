@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { OrganizationHistorySubscriber } from 'src/modules/organization/services/organization-history.service';
+import { OrganizationRequestHistorySubscriber } from 'src/modules/organization/services/organization-request-history.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -16,6 +18,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get('DATABASE_NAME'),
       autoLoadEntities: true,
       synchronize: false, // never set it to TRUE in production
+      subscribers: [
+        OrganizationHistorySubscriber,
+        OrganizationRequestHistorySubscriber,
+      ],
       logging: !!parseInt(this.configService.get('TYPEORM_DEBUG'))
         ? true
         : false,
