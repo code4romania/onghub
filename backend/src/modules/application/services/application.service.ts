@@ -40,8 +40,8 @@ import { ApplicationTableView } from '../entities/application-table-view.entity'
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -434,12 +434,26 @@ export class ApplicationService {
       );
 
       // send email to admin to delete the application
-      this.mailService.sendEmail({
+      await this.mailService.sendEmail({
         to: superAdmins.map((user) => user.email),
-        template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
+        template: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.template,
+        subject: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.subject,
         context: {
-          applicationName: application.name,
-          organizationName: organziation.organizationGeneral.name,
+          title:
+            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.subtitle(
+              organziation.organizationGeneral.name,
+              application.name,
+            ),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
+              'www.google.com',
+            ),
+            label:
+              MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta
+                .label,
+          },
         },
       });
 

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
@@ -536,20 +536,20 @@ export class OrganizationService {
       (item) => item.role === Role.ADMIN,
     );
 
-    const adminEmails = admins.map((item) => {
-      return item.email;
-    });
-
     await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
 
     await this.mailService.sendEmail({
-      to: adminEmails,
-      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      to: admins.map((admin) => admin.email),
+      template: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.template,
+      subject: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.subject,
       context: {
-        orgName: organization.organizationGeneral.name,
+        title: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.title,
+        subtitle: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.subtitle(
+          organization.organizationGeneral.name,
+        ),
       },
     });
 

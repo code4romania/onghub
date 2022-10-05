@@ -15,9 +15,9 @@ import { OrganizationRequestRepository } from '../repositories/organization-requ
 import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -89,15 +89,18 @@ export class OrganizationRequestService {
     const { admin, organization } = createRequestDto;
     const errors = [];
 
-
     // 1. validate admin
     if (admin) {
-      const user = await this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
+      const user = await this.userService.findOne({
+        where: [{ email: admin.email }, { phone: admin.phone }],
+      });
 
       if (user) {
-       errors.push(new BadRequestException(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
-        ))
+        errors.push(
+          new BadRequestException(
+            ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+          ),
+        );
       }
     }
 
@@ -107,18 +110,20 @@ export class OrganizationRequestService {
       if (organization.general) {
         const { cui, rafNumber, name } = organization.general;
 
-        errors.push(...await this.organizationService.validateOrganizationGeneral(
-          cui,
-          rafNumber,
-          name,
-        ));
+        errors.push(
+          ...(await this.organizationService.validateOrganizationGeneral(
+            cui,
+            rafNumber,
+            name,
+          )),
+        );
       }
     }
 
     if (errors.length) {
       throw new BadRequestException(errors);
     } else {
-      return []
+      return [];
     }
   }
 
@@ -155,21 +160,37 @@ export class OrganizationRequestService {
 
       // Mail notifications
       // Admin
-      this.mailService.sendEmail({
+      await this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
+        template: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.template,
+        subject: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.subject,
+        context: {
+          title: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.title,
+          subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
+        },
       });
 
       // Super-Admin
-      const superAdmin = await this.userService.findMany({
+      const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSuperAdmins = superAdmin.map((item) => {
-        return item.email;
-      });
-      this.mailService.sendEmail({
-        to: emailSuperAdmins,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((item) => item.email),
+        template: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.template,
+        subject: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.subject,
+        context: {
+          title: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
+              'www.google.com',
+            ),
+            label:
+              MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.label,
+          },
+        },
       });
 
       return this.organizationRequestRepository.save({
@@ -209,9 +230,20 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
-    this.mailService.sendEmail({
+    await this.mailService.sendEmail({
       to: email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_APPROVAL,
+      template: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.template,
+      subject: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.subject,
+      context: {
+        title: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.title,
+        subtitle: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
+        cta: {
+          link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
+            'www.google.com',
+          ),
+          label: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.label,
+        },
+      },
     });
 
     return this.find(requestId);
@@ -234,9 +266,15 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // 4. Send rejection by email
-    this.mailService.sendEmail({
+    await this.mailService.sendEmail({
       to: found.email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_REJECTION,
+      template: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.template,
+      subject: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.subject,
+      context: {
+        title: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.title,
+        subtitle:
+          MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
+      },
     });
 
     return this.find(requestId);
@@ -250,15 +288,17 @@ export class OrganizationRequestService {
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSuperAdmins = superAdmins.map((item) => {
-        return item.email;
-      });
 
       await this.mailService.sendEmail({
-        to: emailSuperAdmins,
-        template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
+        to: superAdmins.map((superAdmin) => superAdmin.email),
+        template: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.template,
+        subject: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.subject,
         context: {
-          orgName: organization.organizationGeneral.name,
+          title: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
+              organization.organizationGeneral.name,
+            ),
         },
       });
     } catch (error) {
