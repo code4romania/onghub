@@ -63,6 +63,26 @@ export class OrganizationController {
     return this.organizationService.findAll({ options: filters });
   }
 
+  /**
+ * **********************
+ * *******STATISTICS*****
+ * **********************
+ */
+
+  @Roles(Role.SUPER_ADMIN)
+  @Post('statistics')
+  getSuperAdminStatistics() {
+    return this.organizationStatisticsService.getAllOrganizationsStatistics();
+  }
+
+  // @Roles(Role.ADMIN, Role.EMPLOYEE)
+  // @ApiParam({ name: 'id', type: String })
+  // @Post(':id/statistics')
+  // getAdminStatistics(@Param('id') id: string) {
+  //   return this.organizationStatisticsService.getOrganizationStatistics(+id);
+  // }
+
+
   @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)
   @Patch(':id/restrict')
@@ -245,23 +265,5 @@ export class OrganizationController {
     return this.organizationService.createNewReportingEntries(id);
   }
 
-  /**
-   * **********************
-   * *******STATISTICS*****
-   * **********************
-   */
 
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Post('statistics')
-  getSuperAdminStatistics() {
-    return this.organizationStatisticsService.getAllOrganizationsStatistics();
-  }
-
-  @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @ApiParam({ name: 'id', type: String })
-  @Post(':id/statistics')
-  getAdminStatistics(@Param('id') id: string) {
-    return this.organizationStatisticsService.getOrganizationStatistics(+id);
-  }
 }

@@ -11,11 +11,13 @@ import {
   deleteInvestorsByProfile,
   deletePartners,
   deletePartnersByProfile,
+  getOneOrganizationStatistics,
   getOrganization,
   getOrganizationApplicationRequests,
   getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
+  getOrganizationsStatistics,
   patchOrganization,
   patchOrganizationByProfile,
   uploadInvestors,
@@ -371,6 +373,31 @@ export const useDeleteInvestorByProfileMutation = () => {
     ({ investorId }: { investorId: number }) => deleteInvestorsByProfile(investorId),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    },
+  );
+};
+
+
+// Statistics
+
+
+export const useAllOrganizationsStatisticsQuery = () => {
+  const { setAllOrganizationsStatistics } = useStore();
+  return useQuery(
+    ['all-organizations-statistics'],
+    () => getOrganizationsStatistics(),
+    {
+      onSuccess: (data: any) => setAllOrganizationsStatistics(data),
+    },
+  );
+};
+
+export const useOneOrganizationStatisticsQuery = (organizationId: string) => {
+  return useQuery(
+    ['orgranization-statistics', organizationId],
+    () => getOneOrganizationStatistics(+organizationId),
+    {
+      enabled: !!organizationId,
     },
   );
 };

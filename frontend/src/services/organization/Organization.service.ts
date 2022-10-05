@@ -118,3 +118,14 @@ export const deletePartners = (id: number, partnerId: number): Promise<any> => {
 export const deleteInvestors = (id: number, investorId: number): Promise<any> => {
   return API.delete(`/organization/${id}/investors/${investorId}`).then((res) => res.data);
 };
+
+
+// Statistics
+
+export const getOrganizationsStatistics = (): Promise<any> => {
+  return API.get(`organization/statistics`).then(res => res.data);
+}
+
+export const getOneOrganizationStatistics = (id: number): Promise<any> => {
+  return API.get(`organization/${id}/statistics`).then(res => res.data);
+}

@@ -40,6 +40,7 @@ import EditApplication from '../../pages/apps-store/components/EditApplication';
 import ApplicationWithOngList from '../../pages/application/ApplicationWithOngList';
 import OrganizationProfile from '../../pages/organization/OrganizationProfile';
 import OrganizationApplications from '../../pages/organization/components/OrganizationApplications/OrganizationApplications';
+import SuperAdminDashboard from '../../pages/dashboard/SuperAdminDashboard';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -192,8 +193,9 @@ const Router = () => {
               </RoleGuard>
             }
           />
+
           {/* Admin and Employee */}
-          <Route index element={<Dashboard />}></Route>
+          <Route index element={role === UserRole.SUPER_ADMIN ? <SuperAdminDashboard/> : <Dashboard />}></Route>
 
           <Route
             path={'organizations/:id'}

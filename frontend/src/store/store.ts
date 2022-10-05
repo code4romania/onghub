@@ -41,6 +41,7 @@ import { applicationRequestsSlice } from './request/ApplicationRequests';
 import { ongApplicationSlice } from './application/OngApplication.slice';
 import { IInvite } from '../pages/users/interfaces/Invite.interface';
 import { invitesSlice } from './user/Invites.slice';
+import { organizationStatisticsSlice } from './organization/organization-statistics.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -50,6 +51,7 @@ interface OrganizationState {
   organizationActivity: any;
   organizationReport: IOrganizationReport | null;
   organizationLegal: IOrganizationLegal | null;
+  allOrganizationsStatistics: any | null;
   setOrganization: (organization: IOrganization) => void;
   setOrganizationActivity: (organizationActivity: any) => void;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
@@ -57,6 +59,7 @@ interface OrganizationState {
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
   setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
+  setAllOrganizationsStatistics: (allOrganizationsStatistics: any) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -120,14 +123,14 @@ interface OngApplicationState {
 
 const useStore = create<
   OrganizationState &
-    NomenclatureState &
-    UserState &
-    ProfileState &
-    OrganizationRequestState &
-    ApplicationRequestState &
-    ApplicationState &
-    OngApplicationState &
-    InviteState
+  NomenclatureState &
+  UserState &
+  ProfileState &
+  OrganizationRequestState &
+  ApplicationRequestState &
+  ApplicationState &
+  OngApplicationState &
+  InviteState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -144,6 +147,7 @@ const useStore = create<
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
   ...invitesSlice(set),
+  ...organizationStatisticsSlice(set),
 }));
 
 export default useStore;
