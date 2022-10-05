@@ -7,6 +7,9 @@ import {
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MailService } from 'src/mail/services/mail.service';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -58,6 +61,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
+    private readonly mailService: MailService,
   ) {}
 
   public async create(
@@ -248,6 +252,21 @@ export class OrganizationService {
     return organization;
   }
 
+  public async findWithUsers(id: number): Promise<Organization> {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+      relations: ['users', 'organizationGeneral'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
   /**
    * Update organization will only update one child at the time
    * TODO: Review if we put this in organization
@@ -280,16 +299,31 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.financial) {
-      return this.organizationFinancialService.update(
-        updateOrganizationDto.financial,
-      );
+      const organizationFinancial =
+        await this.organizationFinancialService.update(
+          updateOrganizationDto.financial,
+        );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationFinancial;
     }
 
     if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
+      const organizationReport = await this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
       );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationReport;
     }
 
     return null;
@@ -387,6 +421,11 @@ export class OrganizationService {
       files,
     );
 
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
+
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -414,6 +453,11 @@ export class OrganizationService {
       organizationId,
       files,
     );
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -482,16 +526,34 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.find(organizationId);
+    const organization = await this.findWithUsers(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
-      throw new BadRequestException(ORGANIZATION_ERRORS.RESTRICT);
+      throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
     }
 
-    return this.organizationRepository.updateOne({
+    const admins = organization.users.filter(
+      (item) => item.role === Role.ADMIN,
+    );
+
+    const adminEmails = admins.map((item) => {
+      return item.email;
+    });
+
+    await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
+
+    await this.mailService.sendEmail({
+      to: adminEmails,
+      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      context: {
+        orgName: organization.organizationGeneral.name,
+      },
+    });
+
+    return organization;
   }
 
   public async delete(organizationId: number): Promise<void> {

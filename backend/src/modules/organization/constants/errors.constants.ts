@@ -65,7 +65,7 @@ export const ORGANIZATION_ERRORS = {
       errorCode: 'ORG_015',
     },
   },
-  RESTRICT: {
+  ALREADY_RESTRICTED: {
     message: 'Organization is already RESTRICTED',
     errorCode: 'ORG_016',
   },
@@ -82,6 +82,10 @@ export const ORGANIZATION_ERRORS = {
       message: 'Saving the new entries in DB, failed',
       errorCode: 'ORG_019',
     },
+  },
+  RESTRICTED: {
+    message: 'Organization is restricted',
+    errorCode: 'ORG_020',
   },
 };
 

@@ -87,8 +87,15 @@ export class OrganizationController {
   @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)
   @Patch(':id/restrict')
-  restrictOrganization(@Param('id') id: number): Promise<Organization> {
+  restrict(@Param('id') id: number) {
     return this.organizationService.restrict(id);
+  }
+
+  @ApiParam({ name: 'id', type: Number })
+  @Roles(Role.SUPER_ADMIN)
+  @Patch(':id/activate')
+  activate(@Param('id') id: number) {
+    return this.organizationService.activate(id);
   }
 
   /**
