@@ -44,7 +44,7 @@ const translations = {
     required: i18n.t('appstore:config.video_link.required'),
   },
   management: {
-    label: i18n.t('appstore:config.video_link.label'),
+    label: i18n.t('appstore:config.management.label'),
   },
   step: {
     required: i18n.t('appstore:config.step.required'),
@@ -118,7 +118,7 @@ export const AddAppConfig: Record<string, any> = {
         message: translations.short.required,
       },
       maxLength: {
-        value: 250,
+        value: 120,
         message: translations.short.max,
       },
       minLength: {

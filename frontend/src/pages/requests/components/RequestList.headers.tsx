@@ -46,18 +46,6 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     selector: (row: IOrganizationRequest) => row.phone,
   },
   {
-    id: 'status',
-    sortable: true,
-    sortField: 'status',
-    name: translations.status,
-    cell: (row: IOrganizationRequest) => (
-      <StatusBadge
-        status={RequestStatusBadgeMapper(row.status)}
-        value={REQUEST_STATUS_NAME[row.status] || translations.status_error}
-      />
-    ),
-  },
-  {
     id: 'createdOn',
     name: translations.created_on,
     sortable: true,
