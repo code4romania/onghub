@@ -541,12 +541,18 @@ export class OrganizationService {
       status: OrganizationStatus.RESTRICTED,
     });
 
+    const {
+      template,
+      subject,
+      context: { title },
+    } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN;
+
     await this.mailService.sendEmail({
       to: admins.map((admin) => admin.email),
-      template: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.template,
-      subject: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.subject,
+      template,
+      subject,
       context: {
-        title: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.title,
+        title,
         subtitle: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.subtitle(
           organization.organizationGeneral.name,
         ),

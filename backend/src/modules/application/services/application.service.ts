@@ -434,13 +434,21 @@ export class ApplicationService {
       );
 
       // send email to admin to delete the application
+      const {
+        template,
+        subject,
+        context: {
+          title,
+          cta: { label },
+        },
+      } = MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE;
+
       await this.mailService.sendEmail({
         to: superAdmins.map((user) => user.email),
-        template: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.template,
-        subject: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.subject,
+        template,
+        subject,
         context: {
-          title:
-            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.title,
+          title,
           subtitle:
             MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.subtitle(
               organziation.organizationGeneral.name,
@@ -450,9 +458,7 @@ export class ApplicationService {
             link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
               organizationId.toString(),
             ),
-            label:
-              MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta
-                .label,
+            label,
           },
         },
       });

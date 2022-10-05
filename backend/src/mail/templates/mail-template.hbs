@@ -40,10 +40,6 @@
     }
 
     .p2 {
-      font-size: 0.875rem;
-    }
-
-    .p3 {
       font-size: 0.75rem;
     }
 
@@ -56,10 +52,6 @@
 
     .text-center {
       text-align: center;
-    }
-
-    .mt-3 {
-      margin-top: 3rem;
     }
 
     #content {
@@ -79,10 +71,7 @@
         <button type="button">{{cta.label}}</button>
       </a>
       {{/if}}
-      <p class="p2 mt-3">If you have any questions, reach out to us at hello@onghub.com. Need help? Check out our <a
-          href="/" target="_blank">FAQs</a> and
-        <a href="/" target="_blank">Terms and conditions</a>.
-      </p>
+      {{> faq-tc}}
     </div>
     {{> footer}}
   </div>

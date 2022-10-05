@@ -160,12 +160,19 @@ export class OrganizationRequestService {
 
       // Mail notifications
       // Admin
+
+      const adminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
+
       await this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        template: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.template,
-        subject: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.subject,
+        template: adminMailOptions.template,
+        subject: adminMailOptions.subject,
         context: {
-          title: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.title,
+          title: adminMailOptions.context.title,
           subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
         },
       });
@@ -175,20 +182,25 @@ export class OrganizationRequestService {
         where: { role: Role.SUPER_ADMIN },
       });
 
+      const superadminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
+
       await this.mailService.sendEmail({
         to: superAdmins.map((item) => item.email),
-        template: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.template,
-        subject: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.subject,
+        template: superadminMailOptions.template,
+        subject: superadminMailOptions.subject,
         context: {
-          title: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.title,
+          title: superadminMailOptions.context.title,
           subtitle:
             MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
           cta: {
             link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
               foundRequest.id.toString(),
             ),
-            label:
-              MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.label,
+            label: '',
           },
         },
       });
@@ -230,18 +242,27 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
+    const {
+      template,
+      subject,
+      context: {
+        title,
+        cta: { label },
+      },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
+
     await this.mailService.sendEmail({
       to: email,
-      template: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.template,
-      subject: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.subject,
+      template,
+      subject,
       context: {
-        title: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.title,
+        title,
         subtitle: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
         cta: {
           link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
             'www.google.com',
           ),
-          label: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.label,
+          label,
         },
       },
     });
@@ -266,12 +287,19 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // 4. Send rejection by email
+
+    const {
+      template,
+      subject,
+      context: { title },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION;
+
     await this.mailService.sendEmail({
       to: found.email,
-      template: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.template,
-      subject: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.subject,
+      template,
+      subject,
       context: {
-        title: MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.title,
+        title,
         subtitle:
           MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
       },
@@ -289,12 +317,18 @@ export class OrganizationRequestService {
         where: { role: Role.SUPER_ADMIN },
       });
 
+      const {
+        template,
+        subject,
+        context: { title },
+      } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN;
+
       await this.mailService.sendEmail({
         to: superAdmins.map((superAdmin) => superAdmin.email),
-        template: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.template,
-        subject: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.subject,
+        template,
+        subject,
         context: {
-          title: MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.title,
+          title,
           subtitle:
             MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
               organization.organizationGeneral.name,

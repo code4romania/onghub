@@ -1,7 +1,7 @@
-import { MAIL_TEMPLATES } from '../enums/mail.enum';
+const ORGANIZATION_REQUEST = './mail-template';
 
 interface IMailOptions {
-  template: MAIL_TEMPLATES;
+  template: string;
   subject: string;
   context: {
     title: string;
@@ -12,7 +12,7 @@ interface IMailOptions {
 
 export const MAIL_OPTIONS: Record<string, IMailOptions> = {
   ORGANIZATION_CREATE_ADMIN: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Creare Organizatie',
     context: {
       title:
@@ -22,7 +22,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_CREATE_SUPERADMIN: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Creare Organizatie',
     context: {
       title: 'Creare Organizatie - Solicitare noua',
@@ -35,7 +35,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_REQUEST_APPROVAL: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Creare Organizatie',
     context: {
       title: 'Creare Organizatie - Solicitare aprobata',
@@ -48,7 +48,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_REQUEST_REJECTION: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Creare Orgnizatie',
     context: {
       title: 'Creare Organizatie - Solicitare respinsa',
@@ -57,7 +57,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_RESTRICT_ADMIN: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Inchidere Organizatie',
     context: {
       title: 'Inchidere Organizatie',
@@ -66,7 +66,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_RESTRICT_SUPERADMIN: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Inchidere Organizatie',
     context: {
       title: 'Inchidere Organizatie - Solicitare noua',
@@ -75,7 +75,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     },
   },
   ORGANIZATION_APPLICATION_REQUEST_DELETE: {
-    template: MAIL_TEMPLATES.ORGANIZATION_REQUEST,
+    template: ORGANIZATION_REQUEST,
     subject: 'Stergere aplicatie din organizatie',
     context: {
       title: 'Stergere aplicatie din organizatie - Solicitare noua',
