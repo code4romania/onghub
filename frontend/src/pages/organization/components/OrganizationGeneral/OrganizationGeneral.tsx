@@ -17,7 +17,6 @@ import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.q
 import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
-  useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
@@ -34,14 +33,10 @@ const OrganizationGeneral = () => {
   const location = useLocation();
 
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
-    REQUEST_LOCATION,
-  )
+  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
     ? useOrganizationMutation()
     : useOrganizationByProfileMutation();
 
-  const { mutate: uploadFiltes, error: uploadFilesError } =
-    useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
@@ -76,16 +71,6 @@ const OrganizationGeneral = () => {
     }
   }, [cities]);
 
-  useEffect(() => {
-    if (updateOrganizationError) {
-      useErrorToast(t('save_error', { ns: 'orgnization' }));
-    }
-
-    if (uploadFilesError) {
-      useErrorToast(t('logo.update', { ns: 'common' }));
-    }
-  }, [updateOrganizationError, uploadFilesError]);
-
   const startEdit = () => {
     setReadonly(false);
   };
@@ -100,45 +85,38 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
+    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
+      data;
+
     setReadonly(true);
-    const contact = {
-      ...data.contact,
-      fullName: data.contact_fullName,
-      phone: data.contact_phone,
-      email: data.contact_email,
+
+    const payload = {
+      ...organizationGeneral,
+      contact: {
+        ...contact,
+        fullName: contact_fullName,
+        phone: contact_phone,
+        email: contact_email,
+      },
     };
 
-    const organizationGeneral = {
-      ...data,
-      contact,
-      countyId: data.county.id,
-      cityId: data.city.id,
-    };
-
-    delete organizationGeneral.county;
-    delete organizationGeneral.city;
-    delete organizationGeneral.logo;
-
-    if (file) {
-      const data = new FormData();
-      data.append('logo', file);
-      uploadFiltes(
-        { data },
-        {
-          onSettled: () => {
-            updateOrganization({
-              organization: { general: emptyStringToNull(organizationGeneral) },
-            });
-          },
-        },
-      );
-      setFile(null);
-    } else {
-      updateOrganization({
+    updateOrganization(
+      {
         id: organization?.id as number,
-        organization: { general: emptyStringToNull(organizationGeneral) },
-      });
-    }
+        organization: {
+          general: emptyStringToNull(payload),
+        },
+        logo: file,
+      },
+      {
+        onSuccess: () => {
+          setFile(null);
+        },
+        onError: () => {
+          useErrorToast(t('save_error', { ns: 'orgnization' }));
+        },
+      },
+    );
   };
 
   return (

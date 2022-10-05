@@ -146,12 +146,32 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @UploadedFiles()
+    {
+      logo,
+      organizationStatute,
+    }: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
   ) {
-    return this.organizationService.update(+id, updateOrganizationDto);
+    return this.organizationService.update(
+      +id,
+      updateOrganizationDto,
+      logo,
+      organizationStatute,
+    );
   }
 
   /**

@@ -7,18 +7,46 @@ import {
   ApplicationWithOngStatus,
   OrganizationApplicationRequest,
 } from '../application/interfaces/Application.interface';
+import {
+  mapOrganizationActivityToFormData,
+  mapOrganizationGeneralToFormDara,
+  mapOrganizationLegalToFormData,
+} from './OrganizationFormDataMapper.service';
 
 /**EMPLOYEE && ADMIN */
 export const getOrganizationByProfile = (): Promise<any> => {
   return API.get(`/organization-profile`).then((res) => res.data);
 };
 
-export const patchOrganizationByProfile = (update: any): Promise<any> => {
-  return API.patch(`/organization-profile`, { ...update }).then((res) => res.data);
-};
+export const patchOrganizationByProfile = (
+  update: any,
+  logo?: File,
+  organizationStatute?: File,
+): Promise<any> => {
+  let payload = new FormData();
 
-export const uploadOrganizationFilesByProfile = (files: FormData): Promise<any> => {
-  return API.post(`/organization-profile/upload`, files, {
+  if (update.general) {
+    payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
+  }
+
+  if (update.activity) {
+    payload = mapOrganizationActivityToFormData(payload, update.activity, 'activity');
+  }
+
+  if (update.legal) {
+    payload = mapOrganizationLegalToFormData(payload, update.legal, 'legal');
+  }
+
+  // attach files
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  if (organizationStatute) {
+    payload.append('organizationStatute', organizationStatute);
+  }
+
+  return API.patch(`/organization-profile`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
@@ -89,8 +117,38 @@ export const getOrganizationApplicationRequests = (
   return API.get(`/application/request/organization/${id}`).then((res) => res.data);
 };
 
-export const patchOrganization = (id: number, update: any): Promise<any> => {
-  return API.patch(`/organization/${id}`, { ...update }).then((res) => res.data);
+export const patchOrganization = (
+  id: number,
+  update: any,
+  logo?: File | null,
+  organizationStatute?: File | null,
+): Promise<any> => {
+  let payload = new FormData();
+
+  if (update.general) {
+    payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
+  }
+
+  if (update.activity) {
+    payload = mapOrganizationActivityToFormData(payload, update.activity, 'activity');
+  }
+
+  if (update.legal) {
+    payload = mapOrganizationLegalToFormData(payload, update.legal, 'legal');
+  }
+
+  // attach files
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  if (organizationStatute) {
+    payload.append('organizationStatute', organizationStatute);
+  }
+
+  return API.patch(`/organization/${id}`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res) => res.data);
 };
 
 export const uploadPartners = (id: number, partnerId: number, files: FormData): Promise<any> => {

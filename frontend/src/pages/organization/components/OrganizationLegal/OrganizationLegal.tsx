@@ -5,7 +5,7 @@ import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { flatten } from '../../../../common/helpers/format.helper';
+import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { Person } from '../../../../common/interfaces/person.interface';
@@ -17,7 +17,6 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
-  useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
@@ -34,7 +33,7 @@ const OrganizationLegal = () => {
   const location = useLocation();
 
   const [isEditMode, setEditMode] = useState(false);
-  const [organizationStatute, setOrganizationStatute] = useState<string | null>(null);
+  const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -48,13 +47,10 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
-    REQUEST_LOCATION,
-  )
+  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
     ? useOrganizationMutation()
     : useOrganizationByProfileMutation();
-  const { mutate: uploadFiles, error: uploadFilesError } =
-    useUploadOrganizationFilesByProfileMutation();
+
   const { role } = useContext(AuthContext);
   // React i18n
   const { t } = useTranslation(['legal', 'organization', 'common']);
@@ -82,10 +78,6 @@ const OrganizationLegal = () => {
       setDirectors(organizationLegal.directors);
     }
   }, [organizationLegal]);
-
-  useEffect(() => {
-    if (updateOrganizationError) useErrorToast(t('save_error', { ns: 'organization' }));
-  }, [updateOrganizationError]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
@@ -228,20 +220,29 @@ const OrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    updateOrganization({
-      id: organization?.id,
-      organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
-    });
+    updateOrganization(
+      {
+        id: organization?.id,
+        organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
+        logo: null,
+        organizationStatute,
+      },
+      {
+        onSuccess: () => {
+          setOrganizationStatute(null);
+        },
+        onError: () => {
+          useErrorToast(t('save_error', { ns: 'organization' }));
+        },
+      },
+    );
 
     setEditMode(false);
   };
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const data = new FormData();
-      data.append('organizationStatute', file);
-      uploadFiles({ data });
+      setOrganizationStatute(event.target.files[0]);
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -251,13 +252,6 @@ const OrganizationLegal = () => {
   const onRemoveOrganizationStatute = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    updateOrganization({
-      organization: {
-        legal: {
-          organizationStatute: null,
-        },
-      },
-    });
     setOrganizationStatute(null);
   };
 
@@ -376,7 +370,7 @@ const OrganizationLegal = () => {
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
-                  href={organizationStatute || organizationLegal?.organizationStatute}
+                  href={fileToURL(organizationStatute) || organizationLegal?.organizationStatute}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >

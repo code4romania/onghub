@@ -1,4 +1,9 @@
 import { useMutation, useQuery } from 'react-query';
+import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { Person } from '../../common/interfaces/person.interface';
+import { Contact } from '../../pages/organization/interfaces/Contact.interface';
+import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import { IOrganizationActivity } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
@@ -20,15 +25,9 @@ import {
   patchOrganizationByProfile,
   uploadInvestors,
   uploadInvestorsByProfile,
-  uploadOrganizationFilesByProfile,
   uploadPartners,
   uploadPartnersByProfile,
 } from './Organization.service';
-import { Contact } from '../../pages/organization/interfaces/Contact.interface';
-import { Person } from '../../common/interfaces/person.interface';
-import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
-import { OrderDirection } from '../../common/enums/sort-direction.enum';
-import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 
 interface OrganizationPayload {
   id?: number;
@@ -41,7 +40,6 @@ interface OrganizationPayload {
       directors?: Partial<Contact>[];
       directorsDeleted?: number[];
       others?: Partial<Person>[];
-      organizationStatute?: string | null;
     };
     report?: {
       reportId: number;
@@ -50,6 +48,8 @@ interface OrganizationPayload {
       report?: string;
     };
   };
+  logo?: File | null;
+  organizationStatute?: File | null;
 }
 
 /**SUPER ADMIN */
@@ -141,7 +141,8 @@ export const useOrganizationMutation = () => {
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
-    ({ id, organization }: OrganizationPayload) => patchOrganization(id as number, organization),
+    ({ id, organization, logo, organizationStatute }: OrganizationPayload) =>
+      patchOrganization(id as number, organization, logo, organizationStatute),
     {
       onSuccess: (
         data:
@@ -286,28 +287,6 @@ export const useOrganizationByProfileMutation = () => {
       },
     },
   );
-};
-
-export const useUploadOrganizationFilesByProfileMutation = () => {
-  const { setOrganizationGeneral, setOrganizationLegal, organizationGeneral, organizationLegal } =
-    useStore();
-  return useMutation(({ data }: { data: FormData }) => uploadOrganizationFilesByProfile(data), {
-    onSuccess: (data: {
-      organizationGeneral: IOrganizationGeneral;
-      organizationLegal: IOrganizationLegal;
-    }) => {
-      if (organizationGeneral) {
-        setOrganizationGeneral({ ...organizationGeneral, logo: data.organizationGeneral.logo });
-      }
-
-      if (organizationLegal) {
-        setOrganizationLegal({
-          ...organizationLegal,
-          organizationStatute: data.organizationLegal?.organizationStatute,
-        });
-      }
-    },
-  });
 };
 
 export const useUploadPartnersListByProfile = () => {
