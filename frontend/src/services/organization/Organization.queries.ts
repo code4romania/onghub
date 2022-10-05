@@ -405,7 +405,7 @@ export const useAllOrganizationsStatisticsQuery = () => {
 export const useOneOrganizationStatisticsQuery = (organizationId: number) => {
   const { setOneOrganizationStatistics } = useStore();
   return useQuery(
-    ['orgranization-statistics', organizationId],
+    ['organizations-statistics', organizationId],
     () => getOneOrganizationStatistics(+organizationId),
     {
       enabled: !!organizationId,

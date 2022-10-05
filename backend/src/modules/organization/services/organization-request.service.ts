@@ -17,11 +17,8 @@ import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { Role } from 'src/modules/user/enums/role.enum';
-<<<<<<< HEAD
 import { FindManyOptions } from 'typeorm';
-=======
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
->>>>>>> develop
 
 @Injectable()
 export class OrganizationRequestService {

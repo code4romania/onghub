@@ -272,8 +272,4 @@ export class OrganizationController {
   createNewReportEntries(@Param('id') id: string) {
     return this.organizationService.createNewReportingEntries(id);
   }
-
-
-
-
 }
