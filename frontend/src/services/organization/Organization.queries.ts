@@ -392,12 +392,15 @@ export const useAllOrganizationsStatisticsQuery = () => {
   );
 };
 
-export const useOneOrganizationStatisticsQuery = (organizationId: string) => {
+export const useOneOrganizationStatisticsQuery = (organizationId: number) => {
+  const { setOneOrganizationStatistics } = useStore();
   return useQuery(
     ['orgranization-statistics', organizationId],
     () => getOneOrganizationStatistics(+organizationId),
     {
       enabled: !!organizationId,
+      onSuccess: (data: any) => setOneOrganizationStatistics(data)
     },
+
   );
 };

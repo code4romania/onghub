@@ -7,7 +7,7 @@ import { OrganizationService } from '.';
 import { Organization } from '../entities';
 import { OrganizationFinancialStatus } from '../enums/organization-financial-status.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
-import { IGeneralONGHubStatistics, IOrganizationStatistics, ISuperAdminOrganizationStatistics } from '../interfaces/organization-statistics.interface';
+import { IGeneralONGHubStatistics, IOrganizationStatistics, IAllOrganizationsStatistics } from '../interfaces/organization-statistics.interface';
 import { OrganizationRequestService } from './organization-request.service';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class OrganizationStatisticsService {
 		private readonly organizationRequestService: OrganizationRequestService
 	) { }
 
-	public async getAllOrganizationsStatistics(): Promise<ISuperAdminOrganizationStatistics> {
+	public async getAllOrganizationsStatistics(): Promise<IAllOrganizationsStatistics> {
 		const organizations = await this.organizationsService.getMany({ where: { status: OrganizationStatus.ACTIVE } });
 		const users = await this.userService.findMany({});
 		const organizationRequest = await this.organizationRequestService.findMany({});
@@ -29,7 +29,7 @@ export class OrganizationStatisticsService {
 			numberOfUpdatedOrganizations: organizations.filter((ong: Organization) => ong.financialStatus === OrganizationFinancialStatus.COMPLETED).length,
 			numberOfPendingRequests: organizationRequest.length,
 			numberOfUsers: users.length,
-			meanNumberOfUsers: Math.floor(organizations.length / users.length),
+			meanNumberOfUsers: Math.ceil(organizations.length / users.length),
 			numberOfApps: applications.length,
 		}
 	}
@@ -45,10 +45,11 @@ export class OrganizationStatisticsService {
 			organizationSyncedOn: organization.syncedOn,
 			numberOfInstalledApps: installedApps.length,
 			numberOfUsers: users.length,
+			hubStatistics: (await this.getGeneralONGHubStatistics()),
 		}
 	}
 
-	public async getGeneralONGHubStatistics(): Promise<IGeneralONGHubStatistics> {
+	private async getGeneralONGHubStatistics(): Promise<IGeneralONGHubStatistics> {
 		const organizations = await this.organizationsService.getMany({ where: { status: OrganizationStatus.ACTIVE } });
 		const applications = await this.applicationService.getMany(null);
 

@@ -42,6 +42,7 @@ import { ongApplicationSlice } from './application/OngApplication.slice';
 import { IInvite } from '../pages/users/interfaces/Invite.interface';
 import { invitesSlice } from './user/Invites.slice';
 import { organizationStatisticsSlice } from './organization/organization-statistics.slice';
+import { IAllOrganizationsStatistics, IOrganizationStatistics } from '../pages/organization/interfaces/OrganizationStatistics.interface';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -51,7 +52,8 @@ interface OrganizationState {
   organizationActivity: any;
   organizationReport: IOrganizationReport | null;
   organizationLegal: IOrganizationLegal | null;
-  allOrganizationsStatistics: any | null;
+  allOrganizationsStatistics: IAllOrganizationsStatistics | null;
+  oneOrganizationStatistics: IOrganizationStatistics | null;
   setOrganization: (organization: IOrganization) => void;
   setOrganizationActivity: (organizationActivity: any) => void;
   setOrganizationGeneral: (organizationGeneral: IOrganizationGeneral) => void;
@@ -59,7 +61,8 @@ interface OrganizationState {
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
   setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
-  setAllOrganizationsStatistics: (allOrganizationsStatistics: any) => void;
+  setAllOrganizationsStatistics: (allOrganizationsStatistics: IAllOrganizationsStatistics) => void;
+  setOneOrganizationStatistics: (oneOrganizationStatistics: IOrganizationStatistics) => void;
 }
 interface NomenclatureState {
   counties: County[];

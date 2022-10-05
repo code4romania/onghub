@@ -41,6 +41,7 @@ import ApplicationWithOngList from '../../pages/application/ApplicationWithOngLi
 import OrganizationProfile from '../../pages/organization/OrganizationProfile';
 import OrganizationApplications from '../../pages/organization/components/OrganizationApplications/OrganizationApplications';
 import SuperAdminDashboard from '../../pages/dashboard/SuperAdminDashboard';
+import OrganizationOverview from '../../pages/organization/components/Overview/OrganizationOverview';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -195,7 +196,7 @@ const Router = () => {
           />
 
           {/* Admin and Employee */}
-          <Route index element={role === UserRole.SUPER_ADMIN ? <SuperAdminDashboard/> : <Dashboard />}></Route>
+          <Route index element={role === UserRole.SUPER_ADMIN ? <Dashboard /> : <Dashboard />}></Route>
 
           <Route
             path={'organizations/:id'}
@@ -206,7 +207,7 @@ const Router = () => {
             }
           >
             <Route index element={<Navigate to={'overview'}></Navigate>} />
-            <Route path="overview" element={<div>Overview</div>} />
+            <Route path="overview" element={<OrganizationOverview />} />
             <Route path="general" element={<OrganizationGeneral />} />
             <Route path="activity" element={<OrganizationActivity />} />
             <Route path="legal" element={<OrganizationLegal />} />

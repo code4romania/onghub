@@ -53,7 +53,7 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
     private readonly organizationStatisticsService: OrganizationStatisticsService,
-  ) {}
+  ) { }
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -64,24 +64,25 @@ export class OrganizationController {
   }
 
   /**
- * **********************
- * *******STATISTICS*****
- * **********************
- */
+* **********************
+* *******STATISTICS*****
+* **********************
+*/
+
 
   @Roles(Role.SUPER_ADMIN)
-  @Post('statistics')
+  @Get('statistics')
   getSuperAdminStatistics() {
     return this.organizationStatisticsService.getAllOrganizationsStatistics();
   }
 
-  // @Roles(Role.ADMIN, Role.EMPLOYEE)
-  // @ApiParam({ name: 'id', type: String })
-  // @Post(':id/statistics')
-  // getAdminStatistics(@Param('id') id: string) {
-  //   return this.organizationStatisticsService.getOrganizationStatistics(+id);
-  // }
 
+  @Roles(Role.ADMIN, Role.EMPLOYEE, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/statistics')
+  getAdminStatistics(@Param('id') id: string) {
+    return this.organizationStatisticsService.getOrganizationStatistics(+id);
+  }
 
   @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)
@@ -264,6 +265,8 @@ export class OrganizationController {
   createNewReportEntries(@Param('id') id: string) {
     return this.organizationService.createNewReportingEntries(id);
   }
+
+
 
 
 }

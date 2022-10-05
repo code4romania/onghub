@@ -1,4 +1,4 @@
-export interface ISuperAdminOrganizationStatistics {
+export interface IAllOrganizationsStatistics {
     numberOfActiveOrganizations: number;
     numberOfUpdatedOrganizations: number;
     numberOfPendingRequests: number;
@@ -13,6 +13,7 @@ export interface IOrganizationStatistics {
     organizationSyncedOn: Date;
     numberOfInstalledApps: number;
     numberOfUsers: number;
+    hubStatistics: IGeneralONGHubStatistics
 }
 
 export interface IGeneralONGHubStatistics {
