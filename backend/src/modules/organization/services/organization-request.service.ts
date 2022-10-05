@@ -127,7 +127,11 @@ export class OrganizationRequestService {
     }
   }
 
-  public async create(createReqDto: CreateOrganizationRequestDto) {
+  public async create(
+    createReqDto: CreateOrganizationRequestDto,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
+  ) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
       where: { email: createReqDto.admin.email },
@@ -156,6 +160,8 @@ export class OrganizationRequestService {
     try {
       const organization = await this.organizationService.create(
         createReqDto.organization,
+        logo,
+        organizationStatute,
       );
 
       // Mail notifications

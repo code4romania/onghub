@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-  IsAlpha,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -178,4 +177,9 @@ export class CreateOrganizationGeneralDto {
   /* Organization city id */
   @IsNumber()
   cityId: number;
+
+  /* logo */
+  @IsString()
+  @IsOptional()
+  logo?: string;
 }

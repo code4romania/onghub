@@ -62,6 +62,8 @@ export class OrganizationService {
 
   public async create(
     createOrganizationDto: CreateOrganizationDto,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
   ): Promise<Organization> {
     if (
       createOrganizationDto.activity.area === Area.LOCAL &&
@@ -153,7 +155,7 @@ export class OrganizationService {
     );
 
     // create the parent entry with default values
-    return this.organizationRepository.save({
+    const organization = await this.organizationRepository.save({
       organizationGeneral: {
         ...createOrganizationDto.general,
       },
@@ -180,6 +182,38 @@ export class OrganizationService {
         investors: [{ year: lastYear }],
       },
     });
+
+    // upload logo
+    if (logo) {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+        logo,
+      );
+
+      await this.organizationGeneralService.update(
+        organization.organizationGeneral.id,
+        {
+          logo: uploadedFile[0],
+        },
+      );
+    }
+
+    // upload organization statute
+    if (organizationStatute) {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+        organizationStatute,
+      );
+
+      await this.organizationLegalService.update(
+        organization.organizationLegal.id,
+        {
+          organizationStatute: uploadedFile[0],
+        },
+      );
+    }
+
+    return organization;
   }
 
   public async find(id: number) {
@@ -312,25 +346,25 @@ export class OrganizationService {
     }
 
     try {
-      // if (logo) {
-      //   if (organization.organizationGeneral.logo) {
-      //     await this.fileManagerService.deleteFiles([
-      //       organization.organizationGeneral.logo,
-      //     ]);
-      //   }
+      if (logo) {
+        if (organization.organizationGeneral.logo) {
+          await this.fileManagerService.deleteFiles([
+            organization.organizationGeneral.logo,
+          ]);
+        }
 
-      //   const uploadedFile = await this.fileManagerService.uploadFiles(
-      //     `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
-      //     logo,
-      //   );
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
+          logo,
+        );
 
-      //   await this.organizationGeneralService.update(
-      //     organization.organizationGeneral.id,
-      //     {
-      //       logo: uploadedFile[0],
-      //     },
-      //   );
-      // }
+        await this.organizationGeneralService.update(
+          organization.organizationGeneral.id,
+          {
+            logo: uploadedFile[0],
+          },
+        );
+      }
 
       if (organizationStatute) {
         if (organization.organizationLegal.organizationStatute) {

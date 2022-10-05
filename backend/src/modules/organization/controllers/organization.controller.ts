@@ -89,7 +89,11 @@ export class OrganizationController {
       organizationStatute: Express.Multer.File[];
     },
   ): Promise<OrganizationRequest> {
-    return this.organizationRequestService.create(createRequestDto);
+    return this.organizationRequestService.create(
+      createRequestDto,
+      logo,
+      organizationStatute,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
