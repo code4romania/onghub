@@ -1,35 +1,34 @@
+import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
 import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+import { flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 import { Person } from '../../../../common/interfaces/person.interface';
 import ContactForm from '../../../../components/Contact/Contact';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { useSelectedOrganization } from '../../../../store/selectors';
-import { Contact } from '../../interfaces/Contact.interface';
-import DirectorModal from './components/DirectorModal';
-import OtherModal from './components/OtherModal';
-import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
-import { OrganizationLegalConfig } from './OrganizationLegalConfig';
-import { OthersTableHeaders } from './table-headers/OthersTable.headers';
-import { flatten } from '../../../../common/helpers/format.helper';
-import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
+import { AuthContext } from '../../../../contexts/AuthContext';
 import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
   useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
-import { useErrorToast } from '../../../../common/hooks/useToast';
-import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
-import { getPublicFileUrl } from '../../../../services/files/File.service';
-import { AuthContext } from '../../../../contexts/AuthContext';
+import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
-import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Contact } from '../../interfaces/Contact.interface';
+import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
+import DirectorModal from './components/DirectorModal';
+import OtherModal from './components/OtherModal';
+import { OrganizationLegalConfig } from './OrganizationLegalConfig';
+import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
+import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 
 const OrganizationLegal = () => {
   const location = useLocation();
@@ -81,8 +80,6 @@ const OrganizationLegal = () => {
       reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
-      if (organizationLegal.organizationStatute)
-        requestOrganizationStatuteUrl(organizationLegal.organizationStatute);
     }
   }, [organizationLegal]);
 
@@ -264,15 +261,6 @@ const OrganizationLegal = () => {
     setOrganizationStatute(null);
   };
 
-  const requestOrganizationStatuteUrl = async (path: string) => {
-    try {
-      const orgStatuteUrl = await getPublicFileUrl(path);
-      setOrganizationStatute(orgStatuteUrl);
-    } catch (error) {
-      useErrorToast(t('statute_error'));
-    }
-  };
-
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="py-5 px-10 flex justify-between">
@@ -388,7 +376,7 @@ const OrganizationLegal = () => {
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
-                  href={organizationStatute || ''}
+                  href={organizationStatute || organizationLegal?.organizationStatute}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
