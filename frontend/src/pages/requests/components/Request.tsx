@@ -15,9 +15,9 @@ import {
   useRejectOrganizationRequestMutation,
   useOrganizationRequest,
 } from '../../../services/request/Request.queries';
-import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
 import { RequestStatus } from '../enum/RequestStatus.enum';
+import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 
 const Request = () => {
   const { id } = useParams();

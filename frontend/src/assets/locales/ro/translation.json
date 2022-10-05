@@ -627,7 +627,6 @@
     },
     "filters": {
       "active": "Activ",
-      "pending": "In asteptare",
       "restricted": "Restrictionat"
     },
     "list_header": {
@@ -823,6 +822,17 @@
       "status_update": "Status actualizat",
       "requests": "Solicitari",
       "date_added": "Data adaugarii"
+    },
+    "form": {
+      "title": "Date generale",
+      "subtitle": "This information will be displayed publicly so be careful what you share",
+      "logo": "Logo aplicatie",
+      "upload_logo": "Incarca logo",
+      "upload_description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.",
+      "steps_title": "Pasi pentru adaugarea aplicatiei",
+      "steps_subtitle": "This information will be displayed publicly so be careful what you share",
+      "more_steps": "Adauga mai multi pasi",
+      "delete_step": "Sterge pas"
     }
   },
   "app": {

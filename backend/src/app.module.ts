@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -19,6 +19,9 @@ import { AuthenticationModule } from './modules/authentication/auth.module';
 import { JwtAuthGuard } from './modules/authentication/jwt-auth.guard';
 import { UserStatusGuard } from './common/guards/user-status.guard';
 import { RolesGuard } from './common/guards/roles.guard';
+import { RawBodyMiddleware } from './shared/middlewares/raw-body.middleware';
+import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
+import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
 
 @Module({
   imports: [
@@ -35,12 +38,15 @@ import { RolesGuard } from './common/guards/roles.guard';
     QueueProviderModule,
 
     // Business modules
-    MailModule,
-    SharedModule,
     UserModule,
     AuthenticationModule,
     ApplicationModule,
     OrganizationModule,
+    PublicAPIModule,
+
+    // Other modules
+    SharedModule,
+    MailModule,
   ],
   providers: [
     {
@@ -64,4 +70,12 @@ import { RolesGuard } from './common/guards/roles.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer
+      .apply(RawBodyMiddleware)
+      .forRoutes('api/*')
+      .apply(JsonBodyMiddleware)
+      .forRoutes('*');
+  }
+}
