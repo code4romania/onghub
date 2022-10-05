@@ -17,7 +17,7 @@ import {
 } from '../../../services/request/Request.queries';
 import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.modals';
 import { RequestStatus } from '../enum/RequestStatus.enum';
-import { ORGANIZATION_REQUEST_TABS } from '../constants/tabs.constans';
+import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 
 const Request = () => {
   const { id } = useParams();
@@ -48,7 +48,7 @@ const Request = () => {
   } = useRejectOrganizationRequestMutation();
 
   useEffect(() => {
-    const found: IPageTab | undefined = ORGANIZATION_REQUEST_TABS.find(
+    const found: IPageTab | undefined = ORGANIZATION_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
@@ -139,7 +139,7 @@ const Request = () => {
               className="flex  pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
               aria-label="Tabs"
             >
-              {ORGANIZATION_REQUEST_TABS.map((tab) => (
+              {ORGANIZATION_TABS.map((tab) => (
                 <a
                   key={tab.name}
                   onClick={() => onTabClick(tab)}
