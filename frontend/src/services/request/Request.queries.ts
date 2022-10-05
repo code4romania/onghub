@@ -28,11 +28,12 @@ export const useCreateOrganizationRequestMutation = () => {
     ({
       organization,
       logo,
+      organizationStatute,
     }: {
       organization: ICreateOrganizationPayload;
       logo?: File | null;
       organizationStatute?: File | null;
-    }) => createOrganizationRequest(organization, logo),
+    }) => createOrganizationRequest(organization, logo, organizationStatute),
   );
 };
 

@@ -15,9 +15,13 @@ const CreateOrganization = () => {
   const [error, setError] = useState('');
   const [organization, setOrganization] = useState<ICreateOrganizationPayload | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
+  const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
 
-  const { mutateAsync: mutateRequest, isLoading: requestLoading } =
-    useCreateOrganizationRequestMutation();
+  const {
+    mutateAsync: mutateRequest,
+    isLoading: requestLoading,
+    error: requestError,
+  } = useCreateOrganizationRequestMutation();
 
   const { t } = useTranslation(['organization', 'common']);
 
@@ -34,14 +38,37 @@ const CreateOrganization = () => {
     if (organization) {
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify(organization));
     }
+  }, [organization]);
 
+  useEffect(() => {
     if (organization?.legal) {
       submit();
     }
   }, [organization]);
 
+  useEffect(() => {
+    if (requestError) {
+      setError(`${(requestError as any)?.response?.data?.message}`);
+    }
+  }, [requestError]);
+
   const submit = async () => {
-    if (organization) await mutateRequest({ organization, logo });
+    if (
+      organization &&
+      organization.admin &&
+      organization.general &&
+      organization.activity &&
+      organization.legal
+    )
+      await mutateRequest(
+        { organization, logo, organizationStatute },
+        {
+          onSuccess: () => {
+            localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
+            setSuccess(true);
+          },
+        },
+      );
   };
 
   const reset = () => {
@@ -60,7 +87,16 @@ const CreateOrganization = () => {
         <div className="content overflow-scroll w-full pl-6 flex flex-col gap-4">
           <ProgressSteps disabled={success} />
           {!success && !error && (
-            <Outlet context={[organization, setOrganization, logo, setLogo]} />
+            <Outlet
+              context={[
+                organization,
+                setOrganization,
+                logo,
+                setLogo,
+                organizationStatute,
+                setOrganizationStatute,
+              ]}
+            />
           )}
           {success && (
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
