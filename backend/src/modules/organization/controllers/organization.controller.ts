@@ -1,48 +1,48 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-  UploadedFiles,
-  Delete,
+  Post,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiBearerAuth,
-  ApiTooManyRequestsResponse,
   ApiParam,
   ApiQuery,
+  ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
-import { OrganizationService } from '../services/organization.service';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
+import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
+import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
+import { ApplicationService } from 'src/modules/application/services/application.service';
+import { Role } from '../../user/enums/role.enum';
 import {
   INVESTOR_UPLOAD_SCHEMA,
-  PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
+  PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../../user/enums/role.enum';
-import { OrganizationFilterDto } from '../dto/organization-filter.dto';
-import { Pagination } from 'src/common/interfaces/pagination';
-import { OrganizationView } from '../entities/organization.view-entity';
-import { OrganizationRequestService } from '../services/organization-request.service';
-import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { OrganizationRequest } from '../entities/organization-request.entity';
-import { Public } from 'src/common/decorators/public.decorator';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
-import { ApplicationService } from 'src/modules/application/services/application.service';
-import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
-import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
-import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
+import { OrganizationFilterDto } from '../dto/organization-filter.dto';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
+import { OrganizationRequest } from '../entities/organization-request.entity';
+import { OrganizationView } from '../entities/organization-view.entity';
+import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationStatisticsService } from '../services/organization-statistics.service';
+import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -53,7 +53,7 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
     private readonly organizationStatisticsService: OrganizationStatisticsService,
-  ) { }
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')

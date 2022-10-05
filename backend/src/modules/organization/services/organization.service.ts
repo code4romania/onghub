@@ -1,9 +1,9 @@
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
-  Logger,
+  Injectable,
   InternalServerErrorException,
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -33,7 +33,7 @@ import {
   Partner,
   Report,
 } from '../entities';
-import { OrganizationView } from '../entities/organization.view-entity';
+import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
@@ -717,7 +717,9 @@ export class OrganizationService {
     }
   }
 
-  public async getMany(findConditions: FindManyOptions<Organization>): Promise<Organization[]> {
+  public async getMany(
+    findConditions: FindManyOptions<Organization>,
+  ): Promise<Organization[]> {
     return this.organizationRepository.getMany(findConditions);
   }
 }
