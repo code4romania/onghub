@@ -1,43 +1,42 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-  UploadedFiles,
-  Delete,
+  Post,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiBearerAuth,
-  ApiTooManyRequestsResponse,
   ApiParam,
   ApiQuery,
+  ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
-import { OrganizationService } from '../services/organization.service';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { Role } from '../../user/enums/role.enum';
 import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
-  ORGANIZATION_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../../user/enums/role.enum';
+import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
-import { Pagination } from 'src/common/interfaces/pagination';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
+import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { OrganizationRequestService } from '../services/organization-request.service';
-import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { OrganizationRequest } from '../entities/organization-request.entity';
-import { Public } from 'src/common/decorators/public.decorator';
-import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
+import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -69,6 +68,30 @@ export class OrganizationController {
    * ******* ONG REQUEST *****
    * *****************************
    */
+  @Public()
+  @ApiBody({ type: CreateOrganizationRequestDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
+  @Post('request')
+  create(
+    @Body() createRequestDto: CreateOrganizationRequestDto,
+    @UploadedFiles()
+    {
+      logo,
+      organizationStatute,
+    }: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
+  ): Promise<OrganizationRequest> {
+    return this.organizationRequestService.create(createRequestDto);
+  }
+
   @Roles(Role.SUPER_ADMIN)
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('request')
@@ -76,15 +99,6 @@ export class OrganizationController {
     @Query() filters: BaseFilterDto,
   ): Promise<Pagination<OrganizationRequest>> {
     return this.organizationRequestService.findAll(filters);
-  }
-
-  @Public()
-  @ApiBody({ type: CreateOrganizationRequestDto })
-  @Post('request')
-  create(
-    @Body() createRequestDto: CreateOrganizationRequestDto,
-  ): Promise<OrganizationRequest> {
-    return this.organizationRequestService.create(createRequestDto);
   }
 
   @Public()
@@ -141,33 +155,6 @@ export class OrganizationController {
    * *******UPLOADS*****
    * ******************
    */
-  @Roles(Role.SUPER_ADMIN)
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'logo', maxCount: 1 },
-      { name: 'organizationStatute', maxCount: 1 },
-    ]),
-  )
-  @ApiBody({
-    schema: ORGANIZATION_UPLOAD_SCHEMA,
-  })
-  @Post(':id/upload')
-  upload(
-    @Param('id') id: number,
-    @UploadedFiles()
-    files: {
-      logo: Express.Multer.File[];
-      organizationStatute: Express.Multer.File[];
-    },
-  ): Promise<any> {
-    return this.organizationService.upload(
-      id,
-      files.logo,
-      files.organizationStatute,
-    );
-  }
-
   @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))

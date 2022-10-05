@@ -5,18 +5,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { UserService } from 'src/modules/user/services/user.service';
+import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
+import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
-import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
-import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
-import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
-import { Role } from 'src/modules/user/enums/role.enum';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -86,17 +86,21 @@ export class OrganizationRequestService {
     createRequestDto: Partial<CreateOrganizationRequestDto>,
   ): Promise<any[]> {
     const { admin, organization } = createRequestDto;
-    const errors = [];
 
+    const errors = [];
 
     // 1. validate admin
     if (admin) {
-      const user = await this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
+      const user = await this.userService.findOne({
+        where: [{ email: admin.email }],
+      });
 
       if (user) {
-       errors.push(new BadRequestException(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
-        ))
+        errors.push(
+          new BadRequestException(
+            ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+          ),
+        );
       }
     }
 
@@ -106,18 +110,20 @@ export class OrganizationRequestService {
       if (organization.general) {
         const { cui, rafNumber, name } = organization.general;
 
-        errors.push(...await this.organizationService.validateOrganizationGeneral(
-          cui,
-          rafNumber,
-          name,
-        ));
+        errors.push(
+          ...(await this.organizationService.validateOrganizationGeneral(
+            cui,
+            rafNumber,
+            name,
+          )),
+        );
       }
     }
 
     if (errors.length) {
       throw new BadRequestException(errors);
     } else {
-      return []
+      return [];
     }
   }
 

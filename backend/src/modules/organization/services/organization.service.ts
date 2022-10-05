@@ -1,9 +1,9 @@
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
-  Logger,
+  Injectable,
   InternalServerErrorException,
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -312,25 +312,25 @@ export class OrganizationService {
     }
 
     try {
-      if (logo) {
-        if (organization.organizationGeneral.logo) {
-          await this.fileManagerService.deleteFiles([
-            organization.organizationGeneral.logo,
-          ]);
-        }
+      // if (logo) {
+      //   if (organization.organizationGeneral.logo) {
+      //     await this.fileManagerService.deleteFiles([
+      //       organization.organizationGeneral.logo,
+      //     ]);
+      //   }
 
-        const uploadedFile = await this.fileManagerService.uploadFiles(
-          `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
-          logo,
-        );
+      //   const uploadedFile = await this.fileManagerService.uploadFiles(
+      //     `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
+      //     logo,
+      //   );
 
-        await this.organizationGeneralService.update(
-          organization.organizationGeneral.id,
-          {
-            logo: uploadedFile[0],
-          },
-        );
-      }
+      //   await this.organizationGeneralService.update(
+      //     organization.organizationGeneral.id,
+      //     {
+      //       logo: uploadedFile[0],
+      //     },
+      //   );
+      // }
 
       if (organizationStatute) {
         if (organization.organizationLegal.organizationStatute) {
@@ -623,9 +623,10 @@ export class OrganizationService {
       );
     }
 
-    const organizationWithRafNumber = this.organizationGeneralService.findOne({
-      where: { rafNumber },
-    });
+    const organizationWithRafNumber =
+      await this.organizationGeneralService.findOne({
+        where: { rafNumber },
+      });
 
     if (organizationWithRafNumber) {
       errors.push(
