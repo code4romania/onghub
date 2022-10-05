@@ -3,6 +3,9 @@ import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { OrganizationHistorySubscriber } from 'src/modules/organization/services/organization-history.service';
 import { OrganizationRequestHistorySubscriber } from 'src/modules/organization/services/organization-request-history.service';
+import { ApplicationHistorySubscriber } from 'src/modules/application/services/application-history.service';
+import { ApplicationRequestHistorySubscriber } from 'src/modules/application/services/application-request-history.service';
+import { UserHistorySubscriber } from 'src/modules/user/services/user-history.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -21,6 +24,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       subscribers: [
         OrganizationHistorySubscriber,
         OrganizationRequestHistorySubscriber,
+        ApplicationHistorySubscriber,
+        ApplicationRequestHistorySubscriber,
+        UserHistorySubscriber,
       ],
       logging: !!parseInt(this.configService.get('TYPEORM_DEBUG'))
         ? true
