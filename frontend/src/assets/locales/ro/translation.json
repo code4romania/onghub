@@ -133,7 +133,7 @@
       "name": {
         "required": "Numele si prenumele sunt obligatorii",
         "max": "Numele si prenumele nu pot avea mai mult de 100 de caractere",
-        "min": "Numele si prenumele nu pot avea mai putin de 3 caractere",
+        "min": "Numele si prenumele nu pot avea mai putin de 5 caractere",
         "invalid": "Numele si prenumele au un format invalid",
         "label": "Nume si prenume*"
       },
@@ -762,7 +762,7 @@
       },
       "short": {
         "required": "Descrierea scurta este obligatorie",
-        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "max": "Descrierea scurta poate sa aiba maxim 120 de caractere",
         "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
         "label": "Descriere scurta",
         "helper": "Maximum 250 de caractere"
