@@ -21,6 +21,8 @@ import { ApplicationTableView } from './entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
 import { UserModule } from '../user/user.module';
 import { OrganizationModule } from '../organization/organization.module';
+import { ApplicationHistory } from './entities/application-history.entity';
+import { ApplicationRequestHistory } from './entities/application-request-history.entity';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { OrganizationModule } from '../organization/organization.module';
       UserOngApplication,
       ApplicationTableView,
       ApplicationOngView,
+      ApplicationHistory,
+      ApplicationRequestHistory,
     ]),
     SharedModule,
     UserModule,
