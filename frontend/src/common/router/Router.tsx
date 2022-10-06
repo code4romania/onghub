@@ -196,7 +196,7 @@ const Router = () => {
           />
 
           {/* Admin and Employee */}
-          <Route index element={role === UserRole.SUPER_ADMIN ? <Dashboard /> : <Dashboard />}></Route>
+          <Route index element={role === UserRole.SUPER_ADMIN ? <SuperAdminDashboard /> : <Dashboard />}></Route>
 
           <Route
             path={'organizations/:id'}
