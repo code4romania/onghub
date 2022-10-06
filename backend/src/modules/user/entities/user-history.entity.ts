@@ -59,8 +59,4 @@ export class UserHistory extends BaseEntity implements HistoryEntityInterface {
   @Exclude()
   @Column({ type: 'integer', nullable: true, name: 'organization_id' })
   organizationId: number;
-
-  @ManyToOne((type) => Organization, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'organization_id' })
-  organization: Organization;
 }

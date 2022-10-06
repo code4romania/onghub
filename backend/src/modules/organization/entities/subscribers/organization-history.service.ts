@@ -1,7 +1,7 @@
 import { HistoryEntitySubscriber } from '@anchan828/typeorm-history';
 import { EventSubscriber } from 'typeorm';
-import { Organization } from '../entities';
-import { OrganizationHistory } from '../entities/organization-history.entity';
+import { OrganizationHistory } from '../organization-history.entity';
+import { Organization } from '../organization.entity';
 
 @EventSubscriber()
 export class OrganizationHistorySubscriber extends HistoryEntitySubscriber<

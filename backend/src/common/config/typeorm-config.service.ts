@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { OrganizationHistorySubscriber } from 'src/modules/organization/services/organization-history.service';
-import { OrganizationRequestHistorySubscriber } from 'src/modules/organization/services/organization-request-history.service';
-import { ApplicationHistorySubscriber } from 'src/modules/application/services/application-history.service';
-import { ApplicationRequestHistorySubscriber } from 'src/modules/application/services/application-request-history.service';
-import { UserHistorySubscriber } from 'src/modules/user/services/user-history.service';
+import { OrganizationRequestHistorySubscriber } from 'src/modules/organization/entities/subscribers/organization-request-history.service';
+import { ApplicationHistorySubscriber } from 'src/modules/application/entities/subscribers/application-history.service';
+import { ApplicationRequestHistorySubscriber } from 'src/modules/application/entities/subscribers/application-request-history.service';
+import { UserHistorySubscriber } from 'src/modules/user/entities/subscribers/user-history.service';
+import { OrganizationHistorySubscriber } from 'src/modules/organization/entities/subscribers/organization-history.service';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {

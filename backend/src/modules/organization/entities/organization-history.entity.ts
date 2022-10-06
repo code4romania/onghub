@@ -58,14 +58,6 @@ export class OrganizationHistory
   })
   organizationGeneralId: number;
 
-  @OneToOne(
-    () => OrganizationGeneral,
-    (organizationGeneral) => organizationGeneral.organization,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'organization_general_id' })
-  organizationGeneral: OrganizationGeneral;
-
   @Exclude()
   @Column({
     type: 'integer',
@@ -73,14 +65,6 @@ export class OrganizationHistory
     name: 'organization_activity_id',
   })
   organizationActivityId: number;
-
-  @OneToOne(
-    () => OrganizationActivity,
-    (organizationActivity) => organizationActivity.organization,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'organization_activity_id' })
-  organizationActivity: OrganizationActivity;
 
   @Exclude()
   @Column({
@@ -90,22 +74,6 @@ export class OrganizationHistory
   })
   organizationLegalId: number;
 
-  @OneToOne(
-    () => OrganizationLegal,
-    (organizationLegal) => organizationLegal.organization,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'organization_legal_id' })
-  organizationLegal: OrganizationLegal;
-
-  @OneToMany(
-    () => OrganizationFinancial,
-    (organizationFinancial) => organizationFinancial.organization,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'organization_financial_id' })
-  organizationFinancial: OrganizationFinancial[];
-
   @Exclude()
   @Column({
     type: 'integer',
@@ -113,18 +81,4 @@ export class OrganizationHistory
     name: 'organization_report_id',
   })
   organizationReportId: number;
-
-  @OneToOne(
-    () => OrganizationReport,
-    (organizationReport) => organizationReport.organization,
-    { cascade: true },
-  )
-  @JoinColumn({ name: 'organization_report_id' })
-  organizationReport: OrganizationReport;
-
-  @OneToMany((type) => User, (user) => user.organization)
-  users: User[];
-
-  @OneToMany((type) => OrganizationRequest, (request) => request.organization)
-  requests: OrganizationRequest[];
 }

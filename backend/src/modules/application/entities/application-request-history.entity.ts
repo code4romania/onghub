@@ -30,8 +30,4 @@ export class ApplicationRequestHistory
 
   @Column({ type: 'integer', nullable: true, name: 'application_id' })
   applicationId: number;
-
-  @ManyToOne((type) => Application)
-  @JoinColumn({ name: 'application_id' })
-  application: Application;
 }

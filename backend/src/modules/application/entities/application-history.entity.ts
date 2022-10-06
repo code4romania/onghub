@@ -71,7 +71,4 @@ export class ApplicationHistory
 
   @Column({ type: 'text', name: 'management_url', nullable: true })
   managementUrl: string;
-
-  @OneToMany(() => OngApplication, (ongApp) => ongApp.application)
-  ongApplications: OngApplication[];
 }
