@@ -27,7 +27,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
   };
 
   return (
-    <div className="bg-white rounded-xl shadow flex flex-col gap-4 items-center justify-between w-80 h-[28rem] p-8 relative overflow-hidden">
+    <div className="bg-white rounded-xl shadow flex flex-col gap-1 items-center justify-between w-80 h-[28rem] p-8 relative overflow-auto">
       {(application.status === OngApplicationStatus.RESTRICTED ||
         application.status === OngApplicationStatus.DISABLED) && (
         <div className="ribbon">

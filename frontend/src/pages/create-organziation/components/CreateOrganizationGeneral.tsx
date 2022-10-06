@@ -83,22 +83,24 @@ const CreateOrganizationGeneral = () => {
         phone: data.contact_phone,
         email: data.contact_email,
       };
-  
+
       const organizationGeneral = {
         ...data,
         contact,
         logo: file,
       };
 
-      await validationMutate({ organization: {general: organizationGeneral }}); // Throws errors
-  
+      await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
+
       setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
-  
+
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
-        response.forEach((r: any, index: number) => useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()));
+        response.forEach((r: any, index: number) =>
+          useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()),
+        );
       }
     }
   };
@@ -399,7 +401,7 @@ const CreateOrganizationGeneral = () => {
               </div>
               {/* End Logo */}
             </div>
-            <div className="pt-8">
+            {/* <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('contact.description')}
@@ -415,7 +417,7 @@ const CreateOrganizationGeneral = () => {
                 ]}
                 id="create-organization-general"
               />
-            </div>
+            </div> */}
             <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">{t('social')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
@@ -670,4 +672,3 @@ const CreateOrganizationGeneral = () => {
 };
 
 export default CreateOrganizationGeneral;
-
