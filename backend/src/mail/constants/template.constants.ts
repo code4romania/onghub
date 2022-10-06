@@ -5,7 +5,7 @@ interface IMailOptions {
   subject: string;
   context: {
     title: string;
-    subtitle: (data1?: string, data2?: string) => string;
+    subtitle: (...args: string[]) => string;
     cta?: { link: (link?: string) => string; label: string };
   };
 }
