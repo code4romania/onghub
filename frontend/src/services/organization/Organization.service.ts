@@ -9,6 +9,7 @@ import {
 } from '../application/interfaces/Application.interface';
 import {
   mapOrganizationActivityToFormData,
+  mapOrganizationFinancialToFormData,
   mapOrganizationGeneralToFormDara,
   mapOrganizationLegalToFormData,
 } from './OrganizationFormDataMapper.service';
@@ -35,6 +36,10 @@ export const patchOrganizationByProfile = (
 
   if (update.legal) {
     payload = mapOrganizationLegalToFormData(payload, update.legal, 'legal');
+  }
+
+  if (update.financial) {
+    payload = mapOrganizationFinancialToFormData(payload, update.financial, 'financial');
   }
 
   // attach files
@@ -125,6 +130,8 @@ export const patchOrganization = (
 ): Promise<any> => {
   let payload = new FormData();
 
+  console.log('update', update);
+
   if (update.general) {
     payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
   }
@@ -135,6 +142,10 @@ export const patchOrganization = (
 
   if (update.legal) {
     payload = mapOrganizationLegalToFormData(payload, update.legal, 'legal');
+  }
+
+  if (update.financial) {
+    payload = mapOrganizationFinancialToFormData(payload, update.financial, 'financial');
   }
 
   // attach files

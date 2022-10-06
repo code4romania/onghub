@@ -3,6 +3,8 @@ import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { Person } from '../../common/interfaces/person.interface';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
+import { Expense } from '../../pages/organization/interfaces/Expense.interface';
+import { Income } from '../../pages/organization/interfaces/Income.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import { IOrganizationActivity } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
@@ -34,7 +36,7 @@ interface OrganizationPayload {
   organization: {
     general?: IOrganizationGeneral;
     activity?: Partial<IOrganizationActivity>;
-    financial?: Partial<IOrganizationFinancial>;
+    financial?: { id: number; data: Partial<Income | Expense> };
     legal?: {
       legalReprezentative?: Partial<Contact>;
       directors?: Partial<Contact>[];

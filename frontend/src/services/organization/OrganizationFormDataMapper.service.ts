@@ -7,6 +7,8 @@ import {
   ICreateOrganizationUser,
 } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
+import { Expense } from '../../pages/organization/interfaces/Expense.interface';
+import { Income } from '../../pages/organization/interfaces/Income.interface';
 
 export const mapAdminToFormData = (payload: FormData, admin: ICreateOrganizationUser): FormData => {
   return mapEntityToFormData(payload, 'admin', admin);
@@ -106,6 +108,26 @@ export const mapOrganizationLegalToFormData = (
   });
 
   return organizationLegalUpdated;
+};
+
+export const mapOrganizationFinancialToFormData = (
+  payload: FormData,
+  legal: {
+    id: number;
+    data: Partial<Income | Expense>;
+  },
+  organizationLegalKey: string,
+) => {
+  const { data, id } = legal;
+
+  payload.append(`${organizationLegalKey}[id]`, id.toString());
+  const payloadWithExpenseIncome = mapEntityToFormData(
+    payload,
+    `${organizationLegalKey}[data]`,
+    data,
+  );
+
+  return payloadWithExpenseIncome;
 };
 
 export const mapEntityToFormData = (
