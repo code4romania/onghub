@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { UserService } from 'src/modules/user/services/user.service';
 import { OrganizationService } from '.';
-import { OrganizationFinancialStatus } from '../enums/organization-financial-status.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { RequestStatus } from '../enums/request-status.enum';
 import {
@@ -31,7 +31,7 @@ export class OrganizationStatisticsService {
       await this.organizationsService.countOrganizations({
         where: {
           status: OrganizationStatus.ACTIVE,
-          financialStatus: OrganizationFinancialStatus.COMPLETED,
+          completionStatus: CompletionStatus.COMPLETED,
         },
       });
 
@@ -67,7 +67,7 @@ export class OrganizationStatisticsService {
 
     return {
       isOrganizationUpdated:
-        organization.financialStatus === OrganizationFinancialStatus.COMPLETED,
+        organization.completionStatus === CompletionStatus.COMPLETED,
       organizationCreatedOn: organization.createdOn,
       organizationSyncedOn: organization.syncedOn,
       numberOfInstalledApps: installedApps.length,

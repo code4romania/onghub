@@ -335,12 +335,6 @@ export class OrganizationRequestService {
     return this.find(requestId);
   }
 
-  public async findMany(
-    findConditions: FindManyOptions<OrganizationRequest>,
-  ): Promise<OrganizationRequest[]> {
-    return this.organizationRequestRepository.getMany(findConditions);
-  }
-
   public async countOrganizationRequest(
     findConditions?: FindManyOptions<OrganizationRequest>,
   ): Promise<number> {
