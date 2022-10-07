@@ -108,13 +108,17 @@ export class OrganizationRequestService {
     if (organization) {
       // 2.1 validate organization general
       if (organization.general) {
-        const { cui, rafNumber, name } = organization.general;
+        const { cui, rafNumber, name, email, phone, alias } =
+          organization.general;
 
         errors.push(
           ...(await this.organizationService.validateOrganizationGeneral(
             cui,
             rafNumber,
             name,
+            email,
+            phone,
+            alias,
           )),
         );
       }

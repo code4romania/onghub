@@ -122,7 +122,10 @@
         "REQ_001": "Acest email este deja folosit",
         "REQ_007": "Exista deja o organizatie cu acest CUI",
         "REQ_008": "Exista deja o organizatie cu acest numar RAF",
-        "REQ_009": "Exista deja o organizatie cu aceasta denumire"
+        "REQ_009": "Exista deja o organizatie cu aceasta denumire",
+        "REQ_010": "Exista deja o organizatie cu acest alias",
+        "REQ_011": "Exista deja o organizatie cu acest email",
+        "REQ_012": "Exista deja o organizatie cu acest numar de telefon"
       }
     },
     "filters": {
@@ -582,6 +585,8 @@
     "subtitle": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
     "add": "Adauga Utilizator",
     "not_found": "Utilizatorul nu exista in baza de date",
+    "failure_email": "Exista deja un utilizator cu acest email",
+    "failure_phone": "Exista deja un utilizator cu acest numar de telefon",
     "tabs": {
       "users": "Utilizatori",
       "invites": "Invitatii trimise"
@@ -609,7 +614,8 @@
       "restrict_success": "Acces restrictionat pentru utilizatorul",
       "date": "Data adaugarii",
       "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
-      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum",
+      "download": "Descarca Tabel"
     },
     "invites": {
       "title": "Lista cu invitatii",

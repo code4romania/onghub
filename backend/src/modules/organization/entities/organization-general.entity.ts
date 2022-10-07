@@ -12,16 +12,16 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', unique: true, name: 'name' })
   name: string;
 
-  @Column({ type: 'text', name: 'alias' })
+  @Column({ type: 'text', unique: true, name: 'alias' })
   alias: string;
 
   @Column({ type: 'enum', enum: OrganizationType, name: 'type' })
   type: OrganizationType;
 
-  @Column({ type: 'text', name: 'email' })
+  @Column({ type: 'text', unique: true, name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'phone' })
+  @Column({ type: 'text', unique: true, name: 'phone' })
   phone: string;
 
   @Column({ type: 'integer', name: 'year_created' })

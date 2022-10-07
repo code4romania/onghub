@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { USER_ERRORS } from '../../../../common/constants/error.constants';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
@@ -62,6 +63,22 @@ const UserCreate = () => {
           navigate('/users');
         },
         onError: () => {
+          const updateError: any = createUserMutation.error;
+          const err = updateError?.response?.data;
+          switch (err.code) {
+            case USER_ERRORS.ALREADY_EXISTS_PHONE: {
+              useErrorToast(t('failure_phone'));
+              break;
+            }
+            case USER_ERRORS.ALREADY_EXISTS_EMAIL: {
+              useErrorToast(t('failure_email'));
+              break;
+            }
+            default: {
+              useErrorToast(t('edit.failure'));
+              break;
+            }
+          }
           useErrorToast(t('create.failure'));
         },
       },

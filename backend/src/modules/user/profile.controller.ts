@@ -24,7 +24,7 @@ export class ProfileController {
     return user;
   }
 
-  @Delete()
+  @Delete('')
   remove(@ExtractUser() user: User) {
     return this.userService.remove(user);
   }

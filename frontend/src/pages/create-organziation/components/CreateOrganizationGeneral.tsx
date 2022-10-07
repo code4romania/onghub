@@ -401,7 +401,7 @@ const CreateOrganizationGeneral = () => {
               </div>
               {/* End Logo */}
             </div>
-            {/* <div className="pt-8">
+            <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('contact.description')}
@@ -417,7 +417,7 @@ const CreateOrganizationGeneral = () => {
                 ]}
                 id="create-organization-general"
               />
-            </div> */}
+            </div>
             <div className="pt-8">
               <span className="text-xl font-bold text-gray-900">{t('social')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">

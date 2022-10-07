@@ -279,7 +279,7 @@ const UserList = () => {
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold text-xl">{t('title')}</p>
           <button type="button" className="edit-button" onClick={onExport}>
-            Descarca Tabel
+            {t('list.download')}
           </button>
         </div>
         <div className="pb-5 px-10">

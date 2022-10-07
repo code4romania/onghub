@@ -12,6 +12,7 @@ const useErrorToast = (message: string, id?: string) => {
     theme: 'colored',
     toastId: errorToastId,
     hideProgressBar: true,
+    autoClose: 3000,
   });
 };
 
@@ -27,6 +28,7 @@ const useSuccessToast = (message: string) => {
     theme: 'colored',
     toastId: successToastId,
     hideProgressBar: true,
+    autoClose: 3000,
   });
 };
 
