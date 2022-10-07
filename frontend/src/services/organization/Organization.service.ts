@@ -7,18 +7,26 @@ import {
   ApplicationWithOngStatus,
   OrganizationApplicationRequest,
 } from '../application/interfaces/Application.interface';
+import {
+  mapEntityToFormData,
+  mapOrganizationActivityToFormData,
+  mapOrganizationFinancialToFormData,
+  mapOrganizationGeneralToFormDara,
+  mapOrganizationLegalToFormData,
+} from './OrganizationFormDataMapper.service';
 
 /**EMPLOYEE && ADMIN */
 export const getOrganizationByProfile = (): Promise<any> => {
   return API.get(`/organization-profile`).then((res) => res.data);
 };
 
-export const patchOrganizationByProfile = (update: any): Promise<any> => {
-  return API.patch(`/organization-profile`, { ...update }).then((res) => res.data);
-};
-
-export const uploadOrganizationFilesByProfile = (files: FormData): Promise<any> => {
-  return API.post(`/organization-profile/upload`, files, {
+export const patchOrganizationByProfile = (
+  update: any,
+  logo?: File | null,
+  organizationStatute?: File | null,
+): Promise<any> => {
+  const payload = generateOrganizationFormDataPayload(update, logo, organizationStatute);
+  return API.patch(`/organization-profile`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
@@ -93,12 +101,14 @@ export const getOrganizationApplicationRequests = (
   return API.get(`/application/request/organization/${id}`).then((res) => res.data);
 };
 
-export const patchOrganization = (id: number, update: any): Promise<any> => {
-  return API.patch(`/organization/${id}`, { ...update }).then((res) => res.data);
-};
-
-export const uploadOrganizationFiles = (id: number, files: FormData): Promise<any> => {
-  return API.post(`/organization/${id}/upload`, files, {
+export const patchOrganization = (
+  id: number,
+  update: any,
+  logo?: File | null,
+  organizationStatute?: File | null,
+): Promise<any> => {
+  const payload = generateOrganizationFormDataPayload(update, logo, organizationStatute);
+  return API.patch(`/organization/${id}`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
 };
@@ -141,4 +151,43 @@ export const restrictOrganization = (id: number): Promise<any> => {
 
 export const activateOrganization = (id: number): Promise<any> => {
   return API.patch(`organization/${id}/activate`).then((res) => res.data);
+};
+
+const generateOrganizationFormDataPayload = (
+  update: any,
+  logo?: File | null,
+  organizationStatute?: File | null,
+) => {
+  let payload = new FormData();
+
+  if (update.general) {
+    payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
+  }
+
+  if (update.activity) {
+    payload = mapOrganizationActivityToFormData(payload, update.activity, 'activity');
+  }
+
+  if (update.legal) {
+    payload = mapOrganizationLegalToFormData(payload, update.legal, 'legal');
+  }
+
+  if (update.financial) {
+    payload = mapOrganizationFinancialToFormData(payload, update.financial, 'financial');
+  }
+
+  if (update.report) {
+    payload = mapEntityToFormData(payload, 'report', update.report);
+  }
+
+  // attach files
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  if (organizationStatute) {
+    payload.append('organizationStatute', organizationStatute);
+  }
+
+  return payload;
 };

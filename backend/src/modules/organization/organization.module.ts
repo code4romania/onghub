@@ -1,8 +1,6 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from '../application/application.module';
-import { UserModule } from '../user/user.module';
-import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationProfileController } from './controllers/organization-profile.controller';
 import { OrganizationController } from './controllers/organization.controller';
 import {
@@ -44,6 +42,10 @@ import {
 import { OrganizationReportService } from './services/organization-report.service';
 import { OrganizationRequestService } from './services/organization-request.service';
 import { OrganizationStatisticsService } from './services/organization-statistics.service';
+import { UserModule } from '../user/user.module';
+import { OrganizationApplicationController } from './controllers/organization-application.controller';
+import { OrganizationHistory } from './entities/organization-history.entity';
+import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { OrganizationStatisticsService } from './services/organization-statistic
       Investor,
       OrganizationRequest,
       OrganizationView,
+      OrganizationHistory,
+      OrganizationRequestHistory,
     ]),
     ApplicationModule,
     UserModule,

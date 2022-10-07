@@ -21,6 +21,8 @@ export class OrganizationLegalService {
   public async update(
     id: number,
     updateOrganizationLegalDto: UpdateOrganizationLegalDto,
+    organizationStatutePath?: string,
+    organizationStatute?: Express.Multer.File[],
   ) {
     const orgLegal = await this.organizationLegalRepostory.get({
       where: { id },
@@ -32,7 +34,7 @@ export class OrganizationLegalService {
       });
     }
 
-    const { directorsDeleted, ...organizationLegalData } =
+    let { directorsDeleted, ...organizationLegalData } =
       updateOrganizationLegalDto;
 
     if (updateOrganizationLegalDto?.directors?.length < 3) {
@@ -45,11 +47,23 @@ export class OrganizationLegalService {
       await this.contactService.delete({ id: In(directorsDeleted) });
     }
 
-    if (
-      organizationLegalData.organizationStatute === null &&
-      orgLegal.organizationStatute
-    ) {
-      await this.fileManagerService.deleteFiles([orgLegal.organizationStatute]);
+    // Update organization statute file if necessary
+    if (organizationStatute) {
+      if (orgLegal.organizationStatute) {
+        await this.fileManagerService.deleteFiles([
+          orgLegal.organizationStatute,
+        ]);
+      }
+
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        organizationStatutePath,
+        organizationStatute,
+      );
+
+      organizationLegalData = {
+        ...organizationLegalData,
+        organizationStatute: uploadedFile[0],
+      };
     }
 
     await this.organizationLegalRepostory.save({
@@ -57,9 +71,22 @@ export class OrganizationLegalService {
       ...organizationLegalData,
     });
 
-    return this.organizationLegalRepostory.get({
+    let organizationLegal = await this.organizationLegalRepostory.get({
       where: { id },
       relations: ['directors', 'legalReprezentative'],
     });
+
+    if (organizationLegal.organizationStatute) {
+      const organizationStatutePublicUrl =
+        await this.fileManagerService.generatePresignedURL(
+          organizationLegal.organizationStatute,
+        );
+      organizationLegal = {
+        ...organizationLegal,
+        organizationStatute: organizationStatutePublicUrl,
+      };
+    }
+
+    return organizationLegal;
   }
 }

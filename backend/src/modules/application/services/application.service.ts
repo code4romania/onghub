@@ -40,9 +40,9 @@ import { ApplicationTableView } from '../entities/application-table-view.entity'
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { OrganizationService } from 'src/modules/organization/services';
 import { FindManyOptions } from 'typeorm';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -435,12 +435,32 @@ export class ApplicationService {
       );
 
       // send email to admin to delete the application
-      this.mailService.sendEmail({
-        to: superAdmins.map((user) => user.email),
-        template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
+      const {
+        template,
+        subject,
         context: {
-          applicationName: application.name,
-          organizationName: organziation.organizationGeneral.name,
+          title,
+          cta: { label },
+        },
+      } = MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((user) => user.email),
+        template,
+        subject,
+        context: {
+          title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.subtitle(
+              organziation.organizationGeneral.name,
+              application.name,
+            ),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
+              organizationId.toString(),
+            ),
+            label,
+          },
         },
       });
 
@@ -491,8 +511,10 @@ export class ApplicationService {
     );
   }
 
-  public async getMany(options: FindManyOptions<Application>): Promise<Application[]> {
-   return this.applicationRepository.getMany(options);
+  public async getMany(
+    options: FindManyOptions<Application>,
+  ): Promise<Application[]> {
+    return this.applicationRepository.getMany(options);
   }
 
   /**
@@ -555,5 +577,4 @@ export class ApplicationService {
       status: finalStatus,
     };
   }
-  
 }

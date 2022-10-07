@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { Pagination } from 'src/common/interfaces/pagination';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
@@ -66,6 +66,8 @@ export class OrganizationService {
 
   public async create(
     createOrganizationDto: CreateOrganizationDto,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
   ): Promise<Organization> {
     if (
       createOrganizationDto.activity.area === Area.LOCAL &&
@@ -157,7 +159,7 @@ export class OrganizationService {
     );
 
     // create the parent entry with default values
-    return this.organizationRepository.save({
+    const organization = await this.organizationRepository.save({
       organizationGeneral: {
         ...createOrganizationDto.general,
       },
@@ -184,6 +186,38 @@ export class OrganizationService {
         investors: [{ year: lastYear }],
       },
     });
+
+    // upload logo
+    if (logo) {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+        logo,
+      );
+
+      await this.organizationGeneralService.update(
+        organization.organizationGeneral.id,
+        {
+          logo: uploadedFile[0],
+        },
+      );
+    }
+
+    // upload organization statute
+    if (organizationStatute) {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+        organizationStatute,
+      );
+
+      await this.organizationLegalService.update(
+        organization.organizationLegal.id,
+        {
+          organizationStatute: uploadedFile[0],
+        },
+      );
+    }
+
+    return organization;
   }
 
   public async find(id: number) {
@@ -209,10 +243,21 @@ export class OrganizationService {
       ...options,
     };
 
-    return this.organizationViewRepository.getManyPaginated(
+    const ongList = await this.organizationViewRepository.getManyPaginated(
       ORGANIZATION_FILTERS_CONFIG,
       paginationOptions,
     );
+
+    // Map the logo url
+    const items =
+      await this.fileManagerService.mapLogoToEntity<OrganizationView>(
+        ongList.items,
+      );
+
+    return {
+      ...ongList,
+      items,
+    };
   }
 
   public async findWithRelations(id: number): Promise<Organization> {
@@ -249,6 +294,23 @@ export class OrganizationService {
       });
     }
 
+    // check for logo and add public url
+    if (organization.organizationGeneral.logo) {
+      const logo = await this.fileManagerService.generatePresignedURL(
+        organization.organizationGeneral.logo,
+      );
+      organization.organizationGeneral.logo = logo;
+    }
+
+    // check for logo and add public url
+    if (organization.organizationLegal.organizationStatute) {
+      const organizationStatute =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.organizationStatute,
+        );
+      organization.organizationLegal.organizationStatute = organizationStatute;
+    }
+
     return organization;
   }
 
@@ -274,6 +336,8 @@ export class OrganizationService {
   public async update(
     id: number,
     updateOrganizationDto: UpdateOrganizationDto,
+    logo?: Express.Multer.File[],
+    organizationStatute?: Express.Multer.File[],
   ): Promise<any> {
     const organization = await this.find(id);
 
@@ -281,6 +345,8 @@ export class OrganizationService {
       return this.organizationGeneralService.update(
         organization.organizationGeneralId,
         updateOrganizationDto.general,
+        `${id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+        logo,
       );
     }
 
@@ -295,6 +361,8 @@ export class OrganizationService {
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
+        `${id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+        organizationStatute,
       );
     }
 
@@ -327,75 +395,6 @@ export class OrganizationService {
     }
 
     return null;
-  }
-
-  public async upload(
-    organizationId: number,
-    logo: Express.Multer.File[],
-    organizationStatute: Express.Multer.File[],
-  ): Promise<Organization> {
-    const organization = await this.organizationRepository.get({
-      where: { id: organizationId },
-      relations: ['organizationGeneral', 'organizationLegal'],
-    });
-
-    if (!organization) {
-      throw new NotFoundException({
-        ...ORGANIZATION_ERRORS.GET,
-      });
-    }
-
-    try {
-      if (logo) {
-        if (organization.organizationGeneral.logo) {
-          await this.fileManagerService.deleteFiles([
-            organization.organizationGeneral.logo,
-          ]);
-        }
-
-        const uploadedFile = await this.fileManagerService.uploadFiles(
-          `${organizationId}/${ORGANIZATION_FILES_DIR.LOGO}`,
-          logo,
-        );
-
-        await this.organizationGeneralService.update(
-          organization.organizationGeneral.id,
-          {
-            logo: uploadedFile[0],
-          },
-        );
-      }
-
-      if (organizationStatute) {
-        if (organization.organizationLegal.organizationStatute) {
-          await this.fileManagerService.deleteFiles([
-            organization.organizationLegal.organizationStatute,
-          ]);
-        }
-
-        const uploadedFile = await this.fileManagerService.uploadFiles(
-          `${organizationId}/${ORGANIZATION_FILES_DIR.STATUTE}`,
-          organizationStatute,
-        );
-
-        await this.organizationLegalService.update(
-          organization.organizationLegal.id,
-          {
-            organizationStatute: uploadedFile[0],
-          },
-        );
-      }
-
-      return this.organizationRepository.get({
-        where: { id: organizationId },
-        relations: ['organizationGeneral', 'organizationLegal'],
-      });
-    } catch (error) {
-      throw new BadRequestException({
-        ...ORGANIZATION_ERRORS.UPLOAD,
-        error: { error },
-      });
-    }
   }
 
   public async uploadPartners(
@@ -536,20 +535,26 @@ export class OrganizationService {
       (item) => item.role === Role.ADMIN,
     );
 
-    const adminEmails = admins.map((item) => {
-      return item.email;
-    });
-
     await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
 
+    const {
+      template,
+      subject,
+      context: { title },
+    } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN;
+
     await this.mailService.sendEmail({
-      to: adminEmails,
-      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      to: admins.map((admin) => admin.email),
+      template,
+      subject,
       context: {
-        orgName: organization.organizationGeneral.name,
+        title,
+        subtitle: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.subtitle(
+          organization.organizationGeneral.name,
+        ),
       },
     });
 
@@ -685,9 +690,10 @@ export class OrganizationService {
       );
     }
 
-    const organizationWithRafNumber = this.organizationGeneralService.findOne({
-      where: { rafNumber },
-    });
+    const organizationWithRafNumber =
+      await this.organizationGeneralService.findOne({
+        where: { rafNumber },
+      });
 
     if (organizationWithRafNumber) {
       errors.push(
