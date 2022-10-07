@@ -10,6 +10,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
+import { UserRole } from '../users/enums/UserRole.enum';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -28,6 +29,7 @@ const Account = () => {
   const { mutateAsync: deleteUser, error: deleteUserError } = useUserMutation();
   const { profile } = useUser();
   const { t } = useTranslation(['account', 'common']);
+  const { role } = useAuthContext();
 
   useEffect(() => {
     useErrorToast((deleteUserError as any)?.response?.data?.message);
@@ -67,15 +69,17 @@ const Account = () => {
           <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_account')}</p>
           <p className="text-gray-400 pt-6">{t('account_description')}</p>
         </div>
-        <button
-          type="button"
-          className="red-button"
-          onClick={() => {
-            setAccountDeleteModal(true);
-          }}
-        >
-          {t('close.account')}
-        </button>
+        {role === UserRole.EMPLOYEE && (
+          <button
+            type="button"
+            className="red-button"
+            onClick={() => {
+              setAccountDeleteModal(true);
+            }}
+          >
+            {t('close.account')}
+          </button>
+        )}
       </div>
       <div className="w-full bg-white shadow rounded-lg ">
         <div className="py-5 px-10 flex justify-between align-center">

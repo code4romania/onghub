@@ -36,7 +36,7 @@ const DataTableFilters = ({
 
   const resetFilters = () => {
     onResetFilters();
-    setFiltersCollapsed(false);
+    setFiltersCollapsed(true);
   };
 
   const onSearchValueChange = (value: string) => {

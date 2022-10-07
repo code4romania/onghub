@@ -8,4 +8,5 @@ export interface IUser extends BaseEntity {
   phone: string;
   role: string;
   status: UserStatus;
+  organization: BaseEntity;
 }

@@ -5,7 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
@@ -106,13 +107,12 @@ export class OrganizationRequestService {
     createRequestDto: Partial<CreateOrganizationRequestDto>,
   ): Promise<any[]> {
     const { admin, organization } = createRequestDto;
-
     const errors = [];
 
     // 1. validate admin
     if (admin) {
       const user = await this.userService.findOne({
-        where: [{ email: admin.email }],
+        where: [{ email: admin.email }, { phone: admin.phone }],
       });
 
       if (user) {
@@ -186,21 +186,49 @@ export class OrganizationRequestService {
 
       // Mail notifications
       // Admin
-      this.mailService.sendEmail({
+
+      const adminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
+
+      await this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
+        template: adminMailOptions.template,
+        subject: adminMailOptions.subject,
+        context: {
+          title: adminMailOptions.context.title,
+          subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
+        },
       });
 
       // Super-Admin
-      const superAdmin = await this.userService.findMany({
+      const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSAdmins = superAdmin.map((item) => {
-        return item.email;
-      });
-      this.mailService.sendEmail({
-        to: emailSAdmins,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
+
+      const superadminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((item) => item.email),
+        template: superadminMailOptions.template,
+        subject: superadminMailOptions.subject,
+        context: {
+          title: superadminMailOptions.context.title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
+              foundRequest.id.toString(),
+            ),
+            label: '',
+          },
+        },
       });
 
       return this.organizationRequestRepository.save({
@@ -240,9 +268,29 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
-    this.mailService.sendEmail({
+    const {
+      template,
+      subject,
+      context: {
+        title,
+        cta: { label },
+      },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
+
+    await this.mailService.sendEmail({
       to: email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_APPROVAL,
+      template,
+      subject,
+      context: {
+        title,
+        subtitle: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
+        cta: {
+          link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
+            'www.google.com',
+          ),
+          label,
+        },
+      },
     });
 
     return this.find(requestId);
@@ -265,12 +313,61 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // 4. Send rejection by email
-    this.mailService.sendEmail({
+
+    const {
+      template,
+      subject,
+      context: { title },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION;
+
+    await this.mailService.sendEmail({
       to: found.email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_REJECTION,
+      template,
+      subject,
+      context: {
+        title,
+        subtitle:
+          MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
+      },
     });
 
     return this.find(requestId);
+  }
+
+  public async sendRestrictRequest(organizationId: number): Promise<void> {
+    try {
+      const organization = await this.organizationService.findWithUsers(
+        organizationId,
+      );
+      const superAdmins = await this.userService.findMany({
+        where: { role: Role.SUPER_ADMIN },
+      });
+
+      const {
+        template,
+        subject,
+        context: { title },
+      } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((superAdmin) => superAdmin.email),
+        template,
+        subject,
+        context: {
+          title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
+              organization.organizationGeneral.name,
+            ),
+        },
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...MAIL_ERRORS.RESTRICT_FOR_SUPERADMINS,
+      });
+      throw error;
+    }
   }
 
   private find(id: number): Promise<OrganizationRequest> {

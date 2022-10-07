@@ -81,6 +81,10 @@ export const deleteInvestorsByProfile = (investorId: number): Promise<any> => {
   return API.delete(`/organization-profile/investors/${investorId}`).then((res) => res.data);
 };
 
+export const restrictOrganizationRequest = (): Promise<any> => {
+  return API.post(`/organization-profile/close`).then((res) => res.data);
+};
+
 /**
  * SUPER ADMIN
  */
@@ -189,4 +193,12 @@ export const deletePartners = (id: number, partnerId: number): Promise<any> => {
 
 export const deleteInvestors = (id: number, investorId: number): Promise<any> => {
   return API.delete(`/organization/${id}/investors/${investorId}`).then((res) => res.data);
+};
+
+export const restrictOrganization = (id: number): Promise<any> => {
+  return API.patch(`/organization/${id}/restrict`).then((res) => res.data);
+};
+
+export const activateOrganization = (id: number): Promise<any> => {
+  return API.patch(`organization/${id}/activate`).then((res) => res.data);
 };

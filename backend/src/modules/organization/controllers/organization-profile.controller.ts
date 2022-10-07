@@ -19,16 +19,16 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
-import { Role } from '../../user/enums/role.enum';
 import {
   INVESTOR_UPLOAD_SCHEMA,
-  ORGANIZATION_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
+import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
@@ -36,7 +36,10 @@ import { OrganizationService } from '../services/organization.service';
 @ApiBearerAuth()
 @Controller('organization-profile')
 export class OrganizationProfileController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private readonly organizationRequestService: OrganizationRequestService,
+  ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @Get()
@@ -54,6 +57,14 @@ export class OrganizationProfileController {
     return this.organizationService.update(
       user.organizationId,
       updateOrganizationDto,
+    );
+  }
+
+  @Roles(Role.ADMIN)
+  @Post('close')
+  requestClose(@ExtractUser() user: User) {
+    return this.organizationRequestService.sendRestrictRequest(
+      user.organizationId,
     );
   }
 

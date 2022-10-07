@@ -1,0 +1,12 @@
+service: auth-hook
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  stage: dev
+
+functions:
+  permissionCheck:
+    handler: handler.permissionCheck
