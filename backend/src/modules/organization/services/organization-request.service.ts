@@ -5,19 +5,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { UserService } from 'src/modules/user/services/user.service';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
+import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
-import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
-import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
-import { MailService } from 'src/mail/services/mail.service';
-import { Role } from 'src/modules/user/enums/role.enum';
-import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -28,6 +29,7 @@ export class OrganizationRequestService {
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -43,7 +45,7 @@ export class OrganizationRequestService {
   }
 
   public async findOne(id: number): Promise<OrganizationRequest> {
-    const request = this.organizationRequestRepository.get({
+    const request = await this.organizationRequestRepository.get({
       where: {
         id,
         status: RequestStatus.PENDING,
@@ -78,6 +80,24 @@ export class OrganizationRequestService {
       throw new NotFoundException({
         ...ORGANIZATION_REQUEST_ERRORS.GET.NOT_FOUND,
       });
+    }
+
+    // check for logo and add public url
+    if (request.organization.organizationGeneral.logo) {
+      const logo = await this.fileManagerService.generatePresignedURL(
+        request.organization.organizationGeneral.logo,
+      );
+      request.organization.organizationGeneral.logo = logo;
+    }
+
+    // check for logo and add public url
+    if (request.organization.organizationLegal.organizationStatute) {
+      const organizationStatute =
+        await this.fileManagerService.generatePresignedURL(
+          request.organization.organizationLegal.organizationStatute,
+        );
+      request.organization.organizationLegal.organizationStatute =
+        organizationStatute;
     }
 
     return request;
@@ -127,7 +147,11 @@ export class OrganizationRequestService {
     }
   }
 
-  public async create(createReqDto: CreateOrganizationRequestDto) {
+  public async create(
+    createReqDto: CreateOrganizationRequestDto,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
+  ) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
       where: { email: createReqDto.admin.email },
@@ -156,6 +180,8 @@ export class OrganizationRequestService {
     try {
       const organization = await this.organizationService.create(
         createReqDto.organization,
+        logo,
+        organizationStatute,
       );
 
       // Mail notifications

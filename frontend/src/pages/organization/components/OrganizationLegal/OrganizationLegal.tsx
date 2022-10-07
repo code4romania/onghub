@@ -1,42 +1,39 @@
+import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
 import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
 import { Person } from '../../../../common/interfaces/person.interface';
 import ContactForm from '../../../../components/Contact/Contact';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { useSelectedOrganization } from '../../../../store/selectors';
-import { Contact } from '../../interfaces/Contact.interface';
-import DirectorModal from './components/DirectorModal';
-import OtherModal from './components/OtherModal';
-import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
-import { OrganizationLegalConfig } from './OrganizationLegalConfig';
-import { OthersTableHeaders } from './table-headers/OthersTable.headers';
-import { flatten } from '../../../../common/helpers/format.helper';
-import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
+import { AuthContext } from '../../../../contexts/AuthContext';
 import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
-  useUploadOrganizationFilesByProfileMutation,
-  useUploadOrganizationFilesMutation,
 } from '../../../../services/organization/Organization.queries';
-import { useErrorToast } from '../../../../common/hooks/useToast';
-import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
-import { getPublicFileUrl } from '../../../../services/files/File.service';
-import { AuthContext } from '../../../../contexts/AuthContext';
+import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
-import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Contact } from '../../interfaces/Contact.interface';
+import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
+import DirectorModal from './components/DirectorModal';
+import OtherModal from './components/OtherModal';
+import { OrganizationLegalConfig } from './OrganizationLegalConfig';
+import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
+import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 
 const OrganizationLegal = () => {
   const location = useLocation();
 
   const [isEditMode, setEditMode] = useState(false);
-  const [organizationStatute, setOrganizationStatute] = useState<string | null>(null);
+  const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -50,13 +47,10 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
-    REQUEST_LOCATION,
-  )
+  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
     ? useOrganizationMutation()
     : useOrganizationByProfileMutation();
-  const { mutate: uploadFiles, error: uploadFilesError } =
-    useUploadOrganizationFilesByProfileMutation();
+
   const { role } = useContext(AuthContext);
   // React i18n
   const { t } = useTranslation(['legal', 'organization', 'common']);
@@ -82,14 +76,8 @@ const OrganizationLegal = () => {
       reset({ ...legalReprezentative });
       setOthers(organizationLegal.others);
       setDirectors(organizationLegal.directors);
-      if (organizationLegal.organizationStatute)
-        requestOrganizationStatuteUrl(organizationLegal.organizationStatute);
     }
   }, [organizationLegal]);
-
-  useEffect(() => {
-    if (updateOrganizationError) useErrorToast(t('save_error', { ns: 'organization' }));
-  }, [updateOrganizationError]);
 
   const buildDirectorActionColumn = (): TableColumn<Contact> => {
     const menuItems = [
@@ -232,20 +220,29 @@ const OrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    updateOrganization({
-      id: organization?.id,
-      organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
-    });
+    updateOrganization(
+      {
+        id: organization?.id,
+        organization: { legal: { legalReprezentative, directors, directorsDeleted, others } },
+        logo: null,
+        organizationStatute,
+      },
+      {
+        onSuccess: () => {
+          setOrganizationStatute(null);
+        },
+        onError: () => {
+          useErrorToast(t('save_error', { ns: 'organization' }));
+        },
+      },
+    );
 
     setEditMode(false);
   };
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const data = new FormData();
-      data.append('organizationStatute', file);
-      uploadFiles({ data });
+      setOrganizationStatute(event.target.files[0]);
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -255,23 +252,7 @@ const OrganizationLegal = () => {
   const onRemoveOrganizationStatute = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    updateOrganization({
-      organization: {
-        legal: {
-          organizationStatute: null,
-        },
-      },
-    });
     setOrganizationStatute(null);
-  };
-
-  const requestOrganizationStatuteUrl = async (path: string) => {
-    try {
-      const orgStatuteUrl = await getPublicFileUrl(path);
-      setOrganizationStatute(orgStatuteUrl);
-    } catch (error) {
-      useErrorToast(t('statute_error'));
-    }
   };
 
   return (
@@ -389,7 +370,7 @@ const OrganizationLegal = () => {
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
-                  href={organizationStatute || ''}
+                  href={fileToURL(organizationStatute) || organizationLegal?.organizationStatute}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >

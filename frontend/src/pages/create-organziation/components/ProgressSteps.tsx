@@ -1,4 +1,3 @@
-import { create } from 'domain';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import i18n from '../../../common/config/i18n';

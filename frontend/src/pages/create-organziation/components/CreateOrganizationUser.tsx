@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import { useErrorToast } from '../../../common/hooks/useToast';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
@@ -12,6 +12,7 @@ import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationError
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const [organization, setOrganization] = useOutletContext<any>();
 
@@ -25,17 +26,12 @@ const CreateOrganizationUser = () => {
     control,
     formState: { errors },
     reset,
-    setValue,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
-  const {
-    mutateAsync: validationMutate,
-    error: validationError,
-    isLoading: validationLoading,
-  } = useCreateOrganizationRequestValidationMutation();
+  const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
   useEffect(() => {
     if (organization && organization.admin) {
@@ -45,7 +41,7 @@ const CreateOrganizationUser = () => {
 
   const handleSave = async (data: any) => {
     try {
-      await validationMutate({ admin: {...data} }); // Throws errors
+      await validationMutate({ admin: { ...data } }); // Throws errors
 
       const admin = {
         ...data,
@@ -56,7 +52,10 @@ const CreateOrganizationUser = () => {
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
-        response.forEach((r: any, index: number) => useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()));
+        const mappedErrors = response.map(
+          (error) => CREATE_ORGANIZATION_ERRORS[error.response.errorCode],
+        );
+        setValidationErrors(mappedErrors);
       }
     }
   };
@@ -158,6 +157,9 @@ const CreateOrganizationUser = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
+        {validationErrors.length > 0 && (
+          <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
+        )}
       </div>
     </div>
   );
