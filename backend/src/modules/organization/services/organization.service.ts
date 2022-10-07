@@ -283,6 +283,23 @@ export class OrganizationService {
       });
     }
 
+    // check for logo and add public url
+    if (organization.organizationGeneral.logo) {
+      const logo = await this.fileManagerService.generatePresignedURL(
+        organization.organizationGeneral.logo,
+      );
+      organization.organizationGeneral.logo = logo;
+    }
+
+    // check for logo and add public url
+    if (organization.organizationLegal.organizationStatute) {
+      const organizationStatute =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.organizationStatute,
+        );
+      organization.organizationLegal.organizationStatute = organizationStatute;
+    }
+
     return organization;
   }
 

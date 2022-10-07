@@ -85,8 +85,14 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
-      data;
+    const {
+      contact_email,
+      contact_fullName,
+      contact_phone,
+      contact,
+      logo,
+      ...organizationGeneral
+    } = data;
 
     setReadonly(true);
 

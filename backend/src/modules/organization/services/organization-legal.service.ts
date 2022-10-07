@@ -71,9 +71,22 @@ export class OrganizationLegalService {
       ...organizationLegalData,
     });
 
-    return this.organizationLegalRepostory.get({
+    let organizationLegal = await this.organizationLegalRepostory.get({
       where: { id },
       relations: ['directors', 'legalReprezentative'],
     });
+
+    if (organizationLegal.organizationStatute) {
+      const organizationStatutePublicUrl =
+        await this.fileManagerService.generatePresignedURL(
+          organizationLegal.organizationStatute,
+        );
+      organizationLegal = {
+        ...organizationLegal,
+        organizationStatute: organizationStatutePublicUrl,
+      };
+    }
+
+    return organizationLegal;
   }
 }

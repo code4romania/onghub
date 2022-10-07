@@ -22,8 +22,8 @@ export const getOrganizationByProfile = (): Promise<any> => {
 
 export const patchOrganizationByProfile = (
   update: any,
-  logo?: File,
-  organizationStatute?: File,
+  logo?: File | null,
+  organizationStatute?: File | null,
 ): Promise<any> => {
   let payload = new FormData();
 

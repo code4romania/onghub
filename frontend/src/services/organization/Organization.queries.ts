@@ -268,7 +268,8 @@ export const useOrganizationByProfileMutation = () => {
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
-    ({ organization }: OrganizationPayload) => patchOrganizationByProfile(organization),
+    ({ organization, logo, organizationStatute }: OrganizationPayload) =>
+      patchOrganizationByProfile(organization, logo, organizationStatute),
     {
       onSuccess: (
         data:

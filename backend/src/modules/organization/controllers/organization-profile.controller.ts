@@ -49,14 +49,31 @@ export class OrganizationProfileController {
 
   @Roles(Role.ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
   @Patch()
   update(
     @ExtractUser() user: User,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @UploadedFiles()
+    {
+      logo,
+      organizationStatute,
+    }: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
   ) {
     return this.organizationService.update(
       user.organizationId,
       updateOrganizationDto,
+      logo,
+      organizationStatute,
     );
   }
 

@@ -52,10 +52,22 @@ export class OrganizationGeneralService {
       ...updateOrganizationData,
     });
 
-    return this.organizationGeneralRepository.get({
+    let organizationGeneral = await this.organizationGeneralRepository.get({
       where: { id },
       relations: ['city', 'county', 'contact'],
     });
+
+    if (logo) {
+      const logoPublicUrl = await this.fileManagerService.generatePresignedURL(
+        organizationGeneral.logo,
+      );
+      organizationGeneral = {
+        ...organizationGeneral,
+        logo: logoPublicUrl,
+      };
+    }
+
+    return organizationGeneral;
   }
 
   public async findOne(
