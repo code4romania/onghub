@@ -511,10 +511,10 @@ export class ApplicationService {
     );
   }
 
-  public async getMany(
-    options: FindManyOptions<Application>,
-  ): Promise<Application[]> {
-    return this.applicationRepository.getMany(options);
+  public async countApplications(
+    options?: FindManyOptions<Application>,
+  ): Promise<number> {
+    return this.applicationRepository.count(options);
   }
 
   /**

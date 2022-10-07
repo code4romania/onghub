@@ -341,6 +341,12 @@ export class OrganizationRequestService {
     return this.organizationRequestRepository.getMany(findConditions);
   }
 
+  public async countOrganizationRequest(
+    findConditions?: FindManyOptions<OrganizationRequest>,
+  ): Promise<number> {
+    return this.organizationRequestRepository.count(findConditions);
+  }
+
   public async sendRestrictRequest(organizationId: number): Promise<void> {
     try {
       const organization = await this.organizationService.findWithUsers(

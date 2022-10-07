@@ -785,9 +785,9 @@ export class OrganizationService {
     }
   }
 
-  public async getMany(
-    findConditions: FindManyOptions<Organization>,
-  ): Promise<Organization[]> {
-    return this.organizationRepository.getMany(findConditions);
+  public async countOrganizations(
+    findConditions?: FindManyOptions<Organization>,
+  ): Promise<number> {
+    return this.organizationRepository.count(findConditions);
   }
 }
