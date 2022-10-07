@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { useTranslation } from 'react-i18next';
 
 interface StatisticsCardInfo {
   icon: any;
@@ -11,13 +12,15 @@ interface StatisticsCardInfo {
 }
 
 const StatisticsCard = ({ stat }: { stat: StatisticsCardInfo }) => {
+  const { t } = useTranslation('dashboard');
+
   return (
     <div className="flex w-[29rem] gap-4 p-5 bg-white rounded-lg shadow items-center">
       <div className={classNames('bg-green rounded p-2', stat.iconColor)}>
         <stat.icon className="w-10 h-10 text-white" />
       </div>
       <div className="flex flex-col gap-1">
-        <span className="text-gray-500 wrap">{stat.title}</span>
+        <span className="text-gray-500 wrap">{t(stat.title)}</span>
         <div className="flex items-baseline gap-4">
           <span className="text-gray-900 text-3xl">{stat.count}</span>
           {stat.movementInTheLastMonth && (

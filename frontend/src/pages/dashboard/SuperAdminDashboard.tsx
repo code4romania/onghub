@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
@@ -12,26 +13,34 @@ const SuperAdminDashboard = () => {
   const { isLoading, error } = useAllOrganizationsStatisticsQuery();
   const { allOrganizationsStatistics } = useOrganizationStatistics();
 
+  const { t } = useTranslation(['dashboard']);
+
   useEffect(() => {
     if (error) {
-      useErrorToast('Eroare la preloarea datelor');
+      useErrorToast(t('statistics.error'));
     }
-  }, [error])
-
+  }, [error]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
-
   return (
-    <ContentWrapper
-      title={"Dashboard"}
-    >
-      <div className='flex gap-4 flex-wrap'>
-        {allOrganizationsStatistics && Object.keys(allOrganizationsStatistics).map((key, index) => <StatisticsCard key={index} stat={{ ...SuperAdminDashboardStatisticsMapping[key], count: allOrganizationsStatistics[key as keyof IAllOrganizationsStatistics] }} />)}
+    <ContentWrapper title={t('title')}>
+      <div className="flex gap-4 flex-wrap">
+        {allOrganizationsStatistics &&
+          Object.keys(allOrganizationsStatistics).map((key, index) => (
+            <StatisticsCard
+              key={index}
+              stat={{
+                ...SuperAdminDashboardStatisticsMapping[key],
+                count: allOrganizationsStatistics[key as keyof IAllOrganizationsStatistics],
+              }}
+            />
+          ))}
       </div>
-    </ContentWrapper>)
+    </ContentWrapper>
+  );
 };
 
 export default SuperAdminDashboard;
