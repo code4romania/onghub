@@ -14,7 +14,7 @@ export class CreateOrganizationDto {
   @ValidateNested()
   activity: CreateOrganizationActivityDto;
 
-  // /* Organization Legal */
+  /* Organization Legal */
   @Type(() => CreateOrganizationLegalDto)
   @ValidateNested()
   legal: CreateOrganizationLegalDto;
