@@ -8,6 +8,7 @@ import {
   OrganizationApplicationRequest,
 } from '../application/interfaces/Application.interface';
 import {
+  mapEntityToFormData,
   mapOrganizationActivityToFormData,
   mapOrganizationFinancialToFormData,
   mapOrganizationGeneralToFormDara,
@@ -40,6 +41,10 @@ export const patchOrganizationByProfile = (
 
   if (update.financial) {
     payload = mapOrganizationFinancialToFormData(payload, update.financial, 'financial');
+  }
+
+  if (update.report) {
+    payload = mapEntityToFormData(payload, 'report', update.report);
   }
 
   // attach files
@@ -146,6 +151,10 @@ export const patchOrganization = (
 
   if (update.financial) {
     payload = mapOrganizationFinancialToFormData(payload, update.financial, 'financial');
+  }
+
+  if (update.report) {
+    payload = mapEntityToFormData(payload, 'report', update.report);
   }
 
   // attach files
