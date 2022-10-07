@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
-import { useErrorToast } from '../../../common/hooks/useToast';
 import ContactForm from '../../../components/Contact/Contact';
+import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
@@ -21,20 +21,16 @@ const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { cities, counties } = useNomenclature();
-  const [file, setFile] = useState<File | null>(null);
 
-  const [organization, setOrganization] = useOutletContext<any>();
+  const [organization, setOrganization, logo, setLogo] = useOutletContext<any>();
 
   const { t } = useTranslation(['general', 'common']);
 
   // queries
   useCitiesQuery(county?.id);
-  const {
-    mutateAsync: validationMutate,
-    error: validationError,
-    isLoading: validationLoading,
-  } = useCreateOrganizationRequestValidationMutation();
+  const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
 
@@ -56,7 +52,6 @@ const CreateOrganizationGeneral = () => {
       reset({ ...organization.general, ...contact });
       setCounty(organization.general.county);
       setCity(organization.general.city);
-      // setFile(organization.general.logo);
     }
   }, [organization]);
 
@@ -68,7 +63,7 @@ const CreateOrganizationGeneral = () => {
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setFile(event.target.files[0]);
+      setLogo(event.target.files[0]);
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -87,7 +82,6 @@ const CreateOrganizationGeneral = () => {
       const organizationGeneral = {
         ...data,
         contact,
-        logo: file,
       };
 
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
@@ -98,9 +92,10 @@ const CreateOrganizationGeneral = () => {
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
-        response.forEach((r: any, index: number) =>
-          useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()),
+        const mappedErrors = response.map(
+          (error) => CREATE_ORGANIZATION_ERRORS[error.response.errorCode],
         );
+        setValidationErrors(mappedErrors);
       }
     }
   };
@@ -364,7 +359,7 @@ const CreateOrganizationGeneral = () => {
                 </label>
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    {!file ? (
+                    {!logo ? (
                       <svg
                         className="h-full w-full text-gray-300"
                         fill="currentColor"
@@ -373,7 +368,7 @@ const CreateOrganizationGeneral = () => {
                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
                     ) : (
-                      <img src={fileToURL(file) || ''} className="h-20 w-80" />
+                      <img src={fileToURL(logo) || ''} className="h-20 w-80" />
                     )}
                   </span>
                   {!readonly && (
@@ -666,6 +661,9 @@ const CreateOrganizationGeneral = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
+        {validationErrors.length > 0 && (
+          <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
+        )}
       </div>
     </div>
   );

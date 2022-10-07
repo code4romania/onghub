@@ -1,10 +1,11 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
+import i18n from '../../../common/config/i18n';
 import { formatDate } from '../../../common/helpers/format.helper';
+import NameWithLogo from '../../../components/name-with-logo/NameWithLogo';
 import StatusBadge, { BadgeStatus } from '../../../components/status-badge/StatusBadge';
 import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
 import { IOrganizationView } from '../interfaces/Organization.interface';
-import i18n from '../../../common/config/i18n';
 
 const translations = {
   ong: i18n.t('organizations:header.ong'),
@@ -24,7 +25,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'name',
     name: translations.ong,
     sortable: true,
-    selector: (row: IOrganizationView) => row.name,
+    cell: (row: IOrganizationView) => <NameWithLogo name={row.name} logo={row.logo} />,
   },
   {
     id: 'userCount',

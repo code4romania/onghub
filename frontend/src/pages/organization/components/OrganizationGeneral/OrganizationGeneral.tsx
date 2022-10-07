@@ -1,50 +1,42 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { PencilIcon } from '@heroicons/react/solid';
-import { classNames } from '../../../../common/helpers/tailwind.helper';
+import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+import { emptyStringToNull, fileToURL, flatten } from '../../../../common/helpers/format.helper';
+import { classNames } from '../../../../common/helpers/tailwind.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
+import ContactForm from '../../../../components/Contact/Contact';
 import InputField from '../../../../components/InputField/InputField';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
+import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Select from '../../../../components/Select/Select';
-import ContactForm from '../../../../components/Contact/Contact';
 import Textarea from '../../../../components/Textarea/Textarea';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import {
   useOrganizationByProfileMutation,
   useOrganizationMutation,
-  useUploadOrganizationFilesByProfileMutation,
 } from '../../../../services/organization/Organization.queries';
-import { useSelectedOrganization } from '../../../../store/selectors';
-import { useNomenclature } from '../../../../store/selectors';
-import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
-import SectionHeader from '../../../../components/section-header/SectionHeader';
-import { emptyStringToNull, flatten, fileToURL } from '../../../../common/helpers/format.helper';
-import { useErrorToast } from '../../../../common/hooks/useToast';
-import { getPublicFileUrl } from '../../../../services/files/File.service';
-import { AuthContext } from '../../../../contexts/AuthContext';
+import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
-import { useLocation } from 'react-router-dom';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
-import { useTranslation } from 'react-i18next';
+import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
-  const [logo, setLogo] = useState<string | null>(null);
   const { cities, counties } = useNomenclature();
 
   const location = useLocation();
 
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization, error: updateOrganizationError } = location.pathname.includes(
-    REQUEST_LOCATION,
-  )
+  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
     ? useOrganizationMutation()
     : useOrganizationByProfileMutation();
 
-  const { mutate: uploadFiltes, error: uploadFilesError } =
-    useUploadOrganizationFilesByProfileMutation();
   const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
@@ -70,7 +62,6 @@ const OrganizationGeneral = () => {
       reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
-      if (organizationGeneral.logo) requestLogoUrl(organizationGeneral.logo);
     }
   }, [organizationGeneral]);
 
@@ -79,25 +70,6 @@ const OrganizationGeneral = () => {
       setValue('city', null);
     }
   }, [cities]);
-
-  useEffect(() => {
-    if (updateOrganizationError) {
-      useErrorToast(t('save_error', { ns: 'orgnization' }));
-    }
-
-    if (uploadFilesError) {
-      useErrorToast(t('logo.update', { ns: 'common' }));
-    }
-  }, [updateOrganizationError, uploadFilesError]);
-
-  const requestLogoUrl = async (logoPath: string) => {
-    try {
-      const logoUrl = await getPublicFileUrl(logoPath);
-      setLogo(logoUrl);
-    } catch (error) {
-      useErrorToast(t('logo.load', { ns: 'common' }));
-    }
-  };
 
   const startEdit = () => {
     setReadonly(false);
@@ -113,45 +85,44 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    setReadonly(true);
-    const contact = {
-      ...data.contact,
-      fullName: data.contact_fullName,
-      phone: data.contact_phone,
-      email: data.contact_email,
-    };
-
-    const organizationGeneral = {
-      ...data,
+    const {
+      contact_email,
+      contact_fullName,
+      contact_phone,
       contact,
-      countyId: data.county.id,
-      cityId: data.city.id,
+      logo,
+      ...organizationGeneral
+    } = data;
+
+    setReadonly(true);
+
+    const payload = {
+      ...organizationGeneral,
+      contact: {
+        ...contact,
+        fullName: contact_fullName,
+        phone: contact_phone,
+        email: contact_email,
+      },
     };
 
-    delete organizationGeneral.county;
-    delete organizationGeneral.city;
-    delete organizationGeneral.logo;
-
-    if (file) {
-      const data = new FormData();
-      data.append('logo', file);
-      uploadFiltes(
-        { data },
-        {
-          onSettled: () => {
-            updateOrganization({
-              organization: { general: emptyStringToNull(organizationGeneral) },
-            });
-          },
-        },
-      );
-      setFile(null);
-    } else {
-      updateOrganization({
+    updateOrganization(
+      {
         id: organization?.id as number,
-        organization: { general: emptyStringToNull(organizationGeneral) },
-      });
-    }
+        organization: {
+          general: emptyStringToNull(payload),
+        },
+        logo: file,
+      },
+      {
+        onSuccess: () => {
+          setFile(null);
+        },
+        onError: () => {
+          useErrorToast(t('save_error', { ns: 'orgnization' }));
+        },
+      },
+    );
   };
 
   return (
@@ -417,7 +388,7 @@ const OrganizationGeneral = () => {
 
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
-                    {!file && !logo ? (
+                    {!file && !organizationGeneral?.logo ? (
                       <svg
                         className="h-full w-full text-gray-300"
                         fill="currentColor"
@@ -426,7 +397,10 @@ const OrganizationGeneral = () => {
                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
                     ) : (
-                      <img src={fileToURL(file) || (logo as string)} className="h-20 w-80" />
+                      <img
+                        src={fileToURL(file) || (organizationGeneral?.logo as string)}
+                        className="h-20 w-80"
+                      />
                     )}
                   </span>
                   {!readonly && (

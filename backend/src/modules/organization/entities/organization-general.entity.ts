@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { City } from 'src/shared/entities/city.entity';
 import { Contact } from 'src/modules/organization/entities/contact.entity';
+import { City } from 'src/shared/entities/city.entity';
 import { County } from 'src/shared/entities/county.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { OrganizationType } from '../enums/organization-type.enum';
@@ -39,8 +39,7 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'description', nullable: true })
   description: string;
 
-  // TODO: this needs to be from the attachment table
-  @Column({ type: 'text', name: 'logo' })
+  @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
 
   @Column({ type: 'text', name: 'website' })

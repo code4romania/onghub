@@ -1,36 +1,35 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
-  UseInterceptors,
-  ClassSerializerInterceptor,
+  Post,
   UploadedFiles,
-  Delete,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
-  ApiBearerAuth,
-  ApiTooManyRequestsResponse,
   ApiParam,
+  ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization } from '../entities';
-import { OrganizationService } from '../services/organization.service';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from 'src/modules/user/enums/role.enum';
+import { ExtractUser } from '../../user/decorators/user.decorator';
+import { User } from '../../user/entities/user.entity';
 import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
-  ORGANIZATION_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
-import { ExtractUser } from '../../user/decorators/user.decorator';
-import { User } from '../../user/entities/user.entity';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../../user/enums/role.enum';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
 import { OrganizationRequestService } from '../services/organization-request.service';
+import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -50,14 +49,31 @@ export class OrganizationProfileController {
 
   @Roles(Role.ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
   @Patch()
   update(
     @ExtractUser() user: User,
     @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @UploadedFiles()
+    {
+      logo,
+      organizationStatute,
+    }: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
   ) {
     return this.organizationService.update(
       user.organizationId,
       updateOrganizationDto,
+      logo,
+      organizationStatute,
     );
   }
 
@@ -66,34 +82,6 @@ export class OrganizationProfileController {
   requestClose(@ExtractUser() user: User) {
     return this.organizationRequestService.sendRestrictRequest(
       user.organizationId,
-    );
-  }
-
-  // @Public() -- NEEDED FOR CREATE FLOW
-  @Roles(Role.ADMIN)
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'logo', maxCount: 1 },
-      { name: 'organizationStatute', maxCount: 1 },
-    ]),
-  )
-  @ApiBody({
-    schema: ORGANIZATION_UPLOAD_SCHEMA,
-  })
-  @Post('upload')
-  upload(
-    @ExtractUser() user: User,
-    @UploadedFiles()
-    files: {
-      logo: Express.Multer.File[];
-      organizationStatute: Express.Multer.File[];
-    },
-  ): Promise<any> {
-    return this.organizationService.upload(
-      user.organizationId,
-      files.logo,
-      files.organizationStatute,
     );
   }
 

@@ -9,6 +9,7 @@ export const ORGANIZATION_FILTERS_CONFIG = {
     name: true,
     userCount: true,
     completionStatusCount: true,
+    logo: true,
   },
   searchableColumns: ['name'],
   defaultSortBy: 'id',
