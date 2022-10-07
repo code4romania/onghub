@@ -139,8 +139,6 @@ export const patchOrganization = (
 ): Promise<any> => {
   let payload = new FormData();
 
-  console.log('update', update);
-
   if (update.general) {
     payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
   }

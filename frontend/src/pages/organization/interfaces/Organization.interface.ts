@@ -23,4 +23,5 @@ export interface IOrganizationView extends IOrganization {
   name: string;
   userCount: number;
   completionStatusCount: number;
+  logo: string;
 }

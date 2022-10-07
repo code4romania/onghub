@@ -36,7 +36,7 @@ import {
   Partner,
   Report,
 } from '../entities';
-import { OrganizationView } from '../entities/organization.view-entity';
+import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
@@ -243,10 +243,21 @@ export class OrganizationService {
       ...options,
     };
 
-    return this.organizationViewRepository.getManyPaginated(
+    const ongList = await this.organizationViewRepository.getManyPaginated(
       ORGANIZATION_FILTERS_CONFIG,
       paginationOptions,
     );
+
+    // Map the logo url
+    const items =
+      await this.fileManagerService.mapLogoToEntity<OrganizationView>(
+        ongList.items,
+      );
+
+    return {
+      ...ongList,
+      items,
+    };
   }
 
   public async findWithRelations(id: number): Promise<Organization> {
