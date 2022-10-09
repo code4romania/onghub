@@ -94,7 +94,7 @@ export class OngApplicationService {
     organizationId: number,
     applicationId: number,
     status: OngApplicationStatus,
-  ): Promise<UpdateResult> {
+  ): Promise<OngApplication> {
     const ongApplication = await this.ongApplicationRepository.get({
       where: {
         applicationId,
