@@ -5,7 +5,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
@@ -38,6 +37,7 @@ import {
 } from '../entities';
 import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
+import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -372,10 +372,7 @@ export class OrganizationService {
           updateOrganizationDto.financial,
         );
 
-      await this.organizationRepository.updateOne({
-        id,
-        syncedOn: new Date(),
-      });
+      await this.updateOrganizationCompletionStatus(organization.id);
 
       return organizationFinancial;
     }
@@ -386,10 +383,7 @@ export class OrganizationService {
         updateOrganizationDto.report,
       );
 
-      await this.organizationRepository.updateOne({
-        id,
-        syncedOn: new Date(),
-      });
+      await this.updateOrganizationCompletionStatus(organization.id);
 
       return organizationReport;
     }
@@ -420,10 +414,7 @@ export class OrganizationService {
       files,
     );
 
-    await this.organizationRepository.updateOne({
-      id: organizationId,
-      syncedOn: new Date(),
-    });
+    await this.updateOrganizationCompletionStatus(organization.id);
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -453,10 +444,7 @@ export class OrganizationService {
       files,
     );
 
-    await this.organizationRepository.updateOne({
-      id: organizationId,
-      syncedOn: new Date(),
-    });
+    await this.updateOrganizationCompletionStatus(organization.id);
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -479,6 +467,8 @@ export class OrganizationService {
 
     await this.organizationReportService.deletePartner(partnerId);
 
+    await this.updateOrganizationCompletionStatus(organization.id);
+
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -499,6 +489,8 @@ export class OrganizationService {
     }
 
     await this.organizationReportService.deleteInvestor(investorId);
+
+    await this.updateOrganizationCompletionStatus(organization.id);
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -774,6 +766,8 @@ export class OrganizationService {
           partners: [...organization.organizationReport.partners, { year }],
           investors: [...organization.organizationReport.investors, { year }],
         },
+        syncedOn: new Date(),
+        completionStatus: CompletionStatus.NOT_COMPLETED,
       });
 
       return orgUpdated;
@@ -789,5 +783,75 @@ export class OrganizationService {
     findConditions?: FindManyOptions<Organization>,
   ): Promise<number> {
     return this.organizationRepository.count(findConditions);
+  }
+
+  /**
+   * Check if the organization has all the financial, report, partner and investor data corectly completed and update the completionStatus
+   */
+  private async updateOrganizationCompletionStatus(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      // 1. get organization with financial, report, partener and investor data
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: [
+          'organizationFinancial',
+          'organizationReport',
+          'organizationReport.reports',
+          'organizationReport.partners',
+          'organizationReport.investors',
+        ],
+      });
+
+      // 2. check if we have all financial data completed
+      const organizationFinancialCompleted =
+        organization.organizationFinancial.findIndex(
+          (financial) => financial.status === CompletionStatus.NOT_COMPLETED,
+        ) < 0;
+
+      // 3. check if report data is completed
+      const organizationReportsCompleted =
+        organization.organizationReport.reports.findIndex(
+          (report) => report.status === CompletionStatus.NOT_COMPLETED,
+        ) < 0;
+
+      // 4. check if investor data is completed
+      const organizationInvestorsCompleted =
+        organization.organizationReport.investors.findIndex(
+          (investor) => investor.status === CompletionStatus.NOT_COMPLETED,
+        ) < 0;
+
+      // 5. check if partner data si completed
+      const organizationPartnersCompleted =
+        organization.organizationReport.partners.findIndex(
+          (partner) => partner.status === CompletionStatus.NOT_COMPLETED,
+        ) < 0;
+
+      // 6. If all the statuses above are true than the organization is up to date
+      const organizationInSync =
+        organizationFinancialCompleted &&
+        organizationReportsCompleted &&
+        organizationInvestorsCompleted &&
+        organizationPartnersCompleted;
+
+      // 7. Update the organization with latest status
+      await this.organizationRepository.update(
+        { id: organizationId },
+        {
+          completionStatus: organizationInSync
+            ? CompletionStatus.COMPLETED
+            : CompletionStatus.NOT_COMPLETED,
+          syncedOn: new Date(),
+        },
+      );
+    } catch (error) {
+      // TO: validate if we throw error
+      this.logger.error({
+        ...ORGANIZATION_ERRORS.COMPLETION_STATUS,
+        error,
+        organizationId,
+      });
+    }
   }
 }
