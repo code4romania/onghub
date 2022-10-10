@@ -41,6 +41,7 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
+import { FindManyOptions } from 'typeorm';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
@@ -513,6 +514,12 @@ export class ApplicationService {
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
+  }
+
+  public async countApplications(
+    options?: FindManyOptions<Application>,
+  ): Promise<number> {
+    return this.applicationRepository.count(options);
   }
 
   /**

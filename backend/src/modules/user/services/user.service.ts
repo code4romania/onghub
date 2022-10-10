@@ -105,6 +105,10 @@ export class UserService {
     return this.userRepository.getMany(options);
   }
 
+  public async countUsers(options?: FindManyOptions<User>): Promise<number> {
+    return this.userRepository.count(options);
+  }
+
   public async updateById(
     id: number,
     payload: UpdateUserDto,

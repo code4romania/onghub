@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { OrganizationController } from './controllers/organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApplicationModule } from '../application/application.module';
+import { OrganizationProfileController } from './controllers/organization-profile.controller';
 import {
-  OrganizationGeneral,
+  Contact,
+  Investor,
   Organization,
   OrganizationActivity,
-  OrganizationLegal,
-  Contact,
   OrganizationFinancial,
+  OrganizationGeneral,
+  OrganizationLegal,
   OrganizationReport,
-  Report,
-  Partner,
-  Investor,
   OrganizationView,
+  Partner,
+  Report,
 } from './entities';
+import { OrganizationRequest } from './entities/organization-request.entity';
 import {
   ContactRepository,
   InvestorRepository,
@@ -26,6 +29,7 @@ import {
   OrganizationViewRepository,
   PartnerRepository,
 } from './repositories';
+import { OrganizationRequestRepository } from './repositories/organization-request.repository';
 import {
   ContactService,
   OrganizationActivityService,
@@ -36,11 +40,8 @@ import {
   ReportService,
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
-import { OrganizationProfileController } from './controllers/organization-profile.controller';
-import { ApplicationModule } from '../application/application.module';
-import { OrganizationRequest } from './entities/organization-request.entity';
-import { OrganizationRequestRepository } from './repositories/organization-request.repository';
 import { OrganizationRequestService } from './services/organization-request.service';
+import { OrganizationStatisticsService } from './services/organization-statistics.service';
 import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationHistory } from './entities/organization-history.entity';
@@ -51,7 +52,6 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
     TypeOrmModule.forFeature([
       Contact,
       Organization,
-      OrganizationView,
       OrganizationGeneral,
       OrganizationActivity,
       OrganizationLegal,
@@ -61,6 +61,7 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
       Partner,
       Investor,
       OrganizationRequest,
+      OrganizationView,
       OrganizationHistory,
       OrganizationRequestHistory,
     ]),
@@ -93,6 +94,7 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
     OrganizationViewRepository,
     OrganizationRequestRepository,
     OrganizationRequestService,
+    OrganizationStatisticsService,
   ],
   exports: [OrganizationService],
 })

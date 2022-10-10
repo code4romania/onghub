@@ -78,6 +78,10 @@ export abstract class BaseDAO<T> {
     return this.repository.remove(record);
   }
 
+  count(findCriteria?: FindManyOptions<T>): Promise<number> {
+    return this.repository.count(findCriteria);
+  }
+
   public async getManyPaginated(
     config: IPaginationConfig,
     options: BaseFilterDto,

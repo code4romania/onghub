@@ -19,11 +19,13 @@ import {
   deleteInvestorsByProfile,
   deletePartners,
   deletePartnersByProfile,
+  getOneOrganizationStatistics,
   getOrganization,
   getOrganizationApplicationRequests,
   getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
+  getOrganizationsStatistics,
   patchOrganization,
   patchOrganizationByProfile,
   restrictOrganization,
@@ -339,6 +341,33 @@ export const useDeleteInvestorByProfileMutation = () => {
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
+  );
+};
+
+
+// Statistics
+
+export const useAllOrganizationsStatisticsQuery = () => {
+  const { setAllOrganizationsStatistics } = useStore();
+  return useQuery(
+    ['all-organizations-statistics'],
+    () => getOrganizationsStatistics(),
+    {
+      onSuccess: (data: any) => setAllOrganizationsStatistics(data),
+    },
+  );
+};
+
+export const useOneOrganizationStatisticsQuery = (organizationId: number) => {
+  const { setOneOrganizationStatistics } = useStore();
+  return useQuery(
+    ['organizations-statistics', organizationId],
+    () => getOneOrganizationStatistics(+organizationId),
+    {
+      enabled: !!organizationId,
+      onSuccess: (data: any) => setOneOrganizationStatistics(data)
+    },
+
   );
 };
 

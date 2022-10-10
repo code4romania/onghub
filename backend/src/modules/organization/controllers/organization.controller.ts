@@ -36,6 +36,7 @@ import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
 import { OrganizationRequestService } from '../services/organization-request.service';
+import { OrganizationStatisticsService } from '../services/organization-statistics.service';
 import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
@@ -46,6 +47,7 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
+    private readonly organizationStatisticsService: OrganizationStatisticsService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -54,6 +56,25 @@ export class OrganizationController {
     @Query() filters: OrganizationFilterDto,
   ): Promise<Pagination<OrganizationView>> {
     return this.organizationService.findAll({ options: filters });
+  }
+
+  /**
+   * **********************
+   * *******STATISTICS*****
+   * **********************
+   */
+
+  @Roles(Role.SUPER_ADMIN)
+  @Get('statistics')
+  getSuperAdminStatistics() {
+    return this.organizationStatisticsService.getAllOrganizationsStatistics();
+  }
+
+  @Roles(Role.ADMIN, Role.EMPLOYEE, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/statistics')
+  getAdminStatistics(@Param('id') id: string) {
+    return this.organizationStatisticsService.getOrganizationStatistics(+id);
   }
 
   @ApiParam({ name: 'id', type: Number })
