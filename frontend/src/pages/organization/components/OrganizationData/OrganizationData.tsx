@@ -1,17 +1,14 @@
+import { DownloadIcon, PencilIcon, TrashIcon, UploadIcon } from '@heroicons/react/outline';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { PencilIcon, TrashIcon, DownloadIcon, UploadIcon } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
+import readXlsxFile from 'read-excel-file';
+import { triggerDownload } from '../../../../common/helpers/utils.helper';
+import { useErrorToast } from '../../../../common/hooks/useToast';
+import CardPanel from '../../../../components/card-panel/CardPanel';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
-import { useSelectedOrganization } from '../../../../store/selectors';
-import { Report } from '../../interfaces/Report.interface';
-import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
-import { PartnerTableHeaders } from './table-headers/PartnerTable.headers';
-import { Investor } from '../../interfaces/Investor.interface';
-import { Partner } from '../../interfaces/Partner.interface';
-import { InvestorsTableHeaders } from './table-headers/InvestorTable.headers';
-import ReportSummaryModal from './components/ReportSummaryModal';
-import CardPanel from '../../../../components/card-panel/CardPanel';
+import { AuthContext } from '../../../../contexts/AuthContext';
 import {
   getInvestorsTemplate,
   getPartnersTemplate,
@@ -21,15 +18,20 @@ import {
   useDeleteInvestorByProfileMutation,
   useDeletePartnerByProfileMutation,
   useOrganizationByProfileMutation,
+  useOrganizationMutation,
   useUploadInvestorsByProfileList,
   useUploadPartnersListByProfile,
 } from '../../../../services/organization/Organization.queries';
-import { useErrorToast } from '../../../../common/hooks/useToast';
-import readXlsxFile from 'read-excel-file';
-import { triggerDownload } from '../../../../common/helpers/utils.helper';
-import { AuthContext } from '../../../../contexts/AuthContext';
+import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
-import { useTranslation } from 'react-i18next';
+import { REQUEST_LOCATION } from '../../constants/location.constants';
+import { Investor } from '../../interfaces/Investor.interface';
+import { Partner } from '../../interfaces/Partner.interface';
+import { Report } from '../../interfaces/Report.interface';
+import ReportSummaryModal from './components/ReportSummaryModal';
+import { InvestorsTableHeaders } from './table-headers/InvestorTable.headers';
+import { PartnerTableHeaders } from './table-headers/PartnerTable.headers';
+import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
 
 const OrganizationData = () => {
   // static links for partners and investors tables
@@ -43,27 +45,33 @@ const OrganizationData = () => {
   const { role } = useContext(AuthContext);
   const { t } = useTranslation(['open_data', 'organization', 'common']);
 
-  const { organizationReport } = useSelectedOrganization();
+  const { organizationReport, organization } = useSelectedOrganization();
   const {
     mutate: updateReport,
     error: updateReportError,
     isLoading: updateReportPending,
-  } = useOrganizationByProfileMutation();
+  } = location.pathname.includes(REQUEST_LOCATION)
+    ? useOrganizationMutation()
+    : useOrganizationByProfileMutation();
+
   const {
     mutate: uploadPartners,
     error: uploadPartnersError,
     isLoading: uploadPartnersPending,
   } = useUploadPartnersListByProfile();
+
   const {
     mutate: uploadInvestors,
     error: uploadInvestorsError,
     isLoading: uploadInvestorsPending,
   } = useUploadInvestorsByProfileList();
+
   const {
     mutate: deleteInvestor,
     error: deleteInvestorError,
     isLoading: deleteInvestorPending,
   } = useDeleteInvestorByProfileMutation();
+
   const {
     mutate: deletePartner,
     error: deletePartnerError,
@@ -218,6 +226,7 @@ const OrganizationData = () => {
     data.report = 'http://' + data.report;
 
     updateReport({
+      id: organization?.id,
       organization: {
         report: {
           reportId: data.id,
@@ -341,7 +350,11 @@ const OrganizationData = () => {
             </p>
           </div>
           <DataTableComponent
-            columns={[...PartnerTableHeaders, buildPartnersActionColumn()]}
+            columns={
+              !location.pathname.includes(REQUEST_LOCATION)
+                ? [...PartnerTableHeaders, buildPartnersActionColumn()]
+                : PartnerTableHeaders
+            }
             data={organizationReport?.partners || []}
             loading={uploadPartnersPending || deletePartnerPending}
           />
@@ -363,7 +376,11 @@ const OrganizationData = () => {
             </p>
           </div>
           <DataTableComponent
-            columns={[...InvestorsTableHeaders, buildInvestorsActionColumn()]}
+            columns={
+              !location.pathname.includes(REQUEST_LOCATION)
+                ? [...InvestorsTableHeaders, buildInvestorsActionColumn()]
+                : InvestorsTableHeaders
+            }
             data={organizationReport?.investors || []}
             loading={uploadInvestorsPending || deleteInvestorPending}
           />

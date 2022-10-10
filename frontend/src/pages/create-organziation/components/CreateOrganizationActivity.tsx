@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
-  str2bool,
   mapCitiesToSelect,
-  mapNameToSelect,
   mapGroupsToSelect,
+  mapNameToSelect,
+  mapSelectToValue,
+  str2bool,
 } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
 import InputField from '../../../components/InputField/InputField';
@@ -14,10 +15,10 @@ import MultiSelect from '../../../components/multi-select/MultiSelect';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import ServerSelect from '../../../components/server-select/ServerSelect';
 import {
-  useDomainsQuery,
-  useRegionsQuery,
-  useFederationsQuery,
   useCoalitionsQuery,
+  useDomainsQuery,
+  useFederationsQuery,
+  useRegionsQuery,
 } from '../../../services/nomenclature/Nomenclature.queries';
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
 import { useNomenclature } from '../../../store/selectors';
@@ -73,6 +74,12 @@ const CreateOrganizationActivity = () => {
       offersGrants: str2bool(data.offersGrants),
       hasBranches: str2bool(data.hasBranches),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
+
+      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
+      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
+      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
+      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
+      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
     setOrganization((org: any) => ({ ...org, activity }));

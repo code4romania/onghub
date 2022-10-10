@@ -24,14 +24,9 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { ApplicationWithOngStatus } from 'src/modules/application/interfaces/application-with-ong-status.interface';
-import { OrganizationApplicationRequest } from 'src/modules/application/interfaces/organization-application-request.interface';
-import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import { Role } from '../../user/enums/role.enum';
 import {
   INVESTOR_UPLOAD_SCHEMA,
-  ORGANIZATION_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
@@ -54,7 +49,7 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
     private readonly organizationStatisticsService: OrganizationStatisticsService,
-  ) { }
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -65,18 +60,16 @@ export class OrganizationController {
   }
 
   /**
-* **********************
-* *******STATISTICS*****
-* **********************
-*/
-
+   * **********************
+   * *******STATISTICS*****
+   * **********************
+   */
 
   @Roles(Role.SUPER_ADMIN)
   @Get('statistics')
   getSuperAdminStatistics() {
     return this.organizationStatisticsService.getAllOrganizationsStatistics();
   }
-
 
   @Roles(Role.ADMIN, Role.EMPLOYEE, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
@@ -124,6 +117,34 @@ export class OrganizationController {
    * ******* ONG REQUEST *****
    * *****************************
    */
+  @Public()
+  @ApiBody({ type: CreateOrganizationRequestDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'logo', maxCount: 1 },
+      { name: 'organizationStatute', maxCount: 1 },
+    ]),
+  )
+  @Post('request')
+  create(
+    @Body() createRequestDto: CreateOrganizationRequestDto,
+    @UploadedFiles()
+    {
+      logo,
+      organizationStatute,
+    }: {
+      logo: Express.Multer.File[];
+      organizationStatute: Express.Multer.File[];
+    },
+  ): Promise<OrganizationRequest> {
+    return this.organizationRequestService.create(
+      createRequestDto,
+      logo,
+      organizationStatute,
+    );
+  }
+
   @Roles(Role.SUPER_ADMIN)
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('request')
@@ -131,15 +152,6 @@ export class OrganizationController {
     @Query() filters: BaseFilterDto,
   ): Promise<Pagination<OrganizationRequest>> {
     return this.organizationRequestService.findAll(filters);
-  }
-
-  @Public()
-  @ApiBody({ type: CreateOrganizationRequestDto })
-  @Post('request')
-  create(
-    @Body() createRequestDto: CreateOrganizationRequestDto,
-  ): Promise<OrganizationRequest> {
-    return this.organizationRequestService.create(createRequestDto);
   }
 
   @Public()
@@ -183,20 +195,6 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOrganizationDto: UpdateOrganizationDto,
-  ) {
-    return this.organizationService.update(+id, updateOrganizationDto);
-  }
-
-  /**
-   * *******************
-   * *******UPLOADS*****
-   * ******************
-   */
-  @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -204,25 +202,32 @@ export class OrganizationController {
       { name: 'organizationStatute', maxCount: 1 },
     ]),
   )
-  @ApiBody({
-    schema: ORGANIZATION_UPLOAD_SCHEMA,
-  })
-  @Post(':id/upload')
-  upload(
-    @Param('id') id: number,
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateOrganizationDto: UpdateOrganizationDto,
     @UploadedFiles()
-    files: {
+    {
+      logo,
+      organizationStatute,
+    }: {
       logo: Express.Multer.File[];
       organizationStatute: Express.Multer.File[];
     },
-  ): Promise<any> {
-    return this.organizationService.upload(
-      id,
-      files.logo,
-      files.organizationStatute,
+  ) {
+    return this.organizationService.update(
+      +id,
+      updateOrganizationDto,
+      logo,
+      organizationStatute,
     );
   }
 
+  /**
+   * *******************
+   * *******UPLOADS*****
+   * ******************
+   */
   @Roles(Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([{ name: 'partners', maxCount: 1 }]))

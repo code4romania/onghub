@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-  IsAlpha,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -13,10 +12,10 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
-import { OrganizationType } from '../enums/organization-type.enum';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
+import { OrganizationType } from '../enums/organization-type.enum';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -82,10 +81,6 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @Length(200, 700)
   description?: string;
-
-  /* Organization logo/link */
-  @IsString()
-  logo: string;
 
   /* 
   Organization website 
@@ -182,4 +177,9 @@ export class CreateOrganizationGeneralDto {
   /* Organization city id */
   @IsNumber()
   cityId: number;
+
+  /* logo */
+  @IsString()
+  @IsOptional()
+  logo?: string;
 }

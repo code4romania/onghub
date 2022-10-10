@@ -18,12 +18,6 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', name: 'phone' })
   phone: string;
 
-  /* ROLE will be handled differently, depending who is creating the user
-
-    1. Creating a new organization will also create the admin (with role Admin)
-    2. Creating a new user by the ONG Admin will create employee
-
-  */
   @Column({ type: 'enum', enum: Role, name: 'role', default: Role.EMPLOYEE })
   role: Role;
 

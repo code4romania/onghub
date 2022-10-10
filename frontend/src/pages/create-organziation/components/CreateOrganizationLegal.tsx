@@ -6,7 +6,7 @@ import {
   XCircleIcon,
   XIcon,
 } from '@heroicons/react/solid';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,6 @@ import { Contact } from '../../organization/interfaces/Contact.interface';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
-  const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -41,7 +40,8 @@ const CreateOrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
 
-  const [organization, setOrganization] = useOutletContext<any>();
+  const [organization, setOrganization, , , organizationStatute, setOrganizationStatute] =
+    useOutletContext<any>();
 
   const { t } = useTranslation(['legal', 'common']);
 
@@ -230,10 +230,6 @@ const CreateOrganizationLegal = () => {
       ...org,
       legal: { legalReprezentative, directors, directorsDeleted, others, organizationStatute },
     }));
-  };
-
-  const onUploadFile = () => {
-    console.log('on upload file');
   };
 
   return (
