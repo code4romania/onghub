@@ -36,6 +36,7 @@ import {
 } from '../constants/open-api.schema';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
+import { OrganizationStatisticsFilterDto } from '../dto/organization-request-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
@@ -82,6 +83,26 @@ export class OrganizationController {
   @Get(':id/statistics')
   getAdminStatistics(@Param('id') id: string) {
     return this.organizationStatisticsService.getOrganizationStatistics(+id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @Get('request-statistics')
+  getSuperAdminOrganizationRequestStatistics(
+    @Query() filters: OrganizationStatisticsFilterDto,
+  ) {
+    return this.organizationStatisticsService.getOrganizationRequestStatistics(
+      filters,
+    );
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @Get('status-statistics')
+  getSuperAdminOrganizationStatusStatistics(
+    @Query() filters: OrganizationStatisticsFilterDto,
+  ) {
+    return this.organizationStatisticsService.getOrganizationStatusStatistics(
+      filters,
+    );
   }
 
   @ApiParam({ name: 'id', type: Number })

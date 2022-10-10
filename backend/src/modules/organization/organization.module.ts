@@ -19,6 +19,7 @@ import {
   Report,
 } from './entities';
 import { OrganizationRequest } from './entities/organization-request.entity';
+import { OrganizationStatisticsView } from './entities/organization-statistics-view.entity';
 import {
   ContactRepository,
   InvestorRepository,
@@ -30,6 +31,7 @@ import {
   OrganizationRepository,
   OrganizationViewRepository,
   PartnerRepository,
+  OrganizationStatisticsViewRepository,
 } from './repositories';
 import { OrganizationRequestRepository } from './repositories/organization-request.repository';
 import {
@@ -60,6 +62,7 @@ import { OrganizationStatisticsService } from './services/organization-statistic
       Investor,
       OrganizationRequest,
       OrganizationView,
+      OrganizationStatisticsView,
     ]),
     ApplicationModule,
     UserModule,
@@ -91,6 +94,7 @@ import { OrganizationStatisticsService } from './services/organization-statistic
     OrganizationRequestRepository,
     OrganizationRequestService,
     OrganizationStatisticsService,
+    OrganizationStatisticsViewRepository,
   ],
   exports: [OrganizationService],
 })
