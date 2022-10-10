@@ -969,6 +969,7 @@
       "request_chart": "Cereri inscriere in ONG Hub",
       "organization_statistics_error": "Eroare la incarcarea statisticilor despre organizatie",
       "requests_statistics_error": "Eroare la incarcarea statisticilor despre cereri in organizatie",
+      "user_list": "Lista utilizatori",
       "filter": {
         "anual": "Din totdeauna",
         "monthly": "Lunar",

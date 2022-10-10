@@ -4,16 +4,14 @@ import { useErrorToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
 import StatisticsCard from '../../components/statistics-card/StatisticsCard';
-import { useAllOrganizationsStatisticsQuery } from '../../services/organization/Organization.queries';
-import { useOrganizationStatistics } from '../../store/organization/organization-statistics.selectors';
+import { useAllOrganizationsStatisticsQuery } from '../../services/statistics/statistics.queries';
 import { IAllOrganizationsStatistics } from '../organization/interfaces/OrganizationStatistics.interface';
 import OrganizationsLineChart from './components/OrganizationsLIneChart';
 import RequestsLineChart from './components/RequestsLineChart';
 import { SuperAdminDashboardStatisticsMapping } from './constants/DashboardStatistics.constants';
 
 const SuperAdminDashboard = () => {
-  const { isLoading, error } = useAllOrganizationsStatisticsQuery();
-  const { allOrganizationsStatistics } = useOrganizationStatistics();
+  const { data: statistics, isLoading, error } = useAllOrganizationsStatisticsQuery();
 
   const { t } = useTranslation(['dashboard']);
 
@@ -30,13 +28,13 @@ const SuperAdminDashboard = () => {
   return (
     <ContentWrapper title={t('title')}>
       <div className="flex gap-4 flex-wrap">
-        {allOrganizationsStatistics &&
-          Object.keys(allOrganizationsStatistics).map((key, index) => (
+        {statistics &&
+          Object.keys(statistics).map((key, index) => (
             <StatisticsCard
               key={index}
               stat={{
                 ...SuperAdminDashboardStatisticsMapping[key],
-                count: allOrganizationsStatistics[key as keyof IAllOrganizationsStatistics],
+                count: statistics[key as keyof IAllOrganizationsStatistics],
               }}
             />
           ))}

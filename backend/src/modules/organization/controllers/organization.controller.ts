@@ -71,7 +71,7 @@ export class OrganizationController {
     return this.organizationStatisticsService.getAllOrganizationsStatistics();
   }
 
-  @Roles(Role.ADMIN, Role.EMPLOYEE, Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Get(':id/statistics')
   getAdminStatistics(@Param('id') id: string) {
