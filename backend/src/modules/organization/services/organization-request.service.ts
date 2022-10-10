@@ -5,19 +5,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { UserService } from 'src/modules/user/services/user.service';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
+import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
-import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
-import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
-import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
-import { Role } from 'src/modules/user/enums/role.enum';
-import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -28,6 +29,7 @@ export class OrganizationRequestService {
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
+    private readonly fileManagerService: FileManagerService,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -43,7 +45,7 @@ export class OrganizationRequestService {
   }
 
   public async findOne(id: number): Promise<OrganizationRequest> {
-    const request = this.organizationRequestRepository.get({
+    const request = await this.organizationRequestRepository.get({
       where: {
         id,
         status: RequestStatus.PENDING,
@@ -80,6 +82,24 @@ export class OrganizationRequestService {
       });
     }
 
+    // check for logo and add public url
+    if (request.organization.organizationGeneral.logo) {
+      const logo = await this.fileManagerService.generatePresignedURL(
+        request.organization.organizationGeneral.logo,
+      );
+      request.organization.organizationGeneral.logo = logo;
+    }
+
+    // check for logo and add public url
+    if (request.organization.organizationLegal.organizationStatute) {
+      const organizationStatute =
+        await this.fileManagerService.generatePresignedURL(
+          request.organization.organizationLegal.organizationStatute,
+        );
+      request.organization.organizationLegal.organizationStatute =
+        organizationStatute;
+    }
+
     return request;
   }
 
@@ -89,15 +109,18 @@ export class OrganizationRequestService {
     const { admin, organization } = createRequestDto;
     const errors = [];
 
-
     // 1. validate admin
     if (admin) {
-      const user = await this.userService.findOne({ where: [{ email: admin.email }, {phone: admin.phone}] });
+      const user = await this.userService.findOne({
+        where: [{ email: admin.email }, { phone: admin.phone }],
+      });
 
       if (user) {
-       errors.push(new BadRequestException(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
-        ))
+        errors.push(
+          new BadRequestException(
+            ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+          ),
+        );
       }
     }
 
@@ -107,22 +130,28 @@ export class OrganizationRequestService {
       if (organization.general) {
         const { cui, rafNumber, name } = organization.general;
 
-        errors.push(...await this.organizationService.validateOrganizationGeneral(
-          cui,
-          rafNumber,
-          name,
-        ));
+        errors.push(
+          ...(await this.organizationService.validateOrganizationGeneral(
+            cui,
+            rafNumber,
+            name,
+          )),
+        );
       }
     }
 
     if (errors.length) {
       throw new BadRequestException(errors);
     } else {
-      return []
+      return [];
     }
   }
 
-  public async create(createReqDto: CreateOrganizationRequestDto) {
+  public async create(
+    createReqDto: CreateOrganizationRequestDto,
+    logo: Express.Multer.File[],
+    organizationStatute: Express.Multer.File[],
+  ) {
     // Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
       where: { email: createReqDto.admin.email },
@@ -151,25 +180,55 @@ export class OrganizationRequestService {
     try {
       const organization = await this.organizationService.create(
         createReqDto.organization,
+        logo,
+        organizationStatute,
       );
 
       // Mail notifications
       // Admin
-      this.mailService.sendEmail({
+
+      const adminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
+
+      await this.mailService.sendEmail({
         to: createReqDto.admin.email,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_ADMIN,
+        template: adminMailOptions.template,
+        subject: adminMailOptions.subject,
+        context: {
+          title: adminMailOptions.context.title,
+          subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
+        },
       });
 
       // Super-Admin
-      const superAdmin = await this.userService.findMany({
+      const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSuperAdmins = superAdmin.map((item) => {
-        return item.email;
-      });
-      this.mailService.sendEmail({
-        to: emailSuperAdmins,
-        template: MAIL_TEMPLATES.CREATE_ORGANIZATION_SUPER,
+
+      const superadminMailOptions: {
+        template: string;
+        subject: string;
+        context: { title: string };
+      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((item) => item.email),
+        template: superadminMailOptions.template,
+        subject: superadminMailOptions.subject,
+        context: {
+          title: superadminMailOptions.context.title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
+              foundRequest.id.toString(),
+            ),
+            label: '',
+          },
+        },
       });
 
       return this.organizationRequestRepository.save({
@@ -209,9 +268,29 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
-    this.mailService.sendEmail({
+    const {
+      template,
+      subject,
+      context: {
+        title,
+        cta: { label },
+      },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
+
+    await this.mailService.sendEmail({
       to: email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_APPROVAL,
+      template,
+      subject,
+      context: {
+        title,
+        subtitle: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
+        cta: {
+          link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
+            'www.google.com',
+          ),
+          label,
+        },
+      },
     });
 
     return this.find(requestId);
@@ -234,9 +313,22 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // 4. Send rejection by email
-    this.mailService.sendEmail({
+
+    const {
+      template,
+      subject,
+      context: { title },
+    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION;
+
+    await this.mailService.sendEmail({
       to: found.email,
-      template: MAIL_TEMPLATES.ORGANIZATION_REQUEST_REJECTION,
+      template,
+      subject,
+      context: {
+        title,
+        subtitle:
+          MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
+      },
     });
 
     return this.find(requestId);
@@ -250,15 +342,23 @@ export class OrganizationRequestService {
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
-      const emailSuperAdmins = superAdmins.map((item) => {
-        return item.email;
-      });
+
+      const {
+        template,
+        subject,
+        context: { title },
+      } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN;
 
       await this.mailService.sendEmail({
-        to: emailSuperAdmins,
-        template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_SUPER,
+        to: superAdmins.map((superAdmin) => superAdmin.email),
+        template,
+        subject,
         context: {
-          orgName: organization.organizationGeneral.name,
+          title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
+              organization.organizationGeneral.name,
+            ),
         },
       });
     } catch (error) {

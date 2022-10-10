@@ -9,10 +9,11 @@ import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
 import { LoggerModule } from 'nestjs-pino';
 import { ApplicationModule } from '../application/application.module';
+import { UserHistory } from './entities/user-history.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, UserHistory]),
     forwardRef(() => OrganizationModule),
     forwardRef(() => ApplicationModule),
     LoggerModule.forRoot(),

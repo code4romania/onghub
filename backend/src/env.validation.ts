@@ -73,6 +73,9 @@ class EnvironmentVariables {
   MAIL_FROM: string;
 
   @IsString()
+  AWS_S3_BUCKET_NAME_PUBLIC: string;
+
+  @IsString()
   @Length(32)
   ENCRYPTION_KEY: string;
 }

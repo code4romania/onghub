@@ -2,26 +2,63 @@ import { AxiosResponse } from 'axios';
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ICreateOrganizationPayload } from '../../pages/create-organziation/interfaces/CreateOrganization.interface';
 import {
   IApplicationRequest,
   IOrganizationRequest,
 } from '../../pages/requests/interfaces/Request.interface';
 import API from '../API';
-import { CreateOrganizationRequestDTO, ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
+import {
+  mapAdminToFormData,
+  mapOrganizationActivityToFormData,
+  mapOrganizationGeneralToFormDara,
+  mapOrganizationLegalToFormData,
+} from '../organization/OrganizationFormDataMapper.service';
+import { ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
 import { Request } from './interfaces/Request.interface';
 
 // Organization
 export const createOrganizationRequest = (
-  createRequestDTO: CreateOrganizationRequestDTO,
+  createRequestDTO: ICreateOrganizationPayload,
+  logo?: File | null,
+  organizationStatute?: File | null,
 ): Promise<Request> => {
-  return API.post(`/organization/request`, createRequestDTO).then(
-    (res: AxiosResponse<Request>) => res.data,
+  // create form data payload
+  let payload = new FormData();
+  payload = mapAdminToFormData(payload, createRequestDTO.admin);
+  payload = mapOrganizationGeneralToFormDara(
+    payload,
+    createRequestDTO.general,
+    'organization[general]',
   );
+  payload = mapOrganizationActivityToFormData(
+    payload,
+    createRequestDTO.activity,
+    'organization[activity]',
+  );
+  payload = mapOrganizationLegalToFormData(payload, createRequestDTO.legal, 'organization[legal]');
+
+  // attach files
+  if (logo) {
+    payload.append('logo', logo);
+  }
+
+  if (organizationStatute) {
+    payload.append('organizationStatute', organizationStatute);
+  }
+
+  return API.post(`/organization/request`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }).then((res: AxiosResponse<Request>) => res.data);
 };
 
-export const validateOrganizationRequest = async (createOrganizationRequestDTO: Partial<ValidateCreateOrganizationRequest>) => {
-  return API.post('organization/request/validate', createOrganizationRequestDTO).then(res => res.data);
-}
+export const validateOrganizationRequest = async (
+  createOrganizationRequestDTO: Partial<ValidateCreateOrganizationRequest>,
+) => {
+  return API.post('organization/request/validate', createOrganizationRequestDTO).then(
+    (res) => res.data,
+  );
+};
 
 export const getRequests = async (
   limit: number,

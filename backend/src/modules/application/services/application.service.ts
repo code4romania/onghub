@@ -40,8 +40,12 @@ import { ApplicationTableView } from '../entities/application-table-view.entity'
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
-import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
 import { OrganizationService } from 'src/modules/organization/services';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
+import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { UserOngApplicationService } from './user-ong-application.service';
+import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -51,6 +55,7 @@ export class ApplicationService {
     private readonly applicationOngViewRepository: ApplicationOngViewRepository,
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
+    private readonly userOngApplicationService: UserOngApplicationService,
     private readonly fileManagerService: FileManagerService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
@@ -434,12 +439,32 @@ export class ApplicationService {
       );
 
       // send email to admin to delete the application
-      this.mailService.sendEmail({
-        to: superAdmins.map((user) => user.email),
-        template: MAIL_TEMPLATES.DELETE_ONG_APPLICATION_REQUEST,
+      const {
+        template,
+        subject,
         context: {
-          applicationName: application.name,
-          organizationName: organziation.organizationGeneral.name,
+          title,
+          cta: { label },
+        },
+      } = MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((user) => user.email),
+        template,
+        subject,
+        context: {
+          title,
+          subtitle:
+            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.subtitle(
+              organziation.organizationGeneral.name,
+              application.name,
+            ),
+          cta: {
+            link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
+              organizationId.toString(),
+            ),
+            label,
+          },
         },
       });
 
@@ -488,6 +513,98 @@ export class ApplicationService {
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
+  }
+
+  /**
+   *
+   * @param cognitoApplicationId
+   * @param cognitoUserId
+   * @returns TODO document errors
+   */
+  public async hasAccess(
+    cognitoApplicationId: string,
+    cognitoUserId: string,
+  ): Promise<boolean> {
+    // 1. Find the user who is requesting the access and check the status
+    const user: User = await this.userService.findByCognitoId(cognitoUserId);
+
+    // 1.1. Rare case where we don't have the user in evidence (only if was created somewhere else / in cognito directly maybe)
+    if (!user) {
+      throw 'User not found';
+    }
+
+    // 1.2. The user is restricted, stop here
+    if (user.status !== UserStatus.ACTIVE) {
+      throw 'User is restricted';
+    }
+
+    // 2. Find the organization of the user
+
+    // 2.1. SuperAdmins have no organization, are not allowed to access apps
+    if (!user.organizationId) {
+      throw 'User is not part of an organization';
+    }
+
+    const organization = await this.organizationService.find(
+      user?.organizationId,
+    );
+
+    // 2.2. The organization is not ACTIVE, stop here
+    if (organization.status !== OrganizationStatus.ACTIVE) {
+      throw 'Organization is inactive';
+    }
+
+    // 3. Check if the application exists and it's ACTIVE
+    const application = await this.applicationRepository.get({
+      where: { cognitoClientId: cognitoApplicationId },
+    });
+
+    // 3.1. The application requested does not exist
+    if (!application) {
+      throw 'Application not found';
+    }
+
+    // 3.2. The application is inactive
+    if (application.status !== ApplicationStatus.ACTIVE) {
+      throw 'Application is inactive';
+    }
+
+    // 3. Check if the NGO and the user has access to the application
+    // 3.1. Find the relation between the NGO (of the requester) and the Application
+    const ongApplication = await this.ongApplicationService.findOne({
+      where: {
+        organizationId: user.organizationId,
+        applicationId: application.id,
+      },
+    });
+
+    // 3.1.1. The relation between ONG and App does not exist
+    if (!ongApplication) {
+      throw 'Your organization does not have the permission to access this app';
+    }
+
+    // 3.1.2. The relation exists but is not active (is restricted)
+    if (ongApplication.status !== OngApplicationStatus.ACTIVE) {
+      throw 'Your organization is restricted to access this app';
+    }
+
+    // 3.2. Find the relation between the USER and the Application (the relation of the NGO)
+    const userOngApplication = await this.userOngApplicationService.findOne({
+      where: {
+        userId: user.id,
+        ongApplicationId: ongApplication.id,
+      },
+    });
+
+    // 3.2.1. The relation may not exist or is restricted, access denied
+    if (
+      !userOngApplication ||
+      userOngApplication.status !== UserOngApplicationStatus.ACTIVE
+    ) {
+      throw `Your don't have the permission to access this app`;
+    }
+
+    return true;
   }
 
   /**

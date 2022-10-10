@@ -43,6 +43,8 @@ import { OrganizationRequestRepository } from './repositories/organization-reque
 import { OrganizationRequestService } from './services/organization-request.service';
 import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
+import { OrganizationHistory } from './entities/organization-history.entity';
+import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
 
 @Module({
   imports: [
@@ -59,6 +61,8 @@ import { OrganizationApplicationController } from './controllers/organization-ap
       Partner,
       Investor,
       OrganizationRequest,
+      OrganizationHistory,
+      OrganizationRequestHistory,
     ]),
     ApplicationModule,
     UserModule,

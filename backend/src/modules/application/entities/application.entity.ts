@@ -48,6 +48,10 @@ export class Application extends BaseEntity {
   @Column({ type: 'text', name: 'management_url', nullable: true })
   managementUrl: string;
 
+  // Application Client Id
+  @Column({ type: 'text', name: 'cognito_client_id', nullable: true })
+  cognitoClientId: string;
+
   @OneToMany(() => OngApplication, (ongApp) => ongApp.application)
   ongApplications: OngApplication[];
 }
