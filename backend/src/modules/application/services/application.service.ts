@@ -576,8 +576,8 @@ export class ApplicationService {
       throw new BadRequestException(APPLICATION_ERRORS.INACTIVE);
     }
 
-    // 3. Check if the NGO and the user has access to the application
-    // 3.1. Find the relation between the NGO (of the requester) and the Application
+    // 4. Check if the NGO and the user has access to the application
+    // 4.1. Find the relation between the NGO (of the requester) and the Application
     const ongApplication = await this.ongApplicationService.findOne({
       where: {
         organizationId: user.organizationId,
@@ -585,17 +585,17 @@ export class ApplicationService {
       },
     });
 
-    // 3.1.1. The relation between ONG and App does not exist
+    // 4.1.1. The relation between ONG and App does not exist
     if (!ongApplication) {
       throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_MISSING);
     }
 
-    // 3.1.2. The relation exists but is not active (is restricted)
+    // 4.1.2. The relation exists but is not active (is restricted)
     if (ongApplication.status !== OngApplicationStatus.ACTIVE) {
       throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
     }
 
-    // 3.2. Find the relation between the USER and the Application (the relation of the NGO)
+    // 4.2. Find the relation between the USER and the Application (the relation of the NGO)
     const userOngApplication = await this.userOngApplicationService.findOne({
       where: {
         userId: user.id,
@@ -603,7 +603,7 @@ export class ApplicationService {
       },
     });
 
-    // 3.2.1. The relation may not exist or is restricted, access denied
+    // 4.2.1. The relation may not exist or is restricted, access denied
     if (
       !userOngApplication ||
       userOngApplication.status !== UserOngApplicationStatus.ACTIVE
