@@ -25,17 +25,13 @@ import { UserFilterDto } from './dto/user-filter.dto';
 import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
-import { CognitoUserService } from './services/cognito.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
 @ApiBearerAuth()
 export class AdminUserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly cognitoService: CognitoUserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @ApiBody({ type: CreateUserDto })
   @Post('')

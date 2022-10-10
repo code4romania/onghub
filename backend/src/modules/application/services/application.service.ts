@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -8,7 +9,11 @@ import {
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import { APPLICATION_ERRORS } from '../constants/application-error.constants';
+import {
+  APPLICATION_ERRORS,
+  ONG_APPLICATION_ERRORS,
+  USER_ONG_APPLICATION_ERRORS,
+} from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -46,6 +51,8 @@ import { OrganizationStatus } from 'src/modules/organization/enums/organization-
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { UserOngApplicationService } from './user-ong-application.service';
 import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
+import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
+import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -530,19 +537,19 @@ export class ApplicationService {
 
     // 1.1. Rare case where we don't have the user in evidence (only if was created somewhere else / in cognito directly maybe)
     if (!user) {
-      throw 'User not found';
+      throw new NotFoundException(USER_ERRORS.GET);
     }
 
     // 1.2. The user is restricted, stop here
     if (user.status !== UserStatus.ACTIVE) {
-      throw 'User is restricted';
+      throw new ForbiddenException(USER_ERRORS.RESTRICTED);
     }
 
     // 2. Find the organization of the user
 
     // 2.1. SuperAdmins have no organization, are not allowed to access apps
     if (!user.organizationId) {
-      throw 'User is not part of an organization';
+      throw new ForbiddenException(USER_ERRORS.MISSING_ORGANIZATION);
     }
 
     const organization = await this.organizationService.find(
@@ -551,7 +558,7 @@ export class ApplicationService {
 
     // 2.2. The organization is not ACTIVE, stop here
     if (organization.status !== OrganizationStatus.ACTIVE) {
-      throw 'Organization is inactive';
+      throw new ForbiddenException(ORGANIZATION_ERRORS.RESTRICTED);
     }
 
     // 3. Check if the application exists and it's ACTIVE
@@ -561,12 +568,12 @@ export class ApplicationService {
 
     // 3.1. The application requested does not exist
     if (!application) {
-      throw 'Application not found';
+      throw new NotFoundException(APPLICATION_ERRORS.GET);
     }
 
     // 3.2. The application is inactive
     if (application.status !== ApplicationStatus.ACTIVE) {
-      throw 'Application is inactive';
+      throw new BadRequestException(APPLICATION_ERRORS.INACTIVE);
     }
 
     // 3. Check if the NGO and the user has access to the application
@@ -580,12 +587,12 @@ export class ApplicationService {
 
     // 3.1.1. The relation between ONG and App does not exist
     if (!ongApplication) {
-      throw 'Your organization does not have the permission to access this app';
+      throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_MISSING);
     }
 
     // 3.1.2. The relation exists but is not active (is restricted)
     if (ongApplication.status !== OngApplicationStatus.ACTIVE) {
-      throw 'Your organization is restricted to access this app';
+      throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
     }
 
     // 3.2. Find the relation between the USER and the Application (the relation of the NGO)
@@ -601,7 +608,9 @@ export class ApplicationService {
       !userOngApplication ||
       userOngApplication.status !== UserOngApplicationStatus.ACTIVE
     ) {
-      throw `Your don't have the permission to access this app`;
+      throw new ForbiddenException(
+        USER_ONG_APPLICATION_ERRORS.MISSING_PERMISSION,
+      );
     }
 
     return true;

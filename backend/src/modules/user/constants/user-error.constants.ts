@@ -47,4 +47,8 @@ export const USER_ERRORS = {
     message: 'User is restricted',
     errorCode: 'USR_012',
   },
+  MISSING_ORGANIZATION: {
+    message: 'User is not part of an organization',
+    errorCode: 'USR_013',
+  },
 };
