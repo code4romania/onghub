@@ -7,6 +7,8 @@ import StatisticsCard from '../../components/statistics-card/StatisticsCard';
 import { useAllOrganizationsStatisticsQuery } from '../../services/organization/Organization.queries';
 import { useOrganizationStatistics } from '../../store/organization/organization-statistics.selectors';
 import { IAllOrganizationsStatistics } from '../organization/interfaces/OrganizationStatistics.interface';
+import OrganizationsLineChart from './components/OrganizationsLIneChart';
+import RequestsLineChart from './components/RequestsLineChart';
 import { SuperAdminDashboardStatisticsMapping } from './constants/DashboardStatistics.constants';
 
 const SuperAdminDashboard = () => {
@@ -39,6 +41,8 @@ const SuperAdminDashboard = () => {
             />
           ))}
       </div>
+      <RequestsLineChart />
+      <OrganizationsLineChart />
     </ContentWrapper>
   );
 };

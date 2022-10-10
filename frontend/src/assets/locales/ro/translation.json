@@ -960,7 +960,20 @@
       "view_data": "Vizualizeaza datele",
       "updated_data": "Datele organizației sunt actualizate",
       "outdated_data": "Datele organizației sunt actualizate",
-      "error": "Eroare la preluarea datelor"
+      "error": "Eroare la preluarea datelor",
+      "active_organizations": "Organizatii active",
+      "inactive_organizations": "Organizatii inactive",
+      "accepted_requests": "Cereri acceptate",
+      "rejected_requests": "Cereri refuzate",
+      "organization_chart": "Organizatii in ONG Hub",
+      "request_chart": "Cereri inscriere in ONG Hub",
+      "organization_statistics_error": "Eroare la incarcarea statisticilor despre organizatie",
+      "requests_statistics_error": "Eroare la incarcarea statisticilor despre cereri in organizatie",
+      "filter": {
+        "anual": "Din totdeauna",
+        "monthly": "Lunar",
+        "daily": "Zilnic"
+      }
     },
     "activity_title": "Organizație activă în ONG Hub din",
     "last_updated_on": "Ultima actualizare de date"
