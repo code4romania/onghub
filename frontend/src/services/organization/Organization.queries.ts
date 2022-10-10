@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { Person } from '../../common/interfaces/person.interface';
+import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Expense } from '../../pages/organization/interfaces/Expense.interface';
 import { Income } from '../../pages/organization/interfaces/Income.interface';
@@ -66,7 +67,7 @@ export const useOrganizationsQuery = (
   orderBy: string,
   orderDirection: OrderDirection,
   search?: string,
-  status?: number,
+  status?: CompletionStatus,
   interval?: Date[],
   userCount?: string,
 ) => {
@@ -344,18 +345,13 @@ export const useDeleteInvestorByProfileMutation = () => {
   );
 };
 
-
 // Statistics
 
 export const useAllOrganizationsStatisticsQuery = () => {
   const { setAllOrganizationsStatistics } = useStore();
-  return useQuery(
-    ['all-organizations-statistics'],
-    () => getOrganizationsStatistics(),
-    {
-      onSuccess: (data: any) => setAllOrganizationsStatistics(data),
-    },
-  );
+  return useQuery(['all-organizations-statistics'], () => getOrganizationsStatistics(), {
+    onSuccess: (data: any) => setAllOrganizationsStatistics(data),
+  });
 };
 
 export const useOneOrganizationStatisticsQuery = (organizationId: number) => {
@@ -365,9 +361,8 @@ export const useOneOrganizationStatisticsQuery = (organizationId: number) => {
     () => getOneOrganizationStatistics(+organizationId),
     {
       enabled: !!organizationId,
-      onSuccess: (data: any) => setOneOrganizationStatistics(data)
+      onSuccess: (data: any) => setOneOrganizationStatistics(data),
     },
-
   );
 };
 
