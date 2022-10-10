@@ -11,7 +11,7 @@ import { useUser } from '../../store/selectors';
 import { Auth } from 'aws-amplify';
 import { useTranslation } from 'react-i18next';
 
-const Header = ({openSlidingMenu}: {openSlidingMenu?: any}) => {
+const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
   const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
@@ -20,13 +20,13 @@ const Header = ({openSlidingMenu}: {openSlidingMenu?: any}) => {
 
   return (
     <header className="bg-white">
-      <nav className=" px-10  py-4" aria-label="Top">
+      <nav className="sm:px-10  py-4 px-4" aria-label="Top">
         <div className="w-full flex gap-4 justify-between items-center">
           <div className="flex gap-4">
             {isAuthenticated && (
               <div className="flex sm:hidden items-center">
                 <button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-                onClick={() => openSlidingMenu(true)}>
+                  onClick={() => openSlidingMenu(true)}>
                   <MenuIcon className="w-5 h-5" />
                 </button>
               </div>
@@ -37,7 +37,7 @@ const Header = ({openSlidingMenu}: {openSlidingMenu?: any}) => {
           </div>
           {!isAuthenticated && !isRestricted && (
             <button
-              className="bg-yellow-600 px-6 py-2 shadow rounded-full text-black font-titilliumBold"
+              className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
               onClick={(e) => Auth.federatedSignIn()}
             >
               {t('enter')}
