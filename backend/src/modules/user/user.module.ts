@@ -8,11 +8,13 @@ import { AdminUserController } from './admin-user.controller';
 import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
 import { LoggerModule } from 'nestjs-pino';
+import { ApplicationModule } from '../application/application.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => OrganizationModule),
+    forwardRef(() => ApplicationModule),
     LoggerModule.forRoot(),
   ],
   controllers: [ProfileController, AdminUserController],

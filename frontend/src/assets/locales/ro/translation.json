@@ -1,0 +1,945 @@
+{
+  "common": {
+    "year": "An",
+    "status": "Status",
+    "updated_on": "Ultima actualizare",
+    "created_on": "Data adaugarii",
+    "save": "Salveaza modificari",
+    "back": "Inapoi",
+    "edit": "Editeaza",
+    "logo": {
+      "update": "Logo-ul nu s-a putut actualiza",
+      "load": "Logo-ul nu s-a putut incarca"
+    },
+    "delete_data": "Elimina date",
+    "view": "Vizualizeaza",
+    "delete": "Sterge",
+    "error": "Eroare!",
+    "wrong": "Ceva nu a functionat cum trebuie",
+    "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "next": "Mai departe",
+    "send": "Trimite",
+    "url": "URL-ul are un format invalid",
+    "processing": "Se proceseaza...",
+    "loading": "Se incarca...",
+    "completion_status": {
+      "completed": "Completat",
+      "incompleted": "Necompletat"
+    },
+    "restricted": "Restrictionat",
+    "active": "Activ"
+  },
+  "menu": {
+    "informations": "Informatii",
+    "collapse": "Restrange meniul"
+  },
+  "pagination": {
+    "rows_per_page": "Randuri pe pagina",
+    "range_separator_text": "din"
+  },
+  "empty": {
+    "table": "Nu exista date in tabel"
+  },
+  "account": {
+    "password": "Parola a fost schimbata cu success.",
+    "my_account": "Contul meu",
+    "account_description": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "settings": "Setari cont",
+    "settings_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "change_password": "Schimba parola",
+    "name": "Nume",
+    "email": "E-mail cont",
+    "send_mail": "Trimite E-Mail",
+    "wrong_password": "Parolele nu se potrivesc",
+    "close": {
+      "account": "Inchide contul",
+      "title": "Ești sigur că dorești închiderea contului?",
+      "description": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
+    },
+    "inactive": "Ups! Contul tau este inactiv.",
+    "no_access": "Lorem ipsum. Nu mai ai access in ONGHub. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
+    "back": "Inapoi la website",
+    "config": {
+      "old": {
+        "required": "Parola veche este obligatorie.",
+        "invalid": "Parola veche nu are formatul valid.",
+        "label": "Parola curenta*"
+      },
+      "new": {
+        "required": "Parola noua este obligatorie",
+        "invalid": "Parola noua este invalida",
+        "label": "Parola noua*"
+      },
+      "match": "Confirma parola noua*"
+    },
+    "restricted": "Cont restrictionat"
+  },
+  "organization": {
+    "error": "Organizatia nu s-a putut incarca",
+    "my_organization": "Organizatia mea",
+    "description": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "no_access": "Lorem ipsum. Organizatia ta a fost restrictionata. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
+    "inactive": "Ups! Organizatia ta este inactiva.",
+    "back": "Inapoi la website",
+    "send_mail": "Trimite E-Mail",
+    "restricted": "Organizatie restrictionata",
+    "type": {
+      "association": "Asociatie",
+      "foundation": "Fundatie",
+      "federation": "Federatie"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "general": "Date generale",
+      "activity": "Activitatea organizatiei",
+      "legal": "Informatii legale",
+      "financial": "Informatii financiare",
+      "open_data": "Open data",
+      "my_applications": "Applicatiile mele"
+    },
+    "save_error": "Organizatia nu s-a putut salva",
+    "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.",
+    "modal": {
+      "cancel": "Anuleaza modificari",
+      "close": "Close",
+      "save": "Salveaza"
+    },
+    "create": {
+      "congratulations": "Feclicitari",
+      "success": "Ai completat cu succes formularul de aplicare pentru ONG Hub. Pe adresa de e-mail indicată, ai primit confirmarea aplicării și o copie a formularului completat. Te vom contacta în cel mai scurt timp pentru a continua procesul de implementare al ONG Hub pentru organizația ta.",
+      "again": "Incearca din nou",
+      "steps": {
+        "first": "Pasul 1",
+        "account": "Date cont",
+        "second": "Pasul 2",
+        "general": "Date generale",
+        "third": "Pasul 3",
+        "activity": "Activitate",
+        "fourth": "Pasul 4",
+        "legal": "Informatii legale"
+      },
+      "errors": {
+        "REQ_001": "Acest email este deja folosit",
+        "REQ_007": "Exista deja o organizatie cu acest CUI",
+        "REQ_008": "Exista deja o organizatie cu acest numar RAF",
+        "REQ_009": "Exista deja o organizatie cu aceasta denumire"
+      }
+    },
+    "filters": {
+      "incomplete": "Incomplet",
+      "updated": "Actualizat"
+    },
+    "create_config": {
+      "name": {
+        "required": "Numele si prenumele sunt obligatorii",
+        "max": "Numele si prenumele nu pot avea mai mult de 100 de caractere",
+        "min": "Numele si prenumele nu pot avea mai putin de 3 caractere",
+        "invalid": "Numele si prenumele au un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "min": "Numarul de telefon nu poate sa aiba mai putin de 10 caractere",
+        "max": "Numarul de telefon nu poate sa aiba mai mult de 15 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon*"
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul nu poate sa aiba mai mult de 50 de caractere",
+        "invalid": "Email-ul are un format invalid",
+        "label": "E-mail"
+      }
+    },
+    "restrict": {
+      "title": "Esti sigu ca doresti sa stergi organizatia din ONG Hub?",
+      "description": "Lorem ipsum. Eliminarea organizației din ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal, iar datele se vor pierde. Dacă dorești să elimini definitiv organizația, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul.",
+      "confirm": "Sterge organizatia",
+      "request_success": "Cerere trimisa cu succes",
+      "request_error": "Eroare la trimiterea cererii de stergere a organizatiei"
+    }
+  },
+  "general": {
+    "title": "Date generale",
+    "logo": {
+      "name": "Logo organizatie",
+      "upload": "Incarca logo",
+      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+    },
+    "contact": {
+      "name": "Persoana de contact in relatia cu ONGHub",
+      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+    },
+    "social": "Comunicare si social media",
+    "fundraising": "Strangere de fonduri",
+    "config": {
+      "name": {
+        "required": "Numele organizatiei este obligatoriu",
+        "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Numele organizatiei poate sa aiba minim 3 caractere.",
+        "invalid": "Numele organizatiei are un format invalid.",
+        "label": "Denumirea organizatiei*",
+        "helper": "Denumirea oficiala conform cu Registrul ONG"
+      },
+      "alias": {
+        "required": "Aliasul organizatiei este obligatoriu",
+        "max": "Aliasul organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Aliasul organizatiei poate sa aiba minim 3 caractere.",
+        "invalid": "Aliasul organizatiei are un format invalid",
+        "label": "Alias organizatie*"
+      },
+      "type": {
+        "label": "Tip organizatie*",
+        "required": "Tipul organizatiei este obligatoriu",
+        "helper": "Lorem ipsum. Help text."
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul are un format invalid.",
+        "label": "E-mail contact organizatie*",
+        "helper": "Exemplu: contact@organizatie.ro"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "min": "Numarul de telefon poate sa aiba minim 10 caractere",
+        "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon contact organizatie",
+        "helper": "Exemplu: numarul telefonului de la sediu"
+      },
+      "year": {
+        "required": "Anul infintarii este obligatoriu.",
+        "max": "Anul infintarii poate sa aiba maxim 4 caractere",
+        "label": "Anul infintarii"
+      },
+      "cui": {
+        "required": "CUI-ul este obligatoriu",
+        "max": "CUI-ul poate sa aiba maxim 12 caractere",
+        "min": "CUI-ul poate sa aiba minim 2 caractere",
+        "invalid": "CUI-ul are un format invalid",
+        "label": "CUI/CIF*"
+      },
+      "raf": {
+        "required": "Numarul RAF este obligatoriu",
+        "max": "Numarul RAF poate sa aiba maxim 20 de caractere",
+        "min": "Numarul RAF poate sa aiba minim 8 caractere",
+        "invalid": "Numarul RAF are un format invalid",
+        "label": "Nr. Registrul Asociatiilor si Fundatiilor*"
+      },
+      "city": {
+        "required": "Orasul este obligatoriu",
+        "label": "Oras*"
+      },
+      "county": {
+        "required": "Judetul este obligatoriu",
+        "label": "Judet*"
+      },
+      "short": {
+        "required": "Descrierea scurta este obligatorie",
+        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
+        "label": "Descriere scurta organizatie*",
+        "helper": "Descrie organizatia ta in 50-250 de caractere. Descrierea va fi vizibila in alte aplciatii, dupa caz."
+      },
+      "long": {
+        "required": "Descrierea este obligatorie",
+        "max": "Descrierea poate sa aiba maxim 700 de caractere",
+        "min": "Descrierea poate sa aiba minim 200 de caractere",
+        "label": "Descriere extinsa organizatie*",
+        "helper": "Adauga o descriere cat mai cuprinzatoare a organizatiei tale. Maximum 700 de caractere."
+      },
+      "contact": {
+        "required": "Numele contactului este obligatoriu",
+        "max": "Numele contactului poate sa aiba maxim 100 de caractere",
+        "min": "Numele contactului poate sa aiba minim 5 caractere",
+        "invalid": "Numele contactului are un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "contact_email": {
+        "required": "Email-ul contactului este obligatoriu",
+        "max": "Email-ul contactului poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul contactului are un format invalid",
+        "label": "Email*"
+      },
+      "contact_phone": {
+        "required": "Numarul de telefon contactului este obligatoriu",
+        "max": "Numarul de telefon al contactului poate sa aiba maxim 15 caractere",
+        "min": "Numarul de telefon al contactului poate sa aiba minim 10 caractere",
+        "invalid": "Numarul de telefon al contactului are un format invalid",
+        "label": "Telefon*"
+      },
+      "website": {
+        "required": "Website-ul este obligatoriu",
+        "invalid": "Website-ul are un format invalid",
+        "label": "Website*"
+      },
+      "facebook": "Facebook este obligatoriu",
+      "donation": "Pagina de donatii",
+      "redirect": "Link catre contul de Redirectioneaza",
+      "sms": {
+        "length": "SMS-ul pentru donatii trebuie sa aiba 4 caractere",
+        "invalid": "SMS-ul pentru donatii are un format invalid",
+        "label": "Donatii prin SMS",
+        "helper": "Numarul la care se trimite SMS pentru a dona"
+      },
+      "keyword": {
+        "max": "Cuvantul cheie al SMS-ului poate sa aiba maxim 10 caractere",
+        "invalid": "Cuvantul cheie al SMS-ului are un format invalid",
+        "label": "Cuvant cheie SMS",
+        "helper": "Textul care se trimite prin SMS pentru a dona"
+      }
+    }
+  },
+  "activity": {
+    "title": "Activitatea organizatiei",
+    "domains": "Domenii si acoperire geografica",
+    "fed_coal": "Federatii si coalitii",
+    "branches": "Filiale si sucursale",
+    "other": "Alte informatii",
+    "config": {
+      "field": "Campul este obligatoriu.",
+      "domains": "Domenii de activitate*",
+      "domains_helper": "Minim 1 domeniu de activitate.",
+      "area": "Organizatia isi desfasoara activitatea pe plan:",
+      "area_helper": "Lorem ipsum. Alege din lista sau adauga valoare.",
+      "cities": "Localitati in care activeaza organizatia",
+      "cities_helper": "Cauta in lista",
+      "regions": "Regiuni in care activeaza organizatia*",
+      "regions_helper": "Lorem ipsum. Alege din lista sau adauga valoare.",
+      "federations": {
+        "part_of": "Organizatia apartine de una sau mai multe federatii?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Mentioneaza federatii*"
+      },
+      "coalitions": {
+        "part_of": "Organizatia apartine de una sau mai multe coalitii?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Mentioneaza coalitii*"
+      },
+      "international": {
+        "part_of": "Organizatia ta face parte dintr-o organizatie internationala?*",
+        "part_of_helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
+        "min": "Numele organizatiei poate sa aiba mnim 3 caractere.",
+        "invalid": "Formatul este invalid.",
+        "label": "Denimurea organizatiei*",
+        "helper": "Denumirea oficiala conform cu registrul ONG."
+      },
+      "branches": {
+        "has_any": "Organizatia are filiale sau sucursale?*",
+        "has_any_helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu",
+        "label": "Localitati in care organizatia are filiale sau sucursale*",
+        "helper": "Cauta in lista"
+      },
+      "social": {
+        "label": "Esti ONG acreditat pentru servicii sociale?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      },
+      "grants": {
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      },
+      "public": {
+        "label": "Esti declarat ONG de interes public?*",
+        "helper": "De exemplu, lorem ipsum. Help text.",
+        "yes": "Da",
+        "no": "Nu"
+      }
+    }
+  },
+  "legal": {
+    "title": "Informatii Legale",
+    "statute_error": "Nu s-a putut incarca statutul organizatiei",
+    "representative": "Reprezentantul legal al organizatiei",
+    "director": "Consiliul directoral al organizatiei",
+    "dir_minimum": "Este obligatoriu sa adaugi cel putin 3 membri al consiliului directoral pentru a continua.",
+    "add": "Adauga un membru",
+    "other": "Alte persoane relevante in organizatie",
+    "statute": "Statutul organizatiei",
+    "document": "Document",
+    "file_name": "Statut_Organizatie",
+    "statute_upload": "Incarca fisier",
+    "modal": {
+      "add": "Adauga",
+      "edit_director": "Editare membru consiliul directoral",
+      "add_director": "Adaugare membru consiliul directoral",
+      "edit_relevant": "Editare alta persoana relevanta in organizatie",
+      "add_relevant": "Adaugare alta persoana relevanta in organizatie"
+    },
+    "header": {
+      "name": "Nume si prenume",
+      "role": "Rol",
+      "email": "Email",
+      "phone": "Telefon"
+    },
+    "legal_config": {
+      "name": {
+        "required": "Numele reprezentantului legal este obligatoriu.",
+        "maxim": "Numele reprezentantului legal nu poate sa aiba mai mult de 100 de caractere.",
+        "minim": "Numele reprezentantului legal nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele reprezentantului legal are un format invalid.",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul reprezentantului legal este obligatoriu.",
+        "maxim": "Email-ul reprezentantului legal nu poate sa aiba mai mult de 50 de caractere.",
+        "invalid": "Email-ul are un format incorect.",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Numarul de telefon al repzentantului legal este obligatoriu.",
+        "maxim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai mult de 15 caractere.",
+        "minim": "Numarul de telefon al reprezentantului legal nu poate sa aiba mai putin de 10 caractere.",
+        "invalid": "Numarul de telefon are un format invalid.",
+        "label": "Telefon"
+      }
+    },
+    "director_config": {
+      "name": {
+        "required": "Numele directorului este obligatoriu",
+        "maxim": "Numele directorului nu poate sa aiba mai mult de 100 de caractere",
+        "minim": "Numele directorului nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele directorului nu are un format valid.",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul directorului este obligatoriu.",
+        "maxim": "Email-ul directorului nu poate sa aiba mai mult de 50 de caractere.",
+        "invalid": "Email-ul are un format incorect.",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Telefonul directorului este invalid.",
+        "maxim": "Numarul de telefon al directorului nu poate sa aiba mai mult de 15 caractere.",
+        "minim": "Numarul de telefon al directorului nu poate sa aiba mai putin de 10 caractere.",
+        "invalid": "Numarul de telefon are un format invalid.",
+        "label": "Telefon"
+      }
+    },
+    "other_config": {
+      "name": {
+        "required": "Numele este obligatoriu.",
+        "maxim": "Numele nu poate sa aiba mai mult de 100 de caractere.",
+        "minim": "Numele nu poate sa aiba mai putin de 5 caractere.",
+        "invalid": "Numele are un format invalid.",
+        "label": "Nume si prenume*"
+      },
+      "role": {
+        "required": "Rolul este obligatoriu.",
+        "maxim": "Rolul nu poate sa aiba mai mult de 50 de caractere.",
+        "minim": "Rolul nu poate sa aiba mai putin de 3 caractere.",
+        "invalid": "Rolul are un format invalid.",
+        "label": "Rol*"
+      }
+    }
+  },
+  "financial": {
+    "save_error": "Eroare la salvarea datelor financiare",
+    "title": "Date Financiare",
+    "report_row": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum aliquam accusantium est totam sint hic similique!",
+    "modal": {
+      "income": "Total Venituri",
+      "expense": "Total Cheltuieli",
+      "anaf": "*suma preluata automat din raportarea ANAF",
+      "category_income": "Categorie Venituri",
+      "category_expense": "Categorie cheltuieli",
+      "sum": "Suma",
+      "defalcat": "Total Defalcat",
+      "unallocated": "nealocati",
+      "excess": "surplus",
+      "income_report": "Raportare Venituri",
+      "expense_report": "Raportare Cheltuieli"
+    },
+    "header": {
+      "report": "Raportare",
+      "income": "Raportare venituri",
+      "expense": "Raportare cheltuieli",
+      "employees": "Angajati"
+    },
+    "common_config": {
+      "minim": "Nu pot fi introduse valori negative.",
+      "maxim": "Nu pot fi introduse valori mai mari de 9 cifre."
+    },
+    "income": {
+      "membership": "Venituri din cotizatii",
+      "donations": "Venituri din donatii",
+      "percent": "Venituri 2%",
+      "sponsorship": "Venituri din sponsorizari",
+      "economic": "Venituri din activitatea economica",
+      "other": "Alte venituri",
+      "financial": "Venituri financiare"
+    },
+    "expense": {
+      "net": "Salarii nete (resurse umane)",
+      "cas": "Contributii CAS (resurse umane)",
+      "economic": "Cheltuieli directe din activitatea economica",
+      "administrative": "Cheltuieli administrative",
+      "transport": "Transport si cazare",
+      "catering": "Catering",
+      "production": "Productie",
+      "software": "Servicii software",
+      "advertising": "Reclame si publicitate",
+      "taxes": "Alte taxe",
+      "expense": "Alte cheltuieli"
+    }
+  },
+  "open_data": {
+    "load_error": "Datele nu s-au putut incarca",
+    "download": "Descarca lista",
+    "upload": "Incarca lista noua",
+    "delete": "Elimina lista",
+    "no_file": "Niciun fisier incarcat",
+    "download_error": "Nu s-a putut descarca fisierul",
+    "no_data": "Fisierul pe care l-ai incarcat nu contine date!",
+    "invalid": "Formatul fisierului este invalid",
+    "report": {
+      "title": "Sumar",
+      "volunteers": "Voluntari",
+      "contractors": "Contractori",
+      "activity": "Raport activitate",
+      "not_available": "Nu este disponibil",
+      "report": "Raport"
+    },
+    "partners": {
+      "title": "Parteneri",
+      "list": "Lista parteneri",
+      "count": "Numar parteneri",
+      "download": "Descarca model de tabel parteneri"
+    },
+    "investors": {
+      "title": "Finantatori",
+      "list": "Lista finantatori",
+      "count": "Numar finantatori",
+      "download": "Descarca model de tabel finantatori"
+    },
+    "modal": {
+      "summary": "Sumar activitate"
+    },
+    "config": {
+      "volunt_negative": "Numarul de voluntari nu poate fi un numar negativ.",
+      "volunt_maxim": "Numarul de voluntari nu poate sa aiba mai mult de 6 cifre.",
+      "decimal": "Valori cu decimale nu sunt permise.",
+      "contr_negative": "Numarul de contractori nu poate fi un numar negativ.",
+      "contr_maxim": "Numarul de contractori nu poate sa aiba mai mult de 6 cifre.",
+      "link_invalid": "Formatul link-ului este invalid.",
+      "link": "Link raport activitate",
+      "volunteers": "Numar voluntari",
+      "contractors": "Numar contractori",
+      "volunteer_helper": "Lorem ipsum",
+      "contractor_helper": "Lorem ipsum",
+      "report_helper": "Lorem ipsum"
+    }
+  },
+  "applications": {
+    "active_apps": "Aplicatii in folosinta",
+    "pending_app_requests": "Solicitari applicatii",
+    "app_type": "Tip aplicatie",
+    "error": {
+      "get_applications": "Eroare la incarcarea aplicatiilor",
+      "get_requests": "Eroare la incarcarea requesturilor",
+      "restrict_application": "Eroare la restrictionarea accesului",
+      "restore_application": "Eroare la redarea accesului",
+      "remove_application": "Eroare la stergerea applicatiei",
+      "approve_request": "Eroare la aprobarea requestului",
+      "reject_request": "Eroare la respingerea requestului"
+    },
+    "options": {
+      "restore_access": "Reda accesul",
+      "restrict_access": "Restrictioneaza accesul",
+      "remove_application": "Elimina applicatia",
+      "approve_request": "Aproba",
+      "reject_request": "Respinge"
+    },
+    "remove_app_modal": {
+      "title": "Esti sigur ca doresti stergerea aplicatiei",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+    },
+    "reject_request_modal": {
+      "title": "Esti sigur ca doresti respingerea requestului",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+    }
+  },
+  "delete_row": {
+    "delete": "Stergeti randul?",
+    "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
+    "no_delete": "Nu Sterge"
+  },
+  "user": {
+    "title": "Utilizatori",
+    "subtitle": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
+    "add": "Adauga Utilizator",
+    "not_found": "Utilizatorul nu exista in baza de date",
+    "tabs": {
+      "users": "Utilizatori",
+      "invites": "Invitatii trimise"
+    },
+    "create": {
+      "success": "Utilizator create cu succes",
+      "failure": "Utilizatorul nu a putut fi creat",
+      "invite": "Trimite invitatie"
+    },
+    "edit": {
+      "load_error": "Nu s-a putut incarca utilizatorul cu id-ul",
+      "success": "Utilizator actualizat cu succes",
+      "failure": "Utilizatorul nu a putut fi actualizat"
+    },
+    "list": {
+      "load_error": "Eroare la incarcarea utilizatorilor",
+      "restrict_error": "Eroare la restrictionarea accesului",
+      "restore_error": "Eroare la restituirea accesului",
+      "remove_error": "Eroare la stergerea utilizatorului",
+      "restrict": "Restrictioneaza temporar",
+      "give_access": "Reda accesul",
+      "permanent": "Elimina definitiv",
+      "restore_success": "Acces restituit pentru utilizatorul",
+      "remove_success": "S-a sters cu succes utilizatorul cu id-ul",
+      "restrict_success": "Acces restrictionat pentru utilizatorul",
+      "date": "Data adaugarii",
+      "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
+      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+    },
+    "invites": {
+      "title": "Lista cu invitatii",
+      "load_error": "Eroare la incarcarea invitatiilor",
+      "resend_error": "Eroare la retrimiterea invitatiei",
+      "remove_error": "Eroare la stergerea utilizatorului",
+      "resend_success": "Invitatie retrimisa cu succes",
+      "resend": "Retrimite",
+      "remove_success": "S-a sters cu succes utilizatorul",
+      "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
+      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+    },
+    "create_org": {
+      "title": "Persoana de contact in relatia cu ONGHub"
+    },
+    "filters": {
+      "active": "Activ",
+      "restricted": "Restrictionat"
+    },
+    "list_header": {
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "status": "Acces general",
+      "created": "Data adaugarii"
+    },
+    "invites_header": {
+      "name": "Nume",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "added_on": "Data adaugarii"
+    },
+    "status": {
+      "active": "Activ",
+      "restricted": "Restrictionat"
+    },
+    "config": {
+      "name": {
+        "required": "Numele este obligatoriu",
+        "max": "Numele poate sa aiba maxim 100 de caractere",
+        "min": "Numele poate sa aiba minim 5 caractere",
+        "invalid": "Numele are un format invalid",
+        "label": "Nume si prenume*"
+      },
+      "email": {
+        "required": "Email-ul este obligatoriu",
+        "max": "Email-ul poate sa aiba maxim 50 de caractere",
+        "invalid": "Email-ul are un format invalid",
+        "label": "Email*"
+      },
+      "phone": {
+        "required": "Numarul de telefon este obligatoriu",
+        "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
+        "min": "Numarul de telefon poate sa aiba minim 10 caractere",
+        "invalid": "Numarul de telefon are un format invalid",
+        "label": "Telefon"
+      }
+    }
+  },
+  "organizations": {
+    "load_error": "Eroare la incarcarea organizatiilor",
+    "view": "Vizualizeaza ONG",
+    "restrict": "Restrictioneaza temporar",
+    "title": "ONG-uri",
+    "list": "Lista ONG-uri",
+    "administer": "Administreaza aici accesul pentru organizatiile din sistem.",
+    "restrict_error": "Eroare la restrictionarea organizatiei",
+    "activate_error": "Eroare la activarea organizatiei",
+    "activate": "Activeaza",
+    "restrict_success": "Organizatie restrictionata cu succes",
+    "activate_success": "Organizatie activata cu succes",
+    "filter": {
+      "registration": "Perioada de inregistrare",
+      "users": "Numar de utilizatori",
+      "status": "Status actualizare date"
+    },
+    "header": {
+      "ong": "ONG",
+      "users": "Utilizatori",
+      "register": "Inregistrare",
+      "access": "Acces",
+      "updated": "Ultima actualizare date",
+      "status": "Status actualizare",
+      "active": "Activ",
+      "restricted": "Restrictionat"
+    }
+  },
+  "appstore": {
+    "title": "Aplicatii",
+    "description": "Lorem ipsum",
+    "add": "Adauga aplicatie",
+    "all": "Toate aplicatiile",
+    "tabs": {
+      "overview": "Prezentare generala aplicatii",
+      "requests": "Cereri acces aplicatii"
+    },
+    "list": {
+      "load_error": "Eroare la incarcarea aplicatiilor",
+      "access_error": "Eroare la modificarea accesului",
+      "view": "Vizualizeaza aplicatie",
+      "activate": "Activeaza aplicatie",
+      "restrict": "Dezactiveaza temporar",
+      "type": "Tip aplicatie",
+      "status": "Status"
+    },
+    "create": {
+      "error": "Eroare la crearea aplicatiei",
+      "success": "Aplicatie creata cu succes",
+      "description": "Lorem ipsum",
+      "edit": "Editare pagina aplicatie",
+      "generate": "Generare pagina aplicatie",
+      "general": "Date generale",
+      "logo": "Logo aplicatie",
+      "upload": "Incarca logo",
+      "logo_descr": "Incarca logo-ul aplicatiei tale, la o calitate caat mai buna.",
+      "steps": "Pasi pentru adaugarea aplicatiei",
+      "steps_descr": "Lorem ipsum",
+      "step_add": "Adauga mai multi pasi",
+      "step_delete": "Sterge pas"
+    },
+    "type": {
+      "independent": "Website independent",
+      "data": "Colecteaza date din ONGHub",
+      "simple": "Necesita login simplu",
+      "standalone": "Necesita login cu configurare"
+    },
+    "status": {
+      "active": "Activ",
+      "disabled": "Inactiv",
+      "restricted": "Restrictionat",
+      "pending": "In asteptare"
+    },
+    "header": {
+      "name": "Aplicatie",
+      "type": "Tip aplicatie",
+      "status": "Status"
+    },
+    "config": {
+      "name": {
+        "required": "Numele aplicatiei este obligatoriu",
+        "max": "Numele aplicatiei nu poate sa aiba mai mult de 100 de caractere",
+        "min": "Numele aplciatiei nu poate sa aiba mai putin de 3 caractere",
+        "invalid": "Numele aplicatiei are un format invalid",
+        "label": "Denumirea aplicatiei*",
+        "helper": "Alege o denumire de maxim 100 de caractere"
+      },
+      "type": {
+        "label": "Tipul aplicatiei*",
+        "required": "Tipul aplicatiei este obligatoriu"
+      },
+      "short": {
+        "required": "Descrierea scurta este obligatorie",
+        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
+        "label": "Descriere scurta",
+        "helper": "Maximum 250 de caractere"
+      },
+      "description": {
+        "required": "Descrierea este obligatorie",
+        "max": "Descrierea poate sa aiba maxim 700 de caractere",
+        "min": "Descrierea poate sa aiba minim 200 de caractere",
+        "label": "Descriere extinsa aplicatie*",
+        "helper": "Maximum 700 de caractere"
+      },
+      "website": {
+        "label": "Link catre website prezentare aplicatie*",
+        "required": "Link-ul catre website este obligatoriu"
+      },
+      "login_link": {
+        "label": "Link login automat*",
+        "required": "Link-ul catre pagina de login este obligatoriu"
+      },
+      "video_link": {
+        "label": "Link video prezentare*",
+        "helper": "URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
+        "required": "Link-ul catre prezentarea video este obligatoriu"
+      },
+      "management": {
+        "label": "Link pentru pulling app"
+      },
+      "step": {
+        "required": "Pasul este obligatoriu",
+        "invalid": "Pasul are un format invalid",
+        "label": "Pas"
+      }
+    },
+    "request_modal": {
+      "approve": {
+        "title": "Aproba",
+        "description": "Esti sigur ca doresti sa aprobi solicitarea?",
+        "confirm": "Da, aprob solicitarea"
+      },
+      "reject": {
+        "title": "Respinge",
+        "description": "Esti sigur ca doresti sa respingi solicitarea?",
+        "confirm": "Respinge solicitarea"
+      }
+    },
+    "request_header": {
+      "name": "Aplicatie",
+      "ong": "Organizatie",
+      "created_on": "Data solicitarii"
+    },
+    "requests": {
+      "load_error": "Eroare la incarcarea solicitariilor.",
+      "status_error": "Eroare la schimbarea statusului",
+      "view": "Vizualizeaza aplicatie",
+      "aprove": "Aproba",
+      "reject": "Respinge",
+      "status_update": "Status actualizat",
+      "requests": "Solicitari",
+      "date_added": "Data adaugarii"
+    },
+    "form": {
+      "title": "Date generale",
+      "subtitle": "This information will be displayed publicly so be careful what you share",
+      "logo": "Logo aplicatie",
+      "upload_logo": "Incarca logo",
+      "upload_description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.",
+      "steps_title": "Pasi pentru adaugarea aplicatiei",
+      "steps_subtitle": "This information will be displayed publicly so be careful what you share",
+      "more_steps": "Adauga mai multi pasi",
+      "delete_step": "Sterge pas"
+    }
+  },
+  "app": {
+    "title": "Aplicatie",
+    "tabs": {
+      "description": "Descriere",
+      "list": "Lista ONG-uri"
+    },
+    "details": {
+      "website": "Vezi website",
+      "how_to": "Cum poti folosi aplicatia pentru organizatia ta",
+      "request": "Solicita aplicatia",
+      "description": "Descriere",
+      "video": "Video prezentare",
+      "request_error": "Solicitarea nu a putut fi trimisa",
+      "request_successful": "Solicitare trimisa cu succes",
+      "add": "Adauga aplicatie",
+      "restricted": "Accesul la aplicatie a fost restrictionat",
+      "auto": "Aplicatia este adaugata automat la crearea contului ONG Hub si nu poate fi dezactivata.",
+      "delete": "Elimina aplicatie",
+      "contact": "Te vom contacta in 24-48 de ore.",
+      "active": "Aplicatia este activa pentru organizatia ta.",
+      "define_active": "Lorem ipsum. Ce inseamna faptul ca aplicatia este activa. Conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "open": "Deschide aplicatia",
+      "pending": "Solicitarea ta asteapta aprobare.",
+      "configure": "Aplicatia aceasta trebuie instalata si configurata conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "cancel": "Anuleaza solicitare",
+      "restore": "Contacteaza-ne pentru restituirea accesului!",
+      "close_button": "Elimina aplicatia",
+      "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
+      "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
+      "another_description": "Descriere aplicatie",
+      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa"
+    },
+    "list_header": {
+      "name": "ONG",
+      "user_count": "Utilizatori Individuali",
+      "created_on": "Data adaugare",
+      "access": "Access"
+    },
+    "list": {
+      "load_error": "Eroare la incarcarea organizatiilor",
+      "title": "Lista ONG-uri",
+      "activate": "Activeaza aplicatie",
+      "restrict": "Dezactiveaza aplicatie",
+      "remove": "Elimina definitiv"
+    }
+  },
+  "header": {
+    "enter": "Intra in cont",
+    "my_account": "Contul meu",
+    "log_out": "Log out"
+  },
+  "my_apps": {
+    "title": "Aplicatiile mele",
+    "subtitle": "Lorem oppossum.",
+    "open": "Deschide",
+    "more": "Mai mult"
+  },
+  "requests": {
+    "title": "Solicitari acces",
+    "subtitle": "Lorem oppossum.",
+    "load_error": "Eroare la incarcarea solicitarilor",
+    "status_erorr": "Eroare la schimbarea statusului",
+    "status_update": "Status actualizat",
+    "solved": "Solicitare solutionata",
+    "description": "Lorem ipsum",
+    "reject": "Respinge",
+    "approve": "Aproba",
+    "view_form": "Vizualizeaza formular",
+    "requests": "Solicitari",
+    "created_on": "Data adaugarii",
+    "data_pending": "Datele de mai jos corespund unei solicitari in curs de aprobare.",
+    "modals": {
+      "approve": {
+        "title": "Aproba si trimite confirmarea",
+        "description": "In urma aprobarii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare si un link pe care il poate accesa pentru a finaliza procesul si a avea acces în platforma.Esti sigur ca aprobi?",
+        "confirm": "Da, aprob solicitarea"
+      },
+      "reject": {
+        "title": "Respinge si trimite email",
+        "description": "In urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare. Esti sigur ca respingi?",
+        "confirm": "Respinge solicitarea"
+      }
+    },
+    "constants": {
+      "approved": "Aprobat",
+      "rejected": "Respins",
+      "pending": "In procesare"
+    },
+    "header": {
+      "org_name": "Organizatie",
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "status": "Status",
+      "created_on": "Data adaugarii",
+      "status_error": "Eroare"
+    }
+  },
+  "routes": {
+    "dashboard": "Tablou de bord",
+    "organization": "Organizatia mea",
+    "apps": "Aplicatiile mele",
+    "users": "Utilizatori",
+    "store": "Toate aplicatiile",
+    "organizations": "ONG-uri",
+    "requests": "Solicitari Acces"
+  }
+}

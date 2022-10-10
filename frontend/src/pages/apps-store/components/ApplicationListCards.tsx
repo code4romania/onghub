@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import { Loading } from '../../../components/loading/Loading';
 import {
@@ -12,10 +13,11 @@ import ApplicationCard from '../../my-apps/components/ApplicationCard';
 const ApplicationListCards = ({ isOngView }: { isOngView?: boolean }) => {
   const { isLoading, error } = isOngView ? useMyOngApplicationsQuery() : useOngApplicationsQuery();
   const { ongApplications: applications } = useOngApplications();
+  const { t } = useTranslation('appstore');
 
   useEffect(() => {
     if (error) {
-      useErrorToast('Error while loading the applications.');
+      useErrorToast(t('list.load_error'));
     }
   }, [error]);
 

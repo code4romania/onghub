@@ -7,15 +7,20 @@ import { IOrganizationReport } from '../../pages/organization/interfaces/Organiz
 import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
+  activateOrganization,
   deleteInvestors,
   deleteInvestorsByProfile,
   deletePartners,
   deletePartnersByProfile,
   getOrganization,
+  getOrganizationApplicationRequests,
+  getOrganizationApplications,
   getOrganizationByProfile,
   getOrganizations,
   patchOrganization,
   patchOrganizationByProfile,
+  restrictOrganization,
+  restrictOrganizationRequest,
   uploadInvestors,
   uploadInvestorsByProfile,
   uploadOrganizationFiles,
@@ -79,7 +84,27 @@ export const useOrganizationsQuery = (
   );
 };
 
-export const useOrganizationQuery = (id: number) => {
+export const useOrganizationApplicationsQuery = (organizationId: string) => {
+  return useQuery(
+    ['applications', organizationId],
+    () => getOrganizationApplications(organizationId),
+    {
+      enabled: !!organizationId,
+    },
+  );
+};
+
+export const useOrganizationApplicationRequestsQuery = (organizationId: string) => {
+  return useQuery(
+    ['requests', organizationId],
+    () => getOrganizationApplicationRequests(organizationId),
+    {
+      enabled: !!organizationId,
+    },
+  );
+};
+
+export const useOrganizationQuery = (id: string) => {
   const {
     setOrganizationGeneral,
     setOrganizationActivity,
@@ -221,6 +246,14 @@ export const useDeleteInvestorMutation = () => {
   );
 };
 
+export const useRestrictOrganizationMutation = () => {
+  return useMutation((id: number) => restrictOrganization(id));
+};
+
+export const useActivateOrganizationMutation = () => {
+  return useMutation((id: number) => activateOrganization(id));
+};
+
 /**EMPLOYEE & ADMIN */
 
 export const useOrganizationByProfileQuery = () => {
@@ -351,4 +384,8 @@ export const useDeleteInvestorByProfileMutation = () => {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
   );
+};
+
+export const useRestrictOrganizationRequestMutation = () => {
+  return useMutation(() => restrictOrganizationRequest());
 };

@@ -1,4 +1,5 @@
 import { ICreateOrganizationPayload } from '../../../pages/create-organziation/interfaces/CreateOrganization.interface';
+import { IOrganizationGeneral } from '../../../pages/organization/interfaces/OrganizationGeneral.interface';
 
 export interface CreateRequestAdminDTO {
   name: string;
@@ -11,6 +12,9 @@ export interface CreateOrganizationRequestDTO {
   organization: ICreateOrganizationPayload;
 }
 
-export interface CreateApplicationRequestDTO {
-  applicationId: number;
+export interface ValidateCreateOrganizationRequest {
+  admin: CreateRequestAdminDTO;
+  organization: {
+    general: IOrganizationGeneral;
+  }
 }

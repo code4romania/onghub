@@ -9,6 +9,10 @@ export const APPLICATION_ERRORS = {
     message: 'Application Not Found',
     errorCode: 'APP_002',
   },
+  UPLOAD: {
+    message: 'Error while uploading logo',
+    errorCode: 'APP_003',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {
@@ -25,6 +29,15 @@ export const ONG_APPLICATION_ERRORS = {
   RESTRICT: {
     message: 'Could not restrict application',
     errorCode: 'ONG_APP_005',
+  },
+};
+
+export const USER_ONG_APPLICATION_ERRORS = {
+  GET: {
+    NOT_FOUND: {
+      message: 'Application not found',
+      errorCode: 'USER_ONG_APP_002',
+    },
   },
 };
 

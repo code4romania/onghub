@@ -3,23 +3,41 @@ import {
   NotFoundException,
   BadRequestException,
   Logger,
+  InternalServerErrorException,
 } from '@nestjs/common';
+
 import { Pagination } from 'src/common/interfaces/pagination';
+import { MAIL_TEMPLATES } from 'src/mail/enums/mail.enum';
+import { MailService } from 'src/mail/services/mail.service';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { In } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
-import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import {
+  ORGANIZATION_ERRORS,
+  ORGANIZATION_REQUEST_ERRORS,
+} from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
-import { Organization, OrganizationReport } from '../entities';
+import {
+  Contact,
+  Investor,
+  Organization,
+  OrganizationActivity,
+  OrganizationFinancial,
+  OrganizationGeneral,
+  OrganizationLegal,
+  OrganizationReport,
+  Partner,
+  Report,
+} from '../entities';
 import { OrganizationView } from '../entities/organization.view-entity';
 import { Area } from '../enums/organization-area.enum';
-import { FinancialType } from '../enums/organization-financial-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
@@ -32,6 +50,7 @@ import { OrganizationReportService } from './organization-report.service';
 export class OrganizationService {
   private readonly logger = new Logger(OrganizationService.name);
   constructor(
+    private readonly dataSource: DataSource,
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationGeneralService: OrganizationGeneralService,
     private readonly organizationActivityService: OrganizationActivityService,
@@ -42,6 +61,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
+    private readonly mailService: MailService,
   ) {}
 
   public async create(
@@ -128,10 +148,12 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
+    const lastYear = new Date().getFullYear() - 1;
+
     // get anaf data
     const financialInformation = await this.anafService.getFinancialInformation(
       createOrganizationDto.general.cui,
-      new Date().getFullYear() - 1,
+      lastYear,
     );
 
     // create the parent entry with default values
@@ -151,24 +173,15 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial: [
-        {
-          type: FinancialType.EXPENSE,
-          year: new Date().getFullYear() - 1,
-          total: financialInformation?.totalExpense,
-          numberOfEmployees: financialInformation?.numberOfEmployees,
-        },
-        {
-          type: FinancialType.INCOME,
-          year: new Date().getFullYear() - 1,
-          total: financialInformation?.totalIncome,
-          numberOfEmployees: financialInformation?.numberOfEmployees,
-        },
-      ],
+      organizationFinancial:
+        this.organizationFinancialService.generateFinancialReportsData(
+          lastYear,
+          financialInformation,
+        ),
       organizationReport: {
-        reports: [{}],
-        partners: [{}],
-        investors: [{}],
+        reports: [{ year: lastYear }],
+        partners: [{ year: lastYear }],
+        investors: [{ year: lastYear }],
       },
     });
   }
@@ -239,6 +252,21 @@ export class OrganizationService {
     return organization;
   }
 
+  public async findWithUsers(id: number): Promise<Organization> {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+      relations: ['users', 'organizationGeneral'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    return organization;
+  }
+
   /**
    * Update organization will only update one child at the time
    * TODO: Review if we put this in organization
@@ -271,16 +299,31 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.financial) {
-      return this.organizationFinancialService.update(
-        updateOrganizationDto.financial,
-      );
+      const organizationFinancial =
+        await this.organizationFinancialService.update(
+          updateOrganizationDto.financial,
+        );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationFinancial;
     }
 
     if (updateOrganizationDto.report) {
-      return this.organizationReportService.update(
+      const organizationReport = await this.organizationReportService.update(
         organization.organizationReportId,
         updateOrganizationDto.report,
       );
+
+      await this.organizationRepository.updateOne({
+        id,
+        syncedOn: new Date(),
+      });
+
+      return organizationReport;
     }
 
     return null;
@@ -378,6 +421,11 @@ export class OrganizationService {
       files,
     );
 
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
+
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -405,6 +453,11 @@ export class OrganizationService {
       organizationId,
       files,
     );
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      syncedOn: new Date(),
+    });
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -472,10 +525,39 @@ export class OrganizationService {
     });
   }
 
-  public async delete(organizationId: number): Promise<void> {
-    const organization = await this.organizationRepository.get({
-      where: { id: organizationId },
+  public async restrict(organizationId: number) {
+    const organization = await this.findWithUsers(organizationId);
+
+    if (organization.status === OrganizationStatus.RESTRICTED) {
+      throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
+    }
+
+    const admins = organization.users.filter(
+      (item) => item.role === Role.ADMIN,
+    );
+
+    const adminEmails = admins.map((item) => {
+      return item.email;
     });
+
+    await this.organizationRepository.updateOne({
+      id: organizationId,
+      status: OrganizationStatus.RESTRICTED,
+    });
+
+    await this.mailService.sendEmail({
+      to: adminEmails,
+      template: MAIL_TEMPLATES.RESTRICT_ORGANIZATION_ADMIN,
+      context: {
+        orgName: organization.organizationGeneral.name,
+      },
+    });
+
+    return organization;
+  }
+
+  public async delete(organizationId: number): Promise<void> {
+    const organization = await this.findWithRelations(organizationId);
 
     if (organization.status !== OrganizationStatus.PENDING) {
       throw new BadRequestException({
@@ -483,9 +565,83 @@ export class OrganizationService {
       });
     }
 
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+
+    await queryRunner.startTransaction();
+
     try {
-      await this.organizationRepository.remove({ id: organization.id });
+      // 1. delete organization
+      await queryRunner.manager.delete(Organization, organizationId);
+
+      // 2. delete report
+      const reportIds = organization.organizationReport.reports.map(
+        (report) => report.id,
+      );
+      await queryRunner.manager.delete(Report, reportIds);
+
+      const inverstorIds = organization.organizationReport.investors.map(
+        (investor) => investor.id,
+      );
+      await queryRunner.manager.delete(Investor, inverstorIds);
+
+      const partnerIds = organization.organizationReport.partners.map(
+        (partner) => partner.id,
+      );
+      await queryRunner.manager.delete(Partner, partnerIds);
+
+      await queryRunner.manager.delete(
+        OrganizationReport,
+        organization.organizationReportId,
+      );
+
+      // 3. delete financial
+      const organizationFinancialIds = organization.organizationFinancial.map(
+        (financial) => financial.id,
+      );
+      await queryRunner.manager.delete(
+        OrganizationFinancial,
+        organizationFinancialIds,
+      );
+
+      // 4. delete delete legal
+      await queryRunner.manager.delete(
+        Contact,
+        organization.organizationLegal.legalReprezentativeId,
+      );
+
+      const directorsIds = organization.organizationLegal.directors.map(
+        (director) => director.id,
+      );
+      await queryRunner.manager.delete(Contact, directorsIds);
+
+      await queryRunner.manager.delete(
+        OrganizationLegal,
+        organization.organizationLegalId,
+      );
+
+      // 5. delete activity
+      await queryRunner.manager.delete(
+        OrganizationActivity,
+        organization.organizationActivityId,
+      );
+
+      // 6. delete general
+      await queryRunner.manager.delete(
+        OrganizationGeneral,
+        organization.organizationGeneralId,
+      );
+
+      await queryRunner.manager.delete(
+        Contact,
+        organization.organizationGeneral.contactId,
+      );
+
+      await queryRunner.commitTransaction();
     } catch (error) {
+      // since we have errors lets rollback the changes we made
+      await queryRunner.rollbackTransaction();
+
       this.logger.error({
         error: { error },
         ...ORGANIZATION_ERRORS.DELETE.ONG,
@@ -493,6 +649,131 @@ export class OrganizationService {
       const err = error?.response;
       throw new BadRequestException({
         ...ORGANIZATION_ERRORS.DELETE.ONG,
+        error: err,
+      });
+    } finally {
+      // you need to release a queryRunner which was manually instantiated
+      await queryRunner.release();
+    }
+  }
+
+  public async validateOrganizationGeneral(
+    cui: string,
+    rafNumber: string,
+    name: string,
+  ): Promise<any[]> {
+    const errors = [];
+    const organizationWithName = await this.organizationGeneralService.findOne({
+      where: { name },
+    });
+
+    if (organizationWithName) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithCUI = await this.organizationGeneralService.findOne({
+      where: { cui },
+    });
+
+    if (organizationWithCUI) {
+      errors.push(
+        new BadRequestException(ORGANIZATION_REQUEST_ERRORS.CREATE.CUI_EXISTS),
+      );
+    }
+
+    const organizationWithRafNumber = this.organizationGeneralService.findOne({
+      where: { rafNumber },
+    });
+
+    if (organizationWithRafNumber) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    return errors;
+  }
+
+  /**
+   * Once every year, 1st of June we request new data to be completed by the NGOs for the past year
+   *
+   * Preconditions:
+   *
+   *  - The NGO does not have the Financial data, Reports, Parteners, Investors entries already added for the year we request it
+   *
+   *  1. We query ANAF and create 2 new entries to be completed in the Financial section (Expenses, Income)
+   *  2. Create 3 new entires for Reports, Parteners, Investors (Open Data)
+   *  3. Send notification email to the NGO Admin to take action
+   */
+  public async createNewReportingEntries(organizationId: string) {
+    const year = new Date().getFullYear() - 2;
+    // 1. Check if the NGO already has the data we try to add
+    const organization = await this.findWithRelations(+organizationId);
+
+    const { reports, partners, investors } = organization.organizationReport;
+
+    const hasDataFromYear = (
+      data: OrganizationFinancial[] | Report[] | Partner[] | Investor[],
+    ) => data.some((entry) => entry.year === year);
+
+    if (
+      hasDataFromYear(organization.organizationFinancial) ||
+      hasDataFromYear(reports) ||
+      hasDataFromYear(partners) ||
+      hasDataFromYear(investors)
+    ) {
+      throw new BadRequestException(
+        ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ALREADY_EXIST,
+      );
+    }
+
+    // 2. Get data from ANAF
+    let financialFromAnaf = null;
+    try {
+      financialFromAnaf = await this.anafService.getFinancialInformation(
+        organization.organizationGeneral.cui,
+        year,
+      );
+    } catch (err) {
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ANAF_ERRORED,
+        error: err,
+      });
+    }
+
+    // 2.1. Generate the financial reports
+    const newFinancialReport =
+      this.organizationFinancialService.generateFinancialReportsData(
+        year,
+        financialFromAnaf,
+      );
+
+    // 3. Update the ORG in DB including financial data and reports (reports, partners, investors) cascaded
+    try {
+      const orgUpdated = await this.organizationRepository.save({
+        ...organization,
+        organizationFinancial: [
+          ...organization.organizationFinancial,
+          ...newFinancialReport,
+        ],
+        organizationReport: {
+          ...organization.organizationReport,
+          reports: [...organization.organizationReport.reports, { year }],
+          partners: [...organization.organizationReport.partners, { year }],
+          investors: [...organization.organizationReport.investors, { year }],
+        },
+      });
+
+      return orgUpdated;
+    } catch (err) {
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ADD_NEW,
         error: err,
       });
     }

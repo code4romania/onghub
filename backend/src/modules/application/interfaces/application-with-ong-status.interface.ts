@@ -1,3 +1,4 @@
+import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
@@ -5,10 +6,10 @@ export interface ApplicationWithOngStatus {
   id: number;
   name: string;
   logo: string;
-  shortdescription: string;
-  loginlink: string;
+  shortDescription: string;
+  loginLink: string;
   website: string;
-  status: OngApplicationStatus;
+  status: OngApplicationStatus | ApplicationStatus;
   type: ApplicationTypeEnum;
 }
 
@@ -16,5 +17,6 @@ export interface ApplicationWithOngStatusDetails
   extends ApplicationWithOngStatus {
   steps: string[];
   description: string;
-  videolink: string;
+  videoLink: string;
+  managementUrl: string;
 }

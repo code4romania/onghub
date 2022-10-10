@@ -1,5 +1,4 @@
 import React from 'react';
-import { i18n } from '@lingui/core';
 import { createContext, useContext, useState } from 'react';
 import { Language } from '../common/enums/language.enum';
 
@@ -13,8 +12,6 @@ const LocaleProvider = ({ children }: { children: JSX.Element }) => {
 
   const languageChange = async (locale: Language) => {
     const { messages } = await import(`../assets/locales/${locale}/messages`);
-    i18n.load(locale, messages);
-    i18n.activate(locale);
     setCurrenLanguage(locale);
   };
 

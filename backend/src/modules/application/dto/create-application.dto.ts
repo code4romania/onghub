@@ -22,7 +22,7 @@ export class CreateApplicationDto {
   type: ApplicationTypeEnum;
 
   @IsString()
-  @Length(50, 250)
+  @Length(50, 120)
   shortDescription: string;
 
   @IsString()
@@ -42,6 +42,10 @@ export class CreateApplicationDto {
   @IsOptional()
   @Matches(REGEX.LINK)
   loginLink: string;
+
+  @IsOptional()
+  @IsString()
+  managementUrl: string;
 
   @IsOptional()
   @IsString()

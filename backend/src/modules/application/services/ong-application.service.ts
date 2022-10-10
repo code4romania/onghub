@@ -9,12 +9,14 @@ import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants
 import { OngApplication } from '../entities/ong-application.entity';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
+import { UserOngApplicationService } from './user-ong-application.service';
 
 @Injectable()
 export class OngApplicationService {
   private readonly logger = new Logger(OngApplicationService.name);
   constructor(
     private readonly ongApplicationRepository: OngApplicationRepository,
+    private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
 
   /**
@@ -67,12 +69,13 @@ export class OngApplicationService {
     }
 
     try {
+      await this.userOngApplicationService.remove({
+        ongApplicationId: ongApplication.id,
+      });
+
       await this.ongApplicationRepository.remove({ id: ongApplication.id });
     } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...ONG_APPLICATION_ERRORS.DELETE,
-      });
+      this.logger.error({ error: { error }, ...ONG_APPLICATION_ERRORS.DELETE });
       const err = error?.response;
       throw new BadRequestException({
         ...ONG_APPLICATION_ERRORS.DELETE,

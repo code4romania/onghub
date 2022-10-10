@@ -12,9 +12,9 @@ import {
   SUPER_ADMIN_ROUTES,
 } from '../../common/router/Routes.constants';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { Trans } from '@lingui/react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
+import { useTranslation } from 'react-i18next';
 
 export const getNavigationRoutes = (role: UserRole) => {
   let routes = EMPLOYEE_ROUTES;
@@ -38,6 +38,7 @@ const Menu = () => {
   const [isNarrow, setIsNarrow] = useState(false);
   const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
+  const { t } = useTranslation('menu');
 
   useEffect(() => {
     if (location && role) {
@@ -99,7 +100,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              <Trans id="menu.info" />
+              {t('informations')}
             </span>
           </a>
           <a
@@ -121,7 +122,7 @@ const Menu = () => {
                 'transition-all duration-50 whitespace-nowrap',
               )}
             >
-              <Trans id="menu.collapse" />
+              {t('collapse')}
             </span>
           </a>
         </div>

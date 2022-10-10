@@ -1,8 +1,28 @@
-import {
-  ALPHANUMERIC_REGEX,
-  EMAIL_REGEX,
-  PHONE_REGEX,
-} from '../../../common/helpers/format.helper';
+import { NAME_REGEX, EMAIL_REGEX, PHONE_REGEX } from '../../../common/helpers/format.helper';
+import i18n from '../../../common/config/i18n';
+
+const translations = {
+  name: {
+    required: i18n.t('organization:create_config.name.required'),
+    max: i18n.t('organization:create_config.name.max'),
+    min: i18n.t('organization:create_config.name.min'),
+    invalid: i18n.t('organization:create_config.name.invalid'),
+    label: i18n.t('organization:create_config.name.label'),
+  },
+  phone: {
+    required: i18n.t('organization:create_config.phone.required'),
+    min: i18n.t('organization:create_config.phone.min'),
+    max: i18n.t('organization:create_config.phone.max'),
+    invalid: i18n.t('organization:create_config.phone.invalid'),
+    label: i18n.t('organization:create_config.phone.label'),
+  },
+  email: {
+    required: i18n.t('organization:create_config.email.required'),
+    max: i18n.t('organization:create_config.email.max'),
+    invalid: i18n.t('organization:create_config.email.invalid'),
+    label: i18n.t('organization:create_config.email.label'),
+  },
+};
 
 export const CreateOrganizationUserConfig: Record<string, any> = {
   name: {
@@ -10,24 +30,24 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'First name and last name field is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'First name and last name field has a maximum length of 100 characters.',
+        message: translations.name.max,
       },
       minLength: {
         value: 3,
-        message: 'First name and last name field has a minimum length of 3 characters.',
+        message: translations.name.min,
       },
       pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: 'Invalid format',
+        value: NAME_REGEX,
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume',
+      label: translations.name.label,
       helperText: '',
       placeholder: 'Ana Maria Stoian',
     },
@@ -37,24 +57,24 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Phone is required.',
+        message: translations.phone.required,
       },
       minLength: {
         value: 10,
-        message: 'Phone has a minimum length of 10 characters.',
+        message: translations.phone.min,
       },
       maxLength: {
         value: 15,
-        message: 'Phone has a maximum length of 15 characters.',
+        message: translations.phone.max,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon*',
+      label: translations.phone.label,
       helperText: '',
       placeholder: '+40712345678',
     },
@@ -64,20 +84,20 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Email is required.',
+        message: translations.email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Email has a maximum length of 50 characters.',
+        message: translations.email.max,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'E-mail',
+      label: translations.email.label,
       helperText: '',
       placeholder: 'you@example.com',
     },

@@ -8,7 +8,14 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import {
+  Between,
+  FindManyOptions,
+  FindOneOptions,
+  ILike,
+  In,
+  UpdateResult,
+} from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -20,6 +27,13 @@ import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
+import { Access } from 'src/modules/application/interfaces/application-access.interface';
+import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
+import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { format } from 'date-fns';
+import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 
 @Injectable()
 export class UserService {
@@ -28,6 +42,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
+    private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
 
   // ****************************************************
@@ -42,10 +57,25 @@ export class UserService {
   }
 
   public async createEmployee(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
+    const { applicationAccess, ...userData } = createUserDto;
+
+    // 1. create user and send invite
+    const user = await this.create({
+      ...userData,
       role: Role.EMPLOYEE,
     });
+
+    if (applicationAccess?.length === 0) {
+      return user;
+    }
+
+    await this.assignApplications(
+      applicationAccess,
+      user.id,
+      userData.organizationId,
+    );
+
+    return user;
   }
 
   public async getById(
@@ -67,8 +97,12 @@ export class UserService {
     return user;
   }
 
-  public async findOne(options: FindOneOptions): Promise<User> {
+  public async findOne(options: FindOneOptions<User>): Promise<User> {
     return this.userRepository.get(options);
+  }
+
+  public async findMany(options: FindManyOptions<User>): Promise<User[]> {
+    return this.userRepository.getMany(options);
   }
 
   public async updateById(
@@ -77,14 +111,32 @@ export class UserService {
     organizationId?: number,
   ): Promise<User> {
     try {
-      // 1. Chekc if the user exists
+      const { applicationAccess, ...userData } = payload;
+
+      // 1. Check if the user exists
       const user = await this.getById(id, organizationId);
 
       // 2. Update cognito user data
-      await this.cognitoService.updateUser(user.email, payload);
+      await this.cognitoService.updateUser(user.email, {
+        phone: user.phone,
+        name: user.name,
+        ...userData,
+      });
 
-      // 3. Update db user data
-      return this.update(id, payload);
+      // 3. Remove current user applications
+      await this.userOngApplicationService.remove({ userId: id });
+
+      if (applicationAccess?.length > 0) {
+        // 4. assign applications
+        await this.assignApplications(
+          applicationAccess,
+          user.id,
+          user.organizationId,
+        );
+      }
+
+      // 5. Update db user data
+      return this.update(id, userData);
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -97,6 +149,13 @@ export class UserService {
         case USER_ERRORS.GET.errorCode: {
           throw new BadRequestException({
             ...USER_ERRORS.GET,
+            error: err,
+          });
+        }
+        // 2. USR_011: Error whil granting access to application
+        case USER_ERRORS.ACCESS.errorCode: {
+          throw new BadRequestException({
+            ...USER_ERRORS.ACCESS,
             error: err,
           });
         }
@@ -135,6 +194,73 @@ export class UserService {
       where: { cognitoId },
       relations: ['organization'],
     });
+  }
+
+  async getInvitedUsers(
+    options: Partial<BaseFilterDto>,
+    organizationId?: number,
+  ): Promise<User[]> {
+    const { search, start, end } = options;
+    const config = INVITE_FILTERS_CONFIG;
+    const data = await this.cognitoService.getCognitoUsers(
+      CognitoUserStatus.FORCE_CHANGE_PASSWORD,
+    );
+
+    const emails: string[] = data.map((item: UserType) => {
+      return item.Attributes.find((attr) => attr.Name === 'email').Value;
+    });
+
+    // filters (and where)
+    const orWhereQuery = [];
+    const andWhereQuery: any = {};
+
+    // handle range
+    if (config.rangeColumn && start && end) {
+      andWhereQuery[config.rangeColumn] = Between(
+        format(
+          typeof start === 'string' ? new Date(start) : start,
+          'yyyy-MM-dd HH:MM:SS',
+        ),
+        format(
+          typeof end === 'string' ? new Date(end) : end,
+          'yyyy-MM-dd HH:MM:SS',
+        ),
+      );
+    }
+
+    // search query
+    if (search) {
+      const where = config.searchableColumns.map((column: string) => ({
+        ...andWhereQuery,
+        [column]: ILike(`%${search}%`),
+      }));
+      orWhereQuery.push(...where);
+    } else {
+      if (Object.keys(andWhereQuery).length > 0)
+        orWhereQuery.push(andWhereQuery);
+    }
+
+    // full query
+    let query: FindManyOptions<User> = {
+      select: config.selectColumns,
+      relations: config.relations,
+    };
+
+    if (orWhereQuery.length > 0) {
+      query = {
+        ...query,
+        where: orWhereQuery,
+      };
+    }
+
+    const response = await this.findMany({
+      where: organizationId
+        ? { organizationId, email: In(emails) }
+        : { email: In(emails) },
+      ...query,
+    });
+
+    return response;
   }
 
   async remove(user: User): Promise<string> {
@@ -213,6 +339,13 @@ export class UserService {
     return { updated, failed };
   }
 
+  async resendUserInvite(userId: number): Promise<void> {
+    const user = await this.getById(userId);
+    await this.cognitoService.resendInvite(user.email);
+
+    return;
+  }
+
   // ****************************************************
   // ***************** PRIVATE METHODS ******************
   // ****************************************************
@@ -255,8 +388,8 @@ export class UserService {
             error: err,
           });
         }
-        // 2. USR_008: There is already a user with the same email address
-        case USER_ERRORS.CREATE_ALREADY_EXISTS.errorCode: {
+        // 2. USR_011: Error on assigning applications
+        case USER_ERRORS.ACCESS.errorCode: {
           throw error;
         }
         // 3. USR_001: Something unexpected happened
@@ -267,6 +400,36 @@ export class UserService {
           });
         }
       }
+    }
+  }
+
+  private async assignApplications(
+    applicationAccess: Access[],
+    userId: number,
+    organizationId: number,
+  ) {
+    // 2. grant access to applications
+    try {
+      const valuesToInsert = applicationAccess.map(
+        ({ ongApplicationId, status }) => ({
+          ongApplicationId,
+          organizationId,
+          userId,
+          status,
+        }),
+      );
+
+      await this.userOngApplicationService.createMany(valuesToInsert);
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...USER_ERRORS.ACCESS,
+      });
+      const err = error?.response;
+      throw new BadRequestException({
+        ...USER_ERRORS.ACCESS,
+        error: err,
+      });
     }
   }
 }

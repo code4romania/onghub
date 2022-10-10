@@ -5,6 +5,7 @@ import {
   validateSync,
   IsString,
   IsOptional,
+  Length,
 } from 'class-validator';
 
 export enum Environment {
@@ -67,6 +68,13 @@ class EnvironmentVariables {
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
   AWS_S3_BUCKET_NAME: string;
+
+  @IsString()
+  MAIL_FROM: string;
+
+  @IsString()
+  @Length(32)
+  ENCRYPTION_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {

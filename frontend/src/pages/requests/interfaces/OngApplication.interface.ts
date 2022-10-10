@@ -6,6 +6,12 @@ export enum OngApplicationStatus {
   PENDING = 'pending',
   RESTRICTED = 'restricted',
   DISABLED = 'disabled',
+  PENDING_REMOVAL = 'pending-removal',
+}
+
+export enum UserOngApplicationStatus {
+  ACTIVE = 'active',
+  RESTRICTED = 'restricted',
 }
 
 export interface OngApplication {

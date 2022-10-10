@@ -1,5 +1,7 @@
+import { create } from 'domain';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import i18n from '../../../common/config/i18n';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
 
 export interface IProgressStep {
@@ -15,28 +17,41 @@ export enum PROGRESS_STEP_TYPE {
   COMPLETE = 'complete',
 }
 
+const translations = {
+  steps: {
+    first: i18n.t('organization:create.steps.first'),
+    second: i18n.t('organization:create.steps.second'),
+    third: i18n.t('organization:create.steps.third'),
+    fourth: i18n.t('organization:create.steps.fourth'),
+  },
+  account: i18n.t('organization:create.steps.account'),
+  general: i18n.t('organization:create.steps.general'),
+  activity: i18n.t('organization:create.steps.activity'),
+  legal: i18n.t('organization:create.steps.legal'),
+};
+
 const steps_seed: IProgressStep[] = [
   {
-    id: 'Pasul 1',
-    name: 'Date cont',
+    id: translations.steps.first,
+    name: translations.account,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`,
     status: PROGRESS_STEP_TYPE.CURRENT,
   },
   {
-    id: 'Pasul 2',
-    name: 'Date generale',
+    id: translations.steps.second,
+    name: translations.general,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`,
     status: PROGRESS_STEP_TYPE.UPCOMING,
   },
   {
-    id: 'Pasul 3',
-    name: 'Activitate',
+    id: translations.steps.third,
+    name: translations.activity,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`,
     status: PROGRESS_STEP_TYPE.UPCOMING,
   },
   {
-    id: 'Pasul 4',
-    name: 'Informatii legale',
+    id: translations.steps.fourth,
+    name: translations.legal,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`,
     status: PROGRESS_STEP_TYPE.UPCOMING,
   },

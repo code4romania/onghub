@@ -1,4 +1,19 @@
 import { PASSWORD_REGEX } from '../../common/helpers/format.helper';
+import i18n from '../../common/config/i18n';
+
+const translations = {
+  old: {
+    required: i18n.t('account:config.old.required'),
+    invalid: i18n.t('account:config.old.invalid'),
+    label: i18n.t('account:config.old.label'),
+  },
+  new: {
+    required: i18n.t('account:config.new.required'),
+    invalid: i18n.t('account:config.new.invalid'),
+    label: i18n.t('account:config.new.label'),
+  },
+  match: i18n.t('account:config.match'),
+};
 
 export const AccountConfig: Record<string, any> = {
   oldPassword: {
@@ -6,16 +21,16 @@ export const AccountConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Old password is required.',
+        message: translations.old.required,
       },
       pattern: {
         value: PASSWORD_REGEX,
-        message: 'Password is invalid',
+        message: translations.old.invalid,
       },
     },
     config: {
       type: 'password',
-      label: 'Parola curenta*',
+      label: translations.old.label,
       helperText: '',
       placeholder: '',
     },
@@ -25,17 +40,16 @@ export const AccountConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'New password is required.',
+        message: translations.new.required,
       },
       pattern: {
         value: PASSWORD_REGEX,
-        message:
-          'Password is invalid. It must have at least 8 characters, a special character (?, = *, etc.), a lowercase letter, an uppercase letter, and a number.',
+        message: translations.new.invalid,
       },
     },
     config: {
       type: 'password',
-      label: 'Parola noua*',
+      label: translations.new.label,
       helperText: '',
       placeholder: '',
     },
@@ -45,17 +59,16 @@ export const AccountConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'New password is required.',
+        message: translations.new.required,
       },
       pattern: {
         value: PASSWORD_REGEX,
-        message:
-          'Password is invalid. It must have at least 8 characters, a special character (?, = *, etc.), a lowercase letter, an uppercase letter, and a number.',
+        message: translations.new.invalid,
       },
     },
     config: {
       type: 'password',
-      label: 'Confirma Parola noua*',
+      label: translations.match,
       helperText: '',
       placeholder: '',
     },

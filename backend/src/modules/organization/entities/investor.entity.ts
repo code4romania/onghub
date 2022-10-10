@@ -5,7 +5,7 @@ import { OrganizationReport } from './organization-report.entity';
 
 @Entity('investor')
 export class Investor extends BaseEntity {
-  @Column({ type: 'integer', name: 'year', default: new Date().getFullYear() })
+  @Column({ type: 'integer', name: 'year', nullable: false })
   year: number;
 
   @Column({
@@ -30,6 +30,7 @@ export class Investor extends BaseEntity {
   @ManyToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.investors,
+    { onDelete: 'CASCADE' },
   )
   organizationReport: OrganizationReport;
 }

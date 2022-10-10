@@ -23,6 +23,10 @@ import { IUser } from '../../interfaces/User.interface';
 import { UserListTableHeaders } from './table-headers/UserListTable.headers';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
+import { useAuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../enums/UserRole.enum';
+import * as XLSX from 'xlsx';
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -35,8 +39,11 @@ const UserList = () => {
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
   const [range, setRange] = useState<Date[]>([]);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
+  const { role } = useAuthContext();
 
   const { users } = useUser();
+
+  const { t } = useTranslation(['user', 'common']);
 
   const { isLoading, error, refetch } = useUsersQuery(
     rowsPerPage as number,
@@ -65,13 +72,13 @@ const UserList = () => {
   }, [selectedUser]);
 
   useEffect(() => {
-    if (error) useErrorToast('Error while loading the users');
+    if (error) useErrorToast(t('list.load_error'));
 
-    if (restrictUserAccessMutation.error) useErrorToast('Error while restricting accees');
+    if (restrictUserAccessMutation.error) useErrorToast(t('list.restrict_error'));
 
-    if (restoreUserAccessMutation.error) useErrorToast('Error while restoring accees');
+    if (restoreUserAccessMutation.error) useErrorToast(t('list.restore_error'));
 
-    if (removeUserMutation.error) useErrorToast('Error while removing user');
+    if (removeUserMutation.error) useErrorToast(t('list.remove_error'));
   }, [
     error,
     restrictUserAccessMutation.error,
@@ -82,31 +89,36 @@ const UserList = () => {
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
       {
-        name: 'Editeaza',
-        icon: PencilIcon,
-        onClick: onEdit,
-      },
-      {
-        name: 'Restrictioneaza temporar',
+        name: t('list.restrict'),
         icon: BanIcon,
         onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
 
+    // For now onlt admin can edit an user
+    if (role === UserRole.ADMIN) {
+      activeUserMenuItems.unshift({
+        name: t('edit', { ns: 'common' }),
+        icon: PencilIcon,
+        onClick: onEdit,
+        type: PopoverMenuRowType.INFO,
+      });
+    }
+
     const restrictedUserMenuItems = [
       {
-        name: 'Reda accesul',
+        name: t('list.give_access'),
         icon: RefreshIcon,
         onClick: onRestoreAccess,
       },
       {
-        name: 'Editeaza',
+        name: t('edit', { ns: 'common' }),
         icon: PencilIcon,
         onClick: onEdit,
       },
       {
-        name: 'Elimina definitiv',
+        name: t('list.permanent'),
         icon: TrashIcon,
         onClick: setSelectedUser,
         type: PopoverMenuRowType.REMOVE,
@@ -154,7 +166,7 @@ const UserList = () => {
   const onRestoreAccess = (row: IUser) => {
     restoreUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
-        useSuccessToast(`Access restored for user ${row.name}`);
+        useSuccessToast(`${t('list.restore_success')} ${row.name}`);
         refetch();
       },
     });
@@ -168,7 +180,7 @@ const UserList = () => {
     if (selectedUser) {
       removeUserMutation.mutate(selectedUser.id, {
         onSuccess: () => {
-          useSuccessToast(`Successfully removed user with id ${selectedUser.name}`);
+          useSuccessToast(`${t('list.remove_success')} ${selectedUser.name}`);
           refetch();
         },
         onSettled: () => {
@@ -182,7 +194,7 @@ const UserList = () => {
   const onRestrictAccess = (row: IUser) => {
     restrictUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
-        useSuccessToast(`Access restricted for user ${row.name}`);
+        useSuccessToast(`${t('list.restrict_success')} ${row.name}`);
         refetch();
       },
     });
@@ -216,6 +228,25 @@ const UserList = () => {
     setSelectedUser(null);
   };
 
+  /**
+   * ACTIONS
+   */
+  const onExport = () => {
+    const userData = users.items.map((item) => {
+      return {
+        [t('list_header.name')]: item.name,
+        [t('list_header.email')]: item.email,
+        [t('list_header.phone')]: item.phone,
+        [t('list_header.status')]: item.status,
+        [t('list_header.created')]: item.createdOn?.slice(0, 10),
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(userData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+    XLSX.writeFile(wb, 'users.xlsx');
+  };
+
   return (
     <div>
       <DataTableFilters
@@ -226,7 +257,7 @@ const UserList = () => {
         <div className="flex gap-x-6">
           <div className="basis-1/4">
             <DateRangePicker
-              label="Data adaugarii"
+              label={t('list.date')}
               defaultValue={range.length > 0 ? range : undefined}
               onChange={onDateChange}
             />
@@ -234,7 +265,7 @@ const UserList = () => {
           <div className="basis-1/4">
             <Select
               config={{
-                label: 'Status',
+                label: t('status', { ns: 'common' }),
                 collection: UserStatusOptions,
                 displayedAttribute: 'label',
               }}
@@ -246,11 +277,10 @@ const UserList = () => {
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
         <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">Utilizatori</p>
-          {/* Uncomment once download will be implemented */}
-          {/* <button type="button" className="edit-button">
+          <p className="text-gray-800 font-titilliumBold text-xl">{t('title')}</p>
+          <button type="button" className="edit-button" onClick={onExport}>
             Descarca Tabel
-          </button> */}
+          </button>
         </div>
         <div className="pb-5 px-10">
           <DataTableComponent
@@ -269,11 +299,10 @@ const UserList = () => {
         </div>
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
-            title="Ești sigur că dorești stergerea utilizatorului?"
-            description="Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile
-          puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
-            closeBtnLabel="Inapoi"
-            confirmBtnLabel="Sterge"
+            title={t('list.confirmation')}
+            description={t('list.description')}
+            closeBtnLabel={t('back', { ns: 'common' })}
+            confirmBtnLabel={t('delete', { ns: 'common' })}
             onClose={onCancelUserRemoval}
             onConfirm={onDelete}
           />

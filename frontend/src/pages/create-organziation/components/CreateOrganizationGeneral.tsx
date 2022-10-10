@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import ContactForm from '../../../components/Contact/Contact';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -9,9 +11,11 @@ import SectionHeader from '../../../components/section-header/SectionHeader';
 import Select from '../../../components/Select/Select';
 import Textarea from '../../../components/Textarea/Textarea';
 import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { useNomenclature } from '../../../store/selectors';
 import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationErrors.constant';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -22,8 +26,15 @@ const CreateOrganizationGeneral = () => {
 
   const [organization, setOrganization] = useOutletContext<any>();
 
+  const { t } = useTranslation(['general', 'common']);
+
   // queries
   useCitiesQuery(county?.id);
+  const {
+    mutateAsync: validationMutate,
+    error: validationError,
+    isLoading: validationLoading,
+  } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
 
@@ -50,7 +61,7 @@ const CreateOrganizationGeneral = () => {
   }, [organization]);
 
   useEffect(() => {
-    if (county && !readonly) {
+    if (county && !readonly && !city) {
       setValue('city', null);
     }
   }, [cities]);
@@ -64,23 +75,32 @@ const CreateOrganizationGeneral = () => {
     }
   };
 
-  const handleSave = (data: any) => {
-    const contact = {
-      ...data.contact,
-      fullName: data.contact_fullName,
-      phone: data.contact_phone,
-      email: data.contact_email,
-    };
+  const handleSave = async (data: any) => {
+    try {
+      const contact = {
+        ...data.contact,
+        fullName: data.contact_fullName,
+        phone: data.contact_phone,
+        email: data.contact_email,
+      };
+  
+      const organizationGeneral = {
+        ...data,
+        contact,
+        logo: file,
+      };
 
-    const organizationGeneral = {
-      ...data,
-      contact,
-      logo: file,
-    };
-
-    setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
-
-    navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
+      await validationMutate({ organization: {general: organizationGeneral }}); // Throws errors
+  
+      setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
+  
+      navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
+    } catch (err: any) {
+      const response = err.response?.data?.message;
+      if (Array.isArray(response)) {
+        response.forEach((r: any, index: number) => useErrorToast(CREATE_ORGANIZATION_ERRORS[r.response.errorCode], index.toString()));
+      }
+    }
   };
 
   return (
@@ -88,10 +108,7 @@ const CreateOrganizationGeneral = () => {
       <div className="w-full " />
       <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader
-            title="Date generale"
-            subTitle="This information will be displayed publicly so be careful what you share"
-          />
+          <SectionHeader title={t('title')} subTitle={t('information', { ns: 'common' })} />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller
@@ -108,6 +125,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.name.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-name',
                       }}
                       readonly={readonly}
                     />
@@ -128,6 +146,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.alias.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-alias',
                       }}
                       readonly={readonly}
                     />
@@ -139,6 +158,7 @@ const CreateOrganizationGeneral = () => {
                 readonly={readonly}
                 errors={errors[OrganizationGeneralConfig.type.key]}
                 config={OrganizationGeneralConfig.type}
+                id="create-organization-general__type"
               />
               <Controller
                 key={OrganizationGeneralConfig.email.key}
@@ -154,6 +174,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.email.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-email',
                       }}
                       readonly={readonly}
                     />
@@ -174,6 +195,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.phone.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-phone',
                       }}
                       readonly={readonly}
                     />
@@ -189,6 +211,7 @@ const CreateOrganizationGeneral = () => {
                   return (
                     <Select
                       config={{
+                        id: 'create-organization-general__year-created',
                         ...OrganizationGeneralConfig.yearCreated.config,
                       }}
                       selected={value}
@@ -212,6 +235,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.cui.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-cui',
                       }}
                       readonly={readonly}
                     />
@@ -232,6 +256,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__org-raf',
                       }}
                       readonly={readonly}
                     />
@@ -248,6 +273,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general__county',
                           ...OrganizationGeneralConfig.county.config,
                           collection: counties,
                           displayedAttribute: 'name',
@@ -272,6 +298,7 @@ const CreateOrganizationGeneral = () => {
                     return (
                       <Select
                         config={{
+                          id: 'create-organization-general__city',
                           ...OrganizationGeneralConfig.city.config,
                           collection: cities || [],
                           displayedAttribute: 'name',
@@ -299,6 +326,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__short-description',
                       }}
                       readonly={readonly}
                     />
@@ -319,6 +347,7 @@ const CreateOrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.description.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'create-organization-general__description',
                       }}
                       readonly={readonly}
                     />
@@ -329,7 +358,7 @@ const CreateOrganizationGeneral = () => {
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
                 <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
-                  Logo organizatie
+                  {t('logo.name')}
                 </label>
                 <div className="mt-1 flex items-center">
                   <span className="h-20 w-20 rounded-full overflow-hidden bg-gray-100">
@@ -348,15 +377,15 @@ const CreateOrganizationGeneral = () => {
                   {!readonly && (
                     <>
                       <label
-                        htmlFor="uploadPhoto"
+                        htmlFor="create-organization-general__logo-upload"
                         className="cursor-pointer ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       >
-                        Incarca logo
+                        {t('logo.upload')}
                       </label>
                       <input
                         className="h-0 w-0"
                         name="uploadPhoto"
-                        id="uploadPhoto"
+                        id="create-organization-general__logo-upload"
                         type="file"
                         accept="image/png, image/jpeg, image/svg"
                         onChange={onChangeFile}
@@ -365,17 +394,15 @@ const CreateOrganizationGeneral = () => {
                   )}
                 </div>
                 <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                  {t('logo.description')}
                 </p>
               </div>
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">
-                Persoana de contact in relatia cu ONGHub
-              </span>
+              <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.
+                {t('contact.description')}
               </p>
               <ContactForm
                 control={control}
@@ -386,12 +413,13 @@ const CreateOrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
+                id="create-organization-general"
               />
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Comunicare si social media</span>
+              <span className="text-xl font-bold text-gray-900">{t('social')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'common' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller
@@ -408,6 +436,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.website.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__website',
                         }}
                         readonly={readonly}
                       />
@@ -428,6 +457,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.facebook.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__facebook',
                         }}
                         readonly={readonly}
                       />
@@ -448,6 +478,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.instagram.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__instagram',
                         }}
                         readonly={readonly}
                       />
@@ -468,6 +499,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.twitter.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__twitter',
                         }}
                         readonly={readonly}
                       />
@@ -488,6 +520,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.linkedin.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__linkedin',
                         }}
                         readonly={readonly}
                       />
@@ -508,6 +541,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.tiktok.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__tiktok',
                         }}
                         readonly={readonly}
                       />
@@ -517,9 +551,9 @@ const CreateOrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">Fundraising</span>
+              <span className="text-xl font-bold text-gray-900">{t('fundraising')}</span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                This information will be displayed publicly so be careful what you share.
+                {t('information', { ns: 'common' })}
               </p>
               <div className="flex flex-col gap-4">
                 <Controller
@@ -536,6 +570,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.donationWebsite.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__donation-website',
                         }}
                         readonly={readonly}
                       />
@@ -556,6 +591,7 @@ const CreateOrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.redirectLink.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'create-organization-general__redirect-link',
                         }}
                         readonly={readonly}
                       />
@@ -577,6 +613,7 @@ const CreateOrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationSMS.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'create-organization-general__donation-sms',
                           }}
                           readonly={readonly}
                         />
@@ -597,6 +634,7 @@ const CreateOrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationKeyword.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'create-organization-general__donation-keyword',
                           }}
                           readonly={readonly}
                         />
@@ -610,18 +648,20 @@ const CreateOrganizationGeneral = () => {
         </div>
         <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
           <button
+            id="create-organization-general__button-next"
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
             onClick={handleSubmit(handleSave)}
           >
-            Mai departe
+            {t('next', { ns: 'common' })}
           </button>
           <button
+            id="create-organization-general__button-back"
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}
           >
-            Inapoi
+            {t('back', { ns: 'common' })}
           </button>
         </div>
       </div>
@@ -630,3 +670,4 @@ const CreateOrganizationGeneral = () => {
 };
 
 export default CreateOrganizationGeneral;
+

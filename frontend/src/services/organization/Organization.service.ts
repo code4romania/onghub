@@ -3,6 +3,10 @@ import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import API from '../API';
+import {
+  ApplicationWithOngStatus,
+  OrganizationApplicationRequest,
+} from '../application/interfaces/Application.interface';
 
 /**EMPLOYEE && ADMIN */
 export const getOrganizationByProfile = (): Promise<any> => {
@@ -39,6 +43,10 @@ export const deleteInvestorsByProfile = (investorId: number): Promise<any> => {
   return API.delete(`/organization-profile/investors/${investorId}`).then((res) => res.data);
 };
 
+export const restrictOrganizationRequest = (): Promise<any> => {
+  return API.post(`/organization-profile/close`).then((res) => res.data);
+};
+
 /**
  * SUPER ADMIN
  */
@@ -71,8 +79,18 @@ export const getOrganizations = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
-export const getOrganization = (id: number): Promise<any> => {
+export const getOrganization = (id: string): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
+};
+
+export const getOrganizationApplications = (id: string): Promise<ApplicationWithOngStatus[]> => {
+  return API.get(`/application/organization/${id}`).then((res) => res.data);
+};
+
+export const getOrganizationApplicationRequests = (
+  id: string,
+): Promise<OrganizationApplicationRequest[]> => {
+  return API.get(`/application/request/organization/${id}`).then((res) => res.data);
 };
 
 export const patchOrganization = (id: number, update: any): Promise<any> => {
@@ -103,4 +121,12 @@ export const deletePartners = (id: number, partnerId: number): Promise<any> => {
 
 export const deleteInvestors = (id: number, investorId: number): Promise<any> => {
   return API.delete(`/organization/${id}/investors/${investorId}`).then((res) => res.data);
+};
+
+export const restrictOrganization = (id: number): Promise<any> => {
+  return API.patch(`/organization/${id}/restrict`).then((res) => res.data);
+};
+
+export const activateOrganization = (id: number): Promise<any> => {
+  return API.patch(`organization/${id}/activate`).then((res) => res.data);
 };

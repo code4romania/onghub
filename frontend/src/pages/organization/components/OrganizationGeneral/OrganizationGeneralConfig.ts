@@ -10,6 +10,127 @@ import {
 import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/OrganizationType.enum';
+import i18n from '../../../../common/config/i18n';
+
+const translations = {
+  url: i18n.t('common:url'),
+  name: {
+    required: i18n.t('general:config.name.required'),
+    max: i18n.t('general:config.name.max'),
+    min: i18n.t('general:config.name.min'),
+    invalid: i18n.t('general:config.name.invalid'),
+    label: i18n.t('general:config.name.label'),
+    helper: i18n.t('general:config.name.helper'),
+  },
+  alias: {
+    required: i18n.t('general:config.alias.required'),
+    max: i18n.t('general:config.alias.max'),
+    min: i18n.t('general:config.alias.min'),
+    invalid: i18n.t('general:config.alias.invalid'),
+    label: i18n.t('general:config.alias.label'),
+  },
+  type: {
+    label: i18n.t('general:config.type.label'),
+    required: i18n.t('general:config.type.required'),
+    helper: i18n.t('general:config.type.helper'),
+  },
+  email: {
+    required: i18n.t('general:config.email.required'),
+    max: i18n.t('general:config.email.max'),
+    invalid: i18n.t('general:config.email.invalid'),
+    label: i18n.t('general:config.email.label'),
+    helper: i18n.t('general:config.email.helper'),
+  },
+  phone: {
+    required: i18n.t('general:config.phone.required'),
+    min: i18n.t('general:config.phone.min'),
+    max: i18n.t('general:config.phone.max'),
+    invalid: i18n.t('general:config.phone.invalid'),
+    label: i18n.t('general:config.phone.label'),
+    helper: i18n.t('general:config.phone.helper'),
+  },
+  year: {
+    required: i18n.t('general:config.year.required'),
+    max: i18n.t('general:config.year.max'),
+    label: i18n.t('general:config.year.label'),
+  },
+  cui: {
+    required: i18n.t('general:config.cui.required'),
+    max: i18n.t('general:config.cui.max'),
+    min: i18n.t('general:config.cui.min'),
+    invalid: i18n.t('general:config.cui.invalid'),
+    label: i18n.t('general:config.cui.label'),
+  },
+  raf: {
+    required: i18n.t('general:config.raf.required'),
+    max: i18n.t('general:config.raf.max'),
+    min: i18n.t('general:config.raf.min'),
+    invalid: i18n.t('general:config.raf.invalid'),
+    label: i18n.t('general:config.raf.invalid'),
+  },
+  city: {
+    required: i18n.t('general:config.city.required'),
+    label: i18n.t('general:config.city.label'),
+  },
+  county: {
+    required: i18n.t('general:config.county.required'),
+    label: i18n.t('general:config.county.label'),
+  },
+  short: {
+    required: i18n.t('general:config.short.required'),
+    max: i18n.t('general:config.short.max'),
+    min: i18n.t('general:config.short.min'),
+    label: i18n.t('general:config.short.label'),
+    helper: i18n.t('general:config.short.helper'),
+  },
+  long: {
+    required: i18n.t('general:config.long.required'),
+    max: i18n.t('general:config.long.max'),
+    min: i18n.t('general:config.long.min'),
+    label: i18n.t('general:config.long.label'),
+    helper: i18n.t('general:config.long.helper'),
+  },
+  contact: {
+    required: i18n.t('general:config.contact.required'),
+    max: i18n.t('general:config.contact.max'),
+    min: i18n.t('general:config.contact.min'),
+    invalid: i18n.t('general:config.contact.invalid'),
+    label: i18n.t('general:config.contact.label'),
+  },
+  contact_email: {
+    required: i18n.t('general:config.contact_email.required'),
+    max: i18n.t('general:config.contact_email.max'),
+    invalid: i18n.t('general:config.contact_email.invalid'),
+    label: i18n.t('general:config.contact_email.label'),
+  },
+  contact_phone: {
+    required: i18n.t('general:config.contact_phone.required'),
+    max: i18n.t('general:config.contact_phone.max'),
+    min: i18n.t('general:config.contact_phone.min'),
+    invalid: i18n.t('general:config.contact_phone.invalid'),
+    label: i18n.t('general:config.contact_phone.label'),
+  },
+  website: {
+    required: i18n.t('general:config.website.required'),
+    invalid: i18n.t('general:config.website.invalid'),
+    label: i18n.t('general:config.website.label'),
+  },
+  facebook: i18n.t('general:config.facebook'),
+  donation: i18n.t('general:config.donation'),
+  redirect: i18n.t('general:config.redirect'),
+  sms: {
+    length: i18n.t('general:config.sms.length'),
+    invalid: i18n.t('general:config.sms.invalid'),
+    label: i18n.t('general:config.sms.label'),
+    helper: i18n.t('general:config.sms.helper'),
+  },
+  keyword: {
+    max: i18n.t('general:config.keyword.max'),
+    invalid: i18n.t('general:config.keyword.invalid'),
+    label: i18n.t('general:config.keyword.label'),
+    helper: i18n.t('general:config.keyword.helper'),
+  },
+};
 
 export const OrganizationGeneralConfig: Record<string, any> = {
   name: {
@@ -17,25 +138,25 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Organization Name is required.',
+        message: translations.name.required,
       },
       maxLength: {
         value: 100,
-        message: 'Organization Name has a maximum length of 100 characters.',
+        message: translations.name.max,
       },
       minLength: {
         value: 3,
-        message: 'Organization Name has a minimum length of 3 characters.',
+        message: translations.name.min,
       },
       pattern: {
         value: ALPHANUMERIC_REGEX,
-        message: 'Invalid format',
+        message: translations.name.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Denumirea organizatiei*',
-      helperText: 'Denumirea oficiala, conform cu Registrul ONG',
+      label: translations.name.label,
+      helperText: translations.name.helper,
       placeholder: '',
     },
   },
@@ -44,53 +165,56 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Organization Alias is required.',
+        message: translations.alias.required,
       },
       maxLength: {
         value: 100,
-        message: 'Organization Name has a maximum length of 100 characters.',
+        message: translations.alias.max,
       },
       minLength: {
         value: 3,
-        message: 'Organization Name has a minimum length of 3 characters.',
+        message: translations.alias.min,
       },
       pattern: {
         value: ALPHANUMERIC_REGEX,
-        message: 'Invalid format',
+        message: translations.alias.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Alias organizatie*',
+      label: translations.alias.label,
       helperText: '',
       placeholder: '',
     },
   },
   type: {
     key: 'type',
-    label: 'Tip organizatie*',
+    label: translations.type.label,
     rules: {
       required: {
         value: true,
-        message: 'Organization Type is required.',
+        message: translations.type.required,
       },
     },
-    helperText: 'De exemplu lorem impsum. Help text',
+    helperText: translations.type.helper,
     radioConfigs: [
       {
         label: OrganizationTypeNaming[OrganizationTypeEnum.ASSOCIATION],
         name: 'type',
         value: OrganizationTypeEnum.ASSOCIATION,
+        id: 'org-type__association',
       },
       {
         label: OrganizationTypeNaming[OrganizationTypeEnum.FOUNDATION],
         name: 'type',
         value: OrganizationTypeEnum.FOUNDATION,
+        id: 'org-type__foundation',
       },
       {
         label: OrganizationTypeNaming[OrganizationTypeEnum.FEDERATION],
         name: 'type',
         value: OrganizationTypeEnum.FEDERATION,
+        id: 'org-type__federation',
       },
     ],
   },
@@ -99,21 +223,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Email is required.',
+        message: translations.email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Email has a maximum length of 50 characters.',
+        message: translations.email.max,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'E-mail contact organizatie*',
-      helperText: 'Exemplu: contact@organizatie.ro',
+      label: translations.email.label,
+      helperText: translations.email.helper,
       placeholder: '',
     },
   },
@@ -122,25 +246,25 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Phone is required.',
+        message: translations.phone.required,
       },
       minLength: {
         value: 10,
-        message: 'Phone has a minimum length of 10 characters.',
+        message: translations.phone.min,
       },
       maxLength: {
         value: 15,
-        message: 'Phone has a maximum length of 15 characters.',
+        message: translations.phone.max,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon contact organizatie*',
-      helperText: 'Exemplu: numarul telefonului de la sediu',
+      label: translations.phone.label,
+      helperText: translations.phone.helper,
       placeholder: '',
     },
   },
@@ -149,16 +273,16 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Year of creation is required.',
+        message: translations.year.required,
       },
       maxLength: {
         value: 4,
-        message: 'Year of creation has a maximum length of 4 characters.',
+        message: translations.year.max,
       },
     },
     config: {
       type: 'text',
-      label: 'Anul infiintarii*',
+      label: translations.year.label,
       collection: rangeOfYears(1800).sort((a, b) => b - a),
       displayedAttribute: '',
     },
@@ -168,24 +292,24 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Organization CUI is required.',
+        message: translations.cui.required,
       },
       maxLength: {
         value: 12,
-        message: 'Organization CUI has a maximum length of 12 characters.',
+        message: translations.cui.max,
       },
       minLength: {
         value: 2,
-        message: 'Organization CUI has a minimum length of 2 characters.',
+        message: translations.cui.min,
       },
       pattern: {
         value: CUI_REGEX,
-        message: 'CUI format is invalid.',
+        message: translations.cui.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'CUI/CIF*',
+      label: translations.cui.label,
       helperText: '',
       placeholder: '',
     },
@@ -195,26 +319,24 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Organization Register of associations and Foundations Number is required.',
+        message: translations.raf.required,
       },
       maxLength: {
         value: 20,
-        message:
-          'Organization Register of associations and Foundations Number has a maximum length of 20 characters.',
+        message: translations.raf.max,
       },
       minLength: {
         value: 8,
-        message:
-          'Organization Register of associations and Foundations Number has a minimum length of 8 characters.',
+        message: translations.raf.min,
       },
       pattern: {
         value: RAF_NUMBER_REGEX,
-        message: 'RAF format is invalid',
+        message: translations.raf.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nr. Registrul Asociațiilor și Fundațiilor*',
+      label: translations.raf.label,
       helperText: '',
       placeholder: '',
     },
@@ -224,12 +346,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'City is required.',
+        message: translations.city.required,
       },
     },
     config: {
       type: 'text',
-      label: 'Oras*',
+      label: translations.city.label,
       collection: [
         { id: 1, year: 2019 },
         { id: 2, year: 2020 },
@@ -243,12 +365,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'County is required.',
+        message: translations.county.required,
       },
     },
     config: {
       type: 'text',
-      label: 'Judet*',
+      label: translations.county.label,
       displayedAttribute: 'year',
     },
   },
@@ -257,22 +379,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Short description is required.',
+        message: translations.short.required,
       },
       maxLength: {
         value: 250,
-        message: 'Short description has a maximum length of 250 characters.',
+        message: translations.short.max,
       },
       minLength: {
         value: 50,
-        message: 'Short description has a minimum length of 50 characters.',
+        message: translations.short.min,
       },
     },
     config: {
       type: 'text',
-      label: 'Descriere scurta organizatiei*',
-      helperText:
-        'Descrie organizatia ta in 200-250 caractere. Descrierea va fi vizibila in alte aplicatii, dupa caz.',
+      label: translations.short.label,
+      helperText: translations.short.helper,
       placeholder: '',
     },
   },
@@ -281,22 +402,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Description is required.',
+        message: translations.long.required,
       },
       maxLength: {
         value: 700,
-        message: 'Description has a maximum length of 700 characters.',
+        message: translations.long.max,
       },
       minLength: {
         value: 200,
-        message: 'Description has a minimum length of 200 characters.',
+        message: translations.long.min,
       },
     },
     config: {
       type: 'text',
-      label: 'Descriere exstinsa organizatiei*',
-      helperText:
-        'Adauga o descriere cat mai cuprinzatoare a organizatiei tale. Maximum 500 de caractere',
+      label: translations.long.label,
+      helperText: translations.long.helper,
       placeholder: '',
     },
   },
@@ -305,24 +425,24 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Contact Name is required.',
+        message: translations.contact.required,
       },
       maxLength: {
         value: 100,
-        message: 'Contact name has a maximum length of 100 characters.',
+        message: translations.contact.max,
       },
       minLength: {
         value: 5,
-        message: 'Contact Name has a minimum length of 5 characters.',
+        message: translations.contact.min,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Contact name is invalid',
+        message: translations.contact.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Nume si prenume*',
+      label: translations.contact.label,
       helperText: '',
       placeholder: '',
     },
@@ -332,20 +452,20 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Contact Email is required.',
+        message: translations.contact_email.required,
       },
       maxLength: {
         value: 50,
-        message: 'Contact Email has a maximum length of 50 characters.',
+        message: translations.contact_email.max,
       },
       pattern: {
         value: EMAIL_REGEX,
-        message: 'Email format is invalid',
+        message: translations.contact_email.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Email*',
+      label: translations.contact_email.label,
       helperText: '',
       placeholder: '',
     },
@@ -355,24 +475,24 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Contact Phone is required.',
+        message: translations.contact_phone.required,
       },
       maxLength: {
         value: 15,
-        message: 'Contact phone has a maximum length of 15 characters.',
+        message: translations.contact_phone.max,
       },
       minLength: {
         value: 10,
-        message: 'Contact phone has a minimum length of 10 characters.',
+        message: translations.contact_phone.min,
       },
       pattern: {
         value: PHONE_REGEX,
-        message: 'Invalid phone format',
+        message: translations.contact_phone.invalid,
       },
     },
     config: {
       type: 'tel',
-      label: 'Telefon*',
+      label: translations.contact_phone.label,
       helperText: '',
       placeholder: '',
     },
@@ -382,17 +502,17 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Website is required.',
+        message: translations.website.required,
       },
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.website.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Website*',
-      helperText: 'Make your password short and easy to guess. :)',
+      label: translations.website.label,
+      helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
@@ -402,17 +522,17 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: 'Facebook is required.',
+        message: translations.facebook,
       },
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
       label: 'Facebook*',
-      helperText: 'Make your password short and easy to guess. :)',
+      helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
     },
@@ -422,7 +542,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
@@ -438,7 +558,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
@@ -454,7 +574,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
@@ -470,12 +590,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Tiktok',
+      label: 'TikTok',
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -486,12 +606,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Pagina de donatii',
+      label: translations.donation,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -502,12 +622,12 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       pattern: {
         value: URL_REGEX,
-        message: 'URL format must be valid',
+        message: translations.url,
       },
     },
     config: {
       type: 'text',
-      label: 'Link catre contul de Redirectioneaza',
+      label: translations.redirect,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,
@@ -518,21 +638,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       minLength: {
         value: 4,
-        message: 'Length of the Donation SMS must be of maximum 4 characters.',
+        message: translations.sms.length,
       },
       maxLength: {
         value: 4,
-        message: 'Length of the Donation SMS must be of maximum 4 characters.',
+        message: translations.sms.length,
       },
       pattern: {
         value: NUMERIC_REGEX,
-        message: 'Invalid format',
+        message: translations.sms.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Donatii prin SMS',
-      helperText: 'Numarul la care se trimite SMS pentru a dona.',
+      label: translations.sms.label,
+      helperText: translations.sms.helper,
       placeholder: '',
     },
   },
@@ -541,17 +661,17 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     rules: {
       maxLength: {
         value: 10,
-        message: 'Maximum length of the donation keyword is 10 characters.',
+        message: translations.keyword.max,
       },
       pattern: {
         value: NAME_REGEX,
-        message: 'Invalid format',
+        message: translations.keyword.invalid,
       },
     },
     config: {
       type: 'text',
-      label: 'Cuvant cheie SMS',
-      helperText: 'Textul care se trimite prin SMS pentru a dona',
+      label: translations.keyword.label,
+      helperText: translations.keyword.helper,
       placeholder: '',
     },
   },

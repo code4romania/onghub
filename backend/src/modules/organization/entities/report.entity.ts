@@ -24,7 +24,11 @@ export class Report extends BaseEntity {
   })
   numberOfContractors: number;
 
-  @Column({ type: 'integer', name: 'year', default: new Date().getFullYear() })
+  @Column({
+    type: 'integer',
+    name: 'year',
+    nullable: false,
+  })
   year: number;
 
   @Column({
@@ -38,6 +42,7 @@ export class Report extends BaseEntity {
   @ManyToOne(
     () => OrganizationReport,
     (organizationReport) => organizationReport.reports,
+    { onDelete: 'CASCADE' },
   )
   organizationReport: OrganizationReport;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { TextAreaConfig } from './TextareaConfig.interface';
 
-const Textarea = (props: { config: Partial<TextAreaConfig>; readonly: boolean }) => {
+const Textarea = (props: { config: Partial<TextAreaConfig>; readonly?: boolean }) => {
   return (
     <div className="relative w-full">
       {props.config.label && (
@@ -27,6 +27,7 @@ const Textarea = (props: { config: Partial<TextAreaConfig>; readonly: boolean })
             placeholder={props.config.placeholder}
             defaultValue={props.config.defaultValue}
             aria-invalid={props.config.error ? 'true' : 'false'}
+            id={`${props.config.id}__input`}
           ></textarea>
         )}
       </div>
@@ -36,7 +37,7 @@ const Textarea = (props: { config: Partial<TextAreaConfig>; readonly: boolean })
         </p>
       )}
       {props.config.error && (
-        <p className="mt-1 text-sm text-red-600" id="email-error">
+        <p className="mt-1 text-sm text-red-600" id={`${props.config.id}__input-error`}>
           {props.config.error}
         </p>
       )}

@@ -3,6 +3,9 @@ import { UpdateOrganizationFinancialDto } from '../dto/update-organization-finan
 import { OrganizationFinancialRepository } from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import { FinancialType } from '../enums/organization-financial-type.enum';
+import { OrganizationFinancial } from '../entities';
+import { FinancialInformation } from 'src/shared/services/anaf.service';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -37,5 +40,25 @@ export class OrganizationFinancialService {
           ? CompletionStatus.COMPLETED
           : CompletionStatus.NOT_COMPLETED,
     });
+  }
+
+  public generateFinancialReportsData(
+    year: number,
+    financialInformation: FinancialInformation,
+  ): Partial<OrganizationFinancial>[] {
+    return [
+      {
+        type: FinancialType.EXPENSE,
+        year,
+        total: financialInformation?.totalExpense ?? 0,
+        numberOfEmployees: financialInformation?.numberOfEmployees ?? 0,
+      },
+      {
+        type: FinancialType.INCOME,
+        year,
+        total: financialInformation?.totalIncome ?? 0,
+        numberOfEmployees: financialInformation?.numberOfEmployees ?? 0,
+      },
+    ];
   }
 }

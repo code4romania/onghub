@@ -18,25 +18,29 @@ import {
   ApiTooManyRequestsResponse,
   ApiParam,
 } from '@nestjs/swagger';
-import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { Organization } from './entities';
-import { OrganizationService } from './services/organization.service';
+import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { Organization } from '../entities';
+import { OrganizationService } from '../services/organization.service';
 import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
   ORGANIZATION_UPLOAD_SCHEMA,
-} from './constants/open-api.schema';
-import { ExtractUser } from '../user/decorators/user.decorator';
-import { User } from '../user/entities/user.entity';
+} from '../constants/open-api.schema';
+import { ExtractUser } from '../../user/decorators/user.decorator';
+import { User } from '../../user/entities/user.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from '../user/enums/role.enum';
+import { Role } from '../../user/enums/role.enum';
+import { OrganizationRequestService } from '../services/organization-request.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('organization-profile')
 export class OrganizationProfileController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private readonly organizationRequestService: OrganizationRequestService,
+  ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @Get()
@@ -54,6 +58,14 @@ export class OrganizationProfileController {
     return this.organizationService.update(
       user.organizationId,
       updateOrganizationDto,
+    );
+  }
+
+  @Roles(Role.ADMIN)
+  @Post('close')
+  requestClose(@ExtractUser() user: User) {
+    return this.organizationRequestService.sendRestrictRequest(
+      user.organizationId,
     );
   }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
@@ -12,6 +13,7 @@ const Users = () => {
   const location = useLocation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { role } = useAuthContext();
+  const { t } = useTranslation('user');
 
   useEffect(() => {
     // TODO: refactor user tabs to have a function that returns this logic.
@@ -30,11 +32,10 @@ const Users = () => {
 
   return (
     <ContentWrapper
-      title="Utilizatori"
-      subtitle=" Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile
-disponibile."
+      title={t('title')}
+      subtitle={t('subtitle')}
       addButton={{
-        btnLabel: 'Adauga Utilizator',
+        btnLabel: t('add'),
         onBtnClick: () => navigate('/user'),
         visible: role === UserRole.ADMIN,
       }}

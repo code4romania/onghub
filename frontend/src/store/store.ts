@@ -32,12 +32,15 @@ import { organizationRequestsSlice } from './request/OrganizationRequests';
 import { organizationsSlice } from './organization/organizations.slice';
 import {
   Application,
+  ApplicationOrganization,
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../services/application/interfaces/Application.interface';
 import { applicationsSlice } from './application/Application.slice';
 import { applicationRequestsSlice } from './request/ApplicationRequests';
 import { ongApplicationSlice } from './application/OngApplication.slice';
+import { IInvite } from '../pages/users/interfaces/Invite.interface';
+import { invitesSlice } from './user/Invites.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -80,6 +83,11 @@ interface UserState {
   setUsers: (users: PaginatedEntity<IUser>) => void;
 }
 
+interface InviteState {
+  invites: IInvite[];
+  setInvites: (invites: IInvite[]) => void;
+}
+
 interface OrganizationRequestState {
   organizationRequests: PaginatedEntity<IOrganizationRequest>;
   setOrganizationRequests: (organizationRequests: PaginatedEntity<IOrganizationRequest>) => void;
@@ -94,15 +102,18 @@ interface ApplicationRequestState {
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
   setApplications: (applications: PaginatedEntity<Application>) => void;
-  selectedApplication: Application | null;
-  setSelectedApplication: (application: Application) => void;
+  selectedApplication: ApplicationWithOngStatusDetails | null;
+  setSelectedApplication: (application: ApplicationWithOngStatusDetails) => void;
+  applicationOrganizations: PaginatedEntity<ApplicationOrganization>;
+  setApplicationOrganizations: (
+    applicationOrganizations: PaginatedEntity<ApplicationOrganization>,
+  ) => void;
 }
 
 // Admin
 interface OngApplicationState {
   ongApplications: ApplicationWithOngStatus[];
-  setOngApplications: (applications: ApplicationWithOngStatus) => void;
-
+  setOngApplications: (applications: ApplicationWithOngStatus[]) => void;
   selectedOngApplication: ApplicationWithOngStatusDetails | null;
   setSelectedOngApplication: (application: ApplicationWithOngStatusDetails) => void;
 }
@@ -115,7 +126,8 @@ const useStore = create<
     OrganizationRequestState &
     ApplicationRequestState &
     ApplicationState &
-    OngApplicationState
+    OngApplicationState &
+    InviteState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -131,6 +143,7 @@ const useStore = create<
   ...ongApplicationSlice(set),
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
+  ...invitesSlice(set),
 }));
 
 export default useStore;
