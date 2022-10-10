@@ -14,9 +14,10 @@ const client = new SimpleHMACAuth.Client('API_KEY_TEST', 'SECRET_TO_BE_ADDED_HER
   verbose: true
 });
 
-const optionsGET = {
-  method: 'GET',
-  path: '/api/check',
+const options = {
+  method: 'POST',
+  path: '/api/hasAccess',
+  data: undefined
 };
 
 module.exports.permissionCheck = async (event) => {
@@ -31,16 +32,19 @@ module.exports.permissionCheck = async (event) => {
     console.log(`User ${event.request.userAttributes.email} can access ONGHUb`);
     return event;
   } else {
-    console.log(`User ${event.request.userAttributes.email} can't access other apps`);
-    console.log('Check permissions in backend');
+
+    options.data = {
+      applicationClientId: event?.callerContext?.clientId,
+      userId: event?.userName
+    }
 
     try {
-      const response = await client.request(optionsGET);
+      const response = await client.request(options);
       console.log(`RESPONSE OK:`, response);
       return event;
     } catch (error) {
       console.log(`Received error:`, error);
-      throw new Error("You are not allowed to access this application. Contact your administrator!");
+      throw error;
     }
   }
 
