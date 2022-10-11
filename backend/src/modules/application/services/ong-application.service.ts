@@ -100,6 +100,12 @@ export class OngApplicationService {
     return this.ongApplicationRepository.getMany(conditions);
   }
 
+  public async remove(
+    conditions: FindManyOptions<OngApplication>,
+  ): Promise<OngApplication[]> {
+    return this.ongApplicationRepository.remove(conditions);
+  }
+
   public async update(
     organizationId: number,
     applicationId: number,

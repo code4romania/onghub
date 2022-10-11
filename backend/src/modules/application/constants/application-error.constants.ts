@@ -14,7 +14,7 @@ export const APPLICATION_ERRORS = {
     errorCode: 'APP_003',
   },
   DELETE: {
-    message: 'Could not delete application',
+    message: 'Error while deleting the application',
     errorCode: 'APP_004',
   },
 };

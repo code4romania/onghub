@@ -40,7 +40,7 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindManyOptions } from 'typeorm';
+import { FindManyOptions, In } from 'typeorm';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
@@ -478,26 +478,29 @@ export class ApplicationService {
   }
 
   public async deleteOne(id: number): Promise<void> {
-    const organizations = await this.ongApplicationService.findMany({
-      where: { applicationId: id },
-    });
-
-    for (let i = 0; i < organizations.length; i++) {
-      const users = await this.userOngApplicationService.findMany({
-        where: { ongApplicationId: organizations[i].id },
+    try {
+      // 1. get all organization who have access to this application
+      const ongApplications = await this.ongApplicationService.findMany({
+        where: { applicationId: id },
       });
-      for (let j = 0; j < users.length; j++) {
+
+      // map organization ids for easy usage
+      const ongApplicationsIds = ongApplications.map((app) => app.id);
+
+      // 2. check if any organizations have access to the app
+      if (ongApplications.length > 0) {
+        // 2.1 remove all user organization application connections
         await this.userOngApplicationService.remove({
-          where: { id: users[i].id },
+          where: { id: In(ongApplicationsIds) },
+        });
+
+        // 2.2. remove all organization application connections
+        await this.ongApplicationService.remove({
+          where: { id: In(ongApplicationsIds) },
         });
       }
-      await this.ongApplicationService.delete(
-        organizations[i].applicationId,
-        organizations[i].organizationId,
-      );
-    }
 
-    try {
+      // 3. Remove tha actual application
       await this.applicationRepository.remove({ where: { id } });
     } catch (error) {
       this.logger.error({ error, ...APPLICATION_ERRORS.DELETE });

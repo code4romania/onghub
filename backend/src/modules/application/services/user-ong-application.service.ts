@@ -29,8 +29,8 @@ export class UserOngApplicationService {
   }
 
   public async remove(
-    options: FindOneOptions<UserOngApplication>,
-  ): Promise<UserOngApplication> {
+    options: FindManyOptions<UserOngApplication>,
+  ): Promise<UserOngApplication[]> {
     return this.userOngApplicationRepository.remove(options);
   }
 }
