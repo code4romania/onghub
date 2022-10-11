@@ -495,7 +495,17 @@ export class ApplicationService {
         organizations[i].organizationId,
       );
     }
-    await this.applicationRepository.remove({ where: { id } });
+
+    try {
+      await this.applicationRepository.remove({ where: { id } });
+    } catch (error) {
+      this.logger.error({ error, ...APPLICATION_ERRORS.DELETE });
+      const err = error?.response;
+      throw new BadRequestException({
+        error: err,
+        ...APPLICATION_ERRORS.DELETE,
+      });
+    }
   }
 
   /**

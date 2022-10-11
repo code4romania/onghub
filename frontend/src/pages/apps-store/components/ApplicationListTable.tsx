@@ -87,7 +87,7 @@ const ApplicationListTable = () => {
     }
 
     if (removeApplicationError) {
-      useErrorToast('Nu s-a putut sterge aplicatia');
+      useErrorToast(t('list.remove_error'));
     }
   }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
 
@@ -105,7 +105,7 @@ const ApplicationListTable = () => {
         type: PopoverMenuRowType.SUCCESS,
       },
       {
-        name: 'Sterge',
+        name: t('list.remove'),
         icon: TrashIcon,
         onClick: onDeleteApplication,
         type: PopoverMenuRowType.REMOVE,
@@ -244,7 +244,12 @@ const ApplicationListTable = () => {
           <DataTableComponent
             columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
             data={applications.items}
-            loading={isLoading || activateApplicationLoading || deactivateApplicationLoading}
+            loading={
+              isLoading ||
+              activateApplicationLoading ||
+              deactivateApplicationLoading ||
+              removeApplicationLoading
+            }
             pagination
             sortServer
             paginationPerPage={applications.meta.itemsPerPage}
