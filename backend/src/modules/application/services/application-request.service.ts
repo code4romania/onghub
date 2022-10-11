@@ -253,7 +253,9 @@ export class ApplicationRequestService {
 
   private async delete(requestId: number): Promise<void> {
     try {
-      await this.applicationRequestRepository.remove({ id: requestId });
+      await this.applicationRequestRepository.remove({
+        where: { id: requestId },
+      });
     } catch (error) {
       this.logger.error({
         error: { error },

@@ -1,0 +1,23 @@
+{
+  version: '1',
+  region: 'eu-central-1',
+  userPoolId: 'eu-central-1_tyLzpvQsq',
+  userName: '739936ef-8f38-49d1-af42-6257886f9fd9',
+  callerContext: {
+    awsSdkVersion: 'aws-sdk-unknown-unknown',
+    clientId: 'e62c2ik4h1areh8o49l8rqsht'
+  },
+  triggerSource: 'PreAuthentication_Authentication',
+  request: {
+    userAttributes: {
+      sub: '739936ef-8f38-49d1-af42-6257886f9fd9',
+      'cognito:user_status': 'CONFIRMED',
+      name: 'Remas Madyson',
+      phone_number: '+40314433216',
+      email: 'remas.madyson@eledeen.org'
+    },
+    validationData: null,
+    userNotFound: false
+  },
+  response: {}
+}

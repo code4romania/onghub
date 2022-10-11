@@ -52,15 +52,20 @@ export abstract class BaseDAO<T> {
     return this.repository.save(record);
   }
 
-  update(
+  async update(
     findCriteria: FindOptionsWhere<T>,
     updates: QueryDeepPartialEntity<T>,
   ) {
-    return this.repository.update(findCriteria, updates);
-  }
+    const record = await this.get({ where: findCriteria });
 
-  async saveOrUpdate(findCriteria: FindOneOptions<T>, updates: DeepPartial<T>) {
-    const record = await this.get(findCriteria);
+    if (!record) {
+      throw new Error(
+        `Could not find the record by ${JSON.stringify(
+          findCriteria,
+        )} to update with  ${JSON.stringify(updates)}!`,
+      );
+    }
+
     return this.repository.save({ ...record, ...updates });
   }
 
@@ -68,8 +73,9 @@ export abstract class BaseDAO<T> {
     return this.repository.softDelete(findCriteria);
   }
 
-  remove(findCriteria: FindOptionsWhere<T>) {
-    return this.repository.delete(findCriteria);
+  async remove(findCriteria: FindOneOptions<T>) {
+    const record = await this.get(findCriteria);
+    if (record) return this.repository.remove(record);
   }
 
   count(findCriteria?: FindManyOptions<T>): Promise<number> {
