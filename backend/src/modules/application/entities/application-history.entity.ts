@@ -5,10 +5,9 @@ import {
   HistoryOriginalIdColumn,
 } from '@anchan828/typeorm-history';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
-import { OngApplication } from './ong-application.entity';
 
 @Entity()
 export class ApplicationHistory

@@ -388,10 +388,7 @@ export class ApplicationService {
       }
     }
 
-    return this.applicationRepository.save({
-      id,
-      ...updateApplicationDto,
-    });
+    return this.applicationRepository.update({ id }, updateApplicationDto);
   }
 
   public async restrict(
