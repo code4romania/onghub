@@ -28,7 +28,7 @@ export class UserOngApplicationService {
   }
 
   public async remove(
-    options: FindOptionsWhere<UserOngApplication>,
+    options: FindOneOptions<UserOngApplication>,
   ): Promise<UserOngApplication> {
     return this.userOngApplicationRepository.remove(options);
   }

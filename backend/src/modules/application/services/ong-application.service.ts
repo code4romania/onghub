@@ -70,10 +70,12 @@ export class OngApplicationService {
 
     try {
       await this.userOngApplicationService.remove({
-        ongApplicationId: ongApplication.id,
+        where: { ongApplicationId: ongApplication.id },
       });
 
-      await this.ongApplicationRepository.remove({ id: ongApplication.id });
+      await this.ongApplicationRepository.remove({
+        where: { id: ongApplication.id },
+      });
     } catch (error) {
       this.logger.error({ error: { error }, ...ONG_APPLICATION_ERRORS.DELETE });
       const err = error?.response;

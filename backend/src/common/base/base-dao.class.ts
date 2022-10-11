@@ -73,9 +73,9 @@ export abstract class BaseDAO<T> {
     return this.repository.softDelete(findCriteria);
   }
 
-  async remove(findCriteria: FindOptionsWhere<T>) {
+  async remove(findCriteria: FindOneOptions<T>) {
     const record = await this.get(findCriteria);
-    return this.repository.remove(record);
+    if (record) return this.repository.remove(record);
   }
 
   public async getManyPaginated(
