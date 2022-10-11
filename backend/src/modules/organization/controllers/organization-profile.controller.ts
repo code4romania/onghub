@@ -29,7 +29,6 @@ import {
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequestService } from '../services/organization-request.service';
-import { OrganizationStatisticsService } from '../services/organization-statistics.service';
 import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
@@ -40,7 +39,6 @@ export class OrganizationProfileController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
-    private readonly organizationStatisticsService: OrganizationStatisticsService,
   ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
@@ -76,15 +74,6 @@ export class OrganizationProfileController {
       updateOrganizationDto,
       logo,
       organizationStatute,
-    );
-  }
-
-  @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @ApiParam({ name: 'id', type: String })
-  @Get('statistics')
-  getOrganizationStatistics(@ExtractUser() user: User) {
-    return this.organizationStatisticsService.getOrganizationStatistics(
-      user.organizationId,
     );
   }
 

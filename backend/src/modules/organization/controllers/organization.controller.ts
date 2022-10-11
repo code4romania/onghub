@@ -1,8 +1,5 @@
 import {
   Body,
-  CacheInterceptor,
-  CacheKey,
-  CacheTTL,
   ClassSerializerInterceptor,
   Controller,
   Delete,
@@ -32,16 +29,13 @@ import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
-import { STATISTICS_CACHE_DURATION } from '../constants/values.constants';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
-import { OrganizationStatisticsFilterDto } from '../dto/organization-request-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
 import { OrganizationRequestService } from '../services/organization-request.service';
-import { OrganizationStatisticsService } from '../services/organization-statistics.service';
 import { OrganizationService } from '../services/organization.service';
 
 @ApiTooManyRequestsResponse()
@@ -52,7 +46,6 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
-    private readonly organizationStatisticsService: OrganizationStatisticsService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -61,51 +54,6 @@ export class OrganizationController {
     @Query() filters: OrganizationFilterDto,
   ): Promise<Pagination<OrganizationView>> {
     return this.organizationService.findAll({ options: filters });
-  }
-
-  /**
-   * **********************
-   * *******STATISTICS*****
-   * **********************
-   */
-
-  @Roles(Role.SUPER_ADMIN)
-  @Get('statistics')
-  getSuperAdminStatistics() {
-    return this.organizationStatisticsService.getAllOrganizationsStatistics();
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Get(':id/statistics')
-  getAdminStatistics(@Param('id') id: string) {
-    return this.organizationStatisticsService.getOrganizationStatistics(+id);
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @UseInterceptors(CacheInterceptor)
-  @CacheKey('request-statistics')
-  @CacheTTL(STATISTICS_CACHE_DURATION)
-  @Get('request-statistics')
-  getSuperAdminOrganizationRequestStatistics(
-    @Query() filters: OrganizationStatisticsFilterDto,
-  ) {
-    return this.organizationStatisticsService.getOrganizationRequestStatistics(
-      filters,
-    );
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @UseInterceptors(CacheInterceptor)
-  @CacheKey('status-statistics')
-  @CacheTTL(STATISTICS_CACHE_DURATION)
-  @Get('status-statistics')
-  getSuperAdminOrganizationStatusStatistics(
-    @Query() filters: OrganizationStatisticsFilterDto,
-  ) {
-    return this.organizationStatisticsService.getOrganizationStatusStatistics(
-      filters,
-    );
   }
 
   @ApiParam({ name: 'id', type: Number })

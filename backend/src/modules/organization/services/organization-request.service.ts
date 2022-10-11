@@ -20,8 +20,6 @@ import { MailService } from 'src/mail/services/mail.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FindManyOptions } from 'typeorm';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
-import { OrganizationStatisticsFilterDto } from '../dto/organization-request-filter.dto';
-import { IOrganizationRequestStatistics } from '../interfaces/organization-statistics.interface';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -379,90 +377,8 @@ export class OrganizationRequestService {
     }
   }
 
-  public async getOrganizationRequestStatistics(
-    filters: OrganizationStatisticsFilterDto,
-  ): Promise<IOrganizationRequestStatistics> {
-    const filterMapping = {
-      '30-days': { format: 'DD Mon', interval: '29 day', step: '1 day' },
-      '12-months': { format: 'Mon YY', interval: '11 month', step: '1 month' },
-      '5-years': { format: 'YYYY', interval: '4 year', step: '1 year' },
-    };
-
-    const labelsQuery = `select to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') AS "label" from generate_series((NOW() - interval '${
-      filterMapping[filters.organizationRequestFilter].interval
-    }'), NOW(), '${
-      filterMapping[filters.organizationRequestFilter].step
-    }'::interval) d ORDER BY d::date ASC`;
-
-    const approvedQuery = `select to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') AS "date", SUM(case when to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') = to_char(o.updated_on,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') then 1 else 0 end) AS "result" from generate_series((NOW() - interval '${
-      filterMapping[filters.organizationRequestFilter].interval
-    }'), NOW(), '${
-      filterMapping[filters.organizationRequestFilter].step
-    }'::interval) d, "organization_request" o WHERE o.status = '${
-      RequestStatus.APPROVED
-    }' GROUP BY to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }')`;
-
-    const declinedQuery = `select to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') AS "date", SUM(case when to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') = to_char(o.updated_on,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }') then 1 else 0 end) AS "result" from generate_series((NOW() - interval '${
-      filterMapping[filters.organizationRequestFilter].interval
-    }'), NOW(), '${
-      filterMapping[filters.organizationRequestFilter].step
-    }'::interval) d, "organization_request" o WHERE o.status = '${
-      RequestStatus.DECLINED
-    }' GROUP BY to_char(d::date,'${
-      filterMapping[filters.organizationRequestFilter].format
-    }')`;
-
-    const labels: string[] = await this.organizationRequestRepository
-      .query(labelsQuery)
-      .then((data: any) => {
-        return data.map((record: any) => record?.label);
-      });
-
-    const approved: string[] = await this.organizationRequestRepository
-      .query(approvedQuery)
-      .then((data: any) => {
-        const response = new Array(labels.length).fill('0');
-        if (data.length) {
-          data.map((record: any) => {
-            response[labels.indexOf(record.date)] = record.result;
-          });
-        }
-        return response;
-      });
-
-    const declined: string[] = await this.organizationRequestRepository
-      .query(declinedQuery)
-      .then((data: any) => {
-        const response = new Array(labels.length).fill('0');
-        if (data.length) {
-          data.map((record: any) => {
-            response[labels.indexOf(record.date)] = record.result;
-          });
-        }
-        return response;
-      });
-
-    return {
-      labels,
-      approved,
-      declined,
-    };
+  public async query(query: string): Promise<any> {
+    return this.organizationRequestRepository.query(query);
   }
 
   private find(id: number): Promise<OrganizationRequest> {

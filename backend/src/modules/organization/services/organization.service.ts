@@ -23,7 +23,6 @@ import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
-import { OrganizationStatisticsFilterDto } from '../dto/organization-request-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import {
   Contact,
@@ -39,13 +38,8 @@ import {
 } from '../entities';
 import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
-import { OrganizationStatisticsType } from '../enums/organization-statistics-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
-import { IOrganizationStatusStatistics } from '../interfaces/organization-statistics.interface';
-import {
-  OrganizationViewRepository,
-  OrganizatioStatusnStatisticsViewRepository,
-} from '../repositories';
+import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -67,7 +61,6 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
-    private readonly organizationStatisticsViewRepository: OrganizatioStatusnStatisticsViewRepository,
     private readonly mailService: MailService,
   ) {}
 
@@ -796,48 +789,5 @@ export class OrganizationService {
     findConditions?: FindManyOptions<Organization>,
   ): Promise<number> {
     return this.organizationRepository.count(findConditions);
-  }
-
-  public async getOrganizationStatusStatistics(
-    filters: OrganizationStatisticsFilterDto,
-  ): Promise<IOrganizationStatusStatistics> {
-    const filterMapping = {
-      '30-days': { type: OrganizationStatisticsType.DAILY, data_size: 30 },
-      '12-months': { type: OrganizationStatisticsType.MONTHLY, data_size: 12 },
-      '5-years': { type: OrganizationStatisticsType.YEARLY, data_size: 5 },
-    };
-
-    const labels = [];
-    const active = new Array(
-      filterMapping[filters.organizationRequestFilter].data_size,
-    ).fill('0');
-    const restricted = new Array(
-      filterMapping[filters.organizationRequestFilter].data_size,
-    ).fill('0');
-
-    const rawData = await this.organizationStatisticsViewRepository.getMany({
-      where: { type: filterMapping[filters.organizationRequestFilter].type },
-    });
-
-    if (rawData.length) {
-      rawData.map((row: any) => {
-        if (!labels.includes(row.date)) {
-          labels.push(row.date);
-        }
-        if (row.status === OrganizationStatus.ACTIVE) {
-          active[labels.indexOf(row.date)] = row.count;
-        }
-        if (row.status === OrganizationStatus.RESTRICTED) {
-          restricted[labels.indexOf(row.date)] = row.count;
-        }
-        active.push;
-      });
-    }
-
-    return {
-      labels,
-      active,
-      restricted,
-    };
   }
 }

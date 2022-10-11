@@ -1,6 +1,6 @@
 import { ViewColumn, ViewEntity } from 'typeorm';
 import { OrganizationStatisticsType } from '../enums/organization-statistics-type.enum';
-import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationStatus } from '../../organization/enums/organization-status.enum';
 
 @ViewEntity('OrganizationStatusStatisticsView', {
   expression: `with 

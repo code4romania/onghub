@@ -41,13 +41,10 @@ import {
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 import { OrganizationRequestService } from './services/organization-request.service';
-import { OrganizationStatisticsService } from './services/organization-statistics.service';
 import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationHistory } from './entities/organization-history.entity';
 import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
-import { OrganizationStatusStatisticsView } from './entities/organization-status-statistics-view.entity';
-import { OrganizatioStatusnStatisticsViewRepository } from './repositories/organization-status-statistics-view.repository';
 
 @Module({
   imports: [
@@ -64,7 +61,6 @@ import { OrganizatioStatusnStatisticsViewRepository } from './repositories/organ
       Investor,
       OrganizationRequest,
       OrganizationView,
-      OrganizationStatusStatisticsView,
       OrganizationHistory,
       OrganizationRequestHistory,
     ]),
@@ -97,9 +93,7 @@ import { OrganizatioStatusnStatisticsViewRepository } from './repositories/organ
     OrganizationViewRepository,
     OrganizationRequestRepository,
     OrganizationRequestService,
-    OrganizationStatisticsService,
-    OrganizatioStatusnStatisticsViewRepository,
   ],
-  exports: [OrganizationService],
+  exports: [OrganizationService, OrganizationRequestService],
 })
 export class OrganizationModule {}
