@@ -184,7 +184,10 @@ export class StatisticsService {
       numberOfUpdatedOrganizations,
       numberOfPendingRequests,
       numberOfUsers,
-      meanNumberOfUsers: Math.ceil(numberOfActiveOrganizations / numberOfUsers),
+      meanNumberOfUsers:
+        numberOfActiveOrganizations && numberOfUsers
+          ? Math.ceil(numberOfActiveOrganizations / numberOfUsers)
+          : 0,
       numberOfApps,
     };
   }
