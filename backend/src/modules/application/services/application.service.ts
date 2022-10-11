@@ -537,7 +537,7 @@ export class ApplicationService {
 
     // 1.1. Rare case where we don't have the user in evidence (only if was created somewhere else / in cognito directly maybe)
     if (!user) {
-      throw new NotFoundException(USER_ERRORS.GET);
+      throw new ForbiddenException(USER_ERRORS.GET);
     }
 
     // 1.2. The user is restricted, stop here
@@ -568,12 +568,12 @@ export class ApplicationService {
 
     // 3.1. The application requested does not exist
     if (!application) {
-      throw new NotFoundException(APPLICATION_ERRORS.GET);
+      throw new ForbiddenException(APPLICATION_ERRORS.GET);
     }
 
     // 3.2. The application is inactive
     if (application.status !== ApplicationStatus.ACTIVE) {
-      throw new BadRequestException(APPLICATION_ERRORS.INACTIVE);
+      throw new ForbiddenException(APPLICATION_ERRORS.INACTIVE);
     }
 
     // 4. Check if the NGO and the user has access to the application
@@ -587,12 +587,12 @@ export class ApplicationService {
 
     // 4.1.1. The relation between ONG and App does not exist
     if (!ongApplication) {
-      throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_MISSING);
+      throw new ForbiddenException(ONG_APPLICATION_ERRORS.RELATION_MISSING);
     }
 
     // 4.1.2. The relation exists but is not active (is restricted)
     if (ongApplication.status !== OngApplicationStatus.ACTIVE) {
-      throw new BadRequestException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
+      throw new ForbiddenException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
     }
 
     // 4.2. Find the relation between the USER and the Application (the relation of the NGO)
