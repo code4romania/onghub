@@ -105,6 +105,10 @@ export class UserService {
     return this.userRepository.getMany(options);
   }
 
+  public async countUsers(options?: FindManyOptions<User>): Promise<number> {
+    return this.userRepository.count(options);
+  }
+
   public async updateById(
     id: number,
     payload: UpdateUserDto,
@@ -124,7 +128,11 @@ export class UserService {
       });
 
       // 3. Remove current user applications
-      await this.userOngApplicationService.remove({ where: { userId: id } });
+      try {
+        await this.userOngApplicationService.remove({ where: { userId: id } });
+      } catch (error) {
+        console.error('No apps to remove');
+      }
 
       if (applicationAccess?.length > 0) {
         // 4. assign applications
