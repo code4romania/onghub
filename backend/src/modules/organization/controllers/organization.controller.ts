@@ -1,5 +1,8 @@
 import {
   Body,
+  CacheInterceptor,
+  CacheKey,
+  CacheTTL,
   ClassSerializerInterceptor,
   Controller,
   Delete,
@@ -29,6 +32,7 @@ import {
   INVESTOR_UPLOAD_SCHEMA,
   PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
+import { STATISTICS_CACHE_DURATION } from '../constants/values.constants';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { OrganizationStatisticsFilterDto } from '../dto/organization-request-filter.dto';
@@ -79,6 +83,9 @@ export class OrganizationController {
   }
 
   @Roles(Role.SUPER_ADMIN)
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('request-statistics')
+  @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('request-statistics')
   getSuperAdminOrganizationRequestStatistics(
     @Query() filters: OrganizationStatisticsFilterDto,
@@ -89,6 +96,9 @@ export class OrganizationController {
   }
 
   @Roles(Role.SUPER_ADMIN)
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('status-statistics')
+  @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('status-statistics')
   getSuperAdminOrganizationStatusStatistics(
     @Query() filters: OrganizationStatisticsFilterDto,
