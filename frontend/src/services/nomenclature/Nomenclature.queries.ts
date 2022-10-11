@@ -31,7 +31,6 @@ export const useCountiesQuery = () => {
     onSuccess: (data: County[]) => {
       setCounties(data);
     },
-    staleTime: Infinity,
   });
 };
 
