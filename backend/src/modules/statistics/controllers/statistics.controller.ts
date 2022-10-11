@@ -1,6 +1,5 @@
 import {
   CacheInterceptor,
-  CacheKey,
   CacheTTL,
   ClassSerializerInterceptor,
   Controller,
@@ -51,7 +50,6 @@ export class StatisticsController {
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @CacheKey('request_statistics')
   @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('request')
   getSuperAdminOrganizationRequestStatistics(
@@ -61,7 +59,6 @@ export class StatisticsController {
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @CacheKey('status_statistics')
   @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('status')
   getSuperAdminOrganizationStatusStatistics(
