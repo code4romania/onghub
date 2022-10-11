@@ -8,4 +8,4 @@ export * from './contact.repository';
 export * from './partner.repository';
 export * from './investor.repository';
 export * from './organization-view.repository';
-export * from './organization-statistics-view.repository';
+export * from './organization-status-statistics-view.repository';

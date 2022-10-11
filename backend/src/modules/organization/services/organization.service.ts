@@ -42,8 +42,10 @@ import { Area } from '../enums/organization-area.enum';
 import { OrganizationStatisticsType } from '../enums/organization-statistics-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { IOrganizationStatusStatistics } from '../interfaces/organization-statistics.interface';
-import { OrganizationViewRepository } from '../repositories';
-import { OrganizationStatisticsViewRepository } from '../repositories/organization-statistics-view.repository';
+import {
+  OrganizationViewRepository,
+  OrganizatioStatusnStatisticsViewRepository,
+} from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
@@ -65,7 +67,7 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
-    private readonly organizationStatisticsViewRepository: OrganizationStatisticsViewRepository,
+    private readonly organizationStatisticsViewRepository: OrganizatioStatusnStatisticsViewRepository,
     private readonly mailService: MailService,
   ) {}
 

@@ -2,7 +2,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
 import { OrganizationStatisticsType } from '../enums/organization-statistics-type.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 
-@ViewEntity('OrganizationStatisticsView', {
+@ViewEntity('OrganizationStatusStatisticsView', {
   expression: `with 
 date_day_series as (
     select 
@@ -128,7 +128,7 @@ where yearly_status.rnk=1
 group by yearly_status.year, yearly_status.status
   `,
 })
-export class OrganizationStatisticsView {
+export class OrganizationStatusStatisticsView {
   @ViewColumn()
   date: string;
 
