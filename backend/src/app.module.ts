@@ -22,6 +22,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { RawBodyMiddleware } from './shared/middlewares/raw-body.middleware';
 import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
 import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
     ApplicationModule,
     OrganizationModule,
     PublicAPIModule,
+    StatisticsModule,
 
     // Other modules
     SharedModule,
