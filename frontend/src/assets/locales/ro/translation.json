@@ -971,7 +971,7 @@
       "requests_statistics_error": "Eroare la incarcarea statisticilor despre cereri in organizatie",
       "user_list": "Lista utilizatori",
       "filter": {
-        "anual": "Din totdeauna",
+        "yearly": "Din totdeauna",
         "monthly": "Lunar",
         "daily": "Zilnic"
       }

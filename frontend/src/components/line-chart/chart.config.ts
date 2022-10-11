@@ -8,23 +8,23 @@ export const LINE_CHART_OPTIONS = {
 };
 
 export enum ChartOption {
-  _30_DAYS = '30-days',
-  _12_MONTHS = '12-months',
-  _5_YEARS = '5-years',
+  DAILY = 'daily',
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
 }
 
 export const CHART_FILTER_OPTIONS = [
   {
-    label: 'statistics.filter.anual',
-    key: ChartOption._5_YEARS,
+    label: 'statistics.filter.yearly',
+    key: ChartOption.YEARLY,
   },
   {
     label: 'statistics.filter.monthly',
-    key: ChartOption._12_MONTHS,
+    key: ChartOption.MONTHLY,
   },
   {
     label: 'statistics.filter.daily',
-    key: ChartOption._30_DAYS,
+    key: ChartOption.DAILY,
   },
 ];
 

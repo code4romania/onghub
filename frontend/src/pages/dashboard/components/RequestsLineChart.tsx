@@ -9,7 +9,7 @@ import StatisticsErrorBanner from './StatisticsErrorBanner';
 const RequestsLineChart = () => {
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<DataSet[]>([]);
-  const [activeFilter, setActiveFilter] = useState<ChartOption>(ChartOption._5_YEARS);
+  const [activeFilter, setActiveFilter] = useState<ChartOption>(ChartOption.MONTHLY);
 
   const { t } = useTranslation(['dashboard']);
 

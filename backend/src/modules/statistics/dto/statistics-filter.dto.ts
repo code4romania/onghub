@@ -1,8 +1,8 @@
 import { IsEnum } from 'class-validator';
-import { OrganizationRequestFilter } from '../../organization/enums/organization-request-statistics.enum';
+import { OrganizationStatisticsType } from '../enums/organization-statistics-type.enum';
 
 export class StatisticsFilterDto {
-  @IsEnum(OrganizationRequestFilter)
-  statisticsFilter: OrganizationRequestFilter =
-    OrganizationRequestFilter._30_DAYS;
+  @IsEnum(OrganizationStatisticsType)
+  statisticsFilter: OrganizationStatisticsType =
+    OrganizationStatisticsType.MONTHLY;
 }

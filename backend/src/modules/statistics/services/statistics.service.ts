@@ -33,13 +33,21 @@ export class StatisticsService {
   ): Promise<IOrganizationRequestStatistics> {
     try {
       const filterMapping = {
-        '30-days': { format: 'DD Mon', interval: '29 day', step: '1 day' },
-        '12-months': {
+        [OrganizationStatisticsType.DAILY]: {
+          format: 'DD Mon',
+          interval: '29 day',
+          step: '1 day',
+        },
+        [OrganizationStatisticsType.MONTHLY]: {
           format: 'Mon YY',
           interval: '11 month',
           step: '1 month',
         },
-        '5-years': { format: 'YYYY', interval: '4 year', step: '1 year' },
+        [OrganizationStatisticsType.YEARLY]: {
+          format: 'YYYY',
+          interval: '4 year',
+          step: '1 year',
+        },
       };
 
       const labelsQuery = `select to_char(d::date,'${
@@ -130,12 +138,18 @@ export class StatisticsService {
   ): Promise<IOrganizationStatusStatistics> {
     try {
       const filterMapping = {
-        '30-days': { type: OrganizationStatisticsType.DAILY, data_size: 30 },
-        '12-months': {
+        [OrganizationStatisticsType.DAILY]: {
+          type: OrganizationStatisticsType.DAILY,
+          data_size: 30,
+        },
+        [OrganizationStatisticsType.MONTHLY]: {
           type: OrganizationStatisticsType.MONTHLY,
           data_size: 12,
         },
-        '5-years': { type: OrganizationStatisticsType.YEARLY, data_size: 5 },
+        [OrganizationStatisticsType.YEARLY]: {
+          type: OrganizationStatisticsType.YEARLY,
+          data_size: 5,
+        },
       };
 
       const labels = [];
