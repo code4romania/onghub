@@ -3,7 +3,6 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  NotImplementedException,
 } from '@nestjs/common';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
@@ -478,7 +477,25 @@ export class ApplicationService {
   }
 
   public async deleteOne(id: number): Promise<void> {
-    throw new NotImplementedException();
+    const organizations = await this.ongApplicationService.findMany({
+      where: { applicationId: id },
+    });
+
+    for (let i = 0; i < organizations.length; i++) {
+      const users = await this.userOngApplicationService.findMany({
+        where: { ongApplicationId: organizations[i].id },
+      });
+      for (let j = 0; j < users.length; j++) {
+        await this.userOngApplicationService.remove({
+          where: { id: users[i].id },
+        });
+      }
+      await this.ongApplicationService.delete(
+        organizations[i].applicationId,
+        organizations[i].organizationId,
+      );
+    }
+    await this.applicationRepository.remove({ where: { id } });
   }
 
   /**

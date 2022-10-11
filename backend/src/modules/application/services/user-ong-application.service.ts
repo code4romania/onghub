@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  DeepPartial,
-  DeleteResult,
-  FindOneOptions,
-  FindOptionsWhere,
-} from 'typeorm';
+import { DeepPartial, FindManyOptions, FindOneOptions } from 'typeorm';
 import { UserOngApplication } from '../entities/user-ong-application.entity';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
 
@@ -19,6 +14,12 @@ export class UserOngApplicationService {
     conditions: FindOneOptions<UserOngApplication>,
   ): Promise<UserOngApplication> {
     return this.userOngApplicationRepository.get(conditions);
+  }
+
+  public async findMany(
+    conditions: FindManyOptions<UserOngApplication>,
+  ): Promise<UserOngApplication[]> {
+    return this.userOngApplicationRepository.getMany(conditions);
   }
 
   public async createMany(

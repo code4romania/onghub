@@ -1,4 +1,4 @@
-import { EyeIcon, ShieldCheckIcon } from '@heroicons/react/outline';
+import { BanIcon, EyeIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import {
   useActivateApplication,
   useApplicationsQuery,
   useDectivateApplication,
+  useRemoveApplication,
 } from '../../../services/application/Application.queries';
 import {
   Application,
@@ -61,6 +62,12 @@ const ApplicationListTable = () => {
 
   const { applications } = useApplications();
 
+  const {
+    mutateAsync: removeApplication,
+    error: removeApplicationError,
+    isLoading: removeApplicationLoading,
+  } = useRemoveApplication();
+
   useEffect(() => {
     if (applications?.meta) {
       setPage(applications.meta.currentPage);
@@ -78,7 +85,11 @@ const ApplicationListTable = () => {
     if (activateApplicationError || deactivateApplicationError) {
       useErrorToast(t('list.access_error'));
     }
-  }, [error, deactivateApplicationError, activateApplicationError]);
+
+    if (removeApplicationError) {
+      useErrorToast('Nu s-a putut sterge aplicatia');
+    }
+  }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
@@ -89,9 +100,15 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.activate'),
-        icon: ShieldCheckIcon,
+        icon: RefreshIcon,
         onClick: onActivateApplication,
         type: PopoverMenuRowType.SUCCESS,
+      },
+      {
+        name: 'Sterge',
+        icon: TrashIcon,
+        onClick: onDeleteApplication,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -103,7 +120,7 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.restrict'),
-        icon: ShieldCheckIcon,
+        icon: BanIcon,
         onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -181,6 +198,10 @@ const ApplicationListTable = () => {
     setStatus(null);
     setType(null);
     setSearchWord(null);
+  };
+
+  const onDeleteApplication = (row: Application) => {
+    removeApplication({ applicationId: row.id }, { onSuccess: () => refetch() });
   };
 
   return (
