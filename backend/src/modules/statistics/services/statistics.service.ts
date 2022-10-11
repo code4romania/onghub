@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { CompletionStatus } from 'src/modules/organization/enums/organization-financial-completion.enum';
 import { OrganizationStatisticsType } from 'src/modules/statistics/enums/organization-statistics-type.enum';
@@ -20,6 +24,7 @@ import { STATISTICS_ERRORS } from '../constants/error.constants';
 
 @Injectable()
 export class StatisticsService {
+  private readonly logger = new Logger(StatisticsService.name);
   constructor(
     private readonly organizationStatisticsViewRepository: OrganizatioStatusnStatisticsViewRepository,
     private readonly organizationRequestService: OrganizationRequestService,
@@ -126,6 +131,10 @@ export class StatisticsService {
         declined,
       };
     } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...STATISTICS_ERRORS.REQUEST_STATISTICS,
+      });
       throw new InternalServerErrorException({
         ...STATISTICS_ERRORS.REQUEST_STATISTICS,
         error,
@@ -185,6 +194,10 @@ export class StatisticsService {
         restricted,
       };
     } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...STATISTICS_ERRORS.ORGANIZATION_STATUS_STATISTICS,
+      });
       throw new InternalServerErrorException({
         ...STATISTICS_ERRORS.ORGANIZATION_STATUS_STATISTICS,
         error,
@@ -228,6 +241,10 @@ export class StatisticsService {
         numberOfApps,
       };
     } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...STATISTICS_ERRORS.HUB_STATISTICS,
+      });
       throw new InternalServerErrorException({
         ...STATISTICS_ERRORS.HUB_STATISTICS,
         error,
@@ -256,6 +273,10 @@ export class StatisticsService {
         hubStatistics: await this.getGeneralONGHubStatistics(),
       };
     } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...STATISTICS_ERRORS.ORGANIZATION_STATISTICS,
+      });
       throw new InternalServerErrorException({
         ...STATISTICS_ERRORS.ORGANIZATION_STATISTICS,
         error,
