@@ -13,6 +13,10 @@ export const APPLICATION_ERRORS = {
     message: 'Error while uploading logo',
     errorCode: 'APP_003',
   },
+  DELETE: {
+    message: 'Error while deleting the application',
+    errorCode: 'APP_004',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {

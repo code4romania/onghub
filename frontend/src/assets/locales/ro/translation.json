@@ -709,11 +709,15 @@
     "list": {
       "load_error": "Eroare la incarcarea aplicatiilor",
       "access_error": "Eroare la modificarea accesului",
+      "remove_error": "Eroare la stergerea aplicatiei",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
       "restrict": "Dezactiveaza temporar",
       "type": "Tip aplicatie",
-      "status": "Status"
+      "status": "Status",
+      "remove": "Elimina definitiv",
+      "confirmation": "Esti sigur ca doresti stergerea applicatiei?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
     },
     "create": {
       "error": "Eroare la crearea aplicatiei",
