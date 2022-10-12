@@ -17,6 +17,10 @@ export const APPLICATION_ERRORS = {
     message: 'Application is inactive',
     errorCode: 'APP_004',
   },
+  DELETE: {
+    message: 'Error while deleting the application',
+    errorCode: 'APP_005',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {

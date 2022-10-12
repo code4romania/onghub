@@ -5,20 +5,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
-import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
-import { Role } from 'src/modules/user/enums/role.enum';
 import { UserService } from 'src/modules/user/services/user.service';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
-import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
-import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
+import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
+import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
+import { MailService } from 'src/mail/services/mail.service';
+import { Role } from 'src/modules/user/enums/role.enum';
+import { FindManyOptions } from 'typeorm';
+import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -334,6 +335,12 @@ export class OrganizationRequestService {
     return this.find(requestId);
   }
 
+  public async countOrganizationRequest(
+    findConditions?: FindManyOptions<OrganizationRequest>,
+  ): Promise<number> {
+    return this.organizationRequestRepository.count(findConditions);
+  }
+
   public async sendRestrictRequest(organizationId: number): Promise<void> {
     try {
       const organization = await this.organizationService.findWithUsers(
@@ -368,6 +375,10 @@ export class OrganizationRequestService {
       });
       throw error;
     }
+  }
+
+  public async query(query: string): Promise<any> {
+    return this.organizationRequestRepository.query(query);
   }
 
   private find(id: number): Promise<OrganizationRequest> {

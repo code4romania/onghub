@@ -12,4 +12,8 @@ export class OrganizationRequestRepository extends BaseDAO<OrganizationRequest> 
   ) {
     super(organizationRequestRepository);
   }
+
+  query(query: string) {
+    return this.organizationRequestRepository.query(query);
+  }
 }

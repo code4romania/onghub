@@ -709,11 +709,15 @@
     "list": {
       "load_error": "Eroare la incarcarea aplicatiilor",
       "access_error": "Eroare la modificarea accesului",
+      "remove_error": "Eroare la stergerea aplicatiei",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
       "restrict": "Dezactiveaza temporar",
       "type": "Tip aplicatie",
-      "status": "Status"
+      "status": "Status",
+      "remove": "Elimina definitiv",
+      "confirmation": "Esti sigur ca doresti stergerea applicatiei?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
     },
     "create": {
       "error": "Eroare la crearea aplicatiei",
@@ -941,5 +945,42 @@
     "store": "Toate aplicatiile",
     "organizations": "ONG-uri",
     "requests": "Solicitari Acces"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "about": "Despre ONGHub",
+    "statistics": {
+      "mean_number_of_users": "Numar mediu de utiliatori per organizatie",
+      "number_of_active_organizations": "Organizatii active in ONG Hub",
+      "number_of_apps": "Aplicatii disponibile",
+      "number_of_pending_requests": "Cereri inscriere organizatii in asteptare",
+      "number_of_updated_organizations": "Numar de organizatii cu datele actualizate",
+      "number_of_users": "Numar total de utilizatori individuali",
+      "next_update": "Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
+      "active_apps": "Aplicații active",
+      "view_active_apps": "Vezi aplicatii active",
+      "active_users": "Utilizatori în orgaizație",
+      "handle_users": "Gestioneaza utilizatori",
+      "view_data": "Vizualizeaza datele",
+      "updated_data": "Datele organizației sunt actualizate",
+      "outdated_data": "Datele organizației sunt actualizate",
+      "error": "Eroare la preluarea datelor",
+      "active_organizations": "Organizatii active",
+      "inactive_organizations": "Organizatii inactive",
+      "accepted_requests": "Cereri acceptate",
+      "rejected_requests": "Cereri refuzate",
+      "organization_chart": "Organizatii in ONG Hub",
+      "request_chart": "Cereri inscriere in ONG Hub",
+      "organization_statistics_error": "Eroare la incarcarea statisticilor despre organizatie",
+      "requests_statistics_error": "Eroare la incarcarea statisticilor despre cereri in organizatie",
+      "user_list": "Lista utilizatori",
+      "filter": {
+        "yearly": "Din totdeauna",
+        "monthly": "Lunar",
+        "daily": "Zilnic"
+      }
+    },
+    "activity_title": "Organizație activă în ONG Hub din",
+    "last_updated_on": "Ultima actualizare de date"
   }
 }
