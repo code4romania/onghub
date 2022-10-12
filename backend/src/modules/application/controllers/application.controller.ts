@@ -53,6 +53,7 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
+  @ApiQuery({ type: () => ApplicationFilterDto })
   getAll(
     @Query() filters: ApplicationFilterDto,
   ): Promise<Pagination<ApplicationTableView>> {
@@ -136,6 +137,7 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationOrganizationFilterDto })
   @Get(':id/organization')
   findOrganizationsByApplicationId(
     @Param('id') id: number,

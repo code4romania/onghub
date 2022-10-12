@@ -7,7 +7,6 @@ import { UserRepository } from './repositories/user.repository';
 import { AdminUserController } from './admin-user.controller';
 import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
-import { LoggerModule } from 'nestjs-pino';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
 
@@ -16,7 +15,6 @@ import { UserHistory } from './entities/user-history.entity';
     TypeOrmModule.forFeature([User, UserHistory]),
     forwardRef(() => OrganizationModule),
     forwardRef(() => ApplicationModule),
-    LoggerModule.forRoot(),
   ],
   controllers: [ProfileController, AdminUserController],
   providers: [UserRepository, UserService, CognitoUserService],

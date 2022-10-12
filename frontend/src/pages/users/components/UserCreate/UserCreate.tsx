@@ -11,6 +11,7 @@ import { userApplicationsForCreateUser } from '../../../../services/application/
 import { useCreateUserMutation } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import { CREATE_USER_ERRORS } from '../../constants/error.constants';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from './UserCreateConfig';
 
@@ -62,7 +63,13 @@ const UserCreate = () => {
           navigate('/users');
         },
         onError: () => {
-          useErrorToast(t('create.failure'));
+          const updateError: any = createUserMutation.error;
+          const err = updateError?.response?.data;
+          if (err.code) {
+            useErrorToast(CREATE_USER_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('create.failure'));
+          }
         },
       },
     );
