@@ -491,7 +491,7 @@ export class ApplicationService {
       if (ongApplications.length > 0) {
         // 2.1 remove all user organization application connections
         await this.userOngApplicationService.remove({
-          where: { id: In(ongApplicationsIds) },
+          where: { ongApplicationId: In(ongApplicationsIds) },
         });
 
         // 2.2. remove all organization application connections

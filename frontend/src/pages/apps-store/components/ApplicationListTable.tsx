@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
@@ -33,10 +34,11 @@ const ApplicationListTable = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: ApplicationStatus; label: string } | null>();
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
+  const [applicationToBeRemoved, setApplicationToBeRemoved] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
-  const { t } = useTranslation('appstore');
+  const { t } = useTranslation(['appstore', 'common']);
 
   const { isLoading, error, refetch } = useApplicationsQuery(
     rowsPerPage as number,
@@ -201,7 +203,19 @@ const ApplicationListTable = () => {
   };
 
   const onDeleteApplication = (row: Application) => {
-    removeApplication({ applicationId: row.id }, { onSuccess: () => refetch() });
+    setApplicationToBeRemoved(row.id);
+  };
+
+  const onConfirmDeleteApplication = () => {
+    if (applicationToBeRemoved)
+      removeApplication(
+        { applicationId: applicationToBeRemoved },
+        { onSuccess: () => refetch(), onSettled: () => setApplicationToBeRemoved(null) },
+      );
+  };
+
+  const onCancelRemoveApplication = () => {
+    setApplicationToBeRemoved(null);
   };
 
   return (
@@ -260,6 +274,16 @@ const ApplicationListTable = () => {
             onSort={onSort}
           />
         </div>
+        {applicationToBeRemoved && (
+          <ConfirmationModal
+            title={t('list.confirmation')}
+            description={t('list.description')}
+            closeBtnLabel={t('back', { ns: 'common' })}
+            confirmBtnLabel={t('delete', { ns: 'common' })}
+            onClose={onCancelRemoveApplication}
+            onConfirm={onConfirmDeleteApplication}
+          />
+        )}
       </div>
     </div>
   );
