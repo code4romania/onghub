@@ -27,8 +27,8 @@ export const USER_ERRORS = {
     message: 'User not found',
     errorCode: 'USR_007',
   },
-  CREATE_ALREADY_EXISTS: {
-    message: 'User already exists and cannot be created',
+  ALREADY_EXISTS_EMAIL: {
+    message: 'User already exists with this email',
     errorCode: 'USR_008',
   },
   UPDATE: {
@@ -47,8 +47,12 @@ export const USER_ERRORS = {
     message: 'User is restricted',
     errorCode: 'USR_012',
   },
+  ALREADY_EXISTS_PHONE: {
+    message: 'User already exists with this phone',
+    errorCode: 'USR_013',
+  },
   MISSING_ORGANIZATION: {
     message: 'User is not part of an organization',
-    errorCode: 'USR_013',
+    errorCode: 'USR_014',
   },
 };

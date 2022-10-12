@@ -13,6 +13,7 @@ import {
   useSelectedUserQuery,
 } from '../../../../services/user/User.queries';
 import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import { CREATE_USER_ERRORS } from '../../constants/error.constants';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from '../UserCreate/UserCreateConfig';
 
@@ -73,7 +74,13 @@ const UserEdit = () => {
           useSuccessToast(t('edit.success'));
         },
         onError: () => {
-          useErrorToast(t('edit.failure'));
+          const updateError: any = updateUserMutation.error;
+          const err = updateError?.response?.data;
+          if (err.code) {
+            useErrorToast(CREATE_USER_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('edit.failure'));
+          }
         },
       },
     );
