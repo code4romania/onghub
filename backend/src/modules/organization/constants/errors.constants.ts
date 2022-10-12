@@ -129,6 +129,18 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       message: 'An organization with this name already exists',
       errorCode: 'REQ_009',
     },
+    ORGANIZATION_ALIAS_EXISTS: {
+      message: 'An organization with this alias arleady exists',
+      errorCode: 'REQ_010',
+    },
+    ORGANIZATION_EMAIL_EXISTS: {
+      message: 'An organization with this email arleady exists',
+      errorCode: 'REQ_011',
+    },
+    ORGANIZATION_PHONE_EXISTS: {
+      message: 'An organization with this phone arleady exists',
+      errorCode: 'REQ_012',
+    },
   },
   UPDATE: {
     NOT_PENDING: {

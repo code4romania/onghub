@@ -1,4 +1,4 @@
-import { EyeIcon, ShieldCheckIcon } from '@heroicons/react/outline';
+import { BanIcon, EyeIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
@@ -14,6 +15,7 @@ import {
   useActivateApplication,
   useApplicationsQuery,
   useDectivateApplication,
+  useRemoveApplication,
 } from '../../../services/application/Application.queries';
 import {
   Application,
@@ -32,10 +34,11 @@ const ApplicationListTable = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: ApplicationStatus; label: string } | null>();
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
+  const [applicationToBeRemoved, setApplicationToBeRemoved] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
-  const { t } = useTranslation('appstore');
+  const { t } = useTranslation(['appstore', 'common']);
 
   const { isLoading, error, refetch } = useApplicationsQuery(
     rowsPerPage as number,
@@ -61,6 +64,12 @@ const ApplicationListTable = () => {
 
   const { applications } = useApplications();
 
+  const {
+    mutateAsync: removeApplication,
+    error: removeApplicationError,
+    isLoading: removeApplicationLoading,
+  } = useRemoveApplication();
+
   useEffect(() => {
     if (applications?.meta) {
       setPage(applications.meta.currentPage);
@@ -78,7 +87,11 @@ const ApplicationListTable = () => {
     if (activateApplicationError || deactivateApplicationError) {
       useErrorToast(t('list.access_error'));
     }
-  }, [error, deactivateApplicationError, activateApplicationError]);
+
+    if (removeApplicationError) {
+      useErrorToast(t('list.remove_error'));
+    }
+  }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
@@ -89,9 +102,15 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.activate'),
-        icon: ShieldCheckIcon,
+        icon: RefreshIcon,
         onClick: onActivateApplication,
         type: PopoverMenuRowType.SUCCESS,
+      },
+      {
+        name: t('list.remove'),
+        icon: TrashIcon,
+        onClick: onDeleteApplication,
+        type: PopoverMenuRowType.REMOVE,
       },
     ];
 
@@ -103,7 +122,7 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.restrict'),
-        icon: ShieldCheckIcon,
+        icon: BanIcon,
         onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -183,6 +202,22 @@ const ApplicationListTable = () => {
     setSearchWord(null);
   };
 
+  const onDeleteApplication = (row: Application) => {
+    setApplicationToBeRemoved(row.id);
+  };
+
+  const onConfirmDeleteApplication = () => {
+    if (applicationToBeRemoved)
+      removeApplication(
+        { applicationId: applicationToBeRemoved },
+        { onSuccess: () => refetch(), onSettled: () => setApplicationToBeRemoved(null) },
+      );
+  };
+
+  const onCancelRemoveApplication = () => {
+    setApplicationToBeRemoved(null);
+  };
+
   return (
     <div className="w-full h-full">
       <DataTableFilters
@@ -223,7 +258,12 @@ const ApplicationListTable = () => {
           <DataTableComponent
             columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
             data={applications.items}
-            loading={isLoading || activateApplicationLoading || deactivateApplicationLoading}
+            loading={
+              isLoading ||
+              activateApplicationLoading ||
+              deactivateApplicationLoading ||
+              removeApplicationLoading
+            }
             pagination
             sortServer
             paginationPerPage={applications.meta.itemsPerPage}
@@ -234,6 +274,16 @@ const ApplicationListTable = () => {
             onSort={onSort}
           />
         </div>
+        {applicationToBeRemoved && (
+          <ConfirmationModal
+            title={t('list.confirmation')}
+            description={t('list.description')}
+            closeBtnLabel={t('back', { ns: 'common' })}
+            confirmBtnLabel={t('delete', { ns: 'common' })}
+            onClose={onCancelRemoveApplication}
+            onConfirm={onConfirmDeleteApplication}
+          />
+        )}
       </div>
     </div>
   );

@@ -6,8 +6,7 @@ import {
 } from '@anchan828/typeorm-history';
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Organization } from 'src/modules/organization/entities';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 @Entity()
@@ -27,13 +26,13 @@ export class UserHistory extends BaseEntity implements HistoryEntityInterface {
    =============================================================
    */
 
-  @Column({ type: 'varchar', name: 'cognito_id', unique: true, nullable: true })
+  @Column({ type: 'varchar', name: 'cognito_id', nullable: true })
   cognitoId: string;
 
   @Column({ type: 'varchar', name: 'name' })
   name: string;
 
-  @Column({ type: 'varchar', name: 'email', unique: true })
+  @Column({ type: 'varchar', name: 'email' })
   email: string;
 
   @Column({ type: 'varchar', name: 'phone' })

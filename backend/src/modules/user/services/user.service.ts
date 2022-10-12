@@ -105,6 +105,10 @@ export class UserService {
     return this.userRepository.getMany(options);
   }
 
+  public async countUsers(options?: FindManyOptions<User>): Promise<number> {
+    return this.userRepository.count(options);
+  }
+
   public async updateById(
     id: number,
     payload: UpdateUserDto,
@@ -113,10 +117,19 @@ export class UserService {
     try {
       const { applicationAccess, ...userData } = payload;
 
-      // 1. Check if the user exists
+      // 1. Check if user with received data exists
+      const phoneCheck = await this.findOne({
+        where: { phone: userData?.phone },
+      });
+
+      if (phoneCheck) {
+        throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_PHONE);
+      }
+
+      // 2. Check if the user exists
       const user = await this.getById(id, organizationId);
 
-      // 2. Update cognito user data
+      // 3. Update cognito user data
       await this.cognitoService.updateUser(user.email, {
         phone: user.phone,
         name: user.name,
@@ -124,10 +137,14 @@ export class UserService {
       });
 
       // 3. Remove current user applications
-      await this.userOngApplicationService.remove({ userId: id });
+      try {
+        await this.userOngApplicationService.remove({ where: { userId: id } });
+      } catch (error) {
+        console.error('No apps to remove');
+      }
 
       if (applicationAccess?.length > 0) {
-        // 4. assign applications
+        // 5. assign applications
         await this.assignApplications(
           applicationAccess,
           user.id,
@@ -135,7 +152,7 @@ export class UserService {
         );
       }
 
-      // 5. Update db user data
+      // 6. Update db user data
       return this.update(id, userData);
     } catch (error) {
       this.logger.error({
@@ -146,24 +163,16 @@ export class UserService {
       const err = error?.response;
       switch (err?.errorCode) {
         // 1. USR_007: User not found or doesn't have an organizationId
-        case USER_ERRORS.GET.errorCode: {
-          throw new BadRequestException({
-            ...USER_ERRORS.GET,
-            error: err,
-          });
-        }
+        case USER_ERRORS.GET.errorCode:
         // 2. USR_011: Error whil granting access to application
-        case USER_ERRORS.ACCESS.errorCode: {
-          throw new BadRequestException({
-            ...USER_ERRORS.ACCESS,
-            error: err,
-          });
-        }
-        // 3. USR_009: Something unexpected happened while updating the user
+        case USER_ERRORS.ACCESS.errorCode:
+        // 3. USR_013: User already exists with this phone
+        case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
+          throw new BadRequestException(err);
+        // 4. USR_009: Something unexpected happened while updating the user
         default: {
           throw new InternalServerErrorException({
             ...USER_ERRORS.UPDATE,
-            error: err,
           });
         }
       }
@@ -358,11 +367,15 @@ export class UserService {
 
   private async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      // 1. Check if user already exists
+      // 1. Check if user already exists with received data
       if (
         await this.userRepository.get({ where: { email: createUserDto.email } })
       ) {
-        throw new BadRequestException(USER_ERRORS.CREATE_ALREADY_EXISTS);
+        throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_EMAIL);
+      } else if (
+        await this.userRepository.get({ where: { phone: createUserDto.phone } })
+      ) {
+        throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_PHONE);
       }
       // 2. Check the organizationId exists
       await this.organizationService.findWithRelations(
@@ -382,21 +395,18 @@ export class UserService {
       const err = error?.response;
       switch (err?.errorCode) {
         // 1. USR_002: The organization does not exist
-        case ORGANIZATION_ERRORS.GET.errorCode: {
-          throw new BadRequestException({
-            ...USER_ERRORS.CREATE_WRONG_ORG,
-            error: err,
-          });
-        }
+        case ORGANIZATION_ERRORS.GET.errorCode:
         // 2. USR_011: Error on assigning applications
-        case USER_ERRORS.ACCESS.errorCode: {
-          throw error;
-        }
-        // 3. USR_001: Something unexpected happened
+        case USER_ERRORS.ACCESS.errorCode:
+        // 3. USR_008: User already exists with this email
+        case USER_ERRORS.ALREADY_EXISTS_EMAIL.errorCode:
+        // 4. USR_013: User already exists with this phone
+        case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
+          throw new BadRequestException(err);
+        // 5. USR_001: Something unexpected happened
         default: {
           throw new InternalServerErrorException({
             ...USER_ERRORS.CREATE,
-            error: err,
           });
         }
       }
@@ -425,10 +435,8 @@ export class UserService {
         error: { error },
         ...USER_ERRORS.ACCESS,
       });
-      const err = error?.response;
       throw new BadRequestException({
         ...USER_ERRORS.ACCESS,
-        error: err,
       });
     }
   }

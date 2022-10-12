@@ -120,6 +120,10 @@ export const restoreApplication = (applicationId: number, organizationId: string
   );
 };
 
+export const removeApplication = (applicationId: number) => {
+  return API.delete(`application/${applicationId}`).then((res) => res.data);
+};
+
 export const removeOngApplication = (applicationId: number, organizationId: string) => {
   return API.delete(`/application/${applicationId}/organization/${organizationId}`).then(
     (res) => res.data,

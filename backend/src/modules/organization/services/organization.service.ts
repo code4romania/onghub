@@ -5,6 +5,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { formatNumber } from 'libphonenumber-js';
 
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
@@ -13,7 +14,7 @@ import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { DataSource, In } from 'typeorm';
+import { DataSource, FindManyOptions, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import {
   ORGANIZATION_ERRORS,
@@ -666,6 +667,9 @@ export class OrganizationService {
     cui: string,
     rafNumber: string,
     name: string,
+    email: string,
+    phone: string,
+    alias: string,
   ): Promise<any[]> {
     const errors = [];
     const organizationWithName = await this.organizationGeneralService.findOne({
@@ -699,6 +703,54 @@ export class OrganizationService {
       errors.push(
         new BadRequestException(
           ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithEmail = await this.organizationGeneralService.findOne(
+      {
+        where: { email },
+      },
+    );
+
+    if (organizationWithEmail) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_EMAIL_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithAlias = await this.organizationGeneralService.findOne(
+      {
+        where: { alias },
+      },
+    );
+
+    if (organizationWithAlias) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_ALIAS_EXISTS,
+        ),
+      );
+    }
+
+    const formattedPhone = formatNumber(
+      phone.trim().split(' ').join(''),
+      'RO',
+      'E.164',
+    );
+
+    const organizationWithPhone = await this.organizationGeneralService.findOne(
+      {
+        where: { phone: formattedPhone },
+      },
+    );
+
+    if (organizationWithPhone) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
         ),
       );
     }
@@ -783,5 +835,11 @@ export class OrganizationService {
         error: err,
       });
     }
+  }
+
+  public async countOrganizations(
+    findConditions?: FindManyOptions<Organization>,
+  ): Promise<number> {
+    return this.organizationRepository.count(findConditions);
   }
 }

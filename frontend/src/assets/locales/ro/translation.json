@@ -122,7 +122,10 @@
         "REQ_001": "Acest email este deja folosit",
         "REQ_007": "Exista deja o organizatie cu acest CUI",
         "REQ_008": "Exista deja o organizatie cu acest numar RAF",
-        "REQ_009": "Exista deja o organizatie cu aceasta denumire"
+        "REQ_009": "Exista deja o organizatie cu aceasta denumire",
+        "REQ_010": "Exista deja o organizatie cu acest alias",
+        "REQ_011": "Exista deja o organizatie cu acest email",
+        "REQ_012": "Exista deja o organizatie cu acest numar de telefon"
       }
     },
     "filters": {
@@ -133,7 +136,7 @@
       "name": {
         "required": "Numele si prenumele sunt obligatorii",
         "max": "Numele si prenumele nu pot avea mai mult de 100 de caractere",
-        "min": "Numele si prenumele nu pot avea mai putin de 3 caractere",
+        "min": "Numele si prenumele nu pot avea mai putin de 5 caractere",
         "invalid": "Numele si prenumele au un format invalid",
         "label": "Nume si prenume*"
       },
@@ -582,6 +585,8 @@
     "subtitle": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
     "add": "Adauga Utilizator",
     "not_found": "Utilizatorul nu exista in baza de date",
+    "failure_email": "Exista deja un utilizator cu acest email",
+    "failure_phone": "Exista deja un utilizator cu acest numar de telefon",
     "tabs": {
       "users": "Utilizatori",
       "invites": "Invitatii trimise"
@@ -609,7 +614,8 @@
       "restrict_success": "Acces restrictionat pentru utilizatorul",
       "date": "Data adaugarii",
       "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
-      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum"
+      "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum",
+      "download": "Descarca Tabel"
     },
     "invites": {
       "title": "Lista cu invitatii",
@@ -709,11 +715,15 @@
     "list": {
       "load_error": "Eroare la incarcarea aplicatiilor",
       "access_error": "Eroare la modificarea accesului",
+      "remove_error": "Eroare la stergerea aplicatiei",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
       "restrict": "Dezactiveaza temporar",
       "type": "Tip aplicatie",
-      "status": "Status"
+      "status": "Status",
+      "remove": "Elimina definitiv",
+      "confirmation": "Esti sigur ca doresti stergerea applicatiei?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
     },
     "create": {
       "error": "Eroare la crearea aplicatiei",
@@ -762,7 +772,7 @@
       },
       "short": {
         "required": "Descrierea scurta este obligatorie",
-        "max": "Descrierea scurta poate sa aiba maxim 250 de caractere",
+        "max": "Descrierea scurta poate sa aiba maxim 120 de caractere",
         "min": "Descrierea scruta poate sa aiba minim 50 de caractere",
         "label": "Descriere scurta",
         "helper": "Maximum 250 de caractere"
@@ -941,5 +951,42 @@
     "store": "Toate aplicatiile",
     "organizations": "ONG-uri",
     "requests": "Solicitari Acces"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "about": "Despre ONGHub",
+    "statistics": {
+      "mean_number_of_users": "Numar mediu de utiliatori per organizatie",
+      "number_of_active_organizations": "Organizatii active in ONG Hub",
+      "number_of_apps": "Aplicatii disponibile",
+      "number_of_pending_requests": "Cereri inscriere organizatii in asteptare",
+      "number_of_updated_organizations": "Numar de organizatii cu datele actualizate",
+      "number_of_users": "Numar total de utilizatori individuali",
+      "next_update": "Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
+      "active_apps": "Aplicații active",
+      "view_active_apps": "Vezi aplicatii active",
+      "active_users": "Utilizatori în orgaizație",
+      "handle_users": "Gestioneaza utilizatori",
+      "view_data": "Vizualizeaza datele",
+      "updated_data": "Datele organizației sunt actualizate",
+      "outdated_data": "Datele organizației sunt actualizate",
+      "error": "Eroare la preluarea datelor",
+      "active_organizations": "Organizatii active",
+      "inactive_organizations": "Organizatii inactive",
+      "accepted_requests": "Cereri acceptate",
+      "rejected_requests": "Cereri refuzate",
+      "organization_chart": "Organizatii in ONG Hub",
+      "request_chart": "Cereri inscriere in ONG Hub",
+      "organization_statistics_error": "Eroare la incarcarea statisticilor despre organizatie",
+      "requests_statistics_error": "Eroare la incarcarea statisticilor despre cereri in organizatie",
+      "user_list": "Lista utilizatori",
+      "filter": {
+        "yearly": "Din totdeauna",
+        "monthly": "Lunar",
+        "daily": "Zilnic"
+      }
+    },
+    "activity_title": "Organizație activă în ONG Hub din",
+    "last_updated_on": "Ultima actualizare de date"
   }
 }

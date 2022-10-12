@@ -13,6 +13,14 @@ export const APPLICATION_ERRORS = {
     message: 'Error while uploading logo',
     errorCode: 'APP_003',
   },
+  INACTIVE: {
+    message: 'Application is inactive',
+    errorCode: 'APP_004',
+  },
+  DELETE: {
+    message: 'Error while deleting the application',
+    errorCode: 'APP_005',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {
@@ -30,14 +38,27 @@ export const ONG_APPLICATION_ERRORS = {
     message: 'Could not restrict application',
     errorCode: 'ONG_APP_005',
   },
+  RELATION_MISSING: {
+    message:
+      'Your organization does not have the permission to access this app',
+    errorCode: 'ONG_APP_006',
+  },
+  RELATION_RESTRICTED: {
+    message: 'Your organization is restricted to access this app',
+    errorCode: 'ONG_APP_007',
+  },
 };
 
 export const USER_ONG_APPLICATION_ERRORS = {
   GET: {
     NOT_FOUND: {
       message: 'Application not found',
-      errorCode: 'USER_ONG_APP_002',
+      errorCode: 'USER_ONG_APP_001',
     },
+  },
+  MISSING_PERMISSION: {
+    message: "Your don't have the permission to access this app",
+    errorCode: 'USER_ONG_APP_002',
   },
 };
 

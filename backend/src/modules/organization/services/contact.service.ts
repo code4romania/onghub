@@ -15,7 +15,7 @@ export class ContactService {
     return this.contactRepository.getMany(conditions);
   }
 
-  delete(findCriteria: FindOptionsWhere<Contact>) {
+  delete(findCriteria: FindOneOptions<Contact>) {
     return this.contactRepository.remove(findCriteria);
   }
 }

@@ -16,12 +16,14 @@
     "@types/react-dom": "^18.0.5",
     "aws-amplify": "^4.3.27",
     "axios": "^0.27.2",
+    "chart.js": "3.5.0",
     "currency.js": "^2.0.4",
     "date-fns": "^2.28.0",
     "debounce-promise": "^3.1.2",
     "i18next": "^21.9.1",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
+    "react-chartjs-2": "^4.3.1",
     "react-data-table-component": "^7.5.2",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
@@ -60,6 +62,7 @@
     ]
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.37",
     "@types/debounce-promise": "^3.1.4",
     "@types/lodash.debounce": "^4.0.7",
     "@types/react-datepicker": "^4.4.2",
