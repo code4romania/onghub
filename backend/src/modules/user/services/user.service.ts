@@ -14,6 +14,7 @@ import {
   FindOneOptions,
   ILike,
   In,
+  Not,
   UpdateResult,
 } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
@@ -119,7 +120,7 @@ export class UserService {
 
       // 1. Check if user with received data exists
       const phoneCheck = await this.findOne({
-        where: { phone: userData?.phone },
+        where: { phone: userData?.phone, id: Not(id) },
       });
 
       if (phoneCheck) {
