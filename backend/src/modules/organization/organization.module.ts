@@ -41,7 +41,6 @@ import {
 } from './services';
 import { OrganizationReportService } from './services/organization-report.service';
 import { OrganizationRequestService } from './services/organization-request.service';
-import { OrganizationStatisticsService } from './services/organization-statistics.service';
 import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationHistory } from './entities/organization-history.entity';
@@ -94,8 +93,7 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
     OrganizationViewRepository,
     OrganizationRequestRepository,
     OrganizationRequestService,
-    OrganizationStatisticsService,
   ],
-  exports: [OrganizationService],
+  exports: [OrganizationService, OrganizationRequestService],
 })
 export class OrganizationModule {}

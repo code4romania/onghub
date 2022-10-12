@@ -381,6 +381,10 @@ export class OrganizationRequestService {
     }
   }
 
+  public async query(query: string): Promise<any> {
+    return this.organizationRequestRepository.query(query);
+  }
+
   private find(id: number): Promise<OrganizationRequest> {
     return this.organizationRequestRepository.get({
       where: { id },

@@ -5,18 +5,14 @@ import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import ExetendedStatisticsCard from '../../components/extended-statistics-card/ExtendedStatisticsCard';
 import { Loading } from '../../components/loading/Loading';
 import StatisticsCard from '../../components/statistics-card/StatisticsCard';
-import { useOneOrganizationStatisticsQuery } from '../../services/organization/Organization.queries';
-import { useOrganizationStatistics } from '../../store/organization/organization-statistics.selectors';
-import { useSelectedOrganization } from '../../store/selectors';
+import { useOrganizationProfileStatistics } from '../../services/statistics/statistics.queries';
 import {
   AdminDashboardExtendedStatisticsMapping,
   AdminDashboardSimpleStatisticsMapping,
 } from './constants/DashboardStatistics.constants';
 
 const Dashboard = () => {
-  const { organization } = useSelectedOrganization();
-  const { isLoading, error } = useOneOrganizationStatisticsQuery(organization?.id as number);
-  const { oneOrganizationStatistics } = useOrganizationStatistics();
+  const { data: statistics, isLoading, error } = useOrganizationProfileStatistics();
 
   const { t } = useTranslation(['dashboard']);
 
@@ -32,27 +28,27 @@ const Dashboard = () => {
 
   return (
     <ContentWrapper title={t('title')}>
-      {oneOrganizationStatistics && (
+      {statistics && (
         <div className="flex flex-col gap-8">
           <div className="flex gap-4 flex-col-reverse lg:flex-row">
             <div className="flex flex-col gap-4 flex-wrap lg:w-2/3">
               <ExetendedStatisticsCard
                 stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
-                  oneOrganizationStatistics.isOrganizationUpdated,
+                  statistics.isOrganizationUpdated,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <ExetendedStatisticsCard
                   stat={{
                     ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
-                      oneOrganizationStatistics.numberOfInstalledApps,
+                      statistics.numberOfInstalledApps,
                     ),
                   }}
                 />
                 <ExetendedStatisticsCard
                   stat={{
                     ...AdminDashboardExtendedStatisticsMapping.numberOfUsers(
-                      oneOrganizationStatistics.numberOfUsers,
+                      statistics.numberOfUsers,
                     ),
                   }}
                 />
@@ -61,8 +57,8 @@ const Dashboard = () => {
             <div className="flex gap-4 w">
               <ExetendedStatisticsCard
                 stat={AdminDashboardExtendedStatisticsMapping.activity({
-                  organizationCreatedOn: oneOrganizationStatistics.organizationCreatedOn,
-                  organizationSyncedOn: oneOrganizationStatistics.organizationSyncedOn,
+                  organizationCreatedOn: statistics.organizationCreatedOn,
+                  organizationSyncedOn: statistics.organizationSyncedOn,
                 })}
               />
             </div>
@@ -73,13 +69,13 @@ const Dashboard = () => {
               <StatisticsCard
                 stat={{
                   ...AdminDashboardSimpleStatisticsMapping.numberOfApps,
-                  count: oneOrganizationStatistics.hubStatistics.numberOfApplications,
+                  count: statistics.hubStatistics.numberOfApplications,
                 }}
               />
               <StatisticsCard
                 stat={{
                   ...AdminDashboardSimpleStatisticsMapping.numberOfActiveOrganizations,
-                  count: oneOrganizationStatistics.hubStatistics.numberOfActiveOrganizations,
+                  count: statistics.hubStatistics.numberOfActiveOrganizations,
                 }}
               />
             </div>

@@ -196,7 +196,11 @@ const Router = () => {
           />
 
           {/* Admin and Employee */}
-          <Route index element={role === UserRole.SUPER_ADMIN ? <SuperAdminDashboard /> : <Dashboard />}></Route>
+          {role === UserRole.SUPER_ADMIN ? (
+            <Route index element={<SuperAdminDashboard />}></Route>
+          ) : (
+            <Route index element={<Dashboard />}></Route>
+          )}
 
           <Route
             path={'organizations/:id'}
