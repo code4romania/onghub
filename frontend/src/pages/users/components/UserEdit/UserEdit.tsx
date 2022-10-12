@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { USER_ERRORS } from '../../../../common/constants/error.constants';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
 import ContentWrapper from '../../../../components/content-wrapper/ContentWrapper';
@@ -14,6 +13,7 @@ import {
   useSelectedUserQuery,
 } from '../../../../services/user/User.queries';
 import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import { CREATE_USER_ERRORS } from '../../constants/error.constants';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from '../UserCreate/UserCreateConfig';
 
@@ -76,15 +76,10 @@ const UserEdit = () => {
         onError: () => {
           const updateError: any = updateUserMutation.error;
           const err = updateError?.response?.data;
-          switch (err.code) {
-            case USER_ERRORS.ALREADY_EXISTS_PHONE: {
-              useErrorToast(t('failure_phone'));
-              break;
-            }
-            default: {
-              useErrorToast(t('edit.failure'));
-              break;
-            }
+          if (err.code) {
+            useErrorToast(CREATE_USER_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('edit.failure'));
           }
         },
       },

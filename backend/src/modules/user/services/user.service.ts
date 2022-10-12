@@ -121,6 +121,7 @@ export class UserService {
       const phoneCheck = await this.findOne({
         where: { phone: userData?.phone },
       });
+
       if (phoneCheck) {
         throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_PHONE);
       }
