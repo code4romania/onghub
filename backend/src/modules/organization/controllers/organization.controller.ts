@@ -49,6 +49,7 @@ export class OrganizationController {
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
+  @ApiQuery({ type: () => OrganizationFilterDto })
   @Get('')
   findAll(
     @Query() filters: OrganizationFilterDto,
@@ -153,6 +154,7 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiBody({ type: UpdateOrganizationDto })
+  @ApiParam({ name: 'id', type: String })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -192,6 +194,8 @@ export class OrganizationController {
   @ApiBody({
     schema: PARTNER_UPLOAD_SCHEMA,
   })
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'partnerId', type: String })
   @Post(':id/partners/:partnerId')
   uploadPartnerList(
     @Param('id') id: string,
@@ -213,6 +217,8 @@ export class OrganizationController {
   @ApiBody({
     schema: INVESTOR_UPLOAD_SCHEMA,
   })
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'investorId', type: String })
   @Post(':id/investors/:investorId')
   uploadInvestorList(
     @Param('id') id: string,

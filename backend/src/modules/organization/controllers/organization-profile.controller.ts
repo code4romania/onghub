@@ -91,6 +91,7 @@ export class OrganizationProfileController {
   @ApiBody({
     schema: PARTNER_UPLOAD_SCHEMA,
   })
+  @ApiParam({ name: 'partnerId', type: String })
   @Post('partners/:partnerId')
   uploadPartnerList(
     @ExtractUser() user: User,
@@ -112,6 +113,7 @@ export class OrganizationProfileController {
   @ApiBody({
     schema: INVESTOR_UPLOAD_SCHEMA,
   })
+  @ApiParam({ name: 'investorId', type: String })
   @Post('investors/:investorId')
   uploadInvestorList(
     @ExtractUser() user: User,

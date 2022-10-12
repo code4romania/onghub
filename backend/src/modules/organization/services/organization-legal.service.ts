@@ -44,7 +44,7 @@ export class OrganizationLegalService {
     }
 
     if (directorsDeleted?.length > 0) {
-      await this.contactService.delete({ id: In(directorsDeleted) });
+      await this.contactService.delete({ where: { id: In(directorsDeleted) } });
     }
 
     // Update organization statute file if necessary

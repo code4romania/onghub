@@ -1,14 +1,18 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
-  NotImplementedException,
 } from '@nestjs/common';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
-import { APPLICATION_ERRORS } from '../constants/application-error.constants';
+import {
+  APPLICATION_ERRORS,
+  ONG_APPLICATION_ERRORS,
+  USER_ONG_APPLICATION_ERRORS,
+} from '../constants/application-error.constants';
 import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationFilterDto } from '../dto/filter-application.dto';
@@ -41,7 +45,14 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
+import { FindManyOptions, In } from 'typeorm';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
+import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { UserOngApplicationService } from './user-ong-application.service';
+import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
+import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
+import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -51,6 +62,7 @@ export class ApplicationService {
     private readonly applicationOngViewRepository: ApplicationOngViewRepository,
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationService: OngApplicationService,
+    private readonly userOngApplicationService: UserOngApplicationService,
     private readonly fileManagerService: FileManagerService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
@@ -383,10 +395,7 @@ export class ApplicationService {
       }
     }
 
-    return this.applicationRepository.save({
-      id,
-      ...updateApplicationDto,
-    });
+    return this.applicationRepository.update({ id }, updateApplicationDto);
   }
 
   public async restrict(
@@ -476,7 +485,38 @@ export class ApplicationService {
   }
 
   public async deleteOne(id: number): Promise<void> {
-    throw new NotImplementedException();
+    try {
+      // 1. get all organization who have access to this application
+      const ongApplications = await this.ongApplicationService.findMany({
+        where: { applicationId: id },
+      });
+
+      // map organization ids for easy usage
+      const ongApplicationsIds = ongApplications.map((app) => app.id);
+
+      // 2. check if any organizations have access to the app
+      if (ongApplications.length > 0) {
+        // 2.1 remove all user organization application connections
+        await this.userOngApplicationService.remove({
+          where: { ongApplicationId: In(ongApplicationsIds) },
+        });
+
+        // 2.2. remove all organization application connections
+        await this.ongApplicationService.remove({
+          where: { id: In(ongApplicationsIds) },
+        });
+      }
+
+      // 3. Remove tha actual application
+      await this.applicationRepository.remove({ where: { id } });
+    } catch (error) {
+      this.logger.error({ error, ...APPLICATION_ERRORS.DELETE });
+      const err = error?.response;
+      throw new BadRequestException({
+        error: err,
+        ...APPLICATION_ERRORS.DELETE,
+      });
+    }
   }
 
   /**
@@ -508,6 +548,106 @@ export class ApplicationService {
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
       applicationsWithStatus,
     );
+  }
+
+  public async countApplications(
+    options?: FindManyOptions<Application>,
+  ): Promise<number> {
+    return this.applicationRepository.count(options);
+  }
+
+  /**
+   *
+   * @param cognitoApplicationId
+   * @param cognitoUserId
+   * @returns TODO document errors
+   */
+  public async hasAccess(
+    cognitoApplicationId: string,
+    cognitoUserId: string,
+  ): Promise<boolean> {
+    // 1. Find the user who is requesting the access and check the status
+    const user: User = await this.userService.findByCognitoId(cognitoUserId);
+
+    // 1.1. Rare case where we don't have the user in evidence (only if was created somewhere else / in cognito directly maybe)
+    if (!user) {
+      throw new ForbiddenException(USER_ERRORS.GET);
+    }
+
+    // 1.2. The user is restricted, stop here
+    if (user.status !== UserStatus.ACTIVE) {
+      throw new ForbiddenException(USER_ERRORS.RESTRICTED);
+    }
+
+    // 2. Find the organization of the user
+
+    // 2.1. SuperAdmins have no organization, are not allowed to access apps
+    if (!user.organizationId) {
+      throw new ForbiddenException(USER_ERRORS.MISSING_ORGANIZATION);
+    }
+
+    const organization = await this.organizationService.find(
+      user?.organizationId,
+    );
+
+    // 2.2. The organization is not ACTIVE, stop here
+    if (organization.status !== OrganizationStatus.ACTIVE) {
+      throw new ForbiddenException(ORGANIZATION_ERRORS.RESTRICTED);
+    }
+
+    // 3. Check if the application exists and it's ACTIVE
+    const application = await this.applicationRepository.get({
+      where: { cognitoClientId: cognitoApplicationId },
+    });
+
+    // 3.1. The application requested does not exist
+    if (!application) {
+      throw new ForbiddenException(APPLICATION_ERRORS.GET);
+    }
+
+    // 3.2. The application is inactive
+    if (application.status !== ApplicationStatus.ACTIVE) {
+      throw new ForbiddenException(APPLICATION_ERRORS.INACTIVE);
+    }
+
+    // 4. Check if the NGO and the user has access to the application
+    // 4.1. Find the relation between the NGO (of the requester) and the Application
+    const ongApplication = await this.ongApplicationService.findOne({
+      where: {
+        organizationId: user.organizationId,
+        applicationId: application.id,
+      },
+    });
+
+    // 4.1.1. The relation between ONG and App does not exist
+    if (!ongApplication) {
+      throw new ForbiddenException(ONG_APPLICATION_ERRORS.RELATION_MISSING);
+    }
+
+    // 4.1.2. The relation exists but is not active (is restricted)
+    if (ongApplication.status !== OngApplicationStatus.ACTIVE) {
+      throw new ForbiddenException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
+    }
+
+    // 4.2. Find the relation between the USER and the Application (the relation of the NGO)
+    const userOngApplication = await this.userOngApplicationService.findOne({
+      where: {
+        userId: user.id,
+        ongApplicationId: ongApplication.id,
+      },
+    });
+
+    // 4.2.1. The relation may not exist or is restricted, access denied
+    if (
+      !userOngApplication ||
+      userOngApplication.status !== UserOngApplicationStatus.ACTIVE
+    ) {
+      throw new ForbiddenException(
+        USER_ONG_APPLICATION_ERRORS.MISSING_PERMISSION,
+      );
+    }
+
+    return true;
   }
 
   /**

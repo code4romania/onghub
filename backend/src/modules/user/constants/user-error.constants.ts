@@ -51,4 +51,8 @@ export const USER_ERRORS = {
     message: 'User already exists with this phone',
     errorCode: 'USR_013',
   },
+  MISSING_ORGANIZATION: {
+    message: 'User is not part of an organization',
+    errorCode: 'USR_014',
+  },
 };
