@@ -2,13 +2,12 @@ import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Menu, { getNavigationRoutes } from './Menu';
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
 
-export default function SlidingMenu({isOpen, setSlidingMenuOpen}: {isOpen: boolean, setSlidingMenuOpen:any}) {
+export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: { isOpen: boolean, setSlidingMenuOpen: any }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useContext(AuthContext);
@@ -119,7 +118,7 @@ export default function SlidingMenu({isOpen, setSlidingMenuOpen}: {isOpen: boole
                             <span
                               className={classNames('transition-all duration-50 whitespace-nowrap')}
                             >
-                              <Trans id="menu.info" />
+                              Informatii
                             </span>
                           </a>
                         </div>
