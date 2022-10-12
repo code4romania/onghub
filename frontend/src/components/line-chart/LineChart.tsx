@@ -36,13 +36,15 @@ const LineChart = ({ data, title, activeFiler, onUpdateChart }: LineChartProps) 
     <div className="py-4">
       <div className="shadow-lg rounded-lg overflow-hidden bg-white max-w-4xl max-h-128 divide-y divide-gray-200 ">
         <div className="py-5 px-8 flex flex-row justify-between items-center">
-          <span className="font-titilliumBold text-xl text-gray-800">{title}</span>
+          <span className="font-titilliumBold sm:text-lg lg:text-xl text-sm text-gray-800">
+            {title}
+          </span>
           <div>
             <select
               id="location"
               name="location"
               defaultValue={activeFiler || ChartOption.MONTHLY}
-              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 sm:text-base text-xs focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
               onChange={onFilterChange}
             >
               {CHART_FILTER_OPTIONS.map((item) => (

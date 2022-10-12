@@ -40,7 +40,9 @@ const ContentWrapper = ({
               {backButton.btnLabel || 'Inapoi'}
             </button>
           )}
-          <p className="text-gray-800 font-titilliumBold text-3xl">{title}</p>
+          <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+            {title}
+          </p>
         </div>
         <div className="flex gap-4">
           {deleteButton && (deleteButton.visible ?? true) && (

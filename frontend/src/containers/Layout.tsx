@@ -10,10 +10,10 @@ const Layout = () => {
 
   return (
     <div className="w-screen h-screen max-w-full ">
-      <Header openSlidingMenu={setSlidingMenuOpen}/>
-      <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen}/>
+      <Header openSlidingMenu={setSlidingMenuOpen} />
+      <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
       <div className="flex sm:p-6 p-4">
-        <div className="menu hidden sm:flex">
+        <div className="menu hidden lg:flex">
           <Menu />
         </div>
         <div className="content overflow-scroll w-full sm:pl-6">

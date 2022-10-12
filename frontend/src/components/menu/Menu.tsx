@@ -59,7 +59,7 @@ const Menu = () => {
       <nav
         className={classNames(
           isNarrow ? 'w-[5.5rem]' : 'w-[16.5rem]',
-          'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none',
+          'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none h-fit sticky top-5',
         )}
         aria-label="Sidebar"
       >
