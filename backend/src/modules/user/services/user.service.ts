@@ -138,11 +138,7 @@ export class UserService {
       });
 
       // 3. Remove current user applications
-      try {
-        await this.userOngApplicationService.remove({ where: { userId: id } });
-      } catch (error) {
-        console.error('No apps to remove');
-      }
+      await this.userOngApplicationService.remove({ where: { userId: id } });
 
       if (applicationAccess?.length > 0) {
         // 5. assign applications
