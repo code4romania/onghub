@@ -1,4 +1,5 @@
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
+import { CompletionStatus } from '../enums/CompletionStatus.enum';
 import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
 import { IOrganizationActivity } from './OrganizationActivity.interface';
 import { IOrganizationFinancial } from './OrganizationFinancial.interface';
@@ -22,6 +23,6 @@ export interface IOrganizationFull extends IOrganization {
 export interface IOrganizationView extends IOrganization {
   name: string;
   userCount: number;
-  completionStatusCount: number;
+  completionStatus: CompletionStatus;
   logo: string;
 }
