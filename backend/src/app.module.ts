@@ -23,6 +23,7 @@ import { RawBodyMiddleware } from './shared/middlewares/raw-body.middleware';
 import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
 import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
+import { PracticeProgramModule } from './modules/practice-program/practice-program.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
     OrganizationModule,
     PublicAPIModule,
     StatisticsModule,
+    PracticeProgramModule,
 
     // Other modules
     SharedModule,
