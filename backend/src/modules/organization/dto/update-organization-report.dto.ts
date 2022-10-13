@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsNumber,
   IsOptional,
@@ -11,18 +12,21 @@ import { MAX_REPORT } from '../constants/values.constants';
 
 export class UpdateOrganizationReportDto {
   @IsNumber()
+  @Type(() => Number)
   reportId: number;
 
   @IsNumber()
   @IsOptional()
   @Max(MAX_REPORT)
   @IsPositive()
+  @Type(() => Number)
   numberOfVolunteers?: number;
 
   @IsNumber()
   @IsOptional()
   @Max(MAX_REPORT)
   @IsPositive()
+  @Type(() => Number)
   numberOfContractors?: number;
 
   @IsString()

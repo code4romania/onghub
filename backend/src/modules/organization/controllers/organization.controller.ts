@@ -21,6 +21,7 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { FormDataBody } from 'src/common/decorators/form-data-body.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -87,7 +88,8 @@ export class OrganizationController {
   )
   @Post('request')
   create(
-    @Body() createRequestDto: CreateOrganizationRequestDto,
+    @FormDataBody()
+    createRequestDto: CreateOrganizationRequestDto,
     @UploadedFiles()
     {
       logo,
@@ -165,7 +167,7 @@ export class OrganizationController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @FormDataBody() updateOrganizationDto: UpdateOrganizationDto,
     @UploadedFiles()
     {
       logo,
