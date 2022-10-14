@@ -1,6 +1,7 @@
 import {
   ArrayNotEmpty,
   IsArray,
+  IsBoolean,
   IsDate,
   IsNumber,
   IsOptional,
@@ -36,6 +37,9 @@ export class CreatePracticeProgramDto {
   @IsOptional()
   @MinDate(new Date())
   endDate?: Date;
+
+  @IsBoolean()
+  isPeriodNotDetermined: boolean;
 
   @IsNumber()
   @Min(0)

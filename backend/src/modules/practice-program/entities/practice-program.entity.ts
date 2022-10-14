@@ -20,6 +20,9 @@ export class PracticeProgram extends BaseEntity {
   })
   title: string;
 
+  @Column({ type: 'boolean', name: 'active', default: true })
+  active: boolean;
+
   @Column({
     name: 'deadline',
     type: 'timestamp with time zone',
@@ -45,6 +48,9 @@ export class PracticeProgram extends BaseEntity {
     nullable: true,
   })
   endDate: Date;
+
+  @Column({ type: 'boolean', name: 'is_period_not_determined' })
+  isPeriodNotDetermined: boolean;
 
   @Column({ type: 'integer', name: 'min_working_hours' })
   minWorkingHours: number;

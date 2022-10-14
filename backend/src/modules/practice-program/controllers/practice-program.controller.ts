@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import {
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
+import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramService } from '../services/practice-program.service';
 
@@ -35,6 +37,16 @@ export class PracticeProgramController {
     @Body() body: CreatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.create(body);
+  }
+
+  @ApiBody({ type: UpdatePracticeProgramDto })
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() body: UpdatePracticeProgramDto,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.update(id, body);
   }
 
   @Get()

@@ -15,4 +15,12 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Practice program not found',
     errorCode: 'PP_004',
   },
+  UPDATE: {
+    message: 'Error while updateing the practice program',
+    errorCode: 'PP_005',
+  },
+  NOT_DETERMINED_WITH_END_DATE: {
+    message: 'Practice program cannot be undetermined with end date',
+    errorCode: 'PP_006',
+  },
 };
