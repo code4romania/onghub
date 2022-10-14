@@ -3,12 +3,14 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -38,5 +40,11 @@ export class PracticeProgramController {
   @Get()
   async findAll(): Promise<PracticeProgram[]> {
     return this.practiceProgramService.findAll();
+  }
+
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id')
+  async find(@Param('id') id: number): Promise<PracticeProgram> {
+    return this.practiceProgramService.find(id);
   }
 }

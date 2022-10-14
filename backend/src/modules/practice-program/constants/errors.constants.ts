@@ -11,4 +11,8 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Practice program start date must be before end date',
     errorCode: 'PP_003',
   },
+  NOT_FOUND: {
+    message: 'Practice program not found',
+    errorCode: 'PP_004',
+  },
 };

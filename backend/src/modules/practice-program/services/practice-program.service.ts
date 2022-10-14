@@ -117,4 +117,19 @@ export class PracticeProgramService {
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
   }
+
+  public async find(id: number): Promise<PracticeProgram> {
+    const practiceProgram = await this.practiceProgramRepository.get({
+      where: {
+        id,
+      },
+      relations: ['location', 'skills', 'domains', 'faculties'],
+    });
+
+    if (!practiceProgram) {
+      throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+    }
+
+    return practiceProgram;
+  }
 }
