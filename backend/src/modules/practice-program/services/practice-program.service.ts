@@ -35,7 +35,7 @@ export class PracticeProgramService {
       // 1. get location
       const location = await this.nomenclatureService.getCities({
         where: { id: locationId },
-      })[0];
+      });
 
       // 2. get domains
       const domains = await this.nomenclatureService.getDomains({
@@ -90,7 +90,7 @@ export class PracticeProgramService {
       // 7. create new practice program
       return this.practiceProgramRepository.save({
         ...practiceProgramPayload,
-        location,
+        location: location[0],
         domains,
         faculties,
         skills,
@@ -110,5 +110,11 @@ export class PracticeProgramService {
         });
       }
     }
+  }
+
+  public async findAll(): Promise<PracticeProgram[]> {
+    return this.practiceProgramRepository.getMany({
+      relations: ['location', 'skills', 'domains', 'faculties'],
+    });
   }
 }

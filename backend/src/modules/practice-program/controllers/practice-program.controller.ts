@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
   Post,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,5 +33,10 @@ export class PracticeProgramController {
     @Body() body: CreatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.create(body);
+  }
+
+  @Get()
+  async findAll(): Promise<PracticeProgram[]> {
+    return this.practiceProgramService.findAll();
   }
 }

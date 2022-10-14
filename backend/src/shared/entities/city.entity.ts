@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { OrganizationActivity } from 'src/modules/organization/entities';
+import { PracticeProgram } from 'src/modules/practice-program/entities/practice-program.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +10,7 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -33,6 +35,9 @@ export class City {
   @JoinColumn({ name: 'county_id' })
   @Index()
   county: County;
+
+  @OneToMany(() => PracticeProgram, (practicePrgram) => practicePrgram.location)
+  practiceProgram: PracticeProgram;
 
   @ManyToMany(
     (type) => OrganizationActivity,
