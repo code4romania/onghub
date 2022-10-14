@@ -2,6 +2,7 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -58,5 +59,11 @@ export class PracticeProgramController {
   @Get(':id')
   async find(@Param('id') id: number): Promise<PracticeProgram> {
     return this.practiceProgramService.find(id);
+  }
+
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id')
+  async delete(@Param('id') id: number): Promise<void> {
+    return this.practiceProgramService.delete(id);
   }
 }

@@ -277,4 +277,12 @@ export class PracticeProgramService {
 
     return practiceProgram;
   }
+
+  public async delete(id: number): Promise<void> {
+    try {
+      await this.practiceProgramRepository.remove({ where: { id } });
+    } catch (error) {
+      throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+    }
+  }
 }

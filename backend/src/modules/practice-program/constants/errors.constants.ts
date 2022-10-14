@@ -23,4 +23,8 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Practice program cannot be undetermined with end date',
     errorCode: 'PP_006',
   },
+  DELETE: {
+    message: 'Error while deleting practice program',
+    errorCode: 'PP_007',
+  },
 };
