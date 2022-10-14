@@ -4,7 +4,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { FindOneOptions, UpdateResult } from 'typeorm';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { ONG_APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { OngApplication } from '../entities/ong-application.entity';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
@@ -70,7 +70,9 @@ export class OngApplicationService {
 
     try {
       await this.userOngApplicationService.remove({
-        where: { ongApplicationId: ongApplication.id },
+        where: {
+          ongApplicationId: ongApplication.id,
+        },
       });
 
       await this.ongApplicationRepository.remove({
@@ -90,6 +92,18 @@ export class OngApplicationService {
     conditions: FindOneOptions<OngApplication>,
   ): Promise<OngApplication> {
     return this.ongApplicationRepository.get(conditions);
+  }
+
+  public async findMany(
+    conditions: FindManyOptions<OngApplication>,
+  ): Promise<OngApplication[]> {
+    return this.ongApplicationRepository.getMany(conditions);
+  }
+
+  public async remove(
+    conditions: FindManyOptions<OngApplication>,
+  ): Promise<OngApplication[]> {
+    return this.ongApplicationRepository.remove(conditions);
   }
 
   public async update(

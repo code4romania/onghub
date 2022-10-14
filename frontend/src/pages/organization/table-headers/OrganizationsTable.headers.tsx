@@ -4,6 +4,7 @@ import i18n from '../../../common/config/i18n';
 import { formatDate } from '../../../common/helpers/format.helper';
 import NameWithLogo from '../../../components/name-with-logo/NameWithLogo';
 import StatusBadge, { BadgeStatus } from '../../../components/status-badge/StatusBadge';
+import { CompletionStatus } from '../enums/CompletionStatus.enum';
 import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
 import { IOrganizationView } from '../interfaces/Organization.interface';
 
@@ -60,13 +61,21 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     selector: (row: IOrganizationView) => formatDate(row?.updatedOn as string),
   },
   {
-    id: 'completionStatusCount',
+    id: 'completionStatus',
     sortable: true,
     name: translations.status,
     cell: (row: IOrganizationView) => (
       <StatusBadge
-        status={+row.completionStatusCount > 0 ? BadgeStatus.WARNING : BadgeStatus.SUCCESS}
-        value={+row.completionStatusCount > 0 ? translations.incomplete : translations.updated}
+        status={
+          row.completionStatus === CompletionStatus.NOT_COMPLETED
+            ? BadgeStatus.WARNING
+            : BadgeStatus.SUCCESS
+        }
+        value={
+          row.completionStatus === CompletionStatus.NOT_COMPLETED
+            ? translations.incomplete
+            : translations.updated
+        }
       />
     ),
   },

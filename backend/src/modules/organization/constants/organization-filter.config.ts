@@ -8,7 +8,7 @@ export const ORGANIZATION_FILTERS_CONFIG = {
     updatedOn: true,
     name: true,
     userCount: true,
-    completionStatusCount: true,
+    completionStatus: true,
     logo: true,
   },
   searchableColumns: ['name'],

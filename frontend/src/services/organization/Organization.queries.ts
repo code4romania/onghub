@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { Person } from '../../common/interfaces/person.interface';
+import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Expense } from '../../pages/organization/interfaces/Expense.interface';
 import { Income } from '../../pages/organization/interfaces/Income.interface';
@@ -64,7 +65,7 @@ export const useOrganizationsQuery = (
   orderBy: string,
   orderDirection: OrderDirection,
   search?: string,
-  status?: number,
+  status?: CompletionStatus,
   interval?: Date[],
   userCount?: string,
 ) => {

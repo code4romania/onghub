@@ -37,7 +37,7 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
         message: translations.name.max,
       },
       minLength: {
-        value: 3,
+        value: 5,
         message: translations.name.min,
       },
       pattern: {

@@ -87,6 +87,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Organization is restricted',
     errorCode: 'ORG_020',
   },
+  COMPLETION_STATUS: {
+    message: 'Erorr while updateing organization Completion Status',
+    errorCode: 'ORG_021',
+  },
 };
 
 export const PARTNER_ERRORS = {
@@ -128,6 +132,18 @@ export const ORGANIZATION_REQUEST_ERRORS = {
     ORGANIZATION_NAME_EXISTS: {
       message: 'An organization with this name already exists',
       errorCode: 'REQ_009',
+    },
+    ORGANIZATION_ALIAS_EXISTS: {
+      message: 'An organization with this alias arleady exists',
+      errorCode: 'REQ_010',
+    },
+    ORGANIZATION_EMAIL_EXISTS: {
+      message: 'An organization with this email arleady exists',
+      errorCode: 'REQ_011',
+    },
+    ORGANIZATION_PHONE_EXISTS: {
+      message: 'An organization with this phone arleady exists',
+      errorCode: 'REQ_012',
     },
   },
   UPDATE: {

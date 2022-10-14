@@ -1,4 +1,5 @@
 import i18n from '../../../common/config/i18n';
+import { CompletionStatus } from '../enums/CompletionStatus.enum';
 
 const translations = {
   incomplete: i18n.t('organization:filters.incomplete'),
@@ -7,11 +8,11 @@ const translations = {
 
 export const OrganizationCompletionStatusOptions = [
   {
-    status: 1,
+    status: CompletionStatus.NOT_COMPLETED,
     label: translations.incomplete,
   },
   {
-    status: 0,
+    status: CompletionStatus.COMPLETED,
     label: translations.updated,
   },
 ];

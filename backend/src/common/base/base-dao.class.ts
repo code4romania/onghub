@@ -73,16 +73,10 @@ export abstract class BaseDAO<T> {
     return this.repository.softDelete(findCriteria);
   }
 
-  async remove(findCriteria: FindOneOptions<T>) {
-    const record = await this.get(findCriteria);
+  async remove(findCriteria: FindManyOptions<T>) {
+    const records = await this.getMany(findCriteria);
 
-    if (!record) {
-      throw new Error(
-        `Could not find the record by ${JSON.stringify(findCriteria)}`,
-      );
-    }
-
-    return this.repository.remove(record);
+    if (records.length > 0) return this.repository.remove(records);
   }
 
   count(findCriteria?: FindManyOptions<T>): Promise<number> {

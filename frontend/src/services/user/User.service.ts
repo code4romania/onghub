@@ -76,5 +76,5 @@ export const getProfile = async (): Promise<IUser> => {
 };
 
 export const deleteUser = async (): Promise<any> => {
-  return API.delete(`/user`).then((res) => res.data);
+  return API.delete(`/profile`).then((res) => res.data);
 };
