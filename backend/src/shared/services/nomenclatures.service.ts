@@ -1,7 +1,14 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { City, County, Domain, Region } from 'src/shared/entities';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import {
+  City,
+  County,
+  Domain,
+  Faculty,
+  Region,
+  Skill,
+} from 'src/shared/entities';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { NOMENCLATURE_ERRORS } from '../constants/nomenclature-error.constants';
 import { Coalition } from '../entities/coalition.entity';
@@ -22,6 +29,10 @@ export class NomenclaturesService {
     private readonly federationsRepository: Repository<Federation>,
     @InjectRepository(Coalition)
     private readonly coalitionsRepository: Repository<Coalition>,
+    @InjectRepository(Faculty)
+    private readonly facultiesRepository: Repository<Faculty>,
+    @InjectRepository(Skill)
+    private readonly skillsRepository: Repository<Skill>,
   ) {}
 
   public getCities(conditions: FindManyOptions<City>) {
@@ -90,5 +101,13 @@ export class NomenclaturesService {
 
   public getCoalitions(conditions: FindManyOptions<Coalition>) {
     return this.coalitionsRepository.find(conditions);
+  }
+
+  public getFaculties(conditions: FindManyOptions<Faculty>) {
+    return this.facultiesRepository.find(conditions);
+  }
+
+  public getSkills(conditions: FindManyOptions<Skill>) {
+    return this.skillsRepository.find(conditions);
   }
 }

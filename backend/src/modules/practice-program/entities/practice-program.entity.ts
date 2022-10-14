@@ -16,12 +16,14 @@ export class PracticeProgram extends BaseEntity {
   @Column({
     type: 'varchar',
     name: 'title',
+    unique: true,
   })
   title: string;
 
   @Column({
     name: 'deadline',
     type: 'timestamp with time zone',
+    nullable: true,
   })
   deadline: Date;
 
@@ -47,7 +49,7 @@ export class PracticeProgram extends BaseEntity {
   @Column({ type: 'integer', name: 'min_working_hours' })
   minWorkingHours: number;
 
-  @Column({ type: 'integer', name: 'max_working_hours' })
+  @Column({ type: 'integer', name: 'max_working_hours', nullable: true })
   maxWorkingHours: number;
 
   @Column({
