@@ -7,6 +7,6 @@ const translations = {
 };
 
 export const APPLICATION_STORE_TABS: IPageTab[] = [
-  { id: 0, name: translations.overview, href: 'overview' },
+  { id: 0, name: translations.overview, href: '' },
   { id: 1, name: translations.requests, href: 'requests' },
 ];
