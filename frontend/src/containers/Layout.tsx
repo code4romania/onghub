@@ -12,7 +12,7 @@ const Layout = () => {
         <div className="menu">
           <Menu />
         </div>
-        <div className="content overflow-scroll w-full pl-6">
+        <div className="content w-full pl-6">
           <Outlet />
         </div>
       </div>
