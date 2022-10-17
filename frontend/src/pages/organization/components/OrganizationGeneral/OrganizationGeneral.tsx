@@ -430,19 +430,26 @@ const OrganizationGeneral = () => {
                     </>
                   )}
                 </div>
-                <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  {t('logo.description')}
-                </p>
+                {!readonly && (
+                  <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('logo.description')}
+                  </p>
+                )}
               </div>
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-                {t('contact.name')}
-              </span>
-              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('contact.description')}
-              </p>
+              <div className="pb-5">
+                <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                  {t('contact.name')}
+                </span>
+                {!readonly && (
+                  <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('contact.description')}
+                  </p>
+                )}
+              </div>
+
               <ContactForm
                 control={control}
                 errors={errors}
@@ -455,12 +462,16 @@ const OrganizationGeneral = () => {
               />
             </div>
             <div className="pt-8">
-              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-                {t('social')}
-              </span>
-              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
-              </p>
+              <div className="pb-5">
+                <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                  {t('social')}
+                </span>
+                {!readonly && (
+                  <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('information', { ns: 'common' })}
+                  </p>
+                )}
+              </div>
               <div className="flex flex-col gap-4">
                 <Controller
                   key={OrganizationGeneralConfig.website.key}
@@ -585,12 +596,16 @@ const OrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-                {t('fundraising')}
-              </span>
-              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
-              </p>
+              <div className="pb-5">
+                <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                  {t('fundraising')}
+                </span>
+                {!readonly && (
+                  <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('information', { ns: 'common' })}
+                  </p>
+                )}
+              </div>
               <div className="flex flex-col gap-4">
                 <Controller
                   key={OrganizationGeneralConfig.donationWebsite.key}

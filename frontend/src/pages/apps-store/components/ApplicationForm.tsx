@@ -25,11 +25,11 @@ interface ApplicationFormProps {
   file: File | null;
   setFile: (file: File) => void;
   logo?: string | null;
-  isEditApplication?: boolean;
+  readonly?: boolean;
 }
 
 const ApplicationForm = ({
-  isEditApplication,
+  readonly,
   control,
   errors,
   watch,
@@ -82,7 +82,7 @@ const ApplicationForm = ({
                 );
               }}
             />
-            {!isEditApplication && (
+            {!readonly && (
               <RadioGroup
                 control={control}
                 errors={errors.type?.message}
@@ -247,9 +247,11 @@ const ApplicationForm = ({
                 />
               </>
             </div>
-            <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-              {t('form.upload_description')}
-            </p>
+            {!readonly && (
+              <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                {t('form.upload_description')}
+              </p>
+            )}
           </div>
           {/* End Logo */}
           <div className="flex flex-col gap-4 pt-4">

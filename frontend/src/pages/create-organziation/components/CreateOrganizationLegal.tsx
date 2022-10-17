@@ -235,7 +235,7 @@ const CreateOrganizationLegal = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="p-5 sm:p-10">
-        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
+        <div className="flex flex-col sm:gap-16 gap-4 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}

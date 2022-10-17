@@ -393,9 +393,11 @@ const CreateOrganizationGeneral = () => {
                     </>
                   )}
                 </div>
-                <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  {t('logo.description')}
-                </p>
+                {!readonly && (
+                  <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('logo.description')}
+                  </p>
+                )}
               </div>
               {/* End Logo */}
             </div>

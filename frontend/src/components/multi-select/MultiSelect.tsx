@@ -66,7 +66,7 @@ const MultiSelect = ({
           id={id}
         />
       )}
-      {!error && helperText && (
+      {!error && !readonly && helperText && (
         <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
           {helperText}
         </p>

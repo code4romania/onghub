@@ -111,7 +111,7 @@ const OrganizationFinancial = () => {
   return (
     <CardPanel title={t('title')}>
       <>
-        <div className="py-5 lg:px-0 px-5">
+        <div className="py-5">
           <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900">
             {t('data_update', { ns: 'organization' })}
           </p>

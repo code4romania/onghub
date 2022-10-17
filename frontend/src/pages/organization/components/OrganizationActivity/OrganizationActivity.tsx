@@ -170,14 +170,16 @@ const OrganizationActivity = () => {
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
-        <div className="flex flex-col gap-4 ">
-          <div>
+        <div className="flex flex-col gap-4">
+          <div className="pb-5">
             <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
               {t('domains')}
             </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <Controller
             key={OrganizationActivityConfig.domains.key}
@@ -251,13 +253,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
+          <div className="pb-5">
             <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
               {t('fed_coal')}
             </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}
@@ -350,13 +354,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
+          <div className="pb-5">
             <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
               {t('branches')}
             </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}
@@ -390,13 +396,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
+          <div className="pb-5">
             <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
               {t('other')}
             </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}

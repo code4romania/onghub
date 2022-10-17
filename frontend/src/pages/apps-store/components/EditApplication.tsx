@@ -102,7 +102,7 @@ const EditApplication = () => {
 
         <div className="w-full border-t border-gray-300" />
         <ApplicationForm
-          isEditApplication
+          readonly
           control={control}
           errors={errors}
           watch={watch}

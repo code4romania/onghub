@@ -15,7 +15,7 @@ const StatisticsCard = ({ stat }: { stat: StatisticsCardInfo }) => {
   const { t } = useTranslation('dashboard');
 
   return (
-    <div className="flex min-w-[12rem] sm:w-[29rem] w-auto max-w-1/3 gap-4 lg:p-5 p-3 bg-white rounded-lg shadow items-center">
+    <div className="flex min-w-[12rem] sm:w-[29rem] w-full max-w-1/3 gap-4 lg:p-5 p-3 bg-white rounded-lg shadow items-center">
       <div className={classNames('bg-green rounded p-2', stat.iconColor)}>
         <stat.icon className="sm:w-7 sm:h-7 lg:w-10 lg:h-10 w-5 h-5 text-white" />
       </div>
