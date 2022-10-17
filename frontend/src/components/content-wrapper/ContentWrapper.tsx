@@ -44,7 +44,7 @@ const ContentWrapper = ({
             {title}
           </p>
         </div>
-        <div className="flex gap-4 ml-auto">
+        <div className="flex gap-4 ml-auto self-start">
           {deleteButton && (deleteButton.visible ?? true) && (
             <button
               type="button"

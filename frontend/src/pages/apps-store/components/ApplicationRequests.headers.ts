@@ -15,17 +15,20 @@ export const ApplicationRequestsTableHeaders: TableColumn<IApplicationRequest>[]
     id: 'name',
     name: translations.name,
     grow: 3,
+    minWidth: '10rem',
     selector: (row: IApplicationRequest) => row.application?.name || '',
   },
   {
     id: 'ong',
     name: translations.ong,
     grow: 2,
+    minWidth: '15rem',
     selector: (row: IApplicationRequest) => row.organization?.organizationGeneral?.name || '',
   },
   {
     id: 'created_on',
     name: translations.created_on,
+    minWidth: '10rem',
     selector: (row: IApplicationRequest) => formatDate(row.createdOn as string),
   },
 ];
