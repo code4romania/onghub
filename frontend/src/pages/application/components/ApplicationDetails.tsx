@@ -88,14 +88,19 @@ const ApplicationDetails = () => {
 
   return (
     <div className="flex gap-4 mr-1 mb-1 relative sm:flex-row flex-col">
-      <div className="flex flex-col rounded-lg bg-white shadow md:w-96 p-8 divide-y divide-gray-200 h-full">
+      <div className="flex flex-col rounded-lg bg-white shadow md:w-96 lg:p-8 p-5 divide-y divide-gray-200 h-full">
         <div className="flex flex-col gap-4 min-h-full">
-          <img src={application?.logo || logo} className="h-full w-full pt-10 pb-10" />
-          <p className="font-titilliumBold text-black text-xl tracking-wide">{application?.name}</p>
+          <img
+            src={application?.logo || logo}
+            className="sm:h-full h-32 w-full sm:py-10 py-5 object-contain"
+          />
+          <p className="font-titilliumBold text-black sm:text-lg lg:text-xl text-md tracking-wide">
+            {application?.name}
+          </p>
           <div className="flex gap-2 pb-2 items-center">
             <GlobeAltIcon className="h-4 w-4" />
             <p
-              className="hover:text-blue-800 hover:cursor-pointer"
+              className="hover:text-blue-800 hover:cursor-pointer sm:text-sm lg:text-base text-xs"
               onClick={() => {
                 openInNewTab(application.website);
               }}
@@ -104,11 +109,14 @@ const ApplicationDetails = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-4 pt-4 pb-4">
-          <p>{t('details.how_to')}</p>
+        <div className="flex flex-col sm:gap-4 gap-2 pt-4 pb-4">
+          <p className="sm:text-sm lg:text-base text-xs">{t('details.how_to')}</p>
           {application?.steps.map((step: any, index: number) => (
-            <div className="flex gap-4 items-center" key={index}>
-              <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4">
+            <div
+              className="flex sm:gap-4 gap-2 items-center sm:text-sm lg:text-base text-xs"
+              key={index}
+            >
+              <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4 sm:text-sm lg:text-base text-xs">
                 {index + 1}
               </div>
               {step}
@@ -121,7 +129,10 @@ const ApplicationDetails = () => {
             {/* The application is not added */}
             {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
-                <button className="save-button pl-8 pr-8 flex gap-4" onClick={requestApplication}>
+                <button
+                  className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                  onClick={requestApplication}
+                >
                   <PlusIcon className="h-5 w-5" />
                   {application.type === ApplicationTypeEnum.SIMPLE
                     ? t('details.add')
@@ -165,7 +176,10 @@ const ApplicationDetails = () => {
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
               application?.status === OngApplicationStatus.PENDING && (
                 <div className="flex flex-col pt-4 gap-4 items-center justify-center">
-                  <button className="save-button pl-8 pr-8 flex gap-4" disabled>
+                  <button
+                    className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                    disabled
+                  >
                     <PlusIcon className="h-5 w-5" />
                     {t('details.request')}
                   </button>
@@ -184,7 +198,7 @@ const ApplicationDetails = () => {
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <CheckCircleIcon className="text-green w-6" />
-                  <span className="font-titilliumBold text-xl text-gray-800">
+                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
                     {t('details.active')}
                   </span>
                 </div>
@@ -192,7 +206,10 @@ const ApplicationDetails = () => {
                 <div className="p-8 flex flex-col gap-4">
                   <p className="break-all">{t('details.define_active')}</p>
                   <div>
-                    <button className="save-button pl-8 pr-8 flex gap-4" onClick={onOpen}>
+                    <button
+                      className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                      onClick={onOpen}
+                    >
                       {t('details.open')}
                     </button>
                   </div>
@@ -203,7 +220,7 @@ const ApplicationDetails = () => {
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ClockIcon className="w-6 h-6  text-yellow-600" />
-                  <span className="font-titilliumBold text-xl text-gray-800 ">
+                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     {t('details.pending')}
                   </span>
                 </div>
@@ -223,7 +240,7 @@ const ApplicationDetails = () => {
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
-                  <span className="font-titilliumBold text-xl text-gray-800 ">
+                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     {t('details.restricted')}
                   </span>
                 </div>
@@ -237,7 +254,7 @@ const ApplicationDetails = () => {
               <div className="w-full h-full bg-white shadow rounded-lg">
                 <div className="py-5 px-10 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
-                  <span className="font-titilliumBold text-xl text-gray-800 ">
+                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     Accesul la aplicatie este indisponibil momentan
                   </span>
                 </div>
@@ -250,24 +267,26 @@ const ApplicationDetails = () => {
           </React.Fragment>
         )}
         <div className="w-full h-full bg-white shadow rounded-lg">
-          <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">
+          <div className="py-5 lg:px-10 px-5 flex justify-between">
+            <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
               {t('details.description')}
             </span>
           </div>
           <div className="w-full border-t border-gray-300" />
-          <div className=" p-8 ">
-            <p className="break-all">{application?.description}</p>
+          <div className="lg:p-8 p-5">
+            <p className="sm:text-sm lg:text-base text-xs">{application?.description}</p>
           </div>
         </div>
         <div className="w-full h-full bg-white shadow rounded-lg">
-          <div className="py-5 px-10 flex justify-between">
-            <span className="font-titilliumBold text-xl text-gray-800">{t('details.video')}</span>
+          <div className="py-5 lg:px-10 px-5 flex justify-between">
+            <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
+              {t('details.video')}
+            </span>
           </div>
           <div className="w-full border-t border-gray-300" />
-          <div className="p-8">
+          <div className="lg:p-8 p-5">
             <iframe
-              className="h-96 w-full"
+              className="sm:h-96 h-48 w-full"
               src={application?.videoLink}
               frameBorder="0"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

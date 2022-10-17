@@ -28,13 +28,15 @@ const DateRangePicker = ({ label, defaultValue, onChange }: DateRangePickerProps
 
   return (
     <div className="relative w-full">
-      <label className="block text-base font-medium text-gray-700">{label}</label>
+      <label className="block font-medium text-gray-700 sm:text-sm lg:text-base text-xs">
+        {label}
+      </label>
       <div className="mt-1 relative rounded-md">
         <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
           <CalendarIcon className="-ml-1 mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
         </div>
         <DatePicker
-          className="block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          className="block w-full pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}

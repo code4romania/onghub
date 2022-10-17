@@ -36,6 +36,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
     name: translations.count,
     selector: (row: Investor) => row.numberOfInvestors || 'N/A',
     grow: 1.5,
+    minWidth: '10rem',
     sortable: true,
   },
   {
@@ -55,6 +56,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
     ),
     sortable: true,
     grow: 1.5,
+    minWidth: '10rem',
     allowOverflow: true,
   },
   {
@@ -62,6 +64,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
     name: translations.update,
     selector: (row: Investor) => formatDate(row?.updatedOn as string),
     sortable: true,
+    minWidth: '10rem',
     grow: 1,
   },
 ];

@@ -49,7 +49,7 @@
   }
 
   .form-item-label {
-    @apply font-normal text-base text-gray-700;
+    @apply font-normal sm:text-sm lg:text-base text-xs text-gray-700;
   }
 
   .form-item-helper-text {
@@ -57,11 +57,11 @@
   }
 
   .red-button {
-    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto sm:text-sm;
+    @apply w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 sm:text-sm lg:text-base text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500  sm:w-auto;
   }
 
   .delete-button {
-    @apply w-full inline-flex justify-center rounded-md border border-red-600 shadow-sm px-4 py-2 bg-white text-base font-medium text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm;
+    @apply w-full inline-flex justify-center rounded-md border border-red-600 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto;
   }
 }
 
@@ -79,6 +79,10 @@
   overflow-y: initial !important;
 }
 
+.rdt_TableWrapper > div:first-of-type {
+  overflow: scroll !important;
+}
+
 /* data table overrides */
 .rdt_TableHeadRow > .rdt_TableCol {
   @apply bg-gray-50 text-sm font-titilliumBold text-gray-900 border-gray-300;
@@ -89,7 +93,13 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div {
-  @apply whitespace-pre-wrap py-7 pl-2 pr-2 text-sm font-normal text-gray-700 sm:pl-2;
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-sm font-normal text-gray-700;
+}
+
+.rdt_TableBody > div:last-of-type {
+  border-bottom-style: solid !important;
+  border-bottom-width: 1px !important;
+  border-bottom-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 .rdt_TableCol_Sortable svg {
@@ -99,8 +109,13 @@
   height: 14px !important;
 }
 
+.rdt_Pagination {
+  border-top: none !important;
+}
+
 .Toastify__toast {
   @apply font-roboto !important;
+  @apply sm:text-sm lg:text-base text-xs;
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--success {

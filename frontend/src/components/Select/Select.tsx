@@ -23,11 +23,11 @@ const Select = (props: {
       <Listbox value={props.selected} onChange={props.onChange}>
         {({ open }) => (
           <>
-            <Listbox.Label className="block text-normal font-medium text-gray-700 pb-1">
+            <Listbox.Label className="block font-medium text-gray-700 pb-1 sm:text-sm lg:text-base text-xs">
               {props.config.label}
             </Listbox.Label>
             {props.readonly && (
-              <span className="text-normal font-normal text-gray-900">
+              <span className="font-normal text-gray-900 sm:text-sm lg:text-base text-xs">
                 {props.selected &&
                   (props.config.displayedAttribute
                     ? props.selected[props.config.displayedAttribute]
@@ -38,13 +38,13 @@ const Select = (props: {
               <div className=" relative">
                 <Listbox.Button
                   itemID={props.config.id}
-                  className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm"
                 >
                   <span className="block truncate">
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
                       : props.selected) || (
-                      <span className="text-gray-700 text-normal font-normal">
+                      <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
                         {props.config.label}
                       </span>
                     )}
@@ -61,14 +61,14 @@ const Select = (props: {
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                  <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 sm:text-sm lg:text-base text-xs ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none">
                     {props.config.collection.map((item, index) => (
                       <Listbox.Option
                         key={index}
                         className={({ active }) =>
                           classNames(
                             active ? 'text-white bg-blue-500' : 'text-gray-900',
-                            'cursor-default select-none relative py-2 pl-3 pr-9',
+                            'cursor-default select-none relative py-3 pl-3 pr-9',
                           )
                         }
                         value={item}

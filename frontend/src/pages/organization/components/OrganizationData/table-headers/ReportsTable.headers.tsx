@@ -60,7 +60,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       ) : (
         translations.not_available
       ),
-    grow: 4,
+    grow: 2,
     sortable: true,
   },
   {
@@ -87,6 +87,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
     name: translations.update,
     selector: (row: Report) => formatDate(row?.updatedOn as string),
     sortable: true,
+    minWidth: '10rem',
     grow: 1,
   },
 ];

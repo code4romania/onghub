@@ -48,7 +48,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
           <Popover.Button
             className={classNames(
               open ? 'text-gray-900' : 'text-gray-500',
-              'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none',
+              'group bg-white rounded-md inline-flex items-center sm:text-sm lg:text-base text-xs font-medium hover:text-gray-900 focus:outline-none',
             )}
           >
             <DotsVerticalIcon

@@ -26,7 +26,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
             {isAuthenticated && (
               <div className="flex lg:hidden items-center">
                 <button
-                  className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                  className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                   onClick={() => openSlidingMenu(true)}
                 >
                   <MenuIcon className="w-5 h-5" />
@@ -50,7 +50,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-                    <span className="font-titilliumBold text-gray-900 text-base tracking-wide text-right">
+                    <span className="font-titilliumBold text-gray-900 sm:text-sm lg:text-base text-xs tracking-wide text-right">
                       {profile?.name || ''}
                     </span>
                     <img className="w-10 h-10" src={profileImg} alt="Profile photo" />

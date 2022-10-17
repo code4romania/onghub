@@ -318,8 +318,8 @@ const OrganizationData = () => {
     <div className="flex flex-col gap-y-6">
       <CardPanel title={t('report.title')}>
         <>
-          <div className="pt-1 pb-6">
-            <p className="text-base font-normal text-gray-900">
+          <div className="py-5 lg:px-0 px-5">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900">
               {t('data_update', { ns: 'organization' })}
             </p>
           </div>
@@ -336,8 +336,8 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('partners.title')}>
         <>
-          <div className="pt-1 pb-6">
-            <p className="text-base font-normal text-gray-900 flex">
+          <div className="py-5 lg:px-0 px-5">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
               <a
                 href={partnersLink}
@@ -362,8 +362,8 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('investors.title')}>
         <>
-          <div className="pt-1 pb-6">
-            <p className="text-base font-normal text-gray-900 flex">
+          <div className="py-5 lg:px-0 px-5">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
               <a
                 href={investorsLink}

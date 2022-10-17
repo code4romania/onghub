@@ -8,7 +8,7 @@ interface NameWithLogoProps {
 const NameWithLogo = ({ name, logo }: NameWithLogoProps) => {
   return (
     <div className="flex flex-row items-center">
-      <div className="h-10 w-10 mr-3 ">
+      <div className="h-10 w-10 mr-3 min-h-[2.5rem] min-w-[2.5rem]">
         {logo ? (
           <img src={logo} className="h-full w-full rounded-full" />
         ) : (

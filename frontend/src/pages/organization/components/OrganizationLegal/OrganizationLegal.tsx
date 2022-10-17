@@ -257,12 +257,17 @@ const OrganizationLegal = () => {
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
+      <div className="py-5 lg:px-10 px-5 flex justify-between items-center">
+        <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
+          {t('title')}
+        </span>
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"
-            className={classNames(isEditMode ? 'save-button' : 'edit-button')}
+            className={classNames(
+              isEditMode ? 'save-button' : 'edit-button',
+              'sm:text-sm lg:text-base text-xs',
+            )}
             onClick={
               !isEditMode
                 ? setEditMode.bind(null, true)
@@ -287,7 +292,7 @@ const OrganizationLegal = () => {
             />
             <form className="space-y-8">
               <ContactForm
-                className="flex-row gap-x-6"
+                className="lg:flex-row flex-col gap-x-6 gap-y-3"
                 control={control}
                 errors={errors}
                 readonly={!isEditMode}

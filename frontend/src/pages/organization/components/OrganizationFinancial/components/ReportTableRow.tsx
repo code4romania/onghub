@@ -14,7 +14,7 @@ const ReportTableRow = ({ label, config, readonly }: ReportTableRowProps) => {
   const { t } = useTranslation('financial');
   return (
     <tr key={label}>
-      <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-normal text-gray-900 sm:pl-6 flex">
+      <td className="whitespace-nowrap pt-5 pb-3 px-3 sm:text-lg lg:text-base text-xs font-normal text-gray-900 flex">
         {label}
         <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
           <span className="sr-only">{t('report_row')}</span>

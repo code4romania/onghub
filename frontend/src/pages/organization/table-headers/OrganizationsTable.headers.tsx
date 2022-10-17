@@ -25,6 +25,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'name',
     name: translations.ong,
     sortable: true,
+    minWidth: '15rem',
     cell: (row: IOrganizationView) => <NameWithLogo name={row.name} logo={row.logo} />,
   },
   {
@@ -57,6 +58,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'updatedOn',
     name: translations.updated_on,
     sortable: true,
+    grow: 1.2,
     selector: (row: IOrganizationView) => formatDate(row?.updatedOn as string),
   },
   {

@@ -127,13 +127,18 @@ const OrganizationGeneral = () => {
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
+      <div className="py-5 lg:px-10 px-5 flex justify-between items-center">
+        <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
+          {t('title')}
+        </span>
 
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"
-            className={classNames(readonly ? 'edit-button' : 'save-button')}
+            className={classNames(
+              readonly ? 'edit-button' : 'save-button',
+              'sm:text-sm lg:text-base text-xs',
+            )}
             onClick={readonly ? startEdit : handleSubmit(handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
@@ -143,7 +148,7 @@ const OrganizationGeneral = () => {
       </div>
 
       <div className="w-full border-t border-gray-300" />
-      <div className="p-5 sm:p-10 flex">
+      <div className="p-5 lg:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
           <SectionHeader title={t('title')} subTitle={t('information', { ns: 'common' })} />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
@@ -382,7 +387,10 @@ const OrganizationGeneral = () => {
 
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
-                <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
+                <label
+                  htmlFor="photo"
+                  className="block sm:text-sm lg:text-base text-xs font-normal text-gray-700"
+                >
                   {t('logo.name')}
                 </label>
 
@@ -429,7 +437,9 @@ const OrganizationGeneral = () => {
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('contact.name')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('contact.description')}
               </p>
@@ -445,7 +455,9 @@ const OrganizationGeneral = () => {
               />
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('social')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('social')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('information', { ns: 'common' })}
               </p>
@@ -573,7 +585,9 @@ const OrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('fundraising')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('fundraising')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('information', { ns: 'common' })}
               </p>

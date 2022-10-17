@@ -38,7 +38,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         <img src={application.logo || logo} className="h-full w-full pt-10 pb-10"></img>
       </div>
       <div className="flex flex-col gap-4 w-full">
-        <p className="font-titilliumBold text-xl">{application.name}</p>
+        <p className="font-titilliumBold sm:text-lg lg:text-xl text-md">{application.name}</p>
         <p className="break-word Application__Card__Description"> {application.shortDescription}</p>
       </div>
       <div className="flex gap-4 justify-center w-full">
@@ -47,7 +47,10 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         </button>
         {(application.status === OngApplicationStatus.ACTIVE ||
           application.type === ApplicationTypeEnum.INDEPENDENT) && (
-          <button className="save-button w-full flex justify-center" onClick={onOpen}>
+          <button
+            className="save-button w-full flex justify-center sm:text-sm lg:text-base text-xs"
+            onClick={onOpen}
+          >
             <p className="text-center">{t('open')}</p>
           </button>
         )}

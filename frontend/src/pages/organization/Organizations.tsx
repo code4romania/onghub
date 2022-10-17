@@ -203,15 +203,15 @@ const Organizations = () => {
         searchValue={searchWord}
         onResetFilters={onResetFilters}
       >
-        <div className="flex gap-x-6">
-          <div className="basis-1/4">
+        <div className="flex gap-x-6 flex-wrap gap-y-3">
+          <div className="sm:basis-1/4 w-full">
             <DateRangePicker
               label={t('filter.registration')}
               defaultValue={createdOnRange.length > 0 ? createdOnRange : undefined}
               onChange={onDateChange}
             />
           </div>
-          <div className="basis-1/4">
+          <div className="sm:basis-1/4 w-full">
             <Select
               config={{
                 label: t('filter.users'),
@@ -222,7 +222,7 @@ const Organizations = () => {
               onChange={onUsersRangeChange}
             />
           </div>
-          <div className="basis-1/4">
+          <div className="sm:basis-1/4 w-full">
             <Select
               config={{
                 label: t('filter.status'),
@@ -236,10 +236,12 @@ const Organizations = () => {
         </div>
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
-        <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">{t('list')}</p>
+        <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
+          <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
+            {t('list')}
+          </p>
         </div>
-        <div className="pb-5 px-10">
+        <div className="pb-2">
           <DataTableComponent
             columns={[...OrganizationsTableHeaders, buildOrganizationsActionColumn()]}
             data={organizations.items}
