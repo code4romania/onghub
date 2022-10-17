@@ -113,6 +113,14 @@
   border-top: none !important;
 }
 
+.rdt_Pagination > div > svg {
+  display: none;
+}
+
+.rdt_Pagination > div > div > svg {
+  display: none;
+}
+
 .Toastify__toast {
   @apply font-roboto !important;
   @apply sm:text-sm lg:text-base text-xs;
