@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -15,14 +16,17 @@ import {
   ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
+import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramService } from '../services/practice-program.service';
 
-@Roles(Role.ADMIN, Role.SUPER_ADMIN)
+// @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+@Public()
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -53,6 +57,16 @@ export class PracticeProgramController {
   @Get()
   async findAll(): Promise<PracticeProgram[]> {
     return this.practiceProgramService.findAll();
+  }
+
+  @Public()
+  @Get('search')
+  async searchPracticePrograms(
+    @Query() practiceProgramFilters: PracticeProgramFilterDto,
+  ): Promise<PracticeProgram[]> {
+    return this.practiceProgramService.serachPracticePrograms(
+      practiceProgramFilters,
+    );
   }
 
   @ApiParam({ name: 'id', type: String })

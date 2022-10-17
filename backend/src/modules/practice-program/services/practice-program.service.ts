@@ -9,6 +9,7 @@ import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
+import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramRepository } from '../repositories/practice-program.repository';
@@ -261,6 +262,12 @@ export class PracticeProgramService {
     return this.practiceProgramRepository.getMany({
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
+  }
+
+  public async serachPracticePrograms(
+    practiceProgramFilters: PracticeProgramFilterDto,
+  ): Promise<PracticeProgram[]> {
+    return Promise.resolve([]);
   }
 
   public async find(id: number): Promise<PracticeProgram> {
