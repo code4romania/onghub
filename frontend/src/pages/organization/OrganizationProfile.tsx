@@ -75,7 +75,7 @@ const OrganizationProfile = () => {
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"
-            className="delete-button mr-1"
+            className="delete-button mr-1 max-h-10 sm:max-w-auto max-w-fit items-center"
             onClick={() => setOrganizationDeleteModal(true)}
           >
             {t('restrict.confirm')}

@@ -44,7 +44,7 @@ const LineChart = ({ data, title, activeFiler, onUpdateChart }: LineChartProps) 
               id="location"
               name="location"
               defaultValue={activeFiler || ChartOption.MONTHLY}
-              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 sm:text-base text-xs focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 sm:text-sm lg:text-base text-xs focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
               onChange={onFilterChange}
             >
               {CHART_FILTER_OPTIONS.map((item) => (

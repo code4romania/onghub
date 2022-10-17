@@ -276,7 +276,7 @@ const OrganizationLegal = () => {
                   }
             }
           >
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {isEditMode ? t('save', { ns: 'common' }) : t('edit', { ns: 'common' })}
           </button>
         )}
@@ -328,7 +328,7 @@ const OrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}
@@ -345,7 +345,7 @@ const OrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsOtherModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}

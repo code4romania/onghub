@@ -40,7 +40,7 @@ const Select = (props: {
                   itemID={props.config.id}
                   className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm"
                 >
-                  <span className="block truncate">
+                  <span className="block truncate lg:text-base text-sm">
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
                       : props.selected) || (
@@ -79,7 +79,7 @@ const Select = (props: {
                             <span
                               className={classNames(
                                 selected ? 'font-semibold' : 'font-normal',
-                                'block truncate',
+                                'block truncate lg:text-base text-sm',
                               )}
                             >
                               {props.config.displayedAttribute

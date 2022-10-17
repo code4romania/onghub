@@ -7,7 +7,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
 
-export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: { isOpen: boolean, setSlidingMenuOpen: any }) {
+export default function SlidingMenu({
+  isOpen,
+  setSlidingMenuOpen,
+}: {
+  isOpen: boolean;
+  setSlidingMenuOpen: any;
+}) {
   const navigate = useNavigate();
   const location = useLocation();
   const { role } = useContext(AuthContext);
@@ -21,7 +27,6 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: { isOpen: bo
       setCurrentMenuItemId(exists ? exists.id : -1);
     }
   }, [location.pathname]);
-
 
   const handleMenuItemClick = (item: any) => {
     setSlidingMenuOpen(false);
@@ -78,7 +83,7 @@ export default function SlidingMenu({ isOpen, setSlidingMenuOpen }: { isOpen: bo
                     </div>
                   </Transition.Child>
                   <div className="h-full overflow-y-auto bg-gray-900">
-                    <div className="space-y-6 pb-16">
+                    <div className="space-y-6">
                       <nav
                         className={classNames(
                           'w-full',

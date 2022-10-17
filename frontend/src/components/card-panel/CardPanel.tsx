@@ -15,7 +15,7 @@ const CardPanel = ({ title, children, btnLabel, loading, onSave }: CardPanelProp
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 lg:px-10 px-5 flex justify-between">
+      <div className="py-5 lg:px-10 px-5 flex justify-between items-center">
         <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
           {title}
         </span>
@@ -26,14 +26,14 @@ const CardPanel = ({ title, children, btnLabel, loading, onSave }: CardPanelProp
             onClick={onSave}
             disabled={loading}
           >
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {loading ? t('processing') : `${btnLabel || t('save')}`}
           </button>
         )}
       </div>
 
       <div className="w-full border-t border-gray-300" />
-      <div className="md:py-5 md:px-10 sm:p-10">{children}</div>
+      <div className="py-5 lg:px-10 px-5">{children}</div>
     </div>
   );
 };

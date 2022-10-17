@@ -89,7 +89,7 @@ const SearchSelect = ({
                 value={item}
                 className="relative select-none py-2 pl-8 pr-4 text-gray-900 cursor-pointer hover:bg-green-50"
               >
-                <span className="block truncate">{item.name}</span>
+                <span className="block truncate lg:text-base text-sm">{item.name}</span>
               </Combobox.Option>
             ))}
           </Combobox.Options>

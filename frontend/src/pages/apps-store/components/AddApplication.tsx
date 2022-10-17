@@ -77,7 +77,7 @@ const AddApplication = () => {
             className="save-button sm:text-sm lg:text-base text-xs"
             onClick={handleSubmit(onSubmit)}
           >
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {t('save', { ns: 'common' })}
           </button>
         </div>

@@ -28,7 +28,7 @@ const ContentWrapper = ({
 }: ContentWrapperProps) => {
   return (
     <section>
-      <div className="flex justify-between items-start gap-y-3">
+      <div className="flex justify-between items-center gap-y-3">
         <div className="flex sm:flex-row flex-col gap-y-4">
           {backButton && (
             <button

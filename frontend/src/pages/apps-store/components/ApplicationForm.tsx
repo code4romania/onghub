@@ -292,7 +292,7 @@ const ApplicationForm = ({
                   append({ item: '' });
                 }}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('form.more_steps')}
               </button>
               <button
@@ -302,7 +302,7 @@ const ApplicationForm = ({
                   remove(fields.length - 1);
                 }}
               >
-                <XIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <XIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('form.delete_step')}
               </button>
             </div>

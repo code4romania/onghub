@@ -33,7 +33,10 @@ const DateRangePicker = ({ label, defaultValue, onChange }: DateRangePickerProps
       </label>
       <div className="mt-1 relative rounded-md">
         <div className="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none z-10">
-          <CalendarIcon className="-ml-1 mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+          <CalendarIcon
+            className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4 text-gray-400"
+            aria-hidden="true"
+          />
         </div>
         <DatePicker
           className="block w-full pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"

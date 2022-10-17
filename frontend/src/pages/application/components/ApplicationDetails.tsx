@@ -149,13 +149,17 @@ const ApplicationDetails = () => {
             {/* The application is independent and active */}
             {application?.type === ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
-                <p className="text-gray-700 font-titilliumBold">{t('details.auto')}</p>
+                <p className="text-gray-700 font-titilliumBold sm:text-sm lg:text-base text-xs">
+                  {t('details.auto')}
+                </p>
               </div>
             )}
             {/* The application is independent and active */}
             {application?.status === OngApplicationStatus.PENDING_REMOVAL && (
               <div className="flex pt-4 gap-4 items-center justify-center">
-                <p className="text-gray-700 font-titilliumBold">{t('details.pending_removal')}</p>
+                <p className="text-gray-700 font-titilliumBold sm:text-sm lg:text-base text-xs">
+                  {t('details.pending_removal')}
+                </p>
               </div>
             )}
             {/* The application is not independent and active */}
@@ -196,15 +200,17 @@ const ApplicationDetails = () => {
               (application?.type === ApplicationTypeEnum.INDEPENDENT &&
                 application.status !== OngApplicationStatus.DISABLED)) && (
               <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 px-10 flex gap-2 items-center">
+                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
                   <CheckCircleIcon className="text-green w-6" />
                   <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
                     {t('details.active')}
                   </span>
                 </div>
                 <div className="w-full border-t border-gray-300" />
-                <div className="p-8 flex flex-col gap-4">
-                  <p className="break-all">{t('details.define_active')}</p>
+                <div className="lg:p-8 p-5 flex flex-col gap-4">
+                  <p className="break-all sm:text-sm lg:text-base text-xs">
+                    {t('details.define_active')}
+                  </p>
                   <div>
                     <button
                       className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
@@ -218,15 +224,17 @@ const ApplicationDetails = () => {
             )}
             {application?.status === OngApplicationStatus.PENDING && (
               <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 px-10 flex gap-2 items-center">
+                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
                   <ClockIcon className="w-6 h-6  text-yellow-600" />
                   <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     {t('details.pending')}
                   </span>
                 </div>
                 <div className="w-full border-t border-gray-300" />
-                <div className="p-8 flex flex-col gap-4">
-                  <p className="break-all">{t('details.configure')}</p>
+                <div className="lg:p-8 p-5 flex flex-col gap-4">
+                  <p className="break-all sm:text-sm lg:text-base text-xs">
+                    {t('details.configure')}
+                  </p>
                   <div>
                     <button className="edit-button pl-8 pr-8 flex gap-4" onClick={abandonRequest}>
                       <XIcon className="h-5 w-5" />
@@ -238,29 +246,33 @@ const ApplicationDetails = () => {
             )}
             {application?.status === OngApplicationStatus.RESTRICTED && (
               <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 px-10 flex gap-2 items-center">
+                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
                   <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     {t('details.restricted')}
                   </span>
                 </div>
                 <div className="w-full border-t border-gray-300" />
-                <div className="p-8 flex flex-col gap-4">
-                  <p className="break-all">{t('details.restore')}</p>
+                <div className="lg:p-8 p-5 flex flex-col gap-4">
+                  <p className="break-all sm:text-sm lg:text-base text-xs">
+                    {t('details.restore')}
+                  </p>
                 </div>
               </div>
             )}
             {application?.status === OngApplicationStatus.DISABLED && (
               <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 px-10 flex gap-2 items-center">
+                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
                   <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
                   <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
                     Accesul la aplicatie este indisponibil momentan
                   </span>
                 </div>
                 <div className="w-full border-t border-gray-300" />
-                <div className="p-8 flex flex-col gap-4">
-                  <p className="break-all">Vom reveni cu noutati in curand.</p>
+                <div className="lg:p-8 p-5 flex flex-col gap-4">
+                  <p className="break-all sm:text-sm lg:text-base text-xs">
+                    Vom reveni cu noutati in curand.
+                  </p>
                 </div>
               </div>
             )}

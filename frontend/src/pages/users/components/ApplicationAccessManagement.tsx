@@ -60,7 +60,7 @@ const ApplicationAccessManagement = ({
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
+      <div className="py-5 lg:px-10 px-5 flex justify-between">
         <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
           Access
         </span>
@@ -79,7 +79,7 @@ const ApplicationAccessManagement = ({
               <th scope="col" className="py-3.5 pl-4 pr-3 text-left sm:pl-6 w-11/12">
                 Aplicatie
               </th>
-              <th scope="col" className="px-3 py-3.5 pr-10 text-right w-1/12">
+              <th scope="col" className="px-3 py-3.5 pr-10 text-left w-1/12">
                 Access
               </th>
             </tr>

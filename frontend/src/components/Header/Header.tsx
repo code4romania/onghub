@@ -34,7 +34,11 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
               </div>
             )}
             <div className="flex items-center">
-              <img src={logo} alt="Code 4 Romania - ONG Hub" className="h-full w-full" />
+              <img
+                src={logo}
+                alt="Code 4 Romania - ONG Hub"
+                className="h-full w-full sm:max-h-full max-h-10"
+              />
             </div>
           </div>
           {!isAuthenticated && !isRestricted && (
@@ -49,7 +53,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
             <div className="flex space-x-4 items-center">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="flex items-center gap-4 hover:bg-green-tab py-2 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                  <Menu.Button className="flex items-center gap-4 hover:bg-green-tab sm:py-2 sm:px-4 py-1 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                     <span className="font-titilliumBold text-gray-900 sm:text-sm lg:text-base text-xs tracking-wide text-right">
                       {profile?.name || ''}
                     </span>
@@ -73,11 +77,14 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                           <a
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                              'group flex items-center px-4 py-2 text-sm',
+                              'group flex items-center px-4 py-2 sm:text-sm text-xs',
                             )}
                             onClick={() => navigate('/account')}
                           >
-                            <CogIcon className="mr-3 h-5 w-5 text-gray-800 " aria-hidden="true" />
+                            <CogIcon
+                              className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
+                              aria-hidden="true"
+                            />
                             {t('my_account')}
                           </a>
                         )}
@@ -87,12 +94,12 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                           <a
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                              'group flex items-center px-4 py-2 text-sm',
+                              'group flex items-center px-4 py-2 sm:text-sm text-xs',
                             )}
                             onClick={logout}
                           >
                             <LogoutIcon
-                              className="mr-3 h-5 w-5 text-gray-800 "
+                              className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
                               aria-hidden="true"
                             />
                             {t('log_out')}
