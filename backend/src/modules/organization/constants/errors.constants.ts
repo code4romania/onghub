@@ -87,6 +87,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Organization is restricted',
     errorCode: 'ORG_020',
   },
+  COMPLETION_STATUS: {
+    message: 'Erorr while updateing organization Completion Status',
+    errorCode: 'ORG_021',
+  },
 };
 
 export const PARTNER_ERRORS = {

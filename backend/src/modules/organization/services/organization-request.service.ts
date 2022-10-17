@@ -157,18 +157,19 @@ export class OrganizationRequestService {
     logo: Express.Multer.File[],
     organizationStatute: Express.Multer.File[],
   ) {
-    // Check if the admin email is not in the user table already (is unique).
+    // 1. Check if the admin email is not in the user table already (is unique).
     const foundProfile = await this.userService.findOne({
       where: { email: createReqDto.admin.email },
     });
 
+    // 2. There is already and admin with the email address
     if (foundProfile) {
       throw new BadRequestException({
         ...ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
       });
     }
 
-    // Check if there isn't already a request made by the same user.
+    // 3. Check if there isn't already a request made by the same user.
     const foundRequest = await this.organizationRequestRepository.get({
       where: [
         { email: createReqDto.admin.email, status: RequestStatus.PENDING },
@@ -176,22 +177,22 @@ export class OrganizationRequestService {
       ],
     });
 
+    // 4. Throw error for duplicate request
     if (foundRequest) {
       throw new BadRequestException({
         ...ORGANIZATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
       });
     }
 
+    // 5. create organization
+    const organization = await this.organizationService.create(
+      createReqDto.organization,
+      logo,
+      organizationStatute,
+    );
+
     try {
-      const organization = await this.organizationService.create(
-        createReqDto.organization,
-        logo,
-        organizationStatute,
-      );
-
-      // Mail notifications
-      // Admin
-
+      // 6. Send email for Super amdin and admin with successful creation
       const adminMailOptions: {
         template: string;
         subject: string;
@@ -208,7 +209,16 @@ export class OrganizationRequestService {
         },
       });
 
-      // Super-Admin
+      // 7. create request
+      const request = await this.organizationRequestRepository.save({
+        name: createReqDto.admin.name,
+        email: createReqDto.admin.email,
+        phone: createReqDto.admin.phone,
+        organizationName: createReqDto.organization.general.name,
+        organizationId: organization.id,
+      });
+
+      // 8. Send emails for Super-Admin
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
@@ -229,20 +239,14 @@ export class OrganizationRequestService {
             MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
           cta: {
             link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
-              foundRequest.id.toString(),
+              request.id.toString(),
             ),
             label: '',
           },
         },
       });
 
-      return this.organizationRequestRepository.save({
-        name: createReqDto.admin.name,
-        email: createReqDto.admin.email,
-        phone: createReqDto.admin.phone,
-        organizationName: createReqDto.organization.general.name,
-        organizationId: organization.id,
-      });
+      return request;
     } catch (error) {
       this.logger.error({ error, payload: createReqDto });
       throw error;

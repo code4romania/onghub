@@ -22,6 +22,7 @@ import {
   OrganizationCompletionStatusOptions,
   OrganizationsUsersCountOptions,
 } from './constants/filters.constants';
+import { CompletionStatus } from './enums/CompletionStatus.enum';
 import { OrganizationStatus } from './enums/OrganizationStatus.enum';
 import { IOrganizationView } from './interfaces/Organization.interface';
 import { OrganizationsTableHeaders } from './table-headers/OrganizationsTable.headers';
@@ -34,7 +35,7 @@ const Organizations = () => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [createdOnRange, setCreatedOnRange] = useState<Date[]>([]);
-  const [status, setStatus] = useState<{ status: number; label: string } | null>();
+  const [status, setStatus] = useState<{ status: CompletionStatus; label: string } | null>();
   const [usersRange, setUserRange] = useState<{ status: string; label: string } | null>(null);
 
   const { organizations } = useOrganizations();
@@ -93,7 +94,7 @@ const Organizations = () => {
     }
   };
 
-  const onStatusChange = (selected: { status: number; label: string }) => {
+  const onStatusChange = (selected: { status: CompletionStatus; label: string }) => {
     setStatus(selected);
   };
 
@@ -174,7 +175,6 @@ const Organizations = () => {
   };
 
   const onViewOrganization = (row: IOrganizationView) => {
-    console.log('row', row);
     navigate(`/organizations/${row.id}`);
   };
 

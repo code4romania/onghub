@@ -6,6 +6,7 @@ import {
   IsString,
   IsOptional,
   Length,
+  IsNumberString,
 } from 'class-validator';
 
 export enum Environment {
@@ -70,7 +71,15 @@ class EnvironmentVariables {
   AWS_S3_BUCKET_NAME: string;
 
   @IsString()
-  MAIL_FROM: string;
+  MAIL_HOST;
+  @IsNumberString()
+  MAIL_PORT;
+  @IsString()
+  MAIL_USER;
+  @IsString()
+  MAIL_PASS;
+  @IsString()
+  MAIL_FROM;
 
   @IsString()
   AWS_S3_BUCKET_NAME_PUBLIC: string;

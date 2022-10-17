@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
+import { OrganizationController } from './controllers/organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from '../application/application.module';
 import { OrganizationProfileController } from './controllers/organization-profile.controller';
-import { OrganizationController } from './controllers/organization.controller';
 import {
   Contact,
   Investor,

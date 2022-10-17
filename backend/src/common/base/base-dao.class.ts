@@ -76,13 +76,7 @@ export abstract class BaseDAO<T> {
   async remove(findCriteria: FindManyOptions<T>) {
     const records = await this.getMany(findCriteria);
 
-    if (records.length === 0) {
-      throw new Error(
-        `Could not find the records by ${JSON.stringify(findCriteria)}`,
-      );
-    }
-
-    return this.repository.remove(records);
+    if (records.length > 0) return this.repository.remove(records);
   }
 
   count(findCriteria?: FindManyOptions<T>): Promise<number> {
