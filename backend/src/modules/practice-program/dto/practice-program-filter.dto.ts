@@ -1,3 +1,4 @@
+import { OmitType } from '@nestjs/swagger';
 import {
   IsArray,
   IsEnum,
@@ -8,7 +9,10 @@ import {
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { WorkingHours } from '../enums/working-hours.enum';
 
-export class PracticeProgramFilterDto extends BaseFilterDto {
+export class PracticeProgramFilterDto extends OmitType(BaseFilterDto, [
+  'orderBy',
+  'orderDirection',
+]) {
   @IsNumber()
   @IsOptional()
   locationId?: number;
@@ -20,10 +24,14 @@ export class PracticeProgramFilterDto extends BaseFilterDto {
 
   @IsEnum(WorkingHours)
   @IsOptional()
-  workingHous?: WorkingHours;
+  workingHours?: WorkingHours;
 
   @IsOptional()
   @IsArray()
   @IsNotEmpty()
   domains?: number[];
+
+  @IsOptional()
+  @IsNumber()
+  organizationId?: number;
 }

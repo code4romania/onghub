@@ -1,4 +1,9 @@
-import { Between, FindOperator } from 'typeorm';
+import {
+  Between,
+  FindOperator,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+} from 'typeorm';
 import { format } from 'date-fns';
 import {
   DeepPartial,
@@ -100,10 +105,13 @@ export abstract class BaseDAO<T> {
 
     // filters (and where)
     const orWhereQuery = [];
-    const andWherQuery: any = {};
+    let andWherQuery: any = {};
 
     // loop through filters
     for (const filter in filters) {
+      // if filter value falsy continue
+      if (!filters[filter]) continue;
+
       andWherQuery[filter] =
         typeof filters[filter] === 'string'
           ? this.applyFilter(filters[filter])
@@ -112,7 +120,29 @@ export abstract class BaseDAO<T> {
 
     // handle range
     if (config.rangeColumn && start && end) {
-      andWherQuery[config.rangeColumn] = this.betweenDates(start, end);
+      // calculate range based on one single
+      if (typeof config.rangeColumn === 'string') {
+        andWherQuery[config.rangeColumn] = this.betweenDates(start, end);
+      }
+
+      // calculate range based on 2 columns, if rangecolumn comes as an array
+      if (
+        typeof config.rangeColumn === 'object' &&
+        config.rangeColumn.length === 2
+      ) {
+        // build interval conditions
+        const intervalIntersection = this.checkTwoIntervalIntersection(
+          config.rangeColumn[0],
+          config.rangeColumn[1],
+          start,
+          end,
+        );
+
+        andWherQuery = {
+          ...andWherQuery,
+          ...intervalIntersection,
+        };
+      }
     }
 
     // search query
@@ -202,12 +232,51 @@ export abstract class BaseDAO<T> {
     }
   };
 
-  private betweenDates = (from: Date | string, to: Date | string) =>
-    Between(
-      format(
-        typeof from === 'string' ? new Date(from) : from,
-        'yyyy-MM-dd HH:MM:SS',
+  // check if two date intervals intersect eachother
+  private checkTwoIntervalIntersection = (
+    startDateColumn: string,
+    endDateColumn: string,
+    from: Date | string,
+    to: Date | string,
+  ) => {
+    // format start date to start of day
+    const startDate = typeof from === 'string' ? new Date(from) : from;
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+
+    // format end date to end of day
+    const endDate = typeof to === 'string' ? new Date(to) : to;
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
+    return {
+      [startDateColumn]: LessThanOrEqual(
+        format(endDate, 'yyyy-MM-dd HH:MM:SS'),
       ),
-      format(typeof to === 'string' ? new Date(to) : to, 'yyyy-MM-dd HH:MM:SS'),
+      [endDateColumn]: MoreThanOrEqual(
+        format(startDate, 'yyyy-MM-dd HH:MM:SS'),
+      ),
+    };
+  };
+
+  private betweenDates = (from: Date | string, to: Date | string) => {
+    // format start date to start of day
+    const startDate = typeof from === 'string' ? new Date(from) : from;
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+
+    // format end date to end of day
+    const endDate = typeof to === 'string' ? new Date(to) : to;
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
+    return Between(
+      format(startDate, 'yyyy-MM-dd HH:MM:SS'),
+      format(endDate, 'yyyy-MM-dd HH:MM:SS'),
     );
+  };
 }

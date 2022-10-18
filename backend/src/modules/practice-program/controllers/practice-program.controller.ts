@@ -18,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
 import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
@@ -63,7 +64,7 @@ export class PracticeProgramController {
   @Get('search')
   async searchPracticePrograms(
     @Query() practiceProgramFilters: PracticeProgramFilterDto,
-  ): Promise<PracticeProgram[]> {
+  ): Promise<Pagination<PracticeProgram>> {
     return this.practiceProgramService.serachPracticePrograms(
       practiceProgramFilters,
     );
