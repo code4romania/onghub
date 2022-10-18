@@ -83,11 +83,7 @@ const ApplicationForm = ({
               }}
             />
             {!isEditApplication && (
-              <RadioGroup
-                control={control}
-                errors={errors.type?.message}
-                config={AddAppConfig.type}
-              />
+              <RadioGroup control={control} errors={errors.type} config={AddAppConfig.type} />
             )}
             <Controller
               key={AddAppConfig.shortDescription.key}
@@ -270,7 +266,7 @@ const ApplicationForm = ({
                                 errors as {
                                   [x: string]: any | any[];
                                 }
-                              )?.steps[index]?.step?.message as any),
+                              )?.steps[index]?.item?.message as any),
                             defaultValue: value,
                             onChange: onChange,
                           }}
