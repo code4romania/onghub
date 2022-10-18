@@ -42,6 +42,10 @@ export class CognitoUserService {
           Value: name,
         },
         {
+          Name: 'email',
+          Value: email,
+        },
+        {
           Name: 'email_verified',
           Value: 'true',
         },
