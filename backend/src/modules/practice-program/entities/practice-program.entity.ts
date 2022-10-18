@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
+import { Organization } from 'src/modules/organization/entities';
 import { City, Domain, Skill } from 'src/shared/entities';
 import { Faculty } from 'src/shared/entities/faculty.entity';
 import {
@@ -104,4 +105,12 @@ export class PracticeProgram extends BaseEntity {
     inverseJoinColumn: { name: 'skill_id', referencedColumnName: 'id' },
   })
   skills: Skill[];
+
+  @Exclude()
+  @Column({ type: 'integer', name: 'organization_id' })
+  organizationId: number;
+
+  @ManyToOne((type) => Organization)
+  @JoinColumn({ name: 'organization_id' })
+  organization: Organization;
 }
