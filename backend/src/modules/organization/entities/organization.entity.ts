@@ -16,7 +16,6 @@ export class Organization extends BaseEntity {
   @Column({
     type: 'timestamp with time zone',
     name: 'synced_on',
-    default: new Date(),
   })
   syncedOn: Date;
 
