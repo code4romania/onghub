@@ -40,7 +40,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
       ></img>
       <div className="flex flex-col gap-4 w-full">
         <p className="font-titilliumBold sm:text-lg lg:text-xl text-md pt-2">{application.name}</p>
-        <p className="break-words Application__Card__Description sm:text-sm lg:text-base text-xs pb-3">
+        <p className="break-words Application__Card__Description sm:text-sm lg:text-base text-xs mb-3">
           {' '}
           {application.shortDescription}
         </p>
