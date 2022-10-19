@@ -142,6 +142,11 @@ export abstract class BaseDAO<T> {
           ...andWherQuery,
           ...intervalIntersection,
         };
+      } else {
+        // if there are more than 2 element we throw error
+        throw new Error(
+          'Cannot make range comparrison with more than 2 elements',
+        );
       }
     }
 

@@ -1,7 +1,9 @@
+import { InternalErrorException } from '@aws-sdk/client-cognito-identity-provider';
 import {
   BadRequestException,
   HttpException,
   Injectable,
+  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
@@ -270,30 +272,42 @@ export class PracticeProgramService {
   public async serachPracticePrograms(
     practiceProgramFilters: PracticeProgramFilterDto,
   ): Promise<Pagination<PracticeProgram>> {
-    const { faculties, domains, workingHours, ...restOfFilters } =
-      practiceProgramFilters;
+    try {
+      const { faculties, domains, workingHours, ...restOfFilters } =
+        practiceProgramFilters;
 
-    // 1. get onlt active practice programs and map correctly ids for domains and faculties
-    let paginationOptions: any = {
-      ...restOfFilters,
-      active: true,
-      faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
-      domains: domains?.length > 0 ? { id: In(domains) } : null,
-    };
-
-    // 2. set correct mappings for working hours
-    if (workingHours) {
-      paginationOptions = {
-        ...paginationOptions,
-        ...WorkingHoursParser[workingHours],
+      // 1. get onlt active practice programs and map correctly ids for domains and faculties
+      let paginationOptions: any = {
+        ...restOfFilters,
+        active: true,
+        faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
+        domains: domains?.length > 0 ? { id: In(domains) } : null,
       };
-    }
 
-    // 3. return all paginated practice programs with organizations
-    return this.practiceProgramRepository.getManyPaginated(
-      PRACTICE_PROGRAM_FILTER_CONFIG,
-      paginationOptions,
-    );
+      // 2. set correct mappings for working hours
+      if (workingHours) {
+        paginationOptions = {
+          ...paginationOptions,
+          ...WorkingHoursParser[workingHours],
+        };
+      }
+
+      // 3. return all paginated practice programs with organizations
+      return this.practiceProgramRepository.getManyPaginated(
+        PRACTICE_PROGRAM_FILTER_CONFIG,
+        paginationOptions,
+      );
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.SEARCH,
+      });
+
+      throw new InternalServerErrorException({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.SEARCH,
+      });
+    }
   }
 
   public async find(id: number): Promise<PracticeProgram> {
