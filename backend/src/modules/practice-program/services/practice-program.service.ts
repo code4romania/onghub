@@ -2,13 +2,18 @@ import {
   BadRequestException,
   HttpException,
   Injectable,
+  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
+import { WorkingHoursParser } from '../constants/parsers.constants';
+import { PRACTICE_PROGRAM_FILTER_CONFIG } from '../constants/practice-program-filter.config';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
+import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramRepository } from '../repositories/practice-program.repository';
@@ -261,6 +266,47 @@ export class PracticeProgramService {
     return this.practiceProgramRepository.getMany({
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
+  }
+
+  public async serachPracticePrograms(
+    practiceProgramFilters: PracticeProgramFilterDto,
+  ): Promise<Pagination<PracticeProgram>> {
+    try {
+      const { faculties, domains, workingHours, ...restOfFilters } =
+        practiceProgramFilters;
+
+      // 1. get onlt active practice programs and map correctly ids for domains and faculties
+      let paginationOptions: any = {
+        ...restOfFilters,
+        active: true,
+        faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
+        domains: domains?.length > 0 ? { id: In(domains) } : null,
+      };
+
+      // 2. set correct mappings for working hours
+      if (workingHours) {
+        paginationOptions = {
+          ...paginationOptions,
+          ...WorkingHoursParser[workingHours],
+        };
+      }
+
+      // 3. return all paginated practice programs with organizations
+      return this.practiceProgramRepository.getManyPaginated(
+        PRACTICE_PROGRAM_FILTER_CONFIG,
+        paginationOptions,
+      );
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.SEARCH,
+      });
+
+      throw new InternalServerErrorException({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.SEARCH,
+      });
+    }
   }
 
   public async find(id: number): Promise<PracticeProgram> {

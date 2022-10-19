@@ -70,4 +70,7 @@ export class CreatePracticeProgramDto {
   @ArrayNotEmpty()
   @IsOptional()
   skills?: number[];
+
+  @IsNumber()
+  organizationId: number;
 }
