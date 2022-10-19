@@ -22,7 +22,7 @@ export class PracticeProgramService {
   ) {}
 
   public async create(
-    CreatePracticeProgramDto: CreatePracticeProgramDto,
+    createPracticeProgramDto: CreatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     try {
       const {
@@ -31,7 +31,7 @@ export class PracticeProgramService {
         faculties: facultiesIds,
         skills: skillsIds,
         ...practiceProgramPayload
-      } = CreatePracticeProgramDto;
+      } = createPracticeProgramDto;
 
       // 1. get location
       const location = await this.nomenclatureService.getCities({
@@ -230,7 +230,7 @@ export class PracticeProgramService {
         ? null
         : practiceProgramPayload.endDate || practiceProgram.endDate;
 
-      // 9. udpate practice program
+      // 9. update practice program
       return this.practiceProgramRepository.save({
         ...practiceProgram,
         ...practiceProgramPayload,
