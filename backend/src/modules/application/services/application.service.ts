@@ -53,6 +53,7 @@ import { UserOngApplicationService } from './user-ong-application.service';
 import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
 import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
+import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 
 @Injectable()
 export class ApplicationService {
@@ -61,6 +62,7 @@ export class ApplicationService {
     private readonly applicationRepository: ApplicationRepository,
     private readonly applicationOngViewRepository: ApplicationOngViewRepository,
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
+    private readonly applicationRequestRepository: ApplicationRequestRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly userOngApplicationService: UserOngApplicationService,
     private readonly fileManagerService: FileManagerService,
@@ -507,7 +509,24 @@ export class ApplicationService {
         });
       }
 
-      // 3. Remove tha actual application
+      // 3. check if there are any application request for this app
+      const applicationRequests =
+        await this.applicationRequestRepository.getMany({
+          where: { applicationId: id },
+        });
+
+      // 4. remove all requests for this app
+      if (applicationRequests.length > 0) {
+        // map requests ids for easy usage
+        const applicationRequestIds = applicationRequests.map((req) => req.id);
+
+        // 4.1 remove all requests
+        await this.applicationRequestRepository.remove({
+          where: { id: In(applicationRequestIds) },
+        });
+      }
+
+      // 5. Remove tha actual application
       await this.applicationRepository.remove({ where: { id } });
     } catch (error) {
       this.logger.error({ error, ...APPLICATION_ERRORS.DELETE });
