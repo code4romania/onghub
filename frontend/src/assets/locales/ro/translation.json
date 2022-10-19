@@ -950,7 +950,8 @@
     "users": "Utilizatori",
     "store": "Toate aplicatiile",
     "organizations": "ONG-uri",
-    "requests": "Solicitari Acces"
+    "requests": "Solicitari Acces",
+    "practicePrograms": "Programe de Practica"
   },
   "dashboard": {
     "title": "Dashboard",
