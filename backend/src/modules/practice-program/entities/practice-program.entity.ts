@@ -74,7 +74,7 @@ export class PracticeProgram extends BaseEntity {
 
   @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
-    name: 'practive_program_to_domain',
+    name: 'practice_program_to_domain',
     joinColumn: {
       name: 'practice_program_id',
       referencedColumnName: 'id',
@@ -85,7 +85,7 @@ export class PracticeProgram extends BaseEntity {
 
   @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
-    name: 'practive_program_to_faculty',
+    name: 'practice_program_to_faculty',
     joinColumn: {
       name: 'practice_program_id',
       referencedColumnName: 'id',
@@ -96,7 +96,7 @@ export class PracticeProgram extends BaseEntity {
 
   @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
-    name: 'practive_program_to_skill',
+    name: 'practice_program_to_skill',
     joinColumn: {
       name: 'practice_program_id',
       referencedColumnName: 'id',
