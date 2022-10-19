@@ -1,9 +1,8 @@
 import {
   Body,
   Controller,
-  Get,
+  HttpCode,
   Post,
-  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
@@ -28,6 +27,7 @@ export class PublicAPIController {
 
   @Public()
   @UseInterceptors(HMACVerificationInterceptor)
+  @HttpCode(200)
   @Post('/hasAccess')
   async check(
     @Body() { applicationClientId, userId }: HasAccessDTO,

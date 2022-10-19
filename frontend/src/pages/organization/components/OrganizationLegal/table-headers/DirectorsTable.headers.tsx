@@ -15,6 +15,7 @@ export const DirectorsTableHeaders: TableColumn<Contact>[] = [
     name: translations.name,
     selector: (row: Contact) => row.fullName,
     sortable: true,
+    minWidth: '10rem',
     grow: 1,
   },
   {
@@ -22,6 +23,7 @@ export const DirectorsTableHeaders: TableColumn<Contact>[] = [
     name: translations.email,
     selector: (row: Contact) => row.email,
     grow: 1,
+    minWidth: '15rem',
     sortable: true,
   },
   {
@@ -29,6 +31,7 @@ export const DirectorsTableHeaders: TableColumn<Contact>[] = [
     name: translations.phone,
     selector: (row: Contact) => row.phone,
     grow: 1,
+    minWidth: '10rem',
     sortable: true,
   },
 ];

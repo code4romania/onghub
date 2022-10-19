@@ -48,7 +48,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
           <Popover.Button
             className={classNames(
               open ? 'text-gray-900' : 'text-gray-500',
-              'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none',
+              'group bg-white rounded-md inline-flex items-center sm:text-sm lg:text-base text-xs font-medium hover:text-gray-900 focus:outline-none',
             )}
           >
             <DotsVerticalIcon
@@ -68,7 +68,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute z-10 left-1 transform -translate-x-3/4 mt-2 px-0 w-56 max-w-sm">
+            <Popover.Panel className="absolute z-10 left-1 transform -translate-x-52 mt-2 px-0 w-56 max-w-sm">
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="relative grid gap-4 bg-white py-4 px-5">
                   {menuItems.map((item) => (

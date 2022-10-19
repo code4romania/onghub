@@ -10,12 +10,16 @@ import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { useSelectedOrganization } from '../../store/selectors';
+import Select from '../../components/Select/Select';
 
 const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState<{ id: number; name: string } | null>({
+    id: 0,
+    name: ORGANIZATION_EXTENDED_TABS.find((item) => item.id === 0)?.name || '',
+  });
   const { t } = useTranslation('organization');
 
   // TODO: Load nomenclature data on app init
@@ -31,7 +35,7 @@ const Organization = () => {
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
-      setSelectedTab(found.id);
+      setSelectedTab({ id: found.id, name: found.name });
     }
   }, []);
 
@@ -40,7 +44,7 @@ const Organization = () => {
   }, [error]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab(tab.id);
+    setSelectedTab({ id: tab.id, name: tab.name });
     navigate(tab.href);
   };
 
@@ -57,9 +61,9 @@ const Organization = () => {
         onBtnClick: onBackButtonPress,
       }}
     >
-      <div className="-mt-6 pb-6 flex">
+      <div className="pb-6 flex">
         <nav
-          className="flex pt-6 flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
+          className="lg:flex hidden xs:pt-6 pt-0 flex-col flex-wrap space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
         >
           {ORGANIZATION_EXTENDED_TABS.map((tab) => (
@@ -67,16 +71,27 @@ const Organization = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                selectedTab === tab.id
+                selectedTab?.id === tab.id
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
+                'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
               )}
             >
               {tab.name}
             </a>
           ))}
         </nav>
+        <span className="lg:hidden block w-full max-w-sm">
+          <Select
+            config={{
+              label: '',
+              collection: ORGANIZATION_EXTENDED_TABS,
+              displayedAttribute: 'name',
+            }}
+            selected={selectedTab}
+            onChange={onTabClick}
+          />
+        </span>
       </div>
       <Outlet />
     </ContentWrapper>

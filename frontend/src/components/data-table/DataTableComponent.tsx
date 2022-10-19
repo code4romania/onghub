@@ -38,7 +38,7 @@ const DataTableComponent = ({
   return (
     <div
       className={classNames(
-        !loading && data.length > 0 ? 'border-b border-gray-200' : '',
+        !loading && data.length > 0 ? 'border-gray-200' : '',
         'rdt_TableWrapper',
       )}
     >

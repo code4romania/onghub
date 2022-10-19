@@ -16,7 +16,7 @@ const StatusBadge = ({ status, value }: StatusBadgeProps) => {
   return (
     <span
       className={classNames(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full sm:text-sm text-xs font-medium',
         status === BadgeStatus.SUCCESS ? 'bg-green-100 text-green-800' : '',
         status === BadgeStatus.ERROR ? 'bg-red-100 text-red-800' : '',
         status === BadgeStatus.WARNING ? 'bg-yellow-100 text-yellow-800' : '',

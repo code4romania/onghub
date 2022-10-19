@@ -71,7 +71,7 @@ const ExpenseReportModal = ({
         </Transition.Child>
 
         <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+          <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -82,7 +82,7 @@ const ExpenseReportModal = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative bg-white rounded-lg p-6 sm:p-10 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-3xl sm:w-full">
-                <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
+                <div className="absolute top-0 right-0 pt-4 pr-4">
                   <button
                     type="button"
                     className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -94,52 +94,55 @@ const ExpenseReportModal = ({
                 </div>
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
-                    <Dialog.Title as="h3" className="text-xl leading-6 font-bold text-gray-900">
+                    <Dialog.Title
+                      as="h3"
+                      className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900"
+                    >
                       {`${t('modal.expense_report')} ${year}`}
                     </Dialog.Title>
                     <div className="mt-4">
-                      <p className="text-base text-gray-500">
+                      <p className="sm:text-sm lg:text-base text-xs text-gray-500">
                         {t('information', { ns: 'common' })}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-6 flex flex-row-reverse">
-                  <span className="text-xl text-gray-900 font-bold leading-6">{`${formatCurrency(
+                  <span className="sm:text-lg lg:text-xl text-md text-gray-900 font-bold leading-6">{`${formatCurrency(
                     total,
                   )} RON`}</span>
-                  <span className="text-xl text-gray-400 font-normal leading-6 px-3">
+                  <span className="sm:text-lg lg:text-xl text-md text-gray-400 font-normal leading-6 px-3">
                     {t('modal.expense')}
                   </span>
                 </div>
                 <a
                   href={`https://webservicesp.anaf.ro/bilant?an=${year}&cui=${organizationGeneral?.cui}`}
                   target="_blank"
-                  className="mt-4 text-base leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
+                  className="mt-4 sm:text-sm lg:text-base text-xs leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
                   rel="noreferrer"
                 >
                   <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
                   {t('modal.anaf')}
                 </a>
-                <form>
+                <form className="overflow-scroll">
                   <table className="min-w-full divide-y divide-gray-300 mt-8">
                     <thead className="bg-gray-100">
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left font-titilliumBold text-sm font-bold text-gray-800 sm:pl-6"
+                          className="py-3.5 pl-4 pr-3 text-left font-titilliumBold sm:text-sm lg:text-base text-xs font-bold text-gray-800 sm:pl-6"
                         >
                           {t('modal.category_expense')}
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left font-titilliumBold text-sm font-bold text-gray-800"
+                          className="px-3 py-3.5 text-left font-titilliumBold sm:text-sm lg:text-base text-xs font-bold text-gray-800"
                         >
                           {t('modal.sum')}
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 overflow-scroll">
                       {Object.getOwnPropertyNames(ExpenseReportConfig).map((name) => (
                         <Controller
                           key={ExpenseReportConfig[name].key}
@@ -166,10 +169,10 @@ const ExpenseReportModal = ({
                         />
                       ))}
                       <tr>
-                        <td className="whitespace-nowrap py-7 pl-4 pr-3 text-base font-bold text-gray-700 sm:pl-6">
+                        <td className="whitespace-nowrap py-7 pl-4 pr-3 sm:text-sm lg:text-base text-xs font-bold text-gray-700 sm:pl-6">
                           {t('modal.defalcat')}
                         </td>
-                        <td className="whitespace-nowrap py-4 px-3 text-base font-bold ">
+                        <td className="whitespace-nowrap py-4 px-3 sm:text-sm lg:text-base text-xs font-bold ">
                           {`${totalDefalcat} `}
                           {totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
@@ -192,14 +195,14 @@ const ExpenseReportModal = ({
                     <>
                       <button
                         type="button"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 sm:text-sm lg:text-base text-xs font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto"
                         onClick={handleSubmit(onSave)}
                       >
                         {t('modal.save', { ns: 'organization' })}
                       </button>
                       <button
                         type="button"
-                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
                         onClick={() => onClose()}
                       >
                         {t('modal.cancel', { ns: 'organization' })}
@@ -209,7 +212,7 @@ const ExpenseReportModal = ({
                   {isReadonly && role !== UserRole.EMPLOYEE && (
                     <button
                       type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 sm:text-sm lg:text-base text-xs font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto"
                       onClick={() => {
                         setIsReadonly(false);
                       }}

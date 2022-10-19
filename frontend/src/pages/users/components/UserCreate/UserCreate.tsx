@@ -88,8 +88,8 @@ const UserCreate = () => {
           loading={createUserMutation.isLoading}
           onSave={handleSubmit(onSubmit)}
         >
-          <form className="xl:w-1/2 flex flex-col gap-y-4 pb-20">
-            <div className="flex gap-x-6">
+          <form className="xl:w-1/2 flex flex-col gap-y-4">
+            <div className="flex gap-x-6 sm:flex-row flex-col">
               <div className="flex-1">
                 <Controller
                   key={UserCreateConfig.name.key}
@@ -113,7 +113,7 @@ const UserCreate = () => {
               </div>
               <div className="flex-1" />
             </div>
-            <div className="flex gap-x-6">
+            <div className="flex gap-x-6 gap-y-4 sm:flex-row flex-col">
               <Controller
                 key={UserCreateConfig.email.key}
                 name={UserCreateConfig.email.key}

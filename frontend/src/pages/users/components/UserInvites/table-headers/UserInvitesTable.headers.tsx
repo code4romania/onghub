@@ -16,24 +16,28 @@ export const UserInvitesTableHeaders: TableColumn<IInvite>[] = [
     id: 'name',
     name: translations.name,
     sortable: true,
+    minWidth: '10rem',
     selector: (row: IInvite) => row.name,
   },
   {
     id: 'email',
     name: translations.email,
     sortable: true,
+    minWidth: '15rem',
     selector: (row: IInvite) => row.email,
   },
   {
     id: 'phone',
     name: translations.phone,
     sortable: true,
+    minWidth: '10rem',
     selector: (row: IInvite) => row.phone,
   },
   {
     id: 'createdOn',
     name: translations.added_on,
     sortable: true,
+    minWidth: '10rem',
     selector: (row: IInvite) => formatDate(row?.createdOn),
   },
 ];
