@@ -156,16 +156,21 @@ const OrganizationActivity = () => {
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
+      <div className="py-5 lg:px-10 px-5 flex justify-between items-center">
+        <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
+          {t('title')}
+        </span>
 
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"
-            className={classNames(readonly ? 'edit-button' : 'save-button')}
+            className={classNames(
+              readonly ? 'edit-button' : 'save-button',
+              'sm:text-sm lg:text-base text-xs',
+            )}
             onClick={readonly ? startEdit : handleSubmit(handleSave)}
           >
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
           </button>
         )}
@@ -173,12 +178,16 @@ const OrganizationActivity = () => {
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
-        <div className="flex flex-col gap-4 ">
-          <div>
-            <span className="text-xl font-bold text-gray-900">{t('domains')}</span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+        <div className="flex flex-col gap-4">
+          <div className="pb-5">
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('domains')}
+            </span>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <Controller
             key={OrganizationActivityConfig.domains.key}
@@ -252,11 +261,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="text-xl font-bold text-gray-900">{t('fed_coal')}</span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+          <div className="pb-5">
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('fed_coal')}
+            </span>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}
@@ -349,11 +362,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="text-xl font-bold text-gray-900">{t('branches')}</span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+          <div className="pb-5">
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('branches')}
+            </span>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}
@@ -387,11 +404,15 @@ const OrganizationActivity = () => {
           )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="text-xl font-bold text-gray-900">{t('other')}</span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+          <div className="pb-5">
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('other')}
+            </span>
+            {!readonly && (
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <RadioGroup
             control={control}

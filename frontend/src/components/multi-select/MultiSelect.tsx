@@ -33,7 +33,10 @@ const MultiSelect = ({
   return (
     <div>
       {label && (
-        <label htmlFor="email" className="block text-base font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
+        >
           {label}
         </label>
       )}
@@ -63,7 +66,7 @@ const MultiSelect = ({
           id={id}
         />
       )}
-      {!error && helperText && (
+      {!error && !readonly && helperText && (
         <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
           {helperText}
         </p>

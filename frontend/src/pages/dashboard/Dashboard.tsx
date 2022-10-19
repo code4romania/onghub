@@ -64,7 +64,9 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <p className="text-gray-800 font-titilliumBold text-3xl">{t('about')}</p>
+            <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+              {t('about')}
+            </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <StatisticsCard
                 stat={{

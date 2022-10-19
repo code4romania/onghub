@@ -67,11 +67,17 @@ const AddApplication = () => {
       backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/store') }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
-        <div className="py-5 px-10 flex justify-between">
-          <span className="font-titilliumBold text-xl text-gray-800">{t('create.generate')}</span>
+        <div className="py-5 sm:px-10 px-5 flex justify-between">
+          <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 self-center">
+            {t('create.generate')}
+          </span>
 
-          <button type="button" className="save-button" onClick={handleSubmit(onSubmit)}>
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+          <button
+            type="button"
+            className="save-button sm:text-sm lg:text-base text-xs"
+            onClick={handleSubmit(onSubmit)}
+          >
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {t('save', { ns: 'common' })}
           </button>
         </div>

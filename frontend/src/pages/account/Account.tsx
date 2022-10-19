@@ -66,8 +66,12 @@ const Account = () => {
     <div>
       <div className="flex items-start justify-between pt-1 pr-1 pb-6">
         <div className="flex flex-col">
-          <p className="text-gray-800 font-titilliumBold text-3xl">{t('my_account')}</p>
-          <p className="text-gray-400 pt-6">{t('account_description')}</p>
+          <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+            {t('my_account')}
+          </p>
+          <p className="text-gray-400 sm:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+            {t('account_description')}
+          </p>
         </div>
         {role === UserRole.EMPLOYEE && (
           <button
@@ -81,9 +85,9 @@ const Account = () => {
           </button>
         )}
       </div>
-      <div className="w-full bg-white shadow rounded-lg ">
-        <div className="py-5 px-10 flex justify-between align-center">
-          <span className="font-titilliumBold text-xl text-gray-800 flex items-center">
+      <div className="w-full bg-white shadow rounded-lg">
+        <div className="py-5 lg:px-10 px-5 flex justify-between align-center">
+          <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 flex items-center">
             {t('settings')}
           </span>
           <div className="flex gap-4">
@@ -102,7 +106,10 @@ const Account = () => {
 
             <button
               type="button"
-              className={classNames(readonly ? 'edit-button' : 'save-button')}
+              className={classNames(
+                readonly ? 'edit-button' : 'save-button',
+                'sm:text-sm lg:text-base text-xs',
+              )}
               onClick={readonly ? startChangePassword : handleSubmit(onChangePassword)}
             >
               {readonly ? t('change_password') : t('save', { ns: 'common' })}
@@ -112,22 +119,26 @@ const Account = () => {
 
         <div className="w-full border-t border-gray-300" />
         {readonly && (
-          <div className="p-5 sm:p-10 flex flex-col">
-            <span>{t('settings_description')}</span>
+          <div className="p-5 lg:p-10 flex flex-col">
+            <span className="sm:text-sm lg:text-base text-xs">{t('settings_description')}</span>
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex flex-col gap-2">
-                <span className="text-gray-700">{t('name')}</span>
-                <span className="text-gray-800 font-titilliumBold">{profile?.name}</span>
+                <span className="text-gray-700 sm:text-sm lg:text-base text-xs">{t('name')}</span>
+                <span className="text-gray-800 font-titilliumBold sm:text-sm lg:text-base text-xs">
+                  {profile?.name}
+                </span>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="text-gray-700">{t('email')}</span>
-                <span className="text-gray-800 font-titilliumBold">{profile?.email} </span>
+                <span className="text-gray-700 sm:text-sm lg:text-base text-xs">{t('email')}</span>
+                <span className="text-gray-800 font-titilliumBold sm:text-sm lg:text-base text-xs">
+                  {profile?.email}{' '}
+                </span>
               </div>
             </div>
           </div>
         )}
         {!readonly && (
-          <div className="p-5 sm:p-10 flex flex-col gap-4 xl:w-1/2 w-full">
+          <div className="p-5 lg:p-10 flex flex-col gap-4 xl:w-1/2 w-full">
             <div className="flex gap-4 w-full">
               <Controller
                 key={AccountConfig.oldPassword.key}

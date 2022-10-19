@@ -235,7 +235,7 @@ const CreateOrganizationLegal = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="p-5 sm:p-10">
-        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide xl:w-1/2">
+        <div className="flex flex-col sm:gap-16 gap-4 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
@@ -281,7 +281,7 @@ const CreateOrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}
@@ -299,7 +299,7 @@ const CreateOrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsOtherModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}
@@ -390,7 +390,7 @@ const CreateOrganizationLegal = () => {
           <button
             id="create-organization-legal__button-send"
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
             onClick={handleSubmit(handleSave)}
           >
             {t('send', { ns: 'common' })}
@@ -398,7 +398,7 @@ const CreateOrganizationLegal = () => {
           <button
             id="create-organization-legal__button-back"
             type="button"
-            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
             onClick={() => navigate('/new/activity')}
           >
             {t('back', { ns: 'common' })}

@@ -257,12 +257,17 @@ const OrganizationLegal = () => {
 
   return (
     <div className="w-full bg-white shadow rounded-lg">
-      <div className="py-5 px-10 flex justify-between">
-        <span className="font-titilliumBold text-xl text-gray-800">{t('title')}</span>
+      <div className="py-5 lg:px-10 px-5 flex justify-between items-center">
+        <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
+          {t('title')}
+        </span>
         {role !== UserRole.EMPLOYEE && (
           <button
             type="button"
-            className={classNames(isEditMode ? 'save-button' : 'edit-button')}
+            className={classNames(
+              isEditMode ? 'save-button' : 'edit-button',
+              'sm:text-sm lg:text-base text-xs',
+            )}
             onClick={
               !isEditMode
                 ? setEditMode.bind(null, true)
@@ -271,7 +276,7 @@ const OrganizationLegal = () => {
                   }
             }
           >
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {isEditMode ? t('save', { ns: 'common' }) : t('edit', { ns: 'common' })}
           </button>
         )}
@@ -279,7 +284,7 @@ const OrganizationLegal = () => {
 
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 sm:p-10">
-        <div className="flex flex-col gap-16 w-full divide-y divide-gray-200 divide">
+        <div className="flex flex-col sm:gap-16 gap-4 w-full divide-y divide-gray-200 divide">
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
@@ -287,7 +292,7 @@ const OrganizationLegal = () => {
             />
             <form className="space-y-8">
               <ContactForm
-                className="flex-row gap-x-6"
+                className="lg:flex-row flex-col gap-x-6 gap-y-3"
                 control={control}
                 errors={errors}
                 readonly={!isEditMode}
@@ -323,7 +328,7 @@ const OrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}
@@ -340,7 +345,7 @@ const OrganizationLegal = () => {
                 className="add-button max-w-[12rem]"
                 onClick={setIsOtherModalOpen.bind(null, true)}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('add')}
               </button>
             )}

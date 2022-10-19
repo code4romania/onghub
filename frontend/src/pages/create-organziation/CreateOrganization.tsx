@@ -115,7 +115,9 @@ const CreateOrganization = () => {
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <CheckCircleIcon className="fill-green w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">{t('create.congratulations')}</span>
+                <span className="font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+                  {t('create.congratulations')}
+                </span>
               </div>
               <p className="leading-6">{t('create.success')}</p>
             </div>
@@ -124,13 +126,15 @@ const CreateOrganization = () => {
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1 flex flex-col gap-4">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <ExclamationCircleIcon className="fill-red-600 w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">{t('error', { ns: 'common' })}</span>
+                <span className="font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+                  {t('error', { ns: 'common' })}
+                </span>
               </div>
               <p className="leading-6">{error || t('wrong', { ns: 'common' })}</p>
               <button
                 id="create-organization__button-reset"
                 type="button"
-                className="mt-4 w-48 flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0  sm:text-sm"
+                className="mt-4 w-48 flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0  sm:text-sm"
                 onClick={reset}
               >
                 {t('create.again')}

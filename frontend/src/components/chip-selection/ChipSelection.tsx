@@ -87,7 +87,11 @@ const ChipSelection = ({
         ))}
       </div>
       <div
-        className={classNames(error ? 'text-red-500' : 'text-gray-500', 'form-item-helper-text')}
+        className={classNames(
+          error ? 'text-red-500' : 'text-gray-500',
+          'form-item-helper-text',
+          readonly ? 'hidden' : 'block',
+        )}
       >
         {error || helperText}
       </div>

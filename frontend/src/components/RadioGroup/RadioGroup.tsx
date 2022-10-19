@@ -14,7 +14,9 @@ const RadioGroup = (props: {
 }) => {
   return (
     <div>
-      <span className="flex text-normal text-gray-700 font-normal mb-2">{props.config.label}</span>
+      <span className="flex sm:text-sm lg:text-base text-xs text-gray-700 font-normal mb-2 ">
+        {props.config.label}
+      </span>
       <Controller
         name={props.config.key}
         rules={props.config.rules}
@@ -46,13 +48,13 @@ const RadioGroup = (props: {
           );
         }}
       />
-      {!props.errors && (
-        <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+      {!props.errors && !props.readonly && (
+        <p className="mt-1 sm:text-sm text-xs text-gray-500 font-normal" id="email-description">
           {props.config.helperText}
         </p>
       )}
       {!props.readonly && props.errors && (
-        <p className="mt-1 text-sm text-red-600" id={`${props.id}__error`}>
+        <p className="mt-1 sm:text-sm text-xs text-red-600" id={`${props.id}__error`}>
           {props.errors.message}
         </p>
       )}

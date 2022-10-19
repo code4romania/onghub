@@ -16,6 +16,22 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import { useTranslation } from 'react-i18next';
 
+export const getNavigationRoutes = (role: UserRole) => {
+  let routes = EMPLOYEE_ROUTES;
+  switch (role) {
+    case UserRole.ADMIN:
+      routes = ADMIN_ROUTES;
+      break;
+    case UserRole.SUPER_ADMIN:
+      routes = SUPER_ADMIN_ROUTES;
+      break;
+    default:
+      routes = EMPLOYEE_ROUTES;
+  }
+
+  return routes;
+};
+
 const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,22 +49,6 @@ const Menu = () => {
     }
   }, [location.pathname]);
 
-  const getNavigationRoutes = (role: UserRole) => {
-    let routes = EMPLOYEE_ROUTES;
-    switch (role) {
-      case UserRole.ADMIN:
-        routes = ADMIN_ROUTES;
-        break;
-      case UserRole.SUPER_ADMIN:
-        routes = SUPER_ADMIN_ROUTES;
-        break;
-      default:
-        routes = EMPLOYEE_ROUTES;
-    }
-
-    return routes;
-  };
-
   const handleMenuItemClick = (item: any) => {
     setCurrentMenuItemId(item.id);
     navigate(`${item.href}`);
@@ -59,7 +59,7 @@ const Menu = () => {
       <nav
         className={classNames(
           isNarrow ? 'w-[5.5rem]' : 'w-[16.5rem]',
-          'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none',
+          'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none h-fit sticky top-5',
         )}
         aria-label="Sidebar"
       >

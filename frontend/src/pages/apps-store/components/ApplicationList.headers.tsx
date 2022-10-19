@@ -23,6 +23,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: true,
     sortField: 'name',
     grow: 3,
+    minWidth: '15rem',
     cell: (row: Application) => <NameWithLogo logo={row.logo} name={row.name} />,
   },
   {
@@ -30,6 +31,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: true,
     name: 'Numar ONGuri',
     grow: 1,
+    minWidth: '10rem',
     selector: (row: Application) =>
       row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.organizationCount,
   },
@@ -46,6 +48,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: false,
     name: translations.type,
     grow: 2,
+    minWidth: '15rem',
     selector: (row: Application) => ApplicationTypeNaming[row.type],
   },
   {
@@ -53,6 +56,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     sortable: true,
     sortField: 'status',
     name: translations.status,
+    minWidth: '7rem',
     cell: (row: Application) => (
       <StatusBadge
         status={ApplicationStatusBadgeMapper(row.status)}

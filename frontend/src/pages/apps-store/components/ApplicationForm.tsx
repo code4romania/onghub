@@ -25,11 +25,11 @@ interface ApplicationFormProps {
   file: File | null;
   setFile: (file: File) => void;
   logo?: string | null;
-  isEditApplication?: boolean;
+  readonly?: boolean;
 }
 
 const ApplicationForm = ({
-  isEditApplication,
+  readonly,
   control,
   errors,
   watch,
@@ -82,7 +82,7 @@ const ApplicationForm = ({
                 );
               }}
             />
-            {!isEditApplication && (
+            {!readonly && (
               <RadioGroup control={control} errors={errors.type} config={AddAppConfig.type} />
             )}
             <Controller
@@ -205,7 +205,10 @@ const ApplicationForm = ({
           </div>
           {/*  Logo */}
           <div className="sm:col-span-6 gap-4 flex flex-col">
-            <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
+            <label
+              htmlFor="photo"
+              className="block sm:text-sm lg:text-base text-xs font-normal text-gray-700"
+            >
               {t('form.logo')}
             </label>
 
@@ -240,9 +243,11 @@ const ApplicationForm = ({
                 />
               </>
             </div>
-            <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-              {t('form.upload_description')}
-            </p>
+            {!readonly && (
+              <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                {t('form.upload_description')}
+              </p>
+            )}
           </div>
           {/* End Logo */}
           <div className="flex flex-col gap-4 pt-4">
@@ -277,25 +282,25 @@ const ApplicationForm = ({
                 </div>
               );
             })}
-            <div className="flex gap-4">
+            <div className="flex gap-4 sm:flex-row flex-col">
               <button
-                className="save-button"
+                className="save-button sm:text-sm lg:text-base text-xs"
                 onClick={(e: any) => {
                   e.preventDefault();
                   append({ item: '' });
                 }}
               >
-                <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('form.more_steps')}
               </button>
               <button
-                className="add-button"
+                className="add-button sm:text-sm lg:text-base text-xs"
                 onClick={(e: any) => {
                   e.preventDefault();
                   remove(fields.length - 1);
                 }}
               >
-                <XIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                <XIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                 {t('form.delete_step')}
               </button>
             </div>
