@@ -6,7 +6,6 @@ import {
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
-  mapSelectToValue,
   str2bool,
 } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
@@ -75,11 +74,11 @@ const CreateOrganizationActivity = () => {
       hasBranches: str2bool(data.hasBranches),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
 
-      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
-      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
-      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
-      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
-      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
+      branches: data.branches ? data.branches : [],
+      cities: data.cities ? data.cities : [],
+      regions: data.regions ? data.regions : [],
+      coalitions: data.coalitions ? data.coalitions : [],
+      federations: data.federations ? data.federations : [],
     };
 
     setOrganization((org: any) => ({ ...org, activity }));
@@ -92,6 +91,14 @@ const CreateOrganizationActivity = () => {
     if (organization && organization.activity) {
       reset({
         ...organization.activity,
+        isPartOfFederation: organization.activity.isPartOfFederation.toString(),
+        isPartOfCoalition: organization.activity.isPartOfCoalition.toString(),
+        isPartOfInternationalOrganization:
+          organization.activity.isPartOfInternationalOrganization.toString(),
+        isSocialServiceViable: organization.activity.isSocialServiceViable.toString(),
+        offersGrants: organization.activity.offersGrants.toString(),
+        hasBranches: organization.activity.hasBranches.toString(),
+        isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization.toString(),
       });
     }
   }, [organization]);

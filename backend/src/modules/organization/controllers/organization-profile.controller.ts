@@ -18,6 +18,7 @@ import {
   ApiParam,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { FormDataBody } from 'src/common/decorators/form-data-body.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ExtractUser } from '../../user/decorators/user.decorator';
@@ -59,7 +60,7 @@ export class OrganizationProfileController {
   @Patch()
   update(
     @ExtractUser() user: User,
-    @Body() updateOrganizationDto: UpdateOrganizationDto,
+    @FormDataBody() updateOrganizationDto: UpdateOrganizationDto,
     @UploadedFiles()
     {
       logo,

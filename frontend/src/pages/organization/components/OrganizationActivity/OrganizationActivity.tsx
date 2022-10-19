@@ -121,6 +121,14 @@ const OrganizationActivity = () => {
         : [];
       reset({
         ...organizationActivity,
+        isPartOfFederation: organizationActivity.isPartOfFederation.toString(),
+        isPartOfCoalition: organizationActivity.isPartOfCoalition.toString(),
+        isPartOfInternationalOrganization:
+          organizationActivity.isPartOfInternationalOrganization.toString(),
+        isSocialServiceViable: organizationActivity.isSocialServiceViable.toString(),
+        offersGrants: organizationActivity.offersGrants.toString(),
+        hasBranches: organizationActivity.hasBranches.toString(),
+        isPublicIntrestOrganization: organizationActivity.isPublicIntrestOrganization.toString(),
         domains,
         cities,
         branches,

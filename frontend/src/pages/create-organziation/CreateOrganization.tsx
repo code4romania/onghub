@@ -2,6 +2,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
+import { mapSelectToValue } from '../../common/helpers/format.helper';
 import Header from '../../components/Header/Header';
 import { Loading } from '../../components/loading/Loading';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
@@ -59,9 +60,20 @@ const CreateOrganization = () => {
       organization.general &&
       organization.activity &&
       organization.legal
-    )
+    ) {
+      // parse and map activity id's correctly
+      let { activity } = organization;
+      activity = {
+        ...activity,
+        branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
+        cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
+        regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
+        coalitions: activity.coalitions ? [...activity.coalitions.map(mapSelectToValue)] : [],
+        federations: activity.federations ? [...activity.federations.map(mapSelectToValue)] : [],
+      };
+
       await mutateRequest(
-        { organization, logo, organizationStatute },
+        { organization: { ...organization, activity }, logo, organizationStatute },
         {
           onSuccess: () => {
             localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
@@ -69,6 +81,7 @@ const CreateOrganization = () => {
           },
         },
       );
+    }
   };
 
   const reset = () => {
