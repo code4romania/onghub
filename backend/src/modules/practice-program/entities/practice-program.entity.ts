@@ -50,7 +50,7 @@ export class PracticeProgram extends BaseEntity {
   })
   endDate: Date;
 
-  @Column({ type: 'boolean', name: 'is_period_not_determined' })
+  @Column({ type: 'boolean', name: 'is_period_not_determined', default: false })
   isPeriodNotDetermined: boolean;
 
   @Column({ type: 'integer', name: 'min_working_hours' })
@@ -62,6 +62,7 @@ export class PracticeProgram extends BaseEntity {
   @Column({
     type: 'varchar',
     name: 'link',
+    nullable: true,
   })
   link: string;
 

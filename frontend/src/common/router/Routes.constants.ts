@@ -13,7 +13,7 @@ const translations = {
   apps: i18n.t('routes:apps'),
   users: i18n.t('routes:users'),
   store: i18n.t('routes:store'),
-  practiceProgram: i18n.t('routes:practicePrograms'),
+  practiceProgram: i18n.t('routes:practice_programs'),
   organizations: i18n.t('routes:organizations'),
   requests: i18n.t('routes:requests'),
 };

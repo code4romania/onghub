@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useEffect, useState } from 'react';
-import { classNames } from '../../common/helpers/tailwind.helper';
-import Select from 'react-select';
+import React from 'react';
 import AsyncSelect from 'react-select/async';
 import debounce from 'debounce-promise';
 import './ServerSelect.css';
@@ -9,13 +7,13 @@ import { Chip } from '../chip-selection/ChipSelection';
 
 export interface ServerSelectConfig {
   label: string;
-  isMulti: boolean;
+  isMulti?: boolean;
   helperText?: string;
   error?: string;
   placeholder?: string;
   isClearable?: boolean;
   value: any[];
-  readonly: boolean;
+  readonly?: boolean;
   onChange: any;
   loadOptions: any;
   id?: string;

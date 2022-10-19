@@ -951,7 +951,7 @@
     "store": "Toate aplicatiile",
     "organizations": "ONG-uri",
     "requests": "Solicitari Acces",
-    "practicePrograms": "Programe de Practica"
+    "practice_programs": "Programe de Practica"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -989,5 +989,83 @@
     },
     "activity_title": "Organizație activă în ONG Hub din",
     "last_updated_on": "Ultima actualizare de date"
+  },
+  "practice_program": {
+    "add": {
+      "title": "Adauga program de practica",
+      "card_title": "Descriere Program"
+    },
+    "form": {
+      "title": {
+        "required": "Titlul programului este obligatoriu",
+        "min": "Titlul nu poate sa aiba mai putin de 3 caractere",
+        "max": "Titlul nu poate sa aiba mai mult de 50 caractere",
+        "pattern": "Titlul nu are formatul valid.",
+        "label": "Titlu program de practica*",
+        "helper": "",
+        "placeholder": "Program de Practica"
+      },
+      "location": {
+        "required": "Orasul este obligatoriu",
+        "label": "Oras*",
+        "helper": "",
+        "placeholder": "Bucuresti"
+      },
+      "deadline": {
+        "required": "Deadline aplicare este obligatoriu",
+        "label": "Deadline aplicare*",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "description": {
+        "required": "Descrierea este obligatorie",
+        "min": "Descrierea nu poate sa aiba mai putin de 3 caractere",
+        "max": "Descrierea nu poate sa aiba mai mult de 3000 caractere",
+        "pattern": "Descrierea nu are formatul valid.",
+        "label": "Descrierea program de practica*",
+        "helper": "",
+        "placeholder": "Lorem ipsum"
+      },
+      "start_date": {
+        "required": "Data inceput este oblicatorie",
+        "label": "Data inceput program de practica*",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "end_date": {
+        "label": "Data sfarsit program de practica*",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "is_period_not_determined": {
+        "label": "Perioada nedeterminata",
+        "helper": ""
+      },
+      "min_working_hours": {
+        "required": "Campul este obligatoriu",
+        "min": "Campul nu poate fi mai mic decat 0",
+        "label": "Numar ore (minim)",
+        "helper": "",
+        "placeholder": "0"
+      },
+      "max_working_hours": {
+        "required": "Campul este obligatoriu",
+        "min": "Campul nu poate fi mai mic decat 0",
+        "label": "Numar ore (maxim)",
+        "helper": "",
+        "placeholder": "0"
+      },
+      "link": {
+        "pattern": "Formatul link-ului este invalid.",
+        "label": "Link catre pagina de aplicare (button)",
+        "helper": "Adauga link-ul prin care oricine poate aplica la programul de practica",
+        "placeholder": "www.google.com"
+      },
+      "domains": {
+        "required": "Domeniul este obligatoriu",
+        "label": "Domenii*",
+        "helper": "Selecteaza minim un domeniu"
+      }
+    }
   }
 }

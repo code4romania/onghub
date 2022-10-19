@@ -51,6 +51,7 @@ export class CreatePracticeProgramDto {
   maxWorkingHours?: number;
 
   @IsString()
+  @IsOptional()
   @Matches(REGEX.LINK)
   link: string;
 
