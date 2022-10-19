@@ -18,5 +18,5 @@ export interface IPaginationConfig {
   defaultSortBy: string;
   defaultOrderDirection: OrderDirection;
   relations: any;
-  rangeColumn?: string | string[];
+  rangeColumn?: string | [string, string];
 }

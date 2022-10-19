@@ -126,10 +126,7 @@ export abstract class BaseDAO<T> {
       }
 
       // calculate range based on 2 columns, if rangecolumn comes as an array
-      if (
-        typeof config.rangeColumn === 'object' &&
-        config.rangeColumn.length === 2
-      ) {
+      if (typeof config.rangeColumn === 'object') {
         // build interval conditions
         const intervalIntersection = this.checkTwoIntervalIntersection(
           config.rangeColumn[0],
@@ -142,11 +139,6 @@ export abstract class BaseDAO<T> {
           ...andWherQuery,
           ...intervalIntersection,
         };
-      } else {
-        // if there are more than 2 element we throw error
-        throw new Error(
-          'Cannot make range comparrison with more than 2 elements',
-        );
       }
     }
 

@@ -1,4 +1,3 @@
-import { InternalErrorException } from '@aws-sdk/client-cognito-identity-provider';
 import {
   BadRequestException,
   HttpException,

@@ -80,5 +80,5 @@ export const PRACTICE_PROGRAM_FILTER_CONFIG = {
       },
     },
   },
-  rangeColumn: ['startDate', 'endDate'],
+  rangeColumn: ['startDate', 'endDate'] as [string, string],
 };
