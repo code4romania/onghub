@@ -65,7 +65,7 @@ export class PracticeProgramService {
         });
       }
 
-      // 5. check if undetermined flad and end date have correct values
+      // 5. check if undetermined flag and end date have correct values
       if (
         practiceProgramPayload.endDate &&
         practiceProgramPayload.isPeriodNotDetermined
@@ -183,7 +183,7 @@ export class PracticeProgramService {
         });
       }
 
-      // 6. check if undetermined flad and end date have correct values
+      // 6. check if undetermined flag and end date have correct values
       if (
         (practiceProgramPayload.endDate || practiceProgram.endDate) &&
         practiceProgramPayload.isPeriodNotDetermined
