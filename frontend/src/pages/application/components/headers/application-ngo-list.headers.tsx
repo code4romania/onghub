@@ -21,24 +21,32 @@ export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization
     id: 'name',
     name: translations.name,
     sortable: true,
+    grow: 2,
+    minWidth: '15rem',
     cell: (row: ApplicationOrganization) => <NameWithLogo name={row.name} logo={row.logo} />,
   },
   {
     id: 'userCount',
     name: translations.userCount,
     sortable: true,
+    grow: 1,
+    minWidth: '10rem',
     selector: (row: ApplicationOrganization) => row.userCount,
   },
   {
     id: 'createdOn',
     name: translations.createdOn,
     sortable: true,
+    grow: 1,
+    minWidth: '10rem',
     selector: (row: ApplicationOrganization) => formatDate(row.createdOn),
   },
   {
     id: 'status',
     sortable: true,
     sortField: 'status',
+    grow: 1,
+    minWidth: '10rem',
     name: translations.access,
     cell: (row: ApplicationOrganization) => (
       <StatusBadge

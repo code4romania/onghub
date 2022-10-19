@@ -4,6 +4,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import Select from '../../components/Select/Select';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { USERS_TABS } from './constants/Tabs.constants';
 import { UserRole } from './enums/UserRole.enum';
@@ -11,7 +12,10 @@ import { UserRole } from './enums/UserRole.enum';
 const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState<{ id: number; name: string } | null>({
+    id: 0,
+    name: USERS_TABS.find((item) => item.id === 0)?.name || '',
+  });
   const { role } = useAuthContext();
   const { t } = useTranslation('user');
 
@@ -21,12 +25,12 @@ const Users = () => {
       (tab) => tab.href === location.pathname.split('/')[2],
     );
     if (found) {
-      setSelectedTab(found.id);
+      setSelectedTab({ id: found.id, name: found.name });
     }
   }, []);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab(tab.id);
+    setSelectedTab({ id: tab.id, name: tab.name });
     navigate(tab.href);
   };
 
@@ -42,7 +46,7 @@ const Users = () => {
     >
       <div className="pb-6 flex">
         <nav
-          className="flex flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
+          className="lg:flex hidden flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
         >
           {USERS_TABS.map((tab) => (
@@ -50,16 +54,27 @@ const Users = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                tab.href === location.pathname.split('/')[2]
+                selectedTab?.id === tab.id
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md  text-xl px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
+                'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
               )}
             >
               {tab.name}
             </a>
           ))}
         </nav>
+        <span className="lg:hidden block w-full max-w-sm">
+          <Select
+            config={{
+              label: '',
+              collection: USERS_TABS,
+              displayedAttribute: 'name',
+            }}
+            selected={selectedTab}
+            onChange={onTabClick}
+          />
+        </span>
       </div>
       <Outlet />
     </ContentWrapper>

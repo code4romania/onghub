@@ -7,11 +7,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Public } from 'src/common/decorators/public.decorator';
+import { ILike } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
+import { FacultySearchDto } from '../dto/faculty-search.dto';
 import { NomenclaturesService } from '../services';
 
 @Public()
-@UseInterceptors(CacheInterceptor, ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)
 @Controller('nomenclatures')
 export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
@@ -44,5 +46,11 @@ export class NomenclaturesController {
   @Get('coalitions')
   getCoalitions() {
     return this.nomenclaturesService.getCoalitions({});
+  }
+
+  @Get('faculties')
+  getFaculties(@Query() { search }: FacultySearchDto) {
+    const options = search ? { where: { name: ILike(`%${search}%`) } } : {};
+    return this.nomenclaturesService.getFaculties(options);
   }
 }

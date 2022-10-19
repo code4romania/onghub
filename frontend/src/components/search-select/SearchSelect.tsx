@@ -82,14 +82,14 @@ const SearchSelect = ({
           </>
         )}
         {filteredItems.length > 0 && (
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 sm:text-sm lg:text-base text-xs shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             {filteredItems.map((item, index) => (
               <Combobox.Option
                 key={index}
                 value={item}
                 className="relative select-none py-2 pl-8 pr-4 text-gray-900 cursor-pointer hover:bg-green-50"
               >
-                <span className="block truncate">{item.name}</span>
+                <span className="block truncate lg:text-base text-sm">{item.name}</span>
               </Combobox.Option>
             ))}
           </Combobox.Options>

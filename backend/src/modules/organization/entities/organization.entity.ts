@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
+import { PracticeProgram } from 'src/modules/practice-program/entities/practice-program.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
@@ -113,4 +114,7 @@ export class Organization extends BaseEntity {
 
   @OneToMany((type) => OrganizationRequest, (request) => request.organization)
   requests: OrganizationRequest[];
+
+  @OneToMany(() => PracticeProgram, (pp) => pp.organization)
+  practicePrograms: PracticeProgram[];
 }

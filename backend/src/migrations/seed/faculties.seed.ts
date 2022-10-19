@@ -1,0 +1,186 @@
+export const FACULTIES = [
+  {
+    id: 1,
+    name: 'UNIVERSITATEA POLITEHNICA DIN BUCUREŞTI',
+  },
+  {
+    id: 2,
+    name: 'UNIVERSITATEA TEHNICĂ DE CONSTRUCŢII DIN BUCUREŞTI ',
+  },
+  {
+    id: 3,
+    name: 'UNIVERSITATEA DE ARHITECTURĂ ŞI URBANISM „ION MINCU" DIN BUCUREŞTI',
+  },
+  {
+    id: 4,
+    name: 'UNIVERSITATEA DE ŞTIINŢE AGRONOMICE ŞI MEDICINĂ VETERINARĂ DIN BUCUREŞTI',
+  },
+  {
+    id: 5,
+    name: 'UNIVERSITATEA DIN BUCUREŞTI',
+  },
+  {
+    id: 6,
+    name: 'UNIVERSITATEA DE MEDICINĂ ŞI FARMACIE „CAROL DAVILA" DIN BUCUREŞTI',
+  },
+  {
+    id: 7,
+    name: 'ACADEMIA DE STUDII ECONOMICE DIN BUCUREŞTI',
+  },
+  {
+    id: 8,
+    name: 'UNIVERSITATEA NAŢIONALĂ DE MUZICĂ DIN BUCUREŞTI',
+  },
+  {
+    id: 9,
+    name: 'UNIVERSITATEA NAŢIONALĂ DE ARTE DIN BUCUREŞTI',
+  },
+  {
+    id: 10,
+    name: 'UNIVERSITATEA NAŢIONALĂ DE ARTĂ TEATRALĂ ŞI CINEMATOGRAFICĂ „I.L.CARAGIALE" DIN BUCUREŞTI',
+  },
+  {
+    id: 11,
+    name: 'UNIVERSITATEA NAŢIONALĂ DE EDUCAŢIE FIZICĂ ŞI SPORT DIN BUCUREŞTI',
+  },
+  {
+    id: 12,
+    name: 'ŞCOALA NAŢIONALĂ DE STUDII POLITICE ŞI ADMINISTRATIVE DIN BUCUREŞTI',
+  },
+  {
+    id: 13,
+    name: 'UNIVERSITATEA „1 DECEMBRIE 1918” DIN ALBA IULIA',
+  },
+  {
+    id: 14,
+    name: 'UNIVERSITATEA „AUREL VLAICU” DIN ARAD',
+  },
+  {
+    id: 15,
+    name: 'UNIVERSITATEA „VASILE ALECSANDRI” DIN BACĂU',
+  },
+  {
+    id: 16,
+    name: 'UNIVERSITATEA TRANSILVANIA DIN BRAŞOV',
+  },
+  {
+    id: 17,
+    name: 'UNIVERSITATEA TEHNICĂ DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 18,
+    name: 'UNIVERSITATEA DE ŞTIINŢE AGRICOLE ŞI MEDICINĂ VETERINARĂ DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 19,
+    name: 'UNIVERSITATEA „BABEŞ-BOLYAI" DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 20,
+    name: 'UNIVERSITATEA DE MEDICINĂ ŞI FARMACIE „IULIU HAŢIEGANU" DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 21,
+    name: 'ACADEMIA DE MUZICĂ „GHEORGHE DIMA" DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 22,
+    name: 'UNIVERSITATEA DE ARTĂ ŞI DESIGN DIN CLUJ-NAPOCA',
+  },
+  {
+    id: 23,
+    name: 'UNIVERSITATEA „OVIDIUS" DIN CONSTANŢA',
+  },
+  {
+    id: 24,
+    name: 'UNIVERSITATEA MARITIMĂ DIN CONSTANŢA',
+  },
+  {
+    id: 25,
+    name: 'UNIVERSITATEA DIN CRAIOVA',
+  },
+  {
+    id: 26,
+    name: 'UNIVERSITATEA DE MEDICINĂ ŞI FARMACIE DIN CRAIOVA',
+  },
+  {
+    id: 27,
+    name: 'UNIVERSITATEA „DUNĂREA DE JOS" DIN GALAŢI',
+  },
+  {
+    id: 28,
+    name: 'UNIVERSITATEA TEHNICĂ „GHEORGHE ASACHI" DIN IAŞI',
+  },
+  {
+    id: 29,
+    name: 'UNIVERSITATEA PENTRU ȘTIINȚELE VIEȚII „ION IONESCU DE LA BRAD" DIN IAŞI',
+  },
+  {
+    id: 30,
+    name: 'UNIVERSITATEA „ALEXANDRU IOAN CUZA" DIN IAŞI',
+  },
+  {
+    id: 31,
+    name: 'UNIVERSITATEA DE MEDICINĂ ŞI FARMACIE „GRIGORE T. POPA” DIN IAŞI',
+  },
+  {
+    id: 32,
+    name: 'UNIVERSITATEA NAŢIONALĂ DE ARTE „GEORGE ENESCU” DIN IAŞI',
+  },
+  {
+    id: 33,
+    name: 'UNIVERSITATEA DIN ORADEA',
+  },
+  {
+    id: 34,
+    name: 'UNIVERSITATEA DIN PETROŞANI',
+  },
+  {
+    id: 35,
+    name: 'UNIVERSITATEA DIN PITEŞTI',
+  },
+  {
+    id: 36,
+    name: 'UNIVERSITATEA PETROL-GAZE DIN PLOIEŞTI',
+  },
+  {
+    id: 37,
+    name: 'UNIVERSITATEA „LUCIAN BLAGA” DIN SIBIU',
+  },
+  {
+    id: 38,
+    name: 'UNIVERSITATEA „ŞTEFAN CEL MARE” DIN SUCEAVA',
+  },
+  {
+    id: 39,
+    name: 'UNIVERSITATEA „VALAHIA" DIN TÂRGOVIŞTE',
+  },
+  {
+    id: 40,
+    name: 'UNIVERSITATEA „CONSTANTIN BRÂNCUŞI" DIN TÂRGU JIU',
+  },
+  {
+    id: 41,
+    name: 'UNIVERSITATEA DE MEDICINĂ, FARMACIE, ȘTIINȚE ȘI TEHNOLOGIE „GEORGE EMIL PALADE” DIN TÂRGU MUREŞ',
+  },
+  {
+    id: 42,
+    name: 'UNIVERSITATEA DE ARTE DIN TÂRGU MUREŞ',
+  },
+  {
+    id: 43,
+    name: 'UNIVERSITATEA POLITEHNICA TIMIŞOARA',
+  },
+  {
+    id: 44,
+    name: 'UNIVERSITATEA DE ŞTIINŢE AGRICOLE ŞI MEDICINĂ VETERINARĂ A BANATULUI „REGELE MIHAI I AL ROMÂNIEI” DIN TIMIŞOARA',
+  },
+  {
+    id: 45,
+    name: 'UNIVERSITATEA DE VEST DIN TIMIŞOARA',
+  },
+  {
+    id: 46,
+    name: 'UNIVERSITATEA DE MEDICINĂ ŞI FARMACIE „VICTOR BABEŞ" DIN TIMIŞOARA',
+  },
+];

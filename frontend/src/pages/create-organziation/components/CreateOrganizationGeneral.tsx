@@ -354,7 +354,10 @@ const CreateOrganizationGeneral = () => {
 
               {/*  Logo */}
               <div className="sm:col-span-6 gap-4 flex flex-col">
-                <label htmlFor="photo" className="block text-normal font-normal text-gray-700">
+                <label
+                  htmlFor="photo"
+                  className="block sm:text-sm lg:text-base text-xs font-normal text-gray-700"
+                >
                   {t('logo.name')}
                 </label>
                 <div className="mt-1 flex items-center">
@@ -390,14 +393,18 @@ const CreateOrganizationGeneral = () => {
                     </>
                   )}
                 </div>
-                <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
-                  {t('logo.description')}
-                </p>
+                {!readonly && (
+                  <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+                    {t('logo.description')}
+                  </p>
+                )}
               </div>
               {/* End Logo */}
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('contact.name')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('contact.name')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('contact.description')}
               </p>
@@ -414,7 +421,9 @@ const CreateOrganizationGeneral = () => {
               />
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('social')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('social')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('information', { ns: 'common' })}
               </p>
@@ -548,7 +557,9 @@ const CreateOrganizationGeneral = () => {
               </div>
             </div>
             <div className="pt-8">
-              <span className="text-xl font-bold text-gray-900">{t('fundraising')}</span>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('fundraising')}
+              </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
                 {t('information', { ns: 'common' })}
               </p>
@@ -647,7 +658,7 @@ const CreateOrganizationGeneral = () => {
           <button
             id="create-organization-general__button-next"
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
             onClick={handleSubmit(handleSave)}
           >
             {t('next', { ns: 'common' })}
@@ -655,7 +666,7 @@ const CreateOrganizationGeneral = () => {
           <button
             id="create-organization-general__button-back"
             type="button"
-            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`)}
           >
             {t('back', { ns: 'common' })}

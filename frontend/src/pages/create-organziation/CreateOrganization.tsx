@@ -2,6 +2,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
+import { mapSelectToValue } from '../../common/helpers/format.helper';
 import Header from '../../components/Header/Header';
 import { Loading } from '../../components/loading/Loading';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
@@ -59,9 +60,20 @@ const CreateOrganization = () => {
       organization.general &&
       organization.activity &&
       organization.legal
-    )
+    ) {
+      // parse and map activity id's correctly
+      let { activity } = organization;
+      activity = {
+        ...activity,
+        branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
+        cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
+        regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
+        coalitions: activity.coalitions ? [...activity.coalitions.map(mapSelectToValue)] : [],
+        federations: activity.federations ? [...activity.federations.map(mapSelectToValue)] : [],
+      };
+
       await mutateRequest(
-        { organization, logo, organizationStatute },
+        { organization: { ...organization, activity }, logo, organizationStatute },
         {
           onSuccess: () => {
             localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
@@ -69,6 +81,7 @@ const CreateOrganization = () => {
           },
         },
       );
+    }
   };
 
   const reset = () => {
@@ -102,7 +115,9 @@ const CreateOrganization = () => {
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <CheckCircleIcon className="fill-green w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">{t('create.congratulations')}</span>
+                <span className="font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+                  {t('create.congratulations')}
+                </span>
               </div>
               <p className="leading-6">{t('create.success')}</p>
             </div>
@@ -111,13 +126,15 @@ const CreateOrganization = () => {
             <div className="bg-white rounded-lg shadow p-5 sm:p-10 m-1 flex flex-col gap-4">
               <div className="flex items-center justify-start pb-6 gap-4">
                 <ExclamationCircleIcon className="fill-red-600 w-8 h-8" />
-                <span className="font-titilliumBold text-3xl">{t('error', { ns: 'common' })}</span>
+                <span className="font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
+                  {t('error', { ns: 'common' })}
+                </span>
               </div>
               <p className="leading-6">{error || t('wrong', { ns: 'common' })}</p>
               <button
                 id="create-organization__button-reset"
                 type="button"
-                className="mt-4 w-48 flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0  sm:text-sm"
+                className="mt-4 w-48 flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0  sm:text-sm"
                 onClick={reset}
               >
                 {t('create.again')}

@@ -4,3 +4,5 @@ export * from './domain.entity';
 export * from './region.entity';
 export * from './federation.entity';
 export * from './coalition.entity';
+export * from './faculty.entity';
+export * from './skill.entity';

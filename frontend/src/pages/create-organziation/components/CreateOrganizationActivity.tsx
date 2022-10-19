@@ -6,7 +6,6 @@ import {
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
-  mapSelectToValue,
   str2bool,
 } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
@@ -75,11 +74,11 @@ const CreateOrganizationActivity = () => {
       hasBranches: str2bool(data.hasBranches),
       isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
 
-      branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
-      cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
-      regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
-      coalitions: data.coalitions ? [...data.coalitions.map(mapSelectToValue)] : [],
-      federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
+      branches: data.branches ? data.branches : [],
+      cities: data.cities ? data.cities : [],
+      regions: data.regions ? data.regions : [],
+      coalitions: data.coalitions ? data.coalitions : [],
+      federations: data.federations ? data.federations : [],
     };
 
     setOrganization((org: any) => ({ ...org, activity }));
@@ -92,6 +91,14 @@ const CreateOrganizationActivity = () => {
     if (organization && organization.activity) {
       reset({
         ...organization.activity,
+        isPartOfFederation: organization.activity.isPartOfFederation.toString(),
+        isPartOfCoalition: organization.activity.isPartOfCoalition.toString(),
+        isPartOfInternationalOrganization:
+          organization.activity.isPartOfInternationalOrganization.toString(),
+        isSocialServiceViable: organization.activity.isSocialServiceViable.toString(),
+        offersGrants: organization.activity.offersGrants.toString(),
+        hasBranches: organization.activity.hasBranches.toString(),
+        isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization.toString(),
       });
     }
   }, [organization]);
@@ -106,7 +113,9 @@ const CreateOrganizationActivity = () => {
       <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
         <div className="flex flex-col gap-4 ">
           <div>
-            <span className="text-xl font-bold text-gray-900">{t('domains')}</span>
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('domains')}
+            </span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
               {t('information', { ns: 'common' })}
             </p>
@@ -188,7 +197,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">{t('fed_coal')}</span>
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('fed_coal')}
+            </span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
               {t('information', { ns: 'common' })}
             </p>
@@ -291,7 +302,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">{t('branches')}</span>
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('branches')}
+            </span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
               {t('information', { ns: 'common' })}
             </p>
@@ -331,7 +344,9 @@ const CreateOrganizationActivity = () => {
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div>
-            <span className="text-xl font-bold text-gray-900">{t('other')}</span>
+            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+              {t('other')}
+            </span>
             <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
               {t('information', { ns: 'common' })}
             </p>
@@ -362,7 +377,7 @@ const CreateOrganizationActivity = () => {
           <button
             id="create-organization-activity__button-next"
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
             onClick={handleSubmit(handleSave)}
           >
             {t('next', { ns: 'common' })}
@@ -370,7 +385,7 @@ const CreateOrganizationActivity = () => {
           <button
             id="create-organization-activity__button-back"
             type="button"
-            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
             onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}
           >
             {t('back', { ns: 'common' })}
