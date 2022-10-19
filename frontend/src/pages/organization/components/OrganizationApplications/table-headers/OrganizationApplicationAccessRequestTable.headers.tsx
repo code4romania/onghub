@@ -17,6 +17,7 @@ export const OrganizationApplicationRequestsTableHeaders: TableColumn<Organizati
       name: translations.name,
       sortable: true,
       grow: 6,
+      minWidth: '15rem',
       selector: (row) => row.name,
       cell: (row: OrganizationApplicationRequest) => (
         <NameWithLogo logo={row.logo} name={row.name} />
@@ -27,6 +28,7 @@ export const OrganizationApplicationRequestsTableHeaders: TableColumn<Organizati
       sortable: true,
       name: translations.createdOn,
       grow: 1,
+      minWidth: '10rem',
       selector: (row: OrganizationApplicationRequest) => formatDate(row.createdOn),
     },
   ];

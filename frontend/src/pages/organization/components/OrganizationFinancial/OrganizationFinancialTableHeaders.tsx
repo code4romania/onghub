@@ -51,6 +51,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: translations.sum,
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
+    minWidth: '10rem',
     grow: 0.5,
   },
   {
@@ -58,6 +59,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: translations.updated,
     selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn as string),
     sortable: true,
+    minWidth: '10rem',
     grow: 1,
   },
   {
@@ -77,6 +79,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     ),
     sortable: true,
     grow: 1.5,
+    minWidth: '10rem',
     allowOverflow: true,
   },
 ];

@@ -11,7 +11,10 @@ const InputField = (props: {
   return (
     <div className="relative w-full">
       {props.config.label && (
-        <label htmlFor="email" className="block text-base font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
+        >
           {props.config.label}
         </label>
       )}
@@ -30,7 +33,7 @@ const InputField = (props: {
                 ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
                 : 'focus:ring-indigo-500 focus:border-indigo-500',
               props.config.addOn ? 'pl-14' : 'pl-4',
-              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md disabled:bg-gray-100',
+              'block w-full pr-10 border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
             )}
             placeholder={props.config.placeholder}
             defaultValue={props.config.defaultValue}
@@ -45,13 +48,13 @@ const InputField = (props: {
           </div>
         )}
       </div>
-      {!props.config.error && (
-        <p className="mt-1 text-sm text-gray-500 font-normal" id="email-description">
+      {!props.config.error && !props.readonly && (
+        <p className="mt-1 sm:text-sm text-xs text-gray-500 font-normal" id="email-description">
           {props.config.helperText}
         </p>
       )}
       {props.config.error && (
-        <p className="mt-1 text-sm text-red-600" id={`${props.config.id}__input-error`}>
+        <p className="mt-1 sm:text-sm text-xs text-red-600" id={`${props.config.id}__input-error`}>
           {props.config.error}
         </p>
       )}

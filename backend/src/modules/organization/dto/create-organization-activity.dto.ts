@@ -9,6 +9,7 @@ import {
   Matches,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ToBoolean } from 'src/common/decorators/to-boolean.decorator';
 import { Area } from '../enums/organization-area.enum';
 
 export class CreateOrganizationActivityDto {
@@ -16,6 +17,7 @@ export class CreateOrganizationActivityDto {
   area: Area;
 
   @IsBoolean()
+  @ToBoolean()
   isPartOfFederation: boolean;
 
   @IsArray()
@@ -24,6 +26,7 @@ export class CreateOrganizationActivityDto {
   federations?: number[];
 
   @IsBoolean()
+  @ToBoolean()
   isPartOfCoalition: boolean;
 
   @IsArray()
@@ -32,6 +35,7 @@ export class CreateOrganizationActivityDto {
   coalitions?: number[];
 
   @IsBoolean()
+  @ToBoolean()
   isPartOfInternationalOrganization: boolean;
 
   @IsString()
@@ -41,15 +45,19 @@ export class CreateOrganizationActivityDto {
   internationalOrganizationName: string;
 
   @IsBoolean()
+  @ToBoolean()
   isSocialServiceViable: boolean;
 
   @IsBoolean()
+  @ToBoolean()
   offersGrants: boolean;
 
   @IsBoolean()
+  @ToBoolean()
   isPublicIntrestOrganization: boolean;
 
   @IsBoolean()
+  @ToBoolean()
   hasBranches: boolean;
 
   @IsOptional()

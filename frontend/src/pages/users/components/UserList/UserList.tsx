@@ -255,14 +255,14 @@ const UserList = () => {
         onResetFilters={onResetFilters}
       >
         <div className="flex gap-x-6">
-          <div className="basis-1/4">
+          <div className="sm:basis-1/4 w-full">
             <DateRangePicker
               label={t('list.date')}
               defaultValue={range.length > 0 ? range : undefined}
               onChange={onDateChange}
             />
           </div>
-          <div className="basis-1/4">
+          <div className="sm:basis-1/4 w-full">
             <Select
               config={{
                 label: t('status', { ns: 'common' }),
@@ -276,13 +276,19 @@ const UserList = () => {
         </div>
       </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg my-6">
-        <div className="py-5 px-10 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold text-xl">{t('title')}</p>
-          <button type="button" className="edit-button" onClick={onExport}>
+        <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
+          <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
+            {t('title')}
+          </p>
+          <button
+            type="button"
+            className="edit-button sm:text-sm lg:text-base text-xs"
+            onClick={onExport}
+          >
             {t('list.download')}
           </button>
         </div>
-        <div className="pb-5 px-10">
+        <div className="pb-2">
           <DataTableComponent
             columns={[...UserListTableHeaders, buildUserActionColumn()]}
             data={users.items}

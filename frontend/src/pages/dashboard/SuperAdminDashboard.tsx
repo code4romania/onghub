@@ -39,8 +39,10 @@ const SuperAdminDashboard = () => {
             />
           ))}
       </div>
-      <RequestsLineChart />
-      <OrganizationsLineChart />
+      <div className="flex flex-wrap gap-4 pt-4">
+        <RequestsLineChart />
+        <OrganizationsLineChart />
+      </div>
     </ContentWrapper>
   );
 };

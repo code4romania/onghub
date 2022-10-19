@@ -85,20 +85,24 @@ const EditApplication = () => {
       backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate(`/application/${id}/details`) }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
-        <div className="py-5 px-10 flex justify-between">
-          <span className="font-titilliumBold text-xl text-gray-800">
+        <div className="py-5 lg:px-10 px-5 flex justify-between">
+          <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
             {'Editare pagina aplicatie'}
           </span>
 
-          <button type="button" className="save-button" onClick={handleSubmit(onSubmit)}>
-            <PencilIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+          <button
+            type="button"
+            className="save-button sm:text-sm lg:text-base text-xs"
+            onClick={handleSubmit(onSubmit)}
+          >
+            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             Salveaza modificari
           </button>
         </div>
 
         <div className="w-full border-t border-gray-300" />
         <ApplicationForm
-          isEditApplication
+          readonly
           control={control}
           errors={errors}
           watch={watch}

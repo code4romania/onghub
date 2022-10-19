@@ -52,6 +52,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization year created */
   @Max(new Date().getFullYear())
   @IsNumber()
+  @Type(() => Number)
   yearCreated: number;
 
   /* 
@@ -172,10 +173,12 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization county id */
   @IsNumber()
+  @Type(() => Number)
   countyId: number;
 
   /* Organization city id */
   @IsNumber()
+  @Type(() => Number)
   cityId: number;
 
   /* logo */

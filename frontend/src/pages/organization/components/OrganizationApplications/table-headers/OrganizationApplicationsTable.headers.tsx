@@ -24,6 +24,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     name: translations.name,
     sortable: true,
     grow: 6,
+    minWidth: '15rem',
     selector: (row) => row.name,
     cell: (row: ApplicationWithOngStatus) => <NameWithLogo logo={row.logo} name={row.name} />,
   },
@@ -32,6 +33,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     id: 'status',
     sortable: false,
     grow: 1,
+    minWidth: '10rem',
     name: translations.status,
     cell: (row: ApplicationWithOngStatus) => (
       <StatusBadge
@@ -45,6 +47,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     sortable: true,
     name: translations.createdOn,
     grow: 1,
+    minWidth: '10rem',
     selector: (row: ApplicationWithOngStatus) => formatDate(row.createdOn),
   },
 ];

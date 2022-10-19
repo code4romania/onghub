@@ -21,18 +21,23 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     id: 'name',
     name: translations.name,
     sortable: true,
+    grow: 2,
+    minWidth: '15rem',
     selector: (row: IUser) => row.name,
   },
   {
     id: 'email',
     name: translations.email,
     sortable: true,
+    grow: 2,
+    minWidth: '15rem',
     selector: (row: IUser) => row.email,
   },
   {
     id: 'phone',
     name: translations.phone,
     sortable: true,
+    minWidth: '10rem',
     selector: (row: IUser) => row.phone,
   },
   {
@@ -40,6 +45,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     sortable: true,
     sortField: 'status',
     name: translations.status,
+    minWidth: '10rem',
     cell: (row: IUser) => (
       <StatusBadge
         status={row.status === UserStatus.ACTIVE ? BadgeStatus.SUCCESS : BadgeStatus.ERROR}
