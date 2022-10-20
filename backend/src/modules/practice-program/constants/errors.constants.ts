@@ -66,4 +66,8 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     message: 'Error while deleting service',
     errorCode: 'CCS_008',
   },
+  SERVICE_ACCESS: {
+    message: 'At least one service access is required',
+    errorCode: 'CCS_009',
+  },
 };

@@ -64,7 +64,20 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 4. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
+      // 4. check at least one service access has been provided
+      if (
+        !(
+          civicCenterServicePayload.hasOnlineAccess ||
+          civicCenterServicePayload.hasEmailPhoneAccess ||
+          civicCenterServicePayload.hasPhysicalAccess
+        )
+      ) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
+        );
+      }
+
+      // 5. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
       if (
         civicCenterServicePayload.hasOnlineAccess &&
         !(onlineAccessLink && onlineAccessDescription)
@@ -74,7 +87,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 5. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
+      // 6. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
       if (
         civicCenterServicePayload.hasEmailPhoneAccess &&
         !(emailAccess && phoneAccess && emailPhoneAccessDescription)
@@ -84,7 +97,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 6. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
+      // 7. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
       if (
         civicCenterServicePayload.hasPhysicalAccess &&
         !(physicalAccessAddress && physicalAccessDescription)
@@ -94,7 +107,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 7. create new civic center service
+      // 8. create new civic center service
       return this.civicCenterServiceRepository.save({
         ...civicCenterServicePayload,
         location: location[0],
@@ -179,7 +192,27 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 5. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
+      // 5. check at least one service access has been provided
+      const hasOnlineAccess =
+        civicCenterServicePayload.hasOnlineAccess !== undefined
+          ? civicCenterServicePayload.hasOnlineAccess
+          : civicService.hasOnlineAccess;
+      const hasEmailPhoneAccess =
+        civicCenterServicePayload.hasEmailPhoneAccess !== undefined
+          ? civicCenterServicePayload.hasEmailPhoneAccess
+          : civicService.hasEmailPhoneAccess;
+      const hasPhysicalAccess =
+        civicCenterServicePayload.hasPhysicalAccess !== undefined
+          ? civicCenterServicePayload.hasPhysicalAccess
+          : civicService.hasPhysicalAccess;
+
+      if (!(hasOnlineAccess || hasEmailPhoneAccess || hasPhysicalAccess)) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
+        );
+      }
+
+      // 6. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
       if (
         civicCenterServicePayload.hasOnlineAccess &&
         !(onlineAccessLink && onlineAccessDescription)
@@ -189,7 +222,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 6. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
+      // 7. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
       if (
         civicCenterServicePayload.hasEmailPhoneAccess &&
         !(emailAccess && phoneAccess && emailPhoneAccessDescription)
@@ -199,7 +232,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 7. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
+      // 8. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
       if (
         civicCenterServicePayload.hasPhysicalAccess &&
         !(physicalAccessAddress && physicalAccessDescription)
@@ -209,7 +242,7 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 8. update service
+      // 9. update service
       return this.civicCenterServiceRepository.save({
         ...civicService,
         ...civicCenterServicePayload,

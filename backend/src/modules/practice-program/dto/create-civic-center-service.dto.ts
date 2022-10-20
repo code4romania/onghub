@@ -63,7 +63,7 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 3000)
+  @Length(3, 1000)
   onlineAccessDescription: string;
 
   @IsBoolean()
@@ -82,7 +82,7 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 3000)
+  @Length(3, 1000)
   emailPhoneAccessDescription: string;
 
   @IsBoolean()
@@ -90,13 +90,13 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @Length(3, 250)
+  @Length(3, 300)
   physicalAccessAddress: string;
 
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 3000)
+  @Length(3, 1000)
   physicalAccessDescription: string;
 
   @IsBoolean()
