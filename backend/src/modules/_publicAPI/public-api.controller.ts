@@ -41,7 +41,7 @@ export class PublicAPIController {
   }
 
   @Public()
-  // @UseInterceptors(HMACVerificationInterceptor)
+  @UseInterceptors(HMACVerificationInterceptor)
   @ApiBody({ type: ContactMailDto })
   @Post('/contact/feedback')
   async sendMail(@Body() mailOptions: ContactMailDto): Promise<void> {
