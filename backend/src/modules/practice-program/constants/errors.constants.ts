@@ -27,6 +27,10 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Error while deleting practice program',
     errorCode: 'PP_007',
   },
+  SEARCH: {
+    message: 'Error while searching practice programs',
+    errorCode: 'PP_008',
+  },
 };
 
 export const CIVIC_CENTER_SERVICE_ERRORS = {

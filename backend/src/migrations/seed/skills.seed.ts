@@ -1,7 +1,7 @@
 export const SKILLS = [
   {
     id: 1,
-    name: 'Web Development',
+    name: 'Web development',
   },
   {
     id: 2,
@@ -9,6 +9,14 @@ export const SKILLS = [
   },
   {
     id: 3,
-    name: 'UI/UX',
+    name: 'UX',
+  },
+  {
+    id: 4,
+    name: 'UX Design',
+  },
+  {
+    id: 5,
+    name: 'Project management',
   },
 ];
