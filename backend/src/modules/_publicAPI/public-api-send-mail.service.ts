@@ -8,7 +8,7 @@ export class PublicApiSendMailService {
 
   public async sendMail(mailOptions: ContactMailDto): Promise<void> {
     await this.mailService.sendEmail({
-      to: 'ilijah.carl@minutestep.com',
+      to: process.env.MAIL_CONTACT,
       subject: `Feedback - ${mailOptions.sender}`,
       html: `<p>${mailOptions.text}</p>`,
       ...mailOptions,
