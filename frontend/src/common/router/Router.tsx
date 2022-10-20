@@ -106,14 +106,15 @@ const Router = () => {
 
           {/* SuperAdmin and Admin */}
           <Route
-            path={'all-apps'}
+            path="all-apps"
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN, UserRole.ADMIN]}>
                 <AllApplications />
               </RoleGuard>
             }
           >
-            <Route index element={<ApplicationList />} />
+            <Route index element={<Navigate to={'overview'}></Navigate>} />
+            <Route path="overview" element={<ApplicationList />} />
             <Route
               path="requests"
               element={
@@ -133,7 +134,8 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<UserList />}></Route>
+            <Route index element={<Navigate to={'list'}></Navigate>} />
+            <Route path="list" element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
           </Route>
 
