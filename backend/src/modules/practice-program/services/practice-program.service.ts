@@ -34,7 +34,7 @@ export class PracticeProgramService {
         locationId,
         domains: domainsIds,
         faculties: facultiesIds,
-        skills: skillsIds,
+        skills: submitedSkills,
         ...practiceProgramPayload
       } = CreatePracticeProgramDto;
 
@@ -62,6 +62,12 @@ export class PracticeProgramService {
 
       // 4. get skills if any selected
       let skills = [];
+
+      // 4.1 get skill id's for existsing skills
+      const skillsIds = submitedSkills
+        .filter((skill) => skill.id)
+        .map((skill) => skill.id);
+
       if (skillsIds?.length > 0) {
         skills = await this.nomenclatureService.getSkills({
           where: {

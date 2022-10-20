@@ -53,4 +53,9 @@ export class NomenclaturesController {
     const options = search ? { where: { name: ILike(`%${search}%`) } } : {};
     return this.nomenclaturesService.getFaculties(options);
   }
+
+  @Get('skills')
+  getSkills() {
+    return this.nomenclaturesService.getSkills({});
+  }
 }

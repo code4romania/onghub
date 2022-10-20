@@ -1,26 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import Select from 'react-select';
-import './MultiSelect.css';
+import '../multi-select/MultiSelect.css';
 import { Chip } from '../chip-selection/ChipSelection';
+import { ISelectData } from '../../common/helpers/format.helper';
+import CreatableSelect from 'react-select/creatable';
 
-export interface MultiSelectConfig {
+export interface CreatableMultiSelectProps {
   label: string;
   helperText?: string;
   error?: string;
   placeholder?: string;
-  isClearable?: boolean;
-  value: any[];
+  value: ISelectData[];
   readonly?: boolean;
   onChange: any;
-  options: any[];
+  options: ISelectData[];
   id?: string;
 }
 
-const MultiSelect = ({
+const CreatableMultiSelect = ({
   placeholder,
-  isClearable,
   onChange,
   value,
   label,
@@ -29,7 +28,7 @@ const MultiSelect = ({
   readonly,
   options,
   id,
-}: MultiSelectConfig) => {
+}: CreatableMultiSelectProps) => {
   return (
     <div>
       {label && (
@@ -55,13 +54,12 @@ const MultiSelect = ({
         </div>
       )}
       {!readonly && (
-        <Select
+        <CreatableSelect
+          isMulti
           placeholder={placeholder}
           classNamePrefix="reactselect"
           onChange={onChange}
-          isClearable={isClearable}
-          isMulti={true}
-          defaultValue={value}
+          value={value}
           options={options}
           id={id}
         />
@@ -80,4 +78,4 @@ const MultiSelect = ({
   );
 };
 
-export default MultiSelect;
+export default CreatableMultiSelect;

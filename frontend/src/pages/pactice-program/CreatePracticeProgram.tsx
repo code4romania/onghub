@@ -1,13 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { mapSelectToSkill } from '../../common/helpers/format.helper';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
+import { useCreatePracticeProgramMutation } from '../../services/practice-program/PracticeProgram.queries';
 import PracticeProgramForm from './components/PracticeProgramForm';
 
 const CreatePracticeProgram = () => {
   const navigate = useNavigate();
   const { t } = useTranslation(['practice_program', 'common']);
+  // check additional validity
+  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+
+  const { isLoading, mutateAsync: createPracticeProgram } = useCreatePracticeProgramMutation();
+
   // React Hook Form
   const {
     handleSubmit,
@@ -15,7 +23,7 @@ const CreatePracticeProgram = () => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<any>({
+  } = useForm<PracticeProgramPayload>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -24,9 +32,35 @@ const CreatePracticeProgram = () => {
     reset({});
   }, []);
 
-  const onSubmit = async (data: any) => {
-    // TODO: validate startDate > endDate
-    console.log('data', data);
+  const onSubmit = async (data: PracticeProgramPayload) => {
+    // submit only if additional perdiod and working hours conditions are met
+    if (isFormValid) {
+      // parse data
+      const { location, faculties, skills, isPeriodNotDetermined, ...practiceProgramPayload } =
+        data;
+
+      // mpa skills payload
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const skillsData = (skills as any[]).map(mapSelectToSkill);
+
+      const payload = {
+        ...practiceProgramPayload,
+        isPeriodNotDetermined: !!isPeriodNotDetermined,
+        skills: skillsData,
+        faculties: (faculties as any[])?.map((faculty) => faculty.id),
+        locationId: (location as any)?.value,
+      };
+
+      // create practice program request
+      await createPracticeProgram(payload, {
+        onSuccess: () => {
+          console.log('done');
+        },
+        onError: (error) => {
+          console.log('Nu s-a putut crea programul de preactica', error);
+        },
+      });
+    }
   };
 
   return (
@@ -45,13 +79,19 @@ const CreatePracticeProgram = () => {
           <button
             type="button"
             className="save-button sm:text-sm lg:text-base text-xs"
+            disabled={isLoading}
             onClick={handleSubmit(onSubmit)}
           >
-            {t('save', { ns: 'common' })}
+            {isLoading ? t('processing', { ns: 'common' }) : t('save', { ns: 'common' })}
           </button>
         </div>
         <div className="w-full border-t border-gray-300" />
-        <PracticeProgramForm control={control} errors={errors} watch={watch} />
+        <PracticeProgramForm
+          control={control}
+          errors={errors}
+          watch={watch}
+          onChangeFormValidity={setIsFormValid}
+        />
       </div>
     </ContentWrapper>
   );

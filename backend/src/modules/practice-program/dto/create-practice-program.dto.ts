@@ -12,6 +12,7 @@ import {
   MinDate,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { Skill } from 'src/shared/entities';
 
 export class CreatePracticeProgramDto {
   @IsString()
@@ -70,8 +71,9 @@ export class CreatePracticeProgramDto {
   @IsArray()
   @ArrayNotEmpty()
   @IsOptional()
-  skills?: number[];
+  skills?: Partial<Skill>[];
 
   @IsNumber()
-  organizationId: number;
+  @IsOptional()
+  organizationId?: number;
 }

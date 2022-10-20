@@ -1012,8 +1012,7 @@
         "placeholder": "Bucuresti"
       },
       "deadline": {
-        "required": "Deadline aplicare este obligatoriu",
-        "label": "Deadline aplicare*",
+        "label": "Deadline aplicare",
         "helper": "",
         "placeholder": "31.12.2999"
       },
@@ -1035,7 +1034,8 @@
       "end_date": {
         "label": "Data sfarsit program de practica*",
         "helper": "",
-        "placeholder": "31.12.2999"
+        "placeholder": "31.12.2999",
+        "start_date_after_end_date": "Data sfarsit nu poate fi mai mica decat data de inceput"
       },
       "is_period_not_determined": {
         "label": "Perioada nedeterminata",
@@ -1053,7 +1053,8 @@
         "min": "Campul nu poate fi mai mic decat 0",
         "label": "Numar ore (maxim)",
         "helper": "",
-        "placeholder": "0"
+        "placeholder": "0",
+        "min_larger_than_max": "Numarul maxim de ore lucrate nu poate fi mai mic decat numarul minim de ore lucrate"
       },
       "link": {
         "pattern": "Formatul link-ului este invalid.",
@@ -1065,6 +1066,16 @@
         "required": "Domeniul este obligatoriu",
         "label": "Domenii*",
         "helper": "Selecteaza minim un domeniu"
+      },
+      "skills": {
+        "label": "Participantul va invata (cuvinte cheie)",
+        "helper": "Adauga abilitati pe care participantii la program vor avea ocazia sa le dezvolte in timpul programului",
+        "placeholder": "Selecteaza/Adauga..."
+      },
+      "faculties": {
+        "label": "Facultati",
+        "helper": "Completeaza doar daca programul de practica este dedicat numai studentilor unor anumite facultati",
+        "placeholder": "Selecteaza..."
       }
     }
   }

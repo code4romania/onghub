@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import DatePicker from 'react-datepicker';
@@ -10,7 +11,7 @@ interface DatePickerInputProps {
   defaultValue?: string;
   minDate?: Date;
   maxDate?: Date;
-  error?: string | any;
+  error?: string;
   onChange?: any;
   value?: Date;
   id?: string;

@@ -19,7 +19,6 @@ const translations = {
     placeholder: i18n.t('practice_program:form.location.placeholder'),
   },
   deadline: {
-    required: i18n.t('practice_program:form.deadline.required'),
     label: i18n.t('practice_program:form.deadline.label'),
     helper: i18n.t('practice_program:form.deadline.helper'),
     placeholder: i18n.t('practice_program:form.deadline.placeholder'),
@@ -40,7 +39,6 @@ const translations = {
     placeholder: i18n.t('practice_program:form.start_date.placeholder'),
   },
   endDate: {
-    required: i18n.t('practice_program:form.end_date.required'),
     label: i18n.t('practice_program:form.end_date.label'),
     helper: i18n.t('practice_program:form.end_date.helper'),
     placeholder: i18n.t('practice_program:form.end_date.placeholder'),
@@ -64,7 +62,6 @@ const translations = {
     placeholder: i18n.t('practice_program:form.max_working_hours.placeholder'),
   },
   link: {
-    required: i18n.t('practice_program:form.link.required'),
     pattern: i18n.t('practice_program:form.link.pattern'),
     label: i18n.t('practice_program:form.link.label'),
     helper: i18n.t('practice_program:form.link.helper'),
@@ -75,8 +72,16 @@ const translations = {
     label: i18n.t('practice_program:form.domains.label'),
     helper: i18n.t('practice_program:form.domains.helper'),
   },
-  faculties: {},
-  skills: {},
+  skills: {
+    label: i18n.t('practice_program:form.skills.label'),
+    helper: i18n.t('practice_program:form.skills.helper'),
+    placeholder: i18n.t('practice_program:form.skills.placeholder'),
+  },
+  faculties: {
+    label: i18n.t('practice_program:form.faculties.label'),
+    helper: i18n.t('practice_program:form.faculties.helper'),
+    placeholder: i18n.t('practice_program:form.faculties.placeholder'),
+  },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,12 +127,7 @@ export const PracticeProgramFormConfig: Record<string, any> = {
   },
   deadline: {
     key: 'deadline',
-    rules: {
-      required: {
-        value: true,
-        message: translations.deadline.required,
-      },
-    },
+    rules: {},
     config: {
       label: translations.deadline.label,
       helperText: translations.deadline.helper,
@@ -258,6 +258,26 @@ export const PracticeProgramFormConfig: Record<string, any> = {
     config: {
       title: translations.domains.label,
       helperText: translations.domains.helper,
+    },
+  },
+  skills: {
+    key: 'skills',
+    rules: {},
+    config: {
+      type: 'text',
+      label: translations.skills.label,
+      helperText: translations.skills.helper,
+      placeholder: translations.skills.placeholder,
+    },
+  },
+  faculties: {
+    key: 'faculties',
+    rules: {},
+    config: {
+      type: 'text',
+      label: translations.faculties.label,
+      helperText: translations.faculties.helper,
+      placeholder: translations.faculties.placeholder,
     },
   },
 };
