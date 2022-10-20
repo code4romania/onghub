@@ -171,7 +171,7 @@ export class CivicCenterServiceService {
 
       // 4. check if service startDate is after endDate
       const startDate =
-        civicCenterServicePayload.startDate || civicService.endDate;
+        civicCenterServicePayload.startDate || civicService.startDate;
       const endDate = civicCenterServicePayload.endDate || civicService.endDate;
       if (endDate && compareAsc(startDate, endDate) > 0) {
         throw new BadRequestException(
