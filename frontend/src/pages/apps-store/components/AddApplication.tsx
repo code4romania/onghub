@@ -64,7 +64,10 @@ const AddApplication = () => {
     <ContentWrapper
       title={t('add')}
       subtitle={t('create.description')}
-      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/store') }}
+      backButton={{
+        btnLabel: t('back', { ns: 'common' }),
+        onBtnClick: () => navigate('/all-apps'),
+      }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 sm:px-10 px-5 flex justify-between">

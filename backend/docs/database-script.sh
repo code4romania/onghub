@@ -1,6 +1,7 @@
 #!/bin/sh
 # This shell script will backup your remote database and restore it locally inside your chosen docker container
 # The following commands need to be executed in order to run the file (inside the file directory)
+# If you get a 'bad interpreter: /bin/sh^M: no such file or directory' error, run the following command: sed -i -e 's/\r$//' database-script.sh
 #
 # chmod 755 your_script.sh
 # ./your_script.sh

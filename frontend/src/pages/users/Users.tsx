@@ -12,25 +12,29 @@ import { UserRole } from './enums/UserRole.enum';
 const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ id: number; name: string } | null>({
-    id: 0,
-    name: USERS_TABS.find((item) => item.id === 0)?.name || '',
+  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+    href: USERS_TABS.find((item) => item.id === 0)?.href || '',
   });
   const { role } = useAuthContext();
   const { t } = useTranslation('user');
+  const locationLength = location.pathname.split('/').length - 1;
 
   useEffect(() => {
     // TODO: refactor user tabs to have a function that returns this logic.
     const found: IPageTab | undefined = USERS_TABS.find(
-      (tab) => tab.href === location.pathname.split('/')[2],
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ id: found.id, name: found.name });
+      setSelectedTab({ href: found.href });
     }
   }, []);
 
+  useEffect(() => {
+    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+  }, [location]);
+
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ id: tab.id, name: tab.name });
+    setSelectedTab({ href: tab.href });
     navigate(tab.href);
   };
 
@@ -54,7 +58,7 @@ const Users = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                selectedTab?.id === tab.id
+                selectedTab?.href === tab.href
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
                 'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
