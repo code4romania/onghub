@@ -1,4 +1,3 @@
-import { ISendMailOptions } from '@nestjs-modules/mailer';
 import {
   Body,
   Controller,
@@ -9,7 +8,6 @@ import {
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { MailService } from 'src/mail/services/mail.service';
 import { ApplicationService } from '../application/services/application.service';
 import { ExtractUser } from '../user/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';

@@ -14,12 +14,8 @@ export class MailService {
   ) {}
 
   async sendEmail(email: ISendMailOptions) {
-    let from: string | Address;
-    if (email?.from) {
-      from = email.from;
-    } else {
-      from = this.configService.get('MAIL_FROM');
-    }
+    const from = email?.from ? email.from : this.configService.get('MAIL_FROM');
+
     return this.emailQueue.add({
       from,
       ...email,
