@@ -27,7 +27,7 @@ export class CreateCivicCenterServiceDto {
   locationId: number;
 
   @IsDate()
-  @MinDate(new Date())
+  @MinDate(new Date(new Date().setHours(0, 0, 0, 0)))
   startDate: Date;
 
   @IsDate()
