@@ -16,7 +16,7 @@ const Layout = () => {
         <div className="menu hidden lg:flex">
           <Menu />
         </div>
-        <div className="content overflow-scroll w-full lg:pl-6">
+        <div className="content w-full lg:pl-6">
           <Outlet />
         </div>
       </div>

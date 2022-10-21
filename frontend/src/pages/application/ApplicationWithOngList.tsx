@@ -11,11 +11,11 @@ import { APPLICATION_TABS } from './constants/ApplicationTabs';
 const ApplicationWithOngList = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ id: number; name: string } | null>({
-    id: 0,
-    name: APPLICATION_TABS.find((item) => item.id === 0)?.name || '',
+  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+    href: APPLICATION_TABS.find((item) => item.id === 0)?.href || '',
   });
   const params = useParams();
+  const locationLength = location.pathname.split('/').length - 1;
 
   const {
     data: application,
@@ -25,15 +25,19 @@ const ApplicationWithOngList = () => {
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_TABS.find(
-      (tab) => tab.href === location.pathname.split('/')[2],
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ id: found.id, name: found.name });
+      setSelectedTab({ href: found.href });
     }
   }, []);
 
+  useEffect(() => {
+    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+  }, [location]);
+
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ id: tab.id, name: tab.name });
+    setSelectedTab({ href: tab.href });
     navigate(tab.href, { replace: true });
   };
 
@@ -72,7 +76,7 @@ const ApplicationWithOngList = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                selectedTab?.id === tab.id
+                selectedTab?.href === tab.href
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
                 'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',

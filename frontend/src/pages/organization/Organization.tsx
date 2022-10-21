@@ -16,11 +16,11 @@ const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [selectedTab, setSelectedTab] = useState<{ id: number; name: string } | null>({
-    id: 0,
-    name: ORGANIZATION_EXTENDED_TABS.find((item) => item.id === 0)?.name || '',
+  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+    href: ORGANIZATION_EXTENDED_TABS.find((item) => item.id === 0)?.href || '',
   });
   const { t } = useTranslation('organization');
+  const locationLength = location.pathname.split('/').length - 1;
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
@@ -32,19 +32,23 @@ const Organization = () => {
 
   useEffect(() => {
     const found: IPageTab | undefined = ORGANIZATION_EXTENDED_TABS.find(
-      (tab) => tab.href === location.pathname.split('/')[2],
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ id: found.id, name: found.name });
+      setSelectedTab({ href: found.href });
     }
   }, []);
+
+  useEffect(() => {
+    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+  }, [location]);
 
   useEffect(() => {
     if (error) useErrorToast(t('error'));
   }, [error]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ id: tab.id, name: tab.name });
+    setSelectedTab({ href: tab.href });
     navigate(tab.href);
   };
 
@@ -71,7 +75,7 @@ const Organization = () => {
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(
-                selectedTab?.id === tab.id
+                selectedTab?.href === tab.href
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
                 'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
