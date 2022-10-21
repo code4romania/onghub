@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { mapSelectToSkill } from '../../common/helpers/format.helper';
+import { useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
 import { useCreatePracticeProgramMutation } from '../../services/practice-program/PracticeProgram.queries';
@@ -35,29 +35,14 @@ const CreatePracticeProgram = () => {
   const onSubmit = async (data: PracticeProgramPayload) => {
     // submit only if additional perdiod and working hours conditions are met
     if (isFormValid) {
-      // parse data
-      const { location, faculties, skills, isPeriodNotDetermined, ...practiceProgramPayload } =
-        data;
-
-      // mpa skills payload
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const skillsData = (skills as any[]).map(mapSelectToSkill);
-
-      const payload = {
-        ...practiceProgramPayload,
-        isPeriodNotDetermined: !!isPeriodNotDetermined,
-        skills: skillsData,
-        faculties: (faculties as any[])?.map((faculty) => faculty.id),
-        locationId: (location as any)?.value,
-      };
-
       // create practice program request
-      await createPracticeProgram(payload, {
+      await createPracticeProgram(data, {
         onSuccess: () => {
-          console.log('done');
+          useSuccessToast(t('feedback.success_create'));
+          navigate('/practice-program', { replace: true });
         },
-        onError: (error) => {
-          console.log('Nu s-a putut crea programul de preactica', error);
+        onError: () => {
+          useSuccessToast(t('feedback.error_create'));
         },
       });
     }

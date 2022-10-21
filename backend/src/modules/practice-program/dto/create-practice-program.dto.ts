@@ -14,6 +14,9 @@ import {
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { Skill } from 'src/shared/entities';
 
+const MIN_DATE = new Date();
+MIN_DATE.setHours(0, 0, 0, 0);
+
 export class CreatePracticeProgramDto {
   @IsString()
   @Matches(REGEX.ALPHANUMERIC)
@@ -22,7 +25,7 @@ export class CreatePracticeProgramDto {
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   deadline?: Date;
 
   @IsString()
@@ -31,12 +34,12 @@ export class CreatePracticeProgramDto {
   description: string;
 
   @IsDate()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   endDate?: Date;
 
   @IsBoolean()
@@ -47,9 +50,8 @@ export class CreatePracticeProgramDto {
   minWorkingHours: number;
 
   @IsNumber()
-  @IsOptional()
   @Min(0)
-  maxWorkingHours?: number;
+  maxWorkingHours: number;
 
   @IsString()
   @IsOptional()
@@ -64,12 +66,10 @@ export class CreatePracticeProgramDto {
   domains: number[];
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
   faculties?: number[];
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
   skills?: Partial<Skill>[];
 

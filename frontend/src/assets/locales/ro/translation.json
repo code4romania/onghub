@@ -1077,6 +1077,10 @@
         "helper": "Completeaza doar daca programul de practica este dedicat numai studentilor unor anumite facultati",
         "placeholder": "Selecteaza..."
       }
+    },
+    "feedback": {
+      "success_create": "Programul de practica a fost creat!",
+      "error_create": "Eroare la crearea programului de practica"
     }
   }
 }

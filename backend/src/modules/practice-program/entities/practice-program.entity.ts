@@ -17,7 +17,6 @@ export class PracticeProgram extends BaseEntity {
   @Column({
     type: 'varchar',
     name: 'title',
-    unique: true,
   })
   title: string;
 
