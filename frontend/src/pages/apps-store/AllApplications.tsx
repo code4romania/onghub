@@ -12,8 +12,9 @@ import { APPLICATION_STORE_TABS } from './constants/ApplicationStoreTabs.constan
 const AllApplications = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: APPLICATION_STORE_TABS.find((item) => item.id === 0)?.href || '',
+    name: APPLICATION_STORE_TABS.find((item) => item.id === 0)?.name || '',
   });
   const { role } = useAuthContext();
   const { t } = useTranslation('appstore');
@@ -24,16 +25,21 @@ const AllApplications = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = APPLICATION_STORE_TABS.find(
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ href: tab.href, name: tab.name });
     navigate(tab.href);
   };
 

@@ -18,8 +18,9 @@ import Select from '../../components/Select/Select';
 const OrganizationProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: ORGANIZATION_TABS.find((item) => item.id === 0)?.href || '',
+    name: ORGANIZATION_TABS.find((item) => item.id === 0)?.name || '',
   });
   const { t } = useTranslation('organization');
   const { role } = useAuthContext();
@@ -41,12 +42,17 @@ const OrganizationProfile = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = ORGANIZATION_TABS.find(
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const OrganizationProfile = () => {
   }, [error, restrictOrganizationRequestMutation.error]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ href: tab.href, name: tab.name });
     navigate(tab.href);
   };
 
