@@ -11,8 +11,9 @@ import { APPLICATION_TABS } from './constants/ApplicationTabs';
 const ApplicationWithOngList = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: APPLICATION_TABS.find((item) => item.id === 0)?.href || '',
+    name: APPLICATION_TABS.find((item) => item.id === 0)?.name || '',
   });
   const params = useParams();
   const locationLength = location.pathname.split('/').length - 1;
@@ -28,16 +29,21 @@ const ApplicationWithOngList = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = APPLICATION_TABS.find(
+      (item) => item.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ name: tab.name, href: tab.href });
     navigate(tab.href, { replace: true });
   };
 

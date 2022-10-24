@@ -12,8 +12,9 @@ import { UserRole } from './enums/UserRole.enum';
 const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: USERS_TABS.find((item) => item.id === 0)?.href || '',
+    name: USERS_TABS.find((item) => item.id === 0)?.name || '',
   });
   const { role } = useAuthContext();
   const { t } = useTranslation('user');
@@ -25,16 +26,21 @@ const Users = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = USERS_TABS.find(
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ href: tab.href, name: tab.name });
     navigate(tab.href);
   };
 
