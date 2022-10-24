@@ -110,4 +110,8 @@ export class NomenclaturesService {
   public getSkills(conditions: FindManyOptions<Skill>) {
     return this.skillsRepository.find(conditions);
   }
+
+  public createSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
+    return this.skillsRepository.save(skills);
+  }
 }
