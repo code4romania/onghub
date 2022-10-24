@@ -141,7 +141,6 @@ const PracticeProgramForm = ({
                 return (
                   <DatePickerInput
                     {...PracticeProgramFormConfig.deadline.config}
-                    minDate={new Date()}
                     value={value}
                     onChange={onChange}
                     error={(errors as Record<string, { message: string }>)[
@@ -179,7 +178,6 @@ const PracticeProgramForm = ({
                 return (
                   <DatePickerInput
                     {...PracticeProgramFormConfig.startDate.config}
-                    minDate={new Date()}
                     value={value}
                     onChange={onChange}
                     error={
@@ -200,7 +198,6 @@ const PracticeProgramForm = ({
                 return (
                   <DatePickerInput
                     {...PracticeProgramFormConfig.endDate.config}
-                    minDate={new Date()}
                     value={value}
                     onChange={onChange}
                     error={

@@ -1,3 +1,4 @@
+import { ISelectData } from '../../../common/helpers/format.helper';
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { City } from '../../../common/interfaces/city.interface';
 import { Faculty } from '../../../common/interfaces/faculty.interface';
@@ -14,9 +15,9 @@ export interface PracticeProgramPayload extends BaseEntity {
   minWorkingHours: number;
   maxWorkingHours?: number;
   link?: string;
-  location?: City;
+  location?: City | ISelectData;
   locationId: number;
   domains: number[];
-  faculties?: number[] | Faculty[];
-  skills: Partial<Skill>[];
+  faculties?: ISelectData[] | number[] | Faculty[];
+  skills: Partial<Skill>[] | ISelectData[];
 }

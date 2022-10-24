@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useSuccessToast } from '../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
 import { useCreatePracticeProgramMutation } from '../../services/practice-program/PracticeProgram.queries';
@@ -42,7 +42,7 @@ const CreatePracticeProgram = () => {
           navigate('/practice-program', { replace: true });
         },
         onError: () => {
-          useSuccessToast(t('feedback.error_create'));
+          useErrorToast(t('feedback.error_create'));
         },
       });
     }

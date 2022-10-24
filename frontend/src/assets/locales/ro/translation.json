@@ -995,6 +995,10 @@
       "title": "Adauga program de practica",
       "card_title": "Descriere Program"
     },
+    "edit": {
+      "title": "Modifica program de practica",
+      "card_title": "Descriere Program"
+    },
     "form": {
       "title": {
         "required": "Titlul programului este obligatoriu",
@@ -1080,7 +1084,9 @@
     },
     "feedback": {
       "success_create": "Programul de practica a fost creat!",
-      "error_create": "Eroare la crearea programului de practica"
+      "success_update": "Programul de practica a fost modificat cu success!",
+      "error_create": "Eroare la crearea programului de practica",
+      "error_update": "Eroare la modificarea programului de practica"
     }
   }
 }
