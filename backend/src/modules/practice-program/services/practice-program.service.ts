@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
@@ -34,7 +35,7 @@ export class PracticeProgramService {
         locationId,
         domains: domainsIds,
         faculties: facultiesIds,
-        skills: skillsIds,
+        skills: submitedSkills,
         ...practiceProgramPayload
       } = createPracticeProgramDto;
 
@@ -62,12 +63,8 @@ export class PracticeProgramService {
 
       // 4. get skills if any selected
       let skills = [];
-      if (skillsIds?.length > 0) {
-        skills = await this.nomenclatureService.getSkills({
-          where: {
-            id: In(skillsIds),
-          },
-        });
+      if (submitedSkills?.length > 0) {
+        skills = await this.saveAndGetSkills(submitedSkills);
       }
 
       // 5. check if undetermined flag and end date have correct values
@@ -330,5 +327,33 @@ export class PracticeProgramService {
     } catch (error) {
       throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
     }
+  }
+
+  private async saveAndGetSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
+    // 1. separate existing skills from new ones
+    const allSkills = skills.reduce(
+      (
+        previousValue: { existing: Skill[]; new: { name: string }[] },
+        currentValue: Skill | { name: string },
+      ) => {
+        const skillDone = { ...previousValue };
+
+        if (currentValue instanceof Skill && currentValue.id) {
+          skillDone.existing.push(currentValue as Skill);
+        } else {
+          skillDone.new.push(currentValue as { name: string });
+        }
+        return skillDone;
+      },
+      { existing: [], new: [] },
+    );
+
+    // 2. create new skills
+    const newSkills = await this.nomenclatureService.createSkills(
+      allSkills.new,
+    );
+
+    // 3. return all skills
+    return [...newSkills, ...allSkills.existing];
   }
 }

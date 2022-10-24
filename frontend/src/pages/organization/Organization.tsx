@@ -16,8 +16,9 @@ const Organization = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: ORGANIZATION_EXTENDED_TABS.find((item) => item.id === 0)?.href || '',
+    name: ORGANIZATION_EXTENDED_TABS.find((item) => item.id === 0)?.name || '',
   });
   const { t } = useTranslation('organization');
   const locationLength = location.pathname.split('/').length - 1;
@@ -35,12 +36,17 @@ const Organization = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = ORGANIZATION_EXTENDED_TABS.find(
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   useEffect(() => {
@@ -48,7 +54,7 @@ const Organization = () => {
   }, [error]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ href: tab.href, name: tab.name });
     navigate(tab.href);
   };
 

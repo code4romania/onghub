@@ -24,8 +24,9 @@ const Request = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string } | null>({
+  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
     href: ORGANIZATION_TABS.find((item) => item.id === 0)?.href || '',
+    name: ORGANIZATION_TABS.find((item) => item.id === 0)?.name || '',
   });
   const [isApproveModalOpen, setApproveModalOpen] = useState(false);
   const [isRejectModalOpen, setRejectModalOpen] = useState(false);
@@ -57,12 +58,17 @@ const Request = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href });
+      setSelectedTab({ href: found.href, name: found.name });
     }
   }, []);
 
   useEffect(() => {
-    setSelectedTab({ href: location.pathname.split('/')[locationLength] });
+    const found: IPageTab | undefined = ORGANIZATION_TABS.find(
+      (tab) => tab.href === location.pathname.split('/')[locationLength],
+    );
+    if (found) {
+      setSelectedTab({ href: found.href, name: found.name });
+    }
   }, [location]);
 
   useEffect(() => {
@@ -74,7 +80,7 @@ const Request = () => {
   }, [error, approveError, rejectError]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href });
+    setSelectedTab({ href: tab.href, name: tab.name });
     navigate(tab.href);
   };
 

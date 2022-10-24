@@ -12,6 +12,10 @@ import {
   MinDate,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { Skill } from 'src/shared/entities';
+
+const MIN_DATE = new Date();
+MIN_DATE.setHours(0, 0, 0, 0);
 
 export class CreatePracticeProgramDto {
   @IsString()
@@ -21,7 +25,7 @@ export class CreatePracticeProgramDto {
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   deadline?: Date;
 
   @IsString()
@@ -30,12 +34,12 @@ export class CreatePracticeProgramDto {
   description: string;
 
   @IsDate()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
+  @MinDate(MIN_DATE)
   endDate?: Date;
 
   @IsBoolean()
@@ -46,11 +50,11 @@ export class CreatePracticeProgramDto {
   minWorkingHours: number;
 
   @IsNumber()
-  @IsOptional()
   @Min(0)
-  maxWorkingHours?: number;
+  maxWorkingHours: number;
 
   @IsString()
+  @IsOptional()
   @Matches(REGEX.LINK)
   link: string;
 
@@ -62,15 +66,14 @@ export class CreatePracticeProgramDto {
   domains: number[];
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
   faculties?: number[];
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
-  skills?: number[];
+  skills?: Partial<Skill>[];
 
   @IsNumber()
-  organizationId: number;
+  @IsOptional()
+  organizationId?: number;
 }

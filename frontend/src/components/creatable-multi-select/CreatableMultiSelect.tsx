@@ -1,41 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import AsyncSelect from 'react-select/async';
-import debounce from 'debounce-promise';
-import './ServerSelect.css';
+import '../multi-select/MultiSelect.css';
 import { Chip } from '../chip-selection/ChipSelection';
+import { ISelectData } from '../../common/helpers/format.helper';
+import CreatableSelect from 'react-select/creatable';
 
-export interface ServerSelectConfig {
+export interface CreatableMultiSelectProps {
   label: string;
-  isMulti?: boolean;
   helperText?: string;
   error?: string;
   placeholder?: string;
-  isClearable?: boolean;
-  value: any[];
+  value: ISelectData[];
   readonly?: boolean;
   onChange: any;
-  loadOptions: any;
+  options: ISelectData[];
   id?: string;
 }
 
-const ServerSelect = ({
+const CreatableMultiSelect = ({
   placeholder,
-  isClearable,
-  isMulti,
   onChange,
   value,
   label,
-  loadOptions,
   helperText,
   error,
   readonly,
+  options,
   id,
-}: ServerSelectConfig) => {
-  const debouncedLoadOptions = debounce(loadOptions, 500, {
-    leading: false,
-  });
-
+}: CreatableMultiSelectProps) => {
   return (
     <div>
       {label && (
@@ -52,7 +45,7 @@ const ServerSelect = ({
             <Chip
               key={index}
               item={{ id: item.value, name: item.label }}
-              readonly={readonly}
+              readonly={true}
               selected={false}
               onClick={() => {}}
               id={id}
@@ -61,16 +54,14 @@ const ServerSelect = ({
         </div>
       )}
       {!readonly && (
-        <AsyncSelect
-          id={`${id}__input`}
-          cacheOptions
+        <CreatableSelect
+          isMulti
           placeholder={placeholder}
           classNamePrefix="reactselect"
-          loadOptions={debouncedLoadOptions}
           onChange={onChange}
-          isClearable={isClearable}
-          isMulti={isMulti}
-          defaultValue={value}
+          value={value}
+          options={options}
+          id={id}
         />
       )}
       {!error && !readonly && helperText && (
@@ -87,4 +78,4 @@ const ServerSelect = ({
   );
 };
 
-export default ServerSelect;
+export default CreatableMultiSelect;

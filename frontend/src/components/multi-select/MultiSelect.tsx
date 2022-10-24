@@ -12,7 +12,7 @@ export interface MultiSelectConfig {
   placeholder?: string;
   isClearable?: boolean;
   value: any[];
-  readonly: boolean;
+  readonly?: boolean;
   onChange: any;
   options: any[];
   id?: string;

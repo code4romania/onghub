@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../../containers/Layout';
 import { useAuthContext } from '../../contexts/AuthContext';
 import Account from '../../pages/account/Account';
@@ -42,6 +42,7 @@ import OrganizationProfile from '../../pages/organization/OrganizationProfile';
 import OrganizationApplications from '../../pages/organization/components/OrganizationApplications/OrganizationApplications';
 import SuperAdminDashboard from '../../pages/dashboard/SuperAdminDashboard';
 import OrganizationOverview from '../../pages/organization/components/Overview/OrganizationOverview';
+import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticeProgram';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -263,6 +264,21 @@ const Router = () => {
               <Route path="details" element={<ApplicationDetails />} />
             </Route>
           )}
+
+          {/* Practice programs */}
+          <Route
+            path={'practice-program'}
+            element={
+              <RoleGuard roles={[UserRole.ADMIN]}>
+                <Outlet />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<div>Practice Programs List</div>} />
+            <Route path="add" element={<CreatePracticeProgram />} />
+            <Route path=":id" element={<div>Edit Practice Program</div>} />
+          </Route>
+
           <Route path="account" element={<Account />} />
         </Route>
 

@@ -11,9 +11,13 @@ import {
   getRegions,
   getFederations,
   getCoalitions,
+  getSkills,
+  getFaculties,
 } from './Nomenclatures.service';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
+import { Skill } from '../../common/interfaces/skill.interface';
+import { Faculty } from '../../common/interfaces/faculty.interface';
 
 export const useCitiesQuery = (countyId: number) => {
   const { setCities } = useStore();
@@ -66,6 +70,24 @@ export const useCoalitionsQuery = () => {
   return useQuery('coalitions', () => getCoalitions(), {
     onSuccess: (data: Coalition[]) => {
       setCoalitions(data);
+    },
+  });
+};
+
+export const useSkillsQuery = () => {
+  const { setSkills } = useStore();
+  return useQuery('skills', () => getSkills(), {
+    onSuccess: (data: Skill[]) => {
+      setSkills(data);
+    },
+  });
+};
+
+export const useFacultiesQuery = () => {
+  const { setFaculties } = useStore();
+  return useQuery('faculties', () => getFaculties(), {
+    onSuccess: (data: Faculty[]) => {
+      setFaculties(data);
     },
   });
 };
