@@ -12,3 +12,17 @@ export const createPracticeProgram = (
     parsePracticaProgramFormDataToPaylod(practiceProgramPayload),
   ).then((res: AxiosResponse<PracticeProgram>) => res.data);
 };
+
+export const updatePracticeProgram = (
+  id: string,
+  practiceProgramPayload: Partial<PracticeProgramPayload>,
+): Promise<PracticeProgram> => {
+  return API.patch(
+    `/practice-program/${id}`,
+    parsePracticaProgramFormDataToPaylod(practiceProgramPayload),
+  ).then((res: AxiosResponse<PracticeProgram>) => res.data);
+};
+
+export const getPracticeProgramById = (id: string): Promise<PracticeProgram> => {
+  return API.get(`/practice-program/${id}`).then((res: AxiosResponse<PracticeProgram>) => res.data);
+};

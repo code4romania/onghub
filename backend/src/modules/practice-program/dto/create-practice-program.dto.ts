@@ -9,13 +9,9 @@ import {
   Length,
   Matches,
   Min,
-  MinDate,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { Skill } from 'src/shared/entities';
-
-const MIN_DATE = new Date();
-MIN_DATE.setHours(0, 0, 0, 0);
 
 export class CreatePracticeProgramDto {
   @IsString()
@@ -25,7 +21,6 @@ export class CreatePracticeProgramDto {
 
   @IsDate()
   @IsOptional()
-  @MinDate(MIN_DATE)
   deadline?: Date;
 
   @IsString()
@@ -34,12 +29,10 @@ export class CreatePracticeProgramDto {
   description: string;
 
   @IsDate()
-  @MinDate(MIN_DATE)
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @MinDate(MIN_DATE)
   endDate?: Date;
 
   @IsBoolean()

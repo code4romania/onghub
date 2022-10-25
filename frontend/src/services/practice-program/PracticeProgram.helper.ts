@@ -1,8 +1,10 @@
 import { formatISO9075 } from 'date-fns';
-import { mapSelectToSkill } from '../../common/helpers/format.helper';
+import { ISelectData, mapSelectToSkill } from '../../common/helpers/format.helper';
 import { PracticeProgramPayload } from './interfaces/practice-program-payload.interface';
 
-export const parsePracticaProgramFormDataToPaylod = (data: PracticeProgramPayload) => {
+export const parsePracticaProgramFormDataToPaylod = (
+  data: PracticeProgramPayload | Partial<PracticeProgramPayload>,
+) => {
   // parse data
   const {
     location,
@@ -16,12 +18,11 @@ export const parsePracticaProgramFormDataToPaylod = (data: PracticeProgramPayloa
   } = data;
 
   // mpa skills payload
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const skillsData = (skills as any[])?.map(mapSelectToSkill);
+  const skillsData = (skills as (ISelectData & { __isNew__: boolean })[])?.map(mapSelectToSkill);
 
   // format dates
   const formatedStartDate = formatISO9075(startDate as Date);
-  const formatedEndDate = endDate ? formatISO9075(startDate as Date) : endDate;
+  const formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
   const fromatedDeadline = deadline ? formatISO9075(deadline as Date) : deadline;
 
   return {
@@ -31,7 +32,7 @@ export const parsePracticaProgramFormDataToPaylod = (data: PracticeProgramPayloa
     startDate: formatedStartDate,
     endDate: formatedEndDate,
     deadline: fromatedDeadline,
-    faculties: faculties?.map((faculty: any) => faculty.value),
-    locationId: (location as any)?.value,
+    faculties: (faculties as { value: number; label: string }[])?.map((faculty) => faculty.value),
+    locationId: (location as { value: number; label: string })?.value,
   };
 };

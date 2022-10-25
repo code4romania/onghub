@@ -130,9 +130,14 @@ export class PracticeProgramService {
     updatePracticeProgramDto: UpdatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     try {
+      // add filter for organizationId if comes through request
+      const { organizationId, ...updatePracticeProgramDtoPayload } =
+        updatePracticeProgramDto;
+      const where = organizationId ? { id, organizationId } : { id };
+
       // 1. get practice program
       const practiceProgram = await this.practiceProgramRepository.get({
-        where: { id },
+        where,
       });
 
       if (!practiceProgram) {
@@ -143,9 +148,9 @@ export class PracticeProgramService {
         locationId,
         domains: domainsIds,
         faculties: facultiesIds,
-        skills: skillsIds,
+        skills: submitedSkills,
         ...practiceProgramPayload
-      } = updatePracticeProgramDto;
+      } = updatePracticeProgramDtoPayload;
 
       // 2. get location
       let location = null;
@@ -177,12 +182,8 @@ export class PracticeProgramService {
 
       // 5. get skills if any selected
       let skills = [];
-      if (skillsIds?.length > 0) {
-        skills = await this.nomenclatureService.getSkills({
-          where: {
-            id: In(skillsIds),
-          },
-        });
+      if (submitedSkills?.length > 0) {
+        skills = await this.saveAndGetSkills(submitedSkills);
       }
 
       // 6. check if undetermined flag and end date have correct values
@@ -236,7 +237,7 @@ export class PracticeProgramService {
       return this.practiceProgramRepository.save({
         ...practiceProgram,
         ...practiceProgramPayload,
-        location: location || practiceProgram.location,
+        location: location?.length > 0 ? location[0] : practiceProgram.location,
         endDate: finalEndDate,
         domains,
         faculties,
@@ -244,7 +245,7 @@ export class PracticeProgramService {
       });
     } catch (error) {
       this.logger.error({
-        error: { error },
+        error: JSON.stringify(error),
         ...PRACTICE_PROGRAMS_ERRORS.UPDATE,
       });
 
@@ -306,11 +307,20 @@ export class PracticeProgramService {
     }
   }
 
-  public async find(id: number): Promise<PracticeProgram> {
+  public async find(
+    id: number,
+    organizationId?: number,
+  ): Promise<PracticeProgram> {
+    // for admin and employee check organizationId as search criteria
+    const where = organizationId
+      ? {
+          id,
+          organizationId,
+        }
+      : { id };
+
     const practiceProgram = await this.practiceProgramRepository.get({
-      where: {
-        id,
-      },
+      where: where,
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
 
