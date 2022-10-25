@@ -1,12 +1,12 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { formatNumber } from 'libphonenumber-js';
-
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
@@ -14,15 +14,19 @@ import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { DataSource, FindManyOptions, In } from 'typeorm';
+import { DataSource, FindManyOptions, FindOperator, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import {
   ORGANIZATION_ERRORS,
   ORGANIZATION_REQUEST_ERRORS,
 } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
-import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
+import {
+  ORGANIZATION_FILTERS_CONFIG,
+  ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+} from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
+import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import {
@@ -329,6 +333,89 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findAllOrganizationsWithActivePracticePrograms(
+    options: GetOrganizationWithPracticeProgramsFilterDto,
+  ): Promise<Pagination<any>> {
+    try {
+      const { domains, cityId, ...filters } = options;
+
+      // 1. get only organization with active practice programs
+      let paginationOptions: GetOrganizationWithPracticeProgramsFilterDto & {
+        practicePrograms: {
+          active: boolean;
+        };
+        organizationGeneral?: {
+          city: {
+            id: number;
+          };
+        };
+        organizationActivity?: {
+          domains: {
+            id: FindOperator<number>;
+          };
+        };
+      } = {
+        ...filters,
+        practicePrograms: {
+          active: true, // get only organizations with active practice programs
+        },
+      };
+
+      // 2. add filter by domain if provided
+      if (domains?.length > 0) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationActivity: {
+            domains: {
+              id: In(domains),
+            },
+          },
+        };
+      }
+
+      // 3. add filter by city if provided
+      if (cityId) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationGeneral: {
+            city: {
+              id: cityId,
+            },
+          },
+        };
+      }
+
+      // 4. get paginated organizations
+      const organizations = await this.organizationRepository.getManyPaginated(
+        ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+      // 5. flatten the request
+      const flatOrganizations = this.flattenOrganization(organizations);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<OrganizationFlat>(
+          flatOrganizations.items,
+        );
+
+      return {
+        ...flatOrganizations,
+        items,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
   }
 
   /**
@@ -906,5 +993,24 @@ export class OrganizationService {
         organizationId,
       });
     }
+  }
+
+  private flattenOrganization(
+    organizations: Pagination<Organization>,
+  ): Pagination<OrganizationFlat> {
+    const { items, meta } = organizations;
+
+    const flatItems = items.reduce((previous, current) => {
+      previous.push({
+        id: current.id,
+        ...current.organizationGeneral,
+      });
+      return previous;
+    }, []);
+
+    return {
+      items: flatItems,
+      meta,
+    };
   }
 }
