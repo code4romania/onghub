@@ -270,7 +270,7 @@ const Router = () => {
           <Route
             path={'practice-program'}
             element={
-              <RoleGuard roles={[UserRole.ADMIN]}>
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
                 <Outlet />
               </RoleGuard>
             }

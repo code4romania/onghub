@@ -879,7 +879,15 @@
       "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
       "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
       "another_description": "Descriere aplicatie",
-      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa"
+      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa",
+      "disabled": {
+        "title": "Accesul la aplicatie este indisponibil momentan",
+        "description": "Vom reveni cu noutati in curand."
+      },
+      "practice_program": {
+        "redirect_to_site": "Vezi profilul tau pe Practice4Good",
+        "redirect_to_practice_programs": "Gestioneaza program de practica"
+      }
     },
     "list_header": {
       "name": "ONG",
