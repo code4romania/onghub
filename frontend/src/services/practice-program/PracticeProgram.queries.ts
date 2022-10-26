@@ -3,6 +3,7 @@ import { PracticeProgramPayload } from './interfaces/practice-program-payload.in
 import {
   createPracticeProgram,
   getPracticeProgramById,
+  getPracticePrograms,
   updatePracticeProgram,
 } from './PracticeProgram.service';
 
@@ -26,4 +27,8 @@ export const useEditPracticeProgramMutation = () => {
   return useMutation(({ id, data }: { id: string; data: Partial<PracticeProgramPayload> }) =>
     updatePracticeProgram(id, data),
   );
+};
+
+export const usePracticePrograms = () => {
+  return useQuery(['practice-programs'], () => getPracticePrograms());
 };

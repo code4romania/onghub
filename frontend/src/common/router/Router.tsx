@@ -44,6 +44,7 @@ import SuperAdminDashboard from '../../pages/dashboard/SuperAdminDashboard';
 import OrganizationOverview from '../../pages/organization/components/Overview/OrganizationOverview';
 import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticeProgram';
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
+import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -275,7 +276,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<div>Practice Programs List</div>} />
+            <Route index element={<PracticePrograms />} />
             <Route path="add" element={<CreatePracticeProgram />} />
             <Route path=":id" element={<EditPracticeProgram />} />
           </Route>
