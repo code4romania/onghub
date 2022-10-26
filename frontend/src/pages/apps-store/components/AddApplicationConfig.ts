@@ -2,6 +2,7 @@ import { ALPHANUMERIC_REGEX, URL_REGEX } from '../../../common/helpers/format.he
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
 import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 import i18n from '../../../common/config/i18n';
+import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 
 const translations = {
   name: {
@@ -43,8 +44,12 @@ const translations = {
     helper: i18n.t('appstore:config.video_link.helper'),
     required: i18n.t('appstore:config.video_link.required'),
   },
-  management: {
-    label: i18n.t('appstore:config.management.label'),
+  pulling_type: {
+    label: i18n.t('appstore:config.pulling_type.label'),
+    options: {
+      practice_program: i18n.t('appstore:config.pulling_type.options.practice_program'),
+      civic_service: i18n.t('appstore:config.pulling_type.options.civic_service'),
+    },
   },
   step: {
     required: i18n.t('appstore:config.step.required'),
@@ -53,6 +58,17 @@ const translations = {
   },
   url: i18n.t('common:url'),
 };
+
+export const PullingTypeOptions = [
+  {
+    value: ApplicationPullingType.PRACTICE_PROGRAM,
+    label: translations.pulling_type.options.practice_program,
+  },
+  {
+    value: ApplicationPullingType.CIVIC_SERVICE,
+    label: translations.pulling_type.options.civic_service,
+  },
+];
 
 export const AddAppConfig: Record<string, any> = {
   name: {
@@ -216,20 +232,14 @@ export const AddAppConfig: Record<string, any> = {
       addOn: InputFieldHttpAddon,
     },
   },
-  managementUrl: {
-    key: 'managementUrl',
-    rules: {
-      pattern: {
-        value: URL_REGEX,
-        message: translations.url,
-      },
-    },
+  pullingType: {
+    key: 'pullingType',
+    rules: {},
     config: {
       type: 'text',
-      label: translations.management.label,
-      helperText: '',
-      placeholder: '',
-      addOn: InputFieldHttpAddon,
+      label: translations.pulling_type.label,
+      collection: PullingTypeOptions,
+      displayedAttribute: 'label',
     },
   },
   step: {

@@ -797,8 +797,12 @@
         "helper": "URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
         "required": "Link-ul catre prezentarea video este obligatoriu"
       },
-      "management": {
-        "label": "Link pentru pulling app"
+      "pulling_type": {
+        "label": "Tip de date pentru pulling app",
+        "options": {
+          "practice_program": "Programe de practica",
+          "civic_service": "Servicii"
+        }
       },
       "step": {
         "required": "Pasul este obligatoriu",

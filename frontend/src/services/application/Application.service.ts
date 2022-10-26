@@ -139,13 +139,18 @@ const generateApplicationFormDataPayload = (
   logo?: File,
 ): FormData => {
   // we remove the logo and steps
-  const { steps, ...data } = applicationDto;
+  const { steps, pullingType, ...data } = applicationDto;
   // create form data payload
   const payload = new FormData();
   for (const prop in cleanupPayload(data)) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload.append(prop, (data as any)[prop] as string);
   }
+
+  if (pullingType) {
+    payload.append('pullingType', pullingType.value);
+  }
+
   // map steps correcly as array
   steps?.forEach((step: { item: string }) => {
     payload.append('steps[]', step.item);
