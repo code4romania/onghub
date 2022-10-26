@@ -28,7 +28,9 @@
     },
     "restricted": "Restrictionat",
     "active": "Activ",
-    "no_data": "Nu sunt date de afisat!"
+    "no_data": "Nu sunt date de afisat!",
+    "show_more": "Vezi toate",
+    "show_less": "Arata mai putin"
   },
   "menu": {
     "informations": "Informatii",
@@ -1098,6 +1100,16 @@
     "list": {
       "title": "Programele mele de practica",
       "add_button": "Adauga program de practica"
+    },
+    "details": {
+      "deadline": "Deadline aplicare",
+      "deadline_unlimited": "nelimitat",
+      "period": "Perioada program",
+      "period_starting_with": "Incepand cu",
+      "working_hours": "Numar de ore",
+      "faculties": "Dedicat studentilor la",
+      "domains": "Domenii",
+      "skills": "Vei invata"
     },
     "feedback": {
       "success_create": "Programul de practica a fost creat!",
