@@ -1,4 +1,4 @@
-interface OrganizationFlat {
+export interface OrganizationFlat {
   id: number;
   name: string;
   description: string;

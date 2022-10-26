@@ -45,6 +45,7 @@ import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -356,8 +357,10 @@ export class OrganizationService {
             id: FindOperator<number>;
           };
         };
+        status: OrganizationStatus;
       } = {
         ...filters,
+        status: OrganizationStatus.ACTIVE,
         practicePrograms: {
           active: true, // get only organizations with active practice programs
         },

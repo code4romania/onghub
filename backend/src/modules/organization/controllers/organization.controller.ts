@@ -37,6 +37,7 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
+import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
 

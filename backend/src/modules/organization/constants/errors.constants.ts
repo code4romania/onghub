@@ -92,7 +92,7 @@ export const ORGANIZATION_ERRORS = {
     errorCode: 'ORG_021',
   },
   GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS: {
-    message: 'Erorr while loading organizations with practice programs',
+    message: 'Error while loading organizations with practice programs',
     errorCode: 'ORG_022',
   },
 };
