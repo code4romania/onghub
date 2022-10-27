@@ -45,6 +45,7 @@ import { UserModule } from '../user/user.module';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationHistory } from './entities/organization-history.entity';
 import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
+import { PracticeProgramModule } from '../practice-program/practice-program.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
     ]),
     ApplicationModule,
     UserModule,
+    PracticeProgramModule,
   ],
   controllers: [
     OrganizationApplicationController,

@@ -339,6 +339,27 @@ export class PracticeProgramService {
     }
   }
 
+  public async findPracticeShortPracticeProgramsByOrganization(
+    organizationId: number,
+  ): Promise<PracticeProgram[]> {
+    return this.practiceProgramRepository.getMany({
+      select: {
+        id: true,
+        title: true,
+        location: {
+          name: true,
+        },
+        startDate: true,
+        endDate: true,
+        minWorkingHours: true,
+        maxWorkingHours: true,
+        deadline: true,
+      },
+      relations: ['location'],
+      where: { organizationId },
+    });
+  }
+
   private async saveAndGetSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
     // 1. separate existing skills from new ones
     const allSkills = skills.reduce(

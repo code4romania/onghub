@@ -10,6 +10,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
+import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
@@ -46,6 +47,7 @@ import { Area } from '../enums/organization-area.enum';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
+import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -69,6 +71,7 @@ export class OrganizationService {
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
+    private readonly practiceProgramService: PracticeProgramService,
   ) {}
 
   public async create(
@@ -334,6 +337,99 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findOneOrganizationWithActivePracticePrograms(
+    organizationId: number,
+  ): Promise<OrganizationWithPracticePrograms> {
+    try {
+      // 1. get organization info
+      const organization = await this.organizationRepository.get({
+        select: {
+          id: true,
+          organizationGeneral: {
+            name: true,
+            logo: true,
+            description: true,
+            facebook: true,
+            twitter: true,
+            instagram: true,
+            contact: {
+              fullName: true,
+              email: true,
+              phone: true,
+            },
+            city: {
+              name: true,
+              county: {
+                name: true,
+              },
+            },
+          },
+          organizationActivity: {
+            domains: {
+              name: true,
+            },
+          },
+        },
+        relations: [
+          'organizationGeneral',
+          'organizationGeneral.city',
+          'organizationGeneral.contact',
+          'organizationGeneral.city.county',
+          'organizationActivity',
+          'organizationActivity.domains',
+        ],
+        where: {
+          id: organizationId,
+          status: OrganizationStatus.ACTIVE,
+        },
+      });
+
+      // 1.1 throw error fi organization not found
+      if (!organization) {
+        throw new NotFoundException({
+          ...ORGANIZATION_ERRORS.GET,
+        });
+      }
+
+      // 2. get practice programs by organization id
+      const practicePrograms =
+        await this.practiceProgramService.findPracticeShortPracticeProgramsByOrganization(
+          organizationId,
+        );
+
+      const {
+        id,
+        organizationGeneral: {
+          city: {
+            name: city,
+            county: { name: county },
+          },
+          ...organizationGeneralData
+        },
+        organizationActivity,
+      } = organization;
+
+      // 3. return flat result
+      return {
+        id,
+        ...organizationGeneralData,
+        county,
+        city,
+        ...organizationActivity,
+        practicePrograms,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
   }
 
   public async findAllOrganizationsWithActivePracticePrograms(

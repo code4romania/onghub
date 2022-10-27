@@ -18,5 +18,6 @@ import { PracticeProgramService } from './services/practice-program.service';
     PracticeProgramService,
     CivicCenterServiceService,
   ],
+  exports: [PracticeProgramService],
 })
 export class PracticeProgramModule {}

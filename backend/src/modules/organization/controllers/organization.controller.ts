@@ -38,6 +38,7 @@ import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
 import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
+import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
 
@@ -157,6 +158,17 @@ export class OrganizationController {
   ): Promise<Pagination<OrganizationFlat>> {
     return this.organizationService.findAllOrganizationsWithActivePracticePrograms(
       filters,
+    );
+  }
+
+  @Public()
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/practice-program')
+  findOrganizationWithPracticePrograms(
+    @Param('id') id: number,
+  ): Promise<OrganizationWithPracticePrograms> {
+    return this.organizationService.findOneOrganizationWithActivePracticePrograms(
+      id,
     );
   }
 

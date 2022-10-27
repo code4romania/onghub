@@ -95,6 +95,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while loading organizations with practice programs',
     errorCode: 'ORG_022',
   },
+  GET_ORGANIZATION_WITH_ACTIVE_PRACTICE_PROGRAMS: {
+    message: 'Error while retrieving the organization',
+    errorCode: 'ORG_023',
+  },
 };
 
 export const PARTNER_ERRORS = {
