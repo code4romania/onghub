@@ -399,27 +399,19 @@ export class OrganizationService {
           organizationId,
         );
 
-      const {
-        id,
-        organizationGeneral: {
-          city: {
-            name: city,
-            county: { name: county },
-          },
-          ...organizationGeneralData
-        },
-        organizationActivity,
-      } = organization;
+      // 3. get public url logo
+      if (organization.organizationGeneral.logo) {
+        organization.organizationGeneral.logo =
+          await this.fileManagerService.generatePresignedURL(
+            organization.organizationGeneral.logo,
+          );
+      }
 
-      // 3. return flat result
-      return {
-        id,
-        ...organizationGeneralData,
-        county,
-        city,
-        ...organizationActivity,
-        practicePrograms,
-      };
+      // 4. flatten organization
+      const flatOrganization =
+        this.flattenOrganizationWithPracticePrograms(organization);
+
+      return { ...flatOrganization, practicePrograms };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
@@ -1110,6 +1102,30 @@ export class OrganizationService {
     return {
       items: flatItems,
       meta,
+    };
+  }
+
+  private flattenOrganizationWithPracticePrograms(
+    organization: Organization,
+  ): OrganizationWithPracticePrograms {
+    const {
+      id,
+      organizationGeneral: {
+        city: {
+          name: city,
+          county: { name: county },
+        },
+        ...organizationGeneralData
+      },
+      organizationActivity,
+    } = organization;
+
+    return {
+      id,
+      ...organizationGeneralData,
+      county,
+      city,
+      ...organizationActivity,
     };
   }
 }
