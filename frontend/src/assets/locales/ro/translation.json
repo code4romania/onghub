@@ -28,6 +28,7 @@
     },
     "restricted": "Restrictionat",
     "active": "Activ",
+    "inactive": "Inactiv",
     "no_data": "Nu sunt date de afisat!",
     "show_more": "Vezi toate",
     "show_less": "Arata mai putin"
@@ -1109,7 +1110,8 @@
       "working_hours": "Numar de ore",
       "faculties": "Dedicat studentilor la",
       "domains": "Domenii",
-      "skills": "Vei invata"
+      "skills": "Vei invata",
+      "list_error": "Eroare la incarcarea datelor!"
     },
     "feedback": {
       "success_create": "Programul de practica a fost creat!",

@@ -18,7 +18,7 @@ const PracticeProgramContentItem = ({ label, value }: PracticeProgramContentItem
   return (
     <div className="flex flex-col sm:flex-row w-full">
       <div className="flex-1 font-titilliumSemiBold text-base">{label}</div>
-      <div className="flex-1 text-base">{value || 'N/A'}</div>
+      <div className="flex-1 text-base">{value || '-'}</div>
     </div>
   );
 };
@@ -41,7 +41,7 @@ const PracticeProgramContentExpandableItemItem = ({
           expanded={false}
           width={0}
         >
-          {value}
+          {value || '-'}
         </ShowMoreText>
       </div>
     </div>
@@ -85,7 +85,7 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
           <span>{program.location.name}</span>
         </p>
       </div>
-      <div className="flex flex-col py-8 lg:flex-row">
+      <div className="flex flex-col py-8 xl:flex-row">
         <div className="flex-1 flex flex-col gap-4 pb-4">
           <PracticeProgramContentItem
             label={t('details.deadline')}

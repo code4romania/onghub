@@ -14,7 +14,7 @@ const PracticePrograms = () => {
   const navigate = useNavigate();
 
   // practice programs query
-  const { data: practicePrograms, isLoading } = usePracticePrograms();
+  const { data: practicePrograms, isLoading, error } = usePracticePrograms();
 
   const onAddPracticeProgram = () => {
     navigate('add');
@@ -32,21 +32,22 @@ const PracticePrograms = () => {
       {isLoading && <Loading />}
       {!isLoading && (
         <div className="flex flex-col gap-8">
-          {!practicePrograms && <p>{t('no_data', { ns: 'common' })}</p>}
           {practicePrograms &&
             practicePrograms.map((program) => (
               <div
                 key={program.id}
                 className="w-full h-full bg-white shadow rounded-lg p-10 flex flex-col md:flex-row"
               >
-                <div className="md:flex-2">
+                <div className="md:flex-2 xl:flex-3">
                   <PracticeProgramContent program={program} />
                 </div>
                 <div className="md:flex-1">
-                  <PracticeProgramActions />
+                  <PracticeProgramActions program={program} />
                 </div>
               </div>
             ))}
+          {!!error && <p>{t('details.list_error')}</p>}
+          {!practicePrograms && !error && <p>{t('no_data', { ns: 'common' })}</p>}
         </div>
       )}
     </ContentWrapper>
