@@ -69,7 +69,6 @@ export class PracticeProgramController {
   @Patch(':id/disable')
   async disable(
     @Param('id') id: number,
-    @Body() body: UpdatePracticeProgramDto,
     @ExtractUser() user: User,
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.updatePracticeProgramStatus(
