@@ -81,7 +81,18 @@ export class PracticeProgramController {
     );
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Public()
+  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'organizationId', type: String })
+  @Get(':id/organization/:organizationId')
+  async findPracticeProgramPublic(
+    @Param('id') id: number,
+    @Param('organizationId') organizationId: number,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.find(id, organizationId);
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   async find(
