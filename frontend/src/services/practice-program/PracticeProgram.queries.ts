@@ -3,6 +3,8 @@ import { PracticeProgramPayload } from './interfaces/practice-program-payload.in
 import {
   createPracticeProgram,
   deletePracticeProgram,
+  disablePracticeProgram,
+  enablePracticeProgram,
   getPracticeProgramById,
   getPracticePrograms,
   updatePracticeProgram,
@@ -32,6 +34,14 @@ export const useEditPracticeProgramMutation = () => {
 
 export const useDeletePracticeProgramMutation = () => {
   return useMutation((id: number) => deletePracticeProgram(id));
+};
+
+export const useEnablePracticeProgramMutation = () => {
+  return useMutation((id: number) => enablePracticeProgram(id));
+};
+
+export const useDisablePracticeProgramMutation = () => {
+  return useMutation((id: number) => disablePracticeProgram(id));
 };
 
 export const usePracticePrograms = () => {

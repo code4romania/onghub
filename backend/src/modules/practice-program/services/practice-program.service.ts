@@ -260,6 +260,48 @@ export class PracticeProgramService {
     }
   }
 
+  public async updatePracticeProgramStatus(
+    id: number,
+    active: boolean,
+    organizationId?: number,
+  ): Promise<PracticeProgram> {
+    try {
+      const where = organizationId
+        ? {
+            id,
+            organizationId,
+          }
+        : { id };
+
+      const practiceProgram = await this.practiceProgramRepository.get({
+        where: where,
+      });
+
+      if (!practiceProgram) {
+        throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+      }
+
+      return this.practiceProgramRepository.save({
+        ...practiceProgram,
+        active,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.ENABLE_DISABLE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...PRACTICE_PROGRAMS_ERRORS.ENABLE_DISABLE,
+        });
+      }
+    }
+  }
+
   public async findAll(): Promise<PracticeProgram[]> {
     return this.practiceProgramRepository.getMany({
       relations: ['location', 'skills', 'domains', 'faculties'],

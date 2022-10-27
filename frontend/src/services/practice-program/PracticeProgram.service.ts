@@ -31,6 +31,18 @@ export const getPracticePrograms = (): Promise<PracticeProgram[]> => {
   return API.get(`/practice-program`).then((res: AxiosResponse<PracticeProgram[]>) => res.data);
 };
 
+export const enablePracticeProgram = (id: number): Promise<PracticeProgram> => {
+  return API.patch(`/practice-program/${id}/enable`).then(
+    (res: AxiosResponse<PracticeProgram>) => res.data,
+  );
+};
+
+export const disablePracticeProgram = (id: number): Promise<PracticeProgram> => {
+  return API.patch(`/practice-program/${id}/disable`).then(
+    (res: AxiosResponse<PracticeProgram>) => res.data,
+  );
+};
+
 export const deletePracticeProgram = (id: number): Promise<void> => {
   return API.delete(`/practice-program/${id}`).then((res: AxiosResponse<void>) => res.data);
 };

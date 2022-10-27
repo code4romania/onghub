@@ -4,7 +4,11 @@ import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
-import { useDeletePracticeProgramMutation } from '../../../services/practice-program/PracticeProgram.queries';
+import {
+  useDeletePracticeProgramMutation,
+  useDisablePracticeProgramMutation,
+  useEnablePracticeProgramMutation,
+} from '../../../services/practice-program/PracticeProgram.queries';
 
 interface PracticeProgramActionsProps {
   program: PracticeProgram;
@@ -44,7 +48,6 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
 
 const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProps) => {
   const { t } = useTranslation(['practice_program', 'common']);
-  const [active, setActive] = useState<boolean>(program.active);
   const [
     isDeletePracticeProgramConfirmationModalOpen,
     setIsDeletePracticeProgramConfirmationModalOpen,
@@ -53,8 +56,24 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
   const { isLoading: isDeleting, mutateAsync: deletePracticeProgram } =
     useDeletePracticeProgramMutation();
 
-  const onActiveChange = (isActive: boolean) => {
-    setActive(isActive);
+  const { mutateAsync: enablePracticeProgram } = useEnablePracticeProgramMutation();
+  const { mutateAsync: disablePracticeProgram } = useDisablePracticeProgramMutation();
+
+  const onActiveChange = async (isActive: boolean) => {
+    const apiCallbacks = {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        useErrorToast(t('feedback.error_update'));
+      },
+    };
+
+    if (isActive) {
+      await enablePracticeProgram(program.id, apiCallbacks);
+    } else {
+      await disablePracticeProgram(program.id, apiCallbacks);
+    }
   };
 
   const onConfirmDeletePraticeProgram = async () => {
@@ -74,7 +93,7 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
 
   return (
     <div className="flex flex-col gap-4 p-4 mt-8 border-t border-gray-100 itens-center md:m-0 md:pl-[25%] md:py-0 md:pr-0 md:items-end md:border-none">
-      <StatusRadioComponent active={active} setActive={onActiveChange} />
+      <StatusRadioComponent active={program.active} setActive={onActiveChange} />
       <button
         className="edit-button w-full flex gap-4 justify-center disabled:bg-gray-50"
         onClick={() => console.log('view')}

@@ -51,6 +51,35 @@ export class PracticeProgramController {
   }
 
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/enable')
+  async enable(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.updatePracticeProgramStatus(
+      id,
+      true,
+      user?.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/disable')
+  async disable(
+    @Param('id') id: number,
+    @Body() body: UpdatePracticeProgramDto,
+    @ExtractUser() user: User,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.updatePracticeProgramStatus(
+      id,
+      false,
+      user?.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBody({ type: UpdatePracticeProgramDto })
   @ApiParam({ name: 'id', type: String })
   @Patch(':id')
