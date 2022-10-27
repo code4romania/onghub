@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
@@ -48,6 +49,7 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
 
 const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProps) => {
   const { t } = useTranslation(['practice_program', 'common']);
+  const navigate = useNavigate();
   const [
     isDeletePracticeProgramConfirmationModalOpen,
     setIsDeletePracticeProgramConfirmationModalOpen,
@@ -91,20 +93,25 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
     });
   };
 
+  const onViewPracticeProgram = () => {
+    console.log('to be implemented');
+  };
+
+  const onEdit = () => {
+    navigate(`${program.id}`);
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4 mt-8 border-t border-gray-100 itens-center md:m-0 md:pl-[25%] md:py-0 md:pr-0 md:items-end md:border-none">
       <StatusRadioComponent active={program.active} setActive={onActiveChange} />
       <button
         className="edit-button w-full flex gap-4 justify-center disabled:bg-gray-50"
-        onClick={() => console.log('view')}
+        onClick={onViewPracticeProgram}
         disabled={!program?.active}
       >
         {t('view', { ns: 'common' })}
       </button>
-      <button
-        className="edit-button w-full flex gap-4 justify-center"
-        onClick={() => console.log('edit')}
-      >
+      <button className="edit-button w-full flex gap-4 justify-center" onClick={onEdit}>
         {t('edit', { ns: 'common' })}
       </button>
       <button
