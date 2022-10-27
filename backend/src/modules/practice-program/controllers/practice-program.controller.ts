@@ -91,9 +91,13 @@ export class PracticeProgramController {
     return this.practiceProgramService.find(id, user.organizationId);
   }
 
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<void> {
-    return this.practiceProgramService.delete(id);
+  async delete(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.practiceProgramService.delete(id, user.organizationId);
   }
 }
