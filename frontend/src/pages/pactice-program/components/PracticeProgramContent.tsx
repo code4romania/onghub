@@ -23,7 +23,7 @@ const PracticeProgramContentItem = ({ label, value }: PracticeProgramContentItem
   );
 };
 
-const PracticeProgramContentExpandableItemItem = ({
+const PracticeProgramContentExpandableItem = ({
   label,
   value,
 }: PracticeProgramContentItemProps) => {
@@ -96,7 +96,7 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
             label={t('details.working_hours')}
             value={`${program?.minWorkingHours} - ${program?.maxWorkingHours}`}
           />
-          <PracticeProgramContentExpandableItemItem
+          <PracticeProgramContentExpandableItem
             label={t('details.faculties')}
             value={formatFaculties()}
           />
