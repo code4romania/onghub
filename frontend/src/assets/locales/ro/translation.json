@@ -1111,13 +1111,19 @@
       "faculties": "Dedicat studentilor la",
       "domains": "Domenii",
       "skills": "Vei invata",
-      "list_error": "Eroare la incarcarea datelor!"
+      "list_error": "Eroare la incarcarea datelor!",
+      "delete_modal": {
+        "title": "Sterge Program Practica",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      }
     },
     "feedback": {
       "success_create": "Programul de practica a fost creat!",
       "success_update": "Programul de practica a fost modificat cu success!",
+      "success_delete": "Programul de practica a fost sters",
       "error_create": "Eroare la crearea programului de practica",
-      "error_update": "Eroare la modificarea programului de practica"
+      "error_update": "Eroare la modificarea programului de practica",
+      "error_delete": "Eroare la stergerea programului de practica"
     }
   }
 }

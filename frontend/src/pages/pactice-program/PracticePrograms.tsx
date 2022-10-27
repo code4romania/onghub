@@ -14,7 +14,7 @@ const PracticePrograms = () => {
   const navigate = useNavigate();
 
   // practice programs query
-  const { data: practicePrograms, isLoading, error } = usePracticePrograms();
+  const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms();
 
   const onAddPracticeProgram = () => {
     navigate('add');
@@ -42,7 +42,7 @@ const PracticePrograms = () => {
                   <PracticeProgramContent program={program} />
                 </div>
                 <div className="md:flex-1">
-                  <PracticeProgramActions program={program} />
+                  <PracticeProgramActions program={program} refetch={refetch} />
                 </div>
               </div>
             ))}

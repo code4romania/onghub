@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { PracticeProgramPayload } from './interfaces/practice-program-payload.interface';
 import {
   createPracticeProgram,
+  deletePracticeProgram,
   getPracticeProgramById,
   getPracticePrograms,
   updatePracticeProgram,
@@ -27,6 +28,10 @@ export const useEditPracticeProgramMutation = () => {
   return useMutation(({ id, data }: { id: string; data: Partial<PracticeProgramPayload> }) =>
     updatePracticeProgram(id, data),
   );
+};
+
+export const useDeletePracticeProgramMutation = () => {
+  return useMutation((id: number) => deletePracticeProgram(id));
 };
 
 export const usePracticePrograms = () => {

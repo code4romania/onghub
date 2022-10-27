@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { classNames } from '../../../common/helpers/tailwind.helper';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
+import { useDeletePracticeProgramMutation } from '../../../services/practice-program/PracticeProgram.queries';
 
 interface PracticeProgramActionsProps {
   program: PracticeProgram;
+  refetch: () => void;
 }
 
 interface StatusRadioComponentProps {
@@ -15,7 +19,7 @@ interface StatusRadioComponentProps {
 const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) => {
   const { t } = useTranslation('common');
   return (
-    <div className="border border-gray-100 w-full h-10 rounded-md flex flex-row divide-x divide-gray-200">
+    <div className="border border-gray-200 w-full h-10 rounded-md flex flex-row divide-x divide-gray-200 shadow-sm">
       <div
         className={classNames(
           !active ? 'bg-gray-900 text-white' : '',
@@ -27,7 +31,7 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
       </div>
       <div
         className={classNames(
-          active ? 'bg-green-400 text-white' : '',
+          active ? 'bg-green text-white' : '',
           'flex-1 py-2 cursor-pointer rounded-r-md flex items-center justify-center',
         )}
         onClick={setActive.bind(null, true)}
@@ -38,12 +42,34 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
   );
 };
 
-const PracticeProgramActions = ({ program }: PracticeProgramActionsProps) => {
-  const { t } = useTranslation('common');
+const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProps) => {
+  const { t } = useTranslation(['practice_program', 'common']);
   const [active, setActive] = useState<boolean>(program.active);
+  const [
+    isDeletePracticeProgramConfirmationModalOpen,
+    setIsDeletePracticeProgramConfirmationModalOpen,
+  ] = useState<boolean>(false);
+
+  const { isLoading: isDeleting, mutateAsync: deletePracticeProgram } =
+    useDeletePracticeProgramMutation();
 
   const onActiveChange = (isActive: boolean) => {
     setActive(isActive);
+  };
+
+  const onConfirmDeletePraticeProgram = async () => {
+    await deletePracticeProgram(program.id, {
+      onSuccess: () => {
+        useSuccessToast(t('feedback.success_delete'));
+        refetch();
+      },
+      onError: () => {
+        useErrorToast(t('feedback.error_delete'));
+      },
+      onSettled: () => {
+        setIsDeletePracticeProgramConfirmationModalOpen(false);
+      },
+    });
   };
 
   return (
@@ -54,17 +80,32 @@ const PracticeProgramActions = ({ program }: PracticeProgramActionsProps) => {
         onClick={() => console.log('view')}
         disabled={!program?.active}
       >
-        {t('view')}
+        {t('view', { ns: 'common' })}
       </button>
       <button
         className="edit-button w-full flex gap-4 justify-center"
         onClick={() => console.log('edit')}
       >
-        {t('edit')}
+        {t('edit', { ns: 'common' })}
       </button>
-      <button className="delete-button w-full flex gap-4" onClick={() => console.log('delete')}>
-        {t('delete')}
+      <button
+        className="delete-button w-full flex gap-4 disabled:bg-gray-100"
+        onClick={setIsDeletePracticeProgramConfirmationModalOpen.bind(null, true)}
+        disabled={isDeleting}
+      >
+        {!isDeleting ? t('delete', { ns: 'common' }) : t('loading', { ns: 'common' })}
       </button>
+      {isDeletePracticeProgramConfirmationModalOpen && (
+        <ConfirmationModal
+          title={t('details.delete_modal.title')}
+          description={t('details.delete_modal.description')}
+          closeBtnLabel={t('back', { ns: 'common' })}
+          confirmBtnLabel={t('delete', { ns: 'common' })}
+          confirmButtonStyle="red-button"
+          onClose={setIsDeletePracticeProgramConfirmationModalOpen.bind(null, false)}
+          onConfirm={onConfirmDeletePraticeProgram}
+        />
+      )}
     </div>
   );
 };
