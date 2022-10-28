@@ -112,5 +112,5 @@ export class PracticeProgram extends BaseEntity {
 
   @ManyToOne((type) => Organization)
   @JoinColumn({ name: 'organization_id' })
-  organization: Organization;
+  organization?: Organization;
 }

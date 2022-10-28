@@ -83,13 +83,13 @@ export class PracticeProgramController {
 
   @Public()
   @ApiParam({ name: 'id', type: String })
-  @ApiParam({ name: 'organizationId', type: String })
-  @Get(':id/organization/:organizationId')
+  @Get(':id/public')
   async findPracticeProgramPublic(
     @Param('id') id: number,
-    @Param('organizationId') organizationId: number,
-  ): Promise<PracticeProgram> {
-    return this.practiceProgramService.find(id, organizationId);
+  ): Promise<
+    PracticeProgram & { organizationId: number; organizationName: string }
+  > {
+    return this.practiceProgramService.findWithOrganization(id);
   }
 
   @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
