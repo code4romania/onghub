@@ -51,7 +51,7 @@ const PracticeProgramContentExpandableItem = ({
 const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
   const { t } = useTranslation('practice_program');
 
-  const calculatePerid = () => {
+  const calculatePeriod = () => {
     if (!program?.endDate) {
       const startDate = formatDateMonthYear(program?.startDate);
       return `${t('details.period_starting_with')} ${startDate}`;
@@ -91,7 +91,7 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
             label={t('details.deadline')}
             value={program?.endDate ? formatDate(program.endDate) : t('details.deadline_unlimited')}
           />
-          <PracticeProgramContentItem label={t('details.period')} value={calculatePerid()} />
+          <PracticeProgramContentItem label={t('details.period')} value={calculatePeriod()} />
           <PracticeProgramContentItem
             label={t('details.working_hours')}
             value={`${program?.minWorkingHours} - ${program?.maxWorkingHours}`}

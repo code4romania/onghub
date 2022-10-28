@@ -32,7 +32,7 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     errorCode: 'PP_008',
   },
   ENABLE_DISABLE: {
-    message: 'Error while updateing status',
+    message: 'Error while updating status',
     errorCode: 'PP_009',
   },
 };
