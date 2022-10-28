@@ -274,7 +274,7 @@ export class PracticeProgramService {
         : { id };
 
       const practiceProgram = await this.practiceProgramRepository.get({
-        where: where,
+        where,
       });
 
       if (!practiceProgram) {
