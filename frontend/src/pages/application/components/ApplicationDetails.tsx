@@ -137,7 +137,7 @@ const ApplicationDetails = () => {
             {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <button
-                  className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                  className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                   onClick={requestApplication}
                 >
                   <PlusIcon className="h-5 w-5" />
@@ -175,7 +175,7 @@ const ApplicationDetails = () => {
               role !== UserRole.EMPLOYEE && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
-                    className="edit-button pl-8 pr-8 flex gap-4"
+                    className="edit-button px-8 flex gap-4"
                     onClick={() => setConfirmationModalOpen(true)}
                   >
                     <XIcon className="h-5 w-5" />
@@ -188,7 +188,7 @@ const ApplicationDetails = () => {
               application?.status === OngApplicationStatus.PENDING && (
                 <div className="flex flex-col pt-4 gap-4 items-center justify-center">
                   <button
-                    className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                    className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                     disabled
                   >
                     <PlusIcon className="h-5 w-5" />
@@ -214,7 +214,7 @@ const ApplicationDetails = () => {
                   <>
                     {!application?.pullingType && (
                       <button
-                        className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                        className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                         onClick={onOpen}
                       >
                         {t('details.open')}
@@ -223,13 +223,13 @@ const ApplicationDetails = () => {
                     {application?.pullingType === ApplicationPullingType.PRACTICE_PROGRAM && (
                       <div className="w-full flex flex-col lg:flex-row">
                         <button
-                          className="edit-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                           onClick={onOpen}
                         >
                           {t('details.practice_program.redirect_to_site')}
                         </button>
                         <button
-                          className="save-button pl-8 pr-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
                           onClick={onRedirectToPracticePrograms}
                         >
                           {t('details.practice_program.redirect_to_practice_programs')}
@@ -246,7 +246,7 @@ const ApplicationDetails = () => {
                 title={t('details.pending')}
                 description={t('details.configure')}
                 actions={
-                  <button className="edit-button pl-8 pr-8 flex gap-4" onClick={abandonRequest}>
+                  <button className="edit-button px-8 flex gap-4" onClick={abandonRequest}>
                     <XIcon className="h-5 w-5" />
                     {t('details.cancel')}
                   </button>
