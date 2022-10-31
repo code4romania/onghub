@@ -1,28 +1,33 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { formatNumber } from 'libphonenumber-js';
-
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
+import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
-import { DataSource, FindManyOptions, In } from 'typeorm';
+import { DataSource, FindManyOptions, FindOperator, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
 import {
   ORGANIZATION_ERRORS,
   ORGANIZATION_REQUEST_ERRORS,
 } from '../constants/errors.constants';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
-import { ORGANIZATION_FILTERS_CONFIG } from '../constants/organization-filter.config';
+import {
+  ORGANIZATION_FILTERS_CONFIG,
+  ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+} from '../constants/organization-filter.config';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
+import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import {
@@ -41,6 +46,8 @@ import { OrganizationView } from '../entities/organization-view.entity';
 import { Area } from '../enums/organization-area.enum';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
+import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -64,6 +71,7 @@ export class OrganizationService {
     private readonly fileManagerService: FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
+    private readonly practiceProgramService: PracticeProgramService,
   ) {}
 
   public async create(
@@ -329,6 +337,176 @@ export class OrganizationService {
     }
 
     return organization;
+  }
+
+  public async findOneOrganizationWithActivePracticePrograms(
+    organizationId: number,
+  ): Promise<OrganizationWithPracticePrograms> {
+    try {
+      // 1. get organization info
+      const organization = await this.organizationRepository.get({
+        select: {
+          id: true,
+          organizationGeneral: {
+            name: true,
+            logo: true,
+            description: true,
+            facebook: true,
+            twitter: true,
+            instagram: true,
+            contact: {
+              fullName: true,
+              email: true,
+              phone: true,
+            },
+            city: {
+              name: true,
+              county: {
+                name: true,
+              },
+            },
+          },
+          organizationActivity: {
+            domains: {
+              name: true,
+            },
+          },
+        },
+        relations: [
+          'organizationGeneral',
+          'organizationGeneral.city',
+          'organizationGeneral.contact',
+          'organizationGeneral.city.county',
+          'organizationActivity',
+          'organizationActivity.domains',
+        ],
+        where: {
+          id: organizationId,
+          status: OrganizationStatus.ACTIVE,
+        },
+      });
+
+      // 1.1 throw error fi organization not found
+      if (!organization) {
+        throw new NotFoundException({
+          ...ORGANIZATION_ERRORS.GET,
+        });
+      }
+
+      // 2. get practice programs by organization id
+      const practicePrograms =
+        await this.practiceProgramService.findPracticeShortPracticeProgramsByOrganization(
+          organizationId,
+        );
+
+      // 3. get public url logo
+      if (organization.organizationGeneral.logo) {
+        organization.organizationGeneral.logo =
+          await this.fileManagerService.generatePresignedURL(
+            organization.organizationGeneral.logo,
+          );
+      }
+
+      // 4. flatten organization
+      const flatOrganization =
+        this.flattenOrganizationWithPracticePrograms(organization);
+
+      return { ...flatOrganization, practicePrograms };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
+  }
+
+  public async findAllOrganizationsWithActivePracticePrograms(
+    options: GetOrganizationWithPracticeProgramsFilterDto,
+  ): Promise<Pagination<any>> {
+    try {
+      const { domains, cityId, ...filters } = options;
+
+      // 1. get only organization with active practice programs
+      let paginationOptions: GetOrganizationWithPracticeProgramsFilterDto & {
+        practicePrograms: {
+          active: boolean;
+        };
+        organizationGeneral?: {
+          city: {
+            id: number;
+          };
+        };
+        organizationActivity?: {
+          domains: {
+            id: FindOperator<number>;
+          };
+        };
+        status: OrganizationStatus;
+      } = {
+        ...filters,
+        status: OrganizationStatus.ACTIVE,
+        practicePrograms: {
+          active: true, // get only organizations with active practice programs
+        },
+      };
+
+      // 2. add filter by domain if provided
+      if (domains?.length > 0) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationActivity: {
+            domains: {
+              id: In(domains),
+            },
+          },
+        };
+      }
+
+      // 3. add filter by city if provided
+      if (cityId) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationGeneral: {
+            city: {
+              id: cityId,
+            },
+          },
+        };
+      }
+
+      // 4. get paginated organizations
+      const organizations = await this.organizationRepository.getManyPaginated(
+        ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+      // 5. flatten the request
+      const flatOrganizations = this.flattenOrganization(organizations);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<OrganizationFlat>(
+          flatOrganizations.items,
+        );
+
+      return {
+        ...flatOrganizations,
+        items,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
   }
 
   /**
@@ -906,5 +1084,48 @@ export class OrganizationService {
         organizationId,
       });
     }
+  }
+
+  private flattenOrganization(
+    organizations: Pagination<Organization>,
+  ): Pagination<OrganizationFlat> {
+    const { items, meta } = organizations;
+
+    const flatItems = items.reduce((previous, current) => {
+      previous.push({
+        id: current.id,
+        ...current.organizationGeneral,
+      });
+      return previous;
+    }, []);
+
+    return {
+      items: flatItems,
+      meta,
+    };
+  }
+
+  private flattenOrganizationWithPracticePrograms(
+    organization: Organization,
+  ): OrganizationWithPracticePrograms {
+    const {
+      id,
+      organizationGeneral: {
+        city: {
+          name: city,
+          county: { name: county },
+        },
+        ...organizationGeneralData
+      },
+      organizationActivity,
+    } = organization;
+
+    return {
+      id,
+      ...organizationGeneralData,
+      county,
+      city,
+      ...organizationActivity,
+    };
   }
 }

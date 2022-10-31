@@ -41,6 +41,8 @@ import { applicationRequestsSlice } from './request/ApplicationRequests';
 import { ongApplicationSlice } from './application/OngApplication.slice';
 import { IInvite } from '../pages/users/interfaces/Invite.interface';
 import { invitesSlice } from './user/Invites.slice';
+import { Skill } from '../common/interfaces/skill.interface';
+import { Faculty } from '../common/interfaces/faculty.interface';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -65,12 +67,16 @@ interface NomenclatureState {
   regions: Region[];
   federations: Federation[];
   coalitions: Coalition[];
+  skills: Skill[];
+  faculties: Faculty[];
   setCounties: (counties: County[]) => void;
   setCities: (cities: City[]) => void;
   setDomains: (domains: Domain[]) => void;
   setRegions: (regions: Region[]) => void;
   setFederations: (federations: Federation[]) => void;
   setCoalitions: (coaltions: Coalition[]) => void;
+  setSkills: (skills: Skill[]) => void;
+  setFaculties: (faculties: Faculty[]) => void;
 }
 
 interface ProfileState {

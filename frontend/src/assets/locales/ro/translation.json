@@ -950,7 +950,8 @@
     "users": "Utilizatori",
     "store": "Toate aplicatiile",
     "organizations": "ONG-uri",
-    "requests": "Solicitari Acces"
+    "requests": "Solicitari Acces",
+    "practice_programs": "Programe de Practica"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -988,5 +989,104 @@
     },
     "activity_title": "Organizație activă în ONG Hub din",
     "last_updated_on": "Ultima actualizare de date"
+  },
+  "practice_program": {
+    "add": {
+      "title": "Adauga program de practica",
+      "card_title": "Descriere Program"
+    },
+    "edit": {
+      "title": "Modifica program de practica",
+      "card_title": "Descriere Program"
+    },
+    "form": {
+      "title": {
+        "required": "Titlul programului este obligatoriu",
+        "min": "Titlul nu poate sa aiba mai putin de 3 caractere",
+        "max": "Titlul nu poate sa aiba mai mult de 50 caractere",
+        "pattern": "Titlul nu are formatul valid.",
+        "label": "Titlu program de practica*",
+        "helper": "",
+        "placeholder": "Program de Practica"
+      },
+      "location": {
+        "required": "Orasul este obligatoriu",
+        "label": "Oras*",
+        "helper": "",
+        "placeholder": "Bucuresti"
+      },
+      "deadline": {
+        "label": "Deadline aplicare",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "description": {
+        "required": "Descrierea este obligatorie",
+        "min": "Descrierea nu poate sa aiba mai putin de 3 caractere",
+        "max": "Descrierea nu poate sa aiba mai mult de 3000 caractere",
+        "pattern": "Descrierea nu are formatul valid.",
+        "label": "Descrierea program de practica*",
+        "helper": "",
+        "placeholder": "Lorem ipsum"
+      },
+      "start_date": {
+        "required": "Data inceput este oblicatorie",
+        "label": "Data inceput program de practica*",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "end_date": {
+        "label": "Data sfarsit program de practica*",
+        "helper": "",
+        "placeholder": "31.12.2999",
+        "start_date_after_end_date": "Data sfarsit nu poate fi mai mica decat data de inceput"
+      },
+      "is_period_not_determined": {
+        "label": "Perioada nedeterminata",
+        "helper": ""
+      },
+      "min_working_hours": {
+        "required": "Campul este obligatoriu",
+        "min": "Campul nu poate fi mai mic decat 0",
+        "label": "Numar ore (minim)",
+        "helper": "",
+        "placeholder": "0"
+      },
+      "max_working_hours": {
+        "required": "Campul este obligatoriu",
+        "min": "Campul nu poate fi mai mic decat 0",
+        "label": "Numar ore (maxim)",
+        "helper": "",
+        "placeholder": "0",
+        "min_larger_than_max": "Numarul maxim de ore lucrate nu poate fi mai mic decat numarul minim de ore lucrate"
+      },
+      "link": {
+        "pattern": "Formatul link-ului este invalid.",
+        "label": "Link catre pagina de aplicare (button)",
+        "helper": "Adauga link-ul prin care oricine poate aplica la programul de practica",
+        "placeholder": "www.google.com"
+      },
+      "domains": {
+        "required": "Domeniul este obligatoriu",
+        "label": "Domenii*",
+        "helper": "Selecteaza minim un domeniu"
+      },
+      "skills": {
+        "label": "Participantul va invata (cuvinte cheie)",
+        "helper": "Adauga abilitati pe care participantii la program vor avea ocazia sa le dezvolte in timpul programului",
+        "placeholder": "Selecteaza/Adauga..."
+      },
+      "faculties": {
+        "label": "Facultati",
+        "helper": "Completeaza doar daca programul de practica este dedicat numai studentilor unor anumite facultati",
+        "placeholder": "Selecteaza..."
+      }
+    },
+    "feedback": {
+      "success_create": "Programul de practica a fost creat!",
+      "success_update": "Programul de practica a fost modificat cu success!",
+      "error_create": "Eroare la crearea programului de practica",
+      "error_update": "Eroare la modificarea programului de practica"
+    }
   }
 }

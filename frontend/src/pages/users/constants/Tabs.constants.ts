@@ -7,6 +7,6 @@ const translations = {
 };
 
 export const USERS_TABS: IPageTab[] = [
-  { id: 0, name: translations.users, href: '' },
+  { id: 0, name: translations.users, href: 'list' },
   { id: 1, name: translations.invites, href: 'invites' },
 ];

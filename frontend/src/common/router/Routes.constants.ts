@@ -13,6 +13,7 @@ const translations = {
   apps: i18n.t('routes:apps'),
   users: i18n.t('routes:users'),
   store: i18n.t('routes:store'),
+  practiceProgram: i18n.t('routes:practice_programs'),
   organizations: i18n.t('routes:organizations'),
   requests: i18n.t('routes:requests'),
 };
@@ -29,6 +30,7 @@ export const ADMIN_ROUTES = [
   { id: 2, name: translations.users, href: 'users', icon: UserGroupIcon },
   { id: 3, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
   { id: 4, name: translations.store, href: 'all-apps', icon: CollectionIcon },
+  { id: 5, name: translations.practiceProgram, href: 'practice-program', icon: CollectionIcon },
 ];
 
 export const SUPER_ADMIN_ROUTES = [

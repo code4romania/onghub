@@ -48,7 +48,6 @@ const ApplicationForm = ({
   const type = watch('type');
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('event', event);
     if (event.target.files && event.target.files.length > 0) {
       setFile(event.target.files[0]);
       event.target.value = '';

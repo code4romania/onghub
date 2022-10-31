@@ -10,7 +10,7 @@ const InputField = (props: {
 }) => {
   return (
     <div className="relative w-full">
-      {props.config.label && (
+      {props.config.label && props.config.type !== 'checkbox' && (
         <label
           htmlFor="email"
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
@@ -23,24 +23,33 @@ const InputField = (props: {
         {!props.readonly && props.config.addOn && props.config.addOn()}
         {props.readonly && <span>{props.config.defaultValue || '-'}</span>}
         {!props.readonly && (
-          <input
-            type={props.config.type}
-            name={props.config.name}
-            onChange={props.config.onChange}
-            onBlur={props.config.onBlur}
-            className={classNames(
-              props.config.error
-                ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
-                : 'focus:ring-indigo-500 focus:border-indigo-500',
-              props.config.addOn ? 'pl-14' : 'pl-4',
-              'block w-full pr-10 border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
+          <>
+            <input
+              type={props.config.type}
+              name={props.config.name}
+              onChange={props.config.onChange}
+              onBlur={props.config.onBlur}
+              className={classNames(
+                props.config.error
+                  ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
+                  : 'focus:ring-indigo-500 focus:border-indigo-500',
+                props.config.addOn ? 'pl-14' : 'pl-4',
+                props.config.type === 'checkbox'
+                  ? ''
+                  : 'block w-full pr-10 border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
+              )}
+              placeholder={props.config.placeholder}
+              defaultValue={props.config.defaultValue}
+              aria-invalid={props.config.error ? 'true' : 'false'}
+              disabled={props.disabled}
+              id={`${props.config.id}__input`}
+            />
+            {props.config.type === 'checkbox' && (
+              <label className="sm:text-sm lg:text-base text-xs font-medium ml-2 text-gray-700">
+                {props.config.label}
+              </label>
             )}
-            placeholder={props.config.placeholder}
-            defaultValue={props.config.defaultValue}
-            aria-invalid={props.config.error ? 'true' : 'false'}
-            disabled={props.disabled}
-            id={`${props.config.id}__input`}
-          />
+          </>
         )}
         {props.config.error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

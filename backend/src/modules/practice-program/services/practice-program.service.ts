@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
@@ -27,16 +28,16 @@ export class PracticeProgramService {
   ) {}
 
   public async create(
-    CreatePracticeProgramDto: CreatePracticeProgramDto,
+    createPracticeProgramDto: CreatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     try {
       const {
         locationId,
         domains: domainsIds,
         faculties: facultiesIds,
-        skills: skillsIds,
+        skills: submitedSkills,
         ...practiceProgramPayload
-      } = CreatePracticeProgramDto;
+      } = createPracticeProgramDto;
 
       // 1. get location
       const location = await this.nomenclatureService.getCities({
@@ -62,12 +63,8 @@ export class PracticeProgramService {
 
       // 4. get skills if any selected
       let skills = [];
-      if (skillsIds?.length > 0) {
-        skills = await this.nomenclatureService.getSkills({
-          where: {
-            id: In(skillsIds),
-          },
-        });
+      if (submitedSkills?.length > 0) {
+        skills = await this.saveAndGetSkills(submitedSkills);
       }
 
       // 5. check if undetermined flag and end date have correct values
@@ -133,9 +130,14 @@ export class PracticeProgramService {
     updatePracticeProgramDto: UpdatePracticeProgramDto,
   ): Promise<PracticeProgram> {
     try {
+      // add filter for organizationId if comes through request
+      const { organizationId, ...updatePracticeProgramDtoPayload } =
+        updatePracticeProgramDto;
+      const where = organizationId ? { id, organizationId } : { id };
+
       // 1. get practice program
       const practiceProgram = await this.practiceProgramRepository.get({
-        where: { id },
+        where,
       });
 
       if (!practiceProgram) {
@@ -146,9 +148,9 @@ export class PracticeProgramService {
         locationId,
         domains: domainsIds,
         faculties: facultiesIds,
-        skills: skillsIds,
+        skills: submitedSkills,
         ...practiceProgramPayload
-      } = updatePracticeProgramDto;
+      } = updatePracticeProgramDtoPayload;
 
       // 2. get location
       let location = null;
@@ -180,12 +182,8 @@ export class PracticeProgramService {
 
       // 5. get skills if any selected
       let skills = [];
-      if (skillsIds?.length > 0) {
-        skills = await this.nomenclatureService.getSkills({
-          where: {
-            id: In(skillsIds),
-          },
-        });
+      if (submitedSkills?.length > 0) {
+        skills = await this.saveAndGetSkills(submitedSkills);
       }
 
       // 6. check if undetermined flag and end date have correct values
@@ -235,11 +233,11 @@ export class PracticeProgramService {
         ? null
         : practiceProgramPayload.endDate || practiceProgram.endDate;
 
-      // 9. udpate practice program
+      // 9. update practice program
       return this.practiceProgramRepository.save({
         ...practiceProgram,
         ...practiceProgramPayload,
-        location: location || practiceProgram.location,
+        location: location?.length > 0 ? location[0] : practiceProgram.location,
         endDate: finalEndDate,
         domains,
         faculties,
@@ -247,7 +245,7 @@ export class PracticeProgramService {
       });
     } catch (error) {
       this.logger.error({
-        error: { error },
+        error: JSON.stringify(error),
         ...PRACTICE_PROGRAMS_ERRORS.UPDATE,
       });
 
@@ -309,11 +307,20 @@ export class PracticeProgramService {
     }
   }
 
-  public async find(id: number): Promise<PracticeProgram> {
+  public async find(
+    id: number,
+    organizationId?: number,
+  ): Promise<PracticeProgram> {
+    // for admin and employee check organizationId as search criteria
+    const where = organizationId
+      ? {
+          id,
+          organizationId,
+        }
+      : { id };
+
     const practiceProgram = await this.practiceProgramRepository.get({
-      where: {
-        id,
-      },
+      where: where,
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
 
@@ -330,5 +337,54 @@ export class PracticeProgramService {
     } catch (error) {
       throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
     }
+  }
+
+  public async findPracticeShortPracticeProgramsByOrganization(
+    organizationId: number,
+  ): Promise<PracticeProgram[]> {
+    return this.practiceProgramRepository.getMany({
+      select: {
+        id: true,
+        title: true,
+        location: {
+          name: true,
+        },
+        startDate: true,
+        endDate: true,
+        minWorkingHours: true,
+        maxWorkingHours: true,
+        deadline: true,
+      },
+      relations: ['location'],
+      where: { organizationId },
+    });
+  }
+
+  private async saveAndGetSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
+    // 1. separate existing skills from new ones
+    const allSkills = skills.reduce(
+      (
+        previousValue: { existing: Skill[]; new: { name: string }[] },
+        currentValue: Skill | { name: string },
+      ) => {
+        const skillDone = { ...previousValue };
+
+        if (currentValue instanceof Skill && currentValue.id) {
+          skillDone.existing.push(currentValue as Skill);
+        } else {
+          skillDone.new.push(currentValue as { name: string });
+        }
+        return skillDone;
+      },
+      { existing: [], new: [] },
+    );
+
+    // 2. create new skills
+    const newSkills = await this.nomenclatureService.createSkills(
+      allSkills.new,
+    );
+
+    // 3. return all skills
+    return [...newSkills, ...allSkills.existing];
   }
 }

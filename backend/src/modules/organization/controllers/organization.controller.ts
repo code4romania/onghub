@@ -31,11 +31,14 @@ import {
   PARTNER_UPLOAD_SCHEMA,
 } from '../constants/open-api.schema';
 import { CreateOrganizationRequestDto } from '../dto/create-organization-request.dto';
+import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
+import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
+import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
 
@@ -145,6 +148,28 @@ export class OrganizationController {
   @Patch('request/:id/reject')
   reject(@Param('id') id: number): Promise<OrganizationRequest> {
     return this.organizationRequestService.reject(id);
+  }
+
+  /** Practice programs */
+  @Public()
+  @Get('practice-program')
+  findOrganizationsWithPracticePrograms(
+    @Query() filters: GetOrganizationWithPracticeProgramsFilterDto,
+  ): Promise<Pagination<OrganizationFlat>> {
+    return this.organizationService.findAllOrganizationsWithActivePracticePrograms(
+      filters,
+    );
+  }
+
+  @Public()
+  @ApiParam({ name: 'id', type: String })
+  @Get(':id/practice-program')
+  findOrganizationWithPracticePrograms(
+    @Param('id') id: number,
+  ): Promise<OrganizationWithPracticePrograms> {
+    return this.organizationService.findOneOrganizationWithActivePracticePrograms(
+      id,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
