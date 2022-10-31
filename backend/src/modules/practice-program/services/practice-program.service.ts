@@ -373,6 +373,36 @@ export class PracticeProgramService {
     return practiceProgram;
   }
 
+  public async findWithOrganization(
+    id: number,
+  ): Promise<
+    PracticeProgram & { organizationId: number; organizationName: string }
+  > {
+    const practiceProgram = await this.practiceProgramRepository.get({
+      where: { id },
+      relations: [
+        'location',
+        'skills',
+        'domains',
+        'faculties',
+        'organization',
+        'organization.organizationGeneral',
+      ],
+    });
+
+    if (!practiceProgram) {
+      throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+    }
+
+    const { organization, ...practiceProgramResponse } = practiceProgram;
+
+    return {
+      ...practiceProgramResponse,
+      organizationId: organization.id,
+      organizationName: organization.organizationGeneral.name,
+    };
+  }
+
   public async delete(id: number, organizationId?: number): Promise<void> {
     try {
       const where = organizationId ? { id, organizationId } : { id };
