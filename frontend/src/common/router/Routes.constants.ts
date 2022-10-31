@@ -30,7 +30,6 @@ export const ADMIN_ROUTES = [
   { id: 2, name: translations.users, href: 'users', icon: UserGroupIcon },
   { id: 3, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
   { id: 4, name: translations.store, href: 'all-apps', icon: CollectionIcon },
-  { id: 5, name: translations.practiceProgram, href: 'practice-program', icon: CollectionIcon },
 ];
 
 export const SUPER_ADMIN_ROUTES = [

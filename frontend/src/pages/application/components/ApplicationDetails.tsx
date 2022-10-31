@@ -12,12 +12,15 @@ import {
 } from '../../../services/request/Request.queries';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { openInNewTab } from '../../../common/helpers/format.helper';
 import { useTranslation } from 'react-i18next';
 import { useRemovOngApplicationRequest } from '../../../services/application/Application.queries';
+import { ApplicationPullingType } from '../../apps-store/enums/application-pulling-type.enum';
+import ApplicationFeedbackCard from './ApplicationFeedbackCard';
 
 const ApplicationDetails = () => {
+  const navigate = useNavigate();
   const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [application, refecthApplication] = useOutletContext<any>();
   const { role } = useAuthContext();
@@ -67,6 +70,10 @@ const ApplicationDetails = () => {
     } else if (application.loginLink) {
       openInNewTab(application.loginLink);
     }
+  };
+
+  const onRedirectToPracticePrograms = () => {
+    navigate('/practice-program');
   };
 
   const removeApplication = () => {
@@ -130,7 +137,7 @@ const ApplicationDetails = () => {
             {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
               <div className="flex pt-4 gap-4 items-center justify-center">
                 <button
-                  className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                  className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                   onClick={requestApplication}
                 >
                   <PlusIcon className="h-5 w-5" />
@@ -168,7 +175,7 @@ const ApplicationDetails = () => {
               role !== UserRole.EMPLOYEE && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
-                    className="edit-button pl-8 pr-8 flex gap-4"
+                    className="edit-button px-8 flex gap-4"
                     onClick={() => setConfirmationModalOpen(true)}
                   >
                     <XIcon className="h-5 w-5" />
@@ -181,7 +188,7 @@ const ApplicationDetails = () => {
               application?.status === OngApplicationStatus.PENDING && (
                 <div className="flex flex-col pt-4 gap-4 items-center justify-center">
                   <button
-                    className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                    className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                     disabled
                   >
                     <PlusIcon className="h-5 w-5" />
@@ -199,96 +206,73 @@ const ApplicationDetails = () => {
             {(application?.status === OngApplicationStatus.ACTIVE ||
               (application?.type === ApplicationTypeEnum.INDEPENDENT &&
                 application.status !== OngApplicationStatus.DISABLED)) && (
-              <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
-                  <CheckCircleIcon className="text-green w-6" />
-                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
-                    {t('details.active')}
-                  </span>
-                </div>
-                <div className="w-full border-t border-gray-300" />
-                <div className="lg:p-8 p-5 flex flex-col gap-4">
-                  <p className="break-all sm:text-sm lg:text-base text-xs">
-                    {t('details.define_active')}
-                  </p>
-                  <div>
-                    <button
-                      className="save-button pl-8 pr-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                      onClick={onOpen}
-                    >
-                      {t('details.open')}
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ApplicationFeedbackCard
+                icon={<CheckCircleIcon className="text-green w-6" />}
+                title={t('details.active')}
+                description={t('details.define_active')}
+                actions={
+                  <>
+                    {!application?.pullingType && (
+                      <button
+                        className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                        onClick={onOpen}
+                      >
+                        {t('details.open')}
+                      </button>
+                    )}
+                    {application?.pullingType === ApplicationPullingType.PRACTICE_PROGRAM && (
+                      <div className="w-full flex flex-col lg:flex-row">
+                        <button
+                          className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          onClick={onOpen}
+                        >
+                          {t('details.practice_program.redirect_to_site')}
+                        </button>
+                        <button
+                          className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          onClick={onRedirectToPracticePrograms}
+                        >
+                          {t('details.practice_program.redirect_to_practice_programs')}
+                        </button>
+                      </div>
+                    )}
+                  </>
+                }
+              />
             )}
             {application?.status === OngApplicationStatus.PENDING && (
-              <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
-                  <ClockIcon className="w-6 h-6  text-yellow-600" />
-                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
-                    {t('details.pending')}
-                  </span>
-                </div>
-                <div className="w-full border-t border-gray-300" />
-                <div className="lg:p-8 p-5 flex flex-col gap-4">
-                  <p className="break-all sm:text-sm lg:text-base text-xs">
-                    {t('details.configure')}
-                  </p>
-                  <div>
-                    <button className="edit-button pl-8 pr-8 flex gap-4" onClick={abandonRequest}>
-                      <XIcon className="h-5 w-5" />
-                      {t('details.cancel')}
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ApplicationFeedbackCard
+                icon={<ClockIcon className="w-6 h-6  text-yellow-600" />}
+                title={t('details.pending')}
+                description={t('details.configure')}
+                actions={
+                  <button className="edit-button px-8 flex gap-4" onClick={abandonRequest}>
+                    <XIcon className="h-5 w-5" />
+                    {t('details.cancel')}
+                  </button>
+                }
+              />
             )}
             {application?.status === OngApplicationStatus.RESTRICTED && (
-              <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
-                  <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
-                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
-                    {t('details.restricted')}
-                  </span>
-                </div>
-                <div className="w-full border-t border-gray-300" />
-                <div className="lg:p-8 p-5 flex flex-col gap-4">
-                  <p className="break-all sm:text-sm lg:text-base text-xs">
-                    {t('details.restore')}
-                  </p>
-                </div>
-              </div>
+              <ApplicationFeedbackCard
+                icon={<ExclamationCircleIcon className="w-6 h-6  text-red-500" />}
+                title={t('details.restricted')}
+                description={t('details.restore')}
+              />
             )}
             {application?.status === OngApplicationStatus.DISABLED && (
-              <div className="w-full h-full bg-white shadow rounded-lg">
-                <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
-                  <ExclamationCircleIcon className="w-6 h-6  text-red-500" />
-                  <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 ">
-                    Accesul la aplicatie este indisponibil momentan
-                  </span>
-                </div>
-                <div className="w-full border-t border-gray-300" />
-                <div className="lg:p-8 p-5 flex flex-col gap-4">
-                  <p className="break-all sm:text-sm lg:text-base text-xs">
-                    Vom reveni cu noutati in curand.
-                  </p>
-                </div>
-              </div>
+              <ApplicationFeedbackCard
+                icon={<ExclamationCircleIcon className="w-6 h-6  text-red-500" />}
+                title={t('details.disabled.title')}
+                description={t('details.disabled.description')}
+              />
             )}
           </React.Fragment>
         )}
-        <div className="w-full h-full bg-white shadow rounded-lg">
-          <div className="py-5 lg:px-10 px-5 flex justify-between">
-            <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
-              {t('details.description')}
-            </span>
-          </div>
-          <div className="w-full border-t border-gray-300" />
-          <div className="lg:p-8 p-5">
-            <p className="sm:text-sm lg:text-base text-xs">{application?.description}</p>
-          </div>
-        </div>
+        <ApplicationFeedbackCard
+          title={t('details.description')}
+          description={application?.description}
+        />
         <div className="w-full h-full bg-white shadow rounded-lg">
           <div className="py-5 lg:px-10 px-5 flex justify-between">
             <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">

@@ -51,6 +51,34 @@ export class PracticeProgramController {
   }
 
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/enable')
+  async enable(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.updatePracticeProgramStatus(
+      id,
+      true,
+      user?.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/disable')
+  async disable(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<PracticeProgram> {
+    return this.practiceProgramService.updatePracticeProgramStatus(
+      id,
+      false,
+      user?.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBody({ type: UpdatePracticeProgramDto })
   @ApiParam({ name: 'id', type: String })
   @Patch(':id')
@@ -102,9 +130,13 @@ export class PracticeProgramController {
     return this.practiceProgramService.find(id, user.organizationId);
   }
 
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<void> {
-    return this.practiceProgramService.delete(id);
+  async delete(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.practiceProgramService.delete(id, user.organizationId);
   }
 }
