@@ -43,7 +43,7 @@ export class CivicCenterServiceController {
   }
 
   @ApiBody({ type: UpdateCivicCenterServiceDto })
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -59,13 +59,13 @@ export class CivicCenterServiceController {
     return this.civicCenterServiceService.findAll({ options: filters });
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Get(':id')
   async find(@Param('id') id: number): Promise<CivicCenterService> {
     return this.civicCenterServiceService.find(id);
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     return this.civicCenterServiceService.delete(id);

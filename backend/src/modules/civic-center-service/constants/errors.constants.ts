@@ -36,3 +36,18 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     errorCode: 'CCS_009',
   },
 };
+
+export const FEEDBACK_ERRORS = {
+  CREATE: {
+    message: 'Error while creating the feedback',
+    errorCode: 'FED_001',
+  },
+  NOT_FOUND: {
+    message: 'Feedback not found',
+    errorCode: 'FED_002',
+  },
+  DELETE: {
+    message: 'Error while deleting feedback',
+    errorCode: 'FED_003',
+  },
+};
