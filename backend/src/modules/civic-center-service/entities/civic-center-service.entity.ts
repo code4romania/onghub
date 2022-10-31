@@ -10,7 +10,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from 'typeorm';
-import { AgeCategory } from '../enums/age-category.enum';
+import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 
 @Entity()
 export class CivicCenterService extends BaseEntity {

@@ -24,6 +24,7 @@ import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
 import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { PracticeProgramModule } from './modules/practice-program/practice-program.module';
+import { CivicCenterServiceModule } from './modules/civic-center-service/civic-center-service.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { PracticeProgramModule } from './modules/practice-program/practice-progr
     PublicAPIModule,
     StatisticsModule,
     PracticeProgramModule,
+    CivicCenterServiceModule,
 
     // Other modules
     SharedModule,
