@@ -21,7 +21,7 @@ export const parsePracticaProgramFormDataToPaylod = (
   const skillsData = (skills as (ISelectData & { __isNew__: boolean })[])?.map(mapSelectToSkill);
 
   // format dates
-  const formatedStartDate = formatISO9075(startDate as Date);
+  const formatedStartDate = startDate ? formatISO9075(startDate as Date) : startDate;
   const formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
   const fromatedDeadline = deadline ? formatISO9075(deadline as Date) : deadline;
 

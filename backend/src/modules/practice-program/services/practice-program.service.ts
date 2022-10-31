@@ -260,6 +260,48 @@ export class PracticeProgramService {
     }
   }
 
+  public async updatePracticeProgramStatus(
+    id: number,
+    active: boolean,
+    organizationId?: number,
+  ): Promise<PracticeProgram> {
+    try {
+      const where = organizationId
+        ? {
+            id,
+            organizationId,
+          }
+        : { id };
+
+      const practiceProgram = await this.practiceProgramRepository.get({
+        where,
+      });
+
+      if (!practiceProgram) {
+        throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+      }
+
+      return this.practiceProgramRepository.save({
+        ...practiceProgram,
+        active,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...PRACTICE_PROGRAMS_ERRORS.ENABLE_DISABLE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...PRACTICE_PROGRAMS_ERRORS.ENABLE_DISABLE,
+        });
+      }
+    }
+  }
+
   public async findAll(): Promise<PracticeProgram[]> {
     return this.practiceProgramRepository.getMany({
       relations: ['location', 'skills', 'domains', 'faculties'],
@@ -331,9 +373,10 @@ export class PracticeProgramService {
     return practiceProgram;
   }
 
-  public async delete(id: number): Promise<void> {
+  public async delete(id: number, organizationId?: number): Promise<void> {
     try {
-      await this.practiceProgramRepository.remove({ where: { id } });
+      const where = organizationId ? { id, organizationId } : { id };
+      await this.practiceProgramRepository.remove({ where });
     } catch (error) {
       throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
     }

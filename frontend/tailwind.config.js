@@ -95,6 +95,15 @@ module.exports = {
         600: '#4F46E5',
       },
     },
+    borderWidth: {
+      DEFAULT: '1px',
+      0: '0',
+      2: '2px',
+      3: '3px',
+      4: '4px',
+      6: '6px',
+      8: '8px',
+    },
     extend: {
       backgroundImage: {
         logo: 'url(./assets/images/logo.svg)',
