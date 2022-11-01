@@ -52,7 +52,7 @@ export class FeedbackService {
     return this.feedbackRepository.getMany(options);
   }
 
-  public async findAll(
+  public async findManyPaginated(
     user: User,
     options: BaseFilterDto,
   ): Promise<Pagination<Feedback>> {

@@ -42,7 +42,7 @@ export class FeedbackController {
     @ExtractUser() user: User,
     @Query() options: BaseFilterDto,
   ): Promise<Pagination<Feedback>> {
-    return this.feedbackService.findAll(user, options);
+    return this.feedbackService.findManyPaginated(user, options);
   }
 
   @ApiParam({ name: 'id', type: Number })
