@@ -25,10 +25,15 @@ export class FeedbackService {
 
   public async create(data: CreateFeedbackDto): Promise<Feedback> {
     try {
-      const { name, interactionDate, message, rating, civicCenterServiceId } =
-        data;
+      const {
+        fullName,
+        interactionDate,
+        message,
+        rating,
+        civicCenterServiceId,
+      } = data;
       return this.feedbackRepository.save({
-        name,
+        fullName,
         interactionDate,
         message,
         rating,

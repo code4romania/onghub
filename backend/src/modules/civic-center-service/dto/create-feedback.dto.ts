@@ -13,7 +13,7 @@ export class CreateFeedbackDto {
 
   @IsString()
   @Length(3, 100)
-  name: string;
+  fullName: string;
 
   @IsString()
   @MaxLength(30)

@@ -8,7 +8,7 @@ export const FEEDBACK_FILTERS_CONFIG = {
     },
     rating: true,
     interactionDate: true,
-    name: true,
+    fullName: true,
     createdOn: true,
     message: true,
   },

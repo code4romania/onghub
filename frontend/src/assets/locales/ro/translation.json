@@ -1125,5 +1125,14 @@
       "error_update": "Eroare la modificarea programului de practica",
       "error_delete": "Eroare la stergerea programului de practica"
     }
+  },
+  "feedback": {
+    "header": {
+      "service_name": "Serviciu",
+      "rating": "Rating",
+      "interaction_date": "Data interactionarii",
+      "feedback_author": "Autor",
+      "created_on": "Data feedback"
+    }
   }
 }
