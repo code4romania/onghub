@@ -7,6 +7,9 @@ export const formatCurrency = (value: number | string): string =>
 
 export const formatDate = (value: Date | string): string => format(new Date(value), 'd/L/y');
 
+export const formatDateMonthYear = (value: Date | string): string =>
+  format(new Date(value), 'MMM y');
+
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/;
 
@@ -17,7 +20,7 @@ export const PHONE_REGEX =
   /^(\+4|)?(\s|\.|-)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
 export const CUI_REGEX = /^(RO|)?[\d]*$/;
 export const NAME_REGEX = /^(?!.*[ ]{2})[a-zA-Z-\săîâșțĂÎÂȘȚ]*$/;
-export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ"]*$/;
+export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ,"]*$/;
 export const RAF_NUMBER_REGEX = /^[a-zA-Z\d/]*$/;
 
 export const NUMERIC_REGEX = /^\d*$/;

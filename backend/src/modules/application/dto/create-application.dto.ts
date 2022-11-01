@@ -8,6 +8,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 export class CreateApplicationDto {
@@ -20,6 +21,10 @@ export class CreateApplicationDto {
   @IsEnum(ApplicationTypeEnum)
   @IsNotEmpty()
   type: ApplicationTypeEnum;
+
+  @IsEnum(ApplicationPullingType)
+  @IsOptional()
+  pullingType: ApplicationPullingType;
 
   @IsString()
   @Length(50, 120)
@@ -42,10 +47,6 @@ export class CreateApplicationDto {
   @IsOptional()
   @Matches(REGEX.LINK)
   loginLink: string;
-
-  @IsOptional()
-  @IsString()
-  managementUrl: string;
 
   @IsOptional()
   @IsString()

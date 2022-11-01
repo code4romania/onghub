@@ -13,6 +13,7 @@ import { fileToURL } from '../../../common/helpers/format.helper';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
+import Select from '../../../components/Select/Select';
 import Textarea from '../../../components/Textarea/Textarea';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
@@ -183,20 +184,19 @@ const ApplicationForm = ({
               }}
             />
             <Controller
-              key={AddAppConfig.managementUrl.key}
-              name={AddAppConfig.managementUrl.key}
-              rules={AddAppConfig.managementUrl.rules}
+              key={AddAppConfig.pullingType.key}
+              name={AddAppConfig.pullingType.key}
+              rules={AddAppConfig.pullingType.rules}
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <InputField
+                  <Select
                     config={{
-                      ...AddAppConfig.managementUrl.config,
-                      name: AddAppConfig.managementUrl.key,
-                      error: errors.managementUrl?.message,
-                      defaultValue: value,
-                      onChange: onChange,
+                      id: 'create-application__pulling-type',
+                      ...AddAppConfig.pullingType.config,
                     }}
+                    selected={value}
+                    onChange={onChange}
                   />
                 );
               }}

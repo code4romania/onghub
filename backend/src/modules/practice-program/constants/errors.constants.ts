@@ -31,4 +31,8 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Error while searching practice programs',
     errorCode: 'PP_008',
   },
+  ENABLE_DISABLE: {
+    message: 'Error while updating status',
+    errorCode: 'PP_009',
+  },
 };

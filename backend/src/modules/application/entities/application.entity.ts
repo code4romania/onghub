@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity, OneToMany } from 'typeorm';
+import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplication } from './ong-application.entity';
@@ -24,6 +25,14 @@ export class Application extends BaseEntity {
   })
   status: ApplicationStatus;
 
+  @Column({
+    type: 'enum',
+    enum: ApplicationPullingType,
+    name: 'pulling_type',
+    nullable: true,
+  })
+  pullingType: ApplicationPullingType;
+
   @Column({ type: 'jsonb', name: 'steps' })
   steps: string[];
 
@@ -44,9 +53,6 @@ export class Application extends BaseEntity {
 
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
-
-  @Column({ type: 'text', name: 'management_url', nullable: true })
-  managementUrl: string;
 
   // Application Client Id
   @Column({ type: 'text', name: 'cognito_client_id', nullable: true })

@@ -88,7 +88,7 @@ export const ORGANIZATION_ERRORS = {
     errorCode: 'ORG_020',
   },
   COMPLETION_STATUS: {
-    message: 'Erorr while updateing organization Completion Status',
+    message: 'Erorr while updating organization Completion Status',
     errorCode: 'ORG_021',
   },
   GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS: {

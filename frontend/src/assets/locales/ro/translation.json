@@ -27,7 +27,11 @@
       "incompleted": "Necompletat"
     },
     "restricted": "Restrictionat",
-    "active": "Activ"
+    "active": "Activ",
+    "inactive": "Inactiv",
+    "no_data": "Nu sunt date de afisat!",
+    "show_more": "Vezi toate",
+    "show_less": "Arata mai putin"
   },
   "menu": {
     "informations": "Informatii",
@@ -797,8 +801,12 @@
         "helper": "URL-ul trebuie sa fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
         "required": "Link-ul catre prezentarea video este obligatoriu"
       },
-      "management": {
-        "label": "Link pentru pulling app"
+      "pulling_type": {
+        "label": "Tip de date pentru pulling app",
+        "options": {
+          "practice_program": "Programe de practica",
+          "civic_service": "Servicii"
+        }
       },
       "step": {
         "required": "Pasul este obligatoriu",
@@ -875,7 +883,15 @@
       "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
       "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
       "another_description": "Descriere aplicatie",
-      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa"
+      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa",
+      "disabled": {
+        "title": "Accesul la aplicatie este indisponibil momentan",
+        "description": "Vom reveni cu noutati in curand."
+      },
+      "practice_program": {
+        "redirect_to_site": "Vezi profilul tau pe Practice4Good",
+        "redirect_to_practice_programs": "Gestioneaza program de practica"
+      }
     },
     "list_header": {
       "name": "ONG",
@@ -1082,11 +1098,32 @@
         "placeholder": "Selecteaza..."
       }
     },
+    "list": {
+      "title": "Programele mele de practica",
+      "add_button": "Adauga program de practica"
+    },
+    "details": {
+      "deadline": "Deadline aplicare",
+      "deadline_unlimited": "nelimitat",
+      "period": "Perioada program",
+      "period_starting_with": "Incepand cu",
+      "working_hours": "Numar de ore",
+      "faculties": "Dedicat studentilor la",
+      "domains": "Domenii",
+      "skills": "Vei invata",
+      "list_error": "Eroare la incarcarea datelor!",
+      "delete_modal": {
+        "title": "Sterge Program Practica",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      }
+    },
     "feedback": {
       "success_create": "Programul de practica a fost creat!",
       "success_update": "Programul de practica a fost modificat cu success!",
+      "success_delete": "Programul de practica a fost sters",
       "error_create": "Eroare la crearea programului de practica",
-      "error_update": "Eroare la modificarea programului de practica"
+      "error_update": "Eroare la modificarea programului de practica",
+      "error_delete": "Eroare la stergerea programului de practica"
     }
   }
 }

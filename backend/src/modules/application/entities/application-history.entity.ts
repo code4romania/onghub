@@ -6,6 +6,7 @@ import {
 } from '@anchan828/typeorm-history';
 import { BaseEntity } from 'src/common/base/base-entity.class';
 import { Column, Entity } from 'typeorm';
+import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
@@ -47,6 +48,14 @@ export class ApplicationHistory
   })
   status: ApplicationStatus;
 
+  @Column({
+    type: 'enum',
+    enum: ApplicationPullingType,
+    name: 'pulling_type',
+    nullable: true,
+  })
+  pullingType: ApplicationPullingType;
+
   @Column({ type: 'jsonb', name: 'steps' })
   steps: string[];
 
@@ -67,7 +76,4 @@ export class ApplicationHistory
 
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
-
-  @Column({ type: 'text', name: 'management_url', nullable: true })
-  managementUrl: string;
 }
