@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from 'src/modules/user/entities/user.entity';
-import { FindManyOptions, In } from 'typeorm';
+import { FindManyOptions, FindOptionsOrder, In } from 'typeorm';
 import { FEEDBACK_ERRORS } from '../constants/errors.constants';
 import { CreateFeedbackDto } from '../dto/create-feedback.dto';
 import { Feedback } from '../entities/feedback.entity';
@@ -13,6 +13,8 @@ import { FeedbackRepository } from '../repositories/feedback.repository';
 import { CivicCenterServiceService } from './civic-center-service.service';
 import { FEEDBACK_FILTERS_CONFIG } from '../constants/feedback-filters.config';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 @Injectable()
 export class FeedbackService {
@@ -44,42 +46,63 @@ export class FeedbackService {
     }
   }
 
-  public async findAll(user: User): Promise<Feedback[]> {
+  public async findMany(
+    options: FindManyOptions<Feedback>,
+  ): Promise<Feedback[]> {
+    return this.feedbackRepository.getMany(options);
+  }
+
+  public async findAll(
+    user: User,
+    options: BaseFilterDto,
+  ): Promise<Pagination<Feedback>> {
     const civicCenterServices = await this.civicCenterServiceService.findAll({
       options: { organizationId: user.organizationId },
     });
     const config = FEEDBACK_FILTERS_CONFIG;
+    const { limit, page, orderBy, orderDirection } = options;
 
-    // filters (and where)
-    const orWhereQuery = [];
+    // order conditions
+    const orderOptions: FindOptionsOrder<any> = {
+      [orderBy || config.defaultSortBy]: orderDirection || OrderDirection.ASC,
+    };
 
     // full query
     let query: FindManyOptions<Feedback> = {
-        select: config.selectColumns,
-        relations: config.relations,
-      };
-  
-      if (orWhereQuery.length > 0) {
-        query = {
-          ...query,
-          where: orWhereQuery,
-        };
-      }
-  
-      const response = await this.findMany({
-        where: {}
-        ...query,
-      });
-  
-      return response;
+      select: config.selectColumns,
+      relations: config.relations,
+      order: orderOptions,
+      take: limit,
+      skip: (page - 1) * limit,
+    };
 
-    return this.feedbackRepository.getMany({
+    const civicCenterServiceIds = civicCenterServices.map(
+      (service) => service.id,
+    );
+
+    const response = await this.findMany({
       where: {
-        civicCenterServiceId: In(
-          civicCenterServices.map((service) => service.id),
-        ),
+        civicCenterServiceId: In(civicCenterServiceIds),
+      },
+      ...query,
+    });
+
+    const totalCount = await this.feedbackRepository.count({
+      where: {
+        civicCenterServiceId: In(civicCenterServiceIds),
       },
     });
+
+    return {
+      items: response,
+      meta: {
+        itemCount: response.length,
+        totalItems: totalCount,
+        itemsPerPage: limit,
+        totalPages: Math.ceil(totalCount / limit),
+        currentPage: page,
+      },
+    };
   }
 
   public async findOne(id: number): Promise<Feedback> {

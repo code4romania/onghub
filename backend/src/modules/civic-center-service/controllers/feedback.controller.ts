@@ -1,11 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiParam,
+  ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Pagination } from 'src/common/interfaces/pagination';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { CreateFeedbackDto } from '../dto/create-feedback.dto';
@@ -25,9 +36,13 @@ export class FeedbackController {
     return this.feedbackService.create(body);
   }
 
+  @ApiQuery({ type: () => BaseFilterDto })
   @Get()
-  async findAll(@ExtractUser() user: User): Promise<Feedback[]> {
-    return this.feedbackService.findAll(user);
+  async findAll(
+    @ExtractUser() user: User,
+    @Query() options: BaseFilterDto,
+  ): Promise<Pagination<Feedback>> {
+    return this.feedbackService.findAll(user, options);
   }
 
   @ApiParam({ name: 'id', type: Number })

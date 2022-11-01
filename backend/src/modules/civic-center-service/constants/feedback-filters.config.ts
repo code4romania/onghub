@@ -10,6 +10,7 @@ export const FEEDBACK_FILTERS_CONFIG = {
     interactionDate: true,
     name: true,
     createdOn: true,
+    message: true,
   },
   searchableColumns: [],
   defaultSortBy: 'name',
