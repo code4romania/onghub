@@ -45,10 +45,6 @@ const FeedbackList = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedFeedback) setIsConfirmRemoveModalOpen(true);
-  // }, [selectedFeedback]);
-
   useEffect(() => {
     if (error) useErrorToast('Eroare la incarcarea feedback-urilor');
 

@@ -10,11 +10,11 @@ export const getFeedbacks = async (
   orderBy: string,
   orderDirection: OrderDirection,
 ): Promise<PaginatedEntity<IFeedback>> => {
-  const requestUrl = `/feedback?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+  const requestUrl = `/civic-center/feedback?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   return API.get(requestUrl).then((res: AxiosResponse<PaginatedEntity<IFeedback>>) => res.data);
 };
 
 export const removeFeedback = async (id: number): Promise<any> => {
-  return API.delete(`feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
+  return API.delete(`/civic-center/feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
 };

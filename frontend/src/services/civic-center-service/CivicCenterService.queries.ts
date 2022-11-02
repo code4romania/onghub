@@ -14,7 +14,7 @@ export const useFeedbackQuerry = (
   const { setFeedbacks } = useStore();
 
   return useQuery(
-    ['feedback', limit, page, orderBy, orderDirection],
+    ['civic-center/feedback', limit, page, orderBy, orderDirection],
     () => getFeedbacks(limit, page, orderBy, orderDirection),
     {
       onSuccess: (data: PaginatedEntity<IFeedback>) => {
