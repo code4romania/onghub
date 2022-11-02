@@ -22,7 +22,7 @@ export const EMPLOYEE_ROUTES = [
   { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
   { id: 1, name: translations.organization, href: 'organization', icon: SunIcon },
   { id: 2, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
-  { id: 3, name: 'Servicii', href: 'services', icon: CollectionIcon },
+  { id: 3, name: 'Servicii', href: 'services', icon: CollectionIcon }, // temporary
 ];
 
 export const ADMIN_ROUTES = [
@@ -31,7 +31,7 @@ export const ADMIN_ROUTES = [
   { id: 2, name: translations.users, href: 'users', icon: UserGroupIcon },
   { id: 3, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
   { id: 4, name: translations.store, href: 'all-apps', icon: CollectionIcon },
-  { id: 5, name: 'Servicii', href: 'services', icon: CollectionIcon },
+  { id: 5, name: 'Servicii', href: 'services', icon: CollectionIcon }, // temporary
 ];
 
 export const SUPER_ADMIN_ROUTES = [

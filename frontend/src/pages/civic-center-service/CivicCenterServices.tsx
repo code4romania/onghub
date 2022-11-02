@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
@@ -13,6 +14,8 @@ const CivicCenterServices = () => {
     name: SERVICE_TABS.find((item) => item.id === 0)?.name || '',
   });
   const locationLength = location.pathname.split('/').length - 1;
+
+  const { t } = useTranslation('civic-center');
 
   useEffect(() => {
     // TODO: refactor user tabs to have a function that returns this logic.
@@ -43,13 +46,15 @@ const CivicCenterServices = () => {
       <div className="flex justify-between items-center gap-y-3">
         <div className="flex sm:flex-row flex-col gap-y-4">
           <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg self-center">
-            Serviciile mele
+            {t('my_services')}
           </p>
         </div>
       </div>
-      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">Lore ipsum</p>
+      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+        {t('description')}
+      </p>
       <div className="py-1 md:py-3 lg:py-6">
-        <div className="pb-6 flex">
+        <div className="flex">
           <nav
             className="lg:flex hidden flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
             aria-label="Tabs"

@@ -1,6 +1,7 @@
 import { EyeIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
+import { useTranslation } from 'react-i18next';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 import { formatDate } from '../../../../common/helpers/format.helper';
@@ -28,6 +29,8 @@ const FeedbackList = () => {
 
   const { feedbacks } = useCivicCenterService();
 
+  const { t } = useTranslation(['feedback', 'common']);
+
   const { isLoading, error, refetch } = useFeedbackQuerry(
     rowsPerPage as number,
     page as number,
@@ -46,21 +49,21 @@ const FeedbackList = () => {
   }, []);
 
   useEffect(() => {
-    if (error) useErrorToast('Eroare la incarcarea feedback-urilor');
+    if (error) useErrorToast(t('action.load_error'));
 
-    if (removeFeedbackMutation.error) useErrorToast('Eroare la stergerea feedback-ului');
+    if (removeFeedbackMutation.error) useErrorToast(t('action.remove_error'));
   }, [error, removeFeedbackMutation.error]);
 
   const buildFeedbackActionColumn = (): TableColumn<IFeedback> => {
     const feedbackMenuItems = [
       {
-        name: 'Vizualizeaza',
+        name: t('view', { ns: 'common' }),
         icon: EyeIcon,
         onClick: onView,
         type: PopoverMenuRowType.INFO,
       },
       {
-        name: 'Sterge',
+        name: t('delete', { ns: 'common' }),
         icon: TrashIcon,
         onClick: onOpenDeleteModal,
         type: PopoverMenuRowType.REMOVE,
@@ -112,7 +115,7 @@ const FeedbackList = () => {
     if (selectedFeedback) {
       removeFeedbackMutation.mutate(selectedFeedback.id, {
         onSuccess: () => {
-          useSuccessToast('Feedback sters cu succes');
+          useSuccessToast(t('action.remove_success'));
           refetch();
         },
         onSettled: () => {
@@ -135,9 +138,11 @@ const FeedbackList = () => {
 
   return (
     <div>
-      <div className="w-full bg-white shadow rounded-lg my-6">
+      <div className="w-full bg-white shadow rounded-lg">
         <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
-          <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">Feedback</p>
+          <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
+            {t('table_name')}
+          </p>
         </div>
         <div className="pb-2">
           <DataTableComponent
@@ -156,10 +161,10 @@ const FeedbackList = () => {
         </div>
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
-            title="Sterge feedback"
-            description="Esti sigur ca doresti stergerea feedback-ului?"
-            closeBtnLabel="Inapoi"
-            confirmBtnLabel="Sterge"
+            title={t('remove_modal.title')}
+            description={t('remove_modal.description')}
+            closeBtnLabel={t('back', { ns: 'common' })}
+            confirmBtnLabel={t('delete', { ns: 'common' })}
             onClose={onCancelFeedbackRemoval}
             onConfirm={onDelete}
           />
