@@ -15,7 +15,19 @@ import AuthProvider from './AuthProvider';
 // Configure Amplify for Login
 Amplify.configure(AMPLIFY_CONFIG);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      staleTime: 1000 * 30, // 30 seconds
+      cacheTime: 1000 * 30, // 30 seconds
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: "always",
+      suspense: false,
+    }
+  }
+});
 
 const App = () => {
   return (
