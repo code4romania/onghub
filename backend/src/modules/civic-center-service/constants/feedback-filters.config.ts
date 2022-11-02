@@ -13,7 +13,7 @@ export const FEEDBACK_FILTERS_CONFIG = {
     message: true,
   },
   searchableColumns: [],
-  defaultSortBy: 'name',
+  defaultSortBy: 'civicCenterService.name',
   defaultOrderDirection: OrderDirection.ASC,
   relations: { civicCenterService: true },
 };
