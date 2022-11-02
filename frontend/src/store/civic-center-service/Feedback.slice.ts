@@ -11,7 +11,7 @@ export const feedbacksSlice = (set: any) => ({
       itemsPerPage: 10,
       totalItems: 0,
       totalPages: 1,
-      orderByColumn: 'name',
+      orderByColumn: 'civicCenterService.name',
       orderDirection: OrderDirection.ASC,
     },
   },

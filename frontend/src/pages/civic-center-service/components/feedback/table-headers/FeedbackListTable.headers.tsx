@@ -14,7 +14,7 @@ const translations = {
 
 export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   {
-    id: 'name',
+    id: 'civicCenterService.name',
     name: translations.serviceName,
     sortable: true,
     grow: 4,
