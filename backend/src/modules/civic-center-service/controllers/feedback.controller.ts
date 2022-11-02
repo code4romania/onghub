@@ -25,7 +25,7 @@ import { FeedbackService } from '../services/feedback.service';
 
 @ApiTooManyRequestsResponse()
 @ApiBearerAuth()
-@Controller('feedback')
+@Controller('civic-center/feedback')
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 

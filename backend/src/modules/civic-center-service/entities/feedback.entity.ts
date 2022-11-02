@@ -4,8 +4,8 @@ import { CivicCenterService } from './civic-center-service.entity';
 
 @Entity()
 export class Feedback extends BaseEntity {
-  @Column({ type: 'varchar', name: 'name' })
-  name: string;
+  @Column({ type: 'varchar', name: 'full_name' })
+  fullName: string;
 
   @Column({ type: 'varchar', name: 'interaction_date' })
   interactionDate: string;

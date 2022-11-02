@@ -154,10 +154,10 @@ export abstract class BaseDAO<T> {
     }
 
     // order conditions
-    const orderOptions: FindOptionsOrder<any> = {
-      [options.orderBy || config.defaultSortBy]:
-        options.orderDirection || OrderDirection.ASC,
-    };
+    const orderOptions: FindOptionsOrder<any> = this.buildOrderQuery(
+      orderBy || config.defaultSortBy,
+      orderDirection || OrderDirection.ASC,
+    );
 
     // full query
     let query: FindManyOptions<T> = {
@@ -199,6 +199,22 @@ export abstract class BaseDAO<T> {
           [optionValues[0]]: this.buildSearchQuery(
             optionValues.slice(1).join('.'),
             search,
+          ),
+        };
+  };
+
+  private buildOrderQuery = (
+    orderBy: string,
+    orderDirection: OrderDirection,
+  ): any => {
+    const orderValues = orderBy.split('.');
+
+    return orderValues.length === 1
+      ? { [orderBy]: orderDirection }
+      : {
+          [orderValues[0]]: this.buildOrderQuery(
+            orderValues.slice(1).join('.'),
+            orderDirection,
           ),
         };
   };

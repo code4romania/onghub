@@ -22,14 +22,14 @@ import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
-import { CivicCenterServiceService } from '../services/civic-center-service.service';
+import { CivicCenterServiceService } from '../services/civic-center.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
-@Controller('civic-center-service')
-export class CivicCenterServiceController {
+@Controller('civic-center/services')
+export class CivicCenterController {
   constructor(
     private readonly civicCenterServiceService: CivicCenterServiceService,
   ) {}
