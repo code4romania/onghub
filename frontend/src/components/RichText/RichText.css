@@ -1,0 +1,25 @@
+.wrapperClassName {
+  width: 100%;
+  border: 1px solid #CDD0D8;
+  border-radius: 6px;
+  max-height: 24rem;
+  overflow: hidden;
+  overflow-y: scroll;
+
+}
+
+.toolbarClassName {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  background-color: white;;
+  border: unset;
+  border-radius: 6px;
+  border-bottom: 1px solid #CDD0D8;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.editorClassName {
+  padding: 0 1rem;
+}
