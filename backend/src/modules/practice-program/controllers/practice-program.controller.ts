@@ -100,12 +100,6 @@ export class PracticeProgramController {
   }
 
   @Public()
-  @Get('count-active')
-  async countActive(): Promise<number> {
-    return this.practiceProgramService.countActive();
-  }
-
-  @Public()
   @Get('search')
   async searchPracticePrograms(
     @Query() practiceProgramFilters: PracticeProgramFilterDto,

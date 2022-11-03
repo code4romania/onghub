@@ -101,11 +101,4 @@ export class OrganizationApplicationController {
       user.organizationId,
     );
   }
-
-  @Public()
-  @ApiParam({ name: 'id', type: Number })
-  @Get(':id/count-active')
-  async countActiveWithApplication(@Param('id') id: number): Promise<number> {
-    return this.applicationService.countActiveWithApplication(id);
-  }
 }

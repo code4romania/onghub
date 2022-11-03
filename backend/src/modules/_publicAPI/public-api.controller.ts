@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { MailService } from 'src/mail/services/mail.service';
 import { ApplicationService } from '../application/services/application.service';
+import { PracticeProgramService } from '../practice-program/services/practice-program.service';
 import { ExtractUser } from '../user/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';
 import { Role } from '../user/enums/role.enum';
@@ -26,6 +29,8 @@ export class PublicAPIController {
     private readonly keysManager: PublicKeysManager,
     private readonly applications: ApplicationService,
     private readonly mailService: MailService,
+    private readonly practiceProgramService: PracticeProgramService,
+    private readonly applicationService: ApplicationService,
   ) {}
 
   @Public()
@@ -49,6 +54,19 @@ export class PublicAPIController {
       html: `<p>${mailOptions.text}</p>`,
       ...mailOptions,
     });
+  }
+
+  @Public()
+  @Get('landing-counters')
+  async getLadningCounters(): Promise<{
+    activePracticePrograms: number;
+    ongsWithApplication: number;
+  }> {
+    return {
+      activePracticePrograms: await this.practiceProgramService.countActive(),
+      ongsWithApplication:
+        await this.applicationService.countActiveWithApplication(),
+    };
   }
 
   @Roles(Role.SUPER_ADMIN)
