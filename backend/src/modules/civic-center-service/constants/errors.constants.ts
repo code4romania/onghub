@@ -35,6 +35,10 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     message: 'At least one service access is required',
     errorCode: 'CCS_009',
   },
+  SEARCH: {
+    message: 'Error while searching services',
+    errorCode: 'CCS_010',
+  },
 };
 
 export const FEEDBACK_ERRORS = {
