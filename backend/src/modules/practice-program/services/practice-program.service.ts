@@ -308,6 +308,12 @@ export class PracticeProgramService {
     });
   }
 
+  public async countActive(): Promise<number> {
+    return this.practiceProgramRepository.count({
+      where: { active: true },
+    });
+  }
+
   public async serachPracticePrograms(
     practiceProgramFilters: PracticeProgramFilterDto,
   ): Promise<Pagination<PracticeProgram>> {

@@ -669,6 +669,14 @@ export class ApplicationService {
     return true;
   }
 
+  public async countActiveWithApplication(
+    applicationId: number,
+  ): Promise<number> {
+    return this.applicationOngViewRepository.count({
+      where: { applicationId },
+    });
+  }
+
   /**
    * @description
    * Toate applicatiile unui ong in relatie cu access-ul unui utilzator de tip employee

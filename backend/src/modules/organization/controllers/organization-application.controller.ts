@@ -23,6 +23,7 @@ import { ApplicationService } from '../../application/services/application.servi
 import { OrganizationApplicationFilterDto } from 'src/modules/application/dto/organization-application.filters.dto';
 import { ApplicationAccess } from 'src/modules/application/interfaces/application-access.interface';
 import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -99,5 +100,12 @@ export class OrganizationApplicationController {
       id,
       user.organizationId,
     );
+  }
+
+  @Public()
+  @ApiParam({ name: 'id', type: Number })
+  @Get(':id/count-active')
+  async countActiveWithApplication(@Param('id') id: number): Promise<number> {
+    return this.applicationService.countActiveWithApplication(id);
   }
 }
