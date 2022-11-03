@@ -20,9 +20,7 @@ export class FeedbackService {
 
   public async create(data: CreateFeedbackDto): Promise<Feedback> {
     try {
-      return this.feedbackRepository.save({
-        ...data,
-      });
+      return this.feedbackRepository.save(data);
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
