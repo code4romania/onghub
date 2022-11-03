@@ -20,19 +20,8 @@ export class FeedbackService {
 
   public async create(data: CreateFeedbackDto): Promise<Feedback> {
     try {
-      const {
-        fullName,
-        interactionDate,
-        message,
-        rating,
-        civicCenterServiceId,
-      } = data;
       return this.feedbackRepository.save({
-        fullName,
-        interactionDate,
-        message,
-        rating,
-        civicCenterServiceId,
+        ...data,
       });
     } catch (error) {
       if (error instanceof HttpException) {
@@ -56,27 +45,10 @@ export class FeedbackService {
     user: User,
     options: BaseFilterDto,
   ): Promise<Pagination<Feedback>> {
-    const organizationServicesFeedbacks = await this.feedbackRepository.getMany(
-      {
-        where: {
-          civicCenterService: {
-            organizationId: user.organizationId,
-          },
-        },
-      },
-    );
-
-    const civicCenterServiceIds = organizationServicesFeedbacks.map(
-      (feedback) => {
-        return feedback.civicCenterServiceId;
-      },
-    );
-
     const paginationOptions: any = {
-      civicCenterService:
-        civicCenterServiceIds?.length > 0
-          ? { id: In(civicCenterServiceIds) }
-          : null,
+      civicCenterService: {
+        organizationId: user.organizationId,
+      },
       ...options,
     };
 
