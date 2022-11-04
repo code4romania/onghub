@@ -71,7 +71,7 @@ export class ApplicationService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
-    private readonly ongApplicationRepository: OngApplicationRepository
+    private readonly ongApplicationRepository: OngApplicationRepository,
   ) {}
 
   public async create(
@@ -672,10 +672,16 @@ export class ApplicationService {
     return true;
   }
 
-  public async countActiveWithApplication(): Promise<number> {
-    const count = this.ongApplicationRepository.getQueryBuilder().
+  public async countActiveWithCCApplication(): Promise<number> {
+    const count = this.ongApplicationRepository
+      .getQueryBuilder()
+      .leftJoin('application', 'application', 'application.id = application_id')
+      .where('application.pulling_type =:pullingType', {
+        pullingType: ApplicationPullingType.CIVIC_SERVICE,
+      })
+      .getCount();
 
-    return Promise.resolve(0);
+    return Promise.resolve(count);
   }
 
   /**

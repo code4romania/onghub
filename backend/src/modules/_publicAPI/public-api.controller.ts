@@ -65,7 +65,7 @@ export class PublicAPIController {
     return {
       activePracticePrograms: await this.practiceProgramService.countActive(),
       ongsWithApplication:
-        await this.applicationService.countActiveWithApplication(),
+        await this.applicationService.countActiveWithCCApplication(),
     };
   }
 
