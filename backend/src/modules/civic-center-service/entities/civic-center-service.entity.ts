@@ -9,8 +9,10 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
-import { AgeCategory } from '../enums/age-category.enum';
+import { AgeCategory } from '../../practice-program/enums/age-category.enum';
+import { Feedback } from './feedback.entity';
 
 @Entity()
 export class CivicCenterService extends BaseEntity {
@@ -134,4 +136,7 @@ export class CivicCenterService extends BaseEntity {
   @ManyToOne((type) => Organization)
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;
+
+  @OneToMany((type) => Feedback, (feedback) => feedback.civicCenterService)
+  feedbacks: Feedback[];
 }

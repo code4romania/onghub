@@ -7,12 +7,12 @@ import {
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
-import { CIVIC_CENTER_SERVICE_ERRORS } from '../constants/errors.constants';
 import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.dto';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
 import { CivicCenterServiceRepository } from '../repositories/civic-center-service.repository';
+import { CIVIC_CENTER_SERVICE_ERRORS } from '../constants/errors.constants';
 
 @Injectable()
 export class CivicCenterServiceService {

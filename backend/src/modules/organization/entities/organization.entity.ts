@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
+import { CivicCenterService } from 'src/modules/civic-center-service/entities/civic-center-service.entity';
 import { PracticeProgram } from 'src/modules/practice-program/entities/practice-program.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
@@ -116,4 +117,7 @@ export class Organization extends BaseEntity {
 
   @OneToMany(() => PracticeProgram, (pp) => pp.organization)
   practicePrograms: PracticeProgram[];
+
+  @OneToMany(() => CivicCenterService, (ccservice) => ccservice.organization)
+  civicCenterServices: CivicCenterService[];
 }

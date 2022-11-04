@@ -15,7 +15,7 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
-import { AgeCategory } from '../enums/age-category.enum';
+import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 
 export class CreateCivicCenterServiceDto {
   @IsString()
