@@ -351,6 +351,7 @@ export class OrganizationService {
             name: true,
             logo: true,
             description: true,
+            shortDescription: true,
             facebook: true,
             twitter: true,
             instagram: true,
@@ -367,6 +368,7 @@ export class OrganizationService {
             },
           },
           organizationActivity: {
+            id: true,
             domains: {
               name: true,
             },
@@ -1093,8 +1095,8 @@ export class OrganizationService {
 
     const flatItems = items.reduce((previous, current) => {
       previous.push({
-        id: current.id,
         ...current.organizationGeneral,
+        id: current.id,
       });
       return previous;
     }, []);

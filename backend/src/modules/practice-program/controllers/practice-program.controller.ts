@@ -95,8 +95,8 @@ export class PracticeProgramController {
 
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @Get()
-  async findAll(): Promise<PracticeProgram[]> {
-    return this.practiceProgramService.findAll();
+  async findAll(@ExtractUser() user: User): Promise<PracticeProgram[]> {
+    return this.practiceProgramService.findAll(user.organizationId);
   }
 
   @Public()
