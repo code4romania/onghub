@@ -302,8 +302,11 @@ export class PracticeProgramService {
     }
   }
 
-  public async findAll(): Promise<PracticeProgram[]> {
+  public async findAll(organizationId: number): Promise<PracticeProgram[]> {
     return this.practiceProgramRepository.getMany({
+      where: {
+        organizationId: organizationId,
+      },
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
   }
