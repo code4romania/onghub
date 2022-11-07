@@ -35,7 +35,7 @@ export class StatisticsService {
     private readonly userService: UserService,
     private readonly applicationService: ApplicationService,
     private readonly practiceProgramService: PracticeProgramService,
-    public readonly civicCenterService: CivicCenterServiceService,
+    private readonly civicCenterService: CivicCenterServiceService,
   ) {}
 
   public async getOrganizationRequestStatistics(
