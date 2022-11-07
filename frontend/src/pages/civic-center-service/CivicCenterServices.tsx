@@ -15,7 +15,7 @@ const CivicCenterServices = () => {
   });
   const locationLength = location.pathname.split('/').length - 1;
 
-  const { t } = useTranslation('civic-center');
+  const { t } = useTranslation('civic_center');
 
   useEffect(() => {
     // TODO: refactor user tabs to have a function that returns this logic.
@@ -46,7 +46,7 @@ const CivicCenterServices = () => {
       <div className="flex justify-between items-center gap-y-3">
         <div className="flex sm:flex-row flex-col gap-y-4">
           <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg self-center">
-            {t('my_services')}
+            {t('title')}
           </p>
         </div>
       </div>

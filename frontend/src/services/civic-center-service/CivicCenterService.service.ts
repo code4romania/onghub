@@ -15,6 +15,6 @@ export const getFeedbacks = async (
   return API.get(requestUrl).then((res: AxiosResponse<PaginatedEntity<IFeedback>>) => res.data);
 };
 
-export const removeFeedback = async (id: number): Promise<any> => {
+export const removeFeedback = async (id: number): Promise<void> => {
   return API.delete(`/civic-center/feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
 };

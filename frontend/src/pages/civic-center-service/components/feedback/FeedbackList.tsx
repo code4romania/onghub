@@ -50,9 +50,7 @@ const FeedbackList = () => {
 
   useEffect(() => {
     if (error) useErrorToast(t('action.load_error'));
-
-    if (removeFeedbackMutation.error) useErrorToast(t('action.remove_error'));
-  }, [error, removeFeedbackMutation.error]);
+  }, [error]);
 
   const buildFeedbackActionColumn = (): TableColumn<IFeedback> => {
     const feedbackMenuItems = [
@@ -121,6 +119,9 @@ const FeedbackList = () => {
         onSettled: () => {
           setSelectedFeedback(null);
         },
+        onError: () => {
+          useErrorToast(t('action.remove_error'));
+        },
       });
     }
     setIsConfirmRemoveModalOpen(false);
@@ -141,7 +142,7 @@ const FeedbackList = () => {
       <div className="w-full bg-white shadow rounded-lg">
         <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
-            {t('table_name')}
+            {t('title')}
           </p>
         </div>
         <div className="pb-2">

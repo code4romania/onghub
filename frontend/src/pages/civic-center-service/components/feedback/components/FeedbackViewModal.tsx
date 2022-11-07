@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { useTranslation } from 'react-i18next';
 
-interface ConfirmationModalProps {
+interface FeedbackViewModalProps {
   onClose: () => void;
   serviceName?: string;
   fullName?: string;
@@ -20,7 +21,9 @@ const FeedbackViewModal = ({
   message,
   createdOn,
   onClose,
-}: ConfirmationModalProps) => {
+}: FeedbackViewModalProps) => {
+  const { t } = useTranslation('feedback');
+
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -55,7 +58,7 @@ const FeedbackViewModal = ({
                         as="h3"
                         className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900"
                       >
-                        Detalii feedback
+                        {t('view_modal.details')}
                       </Dialog.Title>
                       <button className="right-5 fixed w-min" onClick={onClose}>
                         <XIcon className="mx-auto sm:h-5 sm:w-5 h-4 w-4" />
@@ -63,7 +66,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
-                        Serviciu
+                        {t('header.service_name')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {serviceName}
@@ -71,7 +74,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
-                        Nume autor feedback
+                        {t('view_modal.author_name')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {fullName}
@@ -79,7 +82,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
-                        Rating
+                        {t('header.rating')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {`${rating} / 5`}
@@ -87,7 +90,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
-                        Cand ati interactionat cu serviciul?
+                        {t('view_modal.interaction_when')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {interactionDate}
@@ -95,7 +98,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs ">
-                        Cum a fost interactiunea ta cu acest serviciu?
+                        {t('view_modal.interaction_how')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {message}
@@ -103,7 +106,7 @@ const FeedbackViewModal = ({
                     </div>
                     <div className="mt-6">
                       <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
-                        Data acordarii feedback-ului
+                        {t('view_modal.date_added')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
                         {createdOn}
