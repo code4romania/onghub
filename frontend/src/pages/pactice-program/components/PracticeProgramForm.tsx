@@ -19,6 +19,7 @@ import MultiSelect from '../../../components/multi-select/MultiSelect';
 import { compareAsc } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { PracticeProgramPayload } from '../../../services/practice-program/interfaces/practice-program-payload.interface';
+import RichText from '../../../components/RichText/RichText';
 
 interface PracticeProgramFormProps {
   control: Control<PracticeProgramPayload, object>;
@@ -157,13 +158,12 @@ const PracticeProgramForm = ({
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <Textarea
+                  <RichText
                     config={{
                       ...PracticeProgramFormConfig.description.config,
-                      name: PracticeProgramFormConfig.description.key,
-                      error: errors.description?.message,
-                      defaultValue: value,
-                      onChange: onChange,
+                      error: errors.isPeriodNotDetermined?.message,
+                      value: value,
+                      onChange: onChange
                     }}
                   />
                 );
