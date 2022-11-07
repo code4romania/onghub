@@ -14,6 +14,7 @@ import {
   ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
+import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { STATISTICS_CACHE_DURATION } from 'src/modules/organization/constants/values.constants';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
@@ -68,6 +69,7 @@ export class StatisticsController {
     return this.statisticsService.getOrganizationStatusStatistics(filters);
   }
 
+  @Public()
   @ApiQuery({ name: 'pulling_type', type: String })
   @Get('landing-counters')
   getLandingCounters(
