@@ -21,6 +21,9 @@ import { UserService } from 'src/modules/user/services/user.service';
 import { OrganizatioStatusnStatisticsViewRepository } from '../repositories/organization-status-statistics-view.repository';
 import { StatisticsFilterDto } from '../dto/statistics-filter.dto';
 import { STATISTICS_ERRORS } from '../constants/error.constants';
+import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
+import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
+import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 
 @Injectable()
 export class StatisticsService {
@@ -31,6 +34,8 @@ export class StatisticsService {
     private readonly organizationsService: OrganizationService,
     private readonly userService: UserService,
     private readonly applicationService: ApplicationService,
+    private readonly practiceProgramService: PracticeProgramService,
+    public readonly civicCenterService: CivicCenterServiceService,
   ) {}
 
   public async getOrganizationRequestStatistics(
@@ -282,6 +287,24 @@ export class StatisticsService {
         error,
       });
     }
+  }
+
+  public async getLandingCounters(pullingType: string): Promise<object> {
+    const ongsWithApplication =
+      await this.applicationService.countActiveWithApplication(pullingType);
+    let activeItems: number;
+    switch (pullingType) {
+      case ApplicationPullingType.PRACTICE_PROGRAM:
+        activeItems = await this.practiceProgramService.countActive();
+        break;
+      case ApplicationPullingType.CIVIC_SERVICE:
+        activeItems = await this.civicCenterService.countActive();
+        break;
+    }
+    return {
+      activeItems,
+      ongsWithApplication,
+    };
   }
 
   private async getGeneralONGHubStatistics(): Promise<IGeneralONGHubStatistics> {

@@ -11,6 +11,7 @@ import {
 import {
   ApiBearerAuth,
   ApiParam,
+  ApiQuery,
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -65,5 +66,13 @@ export class StatisticsController {
     @Query() filters: StatisticsFilterDto,
   ) {
     return this.statisticsService.getOrganizationStatusStatistics(filters);
+  }
+
+  @ApiQuery({ name: 'pulling_type', type: String })
+  @Get('landing-counters')
+  getLandingCounters(
+    @Query('pulling_type') pullingType: string,
+  ): Promise<object> {
+    return this.statisticsService.getLandingCounters(pullingType);
   }
 }

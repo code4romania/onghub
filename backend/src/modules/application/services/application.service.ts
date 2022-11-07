@@ -672,12 +672,14 @@ export class ApplicationService {
     return true;
   }
 
-  public async countActiveWithCCApplication(): Promise<number> {
+  public async countActiveWithApplication(
+    pullingType: string,
+  ): Promise<number> {
     const count = this.ongApplicationRepository
       .getQueryBuilder()
       .leftJoin('application', 'application', 'application.id = application_id')
       .where('application.pulling_type =:pullingType', {
-        pullingType: ApplicationPullingType.CIVIC_SERVICE,
+        pullingType,
       })
       .getCount();
 
