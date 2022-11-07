@@ -17,6 +17,7 @@ import { CIVIC_CENTER_SERVICE_ERRORS } from '../constants/errors.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { CivicCenterServiceSearchFilterDto } from '../dto/civic-center-service-search-filter.dto';
 import { CIVIC_SERVICE_FILTERS_CONFIG } from '../constants/civic-center-filters.config';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -301,6 +302,9 @@ export class CivicCenterServiceService {
       let paginationOptions: any = {
         ...restOfFilters,
         active: true,
+        organization: {
+          status: OrganizationStatus.ACTIVE,
+        },
         domains: domains?.length > 0 ? { id: In(domains) } : null,
         ageCategory: ageCategories ? In(ageCategories) : null,
       };
