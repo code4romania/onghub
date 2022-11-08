@@ -9,10 +9,9 @@ import { SERVICE_TABS } from './constants/Tabs.constants';
 const CivicCenterServices = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<{ href: string; name: string } | null>({
-    href: SERVICE_TABS.find((item) => item.id === 0)?.href || '',
-    name: SERVICE_TABS.find((item) => item.id === 0)?.name || '',
-  });
+  const [selectedTab, setSelectedTab] = useState<IPageTab | null>(
+    SERVICE_TABS.find((item) => item.id === 0) || null,
+  );
   const locationLength = location.pathname.split('/').length - 1;
 
   const { t } = useTranslation('civic_center');
@@ -23,7 +22,7 @@ const CivicCenterServices = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href, name: found.name });
+      setSelectedTab(found);
     }
   }, []);
 
@@ -32,12 +31,12 @@ const CivicCenterServices = () => {
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );
     if (found) {
-      setSelectedTab({ href: found.href, name: found.name });
+      setSelectedTab(found);
     }
   }, [location]);
 
   const onTabClick = (tab: IPageTab) => {
-    setSelectedTab({ href: tab.href, name: tab.name });
+    setSelectedTab(tab);
     navigate(tab.href);
   };
 
