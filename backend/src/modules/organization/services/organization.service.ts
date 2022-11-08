@@ -170,6 +170,7 @@ export class OrganizationService {
 
     // create the parent entry with default values
     const organization = await this.organizationRepository.save({
+      syncedOn: new Date(),
       organizationGeneral: {
         ...createOrganizationDto.general,
       },

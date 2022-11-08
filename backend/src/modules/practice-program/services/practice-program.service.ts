@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
@@ -302,8 +303,11 @@ export class PracticeProgramService {
     }
   }
 
-  public async findAll(): Promise<PracticeProgram[]> {
+  public async findAll(organizationId: number): Promise<PracticeProgram[]> {
     return this.practiceProgramRepository.getMany({
+      where: {
+        organizationId: organizationId,
+      },
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
   }
@@ -319,6 +323,9 @@ export class PracticeProgramService {
       let paginationOptions: any = {
         ...restOfFilters,
         active: true,
+        organization: {
+          status: OrganizationStatus.ACTIVE,
+        },
         faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
         domains: domains?.length > 0 ? { id: In(domains) } : null,
       };

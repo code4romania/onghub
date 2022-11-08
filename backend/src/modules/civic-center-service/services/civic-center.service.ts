@@ -2,17 +2,22 @@ import {
   BadRequestException,
   HttpException,
   Injectable,
+  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
-import { CIVIC_CENTER_SERVICE_ERRORS } from '../constants/errors.constants';
 import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.dto';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
 import { CivicCenterServiceRepository } from '../repositories/civic-center-service.repository';
+import { CIVIC_CENTER_SERVICE_ERRORS } from '../constants/errors.constants';
+import { Pagination } from 'src/common/interfaces/pagination';
+import { CivicCenterServiceSearchFilterDto } from '../dto/civic-center-service-search-filter.dto';
+import { CIVIC_SERVICE_FILTERS_CONFIG } from '../constants/civic-center-filters.config';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -284,6 +289,41 @@ export class CivicCenterServiceService {
       where: options,
       relations: ['location', 'domains'],
     });
+  }
+
+  public async searchCivicCenterServices(
+    civicCenterServiceFilterDto: CivicCenterServiceSearchFilterDto,
+  ): Promise<Pagination<CivicCenterService>> {
+    try {
+      const { domains, ageCategories, ...restOfFilters } =
+        civicCenterServiceFilterDto;
+
+      // 1. get only active services and map correctly ids for domains and age categories
+      let paginationOptions: any = {
+        ...restOfFilters,
+        active: true,
+        organization: {
+          status: OrganizationStatus.ACTIVE,
+        },
+        domains: domains?.length > 0 ? { id: In(domains) } : null,
+        ageCategory: ageCategories ? In(ageCategories) : null,
+      };
+
+      // 2. return all paginated services
+      return this.civicCenterServiceRepository.getManyPaginated(
+        CIVIC_SERVICE_FILTERS_CONFIG,
+        paginationOptions,
+      );
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.SEARCH,
+      });
+      throw new InternalServerErrorException({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.SEARCH,
+      });
+    }
   }
 
   public async find(id: number): Promise<CivicCenterService> {

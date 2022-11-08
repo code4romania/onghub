@@ -19,8 +19,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
-      staleTime: 1000 * 30, // 30 seconds
-      cacheTime: 1000 * 30, // 30 seconds
+      staleTime: 0, // DEFAULT: 0 seconds 
+      cacheTime: 300000, // DEFAULT: 5 minutes (300000 ms)
       refetchOnMount: true,
       refetchOnWindowFocus: false,
       refetchOnReconnect: "always",

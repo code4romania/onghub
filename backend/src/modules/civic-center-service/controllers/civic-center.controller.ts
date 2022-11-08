@@ -22,14 +22,14 @@ import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
-import { CivicCenterServiceService } from '../services/civic-center-service.service';
+import { CivicCenterServiceService } from '../services/civic-center.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
-@Controller('civic-center-service')
-export class CivicCenterServiceController {
+@Controller('civic-center/services')
+export class CivicCenterController {
   constructor(
     private readonly civicCenterServiceService: CivicCenterServiceService,
   ) {}
@@ -43,7 +43,7 @@ export class CivicCenterServiceController {
   }
 
   @ApiBody({ type: UpdateCivicCenterServiceDto })
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -59,13 +59,13 @@ export class CivicCenterServiceController {
     return this.civicCenterServiceService.findAll({ options: filters });
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Get(':id')
   async find(@Param('id') id: number): Promise<CivicCenterService> {
     return this.civicCenterServiceService.find(id);
   }
 
-  @ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: Number })
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<void> {
     return this.civicCenterServiceService.delete(id);
