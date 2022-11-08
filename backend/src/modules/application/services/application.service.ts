@@ -673,7 +673,7 @@ export class ApplicationService {
   }
 
   public async countActiveWithApplication(
-    pullingType: string,
+    pullingType: ApplicationPullingType,
   ): Promise<number> {
     const count = this.ongApplicationRepository
       .getQueryBuilder()

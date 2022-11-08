@@ -21,6 +21,10 @@ export const APPLICATION_ERRORS = {
     message: 'Error while deleting the application',
     errorCode: 'APP_005',
   },
+  PULLING_TYPE: {
+    message: 'Invalid pulling type',
+    errorCode: 'APP_006',
+  },
 };
 
 export const ONG_APPLICATION_ERRORS = {

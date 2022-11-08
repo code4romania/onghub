@@ -16,11 +16,13 @@ import {
 } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
 import { STATISTICS_CACHE_DURATION } from 'src/modules/organization/constants/values.constants';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { StatisticsFilterDto } from '../dto/statistics-filter.dto';
+import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { StatisticsService } from '../services/statistics.service';
 
 @ApiTooManyRequestsResponse()
@@ -70,11 +72,11 @@ export class StatisticsController {
   }
 
   @Public()
-  @ApiQuery({ name: 'pulling_type', type: String })
+  @ApiQuery({ name: 'pulling_type', type: () => ApplicationPullingType })
   @Get('landing-counters')
   getLandingCounters(
-    @Query('pulling_type') pullingType: string,
-  ): Promise<object> {
+    @Query('pulling_type') pullingType: ApplicationPullingType,
+  ): Promise<ILandingCounter> {
     return this.statisticsService.getLandingCounters(pullingType);
   }
 }
