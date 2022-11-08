@@ -27,17 +27,15 @@ export class CreateCivicCenterServiceDto {
   locationId: number;
 
   @IsDate()
-  @MinDate(new Date())
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
   endDate?: Date;
 
   @IsString()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 250)
+  @Length(200, 250)
   shortDescription: string;
 
   @IsString()
