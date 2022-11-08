@@ -1006,6 +1006,73 @@
     "activity_title": "Organizație activă în ONG Hub din",
     "last_updated_on": "Ultima actualizare de date"
   },
+  "civic_center_service": {
+    "add": {
+      "title": "Adauga Serviciu",
+      "card_title": "Descriere Serviciu"
+    },
+    "form": {
+      "name": {
+        "required": "Denumirea serviciului este obligatoriu",
+        "min": "Denumirea nu poate sa aiba mai putin de 3 caractere",
+        "max": "Denumirea nu poate sa aiba mai mult de 50 caractere",
+        "pattern": "Denumirea nu are formatul valid.",
+        "label": "Denumirea serviciului*",
+        "helper": "",
+        "placeholder": "Denumirea serviciului"
+      },
+      "location": {
+        "required": "Locatia este obligatorie",
+        "label": "Locatia unde este disponibil serviciul*",
+        "helper": "",
+        "placeholder": "Bucuresti"
+      },
+      "start_date": {
+        "required": "Data inceput este oblicatorie",
+        "label": "Data inceput serviciu*",
+        "helper": "",
+        "placeholder": "31.12.2999"
+      },
+      "end_date": {
+        "label": "Data sfarsit serviciu*",
+        "helper": "",
+        "placeholder": "31.12.2999",
+        "start_date_after_end_date": "Data sfarsit nu poate fi mai mica decat data de inceput"
+      },
+      "is_period_not_determined": {
+        "label": "Perioada nedeterminata",
+        "helper": ""
+      },
+      "short_description": {
+        "required": "Descrierea este obligatorie",
+        "min": "Descrierea nu poate sa aiba mai putin de 200 caractere",
+        "max": "Descrierea nu poate sa aiba mai mult de 250 caractere",
+        "pattern": "Descrierea nu are formatul valid.",
+        "label": "Descriere scurta serviciu*",
+        "helper": "Descriere serviciu oferit in 200-250 caractere",
+        "placeholder": "Lorem ipsum"
+      },
+      "long_description": {
+        "required": "Descrierea este obligatorie",
+        "min": "Descrierea nu poate sa aiba mai putin de 3 caractere",
+        "max": "Descrierea nu poate sa aiba mai mult de 3000 caractere",
+        "pattern": "Descrierea nu are formatul valid.",
+        "label": "Descriere extinsa serviciu*",
+        "helper": "Adauga o descriere cat mai cuprinzatoare a serviciului oferit",
+        "placeholder": "Lorem ipsum"
+      },
+      "domains": {
+        "required": "Domeniul este obligatoriu",
+        "label": "Domenii*",
+        "helper": "Selecteaza minim un domeniu"
+      },
+      "age_category": {
+        "label": "Categorie varsta*",
+        "helper": "Selecteaza minim o categorie de varsta, sau pe toate",
+        "required": "Categoria de varsta este oblicatorie"
+      }
+    }
+  },
   "practice_program": {
     "add": {
       "title": "Adauga program de practica",
