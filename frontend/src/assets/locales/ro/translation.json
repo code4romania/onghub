@@ -1125,5 +1125,35 @@
       "error_update": "Eroare la modificarea programului de practica",
       "error_delete": "Eroare la stergerea programului de practica"
     }
+  },
+  "civic_center": {
+    "title": "Serviciile mele",
+    "description": "Lorem ipsum"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "header": {
+      "service_name": "Serviciu",
+      "rating": "Rating",
+      "interaction_date": "Data interactionarii",
+      "feedback_author": "Autor",
+      "created_on": "Data feedback"
+    },
+    "action": {
+      "load_error": "Eroare la incarcarea feedback-urilor",
+      "remove_error": "Eroare la stergerea feedback-ului",
+      "remove_success": "Feedback sters cu succes"
+    },
+    "remove_modal": {
+      "title": "Sterge feedback",
+      "description": "Esti sigur ca doresti stergerea feedback-ului?"
+    },
+    "view_modal": {
+      "details": "Detalii feedback",
+      "author_name": "Nume autor feedback",
+      "interaction_when": "Cand ati interactionat cu serviciul?",
+      "interaction_how": "Cum a fost interactiunea ta cu acest serviciu?",
+      "date_added": "Data acordarii feedback-ului"
+    }
   }
 }

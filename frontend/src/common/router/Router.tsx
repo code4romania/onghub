@@ -45,6 +45,9 @@ import OrganizationOverview from '../../pages/organization/components/Overview/O
 import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticeProgram';
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
 import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
+import FeedbackList from '../../pages/civic-center-service/components/feedback/FeedbackList';
+import ServiceList from '../../pages/civic-center-service/components/ccservice/ServiceList';
+import CivicCenterServices from '../../pages/civic-center-service/CivicCenterServices';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -279,6 +282,20 @@ const Router = () => {
             <Route index element={<PracticePrograms />} />
             <Route path="add" element={<CreatePracticeProgram />} />
             <Route path=":id" element={<EditPracticeProgram />} />
+          </Route>
+
+          {/* Civic center service feedback */}
+          <Route
+            path={'services'}
+            element={
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                <CivicCenterServices />
+              </RoleGuard>
+            }
+          >
+            <Route index element={<Navigate to={'list'}></Navigate>} />
+            <Route path="list" element={<ServiceList />} />
+            <Route path="feedback" element={<FeedbackList />} />
           </Route>
 
           <Route path="account" element={<Account />} />

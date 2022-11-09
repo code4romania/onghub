@@ -43,6 +43,8 @@ import { IInvite } from '../pages/users/interfaces/Invite.interface';
 import { invitesSlice } from './user/Invites.slice';
 import { Skill } from '../common/interfaces/skill.interface';
 import { Faculty } from '../common/interfaces/faculty.interface';
+import { IFeedback } from '../pages/civic-center-service/interfaces/Feedback.interface';
+import { feedbacksSlice } from './civic-center-service/Feedback.slice';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationFull>;
@@ -104,6 +106,11 @@ interface ApplicationRequestState {
   setApplicationRequests: (applicationRequests: PaginatedEntity<IApplicationRequest>) => void;
 }
 
+interface FeedbackState {
+  feedbacks: PaginatedEntity<IFeedback>;
+  setFeedbacks: (feedbacks: PaginatedEntity<IFeedback>) => void;
+}
+
 // Super Admin
 interface ApplicationState {
   applications: PaginatedEntity<Application>;
@@ -133,7 +140,8 @@ const useStore = create<
     ApplicationRequestState &
     ApplicationState &
     OngApplicationState &
-    InviteState
+    InviteState &
+    FeedbackState
 >()((set: any) => ({
   ...organizationSlice(set),
   ...organizationGeneralSlice(set),
@@ -150,6 +158,7 @@ const useStore = create<
   ...applicationRequestsSlice(set),
   ...organizationRequestsSlice(set),
   ...invitesSlice(set),
+  ...feedbacksSlice(set),
 }));
 
 export default useStore;
