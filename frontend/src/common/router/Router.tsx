@@ -46,6 +46,7 @@ import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticePro
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
 import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
 import CreateCivicCenterService from '../../pages/civic-center-service/CreateCivicCenterService';
+import FeedbackList from '../../pages/civic-center-service/components/feedback/FeedbackList';
 import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 
 const Router = () => {
@@ -287,7 +288,7 @@ const Router = () => {
           <Route
             path={'service'}
             element={
-              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.SUPER_ADMIN]}>
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
                 <Outlet />
               </RoleGuard>
             }
@@ -295,6 +296,7 @@ const Router = () => {
             <Route index element={<div>Lista servicii</div>} />
             <Route path="add" element={<CreateCivicCenterService />} />
             <Route path=":id" element={<EditCivicCenterService />} />
+            <Route path="feedback" element={<FeedbackList />} />
           </Route>
 
           <Route path="account" element={<Account />} />

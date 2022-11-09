@@ -1,4 +1,7 @@
 import { AxiosResponse } from 'axios';
+import { OrderDirection } from '../../common/enums/sort-direction.enum';
+import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { IFeedback } from '../../pages/civic-center-service/interfaces/Feedback.interface';
 import API from '../API';
 import { parseCivicServiceFormDataToPaylod } from './CivicCenterService.helper';
 import { CivicCenterServicePayload } from './interfaces/civic-center-service-payload.interface';
@@ -27,4 +30,19 @@ export const getCivicCenterServiceById = (id: string): Promise<CivicCenterServic
   return API.get(`/civic-center/services/${id}`).then(
     (res: AxiosResponse<CivicCenterService>) => res.data,
   );
+};
+
+export const getFeedbacks = async (
+  limit: number,
+  page: number,
+  orderBy: string,
+  orderDirection: OrderDirection,
+): Promise<PaginatedEntity<IFeedback>> => {
+  const requestUrl = `/civic-center/feedback?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  return API.get(requestUrl).then((res: AxiosResponse<PaginatedEntity<IFeedback>>) => res.data);
+};
+
+export const removeFeedback = async (id: number): Promise<void> => {
+  return API.delete(`/civic-center/feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
 };
