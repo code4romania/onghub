@@ -26,6 +26,8 @@ import {
   ORGANIZATION_FILTERS_CONFIG,
   ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
 } from '../constants/organization-filter.config';
+import { CreateContactDto } from '../dto/create-contact.dto';
+import { CreateUserRequestDto } from '../dto/create-organization-request.dto';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
@@ -75,6 +77,7 @@ export class OrganizationService {
   ) {}
 
   public async create(
+    createContactDto: CreateUserRequestDto,
     createOrganizationDto: CreateOrganizationDto,
     logo: Express.Multer.File[],
     organizationStatute: Express.Multer.File[],
@@ -172,6 +175,10 @@ export class OrganizationService {
     const organization = await this.organizationRepository.save({
       syncedOn: new Date(),
       organizationGeneral: {
+        contact: {
+          fullName: createContactDto.name,
+          ...createContactDto,
+        },
         ...createOrganizationDto.general,
       },
       organizationActivity: {
