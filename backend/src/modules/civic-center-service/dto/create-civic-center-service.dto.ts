@@ -103,5 +103,6 @@ export class CreateCivicCenterServiceDto {
   active: boolean;
 
   @IsNumber()
-  organizationId: number;
+  @IsOptional()
+  organizationId?: number;
 }
