@@ -45,6 +45,7 @@ const CivicCenterForm = ({
   // watchers
   const startDate = watch('startDate');
   const endDate = watch('endDate');
+  const isPeriodNotDetermined = watch('isPeriodNotDetermined');
   const hasOnlineAccess = watch('hasOnlineAccess');
   const hasEmailPhoneAccess = watch('hasEmailPhoneAccess');
   const hasPhysicalAccess = watch('hasPhysicalAccess');
@@ -146,26 +147,28 @@ const CivicCenterForm = ({
                   );
                 }}
               />
-              <Controller
-                key={CivicCenterFormConfig.endDate.key}
-                name={CivicCenterFormConfig.endDate.key}
-                rules={CivicCenterFormConfig.endDate.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <DatePickerInput
-                      {...CivicCenterFormConfig.endDate.config}
-                      value={value}
-                      onChange={onChange}
-                      error={
-                        (errors as Record<string, { message: string }>)[
-                          CivicCenterFormConfig.endDate.key
-                        ]?.message?.toString() || civicCenterProgramPeriodError
-                      }
-                    />
-                  );
-                }}
-              />
+              {!isPeriodNotDetermined && (
+                <Controller
+                  key={CivicCenterFormConfig.endDate.key}
+                  name={CivicCenterFormConfig.endDate.key}
+                  rules={CivicCenterFormConfig.endDate.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <DatePickerInput
+                        {...CivicCenterFormConfig.endDate.config}
+                        value={value}
+                        onChange={onChange}
+                        error={
+                          (errors as Record<string, { message: string }>)[
+                            CivicCenterFormConfig.endDate.key
+                          ]?.message?.toString() || civicCenterProgramPeriodError
+                        }
+                      />
+                    );
+                  }}
+                />
+              )}
               <Controller
                 key={CivicCenterFormConfig.isPeriodNotDetermined.key}
                 name={CivicCenterFormConfig.isPeriodNotDetermined.key}

@@ -61,9 +61,7 @@ export class CivicCenterServiceService {
         civicCenterServicePayload.endDate &&
         civicCenterServicePayload.isPeriodNotDetermined
       ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.NOT_DETERMINED_WITH_END_DATE,
-        );
+        civicCenterServicePayload.endDate === null;
       }
 
       // 3.2 check if service startDate is after endDate

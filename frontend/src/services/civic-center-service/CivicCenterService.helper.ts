@@ -18,7 +18,11 @@ export const parseCivicServiceFormDataToPaylod = (
 
   // format dates
   const formatedStartDate = startDate ? formatISO9075(startDate as Date) : startDate;
-  const formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
+
+  let formatedEndDate = null;
+  if (!isPeriodNotDetermined) {
+    formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
+  }
 
   return {
     ...civicCenterServicePaylod,
@@ -29,5 +33,6 @@ export const parseCivicServiceFormDataToPaylod = (
     hasEmailPhoneAccess: !!hasEmailPhoneAccess,
     endDate: formatedEndDate,
     locationId: (location as { value: number; label: string })?.value,
+    organizationId: 36,
   };
 };
