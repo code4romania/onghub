@@ -7,6 +7,7 @@ import {
   createCivicCenterService,
   getCivicCenterServiceById,
   getFeedbacks,
+  removeFeedback,
   updateCivicCenterService,
 } from './CivicCenterService.service';
 import { CivicCenterServicePayload } from './interfaces/civic-center-service-payload.interface';
@@ -54,4 +55,8 @@ export const useFeedbackQuerry = (
       enabled: !!(limit && page && orderBy && orderDirection),
     },
   );
+};
+
+export const useRemoveFeedbackMutation = () => {
+  return useMutation((id: number) => removeFeedback(id));
 };
