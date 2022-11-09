@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -21,6 +22,11 @@ import { UserService } from 'src/modules/user/services/user.service';
 import { OrganizatioStatusnStatisticsViewRepository } from '../repositories/organization-status-statistics-view.repository';
 import { StatisticsFilterDto } from '../dto/statistics-filter.dto';
 import { STATISTICS_ERRORS } from '../constants/error.constants';
+import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
+import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
+import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
+import { ILandingCounter } from '../interfaces/landing-counters.interface';
+import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 
 @Injectable()
 export class StatisticsService {
@@ -31,6 +37,8 @@ export class StatisticsService {
     private readonly organizationsService: OrganizationService,
     private readonly userService: UserService,
     private readonly applicationService: ApplicationService,
+    private readonly practiceProgramService: PracticeProgramService,
+    private readonly civicCenterService: CivicCenterServiceService,
   ) {}
 
   public async getOrganizationRequestStatistics(
@@ -281,6 +289,35 @@ export class StatisticsService {
         ...STATISTICS_ERRORS.ORGANIZATION_STATISTICS,
         error,
       });
+    }
+  }
+
+  public async getLandingCounters(
+    pullingType: ApplicationPullingType,
+  ): Promise<ILandingCounter> {
+    try {
+      const ongsWithApplication =
+        await this.applicationService.countActiveWithApplication(pullingType);
+      let activeItems: number;
+
+      switch (pullingType) {
+        case ApplicationPullingType.PRACTICE_PROGRAM:
+          activeItems = await this.practiceProgramService.countActive();
+          break;
+        case ApplicationPullingType.CIVIC_SERVICE:
+          activeItems = await this.civicCenterService.countActive();
+          break;
+        default:
+          throw new BadRequestException(APPLICATION_ERRORS.PULLING_TYPE);
+      }
+
+      return {
+        activeItems,
+        ongsWithApplication,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new BadRequestException(error);
     }
   }
 

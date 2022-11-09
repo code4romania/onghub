@@ -54,6 +54,8 @@ import { UserOngApplicationStatus } from '../enums/user-ong-application-status.e
 import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
+import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
+import { OngApplicationRepository } from '../repositories/ong-application.repository';
 
 @Injectable()
 export class ApplicationService {
@@ -69,6 +71,7 @@ export class ApplicationService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
+    private readonly ongApplicationRepository: OngApplicationRepository,
   ) {}
 
   public async create(
@@ -667,6 +670,20 @@ export class ApplicationService {
     }
 
     return true;
+  }
+
+  public async countActiveWithApplication(
+    pullingType: ApplicationPullingType,
+  ): Promise<number> {
+    const count = this.ongApplicationRepository
+      .getQueryBuilder()
+      .leftJoin('application', 'application', 'application.id = application_id')
+      .where('application.pulling_type =:pullingType', {
+        pullingType,
+      })
+      .getCount();
+
+    return Promise.resolve(count);
   }
 
   /**

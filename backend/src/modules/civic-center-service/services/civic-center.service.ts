@@ -348,4 +348,8 @@ export class CivicCenterServiceService {
       throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.DELETE);
     }
   }
+
+  public async countActive(): Promise<number> {
+    return this.civicCenterServiceRepository.count({ where: { active: true } });
+  }
 }
