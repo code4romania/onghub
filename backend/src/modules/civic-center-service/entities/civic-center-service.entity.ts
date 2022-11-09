@@ -43,6 +43,9 @@ export class CivicCenterService extends BaseEntity {
   })
   endDate: Date;
 
+  @Column({ type: 'boolean', name: 'is_period_not_determined', default: false })
+  isPeriodNotDetermined: boolean;
+
   @Column({
     type: 'varchar',
     name: 'short_description',
@@ -66,8 +69,8 @@ export class CivicCenterService extends BaseEntity {
   })
   domains: Domain[];
 
-  @Column({ type: 'enum', enum: AgeCategory, name: 'age_category' })
-  ageCategory: AgeCategory;
+  @Column({ type: 'simple-array', name: 'age_categories' })
+  ageCategories: AgeCategory[];
 
   @Column({ type: 'boolean', name: 'has_online_access', default: false })
   hasOnlineAccess: boolean;

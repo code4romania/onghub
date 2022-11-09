@@ -2,7 +2,11 @@ import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { TextAreaConfig } from './TextareaConfig.interface';
 
-const Textarea = (props: { config: Partial<TextAreaConfig>; readonly?: boolean }) => {
+const Textarea = (props: {
+  config: Partial<TextAreaConfig>;
+  readonly?: boolean;
+  disabled?: boolean;
+}) => {
   return (
     <div className="relative w-full">
       {props.config.label && (
@@ -18,6 +22,7 @@ const Textarea = (props: { config: Partial<TextAreaConfig>; readonly?: boolean }
         {props.readonly && <span>{props.config.defaultValue}</span>}
         {!props.readonly && (
           <textarea
+            disabled={props.disabled}
             rows={4}
             name={props.config.name}
             onChange={props.config.onChange}
@@ -25,7 +30,7 @@ const Textarea = (props: { config: Partial<TextAreaConfig>; readonly?: boolean }
               props.config.error
                 ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
                 : 'focus:ring-indigo-500 focus:border-indigo-500',
-              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md',
+              'block w-full pr-10 border-gray-300 shadow-sm  sm:text-base text-sm rounded-md disabled:bg-gray-100',
             )}
             placeholder={props.config.placeholder}
             defaultValue={props.config.defaultValue}

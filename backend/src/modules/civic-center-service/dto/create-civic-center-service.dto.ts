@@ -4,14 +4,12 @@ import {
   IsBoolean,
   IsDate,
   IsEmail,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
   Length,
   Matches,
   MaxLength,
-  MinDate,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
@@ -27,17 +25,18 @@ export class CreateCivicCenterServiceDto {
   locationId: number;
 
   @IsDate()
-  @MinDate(new Date())
   startDate: Date;
 
   @IsDate()
   @IsOptional()
-  @MinDate(new Date())
   endDate?: Date;
+
+  @IsBoolean()
+  isPeriodNotDetermined: boolean;
 
   @IsString()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 250)
+  @Length(200, 250)
   shortDescription: string;
 
   @IsString()
@@ -49,8 +48,8 @@ export class CreateCivicCenterServiceDto {
   @ArrayNotEmpty()
   domains: number[];
 
-  @IsEnum(AgeCategory)
-  ageCategory: AgeCategory;
+  @IsArray()
+  ageCategories: AgeCategory[];
 
   @IsBoolean()
   hasOnlineAccess: boolean;
@@ -63,7 +62,7 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 1000)
+  @Length(0, 1000)
   onlineAccessDescription: string;
 
   @IsBoolean()
@@ -82,7 +81,7 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 1000)
+  @Length(0, 1000)
   emailPhoneAccessDescription: string;
 
   @IsBoolean()
@@ -90,13 +89,13 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @Length(3, 300)
+  @Length(0, 300)
   physicalAccessAddress: string;
 
   @IsString()
   @IsOptional()
   @Matches(REGEX.ALPHANUMERIC)
-  @Length(3, 1000)
+  @Length(0, 1000)
   physicalAccessDescription: string;
 
   @IsBoolean()
