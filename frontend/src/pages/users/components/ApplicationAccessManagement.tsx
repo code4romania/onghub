@@ -26,7 +26,7 @@ const ApplicationToggle = ({
     onApplicationStatusChange(applicationId, enabled);
   }, [enabled]);
 
-  return <Toggle enabled={enabled} setEnabled={setEnabled} />;
+  return <Toggle value={enabled} onChange={setEnabled} />;
 };
 
 const ApplicationAccessManagement = ({

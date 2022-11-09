@@ -1012,6 +1012,20 @@
       "card_title": "Descriere Serviciu"
     },
     "form": {
+      "section": {
+        "online": {
+          "title": "Access online",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        },
+        "email_or_phone": {
+          "title": "Access prin email sau telefon",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        },
+        "physical": {
+          "title": "Access prin prezentare la locatie",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        }
+      },
       "name": {
         "required": "Denumirea serviciului este obligatoriu",
         "min": "Denumirea nu poate sa aiba mai putin de 3 caractere",
@@ -1070,7 +1084,84 @@
         "label": "Categorie varsta*",
         "helper": "Selecteaza minim o categorie de varsta, sau pe toate",
         "required": "Categoria de varsta este oblicatorie"
+      },
+      "online": {
+        "toggle": {
+          "label": "Serviciul poate fi accesat online"
+        },
+        "link": {
+          "required": "Link-ul este obligatoriu",
+          "pattern": "Formatul link-ului este invalid.",
+          "label": "Link catre pagina de access (buton)*",
+          "helper": "Adauga linkul prin care oricine poate accesa acest serviciu.",
+          "placeholder": ""
+        },
+        "description": {
+          "required": "Descrierea este obligatorie",
+          "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
+          "pattern": "Descrierea nu are formatul valid.",
+          "label": "Descriere access online",
+          "placeholder": "Lorem ipsum"
+        }
+      },
+      "email_or_phone": {
+        "toggle": {
+          "label": "Serviciul poate fi accesat prin telefon sau e-mail"
+        },
+        "phone": {
+          "required": "Numarul de telefon este obligatoriu",
+          "min": "Numarul de telefon nu poate sa aiba mai putin de 10 caractere",
+          "max": "Numarul de telefon nu poate sa aiba mai mult de 15 caractere",
+          "pattern": "Numarul de telefon are un format invalid",
+          "helper": "Numarul de telefon la care solicitantul poate solicita serviciul",
+          "label": "Telefon*"
+        },
+        "email": {
+          "required": "Email-ul este obligatoriu",
+          "max": "Email-ul nu poate sa aiba mai mult de 50 de caractere",
+          "pattern": "Email-ul are un format invalid",
+          "helper": "Adresa de e-mail la care solicitantul poate solicita serviciul",
+          "label": "E-mail*"
+        },
+        "description": {
+          "required": "Descrierea este obligatorie",
+          "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
+          "pattern": "Descrierea nu are formatul valid.",
+          "label": "Descriere access prin email",
+          "placeholder": "Lorem ipsum"
+        }
+      },
+      "physical": {
+        "toggle": {
+          "label": "Serviciul poate fi accesat prin prezentare la locatie"
+        },
+        "address": {
+          "required": "Adresa este obligatorie",
+          "max": "Adresa nu poate sa aiba mai mult de 300 caractere",
+          "pattern": "Adresa nu are formatul valid.",
+          "label": "Adresa serviciu*",
+          "helper": "Introduceti locatia exacta de unde o persoana poate accesa serviciul"
+        },
+        "description": {
+          "required": "Descrierea este obligatorie",
+          "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
+          "pattern": "Descrierea nu are formatul valid.",
+          "label": "Descriere access fizic",
+          "placeholder": "Lorem ipsum",
+          "helper": "Mentioneaza orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"
+        }
+      },
+      "access": {
+        "mandatory": "Cel putin un tip de access este obligatoriu"
       }
+    },
+    "feedback": {
+      "success_create": "Serviciul a fost creat!",
+      "success_update": "Serviciul a fost modificat cu success!",
+      "success_delete": "Serviciul a fost sters",
+      "error_create": "Eroare la crearea serviciului",
+      "error_update": "Eroare la modificarea serviciului",
+      "error_delete": "Eroare la stergerea serviciului"
     }
   },
   "practice_program": {

@@ -3,7 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
+import { CivicCenterServicePayload } from '../../services/civic-center-service/interfaces/civic-center-service-payload.interface';
 import CivicCenterForm from './components/CivicCenterForm';
+import { useCreateCivicCenterServiceMutation } from '../../services/civic-center-service/CivicCenterService.queries';
+import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 
 const CreateCivicCenterService = () => {
   const navigate = useNavigate();
@@ -11,7 +14,8 @@ const CreateCivicCenterService = () => {
   // check additional validity
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
-  const isLoading = false;
+  const { isLoading, mutateAsync: createCivicCenterService } =
+    useCreateCivicCenterServiceMutation();
 
   // React Hook Form
   const {
@@ -20,7 +24,7 @@ const CreateCivicCenterService = () => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<any>({
+  } = useForm<CivicCenterServicePayload>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -29,10 +33,18 @@ const CreateCivicCenterService = () => {
     reset({});
   }, []);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CivicCenterServicePayload) => {
     if (isFormValid) {
-      // create practice program request
-      console.log('data', data);
+      // create civic center service request
+      await createCivicCenterService(data, {
+        onSuccess: () => {
+          useSuccessToast(t('feedback.success_create'));
+          navigate('/service', { replace: true });
+        },
+        onError: () => {
+          useErrorToast(t('feedback.error_create'));
+        },
+      });
     }
   };
 

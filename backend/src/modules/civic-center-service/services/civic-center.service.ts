@@ -56,7 +56,17 @@ export class CivicCenterServiceService {
         },
       });
 
-      // 3. check if service startDate is after endDate
+      // 3.1. check if undetermined flag and end date have correct values
+      if (
+        civicCenterServicePayload.endDate &&
+        civicCenterServicePayload.isPeriodNotDetermined
+      ) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.NOT_DETERMINED_WITH_END_DATE,
+        );
+      }
+
+      // 3.2 check if service startDate is after endDate
       if (
         civicCenterServicePayload.endDate &&
         compareAsc(

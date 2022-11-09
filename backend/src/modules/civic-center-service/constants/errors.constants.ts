@@ -39,6 +39,10 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     message: 'Error while searching services',
     errorCode: 'CCS_010',
   },
+  NOT_DETERMINED_WITH_END_DATE: {
+    message: 'Civic Service cannot be undetermined with end date',
+    errorCode: 'CCS_011',
+  },
 };
 
 export const FEEDBACK_ERRORS = {

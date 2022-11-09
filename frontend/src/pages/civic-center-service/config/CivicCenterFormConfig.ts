@@ -1,5 +1,11 @@
-import { ALPHANUMERIC_REGEX } from '../../../common/helpers/format.helper';
+import {
+  ALPHANUMERIC_REGEX,
+  EMAIL_REGEX,
+  PHONE_REGEX,
+  URL_REGEX,
+} from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
+import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
 
 const translations = {
   name: {
@@ -59,6 +65,71 @@ const translations = {
     label: i18n.t('civic_center_service:form.age_category.label'),
     helper: i18n.t('civic_center_service:form.age_category.helper'),
     required: i18n.t('civic_center_service:form.age_category.required'),
+  },
+  online: {
+    toggle: {
+      label: i18n.t('civic_center_service:form.online.toggle.label'),
+    },
+    link: {
+      required: i18n.t('civic_center_service:form.online.link.required'),
+      pattern: i18n.t('civic_center_service:form.online.link.pattern'),
+      label: i18n.t('civic_center_service:form.online.link.label'),
+      helper: i18n.t('civic_center_service:form.online.link.helper'),
+      placeholder: i18n.t('civic_center_service:form.online.link.placeholder'),
+    },
+    description: {
+      required: i18n.t('civic_center_service:form.online.description.required'),
+      max: i18n.t('civic_center_service:form.online.description.max'),
+      pattern: i18n.t('civic_center_service:form.online.description.pattern'),
+      label: i18n.t('civic_center_service:form.online.description.label'),
+      placeholder: i18n.t('civic_center_service:form.online.description.placeholder'),
+    },
+  },
+  emailOrPhone: {
+    toggle: {
+      label: i18n.t('civic_center_service:form.email_or_phone.toggle.label'),
+    },
+    email: {
+      required: i18n.t('civic_center_service:form.email_or_phone.email.required'),
+      pattern: i18n.t('civic_center_service:form.email_or_phone.email.pattern'),
+      label: i18n.t('civic_center_service:form.email_or_phone.email.label'),
+      helper: i18n.t('civic_center_service:form.email_or_phone.email.helper'),
+      max: i18n.t('civic_center_service:form.email_or_phone.email.max'),
+    },
+    phone: {
+      required: i18n.t('civic_center_service:form.email_or_phone.phone.required'),
+      pattern: i18n.t('civic_center_service:form.email_or_phone.phone.pattern'),
+      label: i18n.t('civic_center_service:form.email_or_phone.phone.label'),
+      helper: i18n.t('civic_center_service:form.email_or_phone.phone.helper'),
+      min: i18n.t('civic_center_service:form.email_or_phone.phone.min'),
+      max: i18n.t('civic_center_service:form.email_or_phone.phone.max'),
+    },
+    description: {
+      required: i18n.t('civic_center_service:form.email_or_phone.description.required'),
+      max: i18n.t('civic_center_service:form.email_or_phone.description.max'),
+      pattern: i18n.t('civic_center_service:form.email_or_phone.description.pattern'),
+      label: i18n.t('civic_center_service:form.email_or_phone.description.label'),
+      placeholder: i18n.t('civic_center_service:form.email_or_phone.description.placeholder'),
+    },
+  },
+  physical: {
+    toggle: {
+      label: i18n.t('civic_center_service:form.physical.toggle.label'),
+    },
+    address: {
+      required: i18n.t('civic_center_service:form.physical.address.required'),
+      pattern: i18n.t('civic_center_service:form.physical.address.pattern'),
+      max: i18n.t('civic_center_service:form.physical.address.max'),
+      label: i18n.t('civic_center_service:form.physical.address.label'),
+      helper: i18n.t('civic_center_service:form.physical.address.helper'),
+    },
+    description: {
+      required: i18n.t('civic_center_service:form.physical.description.required'),
+      max: i18n.t('civic_center_service:form.physical.description.max'),
+      pattern: i18n.t('civic_center_service:form.physical.description.pattern'),
+      label: i18n.t('civic_center_service:form.physical.description.label'),
+      placeholder: i18n.t('civic_center_service:form.physical.description.placeholder'),
+    },
   },
 };
 
@@ -213,6 +284,181 @@ export const CivicCenterFormConfig: Record<string, any> = {
     config: {
       title: translations.ageCategories.label,
       helperText: translations.ageCategories.helper,
+    },
+  },
+  online: {
+    hasOnlineAccess: {
+      key: 'hasOnlineAccess',
+      rules: {},
+      label: translations.online.toggle,
+    },
+    link: {
+      key: 'onlineAccessLink',
+      rules: {
+        required: {
+          value: true,
+          message: translations.online.link.required,
+        },
+        pattern: {
+          value: URL_REGEX,
+          message: translations.online.link.pattern,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.online.link.label,
+        helperText: translations.online.link.helper,
+        placeholder: translations.online.link.placeholder,
+        addOn: InputFieldHttpAddon,
+      },
+    },
+    description: {
+      key: 'onlineAccessDescription',
+      rules: {
+        required: {
+          value: true,
+          message: translations.online.description.required,
+        },
+        maxLength: {
+          value: 1000,
+          message: translations.online.description.max,
+        },
+        pattern: {
+          value: ALPHANUMERIC_REGEX,
+          message: translations.online.description.pattern,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.online.description.label,
+        placeholder: translations.online.description.placeholder,
+      },
+    },
+  },
+  emailOrPhone: {
+    hasEmailPhoneAccess: {
+      key: 'hasEmailPhoneAccess',
+      rules: {},
+      label: translations.emailOrPhone.toggle,
+    },
+    email: {
+      key: 'emailAccess',
+      rules: {
+        required: {
+          value: true,
+          message: translations.emailOrPhone.email.required,
+        },
+        maxLength: {
+          value: 50,
+          message: translations.emailOrPhone.email.max,
+        },
+        pattern: {
+          value: EMAIL_REGEX,
+          message: translations.emailOrPhone.email.pattern,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.emailOrPhone.email.label,
+        helperText: translations.emailOrPhone.email.helper,
+        placeholder: '',
+      },
+    },
+    phone: {
+      key: 'phoneAccess',
+      rules: {
+        required: {
+          value: true,
+          message: translations.emailOrPhone.phone.required,
+        },
+        minLength: {
+          value: 10,
+          message: translations.emailOrPhone.phone.min,
+        },
+        maxLength: {
+          value: 15,
+          message: translations.emailOrPhone.phone.max,
+        },
+        pattern: {
+          value: PHONE_REGEX,
+          message: translations.emailOrPhone.phone.pattern,
+        },
+      },
+      config: {
+        type: 'tel',
+        label: translations.emailOrPhone.phone.label,
+        helperText: translations.emailOrPhone.phone.helper,
+        placeholder: '',
+      },
+    },
+    description: {
+      key: 'emailPhoneAccessDescription',
+      rules: {
+        required: {
+          value: true,
+          message: translations.emailOrPhone.description.required,
+        },
+        maxLength: {
+          value: 1000,
+          message: translations.emailOrPhone.description.max,
+        },
+        pattern: {
+          value: ALPHANUMERIC_REGEX,
+          message: translations.emailOrPhone.description.pattern,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.emailOrPhone.description.label,
+        placeholder: translations.emailOrPhone.description.placeholder,
+      },
+    },
+  },
+  physical: {
+    hasPhysicalAccess: {
+      key: 'hasPhysicalAccess',
+      rules: {},
+      label: translations.physical.toggle,
+    },
+    address: {
+      key: 'physicalAccessAddress',
+      rules: {
+        required: {
+          value: true,
+          message: translations.physical.address.required,
+        },
+        maxLength: {
+          value: 300,
+          message: translations.physical.address.max,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.physical.address.label,
+        helperText: translations.physical.address.helper,
+      },
+    },
+    description: {
+      key: 'physicalAccessDescription',
+      rules: {
+        required: {
+          value: true,
+          message: translations.physical.description.required,
+        },
+        maxLength: {
+          value: 3000,
+          message: translations.physical.description.max,
+        },
+        pattern: {
+          value: ALPHANUMERIC_REGEX,
+          message: translations.physical.description.pattern,
+        },
+      },
+      config: {
+        type: 'text',
+        label: translations.physical.description.label,
+        placeholder: translations.physical.description.placeholder,
+      },
     },
   },
 };

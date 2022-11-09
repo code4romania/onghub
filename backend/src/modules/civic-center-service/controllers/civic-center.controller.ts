@@ -17,6 +17,8 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
+import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.dto';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
@@ -38,8 +40,12 @@ export class CivicCenterController {
   @Post()
   async create(
     @Body() body: CreateCivicCenterServiceDto,
+    @ExtractUser() user: User,
   ): Promise<CivicCenterService> {
-    return this.civicCenterServiceService.create(body);
+    return this.civicCenterServiceService.create({
+      organizationId: user.organizationId,
+      ...body,
+    });
   }
 
   @ApiBody({ type: UpdateCivicCenterServiceDto })
