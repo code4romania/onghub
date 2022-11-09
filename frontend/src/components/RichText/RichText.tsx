@@ -38,7 +38,7 @@ const RichText = (props: { config: RichTextConfig, readonly?: boolean }) => {
           {props.config.label}
         </label>
       )}
-      {props.readonly && <span dangerouslySetInnerHTML={{ __html: props.config.value as string }}></span>}
+      {props.readonly && <span className="richtext_html" dangerouslySetInnerHTML={{ __html: props.config.value as string }}></span>}
       {!props.readonly && <Editor
         editorState={editorState}
         toolbarClassName="toolbarClassName"
