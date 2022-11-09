@@ -46,6 +46,7 @@ import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticePro
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
 import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
 import CreateCivicCenterService from '../../pages/civic-center-service/CreateCivicCenterService';
+import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -293,7 +294,7 @@ const Router = () => {
           >
             <Route index element={<div>Lista servicii</div>} />
             <Route path="add" element={<CreateCivicCenterService />} />
-            <Route path=":id" element={<div>edit civic center</div>} />
+            <Route path=":id" element={<EditCivicCenterService />} />
           </Route>
 
           <Route path="account" element={<Account />} />

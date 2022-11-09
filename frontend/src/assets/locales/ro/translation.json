@@ -1011,6 +1011,10 @@
       "title": "Adauga Serviciu",
       "card_title": "Descriere Serviciu"
     },
+    "edit": {
+      "title": "Modifica Serviciu",
+      "card_title": "Descriere Serviciu"
+    },
     "form": {
       "section": {
         "online": {
