@@ -890,7 +890,8 @@
       },
       "practice_program": {
         "redirect_to_site": "Vezi profilul tau pe Practice4Good",
-        "redirect_to_practice_programs": "Gestioneaza program de practica"
+        "redirect_to_practice_programs": "Gestioneaza program de practica",
+        "redirect_to_services": "Gestioneaza servicii"
       }
     },
     "list_header": {
