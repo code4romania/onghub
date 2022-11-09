@@ -33,6 +33,5 @@ export const parseCivicServiceFormDataToPaylod = (
     hasEmailPhoneAccess: !!hasEmailPhoneAccess,
     endDate: formatedEndDate,
     locationId: (location as { value: number; label: string })?.value,
-    organizationId: 36,
   };
 };
