@@ -253,6 +253,7 @@ const OrganizationGeneral = () => {
                       selected={value}
                       onChange={onChange}
                       readonly={readonly}
+                      disabled={true}
                     />
                   );
                 }}
@@ -273,6 +274,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
+                      disabled={true}
                     />
                   );
                 }}
@@ -293,6 +295,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
+                      disabled={true}
                     />
                   );
                 }}
