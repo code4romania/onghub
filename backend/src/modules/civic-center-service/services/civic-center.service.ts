@@ -8,7 +8,6 @@ import {
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
-import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.dto';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
@@ -288,13 +287,9 @@ export class CivicCenterServiceService {
     }
   }
 
-  public async findAll({
-    options,
-  }: {
-    options: CivicCenterServiceFilterDto;
-  }): Promise<CivicCenterService[]> {
+  public async findAll(organizationId: number): Promise<CivicCenterService[]> {
     return this.civicCenterServiceRepository.getMany({
-      where: options,
+      where: { organizationId },
       relations: ['location', 'domains'],
     });
   }
@@ -334,11 +329,20 @@ export class CivicCenterServiceService {
     }
   }
 
-  public async find(id: number): Promise<CivicCenterService> {
+  public async find(
+    id: number,
+    organizationId?: number,
+  ): Promise<CivicCenterService> {
+    // for admin and employee check organizationId as search criteria
+    const where = organizationId
+      ? {
+          id,
+          organizationId,
+        }
+      : { id };
+
     const practiceProgram = await this.civicCenterServiceRepository.get({
-      where: {
-        id,
-      },
+      where,
       relations: ['location', 'domains'],
     });
 

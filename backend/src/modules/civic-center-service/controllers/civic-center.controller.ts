@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -20,7 +19,6 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
-import { CivicCenterServiceFilterDto } from '../dto/civic-center-service-filter.dto';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
@@ -54,21 +52,26 @@ export class CivicCenterController {
   async update(
     @Param('id') id: number,
     @Body() body: UpdateCivicCenterServiceDto,
+    @ExtractUser() user: User,
   ): Promise<CivicCenterService> {
-    return this.civicCenterServiceService.update(id, body);
+    return this.civicCenterServiceService.update(id, {
+      organizationId: user.organizationId,
+      ...body,
+    });
   }
 
   @Get()
-  async findAll(
-    @Query() filters: CivicCenterServiceFilterDto,
-  ): Promise<CivicCenterService[]> {
-    return this.civicCenterServiceService.findAll({ options: filters });
+  async findAll(@ExtractUser() user: User): Promise<CivicCenterService[]> {
+    return this.civicCenterServiceService.findAll(user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })
   @Get(':id')
-  async find(@Param('id') id: number): Promise<CivicCenterService> {
-    return this.civicCenterServiceService.find(id);
+  async find(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<CivicCenterService> {
+    return this.civicCenterServiceService.find(id, user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })

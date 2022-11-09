@@ -1,8 +1,8 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
-import { formatDate } from '../../../../../common/helpers/format.helper';
-import { IFeedback } from '../../../interfaces/Feedback.interface';
-import i18n from '../../../../../common/config/i18n';
+import { formatDate } from '../../../../common/helpers/format.helper';
+import { IFeedback } from '../../interfaces/Feedback.interface';
+import i18n from '../../../../common/config/i18n';
 
 const translations = {
   serviceName: i18n.t('feedback:header.service_name'),

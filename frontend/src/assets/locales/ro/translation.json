@@ -1008,6 +1008,14 @@
     "last_updated_on": "Ultima actualizare de date"
   },
   "civic_center_service": {
+    "wrapper": {
+      "title": "Serviciile mele",
+      "description": "Lorem ipsum",
+      "add_button": "Adauga Serviciu"
+    },
+    "list": {
+      "error": "Eroare la incarcarea listei"
+    },
     "add": {
       "title": "Adauga Serviciu",
       "card_title": "Descriere Serviciu"
@@ -1288,10 +1296,6 @@
       "error_update": "Eroare la modificarea programului de practica",
       "error_delete": "Eroare la stergerea programului de practica"
     }
-  },
-  "civic_center": {
-    "title": "Serviciile mele",
-    "description": "Lorem ipsum"
   },
   "feedback": {
     "title": "Feedback",
