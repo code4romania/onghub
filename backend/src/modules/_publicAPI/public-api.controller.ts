@@ -3,11 +3,12 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -17,6 +18,7 @@ import { CivicCenterServiceSearchFilterDto } from '../civic-center-service/dto/c
 import { CivicCenterService } from '../civic-center-service/entities/civic-center-service.entity';
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../organization/dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFlat } from '../organization/interfaces/OrganizationFlat.interface';
+import { OrganizationWithServices } from '../organization/interfaces/OrganizationWithServices.interface';
 import { OrganizationService } from '../organization/services';
 import { ExtractUser } from '../user/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';
@@ -65,6 +67,15 @@ export class PublicAPIController {
     return this.organizationService.findAllOrganizationsWithActiveServices(
       filters,
     );
+  }
+
+  @Public()
+  @ApiParam({ name: 'id', type: String })
+  @Get('organization/:id/service')
+  findOrganizationWithServices(
+    @Param('id') id: number,
+  ): Promise<OrganizationWithServices> {
+    return this.organizationService.findOneOrganizationWithActiveServices(id);
   }
 
   @Public()

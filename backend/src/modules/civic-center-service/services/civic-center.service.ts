@@ -299,6 +299,27 @@ export class CivicCenterServiceService {
     });
   }
 
+  public async findPracticeShortServicesByOrganization(
+    organizationId: number,
+  ): Promise<CivicCenterService[]> {
+    return this.civicCenterServiceRepository.getMany({
+      select: {
+        id: true,
+        name: true,
+        location: {
+          name: true,
+        },
+        startDate: true,
+        endDate: true,
+        hasEmailPhoneAccess: true,
+        hasOnlineAccess: true,
+        hasPhysicalAccess: true,
+      },
+      relations: ['location'],
+      where: { organizationId },
+    });
+  }
+
   public async searchCivicCenterServices(
     civicCenterServiceFilterDto: CivicCenterServiceSearchFilterDto,
   ): Promise<Pagination<CivicCenterService>> {

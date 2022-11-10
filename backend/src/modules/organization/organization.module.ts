@@ -46,6 +46,7 @@ import { OrganizationApplicationController } from './controllers/organization-ap
 import { OrganizationHistory } from './entities/organization-history.entity';
 import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
 import { PracticeProgramModule } from '../practice-program/practice-program.module';
+import { CivicCenterModule } from '../civic-center-service/civic-center.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { PracticeProgramModule } from '../practice-program/practice-program.modu
     ApplicationModule,
     UserModule,
     PracticeProgramModule,
+    CivicCenterModule,
   ],
   controllers: [
     OrganizationApplicationController,

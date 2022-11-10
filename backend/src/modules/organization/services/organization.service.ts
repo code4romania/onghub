@@ -10,6 +10,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
+import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
@@ -51,6 +52,7 @@ import { CompletionStatus } from '../enums/organization-financial-completion.enu
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
 import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
+import { OrganizationWithServices } from '../interfaces/OrganizationWithServices.interface';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -75,6 +77,7 @@ export class OrganizationService {
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
+    private readonly civicCenterService: CivicCenterServiceService,
   ) {}
 
   public async create(
@@ -430,6 +433,93 @@ export class OrganizationService {
         throw new InternalServerErrorException({
           error: JSON.stringify(error),
           ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
+  }
+
+  public async findOneOrganizationWithActiveServices(
+    organizationId: number,
+  ): Promise<OrganizationWithServices> {
+    try {
+      // 1. get organization info
+      const organization = await this.organizationRepository.get({
+        select: {
+          id: true,
+          organizationGeneral: {
+            name: true,
+            logo: true,
+            description: true,
+            shortDescription: true,
+            facebook: true,
+            twitter: true,
+            instagram: true,
+            contact: {
+              fullName: true,
+              email: true,
+              phone: true,
+            },
+            city: {
+              name: true,
+              county: {
+                name: true,
+              },
+            },
+          },
+          organizationActivity: {
+            id: true,
+            domains: {
+              name: true,
+            },
+          },
+        },
+        relations: [
+          'organizationGeneral',
+          'organizationGeneral.city',
+          'organizationGeneral.contact',
+          'organizationGeneral.city.county',
+          'organizationActivity',
+          'organizationActivity.domains',
+        ],
+        where: {
+          id: organizationId,
+          status: OrganizationStatus.ACTIVE,
+        },
+      });
+
+      // 1.1 throw error fi organization not found
+      if (!organization) {
+        throw new NotFoundException({
+          ...ORGANIZATION_ERRORS.GET,
+        });
+      }
+
+      // 2. get services by organization id
+      const services =
+        await this.civicCenterService.findPracticeShortServicesByOrganization(
+          organizationId,
+        );
+
+      // 3. get public url logo
+      if (organization.organizationGeneral.logo) {
+        organization.organizationGeneral.logo =
+          await this.fileManagerService.generatePresignedURL(
+            organization.organizationGeneral.logo,
+          );
+      }
+
+      // 4. flatten organization
+      const flatOrganization =
+        this.flattenOrganizationWithPracticePrograms(organization);
+
+      return { ...flatOrganization, services };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_SERVICES,
         });
       }
     }
