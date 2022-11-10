@@ -102,9 +102,13 @@ export class CivicCenterController {
     return this.civicCenterServiceService.find(id, user.organizationId);
   }
 
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: Number })
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<void> {
-    return this.civicCenterServiceService.delete(id);
+  async delete(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.civicCenterServiceService.delete(id, user.organizationId);
   }
 }

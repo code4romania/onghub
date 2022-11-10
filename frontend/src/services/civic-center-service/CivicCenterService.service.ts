@@ -64,3 +64,7 @@ export const getFeedbacks = async (
 export const removeFeedback = async (id: number): Promise<void> => {
   return API.delete(`/civic-center/feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
 };
+
+export const deleteCCService = (id: number): Promise<void> => {
+  return API.delete(`/civic-center/services/${id}`).then((res: AxiosResponse<void>) => res.data);
+};

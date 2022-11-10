@@ -5,6 +5,7 @@ import { IFeedback } from '../../pages/civic-center-service/interfaces/Feedback.
 import useStore from '../../store/store';
 import {
   createCivicCenterService,
+  deleteCCService,
   disableCCService,
   enableCCService,
   getCivicCenterServiceById,
@@ -48,6 +49,10 @@ export const useEnableCCServiceMutation = () => {
 
 export const useDisableCCServiceMutation = () => {
   return useMutation((id: number) => disableCCService(id));
+};
+
+export const useDeleteCCServiceMutation = () => {
+  return useMutation((id: number) => deleteCCService(id));
 };
 
 export const useFeedbackQuerry = (

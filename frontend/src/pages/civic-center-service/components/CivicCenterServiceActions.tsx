@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useErrorToast } from '../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import CardActions from '../../../components/card-actions/CardActions';
 import {
+  useDeleteCCServiceMutation,
   useDisableCCServiceMutation,
   useEnableCCServiceMutation,
 } from '../../../services/civic-center-service/CivicCenterService.queries';
@@ -17,6 +18,8 @@ interface CivicCenterServiceActionsProps {
 const CivicCenterServiceActions = ({ service, refetch }: CivicCenterServiceActionsProps) => {
   const { t } = useTranslation(['civic_center_service']);
   const navigate = useNavigate();
+
+  const { isLoading: isDeleting, mutateAsync: deleteService } = useDeleteCCServiceMutation();
 
   const { mutateAsync: enableService } = useEnableCCServiceMutation();
   const { mutateAsync: disableService } = useDisableCCServiceMutation();
@@ -39,7 +42,15 @@ const CivicCenterServiceActions = ({ service, refetch }: CivicCenterServiceActio
   };
 
   const onConfirmDeleteCivicService = async () => {
-    console.log('on delete - to be implemented');
+    await deleteService(service.id, {
+      onSuccess: () => {
+        useSuccessToast(t('feedback.success_delete'));
+        refetch();
+      },
+      onError: () => {
+        useErrorToast(t('feedback.error_delete'));
+      },
+    });
   };
 
   const onViewCivicCenterService = () => {
@@ -52,7 +63,7 @@ const CivicCenterServiceActions = ({ service, refetch }: CivicCenterServiceActio
 
   return (
     <CardActions
-      isLoading={false}
+      isLoading={isDeleting}
       active={service.active}
       deleteModalTitle={t('details.delete_modal.title')}
       deleteModalDescription={t('details.delete_modal.description')}
