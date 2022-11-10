@@ -35,6 +35,7 @@ import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
+import { formatNumber } from 'libphonenumber-js';
 
 @Injectable()
 export class UserService {
@@ -117,6 +118,8 @@ export class UserService {
   ): Promise<User> {
     try {
       const { applicationAccess, ...userData } = payload;
+      const formattedPhone = formatNumber(userData.phone, 'RO', 'E.164');
+      userData.phone = formattedPhone;
 
       // 1. Check if user with received data exists
       const phoneCheck = await this.findOne({
@@ -363,6 +366,9 @@ export class UserService {
   }
 
   private async create(createUserDto: CreateUserDto): Promise<User> {
+    const formattedPhone = formatNumber(createUserDto.phone, 'RO', 'E.164');
+    createUserDto.phone = formattedPhone;
+
     try {
       // 1. Check if user already exists with received data
       if (

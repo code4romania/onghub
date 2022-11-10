@@ -45,9 +45,9 @@ import OrganizationOverview from '../../pages/organization/components/Overview/O
 import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticeProgram';
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
 import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
+import CreateCivicCenterService from '../../pages/civic-center-service/CreateCivicCenterService';
 import FeedbackList from '../../pages/civic-center-service/components/feedback/FeedbackList';
-import ServiceList from '../../pages/civic-center-service/components/ccservice/ServiceList';
-import CivicCenterServices from '../../pages/civic-center-service/CivicCenterServices';
+import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -284,17 +284,18 @@ const Router = () => {
             <Route path=":id" element={<EditPracticeProgram />} />
           </Route>
 
-          {/* Civic center service feedback */}
+          {/* Civic Service */}
           <Route
-            path={'services'}
+            path={'service'}
             element={
               <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
-                <CivicCenterServices />
+                <Outlet />
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'list'}></Navigate>} />
-            <Route path="list" element={<ServiceList />} />
+            <Route index element={<div>Lista servicii</div>} />
+            <Route path="add" element={<CreateCivicCenterService />} />
+            <Route path=":id" element={<EditCivicCenterService />} />
             <Route path="feedback" element={<FeedbackList />} />
           </Route>
 
