@@ -1,9 +1,15 @@
 import React from 'react';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
-import { formatDate, formatDateMonthYear } from '../../../common/helpers/format.helper';
+import { formatDate } from '../../../common/helpers/format.helper';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
 import ShowMoreText from 'react-show-more-text';
+import {
+  calculatePeriod,
+  formatDomains,
+  formatFaculties,
+  formatSkills,
+} from '../../../common/helpers/pulling-apps-helper';
 
 interface PracticeProgramContentProps {
   program: PracticeProgram;
@@ -51,31 +57,6 @@ const PracticeProgramContentExpandableItem = ({
 const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
   const { t } = useTranslation('practice_program');
 
-  const calculatePeriod = () => {
-    if (!program?.endDate) {
-      const startDate = formatDateMonthYear(program?.startDate);
-      return `${t('details.period_starting_with')} ${startDate}`;
-    } else {
-      const endDate = program?.endDate
-        ? formatDateMonthYear(program.endDate)
-        : t('details.deadline_unlimited');
-      const startDate = formatDateMonthYear(program?.startDate);
-      return `${startDate} - ${endDate}`;
-    }
-  };
-
-  const formatDomains = () => {
-    return program?.domains.map((domain) => domain.name).join(', ');
-  };
-
-  const formatFaculties = () => {
-    return program?.faculties.map((faculty) => faculty.name).join(', ');
-  };
-
-  const formatSkills = () => {
-    return program?.skills.map((skill) => skill.name).join(', ');
-  };
-
   return (
     <section className="divide-y divide-gray-100">
       <div className="flex flex-col gap-2">
@@ -91,19 +72,22 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
             label={t('details.deadline')}
             value={program?.endDate ? formatDate(program.endDate) : t('details.deadline_unlimited')}
           />
-          <PracticeProgramContentItem label={t('details.period')} value={calculatePeriod()} />
+          <PracticeProgramContentItem
+            label={t('details.period')}
+            value={calculatePeriod(program)}
+          />
           <PracticeProgramContentItem
             label={t('details.working_hours')}
             value={`${program?.minWorkingHours} - ${program?.maxWorkingHours}`}
           />
           <PracticeProgramContentExpandableItem
             label={t('details.faculties')}
-            value={formatFaculties()}
+            value={formatFaculties(program)}
           />
         </div>
         <div className="flex-1 flex flex-col gap-4">
-          <PracticeProgramContentItem label={t('details.domains')} value={formatDomains()} />
-          <PracticeProgramContentItem label={t('details.skills')} value={formatSkills()} />
+          <PracticeProgramContentItem label={t('details.domains')} value={formatDomains(program)} />
+          <PracticeProgramContentItem label={t('details.skills')} value={formatSkills(program)} />
         </div>
       </div>
       <div className="pt-8">

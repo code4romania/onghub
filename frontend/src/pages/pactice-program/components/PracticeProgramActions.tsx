@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { classNames } from '../../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
+import StatusRadioComponent from '../../../components/status-radio/StatusRadio';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
 import {
   useDeletePracticeProgramMutation,
@@ -15,37 +15,6 @@ interface PracticeProgramActionsProps {
   program: PracticeProgram;
   refetch: () => void;
 }
-
-interface StatusRadioComponentProps {
-  active: boolean;
-  setActive: (active: boolean) => void;
-}
-
-const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) => {
-  const { t } = useTranslation('common');
-  return (
-    <div className="border border-gray-200 w-full h-10 rounded-md flex flex-row divide-x divide-gray-200 shadow-sm">
-      <div
-        className={classNames(
-          !active ? 'bg-gray-900 text-white' : '',
-          'flex-1 py-2 cursor-pointer rounded-l-md flex items-center justify-center',
-        )}
-        onClick={setActive.bind(null, false)}
-      >
-        {t('inactive')}
-      </div>
-      <div
-        className={classNames(
-          active ? 'bg-green text-white' : '',
-          'flex-1 py-2 cursor-pointer rounded-r-md flex items-center justify-center',
-        )}
-        onClick={setActive.bind(null, true)}
-      >
-        {t('active')}
-      </div>
-    </div>
-  );
-};
 
 const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProps) => {
   const { t } = useTranslation(['practice_program', 'common']);

@@ -55,7 +55,7 @@ const CivicCenterWrapper = () => {
         visible: true,
       }}
     >
-      <div className="flex py-6">
+      <div className="flex pb-6">
         <nav
           className="lg:flex hidden flex-col space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 flex-wrap lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
