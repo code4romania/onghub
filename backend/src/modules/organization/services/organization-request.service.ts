@@ -186,6 +186,7 @@ export class OrganizationRequestService {
 
     // 5. create organization
     const organization = await this.organizationService.create(
+      createReqDto.admin,
       createReqDto.organization,
       logo,
       organizationStatute,

@@ -3,7 +3,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
-import ContactForm from '../../../components/Contact/Contact';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -400,25 +399,6 @@ const CreateOrganizationGeneral = () => {
                 )}
               </div>
               {/* End Logo */}
-            </div>
-            <div className="pt-8">
-              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-                {t('contact.name')}
-              </span>
-              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('contact.description')}
-              </p>
-              <ContactForm
-                control={control}
-                errors={errors}
-                readonly={readonly}
-                configs={[
-                  OrganizationGeneralConfig.contact_name,
-                  OrganizationGeneralConfig.contact_email,
-                  OrganizationGeneralConfig.contact_phone,
-                ]}
-                id="create-organization-general"
-              />
             </div>
             <div className="pt-8">
               <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
