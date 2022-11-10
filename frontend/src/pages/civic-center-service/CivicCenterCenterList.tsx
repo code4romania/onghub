@@ -2,13 +2,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loading } from '../../components/loading/Loading';
 import { useCivicCenterServicesQuery } from '../../services/civic-center-service/CivicCenterService.queries';
+import CivicCenterServiceActions from './components/CivicCenterServiceActions';
 import CivicCenterServiceContent from './components/CivicCenterServiceContent';
 
 const CivicCenterServiceList = () => {
   // translations
   const { t } = useTranslation(['civic_center_service', 'common']);
 
-  const { isLoading, data: services, error } = useCivicCenterServicesQuery();
+  const { isLoading, data: services, error, refetch } = useCivicCenterServicesQuery();
 
   if (isLoading) {
     return <Loading />;
@@ -30,7 +31,7 @@ const CivicCenterServiceList = () => {
               <CivicCenterServiceContent service={service} />
             </div>
             <div className="md:flex-1">
-              {/* <PracticeProgramActions program={program} refetch={refetch} /> */}
+              <CivicCenterServiceActions service={service} refetch={refetch} />
             </div>
           </div>
         ))}

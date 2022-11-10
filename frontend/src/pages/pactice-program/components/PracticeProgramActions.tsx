@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
-import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
-import StatusRadioComponent from '../../../components/status-radio/StatusRadio';
+import CardActions from '../../../components/card-actions/CardActions';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
 import {
   useDeletePracticeProgramMutation,
@@ -19,10 +18,6 @@ interface PracticeProgramActionsProps {
 const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProps) => {
   const { t } = useTranslation(['practice_program', 'common']);
   const navigate = useNavigate();
-  const [
-    isDeletePracticeProgramConfirmationModalOpen,
-    setIsDeletePracticeProgramConfirmationModalOpen,
-  ] = useState<boolean>(false);
 
   const { isLoading: isDeleting, mutateAsync: deletePracticeProgram } =
     useDeletePracticeProgramMutation();
@@ -56,9 +51,6 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
       onError: () => {
         useErrorToast(t('feedback.error_delete'));
       },
-      onSettled: () => {
-        setIsDeletePracticeProgramConfirmationModalOpen(false);
-      },
     });
   };
 
@@ -71,37 +63,16 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 mt-8 border-t border-gray-100 itens-center md:m-0 md:pl-[25%] md:py-0 md:pr-0 md:items-end md:border-none">
-      <StatusRadioComponent active={program.active} setActive={onActiveChange} />
-      <button
-        className="edit-button w-full flex gap-4 justify-center disabled:bg-gray-50"
-        onClick={onViewPracticeProgram}
-        disabled={!program?.active}
-      >
-        {t('view', { ns: 'common' })}
-      </button>
-      <button className="edit-button w-full flex gap-4 justify-center" onClick={onEdit}>
-        {t('edit', { ns: 'common' })}
-      </button>
-      <button
-        className="delete-button w-full flex gap-4 disabled:bg-gray-100"
-        onClick={setIsDeletePracticeProgramConfirmationModalOpen.bind(null, true)}
-        disabled={isDeleting}
-      >
-        {!isDeleting ? t('delete', { ns: 'common' }) : t('loading', { ns: 'common' })}
-      </button>
-      {isDeletePracticeProgramConfirmationModalOpen && (
-        <ConfirmationModal
-          title={t('details.delete_modal.title')}
-          description={t('details.delete_modal.description')}
-          closeBtnLabel={t('back', { ns: 'common' })}
-          confirmBtnLabel={t('delete', { ns: 'common' })}
-          confirmButtonStyle="red-button"
-          onClose={setIsDeletePracticeProgramConfirmationModalOpen.bind(null, false)}
-          onConfirm={onConfirmDeletePraticeProgram}
-        />
-      )}
-    </div>
+    <CardActions
+      isLoading={isDeleting}
+      active={program.active}
+      deleteModalTitle={t('details.delete_modal.title')}
+      deleteModalDescription={t('details.delete_modal.description')}
+      onActiveChange={onActiveChange}
+      onDelete={onConfirmDeletePraticeProgram}
+      onEdit={onEdit}
+      onGoToView={onViewPracticeProgram}
+    />
   );
 };
 
