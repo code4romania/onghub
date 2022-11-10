@@ -46,12 +46,17 @@ export class AdminUserController {
   }
 
   @ApiQuery({ type: () => UserFilterDto })
+  @ApiQuery({ name: 'organization_id', type: Number })
   @Get('')
   async getAll(
     @ExtractUser() user: User,
     @Query() filters: UserFilterDto,
+    @Query('organization_id') organizationId?: number,
   ): Promise<Pagination<User>> {
-    return this.userService.findAll(filters, user.organizationId);
+    return this.userService.findAll(
+      filters,
+      organizationId ? organizationId : user.organizationId,
+    );
   }
 
   @ApiQuery({ type: () => PartialType(BaseFilterDto) })
