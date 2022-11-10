@@ -67,7 +67,7 @@ export const useInviteesQuery = (search?: string, interval?: Date[]) => {
 };
 
 export const useSelectedUserQuery = (userId: string) => {
-  return useQuery(['user', userId], () => getUserById(userId), { enabled: !!userId });
+  return useQuery(['user', userId], () => getUserById(userId), { enabled: !!userId, cacheTime: 0, staleTime: 0 });
 };
 
 export const useCreateUserMutation = () => {
