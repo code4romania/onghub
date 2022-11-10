@@ -60,6 +60,16 @@ export class PublicAPIController {
   }
 
   @Public()
+  @Get('/civic-service/:id')
+  async getServiceById(
+    @Param('id') id: number,
+  ): Promise<
+    CivicCenterService & { organizationId: number; organizationName: string }
+  > {
+    return this.civicCenterServicePublic.get(id);
+  }
+
+  @Public()
   @Get('/organization/services-search')
   async searchOrganizationsWithServices(
     @Query() filters: GetOrganizationWithPracticeProgramsFilterDto,

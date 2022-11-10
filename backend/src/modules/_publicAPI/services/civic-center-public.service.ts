@@ -13,4 +13,8 @@ export class CivicCenterPublicService {
       civicCenterServiceFilterDto,
     );
   }
+
+  public async get(id: number) {
+    return this.civicCenterService.findWithOrganization(id);
+  }
 }
