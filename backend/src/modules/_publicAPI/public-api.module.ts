@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from '../application/application.module';
 import { CivicCenterModule } from '../civic-center-service/civic-center.module';
+import { OrganizationModule } from '../organization/organization.module';
 import { PublicAPIController } from './public-api.controller';
 import { PublicKeysManager } from './public-keys-manager.service';
 import { PublicKeys } from './public-keys.entity';
@@ -9,6 +10,7 @@ import { CivicCenterPublicService } from './services/civic-center-public.service
 
 @Module({
   imports: [
+    OrganizationModule,
     TypeOrmModule.forFeature([PublicKeys]),
     ApplicationModule,
     CivicCenterModule,

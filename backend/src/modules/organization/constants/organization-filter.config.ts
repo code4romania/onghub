@@ -36,6 +36,24 @@ export const ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG = {
   rangeColumn: 'createdOn',
 };
 
+export const ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG = {
+  selectColumns: {
+    id: true,
+    organizationGeneral: {
+      id: true,
+      name: true,
+      description: true,
+    },
+  },
+  searchableColumns: ['organizationGeneral.name', 'civicCenterServices.name'],
+  defaultSortBy: 'id',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {
+    organizationGeneral: true,
+  },
+  rangeColumn: 'createdOn',
+};
+
 export const ORGANIZATION_REQUEST_FILTER_CONFIG = {
   selectColumns: {
     id: true,

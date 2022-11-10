@@ -15,6 +15,9 @@ import { MailService } from 'src/mail/services/mail.service';
 import { ApplicationService } from '../application/services/application.service';
 import { CivicCenterServiceSearchFilterDto } from '../civic-center-service/dto/civic-center-service-search-filter.dto';
 import { CivicCenterService } from '../civic-center-service/entities/civic-center-service.entity';
+import { GetOrganizationWithPracticeProgramsFilterDto } from '../organization/dto/get-organization-with-practice-programs-fillter.dto';
+import { OrganizationFlat } from '../organization/interfaces/OrganizationFlat.interface';
+import { OrganizationService } from '../organization/services';
 import { ExtractUser } from '../user/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';
 import { Role } from '../user/enums/role.enum';
@@ -33,6 +36,7 @@ export class PublicAPIController {
     private readonly applications: ApplicationService,
     private readonly mailService: MailService,
     private readonly civicCenterServicePublic: CivicCenterPublicService,
+    private readonly organizationService: OrganizationService,
   ) {}
 
   @Public()
@@ -51,6 +55,16 @@ export class PublicAPIController {
     @Query() civicCenterFilters: CivicCenterServiceSearchFilterDto,
   ): Promise<Pagination<CivicCenterService>> {
     return this.civicCenterServicePublic.search(civicCenterFilters);
+  }
+
+  @Public()
+  @Get('/organization/services-search')
+  async searchOrganizationsWithServices(
+    @Query() filters: GetOrganizationWithPracticeProgramsFilterDto,
+  ): Promise<Pagination<OrganizationFlat>> {
+    return this.organizationService.findAllOrganizationsWithActiveServices(
+      filters,
+    );
   }
 
   @Public()
