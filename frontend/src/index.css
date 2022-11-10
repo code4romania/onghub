@@ -17,6 +17,11 @@
   src: url('./assets/fonts/TitilliumWeb-SemiBold.ttf');
 }
 
+@font-face {
+  font-family: 'TitilliumWeb';
+  src: url('./assets/fonts/TitilliumWeb-Regular.ttf');
+}
+
 @layer base {
   html {
     font-family: 'Roboto';
@@ -159,9 +164,8 @@
   margin: 0;
 }
 
-
 .richtext_html ul {
-  list-style: disc!important;
+  list-style: disc !important;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0px;

@@ -111,6 +111,7 @@ module.exports = {
       fontFamily: {
         roboto: 'Roboto',
         titilliumBold: 'TitilliumWeb-Bold',
+        titillium: 'TitilliumWeb',
         titilliumSemiBold: 'TitilliumWeb-SemiBold',
       },
       transitionProperty: {
