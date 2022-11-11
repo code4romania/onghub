@@ -4,6 +4,7 @@ import { CivicCenterServiceSearchFilterDto } from 'src/modules/civic-center-serv
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { GetOrganizationWithPracticeProgramsFilterDto } from 'src/modules/organization/dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFlat } from 'src/modules/organization/interfaces/OrganizationFlat.interface';
+import { OrganizationWithServices } from 'src/modules/organization/interfaces/OrganizationWithServices.interface';
 import { OrganizationService } from 'src/modules/organization/services';
 
 @Injectable()
@@ -27,5 +28,9 @@ export class CivicCenterPublicService {
     return this.organizationService.findAllOrganizationsWithActiveServices(
       filters,
     );
+  }
+
+  public async getOrganization(id: number): Promise<OrganizationWithServices> {
+    return this.organizationService.findOneOrganizationWithActiveServices(id);
   }
 }
