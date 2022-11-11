@@ -1,7 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import CardActions from '../../../components/card-actions/CardActions';
+import {
+  useDisableCCServiceMutation,
+  useEnableCCServiceMutation,
+} from '../../../services/civic-center-service/CivicCenterService.queries';
 import { CivicCenterService } from '../../../services/civic-center-service/interfaces/civic-center-service.interface';
 
 interface CivicCenterServiceActionsProps {
@@ -13,8 +18,24 @@ const CivicCenterServiceActions = ({ service, refetch }: CivicCenterServiceActio
   const { t } = useTranslation(['civic_center_service']);
   const navigate = useNavigate();
 
+  const { mutateAsync: enableService } = useEnableCCServiceMutation();
+  const { mutateAsync: disableService } = useDisableCCServiceMutation();
+
   const onActiveChange = async (isActive: boolean) => {
-    console.log('on active change - to be implemented');
+    const apiCallbacks = {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        useErrorToast(t('feedback.error_update'));
+      },
+    };
+
+    if (isActive) {
+      await enableService(service.id, apiCallbacks);
+    } else {
+      await disableService(service.id, apiCallbacks);
+    }
   };
 
   const onConfirmDeleteCivicService = async () => {
