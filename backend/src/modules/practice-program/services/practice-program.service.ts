@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -404,7 +405,7 @@ export class PracticeProgramService {
     });
 
     if (!practiceProgram) {
-      throw new BadRequestException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+      throw new NotFoundException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
     }
 
     const { organization, ...practiceProgramResponse } = practiceProgram;

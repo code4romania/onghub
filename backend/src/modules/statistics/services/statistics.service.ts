@@ -27,6 +27,7 @@ import { ApplicationPullingType } from 'src/modules/application/enums/applicatio
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
+import { Role } from 'src/modules/user/enums/role.enum';
 
 @Injectable()
 export class StatisticsService {
@@ -268,7 +269,7 @@ export class StatisticsService {
       const installedApps =
         await this.applicationService.findApplicationsForOng(organizationId);
       const numberOfUsers = await this.userService.countUsers({
-        where: { organizationId },
+        where: { organizationId, role: Role.EMPLOYEE },
       });
 
       return {

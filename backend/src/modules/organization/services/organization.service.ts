@@ -10,6 +10,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
+import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { AnafService } from 'src/shared/services';
@@ -25,9 +26,12 @@ import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import {
   ORGANIZATION_FILTERS_CONFIG,
   ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+  ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG,
 } from '../constants/organization-filter.config';
+import { CreateUserRequestDto } from '../dto/create-organization-request.dto';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
+import { GetOrganizationWithServicesFilterDto } from '../dto/get-organization-with-services-filter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import {
@@ -48,6 +52,7 @@ import { CompletionStatus } from '../enums/organization-financial-completion.enu
 import { OrganizationStatus } from '../enums/organization-status.enum';
 import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
 import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
+import { OrganizationWithServices } from '../interfaces/OrganizationWithServices.interface';
 import { OrganizationViewRepository } from '../repositories';
 import { OrganizationRepository } from '../repositories/organization.repository';
 import { OrganizationActivityService } from './organization-activity.service';
@@ -72,9 +77,11 @@ export class OrganizationService {
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
+    private readonly civicCenterService: CivicCenterServiceService,
   ) {}
 
   public async create(
+    createUserRequestDto: CreateUserRequestDto,
     createOrganizationDto: CreateOrganizationDto,
     logo: Express.Multer.File[],
     organizationStatute: Express.Multer.File[],
@@ -172,6 +179,10 @@ export class OrganizationService {
     const organization = await this.organizationRepository.save({
       syncedOn: new Date(),
       organizationGeneral: {
+        contact: {
+          fullName: createUserRequestDto.name,
+          ...createUserRequestDto,
+        },
         ...createOrganizationDto.general,
       },
       organizationActivity: {
@@ -412,7 +423,7 @@ export class OrganizationService {
 
       // 4. flatten organization
       const flatOrganization =
-        this.flattenOrganizationWithPracticePrograms(organization);
+        this.flattenOrganizationWithPullingApps(organization);
 
       return { ...flatOrganization, practicePrograms };
     } catch (error) {
@@ -422,6 +433,93 @@ export class OrganizationService {
         throw new InternalServerErrorException({
           error: JSON.stringify(error),
           ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
+  }
+
+  public async findOneOrganizationWithActiveServices(
+    organizationId: number,
+  ): Promise<OrganizationWithServices> {
+    try {
+      // 1. get organization info
+      const organization = await this.organizationRepository.get({
+        select: {
+          id: true,
+          organizationGeneral: {
+            name: true,
+            logo: true,
+            description: true,
+            shortDescription: true,
+            facebook: true,
+            twitter: true,
+            instagram: true,
+            contact: {
+              fullName: true,
+              email: true,
+              phone: true,
+            },
+            city: {
+              name: true,
+              county: {
+                name: true,
+              },
+            },
+          },
+          organizationActivity: {
+            id: true,
+            domains: {
+              name: true,
+            },
+          },
+        },
+        relations: [
+          'organizationGeneral',
+          'organizationGeneral.city',
+          'organizationGeneral.contact',
+          'organizationGeneral.city.county',
+          'organizationActivity',
+          'organizationActivity.domains',
+        ],
+        where: {
+          id: organizationId,
+          status: OrganizationStatus.ACTIVE,
+        },
+      });
+
+      // 1.1 throw error fi organization not found
+      if (!organization) {
+        throw new NotFoundException({
+          ...ORGANIZATION_ERRORS.GET,
+        });
+      }
+
+      // 2. get services by organization id
+      const services =
+        await this.civicCenterService.findPracticeShortServicesByOrganization(
+          organizationId,
+        );
+
+      // 3. get public url logo
+      if (organization.organizationGeneral.logo) {
+        organization.organizationGeneral.logo =
+          await this.fileManagerService.generatePresignedURL(
+            organization.organizationGeneral.logo,
+          );
+      }
+
+      // 4. flatten organization
+      const flatOrganization =
+        this.flattenOrganizationWithPullingApps(organization);
+
+      return { ...flatOrganization, services };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATION_WITH_ACTIVE_SERVICES,
         });
       }
     }
@@ -507,6 +605,91 @@ export class OrganizationService {
         throw new InternalServerErrorException({
           error: JSON.stringify(error),
           ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
+  }
+
+  public async findAllOrganizationsWithActiveServices(
+    options: GetOrganizationWithServicesFilterDto,
+  ): Promise<Pagination<OrganizationFlat>> {
+    try {
+      const { domains, cityId, ...filters } = options;
+
+      // 1. get only organization with active services
+      let paginationOptions: GetOrganizationWithServicesFilterDto & {
+        civicCenterServices: {
+          active: boolean;
+        };
+        organizationGeneral?: {
+          city: {
+            id: number;
+          };
+        };
+        organizationActivity?: {
+          domains: {
+            id: FindOperator<number>;
+          };
+        };
+        status: OrganizationStatus;
+      } = {
+        ...filters,
+        status: OrganizationStatus.ACTIVE,
+        civicCenterServices: {
+          active: true, // get only organizations with active services
+        },
+      };
+
+      // 2. add filter by domain if provided
+      if (domains?.length > 0) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationActivity: {
+            domains: {
+              id: In(domains),
+            },
+          },
+        };
+      }
+
+      // 3. add filter by city if provided
+      if (cityId) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationGeneral: {
+            city: {
+              id: cityId,
+            },
+          },
+        };
+      }
+
+      // 4. get paginated organizations
+      const organizations = await this.organizationRepository.getManyPaginated(
+        ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+      // 5. flatten the request
+      const flatOrganizations = this.flattenOrganization(organizations);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<OrganizationFlat>(
+          flatOrganizations.items,
+        );
+
+      return {
+        ...flatOrganizations,
+        items,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_SERVICES,
         });
       }
     }
@@ -1108,7 +1291,7 @@ export class OrganizationService {
     };
   }
 
-  private flattenOrganizationWithPracticePrograms(
+  private flattenOrganizationWithPullingApps(
     organization: Organization,
   ): OrganizationWithPracticePrograms {
     const {

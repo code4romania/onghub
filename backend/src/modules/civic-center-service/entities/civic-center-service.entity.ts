@@ -138,7 +138,7 @@ export class CivicCenterService extends BaseEntity {
 
   @ManyToOne((type) => Organization)
   @JoinColumn({ name: 'organization_id' })
-  organization: Organization;
+  organization?: Organization;
 
   @OneToMany((type) => Feedback, (feedback) => feedback.civicCenterService)
   feedbacks: Feedback[];

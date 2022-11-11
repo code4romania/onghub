@@ -49,7 +49,7 @@ import CreateCivicCenterService from '../../pages/civic-center-service/CreateCiv
 import FeedbackList from '../../pages/civic-center-service/feedback/FeedbackList';
 import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrapper';
-import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterCenterList';
+import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();

@@ -25,9 +25,28 @@ export const ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG = {
       id: true,
       name: true,
       description: true,
+      logo: true,
     },
   },
   searchableColumns: ['organizationGeneral.name', 'practicePrograms.title'],
+  defaultSortBy: 'id',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {
+    organizationGeneral: true,
+  },
+  rangeColumn: 'createdOn',
+};
+
+export const ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG = {
+  selectColumns: {
+    id: true,
+    organizationGeneral: {
+      id: true,
+      name: true,
+      description: true,
+    },
+  },
+  searchableColumns: ['organizationGeneral.name', 'civicCenterServices.name'],
   defaultSortBy: 'id',
   defaultOrderDirection: OrderDirection.ASC,
   relations: {

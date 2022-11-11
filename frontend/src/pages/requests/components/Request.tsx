@@ -181,7 +181,7 @@ const Request = () => {
               />
             </span>
           </div>
-          <Outlet />
+          <Outlet context={true} />
         </div>
       </ContentWrapper>
       {isApproveModalOpen && (
