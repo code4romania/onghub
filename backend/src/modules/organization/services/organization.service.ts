@@ -522,7 +522,7 @@ export class OrganizationService {
 
   public async findAllOrganizationsWithActiveServices(
     options: GetOrganizationWithServicesFilterDto,
-  ): Promise<Pagination<any>> {
+  ): Promise<Pagination<OrganizationFlat>> {
     try {
       const { domains, cityId, ...filters } = options;
 
