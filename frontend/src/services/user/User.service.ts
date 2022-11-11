@@ -52,6 +52,7 @@ export const getUsers = async (
   search?: string,
   status?: UserStatus,
   interval?: Date[],
+  organizationId?: number,
 ): Promise<PaginatedEntity<IUser>> => {
   let requestUrl = `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
@@ -63,6 +64,8 @@ export const getUsers = async (
     requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
       interval[1],
     )}`;
+
+  if (organizationId) requestUrl = `${requestUrl}&organization_id=${organizationId}`;
 
   return API.get(requestUrl).then((res) => res.data);
 };

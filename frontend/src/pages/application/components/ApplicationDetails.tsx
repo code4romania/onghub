@@ -138,19 +138,21 @@ const ApplicationDetails = () => {
         {role !== UserRole.SUPER_ADMIN && (
           <div>
             {/* The application is not added */}
-            {!application?.status && application?.type !== ApplicationTypeEnum.INDEPENDENT && (
-              <div className="flex pt-4 gap-4 items-center justify-center">
-                <button
-                  className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                  onClick={requestApplication}
-                >
-                  <PlusIcon className="h-5 w-5" />
-                  {application.type === ApplicationTypeEnum.SIMPLE
-                    ? t('details.add')
-                    : t('details.request')}
-                </button>
-              </div>
-            )}
+            {!application?.status &&
+              application?.type !== ApplicationTypeEnum.INDEPENDENT &&
+              role === UserRole.ADMIN && (
+                <div className="flex pt-4 gap-4 items-center justify-center">
+                  <button
+                    className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                    onClick={requestApplication}
+                  >
+                    <PlusIcon className="h-5 w-5" />
+                    {application.type === ApplicationTypeEnum.SIMPLE
+                      ? t('details.add')
+                      : t('details.request')}
+                  </button>
+                </div>
+              )}
             {/* The application was restricted */}
             {application?.status === OngApplicationStatus.RESTRICTED && (
               <div className="flex pt-4 gap-4 items-center justify-center">
@@ -176,7 +178,7 @@ const ApplicationDetails = () => {
             {/* The application is not independent and active */}
             {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
               application?.status === OngApplicationStatus.ACTIVE &&
-              role !== UserRole.EMPLOYEE && (
+              role === UserRole.ADMIN && (
                 <div className="flex pt-4 gap-4 items-center justify-center">
                   <button
                     className="edit-button px-8 flex gap-4"

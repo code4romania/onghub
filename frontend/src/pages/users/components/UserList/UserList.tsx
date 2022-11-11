@@ -28,7 +28,7 @@ import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
 import * as XLSX from 'xlsx';
 
-const UserList = () => {
+const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [page, setPage] = useState<number>();
@@ -53,6 +53,7 @@ const UserList = () => {
     searchWord as string,
     status?.status,
     range,
+    props.organizationId as number,
   );
   const restrictUserAccessMutation = useRestrictUserMutation();
   const restoreUserAccessMutation = useRestoreUserMutation();

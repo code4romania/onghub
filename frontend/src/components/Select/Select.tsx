@@ -17,10 +17,11 @@ const Select = (props: {
   readonly?: boolean;
   onChange: any;
   multi?: boolean;
+  disabled?: boolean;
 }) => {
   return (
     <div className="relative w-full">
-      <Listbox value={props.selected} onChange={props.onChange}>
+      <Listbox disabled={props.disabled} value={props.selected} onChange={props.onChange}>
         {({ open }) => (
           <>
             <Listbox.Label className="block font-medium text-gray-700 pb-1 sm:text-sm lg:text-base text-xs">
@@ -38,7 +39,7 @@ const Select = (props: {
               <div className=" relative">
                 <Listbox.Button
                   itemID={props.config.id}
-                  className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm"
+                  className="h-[44px] bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-base text-sm disabled:bg-gray-100"
                 >
                   <span className="block truncate lg:text-base text-sm">
                     {(props.config.displayedAttribute && props.selected
