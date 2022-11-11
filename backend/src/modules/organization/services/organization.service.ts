@@ -423,7 +423,7 @@ export class OrganizationService {
 
       // 4. flatten organization
       const flatOrganization =
-        this.flattenOrganizationWithPracticePrograms(organization);
+        this.flattenOrganizationWithPullingApps(organization);
 
       return { ...flatOrganization, practicePrograms };
     } catch (error) {
@@ -510,7 +510,7 @@ export class OrganizationService {
 
       // 4. flatten organization
       const flatOrganization =
-        this.flattenOrganizationWithPracticePrograms(organization);
+        this.flattenOrganizationWithPullingApps(organization);
 
       return { ...flatOrganization, services };
     } catch (error) {
@@ -1291,7 +1291,7 @@ export class OrganizationService {
     };
   }
 
-  private flattenOrganizationWithPracticePrograms(
+  private flattenOrganizationWithPullingApps(
     organization: Organization,
   ): OrganizationWithPracticePrograms {
     const {
