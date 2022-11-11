@@ -18,16 +18,6 @@ const CivicCenterWrapper = () => {
   const { t } = useTranslation('civic_center_service');
 
   useEffect(() => {
-    // TODO: refactor user tabs to have a function that returns this logic.
-    const found: IPageTab | undefined = SERVICE_TABS.find(
-      (tab) => tab.href === location.pathname.split('/')[locationLength],
-    );
-    if (found) {
-      setSelectedTab(found);
-    }
-  }, []);
-
-  useEffect(() => {
     const found: IPageTab | undefined = SERVICE_TABS.find(
       (tab) => tab.href === location.pathname.split('/')[locationLength],
     );

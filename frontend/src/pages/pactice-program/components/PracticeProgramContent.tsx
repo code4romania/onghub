@@ -4,12 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { formatDate } from '../../../common/helpers/format.helper';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
 import ShowMoreText from 'react-show-more-text';
-import {
-  calculatePeriod,
-  formatDomains,
-  formatFaculties,
-  formatSkills,
-} from '../../../common/helpers/pulling-apps-helper';
+import { calculatePeriod, dataToCsv } from '../../../common/helpers/pulling-apps-helper';
 
 interface PracticeProgramContentProps {
   program: PracticeProgram;
@@ -82,12 +77,18 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
           />
           <PracticeProgramContentExpandableItem
             label={t('details.faculties')}
-            value={formatFaculties(program)}
+            value={dataToCsv(program?.faculties)}
           />
         </div>
         <div className="flex-1 flex flex-col gap-4">
-          <PracticeProgramContentItem label={t('details.domains')} value={formatDomains(program)} />
-          <PracticeProgramContentItem label={t('details.skills')} value={formatSkills(program)} />
+          <PracticeProgramContentItem
+            label={t('details.domains')}
+            value={dataToCsv(program?.domains)}
+          />
+          <PracticeProgramContentItem
+            label={t('details.skills')}
+            value={dataToCsv(program?.skills)}
+          />
         </div>
       </div>
       <div className="pt-8">

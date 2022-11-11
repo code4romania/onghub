@@ -334,12 +334,10 @@ export class CivicCenterServiceService {
     organizationId?: number,
   ): Promise<CivicCenterService> {
     // for admin and employee check organizationId as search criteria
-    const where = organizationId
-      ? {
-          id,
-          organizationId,
-        }
-      : { id };
+    const where = {
+      id,
+      ...(organizationId ? { organizationId } : {}),
+    };
 
     const practiceProgram = await this.civicCenterServiceRepository.get({
       where,

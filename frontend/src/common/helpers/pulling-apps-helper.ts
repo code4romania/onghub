@@ -28,16 +28,8 @@ export const calculatePeriod = (item: PracticeProgram | CivicCenterService) => {
   }
 };
 
-export const formatDomains = (item: PracticeProgram | CivicCenterService) => {
-  return item?.domains.map((domain) => domain.name).join(', ');
-};
-
-export const formatFaculties = (item: PracticeProgram) => {
-  return item?.faculties.map((faculty) => faculty.name).join(', ');
-};
-
-export const formatSkills = (item: PracticeProgram) => {
-  return item?.skills.map((skill) => skill.name).join(', ');
+export const dataToCsv = (items: { id: number; name: string }[]): string => {
+  return items ? items.map((item) => item.name).join(', ') : '';
 };
 
 export const formatAgeCategories = (item: CivicCenterService) => {

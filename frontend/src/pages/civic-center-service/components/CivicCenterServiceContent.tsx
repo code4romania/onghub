@@ -5,8 +5,8 @@ import { CivicCenterService } from '../../../services/civic-center-service/inter
 import { useTranslation } from 'react-i18next';
 import {
   calculatePeriod,
+  dataToCsv,
   formatAgeCategories,
-  formatDomains,
 } from '../../../common/helpers/pulling-apps-helper';
 
 interface CivicCenterServiceContentProps {
@@ -66,7 +66,7 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
           />
           <CivicCenterAccessDetailsRow
             label={t('details.domains')}
-            value={formatDomains(service)}
+            value={dataToCsv(service.domains)}
           />
         </div>
       </div>
