@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
@@ -286,6 +287,34 @@ export class CivicCenterServiceService {
         });
       }
     }
+  }
+
+  public async findWithOrganization(
+    id: number,
+  ): Promise<
+    CivicCenterService & { organizationId: number; organizationName: string }
+  > {
+    const service = await this.civicCenterServiceRepository.get({
+      where: { id },
+      relations: [
+        'location',
+        'domains',
+        'organization',
+        'organization.organizationGeneral',
+      ],
+    });
+
+    if (!service) {
+      throw new NotFoundException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
+    }
+
+    const { organization, ...civicCenterResponse } = service;
+
+    return {
+      ...civicCenterResponse,
+      organizationId: organization.id,
+      organizationName: organization.organizationGeneral.name,
+    };
   }
 
   public async findAll({

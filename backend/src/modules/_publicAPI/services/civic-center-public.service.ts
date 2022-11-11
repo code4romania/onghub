@@ -33,4 +33,8 @@ export class CivicCenterPublicService {
   public async getOrganization(id: number): Promise<OrganizationWithServices> {
     return this.organizationService.findOneOrganizationWithActiveServices(id);
   }
+
+  public async get(id: number) {
+    return this.civicCenterService.findWithOrganization(id);
+  }
 }

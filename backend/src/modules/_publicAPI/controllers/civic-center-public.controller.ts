@@ -41,4 +41,14 @@ export class CivicCenterPublicController {
   ): Promise<OrganizationWithServices> {
     return this.civicCenterServicePublic.getOrganization(id);
   }
+
+  @Public()
+  @Get('/:id')
+  async getServiceById(
+    @Param('id') id: number,
+  ): Promise<
+    CivicCenterService & { organizationId: number; organizationName: string }
+  > {
+    return this.civicCenterServicePublic.get(id);
+  }
 }
