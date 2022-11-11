@@ -12,7 +12,7 @@ export interface CivicCenterService extends BaseEntity {
   shortDescription: string;
   longDescription: string;
   domains: Domain[];
-  age_categories: AgeCategory[];
+  ageCategories: AgeCategory[];
   hasOnlineAccess: boolean;
   onlineAccessLink?: string;
   onlineAccessDescription?: string;

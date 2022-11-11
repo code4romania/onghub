@@ -30,7 +30,6 @@ export class PublicAPIController {
   ) {}
 
   @Public()
-  @UseInterceptors(HMACVerificationInterceptor)
   @HttpCode(200)
   @Post('/hasAccess')
   async check(
@@ -41,7 +40,6 @@ export class PublicAPIController {
 
   @Public()
   @Throttle(1, 60)
-  @UseInterceptors(HMACVerificationInterceptor)
   @ApiBody({ type: ContactMailDto })
   @Post('/contact/feedback')
   async sendMail(@Body() mailOptions: ContactMailDto): Promise<void> {
