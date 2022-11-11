@@ -319,7 +319,7 @@ export class PracticeProgramService {
     });
   }
 
-  public async serachPracticePrograms(
+  public async searchPracticePrograms(
     practiceProgramFilters: PracticeProgramFilterDto,
   ): Promise<Pagination<PracticeProgram>> {
     try {

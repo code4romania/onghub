@@ -29,6 +29,11 @@ const CardActions = ({
 
   const { t } = useTranslation(['common']);
 
+  const onConfimDelete = () => {
+    onDelete();
+    setIsDeleteConfirmationModalOpen(false);
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4 mt-8 border-t border-gray-100 itens-center md:m-0 md:pl-[25%] md:py-0 md:pr-0 md:items-end md:border-none">
       <StatusRadioComponent active={active} setActive={onActiveChange} />
@@ -57,7 +62,7 @@ const CardActions = ({
           confirmBtnLabel={t('delete', { ns: 'common' })}
           confirmButtonStyle="red-button"
           onClose={setIsDeleteConfirmationModalOpen.bind(null, false)}
-          onConfirm={onDelete}
+          onConfirm={onConfimDelete}
         />
       )}
     </div>

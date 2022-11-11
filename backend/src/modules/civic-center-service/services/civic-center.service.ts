@@ -443,9 +443,10 @@ export class CivicCenterServiceService {
     return practiceProgram;
   }
 
-  public async delete(id: number): Promise<void> {
+  public async delete(id: number, organizationId?: number): Promise<void> {
     try {
-      await this.civicCenterServiceRepository.remove({ where: { id } });
+      const where = organizationId ? { id, organizationId } : { id };
+      await this.civicCenterServiceRepository.remove({ where });
     } catch (error) {
       throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.DELETE);
     }
