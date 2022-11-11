@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePracticePrograms } from '../../services/practice-program/PracticeProgram.queries';
-import PracticeProgramsList from './components/PracticeProgramsList';
+import { usePracticePrograms } from '../../../../services/practice-program/PracticeProgram.queries';
+import PracticeProgramsList from '../../../pactice-program/components/PracticeProgramsList';
 
-const PracticePrograms = () => {
+const OrganizationPracticePrograms = () => {
   // routing
   const navigate = useNavigate();
 
@@ -11,7 +11,7 @@ const PracticePrograms = () => {
   const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms();
 
   const onAddPracticeProgram = () => {
-    navigate('add');
+    navigate('/practice-program/add');
   };
 
   return (
@@ -25,4 +25,4 @@ const PracticePrograms = () => {
   );
 };
 
-export default PracticePrograms;
+export default OrganizationPracticePrograms;

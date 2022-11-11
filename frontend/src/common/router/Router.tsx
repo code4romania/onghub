@@ -50,6 +50,7 @@ import FeedbackList from '../../pages/civic-center-service/feedback/FeedbackList
 import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrapper';
 import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
+import OrganizationPracticePrograms from '../../pages/organization/components/OrganizationPracticePrograms/OrganizationPracticePrograms';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -228,6 +229,8 @@ const Router = () => {
             <Route path="financial" element={<OrganizationFinancial />} />
             <Route path="data" element={<OrganizationData />} />
             <Route path="applications" element={<OrganizationApplications />} />
+            <Route path="programs" element={<OrganizationPracticePrograms />} />
+            <Route path="services" element={<div>servicii</div>} />
           </Route>
           <Route
             path={'organization'}
@@ -276,7 +279,7 @@ const Router = () => {
           <Route
             path={'practice-program'}
             element={
-              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.SUPER_ADMIN]}>
                 <Outlet />
               </RoleGuard>
             }
