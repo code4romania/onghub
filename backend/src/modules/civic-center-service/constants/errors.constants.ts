@@ -39,6 +39,10 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     message: 'Error while searching services',
     errorCode: 'CCS_010',
   },
+  ENABLE_DISABLE: {
+    message: 'Error while updating status',
+    errorCode: 'CCS_011',
+  },
 };
 
 export const FEEDBACK_ERRORS = {

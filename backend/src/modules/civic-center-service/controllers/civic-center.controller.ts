@@ -46,6 +46,34 @@ export class CivicCenterController {
     });
   }
 
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/enable')
+  async enable(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<CivicCenterService> {
+    return this.civicCenterServiceService.updateServicetatus(
+      id,
+      true,
+      user?.organizationId,
+    );
+  }
+
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Patch(':id/disable')
+  async disable(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<CivicCenterService> {
+    return this.civicCenterServiceService.updateServicetatus(
+      id,
+      false,
+      user?.organizationId,
+    );
+  }
+
   @ApiBody({ type: UpdateCivicCenterServiceDto })
   @ApiParam({ name: 'id', type: Number })
   @Patch(':id')
