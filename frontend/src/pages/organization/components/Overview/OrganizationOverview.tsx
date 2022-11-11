@@ -63,7 +63,7 @@ const OrganizationOverview = () => {
             </div>
           </div>
           <ContentWrapper title={t('statistics.user_list')}>
-            <UserList />
+            <UserList organizationId={organization?.id} />
           </ContentWrapper>
         </div>
       )}

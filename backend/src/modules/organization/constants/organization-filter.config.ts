@@ -25,6 +25,7 @@ export const ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG = {
       id: true,
       name: true,
       description: true,
+      logo: true,
     },
   },
   searchableColumns: ['organizationGeneral.name', 'practicePrograms.title'],
