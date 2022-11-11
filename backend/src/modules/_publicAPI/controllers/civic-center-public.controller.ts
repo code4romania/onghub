@@ -1,7 +1,8 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { OrganizationWithServices } from 'src/modules/organization/interfaces/OrganizationWithServices.interface';
 import { CivicCenterServiceSearchFilterDto } from '../../civic-center-service/dto/civic-center-service-search-filter.dto';
 import { CivicCenterService } from '../../civic-center-service/entities/civic-center-service.entity';
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../../organization/dto/get-organization-with-practice-programs-fillter.dto';
@@ -30,5 +31,14 @@ export class CivicCenterPublicController {
     @Query() filters: GetOrganizationWithPracticeProgramsFilterDto,
   ): Promise<Pagination<OrganizationFlat>> {
     return this.civicCenterServicePublic.getOrganizations(filters);
+  }
+
+  @Public()
+  @ApiParam({ name: 'id', type: String })
+  @Get('/organization/:id')
+  findOrganizationWithServices(
+    @Param('id') id: number,
+  ): Promise<OrganizationWithServices> {
+    return this.civicCenterServicePublic.getOrganization(id);
   }
 }
