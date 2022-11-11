@@ -50,7 +50,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       row.report ? (
         <a
           className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
-          href={row.report || ''}
+          href={row.report}
           target="_blank"
           rel="noreferrer"
         >

@@ -223,7 +223,12 @@ const OrganizationData = () => {
   const onSaveReport = (data: Report) => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
-    data.report = 'http://' + data.report;
+
+    if (!data.report?.startsWith('http://' || 'https://')) {
+      data.report = 'https://' + data.report;
+    }
+
+    console.log(data.report);
 
     updateReport({
       id: organization?.id,
