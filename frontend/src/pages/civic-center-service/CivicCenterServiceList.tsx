@@ -35,7 +35,7 @@ const CivicCenterServiceList = () => {
             </div>
           </div>
         ))}
-      {!services && !error && <p>{t('no_data', { ns: 'common' })}</p>}
+      {!services?.length && !error && <p>{t('no_data', { ns: 'common' })}</p>}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { PencilIcon } from '@heroicons/react/solid';
 import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router-dom';
 import { emptyStringToNull, fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -29,6 +29,7 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
   const { cities, counties } = useNomenclature();
+  const disabled: boolean = useOutletContext();
 
   const location = useLocation();
 
@@ -253,6 +254,7 @@ const OrganizationGeneral = () => {
                       selected={value}
                       onChange={onChange}
                       readonly={readonly}
+                      disabled={!disabled}
                     />
                   );
                 }}
@@ -273,6 +275,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
+                      disabled={!disabled}
                     />
                   );
                 }}
@@ -293,6 +296,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
+                      disabled={!disabled}
                     />
                   );
                 }}
