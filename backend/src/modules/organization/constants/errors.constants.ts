@@ -99,6 +99,14 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while retrieving the organization',
     errorCode: 'ORG_023',
   },
+  GET_ORGANIZATIONS_WITH_ACTIVE_SERVICES: {
+    message: 'Error while loading organizations with services',
+    errorCode: 'ORG_024',
+  },
+  GET_ORGANIZATION_WITH_ACTIVE_SERVICES: {
+    message: 'Error while retrieving the organization',
+    errorCode: 'ORG_025',
+  },
 };
 
 export const PARTNER_ERRORS = {

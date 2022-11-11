@@ -25,10 +25,12 @@ import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 import {
   ORGANIZATION_FILTERS_CONFIG,
   ORGANIZATION_WITH_PRACTICE_PROGRAM_FILTERS_CONFIG,
+  ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG,
 } from '../constants/organization-filter.config';
 import { CreateUserRequestDto } from '../dto/create-organization-request.dto';
 import { CreateOrganizationDto } from '../dto/create-organization.dto';
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
+import { GetOrganizationWithServicesFilterDto } from '../dto/get-organization-with-services-filter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import {
@@ -513,6 +515,91 @@ export class OrganizationService {
         throw new InternalServerErrorException({
           error: JSON.stringify(error),
           ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_PRACTICE_PROGRAMS,
+        });
+      }
+    }
+  }
+
+  public async findAllOrganizationsWithActiveServices(
+    options: GetOrganizationWithServicesFilterDto,
+  ): Promise<Pagination<OrganizationFlat>> {
+    try {
+      const { domains, cityId, ...filters } = options;
+
+      // 1. get only organization with active services
+      let paginationOptions: GetOrganizationWithServicesFilterDto & {
+        civicCenterServices: {
+          active: boolean;
+        };
+        organizationGeneral?: {
+          city: {
+            id: number;
+          };
+        };
+        organizationActivity?: {
+          domains: {
+            id: FindOperator<number>;
+          };
+        };
+        status: OrganizationStatus;
+      } = {
+        ...filters,
+        status: OrganizationStatus.ACTIVE,
+        civicCenterServices: {
+          active: true, // get only organizations with active services
+        },
+      };
+
+      // 2. add filter by domain if provided
+      if (domains?.length > 0) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationActivity: {
+            domains: {
+              id: In(domains),
+            },
+          },
+        };
+      }
+
+      // 3. add filter by city if provided
+      if (cityId) {
+        paginationOptions = {
+          ...paginationOptions,
+          organizationGeneral: {
+            city: {
+              id: cityId,
+            },
+          },
+        };
+      }
+
+      // 4. get paginated organizations
+      const organizations = await this.organizationRepository.getManyPaginated(
+        ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG,
+        paginationOptions,
+      );
+
+      // 5. flatten the request
+      const flatOrganizations = this.flattenOrganization(organizations);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<OrganizationFlat>(
+          flatOrganizations.items,
+        );
+
+      return {
+        ...flatOrganizations,
+        items,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          error: JSON.stringify(error),
+          ...ORGANIZATION_ERRORS.GET_ORGANIZATIONS_WITH_ACTIVE_SERVICES,
         });
       }
     }
