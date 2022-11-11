@@ -2,19 +2,19 @@ import { EyeIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
-import { PaginationConfig } from '../../../../common/config/pagination.config';
-import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
-import { formatDate } from '../../../../common/helpers/format.helper';
-import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
-import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
-import DataTableComponent from '../../../../components/data-table/DataTableComponent';
-import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
+import { PaginationConfig } from '../../../common/config/pagination.config';
+import { OrderDirection } from '../../../common/enums/sort-direction.enum';
+import { formatDate } from '../../../common/helpers/format.helper';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
+import DataTableComponent from '../../../components/data-table/DataTableComponent';
+import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import {
   useFeedbackQuerry,
   useRemoveFeedbackMutation,
-} from '../../../../services/civic-center-service/CivicCenterService.queries';
-import { useCivicCenterService } from '../../../../store/selectors';
-import { IFeedback } from '../../interfaces/Feedback.interface';
+} from '../../../services/civic-center-service/CivicCenterService.queries';
+import { useCivicCenterService } from '../../../store/selectors';
+import { IFeedback } from '../interfaces/Feedback.interface';
 import FeedbackViewModal from './components/FeedbackViewModal';
 import { FeedbackListTableHeaders } from './table-headers/FeedbackListTable.headers';
 

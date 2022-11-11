@@ -76,6 +76,10 @@ const ApplicationDetails = () => {
     navigate('/practice-program');
   };
 
+  const onRedirectToServices = () => {
+    navigate('/service');
+  };
+
   const removeApplication = () => {
     removeOngApplication(
       { applicationId: application?.id },
@@ -234,6 +238,22 @@ const ApplicationDetails = () => {
                           onClick={onRedirectToPracticePrograms}
                         >
                           {t('details.practice_program.redirect_to_practice_programs')}
+                        </button>
+                      </div>
+                    )}
+                    {application?.pullingType === ApplicationPullingType.CIVIC_SERVICE && (
+                      <div className="w-full flex flex-col lg:flex-row">
+                        <button
+                          className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          onClick={onOpen}
+                        >
+                          {t('details.services.redirect_to_site')}
+                        </button>
+                        <button
+                          className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          onClick={onRedirectToServices}
+                        >
+                          {t('details.services.redirect_to_services')}
                         </button>
                       </div>
                     )}

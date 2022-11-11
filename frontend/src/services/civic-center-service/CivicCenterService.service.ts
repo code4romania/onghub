@@ -32,6 +32,12 @@ export const getCivicCenterServiceById = (id: string): Promise<CivicCenterServic
   );
 };
 
+export const getCivicCenterServices = (): Promise<CivicCenterService[]> => {
+  return API.get('civic-center/services').then(
+    (res: AxiosResponse<CivicCenterService[]>) => res.data,
+  );
+};
+
 export const getFeedbacks = async (
   limit: number,
   page: number,

@@ -6,11 +6,16 @@ import useStore from '../../store/store';
 import {
   createCivicCenterService,
   getCivicCenterServiceById,
+  getCivicCenterServices,
   getFeedbacks,
   removeFeedback,
   updateCivicCenterService,
 } from './CivicCenterService.service';
 import { CivicCenterServicePayload } from './interfaces/civic-center-service-payload.interface';
+
+export const useCivicCenterServicesQuery = () => {
+  return useQuery(['civic-center-services'], () => getCivicCenterServices(), { retry: 0 });
+};
 
 export const useGetCivicCenterServiceQuery = (civicCenterServiceId: string) => {
   return useQuery(
@@ -18,6 +23,7 @@ export const useGetCivicCenterServiceQuery = (civicCenterServiceId: string) => {
     () => getCivicCenterServiceById(civicCenterServiceId),
     {
       enabled: !!civicCenterServiceId,
+      retry: 0,
     },
   );
 };
@@ -53,6 +59,7 @@ export const useFeedbackQuerry = (
         });
       },
       enabled: !!(limit && page && orderBy && orderDirection),
+      retry: 0,
     },
   );
 };

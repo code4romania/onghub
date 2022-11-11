@@ -890,7 +890,11 @@
       },
       "practice_program": {
         "redirect_to_site": "Vezi profilul tau pe Practice4Good",
-        "redirect_to_practice_programs": "Gestioneaza program de practica"
+        "redirect_to_practice_programs": "Gestioneaza servicii"
+      },
+      "services": {
+        "redirect_to_site": "Vezi profilul tau pe Centrul Civic",
+        "redirect_to_services": "Gestioneaza servicii"
       }
     },
     "list_header": {
@@ -1007,6 +1011,14 @@
     "last_updated_on": "Ultima actualizare de date"
   },
   "civic_center_service": {
+    "wrapper": {
+      "title": "Serviciile mele",
+      "description": "Lorem ipsum",
+      "add_button": "Adauga Serviciu"
+    },
+    "list": {
+      "error": "Eroare la incarcarea listei"
+    },
     "add": {
       "title": "Adauga Serviciu",
       "card_title": "Descriere Serviciu"
@@ -1166,6 +1178,32 @@
       "error_create": "Eroare la crearea serviciului",
       "error_update": "Eroare la modificarea serviciului",
       "error_delete": "Eroare la stergerea serviciului"
+    },
+    "details": {
+      "available": "Disponibil",
+      "age_category": "Categorie de varsta",
+      "domains": "Domenii",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "address": "Adresa",
+      "access": {
+        "online": {
+          "title": "Online",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        },
+        "email_or_phone": {
+          "title": "Prin e-mail sau telefon",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        },
+        "physical": {
+          "title": "Prin prezentare la adresa",
+          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        }
+      },
+      "delete_modal": {
+        "title": "Sterge Serviciu",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+      }
     }
   },
   "practice_program": {
@@ -1287,10 +1325,6 @@
       "error_update": "Eroare la modificarea programului de practica",
       "error_delete": "Eroare la stergerea programului de practica"
     }
-  },
-  "civic_center": {
-    "title": "Serviciile mele",
-    "description": "Lorem ipsum"
   },
   "feedback": {
     "title": "Feedback",

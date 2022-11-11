@@ -46,8 +46,10 @@ import CreatePracticeProgram from '../../pages/pactice-program/CreatePracticePro
 import EditPracticeProgram from '../../pages/pactice-program/EditPracticeProgram';
 import PracticePrograms from '../../pages/pactice-program/PracticePrograms';
 import CreateCivicCenterService from '../../pages/civic-center-service/CreateCivicCenterService';
-import FeedbackList from '../../pages/civic-center-service/components/feedback/FeedbackList';
+import FeedbackList from '../../pages/civic-center-service/feedback/FeedbackList';
 import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
+import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrapper';
+import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -289,15 +291,30 @@ const Router = () => {
             path={'service'}
             element={
               <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
-                <Outlet />
+                <CivicCenterWrapper />
               </RoleGuard>
             }
           >
-            <Route index element={<div>Lista servicii</div>} />
-            <Route path="add" element={<CreateCivicCenterService />} />
-            <Route path=":id" element={<EditCivicCenterService />} />
+            <Route index element={<CivicCenterServiceList />} />
             <Route path="feedback" element={<FeedbackList />} />
           </Route>
+
+          <Route
+            path="service/add"
+            element={
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                <CreateCivicCenterService />
+              </RoleGuard>
+            }
+          />
+          <Route
+            path="service/:id"
+            element={
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
+                <EditCivicCenterService />
+              </RoleGuard>
+            }
+          />
 
           <Route path="account" element={<Account />} />
         </Route>
