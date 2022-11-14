@@ -9,30 +9,6 @@ interface ApplicationAccessManagementProps {
   onAccessChange: (access: any) => void;
 }
 
-interface ApplicationToggleProps {
-  applicationId: number;
-  initialStatus: boolean;
-  onApplicationStatusChange: (applicationId: number, enabled: boolean) => void;
-}
-
-const ApplicationToggle = ({
-  applicationId,
-  initialStatus,
-  onApplicationStatusChange,
-}: ApplicationToggleProps) => {
-  const [enabled, setEnabled] = useState<boolean>(initialStatus);
-
-  useEffect(() => {
-    setEnabled(initialStatus);
-  }, [initialStatus])
-
-  useEffect(() => {
-    onApplicationStatusChange(applicationId, enabled);
-  }, [enabled]);
-
-  return <Toggle value={enabled} onChange={setEnabled} />;
-};
-
 const ApplicationAccessManagement = ({
   applications,
   onAccessChange,
@@ -95,11 +71,7 @@ const ApplicationAccessManagement = ({
                   <NameWithLogo logo={application.logo} name={application.name} />
                 </td>
                 <td className="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                  <ApplicationToggle
-                    initialStatus={application.status === UserOngApplicationStatus.ACTIVE}
-                    applicationId={application.id}
-                    onApplicationStatusChange={enableAccess}
-                  />
+                  <Toggle value={accessTree[application.id]} onChange={(status) => enableAccess(application.id, status)} />
                 </td>
               </tr>
             ))}
