@@ -560,6 +560,7 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status = :status', { status: OngApplicationStatus.PENDING })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
