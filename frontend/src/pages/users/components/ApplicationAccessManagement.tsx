@@ -23,6 +23,10 @@ const ApplicationToggle = ({
   const [enabled, setEnabled] = useState<boolean>(initialStatus);
 
   useEffect(() => {
+    setEnabled(initialStatus);
+  }, [initialStatus])
+
+  useEffect(() => {
     onApplicationStatusChange(applicationId, enabled);
   }, [enabled]);
 

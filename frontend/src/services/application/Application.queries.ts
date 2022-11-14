@@ -131,9 +131,7 @@ export const userApplicationsForCreateUser = () => {
 
 export const useApplicationsForEditUserQuery = (userId: string) => {
   return useQuery(['application', userId], () => getApplicationsForEditUser(userId), {
-    enabled: !!userId,
-    staleTime: 0,
-    cacheTime: 0,
+    enabled: !!userId
   });
 };
 
