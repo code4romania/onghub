@@ -248,6 +248,24 @@ const Router = () => {
             <Route path="data" element={<OrganizationData />} />
           </Route>
 
+          <Route
+            path={'organizations/:organizationId/practice-program/add'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <CreatePracticeProgram />
+              </RoleGuard>
+            }
+          ></Route>
+
+          <Route
+            path={'organizations/:organizationId/practice-program/:id'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <EditPracticeProgram />
+              </RoleGuard>
+            }
+          ></Route>
+
           {role === UserRole.SUPER_ADMIN ? (
             <Route
               path={'application/:id'}
@@ -279,7 +297,7 @@ const Router = () => {
           <Route
             path={'practice-program'}
             element={
-              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE, UserRole.SUPER_ADMIN]}>
+              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
                 <Outlet />
               </RoleGuard>
             }
