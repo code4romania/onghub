@@ -65,7 +65,6 @@ const UserCreate = () => {
         onError: (error) => {
           const createError: any = error;
           const err = createError?.response?.data;
-          console.log(createUserMutation.error);
           if (err.code) {
             useErrorToast(CREATE_USER_ERRORS[err.code]);
           } else {
