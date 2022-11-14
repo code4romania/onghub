@@ -43,7 +43,7 @@ export class PublicAPIController {
   async sendMail(@Body() mailOptions: ContactMailDto): Promise<void> {
     await this.mailService.sendEmail({
       to: process.env.MAIL_CONTACT,
-      subject: `Feedback - ${mailOptions.sender}`,
+      subject: `Feedback ${mailOptions.type} - ${mailOptions.sender}`,
       html: `<p>${mailOptions.text}</p>`,
       ...mailOptions,
     });
