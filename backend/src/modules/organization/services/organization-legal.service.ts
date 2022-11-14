@@ -1,8 +1,12 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { In } from 'typeorm';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
@@ -12,6 +16,7 @@ import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationLegalService {
+  private readonly logger = new Logger(OrganizationLegalService.name);
   constructor(
     private readonly organizationLegalRepostory: OrganizationLegalRepository,
     private readonly contactService: ContactService,
@@ -55,15 +60,41 @@ export class OrganizationLegalService {
         ]);
       }
 
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        organizationStatutePath,
-        organizationStatute,
-      );
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          organizationStatutePath,
+          organizationStatute,
+          FILE_TYPE.FILE,
+        );
 
-      organizationLegalData = {
-        ...organizationLegalData,
-        organizationStatute: uploadedFile[0],
-      };
+        organizationLegalData = {
+          ...organizationLegalData,
+          organizationStatute: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...ORGANIZATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        switch (err?.errorCode) {
+          case FILE_ERRORS.IMAGE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.IMAGE,
+              error,
+            });
+          case FILE_ERRORS.SIZE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.SIZE,
+              error,
+            });
+          default:
+            throw new InternalServerErrorException({
+              ...ORGANIZATION_ERRORS.UPLOAD,
+              error,
+            });
+        }
+      }
     }
 
     await this.organizationLegalRepostory.save({

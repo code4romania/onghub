@@ -13,6 +13,8 @@ import { MailService } from 'src/mail/services/mail.service';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -210,33 +212,65 @@ export class OrganizationService {
     });
 
     // upload logo
-    if (logo) {
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
-        logo,
-      );
+    try {
+      if (logo) {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+          logo,
+          FILE_TYPE.IMAGE,
+        );
 
-      await this.organizationGeneralService.update(
-        organization.organizationGeneral.id,
-        {
-          logo: uploadedFile[0],
-        },
-      );
-    }
+        await this.organizationGeneralService.update(
+          organization.organizationGeneral.id,
+          {
+            logo: uploadedFile[0],
+          },
+        );
+      }
 
-    // upload organization statute
-    if (organizationStatute) {
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
-        organizationStatute,
-      );
+      // upload organization statute
+      if (organizationStatute) {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+          organizationStatute,
+          FILE_TYPE.FILE,
+        );
 
-      await this.organizationLegalService.update(
-        organization.organizationLegal.id,
-        {
-          organizationStatute: uploadedFile[0],
-        },
-      );
+        await this.organizationLegalService.update(
+          organization.organizationLegal.id,
+          {
+            organizationStatute: uploadedFile[0],
+          },
+        );
+      }
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.UPLOAD,
+      });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        case FILE_ERRORS.IMAGE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.IMAGE,
+            err,
+          });
+        case FILE_ERRORS.FILE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.FILE,
+            err,
+          });
+        case FILE_ERRORS.SIZE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.SIZE,
+            error,
+          });
+        default:
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+      }
     }
 
     return organization;

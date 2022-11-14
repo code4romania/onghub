@@ -31,7 +31,14 @@
     "inactive": "Inactiv",
     "no_data": "Nu sunt date de afisat!",
     "show_more": "Vezi toate",
-    "show_less": "Arata mai putin"
+    "show_less": "Arata mai putin",
+    "upload": {
+      "file": "Numai fisiere de tip PDF, DOC, DOCX, XLSX sunt permise",
+      "image": "Numai fisiere de tip PNG, JPG, JPEG sunt permise",
+      "size": "Dimensiunea maxima a fisierului este de 6 MB",
+      "logo": "Eroare la incarcarea logo-ului",
+      "statute": "Eroare la incarcarea statutului organizatiei"
+    }
   },
   "menu": {
     "informations": "Informatii",

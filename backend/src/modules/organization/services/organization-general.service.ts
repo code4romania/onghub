@@ -1,6 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { FindOneOptions } from 'typeorm';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneral } from '../entities';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
@@ -8,6 +16,7 @@ import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationGeneralService {
+  private readonly logger = new Logger(OrganizationGeneralService.name);
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
     private readonly contactService: ContactService,
@@ -36,15 +45,41 @@ export class OrganizationGeneralService {
         ]);
       }
 
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        logoPath,
-        logo,
-      );
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          logoPath,
+          logo,
+          FILE_TYPE.IMAGE,
+        );
 
-      updateOrganizationData = {
-        ...updateOrganizationData,
-        logo: uploadedFile[0],
-      };
+        updateOrganizationData = {
+          ...updateOrganizationData,
+          logo: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...ORGANIZATION_ERRORS.UPLOAD,
+        });
+        const err = error?.response;
+        switch (err?.errorCode) {
+          case FILE_ERRORS.IMAGE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.IMAGE,
+              error,
+            });
+          case FILE_ERRORS.SIZE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.SIZE,
+              error,
+            });
+          default:
+            throw new InternalServerErrorException({
+              ...ORGANIZATION_ERRORS.UPLOAD,
+              error,
+            });
+        }
+      }
     }
 
     await this.organizationGeneralRepository.save({

@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdateOrganizationReportDto } from '../dto/update-organization-report.dto';
 import { ReportService } from './report.service';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
@@ -19,9 +25,12 @@ import {
   ORGANIZATION_FILES_DIR,
   PARTNER_LIST,
 } from '../constants/files.constants';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
+import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
 
 @Injectable()
 export class OrganizationReportService {
+  private readonly logger = new Logger(OrganizationReportService.name);
   constructor(
     private readonly organizationReportRepository: OrganizationReportRepository,
     private readonly partnerRepository: PartnerRepository,
@@ -92,18 +101,44 @@ export class OrganizationReportService {
       await this.fileManagerService.deleteFiles([partner.path]);
     }
 
-    const uploadedFile = await this.fileManagerService.uploadFiles(
-      `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
-      files,
-      `${partner.year}_${PARTNER_LIST}`,
-    );
+    try {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
+        files,
+        FILE_TYPE.FILE,
+        `${partner.year}_${PARTNER_LIST}`,
+      );
 
-    await this.partnerRepository.save({
-      ...partner,
-      path: uploadedFile[0],
-      numberOfPartners,
-      status: CompletionStatus.COMPLETED,
-    });
+      await this.partnerRepository.save({
+        ...partner,
+        path: uploadedFile[0],
+        numberOfPartners,
+        status: CompletionStatus.COMPLETED,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.UPLOAD,
+      });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        case FILE_ERRORS.FILE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.FILE,
+            error,
+          });
+        case FILE_ERRORS.SIZE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.SIZE,
+            error,
+          });
+        default:
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+      }
+    }
   }
 
   public async updateInvestor(
@@ -127,18 +162,44 @@ export class OrganizationReportService {
       await this.fileManagerService.deleteFiles([investor.path]);
     }
 
-    const uploadedFile = await this.fileManagerService.uploadFiles(
-      `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
-      files,
-      `${investor.year}_${INVESTOR_LIST}`,
-    );
+    try {
+      const uploadedFile = await this.fileManagerService.uploadFiles(
+        `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
+        files,
+        FILE_TYPE.FILE,
+        `${investor.year}_${INVESTOR_LIST}`,
+      );
 
-    await this.investorRepository.save({
-      ...investor,
-      path: uploadedFile[0],
-      numberOfInvestors,
-      status: CompletionStatus.COMPLETED,
-    });
+      await this.investorRepository.save({
+        ...investor,
+        path: uploadedFile[0],
+        numberOfInvestors,
+        status: CompletionStatus.COMPLETED,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.UPLOAD,
+      });
+      const err = error?.response;
+      switch (err?.errorCode) {
+        case FILE_ERRORS.FILE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.FILE,
+            error,
+          });
+        case FILE_ERRORS.SIZE.errorCode:
+          throw new BadRequestException({
+            ...FILE_ERRORS.SIZE,
+            error,
+          });
+        default:
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+      }
+    }
   }
 
   public async deletePartner(partnerId: number): Promise<void> {

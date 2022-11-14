@@ -5,6 +5,7 @@ import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { FILE_ERRORS } from '../../../../common/constants/error.constants';
 import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -231,8 +232,14 @@ const OrganizationLegal = () => {
         onSuccess: () => {
           setOrganizationStatute(null);
         },
-        onError: () => {
-          useErrorToast(t('save_error', { ns: 'organization' }));
+        onError: (error) => {
+          const createError: any = error;
+          const err = createError.response.data;
+          if (err.code) {
+            useErrorToast(FILE_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('save_error', { ns: 'organization' }));
+          }
         },
       },
     );

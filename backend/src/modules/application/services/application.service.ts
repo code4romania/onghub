@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -56,6 +57,8 @@ import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.c
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
+import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -90,6 +93,7 @@ export class ApplicationService {
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,
           logo,
+          FILE_TYPE.IMAGE,
           createApplicationDto.name,
         );
 
@@ -103,10 +107,23 @@ export class ApplicationService {
           ...APPLICATION_ERRORS.UPLOAD,
         });
         const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_ERRORS.UPLOAD,
-          error: err,
-        });
+        switch (err?.errorCode) {
+          case FILE_ERRORS.IMAGE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.IMAGE,
+              error,
+            });
+          case FILE_ERRORS.SIZE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.SIZE,
+              error,
+            });
+          default:
+            throw new InternalServerErrorException({
+              ...APPLICATION_ERRORS.UPLOAD,
+              error,
+            });
+        }
       }
     }
 
@@ -379,6 +396,7 @@ export class ApplicationService {
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,
           logo,
+          FILE_TYPE.IMAGE,
           application.name,
         );
 
@@ -393,10 +411,23 @@ export class ApplicationService {
           ...APPLICATION_ERRORS.UPLOAD,
         });
         const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_ERRORS.UPLOAD,
-          error: err,
-        });
+        switch (err?.errorCode) {
+          case FILE_ERRORS.IMAGE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.IMAGE,
+              error,
+            });
+          case FILE_ERRORS.SIZE.errorCode:
+            throw new BadRequestException({
+              ...FILE_ERRORS.SIZE,
+              error,
+            });
+          default:
+            throw new InternalServerErrorException({
+              ...APPLICATION_ERRORS.UPLOAD,
+              error,
+            });
+        }
       }
     }
 
