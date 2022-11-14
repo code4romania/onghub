@@ -10,6 +10,7 @@ import { PublicAPIController } from './controllers/public-api.controller';
 import { PublicKeysManager } from './public-keys-manager.service';
 import { PublicKeys } from './public-keys.entity';
 import { CivicCenterPublicService } from './services/civic-center-public.service';
+import { PracticeProgramPublicService } from './services/practice-program-public.service';
 
 @Module({
   imports: [
@@ -24,7 +25,11 @@ import { CivicCenterPublicService } from './services/civic-center-public.service
     CivicCenterPublicController,
     PracticeProgramPublicController,
   ],
-  providers: [PublicKeysManager, CivicCenterPublicService],
+  providers: [
+    PublicKeysManager,
+    CivicCenterPublicService,
+    PracticeProgramPublicService,
+  ],
   exports: [],
 })
 export class PublicAPIModule {}
