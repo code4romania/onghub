@@ -46,7 +46,7 @@ const CreatePracticeProgram = () => {
             useSuccessToast(t('feedback.success_create'));
 
             if (organizationId) {
-              navigate(-1);
+              navigate(`/organizations/${organizationId}/programs`, { replace: true });
             } else {
               navigate('/practice-program', { replace: true });
             }
@@ -64,7 +64,10 @@ const CreatePracticeProgram = () => {
       title={t('add.title', { ns: 'practice_program' })}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => (organizationId ? navigate(-1) : navigate('practice-program')),
+        onBtnClick: () =>
+          organizationId
+            ? navigate(`/organizations/${organizationId}/programs`)
+            : navigate('/practice-program'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">

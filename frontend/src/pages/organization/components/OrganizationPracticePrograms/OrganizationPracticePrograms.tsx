@@ -12,7 +12,7 @@ const OrganizationPracticePrograms = () => {
   const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms();
 
   const onAddPracticeProgram = () => {
-    navigate(`/organizations/${id}/practice-program/add`);
+    navigate(`/organizations/${id}/programs/add`);
   };
 
   return (

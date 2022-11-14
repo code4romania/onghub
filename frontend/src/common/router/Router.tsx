@@ -249,7 +249,7 @@ const Router = () => {
           </Route>
 
           <Route
-            path={'organizations/:organizationId/practice-program/add'}
+            path={'organizations/:organizationId/programs/add'}
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
                 <CreatePracticeProgram />
@@ -258,7 +258,7 @@ const Router = () => {
           ></Route>
 
           <Route
-            path={'organizations/:organizationId/practice-program/:id'}
+            path={'organizations/:organizationId/programs/:id'}
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
                 <EditPracticeProgram />

@@ -82,7 +82,7 @@ export class PracticeProgramController {
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.update(id, {
       ...body,
-      organizationId: user.organizationId,
+      organizationId: user.organizationId || body.organizationId,
     });
   }
 
