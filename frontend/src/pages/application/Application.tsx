@@ -13,11 +13,16 @@ const Application = () => {
   const {
     data: application,
     isLoading,
+    error,
     refetch: refetchApplication,
   } = useApplicationQuery(id as string);
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (error) {
+    navigate('/apps');
   }
 
   const navigateBack = () => {
