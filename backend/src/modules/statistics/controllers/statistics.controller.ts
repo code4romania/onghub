@@ -1,6 +1,4 @@
 import {
-  CacheInterceptor,
-  CacheTTL,
   ClassSerializerInterceptor,
   Controller,
   Get,
@@ -17,7 +15,6 @@ import {
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
-import { STATISTICS_CACHE_DURATION } from 'src/modules/organization/constants/values.constants';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
@@ -26,7 +23,7 @@ import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { StatisticsService } from '../services/statistics.service';
 
 @ApiTooManyRequestsResponse()
-@UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('statistics')
 export class StatisticsController {
@@ -54,7 +51,6 @@ export class StatisticsController {
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('request')
   getSuperAdminOrganizationRequestStatistics(
     @Query() filters: StatisticsFilterDto,
@@ -63,7 +59,6 @@ export class StatisticsController {
   }
 
   @Roles(Role.SUPER_ADMIN)
-  @CacheTTL(STATISTICS_CACHE_DURATION)
   @Get('status')
   getSuperAdminOrganizationStatusStatistics(
     @Query() filters: StatisticsFilterDto,
