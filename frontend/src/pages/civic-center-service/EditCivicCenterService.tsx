@@ -14,7 +14,7 @@ import { mapToId } from '../../common/helpers/format.helper';
 
 const EditCivicCenterService = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, organizationId } = useParams();
 
   const { t } = useTranslation(['civic_center_service', 'common']);
   // check additional validity
@@ -56,12 +56,19 @@ const EditCivicCenterService = () => {
       await updateCivicCenterService(
         {
           id: id as string,
-          data,
+          data: {
+            ...data,
+            organizationId: organizationId,
+          },
         },
         {
           onSuccess: () => {
             useSuccessToast(t('feedback.success_update'));
-            navigate('/service', { replace: true });
+            if (organizationId) {
+              navigate(`/organizations/${organizationId}/services`, { replace: true });
+            } else {
+              navigate('/service', { replace: true });
+            }
           },
           onError: () => {
             useErrorToast(t('feedback.error_update'));
@@ -76,7 +83,10 @@ const EditCivicCenterService = () => {
       title={t('edit.title')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => navigate('/service'),
+        onBtnClick: () =>
+          organizationId
+            ? navigate(`/organizations/${organizationId}/services`)
+            : navigate('/service'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">

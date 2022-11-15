@@ -51,6 +51,7 @@ import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCe
 import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrapper';
 import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
 import OrganizationPracticePrograms from '../../pages/organization/components/OrganizationPracticePrograms/OrganizationPracticePrograms';
+import OrganizationServices from '../../pages/organization/components/OrganizationServices/OrganizationServices';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -230,7 +231,7 @@ const Router = () => {
             <Route path="data" element={<OrganizationData />} />
             <Route path="applications" element={<OrganizationApplications />} />
             <Route path="programs" element={<OrganizationPracticePrograms />} />
-            <Route path="services" element={<div>servicii</div>} />
+            <Route path="services" element={<OrganizationServices />} />
           </Route>
           <Route
             path={'organization'}
@@ -262,6 +263,24 @@ const Router = () => {
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
                 <EditPracticeProgram />
+              </RoleGuard>
+            }
+          ></Route>
+
+          <Route
+            path={'organizations/:organizationId/services/add'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <CreateCivicCenterService />
+              </RoleGuard>
+            }
+          ></Route>
+
+          <Route
+            path={'organizations/:organizationId/services/:id'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <EditCivicCenterService />
               </RoleGuard>
             }
           ></Route>
