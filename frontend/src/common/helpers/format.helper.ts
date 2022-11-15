@@ -145,3 +145,11 @@ export const cleanupPayload = (payload: any) => {
     .filter((k) => payload[k] !== null && payload[k] !== undefined)
     .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
 };
+
+export const setUrlPrefix = (address: string | null) => {
+  if (!address?.startsWith('http://' || 'https://')) {
+    return 'https://' + address;
+  } else {
+    return address;
+  }
+};

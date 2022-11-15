@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import readXlsxFile from 'read-excel-file';
+import { setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
@@ -224,12 +225,6 @@ const OrganizationData = () => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
 
-    if (!data.report?.startsWith('http://' || 'https://')) {
-      data.report = 'https://' + data.report;
-    }
-
-    console.log(data.report);
-
     updateReport({
       id: organization?.id,
       organization: {
@@ -237,7 +232,7 @@ const OrganizationData = () => {
           reportId: data.id,
           numberOfContractors: data.numberOfContractors ?? undefined,
           numberOfVolunteers: data.numberOfVolunteers ?? undefined,
-          report: data.report || undefined,
+          report: setUrlPrefix(data.report) || undefined,
         },
       },
     });
