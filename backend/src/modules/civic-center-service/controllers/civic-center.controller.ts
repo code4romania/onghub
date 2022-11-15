@@ -55,6 +55,7 @@ export class CivicCenterController {
     return this.civicCenterServiceService.updateServicetatus(
       id,
       true,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
@@ -68,6 +69,7 @@ export class CivicCenterController {
     return this.civicCenterServiceService.updateServicetatus(
       id,
       false,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
@@ -106,6 +108,10 @@ export class CivicCenterController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.civicCenterServiceService.delete(id, user.organizationId);
+    return this.civicCenterServiceService.delete(
+      id,
+      user.role === Role.SUPER_ADMIN,
+      user.organizationId,
+    );
   }
 }
