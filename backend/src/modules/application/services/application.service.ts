@@ -72,7 +72,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) {}
+  ) { }
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -287,7 +287,7 @@ export class ApplicationService {
       .getQueryBuilder()
       .select([
         'application.id as id',
-        'ongApp.status as status',
+        'userOngApp.status as status',
         'application.name as name',
         'application.logo as logo',
         'application.short_description as "shortDescription"',
@@ -305,8 +305,15 @@ export class ApplicationService {
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId: organizationId },
+      ).leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.ong_application_id = ongApp.id'
       )
       .where('application.id = :applicationId', { applicationId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
       .getRawOne();
 
     if (!applicationWithDetails) {
