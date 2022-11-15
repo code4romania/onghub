@@ -60,11 +60,11 @@ const UserCreate = () => {
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
-          navigate('/users');
+          navigate('/users/list');
         },
-        onError: () => {
-          const updateError: any = createUserMutation.error;
-          const err = updateError?.response?.data;
+        onError: (error) => {
+          const createError: any = error;
+          const err = createError?.response?.data;
           if (err.code) {
             useErrorToast(CREATE_USER_ERRORS[err.code]);
           } else {
@@ -79,7 +79,10 @@ const UserCreate = () => {
     <ContentWrapper
       title={t('add')}
       subtitle={t('subtitle')}
-      backButton={{ btnLabel: t('back', { ns: 'common' }), onBtnClick: () => navigate('/users') }}
+      backButton={{
+        btnLabel: t('back', { ns: 'common' }),
+        onBtnClick: () => navigate('/users/list'),
+      }}
     >
       <div className="flex flex-col gap-6">
         <CardPanel
