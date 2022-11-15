@@ -25,5 +25,5 @@ export interface CivicCenterServicePayload extends BaseEntity {
   physicalAccessAddress?: string;
   physicalAccessDescription?: string;
   active: boolean;
-  organizationId: number;
+  organizationId?: string;
 }

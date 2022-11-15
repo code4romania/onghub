@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { CivicCenterServicePayload } from '../../services/civic-center-service/interfaces/civic-center-service-payload.interface';
 import CivicCenterForm from './components/CivicCenterForm';
@@ -10,6 +10,9 @@ import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 
 const CreateCivicCenterService = () => {
   const navigate = useNavigate();
+
+  const { organizationId } = useParams();
+
   const { t } = useTranslation(['civic_center_service', 'common']);
   // check additional validity
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
@@ -36,15 +39,26 @@ const CreateCivicCenterService = () => {
   const onSubmit = async (data: CivicCenterServicePayload) => {
     if (isFormValid) {
       // create civic center service request
-      await createCivicCenterService(data, {
-        onSuccess: () => {
-          useSuccessToast(t('feedback.success_create'));
-          navigate('/service', { replace: true });
+      await createCivicCenterService(
+        {
+          ...data,
+          organizationId: organizationId,
         },
-        onError: () => {
-          useErrorToast(t('feedback.error_create'));
+        {
+          onSuccess: () => {
+            useSuccessToast(t('feedback.success_create'));
+
+            if (organizationId) {
+              navigate(`/organizations/${organizationId}/services`, { replace: true });
+            } else {
+              navigate('/service', { replace: true });
+            }
+          },
+          onError: () => {
+            useErrorToast(t('feedback.error_create'));
+          },
         },
-      });
+      );
     }
   };
 
@@ -53,7 +67,10 @@ const CreateCivicCenterService = () => {
       title={t('add.title')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => navigate('/service'),
+        onBtnClick: () =>
+          organizationId
+            ? navigate(`/organizations/${organizationId}/services`)
+            : navigate('/service'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">

@@ -20,4 +20,5 @@ export interface PracticeProgramPayload extends BaseEntity {
   domains: number[];
   faculties?: ISelectData[] | number[] | Faculty[];
   skills: Partial<Skill>[] | ISelectData[];
+  organizationId?: string;
 }

@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -265,8 +266,13 @@ export class PracticeProgramService {
   public async updatePracticeProgramStatus(
     id: number,
     active: boolean,
+    isSuperAdmin: boolean,
     organizationId?: number,
   ): Promise<PracticeProgram> {
+    if (!isSuperAdmin && !organizationId) {
+      throw new UnauthorizedException();
+    }
+
     try {
       const where = organizationId
         ? {
@@ -417,7 +423,15 @@ export class PracticeProgramService {
     };
   }
 
-  public async delete(id: number, organizationId?: number): Promise<void> {
+  public async delete(
+    id: number,
+    isSuperAdmin: boolean,
+    organizationId?: number,
+  ): Promise<void> {
+    if (!isSuperAdmin && !organizationId) {
+      throw new UnauthorizedException();
+    }
+
     try {
       const where = organizationId ? { id, organizationId } : { id };
       await this.practiceProgramRepository.remove({ where });

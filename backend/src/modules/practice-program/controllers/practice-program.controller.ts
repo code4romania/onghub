@@ -24,6 +24,7 @@ import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramService } from '../services/practice-program.service';
 
+@Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -33,7 +34,6 @@ export class PracticeProgramController {
     private readonly practiceProgramService: PracticeProgramService,
   ) {}
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBody({ type: CreatePracticeProgramDto })
   @Post()
   async create(
@@ -42,11 +42,10 @@ export class PracticeProgramController {
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.create({
       ...body,
-      organizationId: user.organizationId,
+      organizationId: user.organizationId || body.organizationId,
     });
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/enable')
   async enable(
@@ -56,11 +55,11 @@ export class PracticeProgramController {
     return this.practiceProgramService.updatePracticeProgramStatus(
       id,
       true,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/disable')
   async disable(
@@ -70,11 +69,11 @@ export class PracticeProgramController {
     return this.practiceProgramService.updatePracticeProgramStatus(
       id,
       false,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiBody({ type: UpdatePracticeProgramDto })
   @ApiParam({ name: 'id', type: String })
   @Patch(':id')
@@ -85,17 +84,15 @@ export class PracticeProgramController {
   ): Promise<PracticeProgram> {
     return this.practiceProgramService.update(id, {
       ...body,
-      organizationId: user.organizationId,
+      organizationId: user.organizationId || body.organizationId,
     });
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @Get()
   async findAll(@ExtractUser() user: User): Promise<PracticeProgram[]> {
     return this.practiceProgramService.findAll(user.organizationId);
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
   @ApiParam({ name: 'id', type: String })
   @Get(':id')
   async find(
@@ -105,13 +102,16 @@ export class PracticeProgramController {
     return this.practiceProgramService.find(id, user.organizationId);
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
   async delete(
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.practiceProgramService.delete(id, user.organizationId);
+    return this.practiceProgramService.delete(
+      id,
+      user?.role === Role.SUPER_ADMIN,
+      user.organizationId,
+    );
   }
 }
