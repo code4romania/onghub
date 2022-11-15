@@ -72,7 +72,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) { }
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -305,10 +305,11 @@ export class ApplicationService {
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId: organizationId },
-      ).leftJoin(
+      )
+      .leftJoin(
         'user_ong_application',
         'userOngApp',
-        'userOngApp.ong_application_id = ongApp.id'
+        'userOngApp.ong_application_id = ongApp.id',
       )
       .where('application.id = :applicationId', { applicationId })
       .andWhere('ongApp.status = :status', {
@@ -407,6 +408,10 @@ export class ApplicationService {
       }
     }
 
+    if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
+      // await this.userService.si
+    }
+
     return this.applicationRepository.update({ id }, updateApplicationDto);
   }
 
@@ -419,6 +424,8 @@ export class ApplicationService {
       applicationId,
       OngApplicationStatus.RESTRICTED,
     );
+
+    await this.userService.signOutAllOrganization(organizationId);
   }
 
   public async restore(

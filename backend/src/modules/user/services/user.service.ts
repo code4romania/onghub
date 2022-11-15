@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -43,6 +45,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    @Inject(forwardRef(() => OrganizationService))
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
@@ -295,20 +298,20 @@ export class UserService {
     }
   }
 
-  async removeById(id: number, organizatioinId?: number): Promise<string> {
+  async removeById(id: number, organizationId?: number): Promise<string> {
     // 1. Get the user by id
-    const user = await this.getById(id, organizatioinId);
+    const user = await this.getById(id, organizationId);
 
     return this.remove(user);
   }
 
-  async restrictAccess(ids: number[], organizatioinId?: number) {
+  async restrictAccess(ids: number[], organizationId?: number) {
     const updated = [],
       failed = [];
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
       try {
-        const user = await this.getById(id, organizatioinId);
+        const user = await this.getById(id, organizationId);
         await this.userRepository.update(
           { id },
           { status: UserStatus.RESTRICTED },
@@ -353,6 +356,20 @@ export class UserService {
     await this.cognitoService.resendInvite(user.email);
 
     return;
+  }
+
+  public async signOutAllOrganization(organizationId: number): Promise<void> {
+    const users = await this.findMany({ where: { organizationId } });
+
+    users.map(
+      async (user) => await this.cognitoService.globalSignOut(user.cognitoId),
+    );
+  }
+
+  public async signOutUser(userId): Promise<void> {
+    const user = await this.findOne({ where: { id: userId } });
+
+    await this.cognitoService.globalSignOut(user.cognitoId);
   }
 
   // ****************************************************
