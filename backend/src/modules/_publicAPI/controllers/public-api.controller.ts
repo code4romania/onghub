@@ -6,6 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { MailService } from 'src/mail/services/mail.service';
@@ -29,7 +30,6 @@ export class PublicAPIController {
   ) {}
 
   @Public()
-  @UseInterceptors(HMACVerificationInterceptor)
   @HttpCode(200)
   @Post('/hasAccess')
   async check(
@@ -39,13 +39,13 @@ export class PublicAPIController {
   }
 
   @Public()
-  @UseInterceptors(HMACVerificationInterceptor)
+  @Throttle(1, 60)
   @ApiBody({ type: ContactMailDto })
   @Post('/contact/feedback')
   async sendMail(@Body() mailOptions: ContactMailDto): Promise<void> {
     await this.mailService.sendEmail({
       to: process.env.MAIL_CONTACT,
-      subject: `Feedback - ${mailOptions.sender}`,
+      subject: `Feedback ${mailOptions.type} - ${mailOptions.sender}`,
       html: `<p>${mailOptions.text}</p>`,
       ...mailOptions,
     });

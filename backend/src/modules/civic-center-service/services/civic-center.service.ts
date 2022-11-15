@@ -151,6 +151,48 @@ export class CivicCenterServiceService {
     }
   }
 
+  public async updateServicetatus(
+    id: number,
+    active: boolean,
+    organizationId?: number,
+  ): Promise<CivicCenterService> {
+    try {
+      const where = organizationId
+        ? {
+            id,
+            organizationId,
+          }
+        : { id };
+
+      const service = await this.civicCenterServiceRepository.get({
+        where,
+      });
+
+      if (!service) {
+        throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
+      }
+
+      return this.civicCenterServiceRepository.save({
+        ...service,
+        active,
+      });
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.ENABLE_DISABLE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...CIVIC_CENTER_SERVICE_ERRORS.ENABLE_DISABLE,
+        });
+      }
+    }
+  }
+
   public async update(
     id: number,
     updateCivicCenterServiceDto: UpdateCivicCenterServiceDto,
@@ -401,9 +443,10 @@ export class CivicCenterServiceService {
     return practiceProgram;
   }
 
-  public async delete(id: number): Promise<void> {
+  public async delete(id: number, organizationId?: number): Promise<void> {
     try {
-      await this.civicCenterServiceRepository.remove({ where: { id } });
+      const where = organizationId ? { id, organizationId } : { id };
+      await this.civicCenterServiceRepository.remove({ where });
     } catch (error) {
       throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.DELETE);
     }

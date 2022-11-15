@@ -5,6 +5,9 @@ import { IFeedback } from '../../pages/civic-center-service/interfaces/Feedback.
 import useStore from '../../store/store';
 import {
   createCivicCenterService,
+  deleteCCService,
+  disableCCService,
+  enableCCService,
   getCivicCenterServiceById,
   getCivicCenterServices,
   getFeedbacks,
@@ -38,6 +41,18 @@ export const useEditCivicCenterServiceMutation = () => {
   return useMutation(({ id, data }: { id: string; data: Partial<CivicCenterServicePayload> }) =>
     updateCivicCenterService(id, data),
   );
+};
+
+export const useEnableCCServiceMutation = () => {
+  return useMutation((id: number) => enableCCService(id));
+};
+
+export const useDisableCCServiceMutation = () => {
+  return useMutation((id: number) => disableCCService(id));
+};
+
+export const useDeleteCCServiceMutation = () => {
+  return useMutation((id: number) => deleteCCService(id));
 };
 
 export const useFeedbackQuerry = (

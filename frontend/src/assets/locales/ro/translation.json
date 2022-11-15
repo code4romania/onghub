@@ -125,7 +125,7 @@
         "legal": "Informatii legale"
       },
       "errors": {
-        "REQ_001": "Acest email este deja folosit",
+        "REQ_001": "Exista deja un utilizator cu acest email sau cu acest numar de telefon.",
         "REQ_007": "Exista deja o organizatie cu acest CUI",
         "REQ_008": "Exista deja o organizatie cu acest numar RAF",
         "REQ_009": "Exista deja o organizatie cu aceasta denumire",

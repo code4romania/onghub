@@ -26,6 +26,18 @@ export const updateCivicCenterService = (
   ).then((res: AxiosResponse<CivicCenterService>) => res.data);
 };
 
+export const enableCCService = (id: number): Promise<CivicCenterService> => {
+  return API.patch(`/civic-center/services/${id}/enable`).then(
+    (res: AxiosResponse<CivicCenterService>) => res.data,
+  );
+};
+
+export const disableCCService = (id: number): Promise<CivicCenterService> => {
+  return API.patch(`/civic-center/services/${id}/disable`).then(
+    (res: AxiosResponse<CivicCenterService>) => res.data,
+  );
+};
+
 export const getCivicCenterServiceById = (id: string): Promise<CivicCenterService> => {
   return API.get(`/civic-center/services/${id}`).then(
     (res: AxiosResponse<CivicCenterService>) => res.data,
@@ -51,4 +63,8 @@ export const getFeedbacks = async (
 
 export const removeFeedback = async (id: number): Promise<void> => {
   return API.delete(`/civic-center/feedback/${id}`).then((res: AxiosResponse<void>) => res.data);
+};
+
+export const deleteCCService = (id: number): Promise<void> => {
+  return API.delete(`/civic-center/services/${id}`).then((res: AxiosResponse<void>) => res.data);
 };
