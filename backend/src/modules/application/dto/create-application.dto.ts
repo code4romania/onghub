@@ -54,7 +54,7 @@ export class CreateApplicationDto {
   logo: string;
 
   @IsArray()
-  @IsNotEmpty()
+  @IsOptional()
   @Length(2, 100, { each: true })
   steps: string[];
 }
