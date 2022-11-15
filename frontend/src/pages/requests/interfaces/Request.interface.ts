@@ -10,6 +10,7 @@ export interface IOrganizationRequest extends BaseEntity {
   name: string;
   organizationName: string;
   organization: IOrganizationFull;
+  logo: string;
 }
 
 export interface IApplicationRequest extends BaseEntity {

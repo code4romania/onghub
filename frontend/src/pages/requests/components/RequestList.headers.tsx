@@ -8,6 +8,7 @@ import {
 } from '../constants/RequestStatus.constants';
 import { IOrganizationRequest } from '../interfaces/Request.interface';
 import i18n from '../../../common/config/i18n';
+import NameWithLogo from '../../../components/name-with-logo/NameWithLogo';
 
 const translations = {
   organization_name: i18n.t('requests:header.org_name'),
@@ -27,6 +28,9 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     selector: (row: IOrganizationRequest) => row.organizationName,
     grow: 3,
     minWidth: '15rem',
+    cell: (row: IOrganizationRequest) => (
+      <NameWithLogo name={row.organizationName} logo={row.logo} />
+    ),
   },
   {
     id: 'name',
