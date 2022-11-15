@@ -50,6 +50,7 @@ import FeedbackList from '../../pages/civic-center-service/feedback/FeedbackList
 import EditCivicCenterService from '../../pages/civic-center-service/EditCivicCenterService';
 import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrapper';
 import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
+import OrganizationPracticePrograms from '../../pages/organization/components/OrganizationPracticePrograms/OrganizationPracticePrograms';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -228,6 +229,8 @@ const Router = () => {
             <Route path="financial" element={<OrganizationFinancial />} />
             <Route path="data" element={<OrganizationData />} />
             <Route path="applications" element={<OrganizationApplications />} />
+            <Route path="programs" element={<OrganizationPracticePrograms />} />
+            <Route path="services" element={<div>servicii</div>} />
           </Route>
           <Route
             path={'organization'}
@@ -244,6 +247,24 @@ const Router = () => {
             <Route path="financial" element={<OrganizationFinancial />} />
             <Route path="data" element={<OrganizationData />} />
           </Route>
+
+          <Route
+            path={'organizations/:organizationId/programs/add'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <CreatePracticeProgram />
+              </RoleGuard>
+            }
+          ></Route>
+
+          <Route
+            path={'organizations/:organizationId/programs/:id'}
+            element={
+              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                <EditPracticeProgram />
+              </RoleGuard>
+            }
+          ></Route>
 
           {role === UserRole.SUPER_ADMIN ? (
             <Route

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
@@ -10,6 +10,9 @@ import PracticeProgramForm from './components/PracticeProgramForm';
 
 const CreatePracticeProgram = () => {
   const navigate = useNavigate();
+
+  const { organizationId } = useParams();
+
   const { t } = useTranslation(['practice_program', 'common']);
   // check additional validity
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
@@ -36,15 +39,23 @@ const CreatePracticeProgram = () => {
     // submit only if additional perdiod and working hours conditions are met
     if (isFormValid) {
       // create practice program request
-      await createPracticeProgram(data, {
-        onSuccess: () => {
-          useSuccessToast(t('feedback.success_create'));
-          navigate('/practice-program', { replace: true });
+      await createPracticeProgram(
+        { ...data, organizationId: organizationId },
+        {
+          onSuccess: () => {
+            useSuccessToast(t('feedback.success_create'));
+
+            if (organizationId) {
+              navigate(`/organizations/${organizationId}/programs`, { replace: true });
+            } else {
+              navigate('/practice-program', { replace: true });
+            }
+          },
+          onError: () => {
+            useErrorToast(t('feedback.error_create'));
+          },
         },
-        onError: () => {
-          useErrorToast(t('feedback.error_create'));
-        },
-      });
+      );
     }
   };
 
@@ -53,7 +64,10 @@ const CreatePracticeProgram = () => {
       title={t('add.title', { ns: 'practice_program' })}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => navigate('/practice-program'),
+        onBtnClick: () =>
+          organizationId
+            ? navigate(`/organizations/${organizationId}/programs`)
+            : navigate('/practice-program'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">

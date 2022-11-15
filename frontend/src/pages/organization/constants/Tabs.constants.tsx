@@ -9,6 +9,8 @@ const translations = {
   open_data: i18n.t('organization:tabs.open_data'),
   overview: i18n.t('organization:tabs.overview'),
   my_applications: i18n.t('organization:tabs.my_applications'),
+  practice_programs: i18n.t('organization:tabs.practice_programs'),
+  services: i18n.t('organization:tabs.services'),
 };
 
 export const ORGANIZATION_TABS: IPageTab[] = [
@@ -27,4 +29,6 @@ export const ORGANIZATION_EXTENDED_TABS: IPageTab[] = [
   { id: 4, name: translations.financial, href: 'financial' },
   { id: 5, name: translations.open_data, href: 'data' },
   { id: 6, name: translations.my_applications, href: 'applications' },
+  { id: 7, name: translations.practice_programs, href: 'programs' },
+  { id: 8, name: translations.services, href: 'services' },
 ];

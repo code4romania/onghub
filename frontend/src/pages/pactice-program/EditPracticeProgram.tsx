@@ -15,7 +15,7 @@ import PracticeProgramForm from './components/PracticeProgramForm';
 const EditPracticeProgram = () => {
   const navigate = useNavigate();
   // get practice program id
-  const { id } = useParams();
+  const { id, organizationId } = useParams();
 
   // translations
   const { t } = useTranslation(['practice_program', 'common']);
@@ -73,12 +73,19 @@ const EditPracticeProgram = () => {
       await updatePracticeProgram(
         {
           id: id as string,
-          data,
+          data: {
+            ...data,
+            organizationId: organizationId,
+          },
         },
         {
           onSuccess: () => {
             useSuccessToast(t('feedback.success_update'));
-            navigate('/practice-program', { replace: true });
+            if (organizationId) {
+              navigate(`/organizations/${organizationId}/programs`, { replace: true });
+            } else {
+              navigate('/practice-program', { replace: true });
+            }
           },
           onError: () => {
             useErrorToast(t('feedback.error_update'));
@@ -93,7 +100,10 @@ const EditPracticeProgram = () => {
       title={t('edit.title', { ns: 'practice_program' })}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => navigate('/practice-program'),
+        onBtnClick: () =>
+          organizationId
+            ? navigate(`/organizations/${organizationId}/programs`)
+            : navigate('/practice-program'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
