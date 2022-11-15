@@ -22,6 +22,7 @@ const OrganizationPracticePrograms = () => {
       refetch={refetch}
       error={error}
       onAddPracticeProgram={onAddPracticeProgram}
+      hideTitle
     />
   );
 };

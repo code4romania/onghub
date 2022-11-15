@@ -55,6 +55,7 @@ export class PracticeProgramController {
     return this.practiceProgramService.updatePracticeProgramStatus(
       id,
       true,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
@@ -68,6 +69,7 @@ export class PracticeProgramController {
     return this.practiceProgramService.updatePracticeProgramStatus(
       id,
       false,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
@@ -106,6 +108,10 @@ export class PracticeProgramController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.practiceProgramService.delete(id, user.organizationId);
+    return this.practiceProgramService.delete(
+      id,
+      user?.role === Role.SUPER_ADMIN,
+      user.organizationId,
+    );
   }
 }

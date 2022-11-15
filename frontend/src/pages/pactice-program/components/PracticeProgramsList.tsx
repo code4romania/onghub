@@ -10,6 +10,7 @@ interface PracticeProgramsListProps {
   isLoading?: boolean;
   error?: unknown;
   practicePrograms?: PracticeProgram[];
+  hideTitle?: boolean;
   refetch: () => void;
   onAddPracticeProgram: () => void;
 }
@@ -18,6 +19,7 @@ const PracticeProgramsList = ({
   practicePrograms,
   isLoading,
   error,
+  hideTitle,
   refetch,
   onAddPracticeProgram,
 }: PracticeProgramsListProps) => {
@@ -26,7 +28,7 @@ const PracticeProgramsList = ({
 
   return (
     <ContentWrapper
-      title={t('list.title')}
+      title={!hideTitle ? t('list.title') : ''}
       addButton={{
         btnLabel: t('list.add_button'),
         onBtnClick: onAddPracticeProgram,
