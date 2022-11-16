@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
@@ -154,8 +155,14 @@ export class CivicCenterServiceService {
   public async updateServicetatus(
     id: number,
     active: boolean,
+    isSuperAdmin: boolean,
     organizationId?: number,
   ): Promise<CivicCenterService> {
+    if (!organizationId && !isSuperAdmin) {
+      // calling api without organizationId without super-admin persmission throw error
+      throw new UnauthorizedException();
+    }
+
     try {
       const where = organizationId
         ? {
@@ -443,7 +450,16 @@ export class CivicCenterServiceService {
     return practiceProgram;
   }
 
-  public async delete(id: number, organizationId?: number): Promise<void> {
+  public async delete(
+    id: number,
+    isSuperAdmin: boolean,
+    organizationId?: number,
+  ): Promise<void> {
+    if (!organizationId && !isSuperAdmin) {
+      // calling api without organizationId without super-admin persmission throw error
+      throw new UnauthorizedException();
+    }
+
     try {
       const where = organizationId ? { id, organizationId } : { id };
       await this.civicCenterServiceRepository.remove({ where });

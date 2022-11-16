@@ -24,7 +24,7 @@ import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.
 import { CivicCenterService } from '../entities/civic-center-service.entity';
 import { CivicCenterServiceService } from '../services/civic-center.service';
 
-@Roles(Role.ADMIN, Role.SUPER_ADMIN)
+@Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
@@ -41,12 +41,11 @@ export class CivicCenterController {
     @ExtractUser() user: User,
   ): Promise<CivicCenterService> {
     return this.civicCenterServiceService.create({
-      organizationId: user.organizationId,
       ...body,
+      organizationId: user.organizationId || body.organizationId,
     });
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/enable')
   async enable(
@@ -56,11 +55,11 @@ export class CivicCenterController {
     return this.civicCenterServiceService.updateServicetatus(
       id,
       true,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/disable')
   async disable(
@@ -70,6 +69,7 @@ export class CivicCenterController {
     return this.civicCenterServiceService.updateServicetatus(
       id,
       false,
+      user.role === Role.SUPER_ADMIN,
       user?.organizationId,
     );
   }
@@ -83,8 +83,8 @@ export class CivicCenterController {
     @ExtractUser() user: User,
   ): Promise<CivicCenterService> {
     return this.civicCenterServiceService.update(id, {
-      organizationId: user.organizationId,
       ...body,
+      organizationId: user.organizationId || body.organizationId,
     });
   }
 
@@ -102,13 +102,16 @@ export class CivicCenterController {
     return this.civicCenterServiceService.find(id, user.organizationId);
   }
 
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: Number })
   @Delete(':id')
   async delete(
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.civicCenterServiceService.delete(id, user.organizationId);
+    return this.civicCenterServiceService.delete(
+      id,
+      user.role === Role.SUPER_ADMIN,
+      user.organizationId,
+    );
   }
 }

@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { usePracticePrograms } from '../../services/practice-program/PracticeProgram.queries';
-import PracticeProgramsList from './components/PracticeProgramsList';
+import { useNavigate, useParams } from 'react-router-dom';
+import { usePracticePrograms } from '../../../../services/practice-program/PracticeProgram.queries';
+import PracticeProgramsList from '../../../pactice-program/components/PracticeProgramsList';
 
-const PracticePrograms = () => {
+const OrganizationPracticePrograms = () => {
+  const { id } = useParams();
   // routing
   const navigate = useNavigate();
 
@@ -11,7 +12,7 @@ const PracticePrograms = () => {
   const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms();
 
   const onAddPracticeProgram = () => {
-    navigate('add');
+    navigate(`/organizations/${id}/programs/add`);
   };
 
   return (
@@ -21,8 +22,9 @@ const PracticePrograms = () => {
       refetch={refetch}
       error={error}
       onAddPracticeProgram={onAddPracticeProgram}
+      hideTitle
     />
   );
 };
 
-export default PracticePrograms;
+export default OrganizationPracticePrograms;
