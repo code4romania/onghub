@@ -44,14 +44,10 @@ export class FileManagerService {
     });
   }
 
-  public async uploadFiles(
-    path: string,
+  public async validateFiles(
     files: Express.Multer.File[],
     fileType: FILE_TYPE,
-    fileName?: string,
-  ): Promise<string[]> {
-    this.logger.log(`Preparing to upload ${files.length} files...`);
-
+  ): Promise<void> {
     switch (fileType) {
       case FILE_TYPE.IMAGE:
         if (!files.every((file) => VALID_IMAGE_TYPES.includes(file.mimetype))) {
@@ -72,6 +68,17 @@ export class FileManagerService {
         `Maximum size is ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
       );
     }
+  }
+
+  public async uploadFiles(
+    path: string,
+    files: Express.Multer.File[],
+    fileType: FILE_TYPE,
+    fileName?: string,
+  ): Promise<string[]> {
+    this.logger.log(`Preparing to upload ${files.length} files...`);
+
+    await this.validateFiles(files, fileType);
 
     // Create upload params
     const params: FileUploadParams[] = files.map((file) => ({

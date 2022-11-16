@@ -8,7 +8,4 @@ export const CREATE_ORGANIZATION_ERRORS: Record<string, string> = {
   REQ_010: i18n.t('organization:create.errors.REQ_010'),
   REQ_011: i18n.t('organization:create.errors.REQ_011'),
   REQ_012: i18n.t('organization:create.errors.REQ_012'),
-  FILE_002: i18n.t('common:upload.file'),
-  FILE_003: i18n.t('common:upload.image'),
-  FILE_004: i18n.t('common:upload.size'),
 };
