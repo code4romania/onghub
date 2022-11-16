@@ -280,10 +280,10 @@ export class ApplicationService {
    * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
    */
   public async findOne(
-    organizationId: number,
+    user: User,
     applicationId: number,
   ): Promise<ApplicationWithOngStatusDetails> {
-    const applicationWithDetails = await this.applicationRepository
+    let applicationWithDetailsQuery = this.applicationRepository
       .getQueryBuilder()
       .select([
         'application.id as id',
@@ -304,20 +304,24 @@ export class ApplicationService {
         'ong_application',
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
-        { organizationId: organizationId },
+        { organizationId: user.organizationId },
       ).leftJoin(
         'user_ong_application',
         'userOngApp',
         'userOngApp.ong_application_id = ongApp.id'
       )
-      .where('application.id = :applicationId', { applicationId })
-      .andWhere(new Brackets((qb) => {
+      .where('application.id = :applicationId', { applicationId });
+
+    if (user.role === Role.EMPLOYEE) {
+      applicationWithDetailsQuery = applicationWithDetailsQuery.andWhere(new Brackets((qb) => {
         qb.where('application.type != :type AND userOngApp.status = :status', {
           status: UserOngApplicationStatus.ACTIVE,
           type: ApplicationTypeEnum.INDEPENDENT
         }).orWhere('application.type = :type', { type: ApplicationTypeEnum.INDEPENDENT })
-      }))
-      .getRawOne();
+      }));
+    }
+
+    const applicationWithDetails = await applicationWithDetailsQuery.getRawOne();
 
     if (!applicationWithDetails) {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
