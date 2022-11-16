@@ -45,7 +45,7 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindManyOptions, In } from 'typeorm';
+import { Brackets, FindManyOptions, In } from 'typeorm';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
@@ -311,9 +311,12 @@ export class ApplicationService {
         'userOngApp.ong_application_id = ongApp.id'
       )
       .where('application.id = :applicationId', { applicationId })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
-      })
+      .andWhere(new Brackets((qb) => {
+        qb.where('application.type != :type AND userOngApp.status = :status', {
+          status: UserOngApplicationStatus.ACTIVE,
+          type: ApplicationTypeEnum.INDEPENDENT
+        }).orWhere('application.type = :type', { type: ApplicationTypeEnum.INDEPENDENT })
+      }))
       .getRawOne();
 
     if (!applicationWithDetails) {
