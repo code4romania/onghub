@@ -153,6 +153,8 @@ export class UserService {
           user.id,
           user.organizationId,
         );
+      } else {
+        await this.signOutUser(id);
       }
 
       // 6. Update db user data
