@@ -1133,8 +1133,11 @@ export class OrganizationService {
    *  2. Create 3 new entires for Reports, Parteners, Investors (Open Data)
    *  3. Send notification email to the NGO Admin to take action
    */
-  public async createNewReportingEntries(organizationId: string) {
-    const year = new Date().getFullYear() - 2;
+  public async createNewReportingEntries(
+    organizationId: string,
+    forYear?: number,
+  ) {
+    const year = forYear ?? new Date().getFullYear() - 1;
     // 1. Check if the NGO already has the data we try to add
     const organization = await this.findWithRelations(+organizationId);
 

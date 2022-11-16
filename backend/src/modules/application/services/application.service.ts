@@ -45,7 +45,7 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindManyOptions, In } from 'typeorm';
+import { Brackets, FindManyOptions, In } from 'typeorm';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
@@ -280,10 +280,10 @@ export class ApplicationService {
    * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
    */
   public async findOne(
-    organizationId: number,
+    user: User,
     applicationId: number,
   ): Promise<ApplicationWithOngStatusDetails> {
-    const applicationWithDetails = await this.applicationRepository
+    let applicationWithDetailsQuery = this.applicationRepository
       .getQueryBuilder()
       .select([
         'application.id as id',
@@ -304,18 +304,33 @@ export class ApplicationService {
         'ong_application',
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
-        { organizationId: organizationId },
+        { organizationId: user.organizationId },
       )
       .leftJoin(
         'user_ong_application',
         'userOngApp',
         'userOngApp.ong_application_id = ongApp.id',
       )
-      .where('application.id = :applicationId', { applicationId })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
-      })
-      .getRawOne();
+      .where('application.id = :applicationId', { applicationId });
+
+    if (user.role === Role.EMPLOYEE) {
+      applicationWithDetailsQuery = applicationWithDetailsQuery.andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'application.type != :type AND userOngApp.status = :status',
+            {
+              status: UserOngApplicationStatus.ACTIVE,
+              type: ApplicationTypeEnum.INDEPENDENT,
+            },
+          ).orWhere('application.type = :type', {
+            type: ApplicationTypeEnum.INDEPENDENT,
+          });
+        }),
+      );
+    }
+
+    const applicationWithDetails =
+      await applicationWithDetailsQuery.getRawOne();
 
     if (!applicationWithDetails) {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
