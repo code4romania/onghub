@@ -285,8 +285,25 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @ApiBody({
+    required: false,
+    schema: {
+      type: 'object',
+      required: [],
+      properties: {
+        forYear: {
+          type: 'number',
+          format: 'int32',
+          minimum: 2020,
+        },
+      },
+    },
+  })
   @Post(':id/new-report-entries')
-  createNewReportEntries(@Param('id') id: string) {
-    return this.organizationService.createNewReportingEntries(id);
+  createNewReportEntries(
+    @Param('id') id: string,
+    @Body() { forYear }: { forYear: number },
+  ) {
+    return this.organizationService.createNewReportingEntries(id, forYear);
   }
 }
