@@ -408,8 +408,16 @@ export class ApplicationService {
       }
     }
 
+    // if application is disabled, sign out all users from all organizations who have access to the app
     if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
-      // await this.userService.si
+      const ongApplications = await this.ongApplicationService.findMany({
+        where: { applicationId: id },
+      });
+      ongApplications.map(async (ongApplication) => {
+        await this.userService.signOutAllOrganization(
+          ongApplication.organizationId,
+        );
+      });
     }
 
     return this.applicationRepository.update({ id }, updateApplicationDto);
