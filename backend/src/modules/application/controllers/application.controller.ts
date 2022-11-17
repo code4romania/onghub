@@ -49,7 +49,7 @@ export class ApplicationController {
   constructor(
     private readonly applicationService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
-  ) {}
+  ) { }
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -156,7 +156,7 @@ export class ApplicationController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<ApplicationWithOngStatusDetails> {
-    return this.applicationService.findOne(user.organizationId, id);
+    return this.applicationService.findOne(user, id);
   }
 
   @Roles(Role.SUPER_ADMIN)

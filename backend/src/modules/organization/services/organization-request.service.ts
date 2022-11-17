@@ -225,6 +225,7 @@ export class OrganizationRequestService {
         phone: createReqDto.admin.phone,
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
+        logo: organization.organizationGeneral.logo,
       });
 
       // 9. Send emails for Super-Admin

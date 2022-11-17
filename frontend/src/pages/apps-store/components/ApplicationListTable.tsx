@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
-import { useErrorToast } from '../../../common/hooks/useToast';
+import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
@@ -210,7 +210,13 @@ const ApplicationListTable = () => {
     if (applicationToBeRemoved)
       removeApplication(
         { applicationId: applicationToBeRemoved },
-        { onSuccess: () => refetch(), onSettled: () => setApplicationToBeRemoved(null) },
+        {
+          onSuccess: () => {
+            useSuccessToast(t('list.remove_success'));
+            refetch();
+          },
+          onSettled: () => setApplicationToBeRemoved(null),
+        },
       );
   };
 

@@ -44,6 +44,7 @@ export const ORGANIZATION_WITH_SERVICES_FILTERS_CONFIG = {
       id: true,
       name: true,
       description: true,
+      logo: true,
     },
   },
   searchableColumns: ['organizationGeneral.name', 'civicCenterServices.name'],
