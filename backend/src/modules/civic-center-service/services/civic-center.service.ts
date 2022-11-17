@@ -387,6 +387,7 @@ export class CivicCenterServiceService {
         hasEmailPhoneAccess: true,
         hasOnlineAccess: true,
         hasPhysicalAccess: true,
+        shortDescription: true,
       },
       relations: ['location'],
       where: { organizationId },
