@@ -13,6 +13,7 @@ import { MailService } from 'src/mail/services/mail.service';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -210,33 +211,50 @@ export class OrganizationService {
     });
 
     // upload logo
-    if (logo) {
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
-        logo,
-      );
+    try {
+      if (logo) {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organization.id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+          logo,
+          FILE_TYPE.IMAGE,
+        );
 
-      await this.organizationGeneralService.update(
-        organization.organizationGeneral.id,
-        {
-          logo: uploadedFile[0],
-        },
-      );
-    }
+        await this.organizationGeneralService.update(
+          organization.organizationGeneral.id,
+          {
+            logo: uploadedFile[0],
+          },
+        );
+      }
 
-    // upload organization statute
-    if (organizationStatute) {
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
-        organizationStatute,
-      );
+      // upload organization statute
+      if (organizationStatute) {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${organization.id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
+          organizationStatute,
+          FILE_TYPE.FILE,
+        );
 
-      await this.organizationLegalService.update(
-        organization.organizationLegal.id,
-        {
-          organizationStatute: uploadedFile[0],
-        },
-      );
+        await this.organizationLegalService.update(
+          organization.organizationLegal.id,
+          {
+            organizationStatute: uploadedFile[0],
+          },
+        );
+      }
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.UPLOAD,
+      });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.UPLOAD,
+          error,
+        });
+      }
     }
 
     return organization;

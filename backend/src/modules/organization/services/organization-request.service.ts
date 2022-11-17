@@ -20,6 +20,7 @@ import { MailService } from 'src/mail/services/mail.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FindManyOptions } from 'typeorm';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -184,7 +185,11 @@ export class OrganizationRequestService {
       });
     }
 
-    // 5. create organization
+    // 5. Validate files
+    this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+    this.fileManagerService.validateFiles(organizationStatute, FILE_TYPE.FILE);
+
+    // 6. create organization
     const organization = await this.organizationService.create(
       createReqDto.admin,
       createReqDto.organization,
@@ -193,7 +198,7 @@ export class OrganizationRequestService {
     );
 
     try {
-      // 6. Send email for Super amdin and admin with successful creation
+      // 7. Send email for Super amdin and admin with successful creation
       const adminMailOptions: {
         template: string;
         subject: string;
@@ -210,7 +215,7 @@ export class OrganizationRequestService {
         },
       });
 
-      // 7. create request
+      // 8. create request
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
@@ -220,7 +225,7 @@ export class OrganizationRequestService {
         logo: organization.organizationGeneral.logo,
       });
 
-      // 8. Send emails for Super-Admin
+      // 9. Send emails for Super-Admin
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });

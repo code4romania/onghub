@@ -2,6 +2,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
+import { FILE_ERRORS } from '../../common/constants/error.constants';
 import { mapSelectToValue } from '../../common/helpers/format.helper';
 import Header from '../../components/Header/Header';
 import { Loading } from '../../components/loading/Loading';
@@ -49,7 +50,7 @@ const CreateOrganization = () => {
 
   useEffect(() => {
     if (requestError) {
-      setError(`${(requestError as any)?.response?.data?.message}`);
+      setError(`${FILE_ERRORS[(requestError as any)?.response?.data?.code]}`);
     }
   }, [requestError]);
 
