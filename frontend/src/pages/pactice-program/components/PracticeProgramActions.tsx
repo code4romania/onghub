@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { openInNewTab } from '../../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import CardActions from '../../../components/card-actions/CardActions';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
@@ -55,7 +56,7 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
   };
 
   const onViewPracticeProgram = () => {
-    console.log('to be implemented');
+    openInNewTab(`${process.env.REACT_APP_P4G_WEBSITE}/practice-programs/${program.id}`);
   };
 
   const onEdit = () => {
