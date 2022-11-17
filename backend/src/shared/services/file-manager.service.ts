@@ -44,10 +44,8 @@ export class FileManagerService {
     });
   }
 
-  public async validateFiles(
-    files: Express.Multer.File[],
-    fileType: FILE_TYPE,
-  ): Promise<void> {
+  // TODO: look over this function again, find a better way to validate the files
+  public validateFiles(files: Express.Multer.File[], fileType: FILE_TYPE) {
     switch (fileType) {
       case FILE_TYPE.IMAGE:
         if (!files.every((file) => VALID_IMAGE_TYPES.includes(file.mimetype))) {
@@ -78,7 +76,7 @@ export class FileManagerService {
   ): Promise<string[]> {
     this.logger.log(`Preparing to upload ${files.length} files...`);
 
-    await this.validateFiles(files, fileType);
+    this.validateFiles(files, fileType);
 
     // Create upload params
     const params: FileUploadParams[] = files.map((file) => ({

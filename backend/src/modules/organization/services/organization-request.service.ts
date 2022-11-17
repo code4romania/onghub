@@ -186,11 +186,8 @@ export class OrganizationRequestService {
     }
 
     // 5. Validate files
-    await this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
-    await this.fileManagerService.validateFiles(
-      organizationStatute,
-      FILE_TYPE.FILE,
-    );
+    this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+    this.fileManagerService.validateFiles(organizationStatute, FILE_TYPE.FILE);
 
     // 6. create organization
     const organization = await this.organizationService.create(

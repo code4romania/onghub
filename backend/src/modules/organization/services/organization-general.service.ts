@@ -1,10 +1,9 @@
 import {
-  BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { FindOneOptions } from 'typeorm';
@@ -61,23 +60,13 @@ export class OrganizationGeneralService {
           error: { error },
           ...ORGANIZATION_ERRORS.UPLOAD,
         });
-        const err = error?.response;
-        switch (err?.errorCode) {
-          case FILE_ERRORS.IMAGE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.IMAGE,
-              error,
-            });
-          case FILE_ERRORS.SIZE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.SIZE,
-              error,
-            });
-          default:
-            throw new InternalServerErrorException({
-              ...ORGANIZATION_ERRORS.UPLOAD,
-              error,
-            });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
         }
       }
     }

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -58,7 +59,6 @@ import { ApplicationRequestRepository } from '../repositories/application-reques
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
 
 @Injectable()
 export class ApplicationService {
@@ -75,7 +75,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) { }
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -106,23 +106,13 @@ export class ApplicationService {
           error: { error },
           ...APPLICATION_ERRORS.UPLOAD,
         });
-        const err = error?.response;
-        switch (err?.errorCode) {
-          case FILE_ERRORS.IMAGE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.IMAGE,
-              error,
-            });
-          case FILE_ERRORS.SIZE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.SIZE,
-              error,
-            });
-          default:
-            throw new InternalServerErrorException({
-              ...APPLICATION_ERRORS.UPLOAD,
-              error,
-            });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...APPLICATION_ERRORS.UPLOAD,
+            error,
+          });
         }
       }
     }
@@ -322,23 +312,32 @@ export class ApplicationService {
         'ongApp',
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId: user.organizationId },
-      ).leftJoin(
+      )
+      .leftJoin(
         'user_ong_application',
         'userOngApp',
-        'userOngApp.ong_application_id = ongApp.id'
+        'userOngApp.ong_application_id = ongApp.id',
       )
       .where('application.id = :applicationId', { applicationId });
 
     if (user.role === Role.EMPLOYEE) {
-      applicationWithDetailsQuery = applicationWithDetailsQuery.andWhere(new Brackets((qb) => {
-        qb.where('application.type != :type AND userOngApp.status = :status', {
-          status: UserOngApplicationStatus.ACTIVE,
-          type: ApplicationTypeEnum.INDEPENDENT
-        }).orWhere('application.type = :type', { type: ApplicationTypeEnum.INDEPENDENT })
-      }));
+      applicationWithDetailsQuery = applicationWithDetailsQuery.andWhere(
+        new Brackets((qb) => {
+          qb.where(
+            'application.type != :type AND userOngApp.status = :status',
+            {
+              status: UserOngApplicationStatus.ACTIVE,
+              type: ApplicationTypeEnum.INDEPENDENT,
+            },
+          ).orWhere('application.type = :type', {
+            type: ApplicationTypeEnum.INDEPENDENT,
+          });
+        }),
+      );
     }
 
-    const applicationWithDetails = await applicationWithDetailsQuery.getRawOne();
+    const applicationWithDetails =
+      await applicationWithDetailsQuery.getRawOne();
 
     if (!applicationWithDetails) {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
@@ -424,23 +423,13 @@ export class ApplicationService {
           error: { error },
           ...APPLICATION_ERRORS.UPLOAD,
         });
-        const err = error?.response;
-        switch (err?.errorCode) {
-          case FILE_ERRORS.IMAGE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.IMAGE,
-              error,
-            });
-          case FILE_ERRORS.SIZE.errorCode:
-            throw new BadRequestException({
-              ...FILE_ERRORS.SIZE,
-              error,
-            });
-          default:
-            throw new InternalServerErrorException({
-              ...APPLICATION_ERRORS.UPLOAD,
-              error,
-            });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...APPLICATION_ERRORS.UPLOAD,
+            error,
+          });
         }
       }
     }

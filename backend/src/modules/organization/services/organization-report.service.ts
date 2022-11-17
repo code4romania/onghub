@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -120,23 +121,13 @@ export class OrganizationReportService {
         error: { error },
         ...ORGANIZATION_ERRORS.UPLOAD,
       });
-      const err = error?.response;
-      switch (err?.errorCode) {
-        case FILE_ERRORS.FILE.errorCode:
-          throw new BadRequestException({
-            ...FILE_ERRORS.FILE,
-            error,
-          });
-        case FILE_ERRORS.SIZE.errorCode:
-          throw new BadRequestException({
-            ...FILE_ERRORS.SIZE,
-            error,
-          });
-        default:
-          throw new InternalServerErrorException({
-            ...ORGANIZATION_ERRORS.UPLOAD,
-            error,
-          });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.UPLOAD,
+          error,
+        });
       }
     }
   }
@@ -181,23 +172,13 @@ export class OrganizationReportService {
         error: { error },
         ...ORGANIZATION_ERRORS.UPLOAD,
       });
-      const err = error?.response;
-      switch (err?.errorCode) {
-        case FILE_ERRORS.FILE.errorCode:
-          throw new BadRequestException({
-            ...FILE_ERRORS.FILE,
-            error,
-          });
-        case FILE_ERRORS.SIZE.errorCode:
-          throw new BadRequestException({
-            ...FILE_ERRORS.SIZE,
-            error,
-          });
-        default:
-          throw new InternalServerErrorException({
-            ...ORGANIZATION_ERRORS.UPLOAD,
-            error,
-          });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.UPLOAD,
+          error,
+        });
       }
     }
   }
