@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  ArrowCircleLeftIcon,
-  ArrowCircleRightIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/outline';
+import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from '@heroicons/react/outline';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -86,23 +82,6 @@ const Menu = () => {
             </a>
           ))}
         <div className="pt-60 space-y-4">
-          <a
-            key={'info'}
-            className={classNames(
-              isNarrow ? 'justify-center px-0' : 'px-4 space-x-5 ',
-              'main-menu-item',
-            )}
-          >
-            <InformationCircleIcon className="w-5 h-5" />
-            <span
-              className={classNames(
-                isNarrow ? '-translate-x-16 w-0 hidden' : '',
-                'transition-all duration-50 whitespace-nowrap',
-              )}
-            >
-              {t('informations')}
-            </span>
-          </a>
           <a
             key={'menu'}
             onClick={() => setIsNarrow((res) => !res)}
