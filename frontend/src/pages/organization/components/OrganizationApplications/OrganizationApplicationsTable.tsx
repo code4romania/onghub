@@ -48,21 +48,27 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
 
   useEffect(() => {
-    if (organizationApplications) setApplications(organizationApplications);
-  }, [organizationApplications]);
-
-  useEffect(() => {
-    if (organizationApplications)
-      setApplications(
-        organizationApplications.filter((app) => app.name.includes(searchWord || '')),
-      );
-  }, [searchWord]);
-
-  useEffect(() => {
-    if (type && organizationApplications) {
-      setApplications(organizationApplications.filter((app) => app.type === type?.type));
+    if (organizationApplications) {
+      if (type && searchWord) {
+        setApplications(
+          organizationApplications.filter(
+            (app) =>
+              app.type === type?.type && app.name.toLowerCase().includes(searchWord.toLowerCase()),
+          ),
+        );
+      } else if (type) {
+        setApplications(organizationApplications.filter((app) => app.type === type?.type));
+      } else if (searchWord) {
+        setApplications(
+          organizationApplications.filter((app) =>
+            app.name.toLowerCase().includes(searchWord.toLowerCase()),
+          ),
+        );
+      } else {
+        setApplications(organizationApplications);
+      }
     }
-  }, [type]);
+  }, [type, searchWord, organizationApplications]);
 
   useEffect(() => {
     if (applicationsError) {
