@@ -1,7 +1,6 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import Menu, { getNavigationRoutes } from './Menu';
-import { InformationCircleIcon } from '@heroicons/react/outline';
+import { getNavigationRoutes } from './Menu';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -114,19 +113,6 @@ export default function SlidingMenu({
                               </span>
                             </a>
                           ))}
-                        <div className="pt-60 space-y-4">
-                          <a
-                            key={'info'}
-                            className={classNames('px-4 space-x-5 ', 'main-menu-item')}
-                          >
-                            <InformationCircleIcon className="w-5 h-5" />
-                            <span
-                              className={classNames('transition-all duration-50 whitespace-nowrap')}
-                            >
-                              Informatii
-                            </span>
-                          </a>
-                        </div>
                       </nav>
                     </div>
                   </div>

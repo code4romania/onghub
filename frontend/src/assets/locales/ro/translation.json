@@ -46,6 +46,7 @@
     }
   },
   "menu": {
+    "informations": "Informatii",
     "collapse": "Restrange meniul"
   },
   "pagination": {
