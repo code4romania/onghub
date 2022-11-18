@@ -22,8 +22,12 @@ export const parsePracticaProgramFormDataToPaylod = (
 
   // format dates
   const formatedStartDate = startDate ? formatISO9075(startDate as Date) : startDate;
-  const formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
   const fromatedDeadline = deadline ? formatISO9075(deadline as Date) : deadline;
+
+  let formatedEndDate = null;
+  if (!isPeriodNotDetermined) {
+    formatedEndDate = endDate ? formatISO9075(endDate as Date) : endDate;
+  }
 
   return {
     ...practiceProgramPayload,

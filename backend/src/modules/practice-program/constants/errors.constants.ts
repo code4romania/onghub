@@ -19,20 +19,16 @@ export const PRACTICE_PROGRAMS_ERRORS = {
     message: 'Error while updating the practice program',
     errorCode: 'PP_005',
   },
-  NOT_DETERMINED_WITH_END_DATE: {
-    message: 'Practice program cannot be undetermined with end date',
-    errorCode: 'PP_006',
-  },
   DELETE: {
     message: 'Error while deleting practice program',
-    errorCode: 'PP_007',
+    errorCode: 'PP_006',
   },
   SEARCH: {
     message: 'Error while searching practice programs',
-    errorCode: 'PP_008',
+    errorCode: 'PP_007',
   },
   ENABLE_DISABLE: {
     message: 'Error while updating status',
-    errorCode: 'PP_009',
+    errorCode: 'PP_008',
   },
 };

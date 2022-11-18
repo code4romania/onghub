@@ -51,6 +51,7 @@ const PracticeProgramForm = ({
   // watchers
   const startDate = watch('startDate');
   const endDate = watch('endDate');
+  const isPeriodNotDetermined = watch('isPeriodNotDetermined');
   const minWorkingHours = watch('minWorkingHours');
   const maxWorkingHours = watch('maxWorkingHours');
 
@@ -189,26 +190,29 @@ const PracticeProgramForm = ({
                 );
               }}
             />
-            <Controller
-              key={PracticeProgramFormConfig.endDate.key}
-              name={PracticeProgramFormConfig.endDate.key}
-              rules={PracticeProgramFormConfig.endDate.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <DatePickerInput
-                    {...PracticeProgramFormConfig.endDate.config}
-                    value={value}
-                    onChange={onChange}
-                    error={
-                      (errors as Record<string, { message: string }>)[
-                        PracticeProgramFormConfig.endDate.key
-                      ]?.message?.toString() || practiceProgramPeriodError
-                    }
-                  />
-                );
-              }}
-            />
+            {!isPeriodNotDetermined && (
+              <Controller
+                key={PracticeProgramFormConfig.endDate.key}
+                name={PracticeProgramFormConfig.endDate.key}
+                rules={PracticeProgramFormConfig.endDate.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <DatePickerInput
+                      {...PracticeProgramFormConfig.endDate.config}
+                      value={value}
+                      onChange={onChange}
+                      error={
+                        (errors as Record<string, { message: string }>)[
+                          PracticeProgramFormConfig.endDate.key
+                        ]?.message?.toString() || practiceProgramPeriodError
+                      }
+                    />
+                  );
+                }}
+              />
+            )}
+
             <Controller
               key={PracticeProgramFormConfig.isPeriodNotDetermined.key}
               name={PracticeProgramFormConfig.isPeriodNotDetermined.key}

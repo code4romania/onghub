@@ -42,6 +42,9 @@ const InputField = (props: {
               defaultValue={props.config.defaultValue}
               aria-invalid={props.config.error ? 'true' : 'false'}
               disabled={props.disabled}
+              checked={
+                props.config.type === 'checkbox' ? Boolean(props.config.defaultValue) : undefined
+              }
               id={`${props.config.id}__input`}
             />
             {props.config.type === 'checkbox' && (
