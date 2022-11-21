@@ -18,7 +18,6 @@ const RichText = (props: { config: RichTextConfig; readonly?: boolean; disabled?
       JSON.stringify(draftToHtml(convertToRaw(editorState.getCurrentContent()))) !==
       JSON.stringify(props.config.value)
     ) {
-      console.log('props.config.value', props.config);
       const blocksFromHtml = htmlToDraft(props.config.value || '');
       const { contentBlocks, entityMap } = blocksFromHtml;
       const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
