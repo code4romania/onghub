@@ -36,6 +36,8 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
+import * as XLSX from 'xlsx';
+import { DownloadFiltersDto } from '../dto/download-users.filter';
 
 @Injectable()
 export class UserService {
@@ -189,7 +191,7 @@ export class UserService {
       ...options,
     };
 
-    // For Admin user we will sort by organizatioinId
+    // For Admin user we will sort by organizationId
     return this.userRepository.getManyPaginated(
       USER_FILTERS_CONFIG,
       organizationId
@@ -353,6 +355,41 @@ export class UserService {
     await this.cognitoService.resendInvite(user.email);
 
     return;
+  }
+
+  public async downloadUsers(
+    options: DownloadFiltersDto,
+    organizationId?: number,
+  ): Promise<void> {
+    const paginationOptions: any = {
+      role: Role.EMPLOYEE,
+      status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
+      ...options,
+    };
+
+    console.log(paginationOptions);
+
+    // For Admin user we will sort by organizationId
+    const users = await this.userRepository.getManyPaginated(
+      USER_FILTERS_CONFIG,
+      organizationId
+        ? { ...paginationOptions, organizationId }
+        : paginationOptions,
+    );
+
+    const userData = users.items.map((item) => {
+      return {
+        Nume: item.name,
+        Email: item.email,
+        Telefon: item.phone,
+        'Acces general': item.status,
+        'Data adaugarii': item.createdOn.toDateString(),
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(userData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+    XLSX.writeFile(wb, 'users.xlsx');
   }
 
   // ****************************************************

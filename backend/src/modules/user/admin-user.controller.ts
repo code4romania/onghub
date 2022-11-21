@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -26,6 +27,7 @@ import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { DownloadFiltersDto } from './dto/download-users.filter';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
@@ -118,5 +120,17 @@ export class AdminUserController {
   @Delete(':id')
   remove(@Param('id') id: number, @ExtractUser() user: User) {
     return this.userService.removeById(id, user.organizationId);
+  }
+
+  @ApiBody({ type: DownloadFiltersDto })
+  @Post('download')
+  async downloadUsers(
+    @ExtractUser() user: User,
+    @Body() filters: DownloadFiltersDto,
+  ): Promise<void> {
+    return this.userService.downloadUsers(
+      filters,
+      filters.organizationId ? filters.organizationId : user.organizationId,
+    );
   }
 }

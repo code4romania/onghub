@@ -1,6 +1,7 @@
 import {
   createUser,
   deleteUser,
+  downloadUsers,
   getInvitees,
   getProfile,
   getUserById,
@@ -19,6 +20,7 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IInvite } from '../../pages/users/interfaces/Invite.interface';
+import { IUserDownload } from '../../pages/users/interfaces/UserDownload.interface';
 
 export const useProfileQuery = (queryOptions?: any) => {
   const { setProfile, setOrganization } = useStore();
@@ -104,4 +106,8 @@ export const useUserMutation = () => {
 
 export const useResendInviteMutation = () => {
   return useMutation((id: number) => resendInvite(id));
+};
+
+export const useDownloadUsersMutation = () => {
+  return useMutation((payload: IUserDownload) => downloadUsers(payload));
 };

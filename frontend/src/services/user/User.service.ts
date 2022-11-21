@@ -4,6 +4,7 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IInvite } from '../../pages/users/interfaces/Invite.interface';
 import { IUser } from '../../pages/users/interfaces/User.interface';
+import { IUserDownload } from '../../pages/users/interfaces/UserDownload.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 import API from '../API';
 
@@ -80,4 +81,8 @@ export const getProfile = async (): Promise<IUser> => {
 
 export const deleteUser = async (): Promise<any> => {
   return API.delete(`/profile`).then((res) => res.data);
+};
+
+export const downloadUsers = async (payload: IUserDownload): Promise<void> => {
+  return API.post(`/user/download`, payload).then((res) => res.data);
 };
