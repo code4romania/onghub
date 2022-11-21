@@ -16,6 +16,7 @@ interface CivicCenterServiceContentProps {
 interface CivicCenterAccessDetailProps {
   title: string;
   description: string;
+  containsHtml?: boolean;
 }
 
 interface CivicCenterAccessDetailsRowProps {
@@ -23,13 +24,21 @@ interface CivicCenterAccessDetailsRowProps {
   value?: string;
 }
 
-const CivicCenterAccessDetail = ({ title, description }: CivicCenterAccessDetailProps) => (
+const CivicCenterAccessDetail = ({
+  title,
+  description,
+  containsHtml,
+}: CivicCenterAccessDetailProps) => (
   <div className="pb-4">
     <h4 className="flex items-center  justify-start gap-2">
       <CheckCircleIcon className="w-5 h-5 text-green" />
       <span className="font-titilliumBold text-base text-gray-800">{title}</span>
     </h4>
-    <p className="font-normal text-sm text-gray-500">{description}</p>
+    {containsHtml ? (
+      <div dangerouslySetInnerHTML={{ __html: description || '' }} />
+    ) : (
+      <p className="font-normal text-sm text-gray-500">{description}</p>
+    )}
   </div>
 );
 
@@ -75,7 +84,7 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
           <div className="flex-1 flex flex-col gap-2 xl:max-w-[30%]">
             <CivicCenterAccessDetail
               title={t('details.access.online.title')}
-              description={t('details.access.online.description')}
+              description={service?.onlineAccessDescription || ''}
             />
           </div>
         )}
@@ -83,7 +92,7 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
           <div className="flex-1 flex flex-col gap-2 xl:max-w-[30%]">
             <CivicCenterAccessDetail
               title={t('details.access.email_or_phone.title')}
-              description={t('details.access.email_or_phone.description')}
+              description={service?.emailPhoneAccessDescription || ''}
             />
             <CivicCenterAccessDetailsRow label={t('details.email')} value={service.emailAccess} />
             <CivicCenterAccessDetailsRow label={t('details.phone')} value={service.phoneAccess} />
@@ -93,7 +102,8 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
           <div className="flex-1 flex flex-col gap-2 xl:max-w-[30%]">
             <CivicCenterAccessDetail
               title={t('details.access.physical.title')}
-              description={t('details.access.physical.description')}
+              description={service?.physicalAccessDescription || ''}
+              containsHtml
             />
             <CivicCenterAccessDetailsRow
               label={t('details.address')}
