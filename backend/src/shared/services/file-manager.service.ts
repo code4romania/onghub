@@ -45,7 +45,13 @@ export class FileManagerService {
   }
 
   // TODO: look over this function again, find a better way to validate the files
-  public validateFiles(files: Express.Multer.File[], fileType: FILE_TYPE) {
+  public validateFiles(
+    files: Express.Multer.File[],
+    fileType: FILE_TYPE,
+  ): Promise<void> {
+    if (!files) {
+      return;
+    }
     switch (fileType) {
       case FILE_TYPE.IMAGE:
         if (!files.every((file) => VALID_IMAGE_TYPES.includes(file.mimetype))) {
