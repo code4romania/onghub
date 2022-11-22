@@ -42,9 +42,9 @@ const AddApplication = () => {
       {
         application: {
           ...data,
-          website: setUrlPrefix(data.website),
-          loginLink: setUrlPrefix(data.loginLink),
-          videoLink: setUrlPrefix(data.videoLink),
+          website: setUrlPrefix(data.website) as string,
+          loginLink: setUrlPrefix(data.loginLink) || undefined,
+          videoLink: setUrlPrefix(data.videoLink) as string,
         },
         logo: file as File,
       },

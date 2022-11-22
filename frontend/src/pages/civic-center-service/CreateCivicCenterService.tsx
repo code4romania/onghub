@@ -7,6 +7,7 @@ import { CivicCenterServicePayload } from '../../services/civic-center-service/i
 import CivicCenterForm from './components/CivicCenterForm';
 import { useCreateCivicCenterServiceMutation } from '../../services/civic-center-service/CivicCenterService.queries';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
+import { setUrlPrefix } from '../../common/helpers/format.helper';
 
 const CreateCivicCenterService = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const CreateCivicCenterService = () => {
         {
           ...data,
           organizationId: organizationId,
+          onlineAccessLink: setUrlPrefix(data.onlineAccessLink) || undefined,
         },
         {
           onSuccess: () => {

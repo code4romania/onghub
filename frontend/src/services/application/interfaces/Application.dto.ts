@@ -5,10 +5,10 @@ export interface CreateApplicationDto {
   type: ApplicationTypeEnum;
   shortDescription: string;
   description: string;
-  videoLink: string;
-  loginLink: string;
+  videoLink: string | undefined;
+  loginLink: string | undefined;
   pullingType?: { label: string; value: ApplicationPullingType };
-  website: string;
+  website: string | undefined;
   logo: string;
   steps: { item: string }[];
 }
