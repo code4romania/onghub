@@ -129,7 +129,7 @@ const UserInvites = () => {
           <div className="sm:basis-1/4 w-full">
             <DateRangePicker
               label={t('list.date')}
-              defaultValue={range.length > 0 ? range : undefined}
+              value={range.length > 0 ? range : undefined}
               onChange={onDateChange}
             />
           </div>

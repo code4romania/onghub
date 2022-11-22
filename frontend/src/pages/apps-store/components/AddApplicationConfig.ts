@@ -244,12 +244,6 @@ export const AddAppConfig: Record<string, any> = {
   },
   step: {
     key: 'step',
-    rules: {
-      required: {
-        value: true,
-        message: translations.step.required,
-      },
-    },
     config: {
       type: 'text',
       label: translations.step.label,

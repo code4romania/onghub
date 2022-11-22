@@ -73,8 +73,8 @@ export const mapSelectToSkill = (
 // Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,
-  // label: `${item.name}, jud. ${item.county.name}`,
-  label: `${item?.name}`,
+  label: `${item.name}, jud. ${item.county.name}`,
+  // label: `${item?.name}`,
 });
 
 // Federations and Coalitions
@@ -147,9 +147,9 @@ export const cleanupPayload = (payload: any) => {
 };
 
 export const setUrlPrefix = (address: string | null) => {
-  if (!address?.startsWith('http://' || 'https://')) {
-    return 'https://' + address;
-  } else {
+  if (address?.startsWith('http://' || 'https://')) {
     return address;
+  } else {
+    return 'https://' + address;
   }
 };

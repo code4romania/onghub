@@ -1,4 +1,4 @@
-export const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png'];
+export const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 export const VALID_FILE_TYPES = [
   'application/pdf', //.pdf
   'application/msword', //.doc

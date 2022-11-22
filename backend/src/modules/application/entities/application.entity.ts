@@ -33,7 +33,7 @@ export class Application extends BaseEntity {
   })
   pullingType: ApplicationPullingType;
 
-  @Column({ type: 'jsonb', name: 'steps' })
+  @Column({ type: 'jsonb', name: 'steps', nullable: true })
   steps: string[];
 
   @Column({ type: 'text', name: 'short_description' })

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useOutletContext } from 'react-router-dom';
+import { FILE_ERRORS } from '../../../../common/constants/error.constants';
 import {
   emptyStringToNull,
   fileToURL,
@@ -126,8 +127,13 @@ const OrganizationGeneral = () => {
         onSuccess: () => {
           setFile(null);
         },
-        onError: () => {
-          useErrorToast(t('save_error', { ns: 'orgnization' }));
+        onError: (error: any) => {
+          const err = error.response.data;
+          if (err.code) {
+            useErrorToast(FILE_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('save_error', { ns: 'organization' }));
+          }
         },
       },
     );

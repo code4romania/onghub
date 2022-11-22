@@ -85,6 +85,7 @@ const ApplicationDetails = () => {
       { applicationId: application?.id },
       {
         onSuccess: () => {
+          useSuccessToast(t('details.remove_success'));
           refecthApplication();
         },
         onError: () => {

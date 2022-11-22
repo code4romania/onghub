@@ -1,6 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { FindOneOptions } from 'typeorm';
+import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneral } from '../entities';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
@@ -8,6 +15,7 @@ import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationGeneralService {
+  private readonly logger = new Logger(OrganizationGeneralService.name);
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
     private readonly contactService: ContactService,
@@ -36,15 +44,31 @@ export class OrganizationGeneralService {
         ]);
       }
 
-      const uploadedFile = await this.fileManagerService.uploadFiles(
-        logoPath,
-        logo,
-      );
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          logoPath,
+          logo,
+          FILE_TYPE.IMAGE,
+        );
 
-      updateOrganizationData = {
-        ...updateOrganizationData,
-        logo: uploadedFile[0],
-      };
+        updateOrganizationData = {
+          ...updateOrganizationData,
+          logo: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...ORGANIZATION_ERRORS.UPLOAD,
+        });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+        }
+      }
     }
 
     await this.organizationGeneralRepository.save({

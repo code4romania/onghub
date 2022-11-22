@@ -16,6 +16,7 @@ import {
   VALID_FILE_TYPES,
   VALID_IMAGE_TYPES,
 } from '../constants/file.constants';
+import { FILE_TYPE } from '../enum/FileType.enum';
 
 interface FileUploadParams {
   Body: Buffer;
@@ -43,23 +44,19 @@ export class FileManagerService {
     });
   }
 
-  public async uploadFiles(
-    path: string,
-    files: Express.Multer.File[],
-    fileName?: string,
-  ): Promise<string[]> {
-    this.logger.log(`Preparing to upload ${files.length} files...`);
-
-    if (
-      !files.every(
-        (file) =>
-          VALID_IMAGE_TYPES.includes(file.mimetype) ||
-          VALID_FILE_TYPES.includes(file.mimetype),
-      )
-    ) {
-      throw new UnsupportedMediaTypeException(
-        'Only PNG, JPG, JPEG, PDF, DOC, DOCX files allowed',
-      );
+  // TODO: look over this function again, find a better way to validate the files
+  public validateFiles(files: Express.Multer.File[], fileType: FILE_TYPE) {
+    switch (fileType) {
+      case FILE_TYPE.IMAGE:
+        if (!files.every((file) => VALID_IMAGE_TYPES.includes(file.mimetype))) {
+          throw new UnsupportedMediaTypeException(FILE_ERRORS.IMAGE);
+        }
+        break;
+      case FILE_TYPE.FILE:
+        if (!files.every((file) => VALID_FILE_TYPES.includes(file.mimetype))) {
+          throw new UnsupportedMediaTypeException(FILE_ERRORS.FILE);
+        }
+        break;
     }
 
     if (
@@ -69,6 +66,17 @@ export class FileManagerService {
         `Maximum size is ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
       );
     }
+  }
+
+  public async uploadFiles(
+    path: string,
+    files: Express.Multer.File[],
+    fileType: FILE_TYPE,
+    fileName?: string,
+  ): Promise<string[]> {
+    this.logger.log(`Preparing to upload ${files.length} files...`);
+
+    this.validateFiles(files, fileType);
 
     // Create upload params
     const params: FileUploadParams[] = files.map((file) => ({
