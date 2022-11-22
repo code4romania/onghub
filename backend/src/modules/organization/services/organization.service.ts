@@ -922,7 +922,7 @@ export class OrganizationService {
       status: OrganizationStatus.RESTRICTED,
     });
 
-    await this.userService.signOutAllOrganization(organizationId);
+    await this.userService.signOutAllOrganization([organizationId]);
 
     const {
       template,

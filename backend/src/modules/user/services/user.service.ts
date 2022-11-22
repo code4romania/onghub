@@ -154,7 +154,7 @@ export class UserService {
           user.organizationId,
         );
       } else {
-        await this.signOutUser(id);
+        await this.cognitoService.globalSignOut(user.cognitoId);
       }
 
       // 6. Update db user data
@@ -360,18 +360,14 @@ export class UserService {
     return;
   }
 
-  public async signOutAllOrganization(organizationId: number): Promise<void> {
-    const users = await this.findMany({ where: { organizationId } });
+  public async signOutAllOrganization(
+    organizationIds: number[],
+  ): Promise<void> {
+    const users = await this.findMany({ where: { id: In(organizationIds) } });
 
     users.map(
       async (user) => await this.cognitoService.globalSignOut(user.cognitoId),
     );
-  }
-
-  public async signOutUser(userId): Promise<void> {
-    const user = await this.findOne({ where: { id: userId } });
-
-    await this.cognitoService.globalSignOut(user.cognitoId);
   }
 
   // ****************************************************

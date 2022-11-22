@@ -434,16 +434,15 @@ export class ApplicationService {
       }
     }
 
-    // if application is disabled, sign out all users from all organizations who have access to the app
+    // if application is disabled, sign out all users from all organizations
     if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
       const ongApplications = await this.ongApplicationService.findMany({
         where: { applicationId: id },
       });
-      ongApplications.map(async (ongApplication) => {
-        await this.userService.signOutAllOrganization(
-          ongApplication.organizationId,
-        );
-      });
+      const organizationIds = ongApplications.map(
+        (ongApplication) => ongApplication.organizationId,
+      );
+      await this.userService.signOutAllOrganization(organizationIds);
     }
 
     return this.applicationRepository.update({ id }, updateApplicationDto);
@@ -459,7 +458,7 @@ export class ApplicationService {
       OngApplicationStatus.RESTRICTED,
     );
 
-    await this.userService.signOutAllOrganization(organizationId);
+    await this.userService.signOutAllOrganization([organizationId]);
   }
 
   public async restore(
@@ -608,7 +607,9 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
+      .andWhere('ongApp.status != :status', {
+        status: OngApplicationStatus.PENDING,
+      })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
@@ -786,7 +787,7 @@ export class ApplicationService {
 
     const finalStatus =
       applicationStatus === ApplicationStatus.DISABLED &&
-        status !== OngApplicationStatus.RESTRICTED
+      status !== OngApplicationStatus.RESTRICTED
         ? ApplicationStatus.DISABLED
         : status;
 
