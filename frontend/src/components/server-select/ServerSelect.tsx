@@ -35,7 +35,9 @@ const ServerSelect = ({
 }: ServerSelectConfig) => {
   const [defaultValue, setDefaultValue] = useState<any>();
 
-  const debouncedLoadOptions = debounce(loadOptions, 500, {
+  const onSearch = (inputValue: string) => (inputValue?.length >= 3 ? loadOptions(inputValue) : []);
+
+  const debouncedLoadOptions = debounce(onSearch as any, 500, {
     leading: false,
   });
 
