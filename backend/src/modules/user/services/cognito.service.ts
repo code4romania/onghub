@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   AdminCreateUserCommand,
   AdminCreateUserCommandOutput,
@@ -17,6 +17,7 @@ import { CognitoConfig } from 'src/common/config/cognito.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
+import { USER_ERRORS } from '../constants/user-error.constants';
 
 @Injectable()
 export class CognitoUserService {
@@ -107,13 +108,17 @@ export class CognitoUserService {
   }
 
   async globalSignOut(cognitoId: string) {
-    const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
-      UserPoolId: CognitoConfig.userPoolId,
-      Username: cognitoId,
-    });
+    try {
+      const revokeTokenCommand = new AdminUserGlobalSignOutCommand({
+        UserPoolId: CognitoConfig.userPoolId,
+        Username: cognitoId,
+      });
+      const data = await this.cognitoProvider.send(revokeTokenCommand);
 
-    const data = await this.cognitoProvider.send(revokeTokenCommand);
-    return data;
+      return data;
+    } catch (error) {
+      throw new BadRequestException(USER_ERRORS.SIGN_OUT);
+    }
   }
 
   async deleteUser(cognitoId: string) {

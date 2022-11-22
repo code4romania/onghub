@@ -153,9 +153,9 @@ export class UserService {
           user.id,
           user.organizationId,
         );
-      } else {
-        await this.cognitoService.globalSignOut(user.cognitoId);
       }
+
+      await this.cognitoService.globalSignOut(user.cognitoId);
 
       // 6. Update db user data
       return this.update(id, userData);
@@ -173,8 +173,10 @@ export class UserService {
         case USER_ERRORS.ACCESS.errorCode:
         // 3. USR_013: User already exists with this phone
         case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
+        // 4. USR_015: Error on signing out user
+        case USER_ERRORS.SIGN_OUT.errorCode:
           throw new BadRequestException(err);
-        // 4. USR_009: Something unexpected happened while updating the user
+        // 5. USR_009: Something unexpected happened while updating the user
         default: {
           throw new InternalServerErrorException({
             ...USER_ERRORS.UPDATE,
@@ -363,11 +365,15 @@ export class UserService {
   public async signOutAllOrganization(
     organizationIds: number[],
   ): Promise<void> {
-    const users = await this.findMany({ where: { id: In(organizationIds) } });
+    try {
+      const users = await this.findMany({ where: { id: In(organizationIds) } });
 
-    users.map(
-      async (user) => await this.cognitoService.globalSignOut(user.cognitoId),
-    );
+      users.map(
+        async (user) => await this.cognitoService.globalSignOut(user.cognitoId),
+      );
+    } catch (error) {
+      throw new BadRequestException(USER_ERRORS.SIGN_OUT);
+    }
   }
 
   // ****************************************************

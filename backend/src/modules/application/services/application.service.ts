@@ -435,14 +435,19 @@ export class ApplicationService {
     }
 
     // if application is disabled, sign out all users from all organizations
-    if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
-      const ongApplications = await this.ongApplicationService.findMany({
-        where: { applicationId: id },
-      });
-      const organizationIds = ongApplications.map(
-        (ongApplication) => ongApplication.organizationId,
-      );
-      await this.userService.signOutAllOrganization(organizationIds);
+    try {
+      if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
+        const ongApplications = await this.ongApplicationService.findMany({
+          where: { applicationId: id },
+        });
+        const organizationIds = ongApplications.map(
+          (ongApplication) => ongApplication.organizationId,
+        );
+        await this.userService.signOutAllOrganization(organizationIds);
+      }
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
     }
 
     return this.applicationRepository.update({ id }, updateApplicationDto);
@@ -458,7 +463,12 @@ export class ApplicationService {
       OngApplicationStatus.RESTRICTED,
     );
 
-    await this.userService.signOutAllOrganization([organizationId]);
+    try {
+      await this.userService.signOutAllOrganization([organizationId]);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 
   public async restore(

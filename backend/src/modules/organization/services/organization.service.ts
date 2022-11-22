@@ -922,7 +922,12 @@ export class OrganizationService {
       status: OrganizationStatus.RESTRICTED,
     });
 
-    await this.userService.signOutAllOrganization([organizationId]);
+    try {
+      await this.userService.signOutAllOrganization([organizationId]);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
 
     const {
       template,

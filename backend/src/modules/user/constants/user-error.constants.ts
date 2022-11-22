@@ -55,4 +55,8 @@ export const USER_ERRORS = {
     message: 'User is not part of an organization',
     errorCode: 'USR_014',
   },
+  SIGN_OUT: {
+    message: 'Error on signing out user',
+    errorCode: 'USR_015',
+  },
 };
