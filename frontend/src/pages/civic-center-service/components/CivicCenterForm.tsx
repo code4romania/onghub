@@ -52,14 +52,14 @@ const CivicCenterForm = ({
 
   useEffect(() => {
     // check if practice program end date is after start date
-    if (startDate && endDate && compareAsc(startDate, endDate) === 1) {
+    if (startDate && endDate && compareAsc(startDate, endDate) === 1 && !isPeriodNotDetermined) {
       // set practice program period error on both date picker inputs
       setCivicCenterPeriodError(t('form.end_date.start_date_after_end_date'));
     } else {
       // reset error
       setCivicCenterPeriodError(undefined);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isPeriodNotDetermined]);
 
   useEffect(() => {
     if (!hasOnlineAccess && !hasEmailPhoneAccess && !hasPhysicalAccess) {
