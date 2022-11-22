@@ -4,7 +4,6 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IInvite } from '../../pages/users/interfaces/Invite.interface';
 import { IUser } from '../../pages/users/interfaces/User.interface';
-import { IUserDownload } from '../../pages/users/interfaces/UserDownload.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 import API from '../API';
 
@@ -71,6 +70,30 @@ export const getUsers = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
+export const getUsersForDownload = async (
+  orderBy: string,
+  orderDirection: OrderDirection,
+  search?: string,
+  status?: UserStatus,
+  interval?: Date[],
+  organizationId?: number,
+): Promise<PaginatedEntity<IUser>> => {
+  let requestUrl = `/user/download?orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  if (search) requestUrl = `${requestUrl}&search=${search}`;
+
+  if (status) requestUrl = `${requestUrl}&status=${status}`;
+
+  if (interval && interval.length === 2)
+    requestUrl = `${requestUrl}&start=${formatISO9075(interval[0])}&end=${formatISO9075(
+      interval[1],
+    )}`;
+
+  if (organizationId) requestUrl = `${requestUrl}&organization_id=${organizationId}`;
+
+  return API.get(requestUrl).then((res) => res.data);
+};
+
 export const getUserById = async (userId: string) => {
   return API.get(`/user/${userId}`).then((res) => res.data);
 };
@@ -81,8 +104,4 @@ export const getProfile = async (): Promise<IUser> => {
 
 export const deleteUser = async (): Promise<any> => {
   return API.delete(`/profile`).then((res) => res.data);
-};
-
-export const downloadUsers = async (payload: IUserDownload): Promise<void> => {
-  return API.post(`/user/download`, payload).then((res) => res.data);
 };

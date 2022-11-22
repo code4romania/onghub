@@ -122,13 +122,13 @@ export class AdminUserController {
     return this.userService.removeById(id, user.organizationId);
   }
 
-  @ApiBody({ type: DownloadFiltersDto })
-  @Post('download')
+  @ApiQuery({ name: 'filters', type: DownloadFiltersDto })
+  @Get('download')
   async downloadUsers(
     @ExtractUser() user: User,
-    @Body() filters: DownloadFiltersDto,
-  ): Promise<void> {
-    return this.userService.downloadUsers(
+    @Query('filters') filters: DownloadFiltersDto,
+  ): Promise<Pagination<User>> {
+    return this.userService.getUsersForDownload(
       filters,
       filters.organizationId ? filters.organizationId : user.organizationId,
     );

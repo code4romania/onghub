@@ -357,17 +357,15 @@ export class UserService {
     return;
   }
 
-  public async downloadUsers(
+  public async getUsersForDownload(
     options: DownloadFiltersDto,
     organizationId?: number,
-  ): Promise<void> {
+  ): Promise<Pagination<User>> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
       status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
       ...options,
     };
-
-    console.log(paginationOptions);
 
     // For Admin user we will sort by organizationId
     const users = await this.userRepository.getManyPaginated(
@@ -377,19 +375,7 @@ export class UserService {
         : paginationOptions,
     );
 
-    const userData = users.items.map((item) => {
-      return {
-        Nume: item.name,
-        Email: item.email,
-        Telefon: item.phone,
-        'Acces general': item.status,
-        'Data adaugarii': item.createdOn.toDateString(),
-      };
-    });
-    const ws = XLSX.utils.json_to_sheet(userData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Users');
-    XLSX.writeFile(wb, 'users.xlsx');
+    return users;
   }
 
   // ****************************************************
