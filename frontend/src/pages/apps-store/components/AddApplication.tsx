@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { FILE_ERRORS } from '../../../common/constants/error.constants';
+import { setUrlPrefix } from '../../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
@@ -26,11 +28,8 @@ const AddApplication = () => {
     reValidateMode: 'onChange',
   });
   // Create Mutation
-  const {
-    mutateAsync: mutateApplication,
-    error: createApplicationError,
-    isLoading: createApplicationLoading,
-  } = useCreateApplicationMutation();
+  const { mutateAsync: mutateApplication, isLoading: createApplicationLoading } =
+    useCreateApplicationMutation();
 
   useEffect(() => {
     reset({
@@ -38,19 +37,30 @@ const AddApplication = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (createApplicationError) {
-      useErrorToast(t('create.error'));
-    }
-  }, [createApplicationError]);
-
   const onSubmit = async (data: CreateApplicationDto) => {
     await mutateApplication(
-      { application: data, logo: file as File },
+      {
+        application: {
+          ...data,
+          website: setUrlPrefix(data.website),
+          loginLink: setUrlPrefix(data.loginLink),
+          videoLink: setUrlPrefix(data.videoLink),
+        },
+        logo: file as File,
+      },
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
           navigate('/all-apps');
+        },
+        onError: (error) => {
+          const createError: any = error;
+          const err = createError.response.data;
+          if (err.code) {
+            useErrorToast(FILE_ERRORS[err.code]);
+          } else {
+            useErrorToast(t('create.error'));
+          }
         },
       },
     );

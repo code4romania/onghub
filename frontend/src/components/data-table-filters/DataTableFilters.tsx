@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { AdjustmentsIcon, SearchIcon } from '@heroicons/react/outline';
 import debouce from 'lodash.debounce';
+import { useTranslation } from 'react-i18next';
 
 interface DataTableFiltersProps {
   children?: React.ReactNode;
@@ -17,6 +18,8 @@ const DataTableFilters = ({
 }: DataTableFiltersProps) => {
   const [filtersCollapsed, setFiltersCollapsed] = useState<boolean>(false);
   const [searchWord, setSearchWord] = useState<string>('');
+
+  const { t } = useTranslation('common');
 
   // cleanup any side effects of deounce
   useEffect(() => {
@@ -66,7 +69,7 @@ const DataTableFilters = ({
             onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
           >
             <AdjustmentsIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-            {filtersCollapsed ? 'Ascunde filtre' : 'Filtre'}
+            {filtersCollapsed ? t('filters.hide') : t('filters.show')}
           </button>
           {filtersCollapsed && (
             <button
@@ -75,7 +78,7 @@ const DataTableFilters = ({
               onClick={resetFilters}
             >
               <AdjustmentsIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-              {'Reseteaza filtre'}
+              {t('filters.reset')}
             </button>
           )}
         </div>

@@ -207,7 +207,7 @@ const Organizations = () => {
           <div className="sm:basis-1/4 w-full">
             <DateRangePicker
               label={t('filter.registration')}
-              defaultValue={createdOnRange.length > 0 ? createdOnRange : undefined}
+              value={createdOnRange.length > 0 ? createdOnRange : undefined}
               onChange={onDateChange}
             />
           </div>

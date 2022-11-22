@@ -31,7 +31,19 @@
     "inactive": "Inactiv",
     "no_data": "Nu sunt date de afisat!",
     "show_more": "Vezi toate",
-    "show_less": "Arata mai putin"
+    "show_less": "Arata mai putin",
+    "upload": {
+      "file": "Numai fisiere de tip PDF, DOC, DOCX, XLSX sunt permise pentru statutul organizatiei",
+      "image": "Numai fisiere de tip PNG, JPG, JPEG sunt permise pentru logo",
+      "size": "Dimensiunea maxima a fisierului este de 6 MB",
+      "logo": "Eroare la incarcarea logo-ului",
+      "statute": "Eroare la incarcarea statutului organizatiei"
+    },
+    "filters": {
+      "hide": "Ascunde filtre",
+      "reset": "Reseteaza filtre",
+      "show": "Filtre"
+    }
   },
   "menu": {
     "informations": "Informatii",
@@ -722,6 +734,7 @@
       "load_error": "Eroare la incarcarea aplicatiilor",
       "access_error": "Eroare la modificarea accesului",
       "remove_error": "Eroare la stergerea aplicatiei",
+      "remove_success": "Aplicatie eliminata cu succes",
       "view": "Vizualizeaza aplicatie",
       "activate": "Activeaza aplicatie",
       "restrict": "Dezactiveaza temporar",
@@ -870,6 +883,7 @@
       "request_error": "Solicitarea nu a putut fi trimisa",
       "request_successful": "Solicitare trimisa cu succes",
       "add": "Adauga aplicatie",
+      "remove_success": "Aplicatie eliminata cu succes",
       "restricted": "Accesul la aplicatie a fost restrictionat",
       "auto": "Aplicatia este adaugata automat la crearea contului ONG Hub si nu poate fi dezactivata.",
       "delete": "Elimina aplicatie",

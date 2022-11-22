@@ -1,7 +1,9 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
@@ -56,6 +58,7 @@ import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.c
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
+import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -90,6 +93,7 @@ export class ApplicationService {
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,
           logo,
+          FILE_TYPE.IMAGE,
           createApplicationDto.name,
         );
 
@@ -102,11 +106,14 @@ export class ApplicationService {
           error: { error },
           ...APPLICATION_ERRORS.UPLOAD,
         });
-        const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_ERRORS.UPLOAD,
-          error: err,
-        });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...APPLICATION_ERRORS.UPLOAD,
+            error,
+          });
+        }
       }
     }
 
@@ -402,6 +409,7 @@ export class ApplicationService {
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,
           logo,
+          FILE_TYPE.IMAGE,
           application.name,
         );
 
@@ -415,11 +423,14 @@ export class ApplicationService {
           error: { error },
           ...APPLICATION_ERRORS.UPLOAD,
         });
-        const err = error?.response;
-        throw new BadRequestException({
-          ...APPLICATION_ERRORS.UPLOAD,
-          error: err,
-        });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...APPLICATION_ERRORS.UPLOAD,
+            error,
+          });
+        }
       }
     }
 
@@ -597,6 +608,7 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
@@ -774,7 +786,7 @@ export class ApplicationService {
 
     const finalStatus =
       applicationStatus === ApplicationStatus.DISABLED &&
-      status !== OngApplicationStatus.RESTRICTED
+        status !== OngApplicationStatus.RESTRICTED
         ? ApplicationStatus.DISABLED
         : status;
 
