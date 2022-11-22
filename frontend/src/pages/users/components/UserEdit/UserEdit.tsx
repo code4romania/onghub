@@ -73,8 +73,8 @@ const UserEdit = () => {
         onSuccess: () => {
           useSuccessToast(t('edit.success'));
         },
-        onError: () => {
-          const updateError: any = updateUserMutation.error;
+        onError: (error) => {
+          const updateError: any = error;
           const err = updateError?.response?.data;
           if (err.code) {
             useErrorToast(CREATE_USER_ERRORS[err.code]);

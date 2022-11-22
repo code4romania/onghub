@@ -75,7 +75,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) {}
+  ) { }
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -594,6 +594,7 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
@@ -771,7 +772,7 @@ export class ApplicationService {
 
     const finalStatus =
       applicationStatus === ApplicationStatus.DISABLED &&
-      status !== OngApplicationStatus.RESTRICTED
+        status !== OngApplicationStatus.RESTRICTED
         ? ApplicationStatus.DISABLED
         : status;
 

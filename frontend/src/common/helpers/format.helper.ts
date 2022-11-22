@@ -14,7 +14,7 @@ export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/;
 
 export const URL_REGEX =
-  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.?[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https:\/\/(?:www\.|(?!www))|[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
 
 export const PHONE_REGEX =
   /^(\+4|)?(\s|\.|-)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|-)?([0-9]{3}(\s|\.|-|)){2}$/;
@@ -73,8 +73,8 @@ export const mapSelectToSkill = (
 // Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,
-  // label: `${item.name}, jud. ${item.county.name}`,
-  label: `${item?.name}`,
+  label: `${item.name}, jud. ${item.county.name}`,
+  // label: `${item?.name}`,
 });
 
 // Federations and Coalitions
@@ -144,4 +144,12 @@ export const cleanupPayload = (payload: any) => {
   return Object.keys(payload)
     .filter((k) => payload[k] !== null && payload[k] !== undefined)
     .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
+};
+
+export const setUrlPrefix = (address: string | null) => {
+  if (address?.startsWith('http://' || 'https://')) {
+    return address;
+  } else {
+    return 'https://' + address;
+  }
 };

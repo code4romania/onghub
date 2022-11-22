@@ -79,7 +79,7 @@ export class OrganizationService {
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
-  ) {}
+  ) { }
 
   public async create(
     createUserRequestDto: CreateUserRequestDto,
@@ -313,6 +313,7 @@ export class OrganizationService {
         'organizationActivity.coalitions',
         'organizationActivity.domains',
         'organizationActivity.cities',
+        'organizationActivity.cities.county',
         'organizationActivity.federations',
         'organizationActivity.coalitions',
         'organizationActivity.branches',
