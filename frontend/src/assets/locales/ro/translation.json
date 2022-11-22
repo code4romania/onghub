@@ -1177,7 +1177,6 @@
         "description": {
           "required": "Descrierea este obligatorie",
           "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
-          "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access fizic",
           "placeholder": "Lorem ipsum",
           "helper": "Mentioneaza orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"

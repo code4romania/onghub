@@ -6,6 +6,7 @@ import { mapCitiesToSelect } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
 import DatePickerInput from '../../../components/date-picker-input/DatePickerInput';
 import InputField from '../../../components/InputField/InputField';
+import RichText from '../../../components/RichText/RichText';
 import ServerSelect from '../../../components/server-select/ServerSelect';
 import Textarea from '../../../components/Textarea/Textarea';
 import Toggle from '../../../components/toggle/Toggle';
@@ -592,14 +593,14 @@ const CivicCenterForm = ({
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (
-                        <Textarea
+                        <RichText
                           config={{
                             ...CivicCenterFormConfig.physical.description.config,
                             name: CivicCenterFormConfig.physical.description.key,
                             error: (errors as Record<string, { message: string }>)[
                               CivicCenterFormConfig.physical.description.key
                             ]?.message,
-                            defaultValue: value,
+                            value: value,
                             onChange: onChange,
                           }}
                           disabled={!hasPhysicalAccess}
@@ -637,14 +638,14 @@ const CivicCenterForm = ({
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (
-                        <Textarea
+                        <RichText
                           config={{
                             ...CivicCenterFormConfig.physical.description.config,
                             name: CivicCenterFormConfig.physical.description.key,
                             error: (errors as Record<string, { message: string }>)[
                               CivicCenterFormConfig.physical.description.key
                             ]?.message,
-                            defaultValue: value,
+                            value: value,
                             onChange: onChange,
                           }}
                           disabled={!hasPhysicalAccess}
