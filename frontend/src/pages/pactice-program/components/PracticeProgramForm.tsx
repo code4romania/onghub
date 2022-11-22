@@ -51,19 +51,20 @@ const PracticeProgramForm = ({
   // watchers
   const startDate = watch('startDate');
   const endDate = watch('endDate');
+  const isPeriodNotDetermined = watch('isPeriodNotDetermined');
   const minWorkingHours = watch('minWorkingHours');
   const maxWorkingHours = watch('maxWorkingHours');
 
   useEffect(() => {
     // check if practice program end date is after start date
-    if (startDate && endDate && compareAsc(startDate, endDate) === 1) {
+    if (startDate && endDate && compareAsc(startDate, endDate) === 1 && !isPeriodNotDetermined) {
       // set practice program period error on both date picker inputs
       setPracticeProgramPeriodError(t('form.end_date.start_date_after_end_date'));
     } else {
       // reset error
       setPracticeProgramPeriodError(undefined);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isPeriodNotDetermined]);
 
   useEffect(() => {
     // check if min working hours is larger than
@@ -189,26 +190,29 @@ const PracticeProgramForm = ({
                 );
               }}
             />
-            <Controller
-              key={PracticeProgramFormConfig.endDate.key}
-              name={PracticeProgramFormConfig.endDate.key}
-              rules={PracticeProgramFormConfig.endDate.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <DatePickerInput
-                    {...PracticeProgramFormConfig.endDate.config}
-                    value={value}
-                    onChange={onChange}
-                    error={
-                      (errors as Record<string, { message: string }>)[
-                        PracticeProgramFormConfig.endDate.key
-                      ]?.message?.toString() || practiceProgramPeriodError
-                    }
-                  />
-                );
-              }}
-            />
+            {!isPeriodNotDetermined && (
+              <Controller
+                key={PracticeProgramFormConfig.endDate.key}
+                name={PracticeProgramFormConfig.endDate.key}
+                rules={PracticeProgramFormConfig.endDate.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <DatePickerInput
+                      {...PracticeProgramFormConfig.endDate.config}
+                      value={value}
+                      onChange={onChange}
+                      error={
+                        (errors as Record<string, { message: string }>)[
+                          PracticeProgramFormConfig.endDate.key
+                        ]?.message?.toString() || practiceProgramPeriodError
+                      }
+                    />
+                  );
+                }}
+              />
+            )}
+
             <Controller
               key={PracticeProgramFormConfig.isPeriodNotDetermined.key}
               name={PracticeProgramFormConfig.isPeriodNotDetermined.key}
