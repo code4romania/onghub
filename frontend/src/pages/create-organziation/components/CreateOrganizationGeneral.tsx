@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { fileToURL, flatten } from '../../../common/helpers/format.helper';
+import { fileToURL, flatten, setUrlPrefix } from '../../../common/helpers/format.helper';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -81,6 +81,14 @@ const CreateOrganizationGeneral = () => {
       const organizationGeneral = {
         ...data,
         contact,
+        website: setUrlPrefix(data.website),
+        facebook: setUrlPrefix(data.facebook),
+        instagram: setUrlPrefix(data.instagram),
+        twitter: setUrlPrefix(data.twitter),
+        linkedin: setUrlPrefix(data.linkedin),
+        tiktok: setUrlPrefix(data.tiktok),
+        donationWebsite: setUrlPrefix(data.donationWebsite),
+        redirectLink: setUrlPrefix(data.redirectLink),
       };
 
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors

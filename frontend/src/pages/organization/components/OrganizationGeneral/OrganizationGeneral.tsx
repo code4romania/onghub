@@ -4,7 +4,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
-import { emptyStringToNull, fileToURL, flatten } from '../../../../common/helpers/format.helper';
+import {
+  emptyStringToNull,
+  fileToURL,
+  flatten,
+  setUrlPrefix,
+} from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import ContactForm from '../../../../components/Contact/Contact';
@@ -87,19 +92,21 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    const {
-      contact_email,
-      contact_fullName,
-      contact_phone,
-      contact,
-      logo,
-      ...organizationGeneral
-    } = data;
+    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
+      data;
 
     setReadonly(true);
 
     const payload = {
       ...organizationGeneral,
+      website: setUrlPrefix(organizationGeneral.website),
+      facebook: setUrlPrefix(organizationGeneral.facebook),
+      instagram: setUrlPrefix(organizationGeneral.instagram),
+      twitter: setUrlPrefix(organizationGeneral.twitter),
+      linkedin: setUrlPrefix(organizationGeneral.linkedin),
+      tiktok: setUrlPrefix(organizationGeneral.tiktok),
+      donationWebsite: setUrlPrefix(organizationGeneral.donationWebsite),
+      redirectLink: setUrlPrefix(organizationGeneral.redirectLink),
       contact: {
         ...contact,
         fullName: contact_fullName,
