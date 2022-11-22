@@ -57,14 +57,14 @@ const PracticeProgramForm = ({
 
   useEffect(() => {
     // check if practice program end date is after start date
-    if (startDate && endDate && compareAsc(startDate, endDate) === 1) {
+    if (startDate && endDate && compareAsc(startDate, endDate) === 1 && !isPeriodNotDetermined) {
       // set practice program period error on both date picker inputs
       setPracticeProgramPeriodError(t('form.end_date.start_date_after_end_date'));
     } else {
       // reset error
       setPracticeProgramPeriodError(undefined);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isPeriodNotDetermined]);
 
   useEffect(() => {
     // check if min working hours is larger than
