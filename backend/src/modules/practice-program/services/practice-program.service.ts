@@ -376,14 +376,14 @@ export class PracticeProgramService {
     // for admin and employee check organizationId as search criteria
     const where = organizationId
       ? {
-          id,
-          organizationId,
-        }
+        id,
+        organizationId,
+      }
       : { id };
 
     const practiceProgram = await this.practiceProgramRepository.get({
       where: where,
-      relations: ['location', 'skills', 'domains', 'faculties'],
+      relations: ['location', 'location.county', 'skills', 'domains', 'faculties'],
     });
 
     if (!practiceProgram) {
