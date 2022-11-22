@@ -120,13 +120,12 @@ const OrganizationGeneral = () => {
         onSuccess: () => {
           setFile(null);
         },
-        onError: (error) => {
-          const createError: any = error;
-          const err = createError.response.data;
+        onError: (error: any) => {
+          const err = error.response.data;
           if (err.code) {
             useErrorToast(FILE_ERRORS[err.code]);
           } else {
-            useErrorToast(t('save_error', { ns: 'orgnization' }));
+            useErrorToast(t('save_error', { ns: 'organization' }));
           }
         },
       },
