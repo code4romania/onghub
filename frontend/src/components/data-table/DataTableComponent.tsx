@@ -38,14 +38,14 @@ const DataTableComponent = ({
   return (
     <div
       className={classNames(
-        !loading && data.length > 0 ? 'border-gray-200' : '',
+        !loading && data?.length > 0 ? 'border-gray-200' : '',
         'rdt_TableWrapper',
       )}
     >
       <DataTable
         noHeader
         columns={columns}
-        data={data}
+        data={data || []}
         progressPending={loading}
         pagination={pagination}
         paginationServer={pagination}

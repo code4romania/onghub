@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../common/constants/error.constants';
+import { setUrlPrefix } from '../../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
@@ -38,7 +39,15 @@ const AddApplication = () => {
 
   const onSubmit = async (data: CreateApplicationDto) => {
     await mutateApplication(
-      { application: data, logo: file as File },
+      {
+        application: {
+          ...data,
+          website: setUrlPrefix(data.website),
+          loginLink: setUrlPrefix(data.loginLink),
+          videoLink: setUrlPrefix(data.videoLink),
+        },
+        logo: file as File,
+      },
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));

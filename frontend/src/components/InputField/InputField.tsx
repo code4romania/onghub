@@ -33,7 +33,7 @@ const InputField = (props: {
                 props.config.error
                   ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
                   : 'focus:ring-indigo-500 focus:border-indigo-500',
-                props.config.addOn ? 'pl-14' : 'pl-4',
+                props.config.addOn ? 'pl-10' : 'pl-4',
                 props.config.type === 'checkbox'
                   ? ''
                   : 'block w-full pr-10 border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
@@ -42,6 +42,9 @@ const InputField = (props: {
               defaultValue={props.config.defaultValue}
               aria-invalid={props.config.error ? 'true' : 'false'}
               disabled={props.disabled}
+              checked={
+                props.config.type === 'checkbox' ? Boolean(props.config.defaultValue) : undefined
+              }
               id={`${props.config.id}__input`}
             />
             {props.config.type === 'checkbox' && (

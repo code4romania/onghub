@@ -94,7 +94,6 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @Matches(REGEX.ALPHANUMERIC)
   @Length(0, 1000)
   physicalAccessDescription: string;
 
