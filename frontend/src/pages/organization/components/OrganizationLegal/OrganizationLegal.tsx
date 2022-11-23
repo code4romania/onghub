@@ -75,7 +75,7 @@ const OrganizationLegal = () => {
         'legalReprezentative',
       );
       reset({ ...legalReprezentative });
-      setOthers(organizationLegal.others);
+      setOthers(organizationLegal.others || []);
       setDirectors(organizationLegal.directors);
     }
   }, [organizationLegal]);

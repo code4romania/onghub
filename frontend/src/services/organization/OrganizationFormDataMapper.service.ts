@@ -91,7 +91,7 @@ export const mapOrganizationLegalToFormData = (
     legalReprezentative,
   );
 
-  directors.forEach((director: Contact, index: number) => {
+  directors?.forEach((director: Contact, index: number) => {
     organizationLegalUpdated = mapEntityToFormData(
       organizationLegalUpdated,
       `${organizationLegalKey}[directors][${index}]`,
