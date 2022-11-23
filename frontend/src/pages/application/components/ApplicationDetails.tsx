@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useRemovOngApplicationRequest } from '../../../services/application/Application.queries';
 import { ApplicationPullingType } from '../../apps-store/enums/application-pulling-type.enum';
 import ApplicationFeedbackCard from './ApplicationFeedbackCard';
+import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
 
 const ApplicationDetails = () => {
   const navigate = useNavigate();
@@ -123,7 +124,7 @@ const ApplicationDetails = () => {
         </div>
         <div className="flex flex-col sm:gap-4 gap-2 pt-4 pb-4">
           <p className="sm:text-sm lg:text-base text-xs">{t('details.how_to')}</p>
-          {application?.steps.map((step: any, index: number) => (
+          {application?.steps?.map((step: any, index: number) => (
             <div
               className="flex sm:gap-4 gap-2 items-center sm:text-sm lg:text-base text-xs"
               key={index}
@@ -210,8 +211,8 @@ const ApplicationDetails = () => {
       <div className="flex flex-col gap-4 w-full h-full">
         {role !== UserRole.SUPER_ADMIN && (
           <React.Fragment>
-            {(application?.status === OngApplicationStatus.ACTIVE ||
-              application.status !== OngApplicationStatus.DISABLED) && (
+            {(application?.ongStatus === OngApplicationStatus.ACTIVE ||
+              application.status !== ApplicationStatus.DISABLED) && (
               <ApplicationFeedbackCard
                 icon={<CheckCircleIcon className="text-green w-6" />}
                 title={t('details.active')}
@@ -282,7 +283,7 @@ const ApplicationDetails = () => {
                 description={t('details.restore')}
               />
             )}
-            {application?.status === OngApplicationStatus.DISABLED && (
+            {application?.status === ApplicationStatus.DISABLED && (
               <ApplicationFeedbackCard
                 icon={<ExclamationCircleIcon className="w-6 h-6  text-red-500" />}
                 title={t('details.disabled.title')}

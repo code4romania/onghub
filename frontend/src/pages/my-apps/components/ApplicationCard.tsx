@@ -1,5 +1,8 @@
 import React from 'react';
-import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
+import {
+  ApplicationStatus,
+  ApplicationWithOngStatus,
+} from '../../../services/application/interfaces/Application.interface';
 import logo from '../../../assets/images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
@@ -28,8 +31,8 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
 
   return (
     <div className="bg-white rounded-xl shadow flex flex-col gap-1 items-center justify-between lg:p-8 p-5 relative overflow-auto sm:min-h-[28rem] sm:w-80 w-full">
-      {(application.status === OngApplicationStatus.RESTRICTED ||
-        application.status === OngApplicationStatus.DISABLED) && (
+      {(application.ongStatus === OngApplicationStatus.RESTRICTED ||
+        application.status === ApplicationStatus.DISABLED) && (
         <div className="ribbon lg:-left-14 -left-16">
           <p className="sm:text-sm lg:text-base text-xs">Indisponibil</p>
         </div>
@@ -60,7 +63,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         >
           <p className="text-center">{t('more')}</p>
         </button>
-        {(application.status === OngApplicationStatus.ACTIVE ||
+        {(application.ongStatus === OngApplicationStatus.ACTIVE ||
           application.type === ApplicationTypeEnum.INDEPENDENT) && (
           <button
             className="save-button w-full flex justify-center sm:text-sm lg:text-base text-xs"

@@ -101,7 +101,7 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
         <PopoverMenu
           row={row}
           menuItems={
-            row.status === OngApplicationStatus.ACTIVE
+            row.ongStatus === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
               : restrictedApplicationMenu
           }

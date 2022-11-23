@@ -34,7 +34,6 @@ export const OngApplicationStatusBadgeMapper = (status: OngApplicationStatus) =>
     case OngApplicationStatus.ACTIVE: {
       return BadgeStatus.SUCCESS;
     }
-    case OngApplicationStatus.DISABLED:
     case OngApplicationStatus.RESTRICTED: {
       return BadgeStatus.ERROR;
     }
@@ -52,7 +51,7 @@ export const APPLICATION_STATUS_NAME: Record<ApplicationStatus, string> = {
 
 export const ONG_APPLICATION_STATUS: Record<OngApplicationStatus, string> = {
   [OngApplicationStatus.ACTIVE]: translations.active,
-  [OngApplicationStatus.DISABLED]: translations.disabled,
+  // [OngApplicationStatus.DISABLED]: translations.disabled,
   [OngApplicationStatus.RESTRICTED]: translations.restricted,
   [OngApplicationStatus.PENDING]: translations.pending,
   [OngApplicationStatus.PENDING_REMOVAL]: translations.pending,

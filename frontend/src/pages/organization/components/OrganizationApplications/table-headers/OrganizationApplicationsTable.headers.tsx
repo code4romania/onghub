@@ -37,8 +37,8 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     name: translations.status,
     cell: (row: ApplicationWithOngStatus) => (
       <StatusBadge
-        status={OngApplicationStatusBadgeMapper(row.status)}
-        value={ONG_APPLICATION_STATUS[row.status] || translations.active} // in case status is null for independent app the status should be active
+        status={OngApplicationStatusBadgeMapper(row.ongStatus)}
+        value={ONG_APPLICATION_STATUS[row.ongStatus] || translations.active} // in case status is null for independent app the status should be active
       />
     ),
   },

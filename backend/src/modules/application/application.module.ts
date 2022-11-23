@@ -23,6 +23,7 @@ import { UserModule } from '../user/user.module';
 import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationHistory } from './entities/application-history.entity';
 import { ApplicationRequestHistory } from './entities/application-request-history.entity';
+import { AppService } from './services/app.service';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ApplicationRequestHistory } from './entities/application-request-histor
     UserOngApplicationService,
     ApplicationTableViewRepository,
     ApplicationOngViewRepository,
+    AppService,
   ],
   exports: [
     OngApplicationService,

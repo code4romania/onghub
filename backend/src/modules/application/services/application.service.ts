@@ -1,13 +1,10 @@
 import {
   BadRequestException,
   ForbiddenException,
-  HttpException,
   Injectable,
-  InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateApplicationDto } from '../dto/create-application.dto';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { Application } from '../entities/application.entity';
 import {
@@ -15,22 +12,14 @@ import {
   ONG_APPLICATION_ERRORS,
   USER_ONG_APPLICATION_ERRORS,
 } from '../constants/application-error.constants';
-import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
-import { ApplicationFilterDto } from '../dto/filter-application.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import {
-  APPLICATION_FILTERS_CONFIG,
-  APPLICATION_ONG_FILTERS_CONFIG,
-} from '../constants/application-filters.config';
+import { APPLICATION_ONG_FILTERS_CONFIG } from '../constants/application-filters.config';
 import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
-import {
-  APPLICATIONS_FILES_DIR,
-  ORGANIZATION_ALL_APPS_COLUMNS,
-} from '../constants/application.constants';
+import { ORGANIZATION_ALL_APPS_COLUMNS } from '../constants/application.constants';
 import { OngApplicationService } from './ong-application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
@@ -42,8 +31,6 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
-import { ApplicationTableView } from '../entities/application-table-view.entity';
-import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { UserService } from 'src/modules/user/services/user.service';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
@@ -58,7 +45,6 @@ import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.c
 import { ApplicationRequestRepository } from '../repositories/application-request.repository';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
-import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 
 @Injectable()
 export class ApplicationService {
@@ -66,7 +52,6 @@ export class ApplicationService {
   constructor(
     private readonly applicationRepository: ApplicationRepository,
     private readonly applicationOngViewRepository: ApplicationOngViewRepository,
-    private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly applicationRequestRepository: ApplicationRequestRepository,
     private readonly ongApplicationService: OngApplicationService,
     private readonly userOngApplicationService: UserOngApplicationService,
@@ -75,77 +60,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) { }
-
-  public async create(
-    createApplicationDto: CreateApplicationDto,
-    logo: Express.Multer.File[],
-  ): Promise<Application> {
-    if (
-      createApplicationDto.type !== ApplicationTypeEnum.INDEPENDENT &&
-      !createApplicationDto.loginLink
-    ) {
-      throw new BadRequestException({ ...APPLICATION_ERRORS.CREATE.LOGIN });
-    }
-
-    if (logo && logo.length > 0) {
-      try {
-        const uploadedFile = await this.fileManagerService.uploadFiles(
-          `${APPLICATIONS_FILES_DIR}`,
-          logo,
-          FILE_TYPE.IMAGE,
-          createApplicationDto.name,
-        );
-
-        createApplicationDto = {
-          ...createApplicationDto,
-          logo: uploadedFile[0],
-        };
-      } catch (error) {
-        this.logger.error({
-          error: { error },
-          ...APPLICATION_ERRORS.UPLOAD,
-        });
-        if (error instanceof HttpException) {
-          throw error;
-        } else {
-          throw new InternalServerErrorException({
-            ...APPLICATION_ERRORS.UPLOAD,
-            error,
-          });
-        }
-      }
-    }
-
-    return this.applicationRepository.save({
-      ...createApplicationDto,
-    });
-  }
-
-  public async findAll(
-    options: ApplicationFilterDto,
-  ): Promise<Pagination<ApplicationTableView>> {
-    const paginationOptions: any = {
-      ...options,
-    };
-
-    const applications =
-      await this.applicationTableViewRepository.getManyPaginated(
-        APPLICATION_FILTERS_CONFIG,
-        paginationOptions,
-      );
-
-    // Map the logo url
-    const items =
-      await this.fileManagerService.mapLogoToEntity<ApplicationTableView>(
-        applications.items,
-      );
-
-    return {
-      ...applications,
-      items,
-    };
-  }
+  ) {}
 
   /**
    * @description
@@ -170,10 +85,8 @@ export class ApplicationService {
       )
       .execute();
 
-    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
-
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
-      applicationsWithStatus,
+      applications,
     );
   }
 
@@ -272,89 +185,9 @@ export class ApplicationService {
       })
       .execute();
 
-    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
-
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
-      applicationsWithStatus,
+      applications,
     );
-  }
-
-  /**
-   * @description
-   * Metoda destinata utilizatorilor de tip admin ce intoarce o aplicatiile din ong-hub si status ei in relatie cu organizatia din care face parte admin-ul
-   * Metoda descrie pagina de detalii aplicatie din portal
-   *
-   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
-   */
-  public async findOne(
-    user: User,
-    applicationId: number,
-  ): Promise<ApplicationWithOngStatusDetails> {
-    let applicationWithDetailsQuery = this.applicationRepository
-      .getQueryBuilder()
-      .select([
-        'application.id as id',
-        'userOngApp.status as status',
-        'application.name as name',
-        'application.logo as logo',
-        'application.short_description as "shortDescription"',
-        'application.description as description',
-        'application.type as type',
-        'application.steps as steps',
-        'application.website as website',
-        'application.login_link as "loginLink"',
-        'application.video_link as "videoLink"',
-        'application.pulling_type as "pullingType"',
-        'application.status as "applicationStatus"',
-      ])
-      .leftJoin(
-        'ong_application',
-        'ongApp',
-        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
-        { organizationId: user.organizationId },
-      )
-      .leftJoin(
-        'user_ong_application',
-        'userOngApp',
-        'userOngApp.ong_application_id = ongApp.id',
-      )
-      .where('application.id = :applicationId', { applicationId });
-
-    if (user.role === Role.EMPLOYEE) {
-      applicationWithDetailsQuery = applicationWithDetailsQuery.andWhere(
-        new Brackets((qb) => {
-          qb.where(
-            'application.type != :type AND userOngApp.status = :status',
-            {
-              status: UserOngApplicationStatus.ACTIVE,
-              type: ApplicationTypeEnum.INDEPENDENT,
-            },
-          ).orWhere('application.type = :type', {
-            type: ApplicationTypeEnum.INDEPENDENT,
-          });
-        }),
-      );
-    }
-
-    const applicationWithDetails =
-      await applicationWithDetailsQuery.getRawOne();
-
-    if (!applicationWithDetails) {
-      throw new NotFoundException(APPLICATION_ERRORS.GET);
-    }
-
-    // generate public url for logo
-    let logo = null;
-    if (applicationWithDetails.logo) {
-      logo = await this.fileManagerService.generatePresignedURL(
-        applicationWithDetails.logo,
-      );
-    }
-
-    return this.mapApplicationStatus({
-      ...applicationWithDetails,
-      logo,
-    }) as ApplicationWithOngStatusDetails;
   }
 
   public async findOrganizationsByApplicationId(
@@ -382,59 +215,6 @@ export class ApplicationService {
       ...applications,
       items,
     };
-  }
-
-  public async update(
-    id: number,
-    updateApplicationDto: UpdateApplicationDto,
-    logo?: Express.Multer.File[],
-  ): Promise<Application> {
-    const application = await this.applicationRepository.get({
-      where: { id },
-    });
-
-    if (!application) {
-      throw new NotFoundException({
-        ...APPLICATION_ERRORS.GET,
-      });
-    }
-
-    // check for logo and update
-    if (logo && logo.length > 0) {
-      try {
-        if (application.logo) {
-          await this.fileManagerService.deleteFiles([application.logo]);
-        }
-
-        const uploadedFile = await this.fileManagerService.uploadFiles(
-          `${APPLICATIONS_FILES_DIR}`,
-          logo,
-          FILE_TYPE.IMAGE,
-          application.name,
-        );
-
-        return this.applicationRepository.save({
-          id,
-          ...updateApplicationDto,
-          logo: uploadedFile[0],
-        });
-      } catch (error) {
-        this.logger.error({
-          error: { error },
-          ...APPLICATION_ERRORS.UPLOAD,
-        });
-        if (error instanceof HttpException) {
-          throw error;
-        } else {
-          throw new InternalServerErrorException({
-            ...APPLICATION_ERRORS.UPLOAD,
-            error,
-          });
-        }
-      }
-    }
-
-    return this.applicationRepository.update({ id }, updateApplicationDto);
   }
 
   public async restrict(
@@ -594,16 +374,16 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
+      .andWhere('ongApp.status != :status', {
+        status: OngApplicationStatus.PENDING,
+      })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
       .execute();
 
-    const applicationsWithStatus = applications.map(this.mapApplicationStatus);
-
     return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
-      applicationsWithStatus,
+      applications,
     );
   }
 
@@ -754,31 +534,5 @@ export class ApplicationService {
     return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
       applications,
     );
-  }
-
-  /**
-   * @description
-   * Map correct application status meaning that if the application status meaning that if an ong application has an active staus but the application itself is disabeled
-   * the user will receive the disabled status.
-   *
-   * The ong application restricted status will always overcome the application disabled status as the user dosen't need to know if the application is disabled as long as he is restricted from using it.
-   */
-  private mapApplicationStatus(
-    application: ApplicationWithOngStatus & {
-      applicationStatus: ApplicationStatus;
-    },
-  ): ApplicationWithOngStatus | ApplicationWithOngStatusDetails {
-    const { applicationStatus, status, ...applicationRemains } = application;
-
-    const finalStatus =
-      applicationStatus === ApplicationStatus.DISABLED &&
-        status !== OngApplicationStatus.RESTRICTED
-        ? ApplicationStatus.DISABLED
-        : status;
-
-    return {
-      ...applicationRemains,
-      status: finalStatus,
-    };
   }
 }
