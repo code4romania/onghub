@@ -40,8 +40,4 @@ export class DownloadFiltersDto {
   @IsOptional()
   @IsEnum(UserStatus)
   status?: UserStatus;
-
-  @IsOptional()
-  @IsNumber()
-  organizationId?: number;
 }

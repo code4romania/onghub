@@ -77,7 +77,7 @@ export const getUsersForDownload = async (
   status?: UserStatus,
   interval?: Date[],
   organizationId?: number,
-): Promise<PaginatedEntity<IUser>> => {
+): Promise<any> => {
   let requestUrl = `/user/download?orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;

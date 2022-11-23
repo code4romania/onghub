@@ -27,7 +27,6 @@ import ConfirmationModal from '../../../../components/confim-removal-modal/Confi
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
-import * as XLSX from 'xlsx';
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
@@ -46,14 +45,14 @@ const UserList = (props: { organizationId?: number }) => {
 
   const { users } = useUser();
 
-  const { data: usersForDownload } = useGetUsersForDownloadQuery(
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-    searchWord as string,
-    status?.status,
-    range,
-    organizationId as number,
-  );
+  // const { data: file } = useGetUsersForDownloadQuery(
+  //   orderByColumn as string,
+  //   orderDirection as OrderDirection,
+  //   searchWord as string,
+  //   status?.status,
+  //   range,
+  //   organizationId as number,
+  // );
 
   const { t } = useTranslation(['user', 'common']);
 
@@ -246,19 +245,7 @@ const UserList = (props: { organizationId?: number }) => {
    * ACTIONS
    */
   const onExport = () => {
-    const userData: any = usersForDownload?.items.map((item) => {
-      return {
-        [t('list_header.name')]: item.name,
-        [t('list_header.email')]: item.email,
-        [t('list_header.phone')]: item.phone,
-        [t('list_header.status')]: item.status,
-        [t('list_header.created_on')]: item.createdOn?.slice(0, 10),
-      };
-    });
-    const ws = XLSX.utils.json_to_sheet(userData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Users');
-    XLSX.writeFile(wb, 'users.xlsx');
+    console.log('Not yet implemented');
   };
 
   return (

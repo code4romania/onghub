@@ -36,7 +36,6 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
-import * as XLSX from 'xlsx';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
 
 @Injectable()
@@ -359,8 +358,8 @@ export class UserService {
 
   public async getUsersForDownload(
     options: DownloadFiltersDto,
-    organizationId?: number,
-  ): Promise<Pagination<User>> {
+    organizationId: number,
+  ) {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
       status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
@@ -370,9 +369,7 @@ export class UserService {
     // For Admin user we will sort by organizationId
     const users = await this.userRepository.getManyPaginated(
       USER_FILTERS_CONFIG,
-      organizationId
-        ? { ...paginationOptions, organizationId }
-        : paginationOptions,
+      { ...paginationOptions, organizationId },
     );
 
     return users;

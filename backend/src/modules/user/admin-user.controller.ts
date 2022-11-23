@@ -70,6 +70,20 @@ export class AdminUserController {
     return this.userService.getInvitedUsers(filters, user.organizationId);
   }
 
+  @ApiQuery({ name: 'filters', type: DownloadFiltersDto })
+  @ApiQuery({ name: 'organization_id', type: Number })
+  @Get('download')
+  async downloadUsers(
+    @ExtractUser() user: User,
+    @Query('filters') filters: DownloadFiltersDto,
+    @Query('organization_id') organizationId?: number,
+  ) {
+    return this.userService.getUsersForDownload(
+      filters,
+      organizationId ? organizationId : user.organizationId,
+    );
+  }
+
   @ApiParam({ name: 'id', type: Number })
   @Get(':id')
   async getOne(
@@ -120,17 +134,5 @@ export class AdminUserController {
   @Delete(':id')
   remove(@Param('id') id: number, @ExtractUser() user: User) {
     return this.userService.removeById(id, user.organizationId);
-  }
-
-  @ApiQuery({ name: 'filters', type: DownloadFiltersDto })
-  @Get('download')
-  async downloadUsers(
-    @ExtractUser() user: User,
-    @Query('filters') filters: DownloadFiltersDto,
-  ): Promise<Pagination<User>> {
-    return this.userService.getUsersForDownload(
-      filters,
-      filters.organizationId ? filters.organizationId : user.organizationId,
-    );
   }
 }
