@@ -5,12 +5,16 @@ import ContentWrapper from '../../../../components/content-wrapper/ContentWrappe
 import ExetendedStatisticsCard from '../../../../components/extended-statistics-card/ExtendedStatisticsCard';
 import { Loading } from '../../../../components/loading/Loading';
 import { useOneOrganizationStatisticsQuery } from '../../../../services/statistics/statistics.queries';
+import { useProfileQuery } from '../../../../services/user/User.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { AdminDashboardExtendedStatisticsMapping } from '../../../dashboard/constants/DashboardStatistics.constants';
 import UserList from '../../../users/components/UserList/UserList';
+import { UserRole } from '../../../users/enums/UserRole.enum';
 
 const OrganizationOverview = () => {
   const { organization } = useSelectedOrganization();
+
+  const { data: user } = useProfileQuery();
 
   const { t } = useTranslation(['dashboard']);
 
@@ -35,6 +39,7 @@ const OrganizationOverview = () => {
               <ExetendedStatisticsCard
                 stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
                   data.isOrganizationUpdated,
+                  `organizations/${organization?.id}/financial`,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -42,12 +47,18 @@ const OrganizationOverview = () => {
                   stat={{
                     ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
                       data.numberOfInstalledApps,
+                      `organizations/${organization?.id}/applications`,
                     ),
                   }}
                 />
                 <ExetendedStatisticsCard
                   stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfUsers(data.numberOfUsers),
+                    ...(user?.role === UserRole.ADMIN
+                      ? AdminDashboardExtendedStatisticsMapping.numberOfUsers(data.numberOfUsers, {
+                          href: 'users',
+                          label: 'statistics.handle_users',
+                        })
+                      : AdminDashboardExtendedStatisticsMapping.numberOfUsers(data.numberOfUsers)),
                   }}
                 />
               </div>

@@ -62,7 +62,7 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
 };
 
 export const AdminDashboardExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean) => ({
+  isOrganizationUpdated: (isUpdated: boolean, path: string) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
     info: [
@@ -72,11 +72,11 @@ export const AdminDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: 'organization/finanicial',
+      href: path,
       label: 'statistics.view_data',
     },
   }),
-  numberOfInstalledApps: (value: number) => ({
+  numberOfInstalledApps: (value: number, path: string) => ({
     icon: ViewGridAddIcon,
     info: [
       {
@@ -85,17 +85,14 @@ export const AdminDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: 'apps',
+      href: path,
       label: 'statistics.view_active_apps',
     },
   }),
-  numberOfUsers: (value: number) => ({
+  numberOfUsers: (value: number, button?: { href: string; label: string }) => ({
     icon: UserGroupIcon,
     info: [{ title: value, subtitle: 'statistics.active_users' }],
-    button: {
-      href: 'users',
-      label: 'statistics.handle_users',
-    },
+    button,
   }),
   activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date }) => ({
     icon: ClockIcon,

@@ -6,6 +6,8 @@ import ExetendedStatisticsCard from '../../components/extended-statistics-card/E
 import { Loading } from '../../components/loading/Loading';
 import StatisticsCard from '../../components/statistics-card/StatisticsCard';
 import { useOrganizationProfileStatistics } from '../../services/statistics/statistics.queries';
+import { useProfileQuery } from '../../services/user/User.queries';
+import { UserRole } from '../users/enums/UserRole.enum';
 import {
   AdminDashboardExtendedStatisticsMapping,
   AdminDashboardSimpleStatisticsMapping,
@@ -13,6 +15,7 @@ import {
 
 const Dashboard = () => {
   const { data: statistics, isLoading, error } = useOrganizationProfileStatistics();
+  const { data: user } = useProfileQuery();
 
   const { t } = useTranslation(['dashboard']);
 
@@ -35,6 +38,7 @@ const Dashboard = () => {
               <ExetendedStatisticsCard
                 stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
                   statistics.isOrganizationUpdated,
+                  'organization/financial',
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -42,14 +46,20 @@ const Dashboard = () => {
                   stat={{
                     ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
                       statistics.numberOfInstalledApps,
+                      'apps',
                     ),
                   }}
                 />
                 <ExetendedStatisticsCard
                   stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfUsers(
-                      statistics.numberOfUsers,
-                    ),
+                    ...(user?.role === UserRole.ADMIN
+                      ? AdminDashboardExtendedStatisticsMapping.numberOfUsers(
+                          statistics.numberOfUsers,
+                          { href: 'users', label: 'statistics.handle_users' },
+                        )
+                      : AdminDashboardExtendedStatisticsMapping.numberOfUsers(
+                          statistics.numberOfUsers,
+                        )),
                   }}
                 />
               </div>
