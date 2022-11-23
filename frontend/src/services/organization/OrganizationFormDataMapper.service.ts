@@ -99,7 +99,7 @@ export const mapOrganizationLegalToFormData = (
     );
   });
 
-  others.forEach((other: Person, index: number) => {
+  others?.forEach((other: Person, index: number) => {
     organizationLegalUpdated = mapEntityToFormData(
       organizationLegalUpdated,
       `${organizationLegalKey}[others][${index}]`,
