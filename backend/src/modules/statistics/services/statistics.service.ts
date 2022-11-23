@@ -266,8 +266,10 @@ export class StatisticsService {
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      const installedApps =
-        await this.applicationService.findApplicationsForOng(organizationId);
+      const numberOfActiveApps =
+        await this.applicationService.countActiveApplicationsForOng(
+          organizationId,
+        );
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });
@@ -277,7 +279,7 @@ export class StatisticsService {
           organization.completionStatus === CompletionStatus.COMPLETED,
         organizationCreatedOn: organization.createdOn,
         organizationSyncedOn: organization.syncedOn,
-        numberOfInstalledApps: installedApps.length,
+        numberOfInstalledApps: numberOfActiveApps,
         numberOfUsers,
         hubStatistics: await this.getGeneralONGHubStatistics(),
       };
