@@ -39,7 +39,7 @@ const OrganizationOverview = () => {
               <ExetendedStatisticsCard
                 stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
                   data.isOrganizationUpdated,
-                  `organizations/${organization?.id}/financial`,
+                  `/organizations/${organization?.id}/financial`,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -47,7 +47,7 @@ const OrganizationOverview = () => {
                   stat={{
                     ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
                       data.numberOfInstalledApps,
-                      `organizations/${organization?.id}/applications`,
+                      `/organizations/${organization?.id}/applications`,
                     ),
                   }}
                 />
