@@ -53,7 +53,7 @@ export class StatisticsService {
           step: '1 day',
         },
         [OrganizationStatisticsType.MONTHLY]: {
-          format: 'Mon YY',
+          format: 'Mon YYYY',
           interval: '11 month',
           step: '1 month',
         },
