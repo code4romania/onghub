@@ -21,6 +21,7 @@ import { Role } from 'src/modules/user/enums/role.enum';
 import { FindManyOptions } from 'typeorm';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
+import { formatNumber } from 'libphonenumber-js';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -114,7 +115,16 @@ export class OrganizationRequestService {
     // 1. validate admin
     if (admin) {
       const user = await this.userService.findOne({
-        where: [{ email: admin.email }, { phone: admin.phone }],
+        where: [
+          { email: admin.email },
+          {
+            phone: formatNumber(
+              admin.phone.trim().split(' ').join(''),
+              'RO',
+              'E.164',
+            ),
+          },
+        ],
       });
 
       if (user) {
