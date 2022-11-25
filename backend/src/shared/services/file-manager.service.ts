@@ -68,9 +68,7 @@ export class FileManagerService {
     if (
       !files.every((file) => Buffer.byteLength(file.buffer) <= MAX_UPLOAD_SIZE)
     ) {
-      throw new PayloadTooLargeException(
-        `Maximum size is ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
-      );
+      throw new PayloadTooLargeException(FILE_ERRORS.SIZE);
     }
   }
 
