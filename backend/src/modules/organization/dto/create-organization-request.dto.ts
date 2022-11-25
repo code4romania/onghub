@@ -15,7 +15,7 @@ import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organ
 export class CreateUserRequestDto {
   @IsString()
   @IsNotEmpty()
-  @Length(10, 100)
+  @Length(5, 100)
   @Matches(REGEX.NAME)
   name: string;
 
