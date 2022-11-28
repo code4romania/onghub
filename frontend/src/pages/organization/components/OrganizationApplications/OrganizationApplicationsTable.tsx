@@ -48,25 +48,18 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
 
   useEffect(() => {
+    let applicationsCopy: ApplicationWithOngStatus[] = [];
     if (organizationApplications) {
-      if (type && searchWord) {
-        setApplications(
-          organizationApplications.filter(
-            (app) =>
-              app.type === type?.type && app.name.toLowerCase().includes(searchWord.toLowerCase()),
-          ),
-        );
-      } else if (type) {
-        setApplications(organizationApplications.filter((app) => app.type === type?.type));
-      } else if (searchWord) {
-        setApplications(
-          organizationApplications.filter((app) =>
-            app.name.toLowerCase().includes(searchWord.toLowerCase()),
-          ),
-        );
-      } else {
-        setApplications(organizationApplications);
-      }
+      setApplications(organizationApplications);
+      applicationsCopy = organizationApplications;
+    }
+    if (searchWord) {
+      setApplications(
+        applicationsCopy.filter((app) => app.name.toLowerCase().includes(searchWord.toLowerCase())),
+      );
+    }
+    if (type) {
+      setApplications(applicationsCopy.filter((app) => app.type === type?.type));
     }
   }, [type, searchWord, organizationApplications]);
 
