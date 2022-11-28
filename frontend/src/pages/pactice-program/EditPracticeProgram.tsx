@@ -76,7 +76,7 @@ const EditPracticeProgram = () => {
           data: {
             ...data,
             organizationId: organizationId,
-            link: setUrlPrefix(data.link) || undefined,
+            link: setUrlPrefix(data.link || ''),
           },
         },
         {

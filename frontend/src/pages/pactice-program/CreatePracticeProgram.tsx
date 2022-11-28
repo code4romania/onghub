@@ -41,7 +41,7 @@ const CreatePracticeProgram = () => {
     if (isFormValid) {
       // create practice program request
       await createPracticeProgram(
-        { ...data, organizationId: organizationId, link: setUrlPrefix(data.link) || undefined },
+        { ...data, organizationId: organizationId, link: setUrlPrefix(data.link || '') },
         {
           onSuccess: () => {
             useSuccessToast(t('feedback.success_create'));

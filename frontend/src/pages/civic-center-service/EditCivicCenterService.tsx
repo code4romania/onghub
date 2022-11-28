@@ -59,7 +59,7 @@ const EditCivicCenterService = () => {
           data: {
             ...data,
             organizationId: organizationId,
-            onlineAccessLink: setUrlPrefix(data.onlineAccessLink) || undefined,
+            onlineAccessLink: setUrlPrefix(data.onlineAccessLink || ''),
           },
         },
         {

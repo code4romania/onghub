@@ -146,17 +146,10 @@ export const cleanupPayload = (payload: any) => {
     .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
 };
 
-export const setUrlPrefix = (address: string | null | undefined) => {
-  switch (address) {
-    case '':
-    case null:
-    case undefined:
-      return address;
-    default:
-      if (address.startsWith('http://') || address.startsWith('https://')) {
-        return address;
-      } else {
-        return 'https://' + address;
-      }
+export const setUrlPrefix = (address: string | null) => {
+  if (!address || address.startsWith('http://') || address.startsWith('https://')) {
+    return address || '';
+  } else {
+    return 'https://' + address;
   }
 };
