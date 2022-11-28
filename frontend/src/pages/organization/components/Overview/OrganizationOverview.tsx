@@ -34,24 +34,20 @@ const OrganizationOverview = () => {
               <ExetendedStatisticsCard
                 stat={SuperAdminOverviewExtendedStatisticsMapping.isOrganizationUpdated(
                   data.isOrganizationUpdated,
-                  `/organizations/${organization?.id}/financial`,
+                  organization?.id,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...SuperAdminOverviewExtendedStatisticsMapping.numberOfInstalledApps(
-                      data.numberOfInstalledApps,
-                      `/organizations/${organization?.id}/applications`,
-                    ),
-                  }}
+                  stat={SuperAdminOverviewExtendedStatisticsMapping.numberOfInstalledApps(
+                    data.numberOfInstalledApps,
+                    organization?.id,
+                  )}
                 />
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...SuperAdminOverviewExtendedStatisticsMapping.numberOfUsers(
-                      data.numberOfUsers,
-                    ),
-                  }}
+                  stat={SuperAdminOverviewExtendedStatisticsMapping.numberOfUsers(
+                    data.numberOfUsers,
+                  )}
                 />
               </div>
             </div>

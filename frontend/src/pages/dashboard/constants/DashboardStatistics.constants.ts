@@ -62,7 +62,7 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
 };
 
 export const AdminEmployeeDashboardExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean, path: string) => ({
+  isOrganizationUpdated: (isUpdated: boolean) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
     info: [
@@ -72,11 +72,11 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: path,
+      href: 'organization/financial',
       label: 'statistics.view_data',
     },
   }),
-  numberOfInstalledApps: (value: number, path: string) => ({
+  numberOfInstalledApps: (value: number) => ({
     icon: ViewGridAddIcon,
     info: [
       {
@@ -85,15 +85,15 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: path,
+      href: 'apps',
       label: 'statistics.view_active_apps',
     },
   }),
-  numberOfUsersAdmin: (value: number, path: string) => ({
+  numberOfUsersAdmin: (value: number) => ({
     icon: UserGroupIcon,
     info: [{ title: value, subtitle: 'statistics.active_users' }],
     button: {
-      href: path,
+      href: 'users',
       label: 'statistics.handle_users',
     },
   }),
@@ -114,7 +114,7 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
 };
 
 export const SuperAdminOverviewExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean, path: string) => ({
+  isOrganizationUpdated: (isUpdated: boolean, organizationId?: number) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
     info: [
@@ -124,11 +124,11 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: path,
+      href: `/organizations/${organizationId}/financial`,
       label: 'statistics.view_data',
     },
   }),
-  numberOfInstalledApps: (value: number, path: string) => ({
+  numberOfInstalledApps: (value: number, organizationId?: number) => ({
     icon: ViewGridAddIcon,
     info: [
       {
@@ -137,7 +137,7 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: path,
+      href: `/organizations/${organizationId}/applications`,
       label: 'statistics.view_active_apps',
     },
   }),

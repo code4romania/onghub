@@ -38,24 +38,19 @@ const Dashboard = () => {
               <ExetendedStatisticsCard
                 stat={AdminEmployeeDashboardExtendedStatisticsMapping.isOrganizationUpdated(
                   statistics.isOrganizationUpdated,
-                  'organization/financial',
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
-                      statistics.numberOfInstalledApps,
-                      'apps',
-                    ),
-                  }}
+                  stat={AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
+                    statistics.numberOfInstalledApps,
+                  )}
                 />
                 <ExetendedStatisticsCard
                   stat={
                     role === UserRole.ADMIN
                       ? AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersAdmin(
                           statistics.numberOfUsers,
-                          'users',
                         )
                       : AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersEmployee(
                           statistics.numberOfUsers,
