@@ -75,7 +75,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) { }
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -434,6 +434,22 @@ export class ApplicationService {
       }
     }
 
+    // if application is disabled, sign out all users from all organizations
+    try {
+      if (updateApplicationDto.status === ApplicationStatus.DISABLED) {
+        const ongApplications = await this.ongApplicationService.findMany({
+          where: { applicationId: id },
+        });
+        const organizationIds = ongApplications.map(
+          (ongApplication) => ongApplication.organizationId,
+        );
+        await this.userService.signOutAllOrganization(organizationIds);
+      }
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+
     return this.applicationRepository.update({ id }, updateApplicationDto);
   }
 
@@ -446,6 +462,13 @@ export class ApplicationService {
       applicationId,
       OngApplicationStatus.RESTRICTED,
     );
+
+    try {
+      await this.userService.signOutAllOrganization([organizationId]);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 
   public async restore(
@@ -594,7 +617,9 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
+      .andWhere('ongApp.status != :status', {
+        status: OngApplicationStatus.PENDING,
+      })
       .orWhere('application.type = :type', {
         type: ApplicationTypeEnum.INDEPENDENT,
       })
@@ -772,7 +797,7 @@ export class ApplicationService {
 
     const finalStatus =
       applicationStatus === ApplicationStatus.DISABLED &&
-        status !== OngApplicationStatus.RESTRICTED
+      status !== OngApplicationStatus.RESTRICTED
         ? ApplicationStatus.DISABLED
         : status;
 

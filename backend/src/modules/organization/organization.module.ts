@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { OrganizationController } from './controllers/organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationModule } from '../application/application.module';
@@ -70,6 +70,7 @@ import { CivicCenterModule } from '../civic-center-service/civic-center.module';
     UserModule,
     PracticeProgramModule,
     CivicCenterModule,
+    forwardRef(() => UserModule),
   ],
   controllers: [
     OrganizationApplicationController,

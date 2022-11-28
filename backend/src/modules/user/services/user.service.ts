@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -43,6 +45,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly cognitoService: CognitoUserService,
+    @Inject(forwardRef(() => OrganizationService))
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
   ) {}
@@ -152,6 +155,8 @@ export class UserService {
         );
       }
 
+      await this.cognitoService.globalSignOut(user.cognitoId);
+
       // 6. Update db user data
       return this.update(id, userData);
     } catch (error) {
@@ -168,8 +173,10 @@ export class UserService {
         case USER_ERRORS.ACCESS.errorCode:
         // 3. USR_013: User already exists with this phone
         case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
+        // 4. USR_015: Error on signing out user
+        case USER_ERRORS.SIGN_OUT.errorCode:
           throw new BadRequestException(err);
-        // 4. USR_009: Something unexpected happened while updating the user
+        // 5. USR_009: Something unexpected happened while updating the user
         default: {
           throw new InternalServerErrorException({
             ...USER_ERRORS.UPDATE,
@@ -295,20 +302,20 @@ export class UserService {
     }
   }
 
-  async removeById(id: number, organizatioinId?: number): Promise<string> {
+  async removeById(id: number, organizationId?: number): Promise<string> {
     // 1. Get the user by id
-    const user = await this.getById(id, organizatioinId);
+    const user = await this.getById(id, organizationId);
 
     return this.remove(user);
   }
 
-  async restrictAccess(ids: number[], organizatioinId?: number) {
+  async restrictAccess(ids: number[], organizationId?: number) {
     const updated = [],
       failed = [];
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
       try {
-        const user = await this.getById(id, organizatioinId);
+        const user = await this.getById(id, organizationId);
         await this.userRepository.update(
           { id },
           { status: UserStatus.RESTRICTED },
@@ -353,6 +360,20 @@ export class UserService {
     await this.cognitoService.resendInvite(user.email);
 
     return;
+  }
+
+  public async signOutAllOrganization(
+    organizationIds: number[],
+  ): Promise<void> {
+    try {
+      const users = await this.findMany({ where: { id: In(organizationIds) } });
+
+      users.map(
+        async (user) => await this.cognitoService.globalSignOut(user.cognitoId),
+      );
+    } catch (error) {
+      throw new BadRequestException(USER_ERRORS.SIGN_OUT);
+    }
   }
 
   // ****************************************************

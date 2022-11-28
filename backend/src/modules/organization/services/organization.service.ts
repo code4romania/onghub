@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  forwardRef,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -14,6 +16,7 @@ import { CivicCenterServiceService } from 'src/modules/civic-center-service/serv
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
+import { UserService } from 'src/modules/user/services/user.service';
 import { AnafService } from 'src/shared/services';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
@@ -79,7 +82,9 @@ export class OrganizationService {
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
-  ) { }
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
+  ) {}
 
   public async create(
     createUserRequestDto: CreateUserRequestDto,
@@ -916,6 +921,13 @@ export class OrganizationService {
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
+
+    try {
+      await this.userService.signOutAllOrganization([organizationId]);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
 
     const {
       template,
