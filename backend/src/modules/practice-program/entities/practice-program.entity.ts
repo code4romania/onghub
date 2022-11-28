@@ -84,7 +84,7 @@ export class PracticeProgram extends BaseEntity {
   })
   domains: Domain[];
 
-  @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToMany(() => Faculty, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
     name: 'practice_program_to_faculty',
     joinColumn: {
@@ -95,7 +95,7 @@ export class PracticeProgram extends BaseEntity {
   })
   faculties: Faculty[];
 
-  @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToMany(() => Skill, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({
     name: 'practice_program_to_skill',
     joinColumn: {
