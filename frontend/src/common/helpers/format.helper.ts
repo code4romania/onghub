@@ -147,8 +147,8 @@ export const cleanupPayload = (payload: any) => {
 };
 
 export const setUrlPrefix = (address: string | null) => {
-  if (address?.startsWith('http://' || 'https://')) {
-    return address;
+  if (!address || address.startsWith('http://') || address.startsWith('https://')) {
+    return address || '';
   } else {
     return 'https://' + address;
   }

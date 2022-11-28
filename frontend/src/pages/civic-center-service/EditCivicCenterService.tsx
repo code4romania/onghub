@@ -10,7 +10,7 @@ import {
   useGetCivicCenterServiceQuery,
 } from '../../services/civic-center-service/CivicCenterService.queries';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
-import { mapToId } from '../../common/helpers/format.helper';
+import { mapToId, setUrlPrefix } from '../../common/helpers/format.helper';
 
 const EditCivicCenterService = () => {
   const navigate = useNavigate();
@@ -59,6 +59,7 @@ const EditCivicCenterService = () => {
           data: {
             ...data,
             organizationId: organizationId,
+            onlineAccessLink: setUrlPrefix(data.onlineAccessLink || ''),
           },
         },
         {
