@@ -614,7 +614,6 @@ export class ApplicationService {
   ): Promise<number> {
     const applications = await this.applicationRepository
       .getQueryBuilder()
-      .select('application.id as id')
       .leftJoin(
         'ong_application',
         'ongApp',
@@ -627,9 +626,9 @@ export class ApplicationService {
       .andWhere('application.status = :status', {
         status: ApplicationStatus.ACTIVE,
       })
-      .execute();
+      .getCount();
 
-    return applications.length;
+    return applications;
   }
 
   public async countApplications(
