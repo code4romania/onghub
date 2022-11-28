@@ -33,7 +33,7 @@ export class OrganizationRequestService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly fileManagerService: FileManagerService,
-  ) {}
+  ) { }
 
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
@@ -67,6 +67,7 @@ export class OrganizationRequestService {
         'organization.organizationActivity.federations',
         'organization.organizationActivity.coalitions',
         'organization.organizationActivity.branches',
+        'organization.organizationActivity.branches.county',
         'organization.organizationActivity.regions',
         'organization.organizationLegal',
         'organization.organizationLegal.legalReprezentative',
