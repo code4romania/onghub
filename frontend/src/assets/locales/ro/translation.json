@@ -1006,7 +1006,7 @@
       "handle_users": "Gestioneaza utilizatori",
       "view_data": "Vizualizeaza datele",
       "updated_data": "Datele organizației sunt actualizate",
-      "outdated_data": "Datele organizației sunt actualizate",
+      "outdated_data": "Datele organizației nu sunt actualizate",
       "error": "Eroare la preluarea datelor",
       "active_organizations": "Organizatii active",
       "inactive_organizations": "Organizatii inactive",
