@@ -176,6 +176,6 @@ export class ApplicationController {
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
   removeOne(@Param('id') id: number): Promise<void> {
-    return this.applicationService.deleteOne(id);
+    return this.appService.delete(id);
   }
 }

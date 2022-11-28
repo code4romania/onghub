@@ -1,7 +1,6 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { OrganizationController } from './controllers/organization.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApplicationModule } from '../application/application.module';
 import { OrganizationProfileController } from './controllers/organization-profile.controller';
 import {
   Contact,
@@ -42,7 +41,6 @@ import {
 import { OrganizationReportService } from './services/organization-report.service';
 import { OrganizationRequestService } from './services/organization-request.service';
 import { UserModule } from '../user/user.module';
-import { OrganizationApplicationController } from './controllers/organization-application.controller';
 import { OrganizationHistory } from './entities/organization-history.entity';
 import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
 import { PracticeProgramModule } from '../practice-program/practice-program.module';
@@ -66,16 +64,11 @@ import { CivicCenterModule } from '../civic-center-service/civic-center.module';
       OrganizationHistory,
       OrganizationRequestHistory,
     ]),
-    ApplicationModule,
-    UserModule,
+    forwardRef(() => UserModule),
     PracticeProgramModule,
     CivicCenterModule,
   ],
-  controllers: [
-    OrganizationApplicationController,
-    OrganizationController,
-    OrganizationProfileController,
-  ],
+  controllers: [OrganizationController, OrganizationProfileController],
   providers: [
     ContactService,
     OrganizationService,

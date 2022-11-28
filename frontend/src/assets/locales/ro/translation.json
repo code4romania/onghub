@@ -43,7 +43,9 @@
       "hide": "Ascunde filtre",
       "reset": "Reseteaza filtre",
       "show": "Filtre"
-    }
+    },
+    "unavailable": "Indisponibil",
+    "to_be_removed": "De eliminat"
   },
   "menu": {
     "informations": "Informatii",

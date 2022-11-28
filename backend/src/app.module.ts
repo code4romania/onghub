@@ -25,6 +25,7 @@ import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { PracticeProgramModule } from './modules/practice-program/practice-program.module';
 import { CivicCenterModule } from './modules/civic-center-service/civic-center.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CivicCenterModule } from './modules/civic-center-service/civic-center.m
     ThrottlerModule.forRootAsync({
       useClass: RateLimiterConfigService,
     }),
+    EventEmitterModule.forRoot(),
 
     // Providers
     DatabaseProviderModule,

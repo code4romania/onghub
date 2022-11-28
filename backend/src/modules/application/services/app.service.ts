@@ -10,6 +10,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { User } from 'src/modules/user/entities/user.entity';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { In } from 'typeorm';
 import { APPLICATION_ERRORS } from '../constants/application-error.constants';
 import { APPLICATION_FILTERS_CONFIG } from '../constants/application-filters.config';
 import { APPLICATIONS_FILES_DIR } from '../constants/application.constants';
@@ -22,6 +23,8 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { ApplicationRepository } from '../repositories/application.repository';
+import { OngApplicationRepository } from '../repositories/ong-application.repository';
+import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
 
 @Injectable()
 export class AppService {
@@ -31,6 +34,8 @@ export class AppService {
     private readonly applicationRepository: ApplicationRepository,
     private readonly fileManagerService: FileManagerService,
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
+    private readonly ongApplicationRepository: OngApplicationRepository,
+    private readonly userOngApplicationRepository: UserOngApplicationRepository,
   ) {}
 
   public async create(
@@ -186,6 +191,12 @@ export class AppService {
     };
   }
 
+  public async findOneByCognitoId(cognitoId: string): Promise<Application> {
+    return this.applicationRepository.get({
+      where: { cognitoClientId: cognitoId },
+    });
+  }
+
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,
@@ -203,6 +214,12 @@ export class AppService {
         });
       }
 
+      let applicationPayload = {
+        id,
+        ...updateApplicationDto,
+        steps: updateApplicationDto.steps || null,
+      };
+
       // 2. handle logo
       if (logo && logo.length > 0) {
         if (application.logo) {
@@ -216,14 +233,13 @@ export class AppService {
           application.name,
         );
 
-        return this.applicationRepository.save({
-          id,
-          ...updateApplicationDto,
+        applicationPayload = {
+          ...applicationPayload,
           logo: uploadedFile[0],
-        });
+        };
       }
 
-      return this.applicationRepository.update({ id }, updateApplicationDto);
+      return this.applicationRepository.update({ id }, applicationPayload);
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -237,6 +253,41 @@ export class AppService {
           error,
         });
       }
+    }
+  }
+
+  public async delete(id: number): Promise<void> {
+    try {
+      // 1. get all organization who have access to this application
+      const ongApplications = await this.ongApplicationRepository.getMany({
+        where: { applicationId: id },
+      });
+
+      // map organization ids for easy usage
+      const ongApplicationsIds = ongApplications.map((app) => app.id);
+
+      // 2. check if any organizations have access to the app
+      if (ongApplications.length > 0) {
+        // 2.1 remove all user organization application connections
+        await this.userOngApplicationRepository.remove({
+          where: { ongApplicationId: In(ongApplicationsIds) },
+        });
+
+        // 2.2. remove all organization application connections
+        await this.ongApplicationRepository.remove({
+          where: { id: In(ongApplicationsIds) },
+        });
+      }
+
+      // 3. Remove tha actual application
+      await this.applicationRepository.remove({ where: { id } });
+    } catch (error) {
+      this.logger.error({ error, ...APPLICATION_ERRORS.DELETE });
+      const err = error?.response;
+      throw new BadRequestException({
+        error: err,
+        ...APPLICATION_ERRORS.DELETE,
+      });
     }
   }
 }

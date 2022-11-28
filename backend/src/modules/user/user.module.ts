@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,15 +9,21 @@ import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
+import { UserApplicationService } from './services/user-application.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserHistory]),
-    forwardRef(() => OrganizationModule),
-    forwardRef(() => ApplicationModule),
+    OrganizationModule,
+    ApplicationModule,
   ],
   controllers: [ProfileController, AdminUserController],
-  providers: [UserRepository, UserService, CognitoUserService],
-  exports: [UserService],
+  providers: [
+    UserRepository,
+    UserService,
+    CognitoUserService,
+    UserApplicationService,
+  ],
+  exports: [UserService, UserApplicationService],
 })
 export class UserModule {}

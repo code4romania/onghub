@@ -9,7 +9,6 @@ export const ORGANIZATION_ALL_APPS_COLUMNS = [
   'application.status as status',
   'ongApp.status as "ongStatus"',
   'ongApp.created_on as "createdOn"',
-  'application.status as "applicationStatus"',
   'application.type as type',
 ];
 

@@ -13,7 +13,6 @@ import {
   getApplications,
   getApplicationsForCreateUser,
   getApplicationsForEditUser,
-  getMyOngApplications,
   getOngApplications,
   removeApplication,
   removeOngApplication,
@@ -60,19 +59,9 @@ export const useApplicationsQuery = (
 };
 
 // As an Admin you will receive all the Applications + Status (your relationship with that application -> ONGApp table entry).
-export const useOngApplicationsQuery = () => {
+export const useOngApplicationsQuery = (organizationId?: number) => {
   const { setOngApplications } = useStore();
-  return useQuery(['ongApplications'], () => getOngApplications(), {
-    onSuccess: (data: ApplicationWithOngStatus[]) => {
-      setOngApplications(data);
-    },
-  });
-};
-
-// As an Admin you will receive your Applications (the ones added in your organization)
-export const useMyOngApplicationsQuery = () => {
-  const { setOngApplications } = useStore();
-  return useQuery(['myOngApplications'], () => getMyOngApplications(), {
+  return useQuery(['ongApplications', organizationId], () => getOngApplications(organizationId), {
     onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },
@@ -131,7 +120,7 @@ export const userApplicationsForCreateUser = () => {
 
 export const useApplicationsForEditUserQuery = (userId: string) => {
   return useQuery(['application', userId], () => getApplicationsForEditUser(userId), {
-    enabled: !!userId
+    enabled: !!userId,
   });
 };
 

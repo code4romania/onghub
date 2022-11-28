@@ -65,25 +65,19 @@ export const getApplications = async (
 };
 
 // Returns all the applications with ONGApp table entry as status (your ONG relationship with that Application)
-export const getOngApplications = async (): Promise<PaginatedEntity<ApplicationWithOngStatus>> => {
-  const requestUrl = `/organization/application/all`;
-  return API.get(requestUrl).then((res) => res.data);
-};
-
-// Returns all the applications added to your ONG.
-export const getMyOngApplications = async (): Promise<
-  PaginatedEntity<ApplicationWithOngStatus>
-> => {
-  const requestUrl = `/organization/application`;
-  return API.get(requestUrl).then((res) => res.data);
+export const getOngApplications = async (
+  organizationId?: number,
+): Promise<PaginatedEntity<ApplicationWithOngStatus>> => {
+  const requestUrl = `/organizations/application`;
+  return API.get(requestUrl, { params: { organizationId } }).then((res) => res.data);
 };
 
 export const getApplicationsForCreateUser = async (): Promise<ApplicationAccess[]> => {
-  return API.get('/organization/application?status=active').then((res) => res.data);
+  return API.get('/organizations/application?status=active').then((res) => res.data);
 };
 
 export const getApplicationsForEditUser = async (userId: string): Promise<ApplicationAccess[]> => {
-  return API.get(`/organization/application/user/${userId}`).then((res) => res.data);
+  return API.get(`/organizations/application/user/${userId}`).then((res) => res.data);
 };
 
 export const getApplicationById = (applicationId: string): Promise<Application> => {
@@ -131,7 +125,7 @@ export const removeOngApplication = (applicationId: number, organizationId: stri
 };
 
 export const removeOngApplicationRequest = (applicationId: number) => {
-  return API.delete(`/organization/application/${applicationId}`).then((res) => res.data);
+  return API.delete(`/organizations/application/${applicationId}`).then((res) => res.data);
 };
 
 const generateApplicationFormDataPayload = (

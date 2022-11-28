@@ -19,6 +19,7 @@ import { useRemovOngApplicationRequest } from '../../../services/application/App
 import { ApplicationPullingType } from '../../apps-store/enums/application-pulling-type.enum';
 import ApplicationFeedbackCard from './ApplicationFeedbackCard';
 import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
+import ApplicationStatusFeedback from './ApplicationStatusFeedback';
 
 const ApplicationDetails = () => {
   const navigate = useNavigate();
@@ -139,149 +140,150 @@ const ApplicationDetails = () => {
 
         {role !== UserRole.SUPER_ADMIN && (
           <div>
-            {/* The application is not added */}
-            {!application?.status &&
-              application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              role === UserRole.ADMIN && (
-                <div className="flex pt-4 gap-4 items-center justify-center">
-                  <button
-                    className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                    onClick={requestApplication}
-                  >
-                    <PlusIcon className="h-5 w-5" />
-                    {application.type === ApplicationTypeEnum.SIMPLE
-                      ? t('details.add')
-                      : t('details.request')}
-                  </button>
-                </div>
-              )}
-            {/* The application was restricted */}
-            {application?.status === OngApplicationStatus.RESTRICTED && (
-              <div className="flex pt-4 gap-4 items-center justify-center">
-                <p className="">{t('details.restricted')}</p>
-              </div>
+            {/* Application active */}
+            {application?.status === ApplicationStatus.ACTIVE && (
+              <>
+                {/* Handle simple login and standalone application */}
+                {application?.type !== ApplicationTypeEnum.INDEPENDENT && (
+                  <>
+                    {/* The application is not added */}
+                    {application?.ongStatus === null && role === UserRole.ADMIN && (
+                      <div className="flex pt-4 gap-4 items-center justify-center">
+                        <button
+                          className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          onClick={requestApplication}
+                        >
+                          <PlusIcon className="h-5 w-5" />
+                          {application.type === ApplicationTypeEnum.SIMPLE
+                            ? t('details.add')
+                            : t('details.request')}
+                        </button>
+                      </div>
+                    )}
+                    {/* The application is not independent and active */}
+                    {application?.ongStatus === OngApplicationStatus.ACTIVE &&
+                      role === UserRole.ADMIN && (
+                        <div className="flex pt-4 gap-4 items-center justify-center">
+                          <button
+                            className="edit-button px-8 flex gap-4"
+                            onClick={() => setConfirmationModalOpen(true)}
+                          >
+                            <XIcon className="h-5 w-5" />
+                            {t('details.delete')}
+                          </button>
+                        </div>
+                      )}
+                    {/* The application is not independent and pending */}
+                    {application?.ongStatus === OngApplicationStatus.PENDING && (
+                      <div className="flex flex-col pt-4 gap-4 items-center justify-center">
+                        <button
+                          className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                          disabled
+                        >
+                          <PlusIcon className="h-5 w-5" />
+                          {t('details.request')}
+                        </button>
+                        <p>{t('details.contact')}</p>
+                      </div>
+                    )}
+                  </>
+                )}
+                {/* The application was restricted */}
+                {application?.ongStatus === OngApplicationStatus.RESTRICTED && (
+                  <ApplicationStatusFeedback>{t('details.restricted')}</ApplicationStatusFeedback>
+                )}
+                {/* The application is independent and active */}
+                {application?.type === ApplicationTypeEnum.INDEPENDENT && (
+                  <ApplicationStatusFeedback>{t('details.auto')}</ApplicationStatusFeedback>
+                )}
+                {/* The application is standalone and pending removal */}
+                {application?.ongStatus === OngApplicationStatus.PENDING_REMOVAL && (
+                  <ApplicationStatusFeedback>
+                    {t('details.pending_removal')}
+                  </ApplicationStatusFeedback>
+                )}
+              </>
             )}
-            {/* The application is independent and active */}
-            {application?.type === ApplicationTypeEnum.INDEPENDENT && (
-              <div className="flex pt-4 gap-4 items-center justify-center">
-                <p className="text-gray-700 font-titilliumBold sm:text-sm lg:text-base text-xs">
-                  {t('details.auto')}
-                </p>
-              </div>
-            )}
-            {/* The application is independent and active */}
-            {application?.status === OngApplicationStatus.PENDING_REMOVAL && (
-              <div className="flex pt-4 gap-4 items-center justify-center">
-                <p className="text-gray-700 font-titilliumBold sm:text-sm lg:text-base text-xs">
-                  {t('details.pending_removal')}
-                </p>
-              </div>
-            )}
-            {/* The application is not independent and active */}
-            {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              application?.status === OngApplicationStatus.ACTIVE &&
-              role === UserRole.ADMIN && (
-                <div className="flex pt-4 gap-4 items-center justify-center">
-                  <button
-                    className="edit-button px-8 flex gap-4"
-                    onClick={() => setConfirmationModalOpen(true)}
-                  >
-                    <XIcon className="h-5 w-5" />
-                    {t('details.delete')}
-                  </button>
-                </div>
-              )}
-            {/* The application is not independent and pending */}
-            {application?.type !== ApplicationTypeEnum.INDEPENDENT &&
-              application?.status === OngApplicationStatus.PENDING && (
-                <div className="flex flex-col pt-4 gap-4 items-center justify-center">
-                  <button
-                    className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                    disabled
-                  >
-                    <PlusIcon className="h-5 w-5" />
-                    {t('details.request')}
-                  </button>
-                  <p>{t('details.contact')}</p>
-                </div>
-              )}
           </div>
         )}
       </div>
       <div className="flex flex-col gap-4 w-full h-full">
         {role !== UserRole.SUPER_ADMIN && (
           <React.Fragment>
-            {(application?.ongStatus === OngApplicationStatus.ACTIVE ||
-              application.status !== ApplicationStatus.DISABLED) && (
-              <ApplicationFeedbackCard
-                icon={<CheckCircleIcon className="text-green w-6" />}
-                title={t('details.active')}
-                description={t('details.define_active')}
-                actions={
-                  <>
-                    {!application?.pullingType && (
-                      <button
-                        className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                        onClick={onOpen}
-                      >
-                        {t('details.open')}
+            {application?.status !== ApplicationStatus.DISABLED && (
+              <>
+                {application?.ongStatus === OngApplicationStatus.ACTIVE && (
+                  <ApplicationFeedbackCard
+                    icon={<CheckCircleIcon className="text-green w-6" />}
+                    title={t('details.active')}
+                    description={t('details.define_active')}
+                    actions={
+                      <>
+                        {!application?.pullingType && (
+                          <button
+                            className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                            onClick={onOpen}
+                          >
+                            {t('details.open')}
+                          </button>
+                        )}
+                        {application?.pullingType === ApplicationPullingType.PRACTICE_PROGRAM && (
+                          <div className="w-full flex flex-col lg:flex-row">
+                            <button
+                              className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                              onClick={onOpen}
+                            >
+                              {t('details.practice_program.redirect_to_site')}
+                            </button>
+                            <button
+                              className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
+                              onClick={onRedirectToPracticePrograms}
+                            >
+                              {t('details.practice_program.redirect_to_practice_programs')}
+                            </button>
+                          </div>
+                        )}
+                        {application?.pullingType === ApplicationPullingType.CIVIC_SERVICE && (
+                          <div className="w-full flex flex-col lg:flex-row">
+                            <button
+                              className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
+                              onClick={onOpen}
+                            >
+                              {t('details.services.redirect_to_site')}
+                            </button>
+                            <button
+                              className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
+                              onClick={onRedirectToServices}
+                            >
+                              {t('details.services.redirect_to_services')}
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    }
+                  />
+                )}
+                {application?.ongStatus === OngApplicationStatus.PENDING && (
+                  <ApplicationFeedbackCard
+                    icon={<ClockIcon className="w-6 h-6  text-yellow-600" />}
+                    title={t('details.pending')}
+                    description={t('details.configure')}
+                    actions={
+                      <button className="edit-button px-8 flex gap-4" onClick={abandonRequest}>
+                        <XIcon className="h-5 w-5" />
+                        {t('details.cancel')}
                       </button>
-                    )}
-                    {application?.pullingType === ApplicationPullingType.PRACTICE_PROGRAM && (
-                      <div className="w-full flex flex-col lg:flex-row">
-                        <button
-                          className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                          onClick={onOpen}
-                        >
-                          {t('details.practice_program.redirect_to_site')}
-                        </button>
-                        <button
-                          className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
-                          onClick={onRedirectToPracticePrograms}
-                        >
-                          {t('details.practice_program.redirect_to_practice_programs')}
-                        </button>
-                      </div>
-                    )}
-                    {application?.pullingType === ApplicationPullingType.CIVIC_SERVICE && (
-                      <div className="w-full flex flex-col lg:flex-row">
-                        <button
-                          className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
-                          onClick={onOpen}
-                        >
-                          {t('details.services.redirect_to_site')}
-                        </button>
-                        <button
-                          className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
-                          onClick={onRedirectToServices}
-                        >
-                          {t('details.services.redirect_to_services')}
-                        </button>
-                      </div>
-                    )}
-                  </>
-                }
-              />
-            )}
-            {application?.status === OngApplicationStatus.PENDING && (
-              <ApplicationFeedbackCard
-                icon={<ClockIcon className="w-6 h-6  text-yellow-600" />}
-                title={t('details.pending')}
-                description={t('details.configure')}
-                actions={
-                  <button className="edit-button px-8 flex gap-4" onClick={abandonRequest}>
-                    <XIcon className="h-5 w-5" />
-                    {t('details.cancel')}
-                  </button>
-                }
-              />
-            )}
-            {application?.status === OngApplicationStatus.RESTRICTED && (
-              <ApplicationFeedbackCard
-                icon={<ExclamationCircleIcon className="w-6 h-6  text-red-500" />}
-                title={t('details.restricted')}
-                description={t('details.restore')}
-              />
+                    }
+                  />
+                )}
+                {application?.ongStatus === OngApplicationStatus.RESTRICTED && (
+                  <ApplicationFeedbackCard
+                    icon={<ExclamationCircleIcon className="w-6 h-6  text-red-500" />}
+                    title={t('details.restricted')}
+                    description={t('details.restore')}
+                  />
+                )}
+              </>
             )}
             {application?.status === ApplicationStatus.DISABLED && (
               <ApplicationFeedbackCard

@@ -11,6 +11,7 @@ export interface ApplicationWithOngStatus {
   shortDescription: string;
   loginLink: string;
   website: string;
+  createdOn: Date;
   status: ApplicationStatus;
   ongStatus: OngApplicationStatus;
   type: ApplicationTypeEnum;
