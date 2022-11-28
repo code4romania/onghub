@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { mapNameToSelect, mapToId, setUrlPrefix } from '../../common/helpers/format.helper';
+import { setUrlPrefix, mapCitiesToSelect, mapNameToSelect, mapToId } from '../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
@@ -54,6 +54,8 @@ const EditPracticeProgram = () => {
         ? [...practiceProgram.skills.map(mapNameToSelect)]
         : [];
 
+      const location = mapCitiesToSelect(practiceProgram.location);
+
       reset({
         ...formData,
         domains: domains.map(mapToId),
@@ -62,6 +64,7 @@ const EditPracticeProgram = () => {
         deadline: deadline ? new Date(deadline) : deadline,
         faculties,
         skills,
+        location,
       });
     }
   }, [practiceProgram]);
