@@ -161,12 +161,7 @@ const OrganizationLegal = () => {
       setDirectorsDeleted([...directorsDeleted, selectedDirector.id]);
     }
     const filteredDirectors = directors.filter(
-      (director: Partial<Contact>) =>
-        !(
-          director.fullName === selectedDirector?.fullName &&
-          director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.phone
-        ),
+      (director: Partial<Contact>) => director.id !== selectedDirector?.id,
     );
     setDirectors(filteredDirectors);
     setSelectedDirector(null);
