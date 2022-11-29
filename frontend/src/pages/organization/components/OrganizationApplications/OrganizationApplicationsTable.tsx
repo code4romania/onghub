@@ -95,14 +95,25 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       },
     ];
 
+    const pendingRemovalApplicationMenu = [
+      {
+        name: t('options.remove_application'),
+        icon: TrashIcon,
+        onClick: onRemoveApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
     return {
       name: '',
       cell: (row: ApplicationWithOngStatus) => (
         <PopoverMenu
           row={row}
           menuItems={
-            row.status === OngApplicationStatus.ACTIVE
+            row.ongStatus === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
+              : row.ongStatus === OngApplicationStatus.PENDING_REMOVAL
+              ? pendingRemovalApplicationMenu
               : restrictedApplicationMenu
           }
         />
