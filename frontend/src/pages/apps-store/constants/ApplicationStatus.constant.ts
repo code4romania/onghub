@@ -8,6 +8,7 @@ const translations = {
   disabled: i18n.t('appstore:status.disabled'),
   restricted: i18n.t('appstore:status.restricted'),
   pending: i18n.t('appstore:status.pending'),
+  pending_removal: i18n.t('appstore:status.pending_removal'),
 };
 
 export const ApplicationStatusBadgeMapper = (status: ApplicationStatus) => {
@@ -34,11 +35,10 @@ export const OngApplicationStatusBadgeMapper = (status: OngApplicationStatus) =>
     case OngApplicationStatus.ACTIVE: {
       return BadgeStatus.SUCCESS;
     }
-    case OngApplicationStatus.DISABLED:
+    case OngApplicationStatus.PENDING_REMOVAL:
     case OngApplicationStatus.RESTRICTED: {
       return BadgeStatus.ERROR;
     }
-    case OngApplicationStatus.PENDING_REMOVAL:
     case OngApplicationStatus.PENDING: {
       return BadgeStatus.WARNING;
     }
@@ -52,10 +52,9 @@ export const APPLICATION_STATUS_NAME: Record<ApplicationStatus, string> = {
 
 export const ONG_APPLICATION_STATUS: Record<OngApplicationStatus, string> = {
   [OngApplicationStatus.ACTIVE]: translations.active,
-  [OngApplicationStatus.DISABLED]: translations.disabled,
   [OngApplicationStatus.RESTRICTED]: translations.restricted,
   [OngApplicationStatus.PENDING]: translations.pending,
-  [OngApplicationStatus.PENDING_REMOVAL]: translations.pending,
+  [OngApplicationStatus.PENDING_REMOVAL]: translations.pending_removal,
 };
 
 export const ApplicationStatusCollection = [

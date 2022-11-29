@@ -18,20 +18,22 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../../user/enums/role.enum';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
-import { ApplicationWithOngStatus } from '../../application/interfaces/application-with-ong-status.interface';
-import { ApplicationService } from '../../application/services/application.service';
+import { IOngApplication } from '../interfaces/ong-application.interface';
 import { OrganizationApplicationFilterDto } from 'src/modules/application/dto/organization-application.filters.dto';
 import { ApplicationAccess } from 'src/modules/application/interfaces/application-access.interface';
-import { ApplicationRequestService } from 'src/modules/application/services/application-request.service';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
+import { OngApplication } from 'src/modules/application/entities/ong-application.entity';
+import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
+import { ApplicationService } from '../services/application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
-@Controller('organization/application')
+@Controller('organizations/application')
 export class OrganizationApplicationController {
   constructor(
     private readonly applicationService: ApplicationService,
-    private readonly applicationRequestService: ApplicationRequestService,
+    private readonly ongApplicationService: OngApplicationService,
   ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
@@ -40,16 +42,23 @@ export class OrganizationApplicationController {
   findApplications(
     @Query() filters: OrganizationApplicationFilterDto,
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
-    return this.applicationService.findOrganizationAplications(user, filters);
+  ): Promise<IOngApplication[]> {
+    const userId = user.role === Role.EMPLOYEE ? user.id : undefined;
+    return this.ongApplicationService.findApplications(user.organizationId, {
+      ...filters,
+      userId,
+    });
   }
 
   @Roles(Role.ADMIN)
-  @Get('all')
-  findAllApplications(
+  @ApiParam({ name: 'id', type: Number })
+  @Get('user')
+  findActiveOngApplications(
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
-    return this.applicationService.findApplications(user.organizationId);
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findActiveOngApplications(
+      user.organizationId,
+    );
   }
 
   @Roles(Role.ADMIN)
@@ -58,8 +67,8 @@ export class OrganizationApplicationController {
   findOrganizationApplicationsWithStatusForEmployee(
     @ExtractUser() user: User,
     @Param('id') userId: number,
-  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
-    return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findActiveOngApplications(
       user.organizationId,
       userId,
     );
@@ -71,8 +80,8 @@ export class OrganizationApplicationController {
   createApplicationRequest(
     @Param('id') applicationId: number,
     @ExtractUser() user: User,
-  ): Promise<void> {
-    return this.applicationRequestService.create(
+  ): Promise<OngApplication> {
+    return this.ongApplicationService.create(
       user.organizationId,
       applicationId,
     );
@@ -85,7 +94,11 @@ export class OrganizationApplicationController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.applicationRequestService.abandon(id, user.organizationId);
+    return this.ongApplicationService.delete(
+      id,
+      user.organizationId,
+      OngApplicationStatus.PENDING,
+    );
   }
 
   @Roles(Role.ADMIN)
@@ -95,7 +108,7 @@ export class OrganizationApplicationController {
     @Param('id') id: number,
     @ExtractUser() user: User,
   ): Promise<void> {
-    return this.applicationService.deleteOngApplicationRequest(
+    return this.ongApplicationService.requestOngApplicationDeletion(
       id,
       user.organizationId,
     );

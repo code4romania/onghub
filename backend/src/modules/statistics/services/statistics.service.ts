@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import { CompletionStatus } from 'src/modules/organization/enums/organization-financial-completion.enum';
 import { OrganizationStatisticsType } from 'src/modules/statistics/enums/organization-statistics-type.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
@@ -28,6 +27,7 @@ import { CivicCenterServiceService } from 'src/modules/civic-center-service/serv
 import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { ApplicationService } from 'src/modules/application/services/application.service';
 
 @Injectable()
 export class StatisticsService {

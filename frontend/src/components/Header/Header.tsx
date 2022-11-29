@@ -33,7 +33,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                 </button>
               </div>
             )}
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
               <img
                 src={logo}
                 alt="Code 4 Romania - ONG Hub"

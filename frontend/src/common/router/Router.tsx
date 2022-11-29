@@ -62,11 +62,11 @@ const Router = () => {
         {/* Public URLs */}
         <Route
           path="/login"
-          element={!isAuthenticated ? <Login /> : <Navigate to={'/'}></Navigate>}
+          element={!isAuthenticated ? <Login /> : <Navigate to={'/'} replace={true}></Navigate>}
         />
 
         <Route path="new" element={<CreateOrganization />}>
-          <Route index element={<Navigate to={'/new/account'}></Navigate>} />
+          <Route index element={<Navigate to={'/new/account'} replace={true}></Navigate>} />
           <Route path="account" element={<CreateOrganizationUser />} />
           <Route path="general" element={<CreateOrganizationGeneral />} />
           <Route path="activity" element={<CreateOrganizationActivity />} />
@@ -123,7 +123,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'overview'}></Navigate>} />
+            <Route index element={<Navigate to={'overview'} replace={true}></Navigate>} />
             <Route path="overview" element={<ApplicationList />} />
             <Route
               path="requests"
@@ -144,7 +144,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'list'}></Navigate>} />
+            <Route index element={<Navigate to={'list'} replace={true}></Navigate>} />
             <Route path="list" element={<UserList />}></Route>
             <Route path="invites" element={<UserInvites />}></Route>
           </Route>
@@ -166,7 +166,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'general'}></Navigate>} />
+            <Route index element={<Navigate to={'general'} replace={true}></Navigate>} />
             <Route path="general" element={<OrganizationGeneral />} />
             <Route path="activity" element={<OrganizationActivity />} />
             <Route path="legal" element={<OrganizationLegal />} />
@@ -222,7 +222,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'overview'}></Navigate>} />
+            <Route index element={<Navigate to={'overview'} replace={true}></Navigate>} />
             <Route path="overview" element={<OrganizationOverview />} />
             <Route path="general" element={<OrganizationGeneral />} />
             <Route path="activity" element={<OrganizationActivity />} />
@@ -241,7 +241,7 @@ const Router = () => {
               </RoleGuard>
             }
           >
-            <Route index element={<Navigate to={'general'}></Navigate>} />
+            <Route index element={<Navigate to={'general'} replace={true}></Navigate>} />
             <Route path="general" element={<OrganizationGeneral />} />
             <Route path="activity" element={<OrganizationActivity />} />
             <Route path="legal" element={<OrganizationLegal />} />
@@ -294,7 +294,7 @@ const Router = () => {
                 </RoleGuard>
               }
             >
-              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
               <Route path="details" element={<ApplicationDetails />} />
               <Route path="installs" element={<ApplicationNGOList />} />
             </Route>
@@ -307,7 +307,7 @@ const Router = () => {
                 </RoleGuard>
               }
             >
-              <Route index element={<Navigate to={'details'}></Navigate>} />
+              <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
               <Route path="details" element={<ApplicationDetails />} />
             </Route>
           )}
@@ -360,7 +360,7 @@ const Router = () => {
         </Route>
 
         {/* Wild Card */}
-        <Route path="*" element={<Navigate to={'/'}></Navigate>}></Route>
+        <Route path="*" element={<Navigate to={'/'} replace={true}></Navigate>}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -10,7 +10,8 @@ import { Throttle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { MailService } from 'src/mail/services/mail.service';
-import { ApplicationService } from '../../application/services/application.service';
+import { UserApplicationService } from 'src/modules/user/services/user-application.service';
+import { UserService } from 'src/modules/user/services/user.service';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { Role } from '../../user/enums/role.enum';
@@ -25,8 +26,8 @@ import { PublicKeys } from '../public-keys.entity';
 export class PublicAPIController {
   constructor(
     private readonly keysManager: PublicKeysManager,
-    private readonly applications: ApplicationService,
     private readonly mailService: MailService,
+    private readonly userApplicationService: UserApplicationService,
   ) {}
 
   @Public()
@@ -35,7 +36,7 @@ export class PublicAPIController {
   async check(
     @Body() { applicationClientId, userId }: HasAccessDTO,
   ): Promise<boolean> {
-    return this.applications.hasAccess(applicationClientId, userId);
+    return this.userApplicationService.hasAccess(applicationClientId, userId);
   }
 
   @Public()
