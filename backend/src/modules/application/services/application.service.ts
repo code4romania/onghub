@@ -265,7 +265,8 @@ export class ApplicationService {
         });
     }
 
-    const applicationWithDetails = await applicationWithDetailsQuery.execute();
+    const applicationWithDetails =
+      await applicationWithDetailsQuery.getRawOne();
 
     if (!applicationWithDetails) {
       throw new NotFoundException(APPLICATION_ERRORS.GET);
