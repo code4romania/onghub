@@ -31,9 +31,9 @@ import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
 import {
-  ApplicationWithOngStatus,
-  ApplicationWithOngStatusDetails,
-} from '../interfaces/application-with-ong-status.interface';
+  IOngApplication,
+  IOngApplicationDetails,
+} from '../interfaces/ong-application.interface';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
@@ -91,10 +91,10 @@ export class ApplicationController {
   @ApiParam({ name: 'id', type: String })
   @Get('organization/:id')
   findOrganizationApplications(
-    @Param('id') id: number,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return this.ongApplicationService.findApplications(id, {
-      organizationId: id,
+    @Param('id') organizationId: number,
+  ): Promise<IOngApplication[]> {
+    return this.ongApplicationService.findApplications(organizationId, {
+      organizationId,
     });
   }
 
@@ -163,7 +163,7 @@ export class ApplicationController {
   findOne(
     @Param('id') id: number,
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatusDetails> {
+  ): Promise<IOngApplicationDetails> {
     return this.appService.findOne(user, id);
   }
 

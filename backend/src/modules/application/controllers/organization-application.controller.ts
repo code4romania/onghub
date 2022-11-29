@@ -18,7 +18,7 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from '../../user/enums/role.enum';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
-import { ApplicationWithOngStatus } from '../../application/interfaces/application-with-ong-status.interface';
+import { IOngApplication } from '../interfaces/ong-application.interface';
 import { OrganizationApplicationFilterDto } from 'src/modules/application/dto/organization-application.filters.dto';
 import { ApplicationAccess } from 'src/modules/application/interfaces/application-access.interface';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
@@ -42,7 +42,7 @@ export class OrganizationApplicationController {
   findApplications(
     @Query() filters: OrganizationApplicationFilterDto,
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[]> {
+  ): Promise<IOngApplication[]> {
     const userId = user.role === Role.EMPLOYEE ? user.id : undefined;
     return this.ongApplicationService.findApplications(user.organizationId, {
       ...filters,

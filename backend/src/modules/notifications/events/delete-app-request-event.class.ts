@@ -1,4 +1,4 @@
-export default class DeleteAppRequest {
+export default class DeleteAppRequestEvent {
   constructor(
     private _organizationId: number,
     private _applicationName: string,

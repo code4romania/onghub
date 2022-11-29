@@ -30,7 +30,7 @@ import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
-import { ApplicationWithOngStatusDetails } from '../interfaces/application-with-ong-status.interface';
+import { IOngApplicationDetails } from '../interfaces/ong-application.interface';
 import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
 import { ApplicationTableViewRepository } from '../repositories/application-table-view.repository';
 import { ApplicationRepository } from '../repositories/application.repository';
@@ -223,7 +223,7 @@ export class ApplicationService {
   public async findOne(
     user: User,
     applicationId: number,
-  ): Promise<ApplicationWithOngStatusDetails> {
+  ): Promise<IOngApplicationDetails> {
     let applicationWithDetailsQuery = this.applicationRepository
       .getQueryBuilder()
       .select([

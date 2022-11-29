@@ -1,16 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { UserService } from 'src/modules/user/services/user.service';
-import { MAIL_EVENTS } from '../constants/mail-events.constants';
-import { MAIL_OPTIONS } from '../constants/template.constants';
-import DeleteAppRequest from '../events/delete-app-request.class';
-import { MailService } from './mail.service';
+import { NOTIFICATIONS_ERRORS } from '../constants/errors.constants';
+import { EVENTS } from '../constants/events.contants';
+import DeleteAppRequestEvent from '../events/delete-app-request-event.class';
 
 @Injectable()
-export class MailListenerService {
-  private readonly logger = new Logger(MailListenerService.name);
+export class NotificationsService {
+  private readonly logger = new Logger(NotificationsService.name);
 
   constructor(
     private readonly organizationService: OrganizationService,
@@ -18,8 +19,8 @@ export class MailListenerService {
     private readonly mailService: MailService,
   ) {}
 
-  @OnEvent(MAIL_EVENTS.DELETE_APP_REQUEST)
-  async handleDeleteOngApplicationRequest(payload: DeleteAppRequest) {
+  @OnEvent(EVENTS.DELETE_APP_REQUEST)
+  async handleDeleteOngApplicationRequest(payload: DeleteAppRequestEvent) {
     try {
       const { organizationId, applicationName } = payload;
 
@@ -61,7 +62,10 @@ export class MailListenerService {
         },
       });
     } catch (error) {
-      this.logger.error('Error on delete ong application request', error);
+      this.logger.error({
+        ...NOTIFICATIONS_ERRORS.REQUEST_APP_DELETE,
+        error,
+      });
     }
   }
 }

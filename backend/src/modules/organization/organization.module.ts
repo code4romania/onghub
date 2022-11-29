@@ -64,7 +64,7 @@ import { CivicCenterModule } from '../civic-center-service/civic-center.module';
       OrganizationHistory,
       OrganizationRequestHistory,
     ]),
-    forwardRef(() => UserModule),
+    UserModule,
     PracticeProgramModule,
     CivicCenterModule,
   ],

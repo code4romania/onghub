@@ -4,7 +4,7 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
 
-export interface ApplicationWithOngStatus {
+export interface IOngApplication {
   id: number;
   name: string;
   logo: string;
@@ -17,8 +17,7 @@ export interface ApplicationWithOngStatus {
   type: ApplicationTypeEnum;
 }
 
-export interface ApplicationWithOngStatusDetails
-  extends ApplicationWithOngStatus {
+export interface IOngApplicationDetails extends IOngApplication {
   steps: string[];
   description: string;
   videoLink: string;

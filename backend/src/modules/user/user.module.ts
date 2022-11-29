@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import { ProfileController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,7 +14,7 @@ import { UserApplicationService } from './services/user-application.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserHistory]),
-    OrganizationModule,
+    forwardRef(() => OrganizationModule),
     ApplicationModule,
   ],
   controllers: [ProfileController, AdminUserController],

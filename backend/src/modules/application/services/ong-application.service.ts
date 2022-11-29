@@ -8,8 +8,8 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { MAIL_EVENTS } from 'src/mail/constants/mail-events.constants';
-import DeleteAppRequest from 'src/mail/events/delete-app-request.class';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import DeleteAppRequestEvent from 'src/modules/notifications/events/delete-app-request-event.class';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 import {
   APPLICATION_ERRORS,
@@ -22,7 +22,7 @@ import { OrganizationApplicationFilterDto } from '../dto/organization-applicatio
 import { OngApplication } from '../entities/ong-application.entity';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
-import { ApplicationWithOngStatus } from '../interfaces/application-with-ong-status.interface';
+import { IOngApplication } from '../interfaces/ong-application.interface';
 import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
@@ -106,7 +106,7 @@ export class OngApplicationService {
   public async findApplications(
     organizationId: number,
     options?: OrganizationApplicationFilterDto,
-  ): Promise<ApplicationWithOngStatus[]> {
+  ): Promise<IOngApplication[]> {
     const { organizationId: ongId, userId } = options;
 
     // 1. This validates that only admins and employees can call this
@@ -159,7 +159,7 @@ export class OngApplicationService {
 
     const applications = await applicationsQuery.execute();
 
-    return this.fileManagerService.mapLogoToEntity<ApplicationWithOngStatus>(
+    return this.fileManagerService.mapLogoToEntity<IOngApplication>(
       applications,
     );
   }
@@ -285,8 +285,11 @@ export class OngApplicationService {
       // 1. If application is for standalone send email to admin
       if (ongApplication.application.type === ApplicationTypeEnum.STANDALONE) {
         this.eventEmitter.emit(
-          MAIL_EVENTS.DELETE_APP_REQUEST,
-          new DeleteAppRequest(organizationId, ongApplication.application.name),
+          EVENTS.DELETE_APP_REQUEST,
+          new DeleteAppRequestEvent(
+            organizationId,
+            ongApplication.application.name,
+          ),
         );
 
         // mark the app as to be removed

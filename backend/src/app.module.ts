@@ -26,6 +26,7 @@ import { StatisticsModule } from './modules/statistics/statistics.module';
 import { PracticeProgramModule } from './modules/practice-program/practice-program.module';
 import { CivicCenterModule } from './modules/civic-center-service/civic-center.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     StatisticsModule,
     PracticeProgramModule,
     CivicCenterModule,
+    NotificationsModule,
 
     // Other modules
     SharedModule,

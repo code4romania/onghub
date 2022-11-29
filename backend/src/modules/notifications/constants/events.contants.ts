@@ -1,3 +1,3 @@
-export const MAIL_EVENTS = {
+export const EVENTS = {
   DELETE_APP_REQUEST: 'delete.app.request',
 };
