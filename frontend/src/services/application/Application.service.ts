@@ -73,7 +73,7 @@ export const getOngApplications = async (
 };
 
 export const getApplicationsForCreateUser = async (): Promise<ApplicationAccess[]> => {
-  return API.get('/organizations/application?status=active').then((res) => res.data);
+  return API.get('/organizations/application/user').then((res) => res.data);
 };
 
 export const getApplicationsForEditUser = async (userId: string): Promise<ApplicationAccess[]> => {

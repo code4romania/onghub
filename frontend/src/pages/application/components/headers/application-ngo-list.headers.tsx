@@ -3,9 +3,12 @@ import { TableColumn } from 'react-data-table-component';
 import i18n from '../../../../common/config/i18n';
 import { formatDate } from '../../../../common/helpers/format.helper';
 import NameWithLogo from '../../../../components/name-with-logo/NameWithLogo';
-import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
+import StatusBadge from '../../../../components/status-badge/StatusBadge';
 import { ApplicationOrganization } from '../../../../services/application/interfaces/Application.interface';
-import { OngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
+import {
+  OngApplicationStatusBadgeMapper,
+  ONG_APPLICATION_STATUS,
+} from '../../../apps-store/constants/ApplicationStatus.constant';
 
 const translations = {
   name: i18n.t('app:list_header.name'),
@@ -50,12 +53,8 @@ export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization
     name: translations.access,
     cell: (row: ApplicationOrganization) => (
       <StatusBadge
-        status={
-          row.status === OngApplicationStatus.ACTIVE ? BadgeStatus.SUCCESS : BadgeStatus.ERROR
-        }
-        value={
-          row.status === OngApplicationStatus.ACTIVE ? translations.active : translations.restricted
-        }
+        status={OngApplicationStatusBadgeMapper(row.status)}
+        value={ONG_APPLICATION_STATUS[row.status] || translations.active} // in case status is null for independent app the status should be active
       />
     ),
   },

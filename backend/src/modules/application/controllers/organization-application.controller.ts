@@ -19,12 +19,12 @@ import { Role } from '../../user/enums/role.enum';
 import { ExtractUser } from '../../user/decorators/user.decorator';
 import { User } from '../../user/entities/user.entity';
 import { ApplicationWithOngStatus } from '../../application/interfaces/application-with-ong-status.interface';
-import { ApplicationService } from '../../application/services/application.service';
 import { OrganizationApplicationFilterDto } from 'src/modules/application/dto/organization-application.filters.dto';
 import { ApplicationAccess } from 'src/modules/application/interfaces/application-access.interface';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 import { OngApplication } from 'src/modules/application/entities/ong-application.entity';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
+import { ApplicationService } from '../services/application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -42,10 +42,22 @@ export class OrganizationApplicationController {
   findApplications(
     @Query() filters: OrganizationApplicationFilterDto,
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
-    return this.ongApplicationService.findApplications(
+  ): Promise<ApplicationWithOngStatus[]> {
+    const userId = user.role === Role.EMPLOYEE ? user.id : undefined;
+    return this.ongApplicationService.findApplications(user.organizationId, {
+      ...filters,
+      userId,
+    });
+  }
+
+  @Roles(Role.ADMIN)
+  @ApiParam({ name: 'id', type: Number })
+  @Get('user')
+  findActiveOngApplications(
+    @ExtractUser() user: User,
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findActiveOngApplications(
       user.organizationId,
-      filters,
     );
   }
 
@@ -55,8 +67,8 @@ export class OrganizationApplicationController {
   findOrganizationApplicationsWithStatusForEmployee(
     @ExtractUser() user: User,
     @Param('id') userId: number,
-  ): Promise<ApplicationWithOngStatus[] | ApplicationAccess[]> {
-    return this.applicationService.findActiveApplicationsForOngUserWithAccessStatus(
+  ): Promise<ApplicationAccess[]> {
+    return this.applicationService.findActiveOngApplications(
       user.organizationId,
       userId,
     );

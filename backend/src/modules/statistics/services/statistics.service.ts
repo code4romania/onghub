@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import { CompletionStatus } from 'src/modules/organization/enums/organization-financial-completion.enum';
 import { OrganizationStatisticsType } from 'src/modules/statistics/enums/organization-statistics-type.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
@@ -28,6 +27,8 @@ import { CivicCenterServiceService } from 'src/modules/civic-center-service/serv
 import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
+import { ApplicationService } from 'src/modules/application/services/application.service';
 
 @Injectable()
 export class StatisticsService {
@@ -38,6 +39,7 @@ export class StatisticsService {
     private readonly organizationsService: OrganizationService,
     private readonly userService: UserService,
     private readonly applicationService: ApplicationService,
+    private readonly ongApplicationService: OngApplicationService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
   ) {}
@@ -266,8 +268,10 @@ export class StatisticsService {
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      const installedApps =
-        await this.applicationService.findApplicationsForOng(organizationId);
+      const installedApps = await this.ongApplicationService.findApplications(
+        organizationId,
+        { organizationId },
+      );
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });

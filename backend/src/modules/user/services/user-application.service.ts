@@ -7,7 +7,7 @@ import {
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 import { UserOngApplicationStatus } from 'src/modules/application/enums/user-ong-application-status.enum';
-import { AppService } from 'src/modules/application/services/app.service';
+import { ApplicationService } from 'src/modules/application/services/application.service';
 import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
@@ -24,7 +24,7 @@ export class UserApplicationService {
   constructor(
     private readonly userService: UserService,
     private readonly organizationService: OrganizationService,
-    private readonly applicationService: AppService,
+    private readonly applicationService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
     private readonly userOngApplicationService: UserOngApplicationService,
   ) {}

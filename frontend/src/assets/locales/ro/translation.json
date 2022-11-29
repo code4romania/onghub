@@ -771,7 +771,8 @@
       "active": "Activ",
       "disabled": "Inactiv",
       "restricted": "Restrictionat",
-      "pending": "In asteptare"
+      "pending": "In asteptare",
+      "pending_removal": "De Sters"
     },
     "header": {
       "name": "Aplicatie",

@@ -34,13 +34,12 @@ import {
   ApplicationWithOngStatus,
   ApplicationWithOngStatusDetails,
 } from '../interfaces/application-with-ong-status.interface';
-import { ApplicationService } from '../services/application.service';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
 import { OngApplicationService } from '../services/ong-application.service';
-import { AppService } from '../services/app.service';
+import { ApplicationService } from '../services/application.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -48,8 +47,7 @@ import { AppService } from '../services/app.service';
 @Controller('application')
 export class ApplicationController {
   constructor(
-    private readonly applicationService: ApplicationService,
-    private readonly appService: AppService,
+    private readonly appService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
   ) {}
 
@@ -94,7 +92,9 @@ export class ApplicationController {
   findOrganizationApplications(
     @Param('id') id: number,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplicationsForOng(id);
+    return this.ongApplicationService.findApplications(id, {
+      organizationId: id,
+    });
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -123,7 +123,7 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.applicationService.restrict(id, filter.organizationId);
+    return this.ongApplicationService.restrict(id, filter.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -134,7 +134,7 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.applicationService.restore(id, filter.organizationId);
+    return this.ongApplicationService.restore(id, filter.organizationId);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -145,10 +145,7 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filters: ApplicationOrganizationFilterDto,
   ): Promise<Pagination<ApplicationOngView>> {
-    return this.applicationService.findOrganizationsByApplicationId(
-      id,
-      filters,
-    );
+    return this.appService.findOrganizationsByApplicationId(id, filters);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)

@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationController } from './controllers/application.controller';
 import { Application } from './entities/application.entity';
@@ -17,7 +17,6 @@ import { ApplicationOngViewRepository } from './repositories/application-ong-vie
 import { ApplicationTableView } from './entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
 import { ApplicationHistory } from './entities/application-history.entity';
-import { AppService } from './services/app.service';
 import { OngApplicationHistory } from './entities/ong-application-history.entity';
 import { OrganizationApplicationController } from './controllers/organization-application.controller';
 
@@ -48,13 +47,11 @@ import { OrganizationApplicationController } from './controllers/organization-ap
     UserOngApplicationService,
     ApplicationTableViewRepository,
     ApplicationOngViewRepository,
-    AppService,
   ],
   exports: [
     OngApplicationService,
     ApplicationService,
     UserOngApplicationService,
-    AppService,
   ],
 })
 export class ApplicationModule {}

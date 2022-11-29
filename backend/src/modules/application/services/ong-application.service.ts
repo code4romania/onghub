@@ -26,7 +26,7 @@ import { ApplicationWithOngStatus } from '../interfaces/application-with-ong-sta
 import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
-import { UserOngApplicationService } from './user-ong-application.service';
+import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
 
 @Injectable()
 export class OngApplicationService {
@@ -34,7 +34,7 @@ export class OngApplicationService {
   constructor(
     private readonly ongApplicationRepository: OngApplicationRepository,
     private readonly applicationRepository: ApplicationRepository,
-    private readonly userOngApplicationService: UserOngApplicationService,
+    private readonly userOngApplicationRepository: UserOngApplicationRepository,
     private readonly fileManagerService: FileManagerService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
@@ -98,15 +98,19 @@ export class OngApplicationService {
     }
   }
 
+  /**
+   * @description
+   * Get all applications assigned to an ONG
+   * An application is assigned to an ong if it is in OngApplication table in statsu ACTIVE, RESTRICTED, PENDING
+   */
   public async findApplications(
     organizationId: number,
     options?: OrganizationApplicationFilterDto,
   ): Promise<ApplicationWithOngStatus[]> {
-    const { organizationId: ongId, status } = options;
+    const { organizationId: ongId, userId } = options;
 
     // 1. This validates that only admins and employees can call this
     if (!organizationId) {
-      // throw new error
       return;
     }
 
@@ -121,8 +125,26 @@ export class OngApplicationService {
         { organizationId },
       );
 
-    // 3. give me all the applications assigned to this organization + independent applications
-    if (ongId) {
+    // 3. Handle my applications for employee
+    if (userId && ongId) {
+      applicationsQuery
+        .leftJoin(
+          'user_ong_application',
+          'userOngApp',
+          'userOngApp.ongApplicationId = ongApp.id',
+        )
+        .where('ongApp.organizationId = :organizationId', {
+          organizationId: ongId,
+        })
+        .andWhere('userOngApp.userId = :userId', { userId })
+        .andWhere('ongApp.status != :status', {
+          status: OngApplicationStatus.PENDING,
+        })
+        .orWhere('application.type = :type', {
+          type: ApplicationTypeEnum.INDEPENDENT,
+        });
+    } else if (ongId) {
+      // 4. Handle My applications for Admin
       applicationsQuery
         .where('ongApp.organizationId = :organizationId', {
           organizationId: ongId,
@@ -232,6 +254,28 @@ export class OngApplicationService {
     });
   }
 
+  public async restrict(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    await this.update(
+      organizationId,
+      applicationId,
+      OngApplicationStatus.RESTRICTED,
+    );
+  }
+
+  public async restore(
+    applicationId: number,
+    organizationId: number,
+  ): Promise<void> {
+    await this.update(
+      organizationId,
+      applicationId,
+      OngApplicationStatus.ACTIVE,
+    );
+  }
+
   public async requestOngApplicationDeletion(
     applicationId: number,
     organizationId: number,
@@ -324,7 +368,7 @@ export class OngApplicationService {
         });
       }
 
-      await this.userOngApplicationService.remove({
+      await this.userOngApplicationRepository.remove({
         where: {
           ongApplicationId: ongApplication.id,
         },
