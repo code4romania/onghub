@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import debounce from 'debounce-promise';
 import './ServerSelect.css';
 import { Chip } from '../chip-selection/ChipSelection';
+import { mapCitiesToSelect } from '../../common/helpers/format.helper';
 
 export interface ServerSelectConfig {
   label: string;
@@ -32,11 +33,17 @@ const ServerSelect = ({
   readonly,
   id,
 }: ServerSelectConfig) => {
+  const [defaultValue, setDefaultValue] = useState<any>();
+
   const onSearch = (inputValue: string) => (inputValue?.length >= 3 ? loadOptions(inputValue) : []);
 
   const debouncedLoadOptions = debounce(onSearch as any, 500, {
     leading: false,
   });
+
+  useEffect(() => {
+    setDefaultValue(value);
+  }, [value])
 
   return (
     <div>
@@ -56,7 +63,7 @@ const ServerSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={readonly}
               selected={false}
-              onClick={() => {}}
+              onClick={() => { }}
               id={id}
             />
           ))}
@@ -72,7 +79,7 @@ const ServerSelect = ({
           onChange={onChange}
           isClearable={isClearable}
           isMulti={isMulti}
-          defaultValue={value}
+          value={defaultValue}
         />
       )}
       {!error && !readonly && helperText && (

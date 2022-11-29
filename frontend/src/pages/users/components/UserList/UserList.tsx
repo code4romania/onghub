@@ -114,17 +114,20 @@ const UserList = (props: { organizationId?: number }) => {
         onClick: onRestoreAccess,
       },
       {
-        name: t('edit', { ns: 'common' }),
-        icon: PencilIcon,
-        onClick: onEdit,
-      },
-      {
         name: t('list.permanent'),
         icon: TrashIcon,
         onClick: setSelectedUser,
         type: PopoverMenuRowType.REMOVE,
       },
     ];
+
+    if (role === UserRole.ADMIN) {
+      restrictedUserMenuItems.splice(1, 0, {
+        name: t('edit', { ns: 'common' }),
+        icon: PencilIcon,
+        onClick: onEdit,
+      });
+    }
 
     return {
       name: '',

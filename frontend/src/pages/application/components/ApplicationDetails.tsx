@@ -123,20 +123,22 @@ const ApplicationDetails = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col sm:gap-4 gap-2 pt-4 pb-4">
-          <p className="sm:text-sm lg:text-base text-xs">{t('details.how_to')}</p>
-          {application?.steps?.map((step: any, index: number) => (
-            <div
-              className="flex sm:gap-4 gap-2 items-center sm:text-sm lg:text-base text-xs"
-              key={index}
-            >
-              <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4 sm:text-sm lg:text-base text-xs">
-                {index + 1}
+        {application?.steps && (
+          <div className="flex flex-col sm:gap-4 gap-2 pt-4 pb-4">
+            <p className="sm:text-sm lg:text-base text-xs">{t('details.how_to')}</p>
+            {application.steps.map((step: any, index: number) => (
+              <div
+                className="flex sm:gap-4 gap-2 items-center sm:text-sm lg:text-base text-xs"
+                key={index}
+              >
+                <div className="rounded-full border-2 m-0 p-4 flex justify-center items-center w-4 h-4 sm:text-sm lg:text-base text-xs">
+                  {index + 1}
+                </div>
+                {step}
               </div>
-              {step}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {role !== UserRole.SUPER_ADMIN && (
           <div>

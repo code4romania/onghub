@@ -148,6 +148,7 @@ export class OrganizationActivityService {
       where: { id },
       relations: [
         'branches',
+        'branches.county',
         'domains',
         'cities',
         'federations',

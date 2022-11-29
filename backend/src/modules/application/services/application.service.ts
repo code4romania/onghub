@@ -389,4 +389,26 @@ export class ApplicationService {
 
     return Promise.resolve(count);
   }
+
+  public async countActiveApplicationsForOng(
+    organizationId: number,
+  ): Promise<number> {
+    const applications = await this.applicationRepository
+      .getQueryBuilder()
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id',
+      )
+      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .getCount();
+
+    return applications;
+  }
 }
