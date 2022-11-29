@@ -33,7 +33,7 @@ export class OrganizationRequestService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly fileManagerService: FileManagerService,
-  ) { }
+  ) {}
 
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
@@ -227,13 +227,14 @@ export class OrganizationRequestService {
       });
 
       // 8. create request
+      const orgLogo = await this.organizationService.getLogo(organization.id); // get logo from the just created organization
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
         phone: createReqDto.admin.phone,
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
-        logo: organization.organizationGeneral.logo,
+        logo: orgLogo,
       });
 
       // 9. Send emails for Super-Admin
