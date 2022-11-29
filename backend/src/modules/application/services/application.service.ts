@@ -98,6 +98,11 @@ export class ApplicationService {
     }
   }
 
+  /**
+   * Get all aplications with statistics for super-admin
+   * @param options
+   * @returns
+   */
   public async findAll(
     options: ApplicationFilterDto,
   ): Promise<Pagination<ApplicationTableView>> {
@@ -123,6 +128,12 @@ export class ApplicationService {
     };
   }
 
+  /**
+   * Find all organizations with access to an application
+   * @param applicationId
+   * @param options
+   * @returns
+   */
   public async findOrganizationsByApplicationId(
     applicationId: number,
     options: BaseFilterDto,
@@ -150,6 +161,12 @@ export class ApplicationService {
     };
   }
 
+  /**
+   * This method is used to assign/show status of assignment for an application in relation to an employee
+   * @param organizationId
+   * @param userId
+   * @returns
+   */
   public async findActiveOngApplications(
     organizationId: number,
     userId?: number,
@@ -202,8 +219,6 @@ export class ApplicationService {
    * @description
    * Metoda destinata utilizatorilor de tip admin ce intoarce o aplicatiile din ong-hub si status ei in relatie cu organizatia din care face parte admin-ul
    * Metoda descrie pagina de detalii aplicatie din portal
-   *
-   * OngApplication.status va fi NULL daca aplicatia nu este asignata organizatiei din care face parte admin-ul
    */
   public async findOne(
     user: User,
@@ -241,6 +256,7 @@ export class ApplicationService {
       )
       .where('application.id = :applicationId', { applicationId });
 
+    // for employee add further filtersin by user id
     if (user.role === Role.EMPLOYEE) {
       applicationWithDetailsQuery
         .andWhere('userOngApp.userId = :userId', { userId: user.id })
@@ -249,8 +265,7 @@ export class ApplicationService {
         });
     }
 
-    const applicationWithDetails =
-      await applicationWithDetailsQuery.getRawOne();
+    const applicationWithDetails = await applicationWithDetailsQuery.execute();
 
     if (!applicationWithDetails) {
       throw new NotFoundException(APPLICATION_ERRORS.GET);

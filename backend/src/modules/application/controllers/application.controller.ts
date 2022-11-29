@@ -40,6 +40,7 @@ import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
 import { OngApplicationService } from '../services/ong-application.service';
 import { ApplicationService } from '../services/application.service';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -123,7 +124,11 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.ongApplicationService.restrict(id, filter.organizationId);
+    return this.ongApplicationService.update(
+      filter.organizationId,
+      id,
+      OngApplicationStatus.RESTRICTED,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -134,7 +139,11 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.ongApplicationService.restore(id, filter.organizationId);
+    return this.ongApplicationService.update(
+      filter.organizationId,
+      id,
+      OngApplicationStatus.ACTIVE,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)

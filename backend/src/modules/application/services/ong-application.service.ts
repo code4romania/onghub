@@ -165,7 +165,9 @@ export class OngApplicationService {
   }
 
   /**
-   *  Get all requests for super-admin only
+   * GET all application requests which are ong applications with staus pending
+   * @param options
+   * @returns
    */
   public async findAllRequests(
     options: BaseFilterDto,
@@ -213,6 +215,10 @@ export class OngApplicationService {
     );
   }
 
+  /**
+   * Approve application request
+   * @param ongApplicationId
+   */
   public async approve(ongApplicationId: number): Promise<void> {
     const ongApp = await this.ongApplicationRepository.get({
       where: { id: ongApplicationId },
@@ -234,6 +240,10 @@ export class OngApplicationService {
     });
   }
 
+  /**
+   * Reject application request
+   * @param ongApplicationId
+   */
   public async reject(ongApplicationId: number): Promise<void> {
     const ongApp = await this.ongApplicationRepository.get({
       where: { id: ongApplicationId },
@@ -252,28 +262,6 @@ export class OngApplicationService {
     await this.ongApplicationRepository.remove({
       where: { id: ongApplicationId },
     });
-  }
-
-  public async restrict(
-    applicationId: number,
-    organizationId: number,
-  ): Promise<void> {
-    await this.update(
-      organizationId,
-      applicationId,
-      OngApplicationStatus.RESTRICTED,
-    );
-  }
-
-  public async restore(
-    applicationId: number,
-    organizationId: number,
-  ): Promise<void> {
-    await this.update(
-      organizationId,
-      applicationId,
-      OngApplicationStatus.ACTIVE,
-    );
   }
 
   public async requestOngApplicationDeletion(
@@ -324,6 +312,12 @@ export class OngApplicationService {
     }
   }
 
+  /**
+   * Get one ong application
+   * @param applicationId
+   * @param organizationId
+   * @returns
+   */
   public async findOne(
     applicationId: number,
     organizationId: number,
