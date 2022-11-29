@@ -75,7 +75,7 @@ export class ApplicationService {
     private readonly mailService: MailService,
     private readonly organizationService: OrganizationService,
     private readonly ongApplicationRepository: OngApplicationRepository,
-  ) { }
+  ) {}
 
   public async create(
     createApplicationDto: CreateApplicationDto,
@@ -584,6 +584,7 @@ export class ApplicationService {
    */
   public async findApplicationsForOng(
     organizationId: number,
+    filters?: ApplicationFilterDto,
   ): Promise<ApplicationWithOngStatus[]> {
     const applications = await this.applicationRepository
       .getQueryBuilder()
@@ -594,9 +595,10 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status != :status', { status: OngApplicationStatus.PENDING })
-      .orWhere('application.type = :type', {
-        type: ApplicationTypeEnum.INDEPENDENT,
+      .andWhere('application.name ilike :search', { search: filters.search })
+      .andWhere('application.type = :type', { type: filters.type })
+      .andWhere('ongApp.status != :status', {
+        status: OngApplicationStatus.PENDING,
       })
       .execute();
 
@@ -772,7 +774,7 @@ export class ApplicationService {
 
     const finalStatus =
       applicationStatus === ApplicationStatus.DISABLED &&
-        status !== OngApplicationStatus.RESTRICTED
+      status !== OngApplicationStatus.RESTRICTED
         ? ApplicationStatus.DISABLED
         : status;
 

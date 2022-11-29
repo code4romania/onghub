@@ -18,6 +18,7 @@ import {
   ApiParam,
   ApiQuery,
   ApiTooManyRequestsResponse,
+  PartialType,
 } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -40,6 +41,7 @@ import { ApplicationOrganizationFilterDto } from '../dto/application-organizatio
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
 import { OngApplicationService } from '../services/ong-application.service';
+import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,7 +51,7 @@ export class ApplicationController {
   constructor(
     private readonly applicationService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
-  ) { }
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Get('')
@@ -88,11 +90,13 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => ApplicationFilterDto })
   @Get('organization/:id')
   findOrganizationApplications(
     @Param('id') id: number,
+    @Query() filters: ApplicationFilterDto,
   ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplicationsForOng(id);
+    return this.applicationService.findApplicationsForOng(id, filters);
   }
 
   @Roles(Role.SUPER_ADMIN)

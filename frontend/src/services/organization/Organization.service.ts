@@ -1,6 +1,7 @@
 import formatISO9075 from 'date-fns/formatISO9075';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
+import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
 import API from '../API';
@@ -92,8 +93,18 @@ export const getOrganization = (id: string): Promise<any> => {
   return API.get(`/organization/${id}`).then((res) => res.data);
 };
 
-export const getOrganizationApplications = (id: string): Promise<ApplicationWithOngStatus[]> => {
-  return API.get(`/application/organization/${id}`).then((res) => res.data);
+export const getOrganizationApplications = (
+  id: string,
+  search?: string,
+  type?: ApplicationTypeEnum,
+): Promise<ApplicationWithOngStatus[]> => {
+  let requestUrl = `/application/organization/${id}`;
+
+  if (search) requestUrl = `${requestUrl}?search=${search}`;
+
+  if (type) requestUrl = `${requestUrl}?type=${type}`;
+
+  return API.get(requestUrl).then((res) => res.data);
 };
 
 export const getOrganizationApplicationRequests = (

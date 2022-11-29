@@ -37,7 +37,11 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
     isLoading: isApplicationsLoading,
     error: applicationsError,
     refetch: reloadApplications,
-  } = useOrganizationApplicationsQuery(organizationId);
+  } = useOrganizationApplicationsQuery(
+    organizationId,
+    searchWord as string,
+    type?.type as ApplicationTypeEnum,
+  );
 
   // actions
   const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
@@ -48,20 +52,10 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
 
   useEffect(() => {
-    let applicationsCopy: ApplicationWithOngStatus[] = [];
     if (organizationApplications) {
       setApplications(organizationApplications);
-      applicationsCopy = organizationApplications;
     }
-    if (searchWord) {
-      setApplications(
-        applicationsCopy.filter((app) => app.name.toLowerCase().includes(searchWord.toLowerCase())),
-      );
-    }
-    if (type) {
-      setApplications(applicationsCopy.filter((app) => app.type === type?.type));
-    }
-  }, [type, searchWord, organizationApplications]);
+  }, [organizationApplications]);
 
   useEffect(() => {
     if (applicationsError) {
