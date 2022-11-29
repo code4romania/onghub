@@ -28,6 +28,7 @@ import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { DownloadFiltersDto } from './dto/download-users.filter';
+import { Response } from 'express';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
@@ -76,11 +77,13 @@ export class AdminUserController {
   async downloadUsers(
     @ExtractUser() user: User,
     @Query('filters') filters: DownloadFiltersDto,
+    @Res() res: Response,
     @Query('organization_id') organizationId?: number,
   ) {
     return this.userService.getUsersForDownload(
       filters,
       organizationId ? organizationId : user.organizationId,
+      res,
     );
   }
 

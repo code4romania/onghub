@@ -37,6 +37,8 @@ import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
+import * as XLSX from 'xlsx';
+import { Response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -359,6 +361,7 @@ export class UserService {
   public async getUsersForDownload(
     options: DownloadFiltersDto,
     organizationId: number,
+    res: Response,
   ) {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
@@ -372,7 +375,25 @@ export class UserService {
       { ...paginationOptions, organizationId },
     );
 
-    return users;
+    const userData = users.items.map((user) => {
+      return {
+        Nume: user.name,
+        Email: user.email,
+        Phone: user.phone,
+        Status: user.status,
+        'Data adaugarii': user.createdOn,
+      };
+    });
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(userData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+
+    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+
+    res.attachment('Users.xlsx');
+
+    return res.send(wb);
   }
 
   // ****************************************************

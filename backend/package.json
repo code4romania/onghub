@@ -52,7 +52,6 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
-    "csv-generate": "^4.2.1",
     "date-fns": "^2.29.3",
     "handlebars": "^4.7.7",
     "helmet": "^5.1.0",
@@ -69,7 +68,8 @@
     "rxjs": "^7.2.0",
     "simple-hmac-auth": "^4.0.0",
     "swagger-ui-express": "^4.4.0",
-    "typeorm": "^0.3.6"
+    "typeorm": "^0.3.6",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.1/xlsx-0.19.1.tgz"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",

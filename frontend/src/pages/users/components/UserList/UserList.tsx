@@ -27,6 +27,7 @@ import ConfirmationModal from '../../../../components/confim-removal-modal/Confi
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
+import * as XLSX from 'xlsx';
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
@@ -45,14 +46,14 @@ const UserList = (props: { organizationId?: number }) => {
 
   const { users } = useUser();
 
-  // const { data: file } = useGetUsersForDownloadQuery(
-  //   orderByColumn as string,
-  //   orderDirection as OrderDirection,
-  //   searchWord as string,
-  //   status?.status,
-  //   range,
-  //   organizationId as number,
-  // );
+  const { data } = useGetUsersForDownloadQuery(
+    orderByColumn as string,
+    orderDirection as OrderDirection,
+    searchWord as string,
+    status?.status,
+    range,
+    organizationId as number,
+  );
 
   const { t } = useTranslation(['user', 'common']);
 
@@ -245,7 +246,7 @@ const UserList = (props: { organizationId?: number }) => {
    * ACTIONS
    */
   const onExport = () => {
-    console.log('Not yet implemented');
+    XLSX.writeFile(data, 'Users.xlsx');
   };
 
   return (
