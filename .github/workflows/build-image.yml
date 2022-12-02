@@ -19,9 +19,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -55,6 +52,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: backend
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
