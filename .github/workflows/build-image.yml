@@ -3,11 +3,10 @@ on:
     branches:
       - main
       - develop
-      - 'ci/add-backend-build-github-action' # debug
     tags:
       - 'v*'
-    # paths:
-    #   - 'backend/**'
+    paths:
+      - 'backend/**'
 
 name: Build Docker image
 
