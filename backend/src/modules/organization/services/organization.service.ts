@@ -79,7 +79,7 @@ export class OrganizationService {
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
-  ) { }
+  ) {}
 
   public async create(
     createUserRequestDto: CreateUserRequestDto,
@@ -300,6 +300,29 @@ export class OrganizationService {
     };
   }
 
+  public async getLogo(id: number): Promise<string> {
+    const organization = await this.organizationRepository.get({
+      where: { id },
+      relations: ['organizationGeneral'],
+    });
+
+    if (!organization) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.GET,
+      });
+    }
+
+    // check for logo and add public url
+    if (organization.organizationGeneral.logo) {
+      const logo = await this.fileManagerService.generatePresignedURL(
+        organization.organizationGeneral.logo,
+      );
+      organization.organizationGeneral.logo = logo;
+    }
+
+    return organization.organizationGeneral.logo;
+  }
+
   public async findWithRelations(id: number): Promise<Organization> {
     const organization = await this.organizationRepository.get({
       where: { id },
@@ -344,7 +367,7 @@ export class OrganizationService {
       organization.organizationGeneral.logo = logo;
     }
 
-    // check for logo and add public url
+    // check for organization statute and add public url
     if (organization.organizationLegal.organizationStatute) {
       const organizationStatute =
         await this.fileManagerService.generatePresignedURL(
