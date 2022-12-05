@@ -76,7 +76,7 @@ export class AdminUserController {
   @Get('download')
   async downloadUsers(
     @ExtractUser() user: User,
-    @Query('filters') filters: DownloadFiltersDto,
+    @Query() filters: DownloadFiltersDto,
     @Res() res: Response,
     @Query('organization_id') organizationId?: number,
   ) {

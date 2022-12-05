@@ -365,7 +365,8 @@ export class UserService {
   ) {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
-      status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
+      limit: 0,
+      page: 0,
       ...options,
     };
 
@@ -388,8 +389,6 @@ export class UserService {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(userData);
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
-
-    const buffer = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
 
     res.attachment('Users.xlsx');
 
