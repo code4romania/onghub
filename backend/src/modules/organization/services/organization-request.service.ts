@@ -41,10 +41,19 @@ export class OrganizationRequestService {
       status: RequestStatus.PENDING,
     };
 
-    return this.organizationRequestRepository.getManyPaginated(
+    const requests = await this.organizationRequestRepository.getManyPaginated(
       ORGANIZATION_REQUEST_FILTER_CONFIG,
       paginationOptions,
     );
+
+    for (let i = 0; i < requests.items.length; i++) {
+      requests.items[i]['logo'] = await this.organizationService.getLogo(
+        requests.items[i].organizationId,
+      );
+      delete requests.items[i].organizationId;
+    }
+
+    return requests;
   }
 
   public async findOne(id: number): Promise<OrganizationRequest> {
@@ -227,14 +236,12 @@ export class OrganizationRequestService {
       });
 
       // 8. create request
-      const orgLogo = await this.organizationService.getLogo(organization.id); // get logo from the just created organization
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
         phone: createReqDto.admin.phone,
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
-        logo: orgLogo,
       });
 
       // 9. Send emails for Super-Admin
