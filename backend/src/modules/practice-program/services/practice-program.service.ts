@@ -75,9 +75,7 @@ export class PracticeProgramService {
         practiceProgramPayload.endDate &&
         practiceProgramPayload.isPeriodNotDetermined
       ) {
-        throw new BadRequestException(
-          PRACTICE_PROGRAMS_ERRORS.NOT_DETERMINED_WITH_END_DATE,
-        );
+        practiceProgramPayload.endDate === null;
       }
 
       // 6. check if practice program startDate is after endDate
@@ -189,17 +187,7 @@ export class PracticeProgramService {
         skills = await this.saveAndGetSkills(submitedSkills);
       }
 
-      // 6. check if undetermined flag and end date have correct values
-      if (
-        (practiceProgramPayload.endDate || practiceProgram.endDate) &&
-        practiceProgramPayload.isPeriodNotDetermined
-      ) {
-        throw new BadRequestException(
-          PRACTICE_PROGRAMS_ERRORS.NOT_DETERMINED_WITH_END_DATE,
-        );
-      }
-
-      // 7. check if practice program startDate is after endDate
+      // 6. check if practice program startDate is after endDate
       const startDate =
         practiceProgramPayload.startDate || practiceProgram.endDate;
       const endDate = practiceProgramPayload.endDate || practiceProgram.endDate;
@@ -210,7 +198,7 @@ export class PracticeProgramService {
         );
       }
 
-      // 8. check if min working hours are higher than maxWorkingHours
+      // 7. check if min working hours are higher than maxWorkingHours
       const minWorkingHours =
         practiceProgramPayload.minWorkingHours ||
         practiceProgram.minWorkingHours;
@@ -226,7 +214,7 @@ export class PracticeProgramService {
       }
 
       /**  
-       * 9. set correct end date value
+       * 8. set correct end date value
           isPeriodUndetermined => true -> endDate = null,
           isPeriodUndetermined => false
             payload contains endDate -> set endDate from payload
@@ -376,14 +364,14 @@ export class PracticeProgramService {
     // for admin and employee check organizationId as search criteria
     const where = organizationId
       ? {
-          id,
-          organizationId,
-        }
+        id,
+        organizationId,
+      }
       : { id };
 
     const practiceProgram = await this.practiceProgramRepository.get({
       where: where,
-      relations: ['location', 'skills', 'domains', 'faculties'],
+      relations: ['location', 'location.county', 'skills', 'domains', 'faculties'],
     });
 
     if (!practiceProgram) {

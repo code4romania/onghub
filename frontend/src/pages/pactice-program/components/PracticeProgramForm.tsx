@@ -51,19 +51,20 @@ const PracticeProgramForm = ({
   // watchers
   const startDate = watch('startDate');
   const endDate = watch('endDate');
+  const isPeriodNotDetermined = watch('isPeriodNotDetermined');
   const minWorkingHours = watch('minWorkingHours');
   const maxWorkingHours = watch('maxWorkingHours');
 
   useEffect(() => {
     // check if practice program end date is after start date
-    if (startDate && endDate && compareAsc(startDate, endDate) === 1) {
+    if (startDate && endDate && compareAsc(startDate, endDate) === 1 && !isPeriodNotDetermined) {
       // set practice program period error on both date picker inputs
       setPracticeProgramPeriodError(t('form.end_date.start_date_after_end_date'));
     } else {
       // reset error
       setPracticeProgramPeriodError(undefined);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isPeriodNotDetermined]);
 
   useEffect(() => {
     // check if min working hours is larger than
@@ -104,6 +105,7 @@ const PracticeProgramForm = ({
                       error: errors.title?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__title',
                     }}
                   />
                 );
@@ -146,6 +148,7 @@ const PracticeProgramForm = ({
                     error={(errors as Record<string, { message: string }>)[
                       PracticeProgramFormConfig.deadline.key
                     ]?.message?.toString()}
+                    id="practice-program-form__deadline__input"
                   />
                 );
               }}
@@ -164,6 +167,7 @@ const PracticeProgramForm = ({
                       error: errors.description?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__description',
                     }}
                   />
                 );
@@ -185,30 +189,35 @@ const PracticeProgramForm = ({
                         PracticeProgramFormConfig.startDate.key
                       ]?.message?.toString() || practiceProgramPeriodError
                     }
+                    id="practice-program-form__date-start__input"
                   />
                 );
               }}
             />
-            <Controller
-              key={PracticeProgramFormConfig.endDate.key}
-              name={PracticeProgramFormConfig.endDate.key}
-              rules={PracticeProgramFormConfig.endDate.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <DatePickerInput
-                    {...PracticeProgramFormConfig.endDate.config}
-                    value={value}
-                    onChange={onChange}
-                    error={
-                      (errors as Record<string, { message: string }>)[
-                        PracticeProgramFormConfig.endDate.key
-                      ]?.message?.toString() || practiceProgramPeriodError
-                    }
-                  />
-                );
-              }}
-            />
+            {!isPeriodNotDetermined && (
+              <Controller
+                key={PracticeProgramFormConfig.endDate.key}
+                name={PracticeProgramFormConfig.endDate.key}
+                rules={PracticeProgramFormConfig.endDate.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <DatePickerInput
+                      {...PracticeProgramFormConfig.endDate.config}
+                      value={value}
+                      onChange={onChange}
+                      error={
+                        (errors as Record<string, { message: string }>)[
+                          PracticeProgramFormConfig.endDate.key
+                        ]?.message?.toString() || practiceProgramPeriodError
+                      }
+                      id="practice-program-form__date-end__input"
+                    />
+                  );
+                }}
+              />
+            )}
+
             <Controller
               key={PracticeProgramFormConfig.isPeriodNotDetermined.key}
               name={PracticeProgramFormConfig.isPeriodNotDetermined.key}
@@ -223,6 +232,7 @@ const PracticeProgramForm = ({
                       error: errors.isPeriodNotDetermined?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__period-undetermined',
                     }}
                   />
                 );
@@ -243,6 +253,7 @@ const PracticeProgramForm = ({
                         error: errors.minWorkingHours?.message || workingHoursError,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'practice-program-form__minimum-hours',
                       }}
                     />
                   );
@@ -262,6 +273,7 @@ const PracticeProgramForm = ({
                         error: errors.maxWorkingHours?.message || workingHoursError,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'practice-program-form__maximum-hours',
                       }}
                     />
                   );
@@ -284,6 +296,7 @@ const PracticeProgramForm = ({
                       ]?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__link',
                     }}
                   />
                 );

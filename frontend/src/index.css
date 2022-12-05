@@ -90,6 +90,8 @@
 
 .rdt_TableWrapper > div:first-of-type {
   overflow: scroll !important;
+  /* added for action menu to be visible without scrolling */
+  padding-bottom: 7rem!important 
 }
 
 /* data table overrides */
@@ -166,6 +168,15 @@
 
 .richtext_html ul {
   list-style: disc !important;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.richtext_html ol {
+  list-style: auto !important;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0px;

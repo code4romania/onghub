@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { ApplicationService } from 'src/modules/application/services/application.service';
 import { CompletionStatus } from 'src/modules/organization/enums/organization-financial-completion.enum';
 import { OrganizationStatisticsType } from 'src/modules/statistics/enums/organization-statistics-type.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
@@ -28,6 +27,7 @@ import { CivicCenterServiceService } from 'src/modules/civic-center-service/serv
 import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
+import { ApplicationService } from 'src/modules/application/services/application.service';
 
 @Injectable()
 export class StatisticsService {
@@ -53,7 +53,7 @@ export class StatisticsService {
           step: '1 day',
         },
         [OrganizationStatisticsType.MONTHLY]: {
-          format: 'Mon YY',
+          format: 'Mon YYYY',
           interval: '11 month',
           step: '1 month',
         },
@@ -266,8 +266,10 @@ export class StatisticsService {
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      const installedApps =
-        await this.applicationService.findApplicationsForOng(organizationId);
+      const numberOfActiveApps =
+        await this.applicationService.countActiveApplicationsForOng(
+          organizationId,
+        );
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });
@@ -277,7 +279,7 @@ export class StatisticsService {
           organization.completionStatus === CompletionStatus.COMPLETED,
         organizationCreatedOn: organization.createdOn,
         organizationSyncedOn: organization.syncedOn,
-        numberOfInstalledApps: installedApps.length,
+        numberOfInstalledApps: numberOfActiveApps,
         numberOfUsers,
         hubStatistics: await this.getGeneralONGHubStatistics(),
       };

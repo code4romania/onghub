@@ -32,16 +32,16 @@ import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { ApplicationTableView } from '../entities/application-table-view.entity';
 import { Application } from '../entities/application.entity';
 import {
-  ApplicationWithOngStatus,
-  ApplicationWithOngStatusDetails,
-} from '../interfaces/application-with-ong-status.interface';
-import { ApplicationService } from '../services/application.service';
+  IOngApplication,
+  IOngApplicationDetails,
+} from '../interfaces/ong-application.interface';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationOrganizationFilterDto } from '../dto/application-organization-filters.dto';
 import { ApplicationOngView } from '../entities/application-ong-view.entity';
 import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto';
 import { OngApplicationService } from '../services/ong-application.service';
-import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { ApplicationService } from '../services/application.service';
+import { OngApplicationStatus } from '../enums/ong-application-status.enum';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,7 +49,7 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 @Controller('application')
 export class ApplicationController {
   constructor(
-    private readonly applicationService: ApplicationService,
+    private readonly appService: ApplicationService,
     private readonly ongApplicationService: OngApplicationService,
   ) {}
 
@@ -59,7 +59,7 @@ export class ApplicationController {
   getAll(
     @Query() filters: ApplicationFilterDto,
   ): Promise<Pagination<ApplicationTableView>> {
-    return this.applicationService.findAll(filters);
+    return this.appService.findAll(filters);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -71,7 +71,7 @@ export class ApplicationController {
     @Body() createApplicationDto: CreateApplicationDto,
     @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ): Promise<Application> {
-    return this.applicationService.create(createApplicationDto, logo);
+    return this.appService.create(createApplicationDto, logo);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -85,7 +85,7 @@ export class ApplicationController {
     @Body() updateApplicationDto: UpdateApplicationDto,
     @UploadedFiles() { logo }: { logo?: Express.Multer.File[] },
   ) {
-    return this.applicationService.update(id, updateApplicationDto, logo);
+    return this.appService.update(id, updateApplicationDto, logo);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -93,17 +93,18 @@ export class ApplicationController {
   @ApiQuery({ type: () => ApplicationFilterDto })
   @Get('organization/:id')
   findOrganizationApplications(
-    @Param('id') id: number,
-    @Query() filters: ApplicationFilterDto,
-  ): Promise<ApplicationWithOngStatus[]> {
-    return this.applicationService.findApplicationsForOng(id, filters);
+    @Param('id') organizationId: number,
+  ): Promise<IOngApplication[]> {
+    return this.ongApplicationService.findApplications(organizationId, {
+      organizationId,
+    });
   }
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/activate')
   activate(@Param('id') id: number) {
-    return this.applicationService.update(id, {
+    return this.appService.update(id, {
       status: ApplicationStatus.ACTIVE,
     });
   }
@@ -112,7 +113,7 @@ export class ApplicationController {
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/deactivate')
   deactivate(@Param('id') id: number) {
-    return this.applicationService.update(id, {
+    return this.appService.update(id, {
       status: ApplicationStatus.DISABLED,
     });
   }
@@ -125,7 +126,11 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.applicationService.restrict(id, filter.organizationId);
+    return this.ongApplicationService.update(
+      filter.organizationId,
+      id,
+      OngApplicationStatus.RESTRICTED,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -136,7 +141,11 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filter: ApplicationAccessFilterDto,
   ) {
-    return this.applicationService.restore(id, filter.organizationId);
+    return this.ongApplicationService.update(
+      filter.organizationId,
+      id,
+      OngApplicationStatus.ACTIVE,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -147,10 +156,7 @@ export class ApplicationController {
     @Param('id') id: number,
     @Query() filters: ApplicationOrganizationFilterDto,
   ): Promise<Pagination<ApplicationOngView>> {
-    return this.applicationService.findOrganizationsByApplicationId(
-      id,
-      filters,
-    );
+    return this.appService.findOrganizationsByApplicationId(id, filters);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EMPLOYEE)
@@ -159,8 +165,8 @@ export class ApplicationController {
   findOne(
     @Param('id') id: number,
     @ExtractUser() user: User,
-  ): Promise<ApplicationWithOngStatusDetails> {
-    return this.applicationService.findOne(user, id);
+  ): Promise<IOngApplicationDetails> {
+    return this.appService.findOne(user, id);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -178,6 +184,6 @@ export class ApplicationController {
   @ApiParam({ name: 'id', type: String })
   @Delete(':id')
   removeOne(@Param('id') id: number): Promise<void> {
-    return this.applicationService.deleteOne(id);
+    return this.appService.delete(id);
   }
 }

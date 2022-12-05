@@ -126,7 +126,6 @@ const translations = {
     description: {
       required: i18n.t('civic_center_service:form.physical.description.required'),
       max: i18n.t('civic_center_service:form.physical.description.max'),
-      pattern: i18n.t('civic_center_service:form.physical.description.pattern'),
       label: i18n.t('civic_center_service:form.physical.description.label'),
       placeholder: i18n.t('civic_center_service:form.physical.description.placeholder'),
     },
@@ -448,10 +447,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
         maxLength: {
           value: 3000,
           message: translations.physical.description.max,
-        },
-        pattern: {
-          value: ALPHANUMERIC_REGEX,
-          message: translations.physical.description.pattern,
         },
       },
       config: {

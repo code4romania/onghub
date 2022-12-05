@@ -44,7 +44,7 @@ const EditApplication = () => {
     if (application) {
       reset({
         ...application,
-        steps: application.steps.map((step) => ({ item: step })),
+        steps: application.steps?.map((step) => ({ item: step })),
       });
       setLogo(application.logo);
     }

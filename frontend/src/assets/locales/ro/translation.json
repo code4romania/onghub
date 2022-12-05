@@ -43,7 +43,9 @@
       "hide": "Ascunde filtre",
       "reset": "Reseteaza filtre",
       "show": "Filtre"
-    }
+    },
+    "unavailable": "Indisponibil",
+    "to_be_removed": "De eliminat"
   },
   "menu": {
     "informations": "Informatii",
@@ -769,7 +771,8 @@
       "active": "Activ",
       "disabled": "Inactiv",
       "restricted": "Restrictionat",
-      "pending": "In asteptare"
+      "pending": "In asteptare",
+      "pending_removal": "De Sters"
     },
     "header": {
       "name": "Aplicatie",
@@ -1006,7 +1009,7 @@
       "handle_users": "Gestioneaza utilizatori",
       "view_data": "Vizualizeaza datele",
       "updated_data": "Datele organizației sunt actualizate",
-      "outdated_data": "Datele organizației sunt actualizate",
+      "outdated_data": "Datele organizației nu sunt actualizate",
       "error": "Eroare la preluarea datelor",
       "active_organizations": "Organizatii active",
       "inactive_organizations": "Organizatii inactive",
@@ -1177,7 +1180,6 @@
         "description": {
           "required": "Descrierea este obligatorie",
           "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
-          "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access fizic",
           "placeholder": "Lorem ipsum",
           "helper": "Mentioneaza orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"

@@ -61,7 +61,7 @@ group by daily_status.day,
 union all 
 --returns the latest status for each month
 select 
-    to_char(date_trunc('month', monthly_status.month), 'Mon YY') as date,
+    to_char(date_trunc('month', monthly_status.month), 'Mon YYYY') as date,
     monthly_status.status,
     case 
         when monthly_status.status is not null 

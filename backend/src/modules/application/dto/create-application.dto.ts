@@ -44,17 +44,17 @@ export class CreateApplicationDto {
   @Matches(REGEX.LINK)
   website: string;
 
+  @IsString()
   @IsOptional()
   @Matches(REGEX.LINK)
-  loginLink: string;
+  loginLink?: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  logo: string;
+  logo?: string;
 
   @IsArray()
   @IsOptional()
   @Length(2, 100, { each: true })
-  steps: string[];
+  steps?: string[];
 }
