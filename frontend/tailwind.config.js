@@ -125,6 +125,9 @@ module.exports = {
         128: '32rem',
         136: '34rem',
       },
+      screens: {
+        fullhd: '1921px',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],

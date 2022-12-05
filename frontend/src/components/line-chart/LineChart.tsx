@@ -33,8 +33,8 @@ const LineChart = ({ data, title, activeFiler, onUpdateChart }: LineChartProps) 
   };
 
   return (
-    <div className="lg:w-2/5 w-full grow 2xl:grow-0">
-      <div className="shadow-lg rounded-lg overflow-hidden bg-white max-w-4xl max-h-128 divide-y divide-gray-200 ">
+    <div className="lg:w-2/5 w-full grow fullhd:grow-0">
+      <div className="shadow-lg rounded-lg overflow-hidden bg-white divide-y divide-gray-200 ">
         <div className="py-5 sm:px-8 px-5 flex flex-row justify-between items-center">
           <span className="font-titilliumBold sm:text-lg lg:text-xl text-sm text-gray-800">
             {title}
