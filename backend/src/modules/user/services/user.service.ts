@@ -376,18 +376,23 @@ export class UserService {
       { ...paginationOptions, organizationId },
     );
 
-    const userData = users.items.map((user) => {
-      return {
-        Nume: user.name,
-        Email: user.email,
-        Phone: user.phone,
-        Status: user.status,
-        'Data adaugarii': user.createdOn,
-      };
-    });
+    // const userData = users.items.map((user) => {
+    //   return {
+    //     Nume: user.name,
+    //     Email: user.email,
+    //     Phone: user.phone,
+    //     Status: user.status,
+    //     'Data adaugarii': user.createdOn,
+    //   };
+    // });
 
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(userData);
+    const ws = XLSX.utils.json_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, []);
+    XLSX.utils.sheet_add_json(ws, users.items, {
+      origin: 'A2',
+      skipHeader: true,
+    });
     XLSX.utils.book_append_sheet(wb, ws, 'Users');
 
     res.attachment('Users.xlsx');
