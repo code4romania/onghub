@@ -107,7 +107,7 @@ export class OngApplicationService {
     organizationId: number,
     options?: OrganizationApplicationFilterDto,
   ): Promise<IOngApplication[]> {
-    const { userId, search, type } = options;
+    const { organizationId: ongId, userId, search, type } = options;
 
     // 1. This validates that only admins and employees can call this
     if (!organizationId) {
@@ -126,7 +126,7 @@ export class OngApplicationService {
       );
 
     // 3. Handle my applications for employee
-    if (userId && organizationId) {
+    if (userId && ongId) {
       applicationsQuery
         .leftJoin(
           'user_ong_application',
@@ -134,7 +134,7 @@ export class OngApplicationService {
           'userOngApp.ongApplicationId = ongApp.id',
         )
         .where('ongApp.organizationId = :organizationId', {
-          organizationId,
+          organizationId: ongId,
         })
         .andWhere('userOngApp.userId = :userId', { userId })
         .andWhere('ongApp.status != :status', {
@@ -143,11 +143,11 @@ export class OngApplicationService {
         .orWhere('application.type = :type', {
           type: ApplicationTypeEnum.INDEPENDENT,
         });
-    } else if (organizationId) {
+    } else if (ongId) {
       // 4. Handle My applications for Admin
       applicationsQuery
         .where('ongApp.organizationId = :organizationId', {
-          organizationId,
+          organizationId: ongId,
         })
         .andWhere('ongApp.status != :status', {
           status: OngApplicationStatus.PENDING,
