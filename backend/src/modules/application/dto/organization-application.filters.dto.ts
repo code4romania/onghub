@@ -1,11 +1,16 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 
 export class OrganizationApplicationFilterDto {
   @IsOptional()
   @IsNumber()
-  organizationId?: number;
+  userId?: number;
 
   @IsOptional()
-  @IsNumber()
-  userId?: number;
+  @IsString()
+  search?: string;
+
+  @IsOptional()
+  @IsEnum(ApplicationTypeEnum)
+  type?: ApplicationTypeEnum;
 }
