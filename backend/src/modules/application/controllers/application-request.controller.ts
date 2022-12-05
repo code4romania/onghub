@@ -16,11 +16,10 @@ import {
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { ApplicationRequestFilterDto } from 'src/modules/application/dto/application-request-filters.dto';
-import { ApplicationRequest } from 'src/modules/application/entities/application-request.entity';
 import { Role } from '../../user/enums/role.enum';
+import { OngApplication } from '../entities/ong-application.entity';
 import { OrganizationApplicationRequest } from '../interfaces/organization-application-request.interface';
-import { ApplicationRequestService } from '../services/application-request.service';
+import { OngApplicationService } from '../services/ong-application.service';
 
 @Roles(Role.SUPER_ADMIN)
 @ApiTooManyRequestsResponse()
@@ -28,16 +27,14 @@ import { ApplicationRequestService } from '../services/application-request.servi
 @ApiBearerAuth()
 @Controller('application/request')
 export class ApplicationRequestController {
-  constructor(
-    private readonly applicationRequestService: ApplicationRequestService,
-  ) {}
+  constructor(private readonly ongApplicationService: OngApplicationService) {}
 
   @ApiQuery({ type: () => BaseFilterDto })
   @Get('')
   async getApplicationRequests(
-    @Query() filters: ApplicationRequestFilterDto,
-  ): Promise<Pagination<ApplicationRequest>> {
-    return this.applicationRequestService.findAll(filters);
+    @Query() filters: BaseFilterDto,
+  ): Promise<Pagination<OngApplication>> {
+    return this.ongApplicationService.findAllRequests(filters);
   }
 
   @ApiParam({ name: 'id', type: String })
@@ -45,18 +42,18 @@ export class ApplicationRequestController {
   findOrganizationApplicationRequests(
     @Param('id') id: number,
   ): Promise<OrganizationApplicationRequest[]> {
-    return this.applicationRequestService.findRequestsByOrganizationId(id);
+    return this.ongApplicationService.findRequestsByOrganizationId(id);
   }
 
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/approve')
   approveApplicationRequest(@Param('id') id: number): Promise<void> {
-    return this.applicationRequestService.approve(id);
+    return this.ongApplicationService.approve(id);
   }
 
   @ApiParam({ name: 'id', type: String })
   @Patch(':id/reject')
   rejectApplicationRequest(@Param('id') id: number): Promise<void> {
-    return this.applicationRequestService.reject(id);
+    return this.ongApplicationService.reject(id);
   }
 }

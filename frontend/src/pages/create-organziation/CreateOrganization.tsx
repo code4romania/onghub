@@ -46,7 +46,7 @@ const CreateOrganization = () => {
     if (organization?.legal) {
       submit();
     }
-  }, [organization]);
+  }, [organization?.legal]);
 
   useEffect(() => {
     if (requestError) {

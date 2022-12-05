@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './MultiSelect.css';
 import { Chip } from '../chip-selection/ChipSelection';
@@ -30,6 +30,11 @@ const MultiSelect = ({
   options,
   id,
 }: MultiSelectConfig) => {
+
+  const [defaultValue, setDefaultValue] = useState<any[]>([]);
+
+  useEffect(() => { setDefaultValue(value) }, [value])
+
   return (
     <div>
       {label && (
@@ -48,7 +53,7 @@ const MultiSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={true}
               selected={false}
-              onClick={() => {}}
+              onClick={() => { }}
               id={id}
             />
           ))}
@@ -61,7 +66,7 @@ const MultiSelect = ({
           onChange={onChange}
           isClearable={isClearable}
           isMulti={true}
-          defaultValue={value}
+          value={defaultValue}
           options={options}
           id={id}
         />

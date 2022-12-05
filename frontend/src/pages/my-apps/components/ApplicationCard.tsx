@@ -1,5 +1,8 @@
 import React from 'react';
-import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
+import {
+  ApplicationStatus,
+  ApplicationWithOngStatus,
+} from '../../../services/application/interfaces/Application.interface';
 import logo from '../../../assets/images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.interface';
@@ -10,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 const ApplicationCard = ({ application }: { application: ApplicationWithOngStatus }) => {
   const navigate = useNavigate();
 
-  const { t } = useTranslation('my_apps');
+  const { t } = useTranslation(['my_apps', 'common']);
 
   const onMore = (e: any) => {
     e.preventDefault();
@@ -28,12 +31,20 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
 
   return (
     <div className="bg-white rounded-xl shadow flex flex-col gap-1 items-center justify-between lg:p-8 p-5 relative overflow-auto sm:min-h-[28rem] sm:w-80 w-full">
-      {(application.status === OngApplicationStatus.RESTRICTED ||
-        application.status === OngApplicationStatus.DISABLED) && (
+      {(application.ongStatus === OngApplicationStatus.RESTRICTED ||
+        application.status === ApplicationStatus.DISABLED) && (
         <div className="ribbon lg:-left-14 -left-16">
-          <p className="sm:text-sm lg:text-base text-xs">Indisponibil</p>
+          <p className="sm:text-sm lg:text-base text-xs">{t('unavailable', { ns: 'common' })}</p>
         </div>
       )}
+      {application.ongStatus === OngApplicationStatus.PENDING_REMOVAL &&
+        application.status !== ApplicationStatus.DISABLED && (
+          <div className="ribbon lg:-left-14 -left-16">
+            <p className="sm:text-sm lg:text-base text-xs">
+              {t('to_be_removed', { ns: 'common' })}
+            </p>
+          </div>
+        )}
       <img
         src={application.logo || logo}
         className="sm:h-full max-h-32 w-full object-contain"
@@ -60,15 +71,16 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         >
           <p className="text-center">{t('more')}</p>
         </button>
-        {(application.status === OngApplicationStatus.ACTIVE ||
-          application.type === ApplicationTypeEnum.INDEPENDENT) && (
-          <button
-            className="save-button w-full flex justify-center sm:text-sm lg:text-base text-xs"
-            onClick={onOpen}
-          >
-            <p className="text-center">{t('open')}</p>
-          </button>
-        )}
+        {(application.ongStatus === OngApplicationStatus.ACTIVE ||
+          application.type === ApplicationTypeEnum.INDEPENDENT) &&
+          application.status !== ApplicationStatus.DISABLED && (
+            <button
+              className="save-button w-full flex justify-center sm:text-sm lg:text-base text-xs"
+              onClick={onOpen}
+            >
+              <p className="text-center">{t('open')}</p>
+            </button>
+          )}
       </div>
     </div>
   );

@@ -105,6 +105,7 @@ const PracticeProgramForm = ({
                       error: errors.title?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__title',
                     }}
                   />
                 );
@@ -147,6 +148,7 @@ const PracticeProgramForm = ({
                     error={(errors as Record<string, { message: string }>)[
                       PracticeProgramFormConfig.deadline.key
                     ]?.message?.toString()}
+                    id="practice-program-form__deadline__input"
                   />
                 );
               }}
@@ -165,6 +167,7 @@ const PracticeProgramForm = ({
                       error: errors.description?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__description',
                     }}
                   />
                 );
@@ -186,6 +189,7 @@ const PracticeProgramForm = ({
                         PracticeProgramFormConfig.startDate.key
                       ]?.message?.toString() || practiceProgramPeriodError
                     }
+                    id="practice-program-form__date-start__input"
                   />
                 );
               }}
@@ -207,6 +211,7 @@ const PracticeProgramForm = ({
                           PracticeProgramFormConfig.endDate.key
                         ]?.message?.toString() || practiceProgramPeriodError
                       }
+                      id="practice-program-form__date-end__input"
                     />
                   );
                 }}
@@ -227,6 +232,7 @@ const PracticeProgramForm = ({
                       error: errors.isPeriodNotDetermined?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__period-undetermined',
                     }}
                   />
                 );
@@ -247,6 +253,7 @@ const PracticeProgramForm = ({
                         error: errors.minWorkingHours?.message || workingHoursError,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'practice-program-form__minimum-hours',
                       }}
                     />
                   );
@@ -266,6 +273,7 @@ const PracticeProgramForm = ({
                         error: errors.maxWorkingHours?.message || workingHoursError,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'practice-program-form__maximum-hours',
                       }}
                     />
                   );
@@ -288,6 +296,7 @@ const PracticeProgramForm = ({
                       ]?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'practice-program-form__link',
                     }}
                   />
                 );

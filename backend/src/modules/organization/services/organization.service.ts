@@ -317,6 +317,7 @@ export class OrganizationService {
         'organizationActivity.federations',
         'organizationActivity.coalitions',
         'organizationActivity.branches',
+        'organizationActivity.branches.county',
         'organizationActivity.regions',
         'organizationLegal',
         'organizationLegal.legalReprezentative',

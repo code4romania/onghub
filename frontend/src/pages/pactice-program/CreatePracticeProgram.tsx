@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { setUrlPrefix } from '../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
@@ -40,7 +41,7 @@ const CreatePracticeProgram = () => {
     if (isFormValid) {
       // create practice program request
       await createPracticeProgram(
-        { ...data, organizationId: organizationId },
+        { ...data, organizationId: organizationId, link: setUrlPrefix(data.link || '') },
         {
           onSuccess: () => {
             useSuccessToast(t('feedback.success_create'));
