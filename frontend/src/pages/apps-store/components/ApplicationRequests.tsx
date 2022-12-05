@@ -181,7 +181,11 @@ const ApplicationRequests = () => {
       >
         <div className="flex gap-x-6">
           <div className="sm:basis-1/4 w-full">
-            <DateRangePicker label={t('requests.date_added')} onChange={onDateChange} />
+            <DateRangePicker
+              label={t('requests.date_added')}
+              onChange={onDateChange}
+              value={range.length > 0 ? range : undefined}
+            />
           </div>
         </div>
       </DataTableFilters>
