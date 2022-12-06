@@ -5,14 +5,17 @@ import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import ExetendedStatisticsCard from '../../components/extended-statistics-card/ExtendedStatisticsCard';
 import { Loading } from '../../components/loading/Loading';
 import StatisticsCard from '../../components/statistics-card/StatisticsCard';
+import { useAuthContext } from '../../contexts/AuthContext';
 import { useOrganizationProfileStatistics } from '../../services/statistics/statistics.queries';
+import { UserRole } from '../users/enums/UserRole.enum';
 import {
-  AdminDashboardExtendedStatisticsMapping,
+  AdminEmployeeDashboardExtendedStatisticsMapping,
   AdminDashboardSimpleStatisticsMapping,
 } from './constants/DashboardStatistics.constants';
 
 const Dashboard = () => {
   const { data: statistics, isLoading, error } = useOrganizationProfileStatistics();
+  const { role } = useAuthContext();
 
   const { t } = useTranslation(['dashboard']);
 
@@ -33,30 +36,32 @@ const Dashboard = () => {
           <div className="flex gap-4 flex-col-reverse lg:flex-row">
             <div className="flex flex-col gap-4 flex-wrap lg:w-2/3">
               <ExetendedStatisticsCard
-                stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
+                stat={AdminEmployeeDashboardExtendedStatisticsMapping.isOrganizationUpdated(
                   statistics.isOrganizationUpdated,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
-                      statistics.numberOfInstalledApps,
-                    ),
-                  }}
+                  stat={AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
+                    statistics.numberOfInstalledApps,
+                  )}
                 />
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfUsers(
-                      statistics.numberOfUsers,
-                    ),
-                  }}
+                  stat={
+                    role === UserRole.ADMIN
+                      ? AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersAdmin(
+                          statistics.numberOfUsers,
+                        )
+                      : AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersEmployee(
+                          statistics.numberOfUsers,
+                        )
+                  }
                 />
               </div>
             </div>
             <div className="flex gap-4 w">
               <ExetendedStatisticsCard
-                stat={AdminDashboardExtendedStatisticsMapping.activity({
+                stat={AdminEmployeeDashboardExtendedStatisticsMapping.activity({
                   organizationCreatedOn: statistics.organizationCreatedOn,
                   organizationSyncedOn: statistics.organizationSyncedOn,
                 })}

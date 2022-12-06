@@ -4,6 +4,10 @@ import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 export class OrganizationApplicationFilterDto {
   @IsOptional()
   @IsNumber()
+  organizationId?: number;
+
+  @IsOptional()
+  @IsNumber()
   userId?: number;
 
   @IsOptional()

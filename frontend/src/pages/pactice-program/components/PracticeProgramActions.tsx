@@ -56,7 +56,7 @@ const PracticeProgramActions = ({ program, refetch }: PracticeProgramActionsProp
   };
 
   const onViewPracticeProgram = () => {
-    openInNewTab(`${process.env.REACT_APP_P4G_WEBSITE}/practice-programs/${program.id}`);
+    openInNewTab(`${process.env.REACT_APP_P4G_WEBSITE}practice-programs/${program.id}`);
   };
 
   const onEdit = () => {
