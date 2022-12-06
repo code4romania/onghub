@@ -65,7 +65,7 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
         <div className="flex-1 flex flex-col gap-4 pb-4">
           <PracticeProgramContentItem
             label={t('details.deadline')}
-            value={program?.endDate ? formatDate(program.endDate) : t('details.deadline_unlimited')}
+            value={`${formatDate(program?.deadline)}`}
           />
           <PracticeProgramContentItem
             label={t('details.period')}
@@ -75,10 +75,10 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
             label={t('details.working_hours')}
             value={`${program?.minWorkingHours} - ${program?.maxWorkingHours}`}
           />
-          <PracticeProgramContentExpandableItem
+          {/* <PracticeProgramContentExpandableItem
             label={t('details.faculties')}
             value={dataToCsv(program?.faculties)}
-          />
+          /> */}
         </div>
         <div className="flex-1 flex flex-col gap-4">
           <PracticeProgramContentItem
@@ -88,6 +88,10 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
           <PracticeProgramContentItem
             label={t('details.skills')}
             value={dataToCsv(program?.skills)}
+          />
+          <PracticeProgramContentExpandableItem
+            label={t('details.faculties')}
+            value={dataToCsv(program?.faculties)}
           />
         </div>
       </div>
