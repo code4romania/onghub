@@ -28,6 +28,8 @@ import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
+import { ApplicationTypeEnum } from 'src/modules/application/enums/ApplicationType.enum';
+import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 
 @Injectable()
 export class StatisticsService {
@@ -263,13 +265,23 @@ export class StatisticsService {
 
   public async getOrganizationStatistics(
     organizationId: number,
+    role?: Role,
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      const numberOfActiveApps =
-        await this.applicationService.countActiveApplicationsForOng(
-          organizationId,
-        );
+      let numberOfActiveApps: number;
+      if (role === Role.ADMIN) {
+        numberOfActiveApps =
+          (await this.applicationService.countActiveApplicationsForOng(
+            organizationId,
+          )) +
+          (await this.applicationService.countApplications({
+            where: {
+              type: ApplicationTypeEnum.INDEPENDENT,
+              status: ApplicationStatus.ACTIVE,
+            },
+          }));
+      }
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });

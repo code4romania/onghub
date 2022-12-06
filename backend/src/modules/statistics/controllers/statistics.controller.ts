@@ -40,6 +40,7 @@ export class StatisticsController {
   getOrganizationStatistics(@ExtractUser() user: User) {
     return this.statisticsService.getOrganizationStatistics(
       user.organizationId,
+      user.role,
     );
   }
 
