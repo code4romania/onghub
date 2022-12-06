@@ -9,15 +9,21 @@ import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
+import { UserApplicationService } from './services/user-application.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserHistory]),
     forwardRef(() => OrganizationModule),
-    forwardRef(() => ApplicationModule),
+    ApplicationModule,
   ],
   controllers: [ProfileController, AdminUserController],
-  providers: [UserRepository, UserService, CognitoUserService],
-  exports: [UserService],
+  providers: [
+    UserRepository,
+    UserService,
+    CognitoUserService,
+    UserApplicationService,
+  ],
+  exports: [UserService, UserApplicationService],
 })
 export class UserModule {}

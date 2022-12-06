@@ -89,6 +89,15 @@ const ApplicationNGOList = () => {
       },
     ];
 
+    const pendingRemovalApplicationMenu = [
+      {
+        name: t('list.remove'),
+        icon: TrashIcon,
+        onClick: onRemoveApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
     const activeApplicationMenu = [
       {
         name: t('list.restrict'),
@@ -106,7 +115,9 @@ const ApplicationNGOList = () => {
           menuItems={
             row.status === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
-              : restrictedApplicationMenu
+              : row.status === OngApplicationStatus.RESTRICTED
+              ? restrictedApplicationMenu
+              : pendingRemovalApplicationMenu
           }
         />
       ),

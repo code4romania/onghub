@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import { Loading } from '../../../components/loading/Loading';
-import {
-  useMyOngApplicationsQuery,
-  useOngApplicationsQuery,
-} from '../../../services/application/Application.queries';
+import { useOngApplicationsQuery } from '../../../services/application/Application.queries';
 import { ApplicationWithOngStatus } from '../../../services/application/interfaces/Application.interface';
-import { useOngApplications } from '../../../store/selectors';
+import { useOngApplications, useSelectedOrganization } from '../../../store/selectors';
 import ApplicationCard from '../../my-apps/components/ApplicationCard';
 
 const ApplicationListCards = ({ isOngView }: { isOngView?: boolean }) => {
-  const { isLoading, error } = isOngView ? useMyOngApplicationsQuery() : useOngApplicationsQuery();
+  const { organization } = useSelectedOrganization();
+  const { isLoading, error } = useOngApplicationsQuery(isOngView ? organization?.id : undefined);
   const { ongApplications: applications } = useOngApplications();
   const { t } = useTranslation('appstore');
 

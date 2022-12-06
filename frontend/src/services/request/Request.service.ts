@@ -94,13 +94,13 @@ export const getOrganizationRequestById = (requestId: string): Promise<Request> 
 
 // Application
 export const createApplicationRequest = (applicationId: number): Promise<Request> => {
-  return API.post(`organization/application/${applicationId}/request`).then(
+  return API.post(`organizations/application/${applicationId}/request`).then(
     (res: AxiosResponse<Request>) => res.data,
   );
 };
 
 export const abandonApplicationnRequest = (applicationId: string) => {
-  return API.delete(`/organization/application/${applicationId}/request`);
+  return API.delete(`/organizations/application/${applicationId}/request`);
 };
 
 export const approveApplicationnRequest = (requestId: string) => {

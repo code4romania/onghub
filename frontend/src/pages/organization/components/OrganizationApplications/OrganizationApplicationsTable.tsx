@@ -26,18 +26,21 @@ import { OrganizationApplicationsTableHeaders } from './table-headers/Organizati
 const OrganizationApplicationsTable = ({ organizationId }: { organizationId: string }) => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
-  const [applications, setApplications] = useState<ApplicationWithOngStatus[]>([]);
   const [removalCandidate, setRemovaCandidate] = useState<ApplicationWithOngStatus | null>(null);
 
   const { t } = useTranslation(['applications', 'common']);
 
   // table data
   const {
-    data: organizationApplications,
+    data: applications,
     isLoading: isApplicationsLoading,
     error: applicationsError,
     refetch: reloadApplications,
-  } = useOrganizationApplicationsQuery(organizationId);
+  } = useOrganizationApplicationsQuery(
+    organizationId,
+    searchWord as string,
+    type?.type as ApplicationTypeEnum,
+  );
 
   // actions
   const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
@@ -46,23 +49,6 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
     useRestrictApplicationMutation();
 
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
-
-  useEffect(() => {
-    if (organizationApplications) setApplications(organizationApplications);
-  }, [organizationApplications]);
-
-  useEffect(() => {
-    if (organizationApplications)
-      setApplications(
-        organizationApplications.filter((app) => app.name.includes(searchWord || '')),
-      );
-  }, [searchWord]);
-
-  useEffect(() => {
-    if (type && organizationApplications) {
-      setApplications(organizationApplications.filter((app) => app.type === type?.type));
-    }
-  }, [type]);
 
   useEffect(() => {
     if (applicationsError) {
@@ -95,14 +81,25 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       },
     ];
 
+    const pendingRemovalApplicationMenu = [
+      {
+        name: t('options.remove_application'),
+        icon: TrashIcon,
+        onClick: onRemoveApplication,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
     return {
       name: '',
       cell: (row: ApplicationWithOngStatus) => (
         <PopoverMenu
           row={row}
           menuItems={
-            row.status === OngApplicationStatus.ACTIVE
+            row.ongStatus === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
+              : row.ongStatus === OngApplicationStatus.PENDING_REMOVAL
+              ? pendingRemovalApplicationMenu
               : restrictedApplicationMenu
           }
         />
@@ -159,7 +156,6 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
   const onResetFilters = () => {
     setSearchWord(null);
     setType(null);
-    setApplications(organizationApplications || []);
   };
 
   return (
@@ -192,9 +188,13 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
         <div className="pb-2">
           <DataTableComponent
             columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
-            data={applications.filter(
-              (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
-            )}
+            data={
+              applications
+                ? applications.filter(
+                    (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
+                  )
+                : []
+            }
             loading={
               isApplicationsLoading ||
               isRestoringAppccess ||

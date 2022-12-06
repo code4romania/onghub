@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApplicationController } from './controllers/application.controller';
 import { Application } from './entities/application.entity';
@@ -8,9 +8,6 @@ import { SharedModule } from 'src/shared/shared.module';
 import { OngApplication } from './entities/ong-application.entity';
 import { OngApplicationRepository } from './repositories/ong-application.repository';
 import { OngApplicationService } from './services/ong-application.service';
-import { ApplicationRequest } from './entities/application-request.entity';
-import { ApplicationRequestRepository } from './repositories/application-request.repository';
-import { ApplicationRequestService } from './services/application-request.service';
 import { ApplicationRequestController } from './controllers/application-request.controller';
 import { UserOngApplication } from './entities/user-ong-application.entity';
 import { UserOngApplicationRepository } from './repositories/user-ong-application.repository';
@@ -19,35 +16,33 @@ import { ApplicationOngView } from './entities/application-ong-view.entity';
 import { ApplicationOngViewRepository } from './repositories/application-ong-view.repository';
 import { ApplicationTableView } from './entities/application-table-view.entity';
 import { ApplicationTableViewRepository } from './repositories/application-table-view.repository';
-import { UserModule } from '../user/user.module';
-import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationHistory } from './entities/application-history.entity';
-import { ApplicationRequestHistory } from './entities/application-request-history.entity';
+import { OngApplicationHistory } from './entities/ong-application-history.entity';
+import { OrganizationApplicationController } from './controllers/organization-application.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Application,
       OngApplication,
-      ApplicationRequest,
       UserOngApplication,
       ApplicationTableView,
       ApplicationOngView,
       ApplicationHistory,
-      ApplicationRequestHistory,
+      OngApplicationHistory,
     ]),
     SharedModule,
-    UserModule,
-    forwardRef(() => OrganizationModule),
   ],
-  controllers: [ApplicationRequestController, ApplicationController],
+  controllers: [
+    ApplicationRequestController,
+    ApplicationController,
+    OrganizationApplicationController,
+  ],
   providers: [
     ApplicationService,
     ApplicationRepository,
     OngApplicationRepository,
     OngApplicationService,
-    ApplicationRequestRepository,
-    ApplicationRequestService,
     UserOngApplicationRepository,
     UserOngApplicationService,
     ApplicationTableViewRepository,
@@ -57,7 +52,6 @@ import { ApplicationRequestHistory } from './entities/application-request-histor
     OngApplicationService,
     ApplicationService,
     UserOngApplicationService,
-    ApplicationRequestService,
   ],
 })
 export class ApplicationModule {}

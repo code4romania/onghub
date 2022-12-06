@@ -218,6 +218,7 @@ const CreateOrganizationGeneral = () => {
                         id: 'create-organization-general__year-created',
                         ...OrganizationGeneralConfig.yearCreated.config,
                       }}
+                      error={errors[OrganizationGeneralConfig.yearCreated.key]?.message}
                       selected={value}
                       onChange={onChange}
                       readonly={readonly}

@@ -28,7 +28,7 @@ const ExetendedStatisticsCard = ({ stat }: { stat: ExtendedStatisticsCardInfo })
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-white rounded-xl shadow w-full">
+    <div className="flex flex-col gap-4 bg-white rounded-xl shadow w-full justify-between">
       <div className="flex gap-4 sm:p-6 p-3 items-start">
         <div className={classNames('bg-green rounded p-2', stat.alert && 'bg-orange')}>
           <stat.icon className={classNames('sm:w-7 sm:h-7 lg:w-10 lg:h-10 w-5 h-5 text-white')} />
