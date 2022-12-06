@@ -867,7 +867,7 @@
       "upload_description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.",
       "steps_title": "Pasi pentru adaugarea aplicatiei",
       "steps_subtitle": "This information will be displayed publicly so be careful what you share",
-      "more_steps": "Adauga mai multi pasi",
+      "add_step": "Adauga pas",
       "delete_step": "Sterge pas"
     }
   },

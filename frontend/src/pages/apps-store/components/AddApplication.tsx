@@ -32,9 +32,7 @@ const AddApplication = () => {
     useCreateApplicationMutation();
 
   useEffect(() => {
-    reset({
-      steps: [{ item: '' }],
-    });
+    reset();
   }, []);
 
   const onSubmit = async (data: CreateApplicationDto) => {
