@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  StreamableFile,
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
@@ -361,8 +362,7 @@ export class UserService {
   public async getUsersForDownload(
     options: DownloadFiltersDto,
     organizationId: number,
-    res: Response,
-  ) {
+  ): Promise<StreamableFile> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
       limit: 0,
@@ -376,28 +376,22 @@ export class UserService {
       { ...paginationOptions, organizationId },
     );
 
-    // const userData = users.items.map((user) => {
-    //   return {
-    //     Nume: user.name,
-    //     Email: user.email,
-    //     Phone: user.phone,
-    //     Status: user.status,
-    //     'Data adaugarii': user.createdOn,
-    //   };
-    // });
+    const userData = users.items.map((user) => {
+      return {
+        Nume: user.name,
+        Email: user.email,
+        Telefon: user.phone,
+        Status: user.status,
+        'Data adaugarii': user.createdOn,
+      };
+    });
 
     const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet([]);
-    XLSX.utils.sheet_add_aoa(ws, []);
-    XLSX.utils.sheet_add_json(ws, users.items, {
-      origin: 'A2',
-      skipHeader: true,
-    });
-    XLSX.utils.book_append_sheet(wb, ws, 'Users');
+    const ws = XLSX.utils.json_to_sheet(userData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Utilizatori');
+    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
-    res.attachment('Users.xlsx');
-
-    return res.send(wb);
+    return new StreamableFile(buffer);
   }
 
   // ****************************************************

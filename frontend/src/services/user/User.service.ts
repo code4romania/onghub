@@ -73,7 +73,7 @@ export const getUsers = async (
 export const getUsersForDownload = async (
   orderBy: string,
   orderDirection: OrderDirection,
-  search?: string,
+  search?: string | null,
   status?: UserStatus,
   interval?: Date[],
   organizationId?: number,

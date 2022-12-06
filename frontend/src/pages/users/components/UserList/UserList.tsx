@@ -11,7 +11,6 @@ import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-
 import DateRangePicker from '../../../../components/date-range-picker/DateRangePicker';
 import Select from '../../../../components/Select/Select';
 import {
-  useGetUsersForDownloadQuery,
   useRemoveUserMutation,
   useRestoreUserMutation,
   useRestrictUserMutation,
@@ -27,7 +26,7 @@ import ConfirmationModal from '../../../../components/confim-removal-modal/Confi
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
-import * as XLSX from 'xlsx';
+import { getUsersForDownload } from '../../../../services/user/User.service';
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
@@ -45,15 +44,6 @@ const UserList = (props: { organizationId?: number }) => {
   const organizationId = props.organizationId;
 
   const { users } = useUser();
-
-  const { data } = useGetUsersForDownloadQuery(
-    orderByColumn as string,
-    orderDirection as OrderDirection,
-    searchWord as string,
-    status?.status,
-    range,
-    organizationId as number,
-  );
 
   const { t } = useTranslation(['user', 'common']);
 
@@ -234,7 +224,6 @@ const UserList = (props: { organizationId?: number }) => {
   };
 
   const onResetFilters = () => {
-    console.log('snjfbhf');
     setStatus(null);
     setRange([]);
     setSearchWord(null);
@@ -249,7 +238,14 @@ const UserList = (props: { organizationId?: number }) => {
    * ACTIONS
    */
   const onExport = () => {
-    XLSX.writeFile(data, 'Users.xlsx');
+    getUsersForDownload(
+      orderByColumn || '',
+      orderDirection || OrderDirection.ASC,
+      searchWord,
+      status?.status,
+      range,
+      organizationId,
+    );
   };
 
   return (

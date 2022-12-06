@@ -10,12 +10,16 @@ import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
 import { UserApplicationService } from './services/user-application.service';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserHistory]),
     forwardRef(() => OrganizationModule),
     ApplicationModule,
+    MulterModule.register({
+      dest: './download',
+    }),
   ],
   controllers: [ProfileController, AdminUserController],
   providers: [

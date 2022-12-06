@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsDate,
-  IsEnum,
-  IsNumber,
-} from 'class-validator';
+import { IsString, IsOptional, IsDate, IsEnum } from 'class-validator';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { UserStatus } from '../enums/user-status.enum';
 

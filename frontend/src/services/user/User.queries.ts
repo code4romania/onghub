@@ -59,22 +59,22 @@ export const useUsersQuery = (
   );
 };
 
-export const useGetUsersForDownloadQuery = (
-  orderBy: string,
-  orderDirection: OrderDirection,
-  search?: string,
-  status?: UserStatus,
-  interval?: Date[],
-  organizationId?: number,
-) => {
-  return useQuery(
-    ['download', orderBy, orderDirection, search, status, interval, organizationId],
-    () => getUsersForDownload(orderBy, orderDirection, search, status, interval, organizationId),
-    {
-      enabled: !!(orderBy && orderDirection),
-    },
-  );
-};
+// export const useGetUsersForDownloadQuery = (
+//   orderBy: string,
+//   orderDirection: OrderDirection,
+//   search?: string,
+//   status?: UserStatus,
+//   interval?: Date[],
+//   organizationId?: number,
+// ) => {
+//   return useQuery(
+//     ['download', orderBy, orderDirection, search, status, interval, organizationId],
+//     () => getUsersForDownload(orderBy, orderDirection, search, status, interval, organizationId),
+//     {
+//       enabled: !!(orderBy && orderDirection),
+//     },
+//   );
+// };
 
 export const useInviteesQuery = (search?: string, interval?: Date[]) => {
   const { setInvites } = useStore();
