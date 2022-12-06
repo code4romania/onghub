@@ -33,7 +33,7 @@ export class OrganizationRequestService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly fileManagerService: FileManagerService,
-  ) { }
+  ) {}
 
   public async findAll(options: BaseFilterDto) {
     const paginationOptions = {
@@ -41,10 +41,19 @@ export class OrganizationRequestService {
       status: RequestStatus.PENDING,
     };
 
-    return this.organizationRequestRepository.getManyPaginated(
+    const requests = await this.organizationRequestRepository.getManyPaginated(
       ORGANIZATION_REQUEST_FILTER_CONFIG,
       paginationOptions,
     );
+
+    for (let i = 0; i < requests.items.length; i++) {
+      requests.items[i]['logo'] = await this.organizationService.getLogo(
+        requests.items[i].organizationId,
+      );
+      delete requests.items[i].organizationId;
+    }
+
+    return requests;
   }
 
   public async findOne(id: number): Promise<OrganizationRequest> {
@@ -233,7 +242,6 @@ export class OrganizationRequestService {
         phone: createReqDto.admin.phone,
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
-        logo: organization.organizationGeneral.logo,
       });
 
       // 9. Send emails for Super-Admin

@@ -41,6 +41,7 @@ import { ApplicationAccessFilterDto } from '../dto/application-access-filter.dto
 import { OngApplicationService } from '../services/ong-application.service';
 import { ApplicationService } from '../services/application.service';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
+import { OrganizationApplicationFilterDto } from '../dto/organization-application.filters.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -89,13 +90,13 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @ApiQuery({ type: () => OrganizationApplicationFilterDto })
   @Get('organization/:id')
   findOrganizationApplications(
     @Param('id') organizationId: number,
+    @Query() filters: OrganizationApplicationFilterDto,
   ): Promise<IOngApplication[]> {
-    return this.ongApplicationService.findApplications(organizationId, {
-      organizationId,
-    });
+    return this.ongApplicationService.findApplications(organizationId, filters);
   }
 
   @Roles(Role.SUPER_ADMIN)

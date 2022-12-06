@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { Person } from '../../common/interfaces/person.interface';
+import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import { CompletionStatus } from '../../pages/organization/enums/CompletionStatus.enum';
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Expense } from '../../pages/organization/interfaces/Expense.interface';
@@ -86,10 +87,14 @@ export const useOrganizationsQuery = (
   );
 };
 
-export const useOrganizationApplicationsQuery = (organizationId: string) => {
+export const useOrganizationApplicationsQuery = (
+  organizationId: string,
+  search?: string,
+  type?: ApplicationTypeEnum,
+) => {
   return useQuery(
-    ['applications', organizationId],
-    () => getOrganizationApplications(organizationId),
+    ['applications', organizationId, search, type],
+    () => getOrganizationApplications(organizationId, search, type),
     {
       enabled: !!organizationId,
     },

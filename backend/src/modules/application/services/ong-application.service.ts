@@ -107,7 +107,7 @@ export class OngApplicationService {
     organizationId: number,
     options?: OrganizationApplicationFilterDto,
   ): Promise<IOngApplication[]> {
-    const { organizationId: ongId, userId } = options;
+    const { organizationId: ongId, userId, search, type } = options;
 
     // 1. This validates that only admins and employees can call this
     if (!organizationId) {
@@ -115,7 +115,7 @@ export class OngApplicationService {
     }
 
     // 2. base query
-    const applicationsQuery = await this.applicationRepository
+    const applicationsQuery = this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
       .leftJoin(
@@ -155,6 +155,23 @@ export class OngApplicationService {
         .orWhere('application.type = :type', {
           type: ApplicationTypeEnum.INDEPENDENT,
         });
+    }
+
+    if (search) {
+      applicationsQuery
+        .where('ongApp.organizationId = :organizationId', {
+          organizationId,
+        })
+        .andWhere('application.name ilike :name', {
+          name: `%${search}%`,
+        });
+    }
+    if (type) {
+      applicationsQuery
+        .where('ongApp.organizationId = :organizationId', {
+          organizationId,
+        })
+        .andWhere('application.type = :type', { type });
     }
 
     const applications = await applicationsQuery.execute();

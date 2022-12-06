@@ -61,7 +61,7 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
   },
 };
 
-export const AdminDashboardExtendedStatisticsMapping = {
+export const AdminEmployeeDashboardExtendedStatisticsMapping = {
   isOrganizationUpdated: (isUpdated: boolean) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
@@ -72,7 +72,7 @@ export const AdminDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: 'organization/finanicial',
+      href: 'organization/financial',
       label: 'statistics.view_data',
     },
   }),
@@ -89,13 +89,61 @@ export const AdminDashboardExtendedStatisticsMapping = {
       label: 'statistics.view_active_apps',
     },
   }),
-  numberOfUsers: (value: number) => ({
+  numberOfUsersAdmin: (value: number) => ({
     icon: UserGroupIcon,
     info: [{ title: value, subtitle: 'statistics.active_users' }],
     button: {
       href: 'users',
       label: 'statistics.handle_users',
     },
+  }),
+  numberOfUsersEmployee: (value: number) => ({
+    icon: UserGroupIcon,
+    info: [{ title: value, subtitle: 'statistics.active_users' }],
+  }),
+  activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date }) => ({
+    icon: ClockIcon,
+    info: [
+      {
+        subtitle: formatDate(values.organizationCreatedOn),
+        title: 'activity_title',
+      },
+      { subtitle: formatDate(values.organizationSyncedOn), title: 'last_updated_on' },
+    ],
+  }),
+};
+
+export const SuperAdminOverviewExtendedStatisticsMapping = {
+  isOrganizationUpdated: (isUpdated: boolean, organizationId?: number) => ({
+    icon: CheckCircleIcon,
+    alert: !isUpdated,
+    info: [
+      {
+        title: isUpdated ? 'statistics.updated_data' : 'statistics.outdated_data',
+        subtitle: 'statistics.next_update',
+      },
+    ],
+    button: {
+      href: `/organizations/${organizationId}/financial`,
+      label: 'statistics.view_data',
+    },
+  }),
+  numberOfInstalledApps: (value: number, organizationId?: number) => ({
+    icon: ViewGridAddIcon,
+    info: [
+      {
+        title: value,
+        subtitle: 'statistics.active_apps',
+      },
+    ],
+    button: {
+      href: `/organizations/${organizationId}/applications`,
+      label: 'statistics.view_active_apps',
+    },
+  }),
+  numberOfUsers: (value: number) => ({
+    icon: UserGroupIcon,
+    info: [{ title: value, subtitle: 'statistics.active_users' }],
   }),
   activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date }) => ({
     icon: ClockIcon,

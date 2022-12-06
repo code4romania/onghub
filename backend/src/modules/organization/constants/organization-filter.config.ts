@@ -65,6 +65,7 @@ export const ORGANIZATION_REQUEST_FILTER_CONFIG = {
     name: true,
     createdOn: true,
     status: true,
+    organizationId: true,
   },
   searchableColumns: ['organizationName', 'name'],
   defaultSortBy: 'createdOn',

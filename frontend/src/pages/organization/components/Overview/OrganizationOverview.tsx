@@ -6,12 +6,11 @@ import ExetendedStatisticsCard from '../../../../components/extended-statistics-
 import { Loading } from '../../../../components/loading/Loading';
 import { useOneOrganizationStatisticsQuery } from '../../../../services/statistics/statistics.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
-import { AdminDashboardExtendedStatisticsMapping } from '../../../dashboard/constants/DashboardStatistics.constants';
+import { SuperAdminOverviewExtendedStatisticsMapping } from '../../../dashboard/constants/DashboardStatistics.constants';
 import UserList from '../../../users/components/UserList/UserList';
 
 const OrganizationOverview = () => {
   const { organization } = useSelectedOrganization();
-
   const { t } = useTranslation(['dashboard']);
 
   const { data, isLoading, error } = useOneOrganizationStatisticsQuery(organization?.id as number);
@@ -33,29 +32,29 @@ const OrganizationOverview = () => {
           <div className="flex gap-4 flex-col-reverse lg:flex-row">
             <div className="flex flex-col gap-4 flex-wrap lg:w-2/3">
               <ExetendedStatisticsCard
-                stat={AdminDashboardExtendedStatisticsMapping.isOrganizationUpdated(
+                stat={SuperAdminOverviewExtendedStatisticsMapping.isOrganizationUpdated(
                   data.isOrganizationUpdated,
+                  organization?.id,
                 )}
               />
               <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfInstalledApps(
-                      data.numberOfInstalledApps,
-                    ),
-                  }}
+                  stat={SuperAdminOverviewExtendedStatisticsMapping.numberOfInstalledApps(
+                    data.numberOfInstalledApps,
+                    organization?.id,
+                  )}
                 />
                 <ExetendedStatisticsCard
-                  stat={{
-                    ...AdminDashboardExtendedStatisticsMapping.numberOfUsers(data.numberOfUsers),
-                  }}
+                  stat={SuperAdminOverviewExtendedStatisticsMapping.numberOfUsers(
+                    data.numberOfUsers,
+                  )}
                 />
               </div>
             </div>
 
             <div className="flex gap-4">
               <ExetendedStatisticsCard
-                stat={AdminDashboardExtendedStatisticsMapping.activity({
+                stat={SuperAdminOverviewExtendedStatisticsMapping.activity({
                   organizationCreatedOn: data.organizationCreatedOn,
                   organizationSyncedOn: data.organizationSyncedOn,
                 })}
