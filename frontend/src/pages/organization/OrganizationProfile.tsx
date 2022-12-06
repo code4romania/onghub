@@ -1,10 +1,13 @@
 /* eslint-disable no-constant-condition */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { useOrganizationByProfileQuery } from '../../services/organization/Organization.queries';
+import {
+  useOrganizationByProfileMutation,
+  useOrganizationByProfileQuery,
+} from '../../services/organization/Organization.queries';
 import { ORGANIZATION_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +32,8 @@ const OrganizationProfile = () => {
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
+
+  const { isLoading, mutate: updateOrganization } = useOrganizationByProfileMutation();
 
   // load organization data
   const { error } = useOrganizationByProfileQuery();
@@ -127,7 +132,7 @@ const OrganizationProfile = () => {
           />
         </span>
       </div>
-      <Outlet />
+      <Outlet context={[false, isLoading, updateOrganization]} />
       {isOrganizationDeleteModalOpen && (
         <ConfirmationModal
           title={t('restrict.title')}

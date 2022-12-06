@@ -2,6 +2,7 @@ import { DownloadIcon, PencilIcon, TrashIcon, UploadIcon } from '@heroicons/reac
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
+import { useOutletContext } from 'react-router-dom';
 import readXlsxFile from 'read-excel-file';
 import { setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
@@ -18,8 +19,6 @@ import {
 import {
   useDeleteInvestorByProfileMutation,
   useDeletePartnerByProfileMutation,
-  useOrganizationByProfileMutation,
-  useOrganizationMutation,
   useUploadInvestorsByProfileList,
   useUploadPartnersListByProfile,
 } from '../../../../services/organization/Organization.queries';
@@ -47,13 +46,9 @@ const OrganizationData = () => {
   const { t } = useTranslation(['open_data', 'organization', 'common']);
 
   const { organizationReport, organization } = useSelectedOrganization();
-  const {
-    mutate: updateReport,
-    error: updateReportError,
-    isLoading: updateReportPending,
-  } = location.pathname.includes(REQUEST_LOCATION)
-    ? useOrganizationMutation()
-    : useOrganizationByProfileMutation();
+
+  const [, updateReportPending, updateReport] =
+    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
 
   const {
     mutate: uploadPartners,
@@ -84,21 +79,9 @@ const OrganizationData = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      updateReportError ||
-      uploadPartnersError ||
-      uploadInvestorsError ||
-      deleteInvestorError ||
-      deletePartnerError
-    )
+    if (uploadPartnersError || uploadInvestorsError || deleteInvestorError || deletePartnerError)
       useErrorToast(t('load_error'));
-  }, [
-    updateReportError,
-    uploadPartnersError,
-    uploadInvestorsError,
-    deleteInvestorError,
-    deletePartnerError,
-  ]);
+  }, [uploadPartnersError, uploadInvestorsError, deleteInvestorError, deletePartnerError]);
 
   const initTemplateData = async () => {
     setInvestorsLink(await getInvestorsTemplate());
@@ -225,17 +208,24 @@ const OrganizationData = () => {
     setIsActivitySummaryModalOpen(false);
     setSelectedReport(null);
 
-    updateReport({
-      id: organization?.id,
-      organization: {
-        report: {
-          reportId: data.id,
-          numberOfContractors: data.numberOfContractors ?? undefined,
-          numberOfVolunteers: data.numberOfVolunteers ?? undefined,
-          report: setUrlPrefix(data.report) || undefined,
+    updateReport(
+      {
+        id: organization?.id,
+        organization: {
+          report: {
+            reportId: data.id,
+            numberOfContractors: data.numberOfContractors ?? undefined,
+            numberOfVolunteers: data.numberOfVolunteers ?? undefined,
+            report: setUrlPrefix(data.report) || undefined,
+          },
         },
       },
-    });
+      {
+        onError: () => {
+          useErrorToast(t('load_error'));
+        },
+      },
+    );
   };
 
   const onDeleteReport = (row: Report) => {

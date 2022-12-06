@@ -1,8 +1,8 @@
 import { PencilIcon } from '@heroicons/react/solid';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
 import {
   emptyStringToNull,
@@ -18,15 +18,10 @@ import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Select from '../../../../components/Select/Select';
 import Textarea from '../../../../components/Textarea/Textarea';
-import { AuthContext } from '../../../../contexts/AuthContext';
+import { useAuthContext } from '../../../../contexts/AuthContext';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
-import {
-  useOrganizationByProfileMutation,
-  useOrganizationMutation,
-} from '../../../../services/organization/Organization.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
-import { REQUEST_LOCATION } from '../../constants/location.constants';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 
 const OrganizationGeneral = () => {
@@ -35,16 +30,12 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
   const { cities, counties } = useNomenclature();
-  const disabled: boolean = useOutletContext();
-
-  const location = useLocation();
+  const [disabled, , updateOrganization] =
+    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { role } = useAuthContext();
 
   const { organizationGeneral, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
-    ? useOrganizationMutation()
-    : useOrganizationByProfileMutation();
 
-  const { role } = useContext(AuthContext);
   // queries
   useCitiesQuery(county?.id);
 

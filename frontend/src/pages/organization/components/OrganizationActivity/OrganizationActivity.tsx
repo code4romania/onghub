@@ -15,10 +15,6 @@ import {
   useRegionsQuery,
 } from '../../../../services/nomenclature/Nomenclature.queries';
 import InputField from '../../../../components/InputField/InputField';
-import {
-  useOrganizationByProfileMutation,
-  useOrganizationMutation,
-} from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
   emptyArrayToNull,
@@ -32,17 +28,15 @@ import {
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
-import { REQUEST_LOCATION } from '../../constants/location.constants';
-import { useLocation } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const OrganizationActivity = () => {
   const { organization, organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
-  const location = useLocation();
-  const { mutate, error } = location.pathname.includes(REQUEST_LOCATION)
-    ? useOrganizationMutation()
-    : useOrganizationByProfileMutation();
+
+  const [, , updateOrganization] =
+    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
 
   const { role } = useContext(AuthContext);
 
@@ -94,10 +88,17 @@ const OrganizationActivity = () => {
       federations: data.federations ? [...data.federations.map(mapSelectToValue)] : [],
     };
 
-    mutate({
-      id: organization?.id,
-      organization: { activity: emptyArrayToNull(activity) },
-    });
+    updateOrganization(
+      {
+        id: organization?.id,
+        organization: { activity: emptyArrayToNull(activity) },
+      },
+      {
+        onError: () => {
+          useErrorToast(t('save_error', { ns: 'organization' }));
+        },
+      },
+    );
   };
 
   // load initial values
@@ -138,12 +139,6 @@ const OrganizationActivity = () => {
       });
     }
   }, [organizationActivity]);
-
-  useEffect(() => {
-    if (error) {
-      useErrorToast(t('save_error', { ns: 'organization' }));
-    }
-  }, [error]);
 
   // edit mode
   const startEdit = () => {
