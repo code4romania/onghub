@@ -257,6 +257,7 @@ const ApplicationForm = ({
                   <Controller
                     name={`steps.${index}.item`}
                     control={control}
+                    rules={AddAppConfig.step.rules}
                     render={({ field: { onChange, value } }) => {
                       return (
                         <InputField

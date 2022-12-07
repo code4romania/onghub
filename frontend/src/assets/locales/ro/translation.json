@@ -827,8 +827,8 @@
         }
       },
       "step": {
-        "required": "Pasul este obligatoriu",
-        "invalid": "Pasul are un format invalid",
+        "min": "Pasul trebuie sa aiba minim 2 caractere",
+        "max": "Pasul trebuie sa aiba maxim 100 de caractere",
         "label": "Pas"
       }
     },
