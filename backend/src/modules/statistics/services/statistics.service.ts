@@ -28,8 +28,7 @@ import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
-import { ApplicationTypeEnum } from 'src/modules/application/enums/ApplicationType.enum';
-import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 
 @Injectable()
 export class StatisticsService {
@@ -42,6 +41,7 @@ export class StatisticsService {
     private readonly applicationService: ApplicationService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
+    private readonly ongApplicationService: OngApplicationService,
   ) {}
 
   public async getOrganizationRequestStatistics(
@@ -270,12 +270,15 @@ export class StatisticsService {
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      const numberOfActiveApps =
-        await this.applicationService.countActiveAppsForUser(
-          role,
-          organizationId,
-          userId,
-        );
+      const activeApps =
+        role === Role.EMPLOYEE
+          ? await this.ongApplicationService.findApplications(organizationId, {
+              organizationId,
+              userId,
+            })
+          : await this.ongApplicationService.findApplications(organizationId, {
+              organizationId,
+            });
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });
@@ -285,7 +288,7 @@ export class StatisticsService {
           organization.completionStatus === CompletionStatus.COMPLETED,
         organizationCreatedOn: organization.createdOn,
         organizationSyncedOn: organization.syncedOn,
-        numberOfInstalledApps: numberOfActiveApps,
+        numberOfInstalledApps: activeApps.length,
         numberOfUsers,
         hubStatistics: await this.getGeneralONGHubStatistics(),
       };
