@@ -16,6 +16,12 @@ export class UserOngApplicationService {
     return this.userOngApplicationRepository.get(conditions);
   }
 
+  public async findMany(
+    conditions: FindManyOptions<UserOngApplication>,
+  ): Promise<UserOngApplication[]> {
+    return this.userOngApplicationRepository.getMany(conditions);
+  }
+
   public async createMany(
     entities: DeepPartial<UserOngApplication>[],
   ): Promise<UserOngApplication[]> {

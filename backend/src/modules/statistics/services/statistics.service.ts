@@ -266,22 +266,16 @@ export class StatisticsService {
   public async getOrganizationStatistics(
     organizationId: number,
     role?: Role,
+    userId?: number,
   ): Promise<IOrganizationStatistics> {
     try {
       const organization = await this.organizationsService.find(organizationId);
-      let numberOfActiveApps: number;
-      if (role === Role.ADMIN) {
-        numberOfActiveApps =
-          (await this.applicationService.countActiveApplicationsForOng(
-            organizationId,
-          )) +
-          (await this.applicationService.countApplications({
-            where: {
-              type: ApplicationTypeEnum.INDEPENDENT,
-              status: ApplicationStatus.ACTIVE,
-            },
-          }));
-      }
+      const numberOfActiveApps =
+        await this.applicationService.countActiveAppsForUser(
+          role,
+          organizationId,
+          userId,
+        );
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });

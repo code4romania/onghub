@@ -41,6 +41,7 @@ export class StatisticsController {
     return this.statisticsService.getOrganizationStatistics(
       user.organizationId,
       user.role,
+      user.id,
     );
   }
 

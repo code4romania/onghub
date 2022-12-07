@@ -29,6 +29,7 @@ import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
+import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { IOngApplicationDetails } from '../interfaces/ong-application.interface';
 import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
@@ -426,5 +427,26 @@ export class ApplicationService {
       .getCount();
 
     return applications;
+  }
+
+  public async countActiveAppsForUser(
+    role: Role,
+    organizationId: number,
+    userId: number,
+  ) {
+    const applicationsCount =
+      role === Role.EMPLOYEE
+        ? await this.userOngApplicationRepository.count({
+            where: { userId, status: UserOngApplicationStatus.ACTIVE },
+          })
+        : await this.countActiveApplicationsForOng(organizationId);
+    const activeIndependentAppsCount = await this.countApplications({
+      where: {
+        type: ApplicationTypeEnum.INDEPENDENT,
+        status: ApplicationStatus.ACTIVE,
+      },
+    });
+
+    return applicationsCount + activeIndependentAppsCount;
   }
 }
