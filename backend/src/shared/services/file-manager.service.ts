@@ -68,7 +68,11 @@ export class FileManagerService {
     if (
       !files.every((file) => Buffer.byteLength(file.buffer) <= MAX_UPLOAD_SIZE)
     ) {
-      throw new PayloadTooLargeException(FILE_ERRORS.SIZE);
+      throw new PayloadTooLargeException(
+        fileType === FILE_TYPE.IMAGE
+          ? FILE_ERRORS.IMAGE_SIZE
+          : FILE_ERRORS.DOC_SIZE,
+      );
     }
   }
 
