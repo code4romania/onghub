@@ -265,11 +265,11 @@ const ApplicationForm = ({
                             name: AddAppConfig.step.key,
                             error:
                               errors.steps &&
-                              ((
+                              (
                                 errors as {
                                   [x: string]: any | any[];
                                 }
-                              )?.steps[index]?.item?.message as any),
+                              )?.steps[index]?.item?.message,
                             defaultValue: value,
                             onChange: onChange,
                           }}

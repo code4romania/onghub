@@ -244,6 +244,16 @@ export const AddAppConfig: Record<string, any> = {
   },
   step: {
     key: 'step',
+    rules: {
+      minLength: {
+        value: 2,
+        message: 'Lungime minim 2',
+      },
+      maxLength: {
+        value: 100,
+        message: 'Lungime maxim 2',
+      },
+    },
     config: {
       type: 'text',
       label: translations.step.label,
