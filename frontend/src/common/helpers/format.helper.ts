@@ -8,7 +8,7 @@ export const formatCurrency = (value: number | string): string =>
 export const formatDate = (value: Date | string): string => format(new Date(value), 'd/L/y');
 
 export const formatDateMonthYear = (value: Date | string): string =>
-  format(new Date(value), 'MMM y');
+  format(new Date(value), 'd MMM y');
 
 export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/,><':;|_~`])\S{8,99}$/;

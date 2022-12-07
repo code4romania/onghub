@@ -65,7 +65,9 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
         <div className="flex-1 flex flex-col gap-4 pb-4">
           <PracticeProgramContentItem
             label={t('details.deadline')}
-            value={program?.endDate ? formatDate(program.endDate) : t('details.deadline_unlimited')}
+            value={
+              program?.deadline ? formatDate(program?.deadline) : t('details.deadline_unlimited')
+            }
           />
           <PracticeProgramContentItem
             label={t('details.period')}
