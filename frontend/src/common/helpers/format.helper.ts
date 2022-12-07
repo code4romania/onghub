@@ -101,14 +101,6 @@ export const fileToURL = (file: File | null) => {
   return file ? URL.createObjectURL(file) : null;
 };
 
-export const emptyStringToNull = (obj: any): any => {
-  let newObj = {};
-  Object.keys(obj).forEach((key: any) => {
-    newObj = { ...newObj, [key]: obj[key] === '' ? null : obj[key] };
-  });
-  return newObj;
-};
-
 export const emptyArrayToNull = (obj: any): any => {
   let newObj = {};
   Object.keys(obj).forEach((key: any) => {
