@@ -127,7 +127,8 @@ const OrganizationProfile = () => {
           />
         </span>
       </div>
-      <Outlet />
+      {/* context for disabling certain fields in organization general */}
+      <Outlet context={true} />
       {isOrganizationDeleteModalOpen && (
         <ConfirmationModal
           title={t('restrict.title')}
