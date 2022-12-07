@@ -406,4 +406,71 @@ export class ApplicationService {
 
     return Promise.resolve(count);
   }
+
+  public async countActiveForAdmin(organizationId: number): Promise<number> {
+    const applicationCount = this.applicationRepository
+      .getQueryBuilder()
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .where('ongApp.organizationId = :organizationId', {
+        organizationId,
+      })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .getCount();
+
+    return applicationCount;
+  }
+
+  public async countActiveForEmployee(
+    organizationId: number,
+    userId: number,
+  ): Promise<number> {
+    const applicationCount = this.applicationRepository
+      .getQueryBuilder()
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.ongApplicationId = ongApp.id',
+      )
+      .where('ongApp.organizationId = :organizationId', {
+        organizationId,
+      })
+      .andWhere('userOngApp.userId = :userId', { userId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .getCount();
+
+    return applicationCount;
+  }
 }

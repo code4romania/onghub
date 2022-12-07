@@ -28,7 +28,6 @@ import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
-import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 
 @Injectable()
 export class StatisticsService {
@@ -41,7 +40,6 @@ export class StatisticsService {
     private readonly applicationService: ApplicationService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
-    private readonly ongApplicationService: OngApplicationService,
   ) {}
 
   public async getOrganizationRequestStatistics(
@@ -272,13 +270,11 @@ export class StatisticsService {
       const organization = await this.organizationsService.find(organizationId);
       const activeApps =
         role === Role.EMPLOYEE
-          ? await this.ongApplicationService.findApplications(organizationId, {
+          ? await this.applicationService.countActiveForEmployee(
               organizationId,
               userId,
-            })
-          : await this.ongApplicationService.findApplications(organizationId, {
-              organizationId,
-            });
+            )
+          : await this.applicationService.countActiveForAdmin(organizationId);
       const numberOfUsers = await this.userService.countUsers({
         where: { organizationId, role: Role.EMPLOYEE },
       });
@@ -288,7 +284,7 @@ export class StatisticsService {
           organization.completionStatus === CompletionStatus.COMPLETED,
         organizationCreatedOn: organization.createdOn,
         organizationSyncedOn: organization.syncedOn,
-        numberOfInstalledApps: activeApps.length,
+        numberOfInstalledApps: activeApps,
         numberOfUsers,
         hubStatistics: await this.getGeneralONGHubStatistics(),
       };
