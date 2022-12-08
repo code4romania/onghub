@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrganizationService } from 'src/modules/organization/services';
 import { UserService } from 'src/modules/user/services/user.service';
@@ -16,12 +15,16 @@ import { RequestStatus } from '../enums/request-status.enum';
 import { OrganizationRequestRepository } from '../repositories/organization-request.repository';
 import { ORGANIZATION_REQUEST_FILTER_CONFIG } from '../constants/organization-filter.config';
 import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
-import { MailService } from 'src/mail/services/mail.service';
-import { Role } from 'src/modules/user/enums/role.enum';
 import { FindManyOptions } from 'typeorm';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { formatNumber } from 'libphonenumber-js';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import CreateOngRequestEvent from 'src/modules/notifications/events/create-ong-request-event.class';
+import ApproveOngRequestEvent from 'src/modules/notifications/events/approve-ong-request-event.class';
+import RejectOngRequestEvent from 'src/modules/notifications/events/reject-ong-request-event.class';
+import DisableOngRequestEvent from 'src/modules/notifications/events/disable-ong-request-event.class';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -31,8 +34,8 @@ export class OrganizationRequestService {
     private readonly organizationRequestRepository: OrganizationRequestRepository,
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
-    private readonly mailService: MailService,
     private readonly fileManagerService: FileManagerService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async findAll(options: BaseFilterDto) {
@@ -218,24 +221,7 @@ export class OrganizationRequestService {
     );
 
     try {
-      // 7. Send email for Super amdin and admin with successful creation
-      const adminMailOptions: {
-        template: string;
-        subject: string;
-        context: { title: string };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
-
-      await this.mailService.sendEmail({
-        to: createReqDto.admin.email,
-        template: adminMailOptions.template,
-        subject: adminMailOptions.subject,
-        context: {
-          title: adminMailOptions.context.title,
-          subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
-        },
-      });
-
-      // 8. create request
+      // 7. create request
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
@@ -244,33 +230,11 @@ export class OrganizationRequestService {
         organizationId: organization.id,
       });
 
-      // 9. Send emails for Super-Admin
-      const superAdmins = await this.userService.findMany({
-        where: { role: Role.SUPER_ADMIN },
-      });
-
-      const superadminMailOptions: {
-        template: string;
-        subject: string;
-        context: { title: string };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
-
-      await this.mailService.sendEmail({
-        to: superAdmins.map((item) => item.email),
-        template: superadminMailOptions.template,
-        subject: superadminMailOptions.subject,
-        context: {
-          title: superadminMailOptions.context.title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
-          cta: {
-            link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
-              request.id.toString(),
-            ),
-            label: '',
-          },
-        },
-      });
+      // 8. trigger emails for admin and super-admin
+      this.eventEmitter.emit(
+        EVENTS.CREATE_ORGANIZATION_REQUEST,
+        new CreateOngRequestEvent(createReqDto.admin.email, request.id),
+      );
 
       return request;
     } catch (error) {
@@ -303,30 +267,10 @@ export class OrganizationRequestService {
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
-    const {
-      template,
-      subject,
-      context: {
-        title,
-        cta: { label },
-      },
-    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
-
-    await this.mailService.sendEmail({
-      to: email,
-      template,
-      subject,
-      context: {
-        title,
-        subtitle: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
-        cta: {
-          link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
-            'www.google.com',
-          ),
-          label,
-        },
-      },
-    });
+    this.eventEmitter.emit(
+      EVENTS.APPROVE_ORGANIZATION_REQUEST,
+      new ApproveOngRequestEvent(email),
+    );
 
     return this.find(requestId);
   }
@@ -348,23 +292,10 @@ export class OrganizationRequestService {
     await this.update(requestId, RequestStatus.DECLINED);
 
     // 4. Send rejection by email
-
-    const {
-      template,
-      subject,
-      context: { title },
-    } = MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION;
-
-    await this.mailService.sendEmail({
-      to: found.email,
-      template,
-      subject,
-      context: {
-        title,
-        subtitle:
-          MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
-      },
-    });
+    this.eventEmitter.emit(
+      EVENTS.REJECT_ORGANIZATION_REQUEST,
+      new RejectOngRequestEvent(found.email),
+    );
 
     return this.find(requestId);
   }
@@ -380,28 +311,11 @@ export class OrganizationRequestService {
       const organization = await this.organizationService.findWithUsers(
         organizationId,
       );
-      const superAdmins = await this.userService.findMany({
-        where: { role: Role.SUPER_ADMIN },
-      });
 
-      const {
-        template,
-        subject,
-        context: { title },
-      } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN;
-
-      await this.mailService.sendEmail({
-        to: superAdmins.map((superAdmin) => superAdmin.email),
-        template,
-        subject,
-        context: {
-          title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
-              organization.organizationGeneral.name,
-            ),
-        },
-      });
+      this.eventEmitter.emit(
+        EVENTS.DISABLE_ORGANIZATION_REQUEST,
+        new DisableOngRequestEvent(organization.organizationGeneral.name),
+      );
     } catch (error) {
       this.logger.error({
         error: { error },
