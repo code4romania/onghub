@@ -392,20 +392,6 @@ export class ApplicationService {
     return this.applicationRepository.count(options);
   }
 
-  public async countActiveWithApplication(
-    pullingType: ApplicationPullingType,
-  ): Promise<number> {
-    const count = this.ongApplicationRepository
-      .getQueryBuilder()
-      .leftJoin('application', 'application', 'application.id = application_id')
-      .where('application.pulling_type =:pullingType', {
-        pullingType,
-      })
-      .getCount();
-
-    return Promise.resolve(count);
-  }
-
   public async countActiveApplicationsForOng(
     organizationId: number,
   ): Promise<number> {

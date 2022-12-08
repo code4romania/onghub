@@ -299,15 +299,18 @@ export class StatisticsService {
     pullingType: ApplicationPullingType,
   ): Promise<ILandingCounter> {
     try {
-      const ongsWithApplication =
-        await this.applicationService.countActiveWithApplication(pullingType);
+      let ongsWithApplication: number;
       let activeItems: number;
 
       switch (pullingType) {
         case ApplicationPullingType.PRACTICE_PROGRAM:
+          ongsWithApplication =
+            await this.organizationsService.countOrganizationsWithActivePracticePrograms();
           activeItems = await this.practiceProgramService.countActive();
           break;
         case ApplicationPullingType.CIVIC_SERVICE:
+          ongsWithApplication =
+            await this.organizationsService.countOrganizationsWithActiveServices();
           activeItems = await this.civicCenterService.countActive();
           break;
         default:
