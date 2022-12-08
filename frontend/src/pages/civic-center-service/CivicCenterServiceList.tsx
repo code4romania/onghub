@@ -1,15 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { Loading } from '../../components/loading/Loading';
 import { useCivicCenterServicesQuery } from '../../services/civic-center-service/CivicCenterService.queries';
 import CivicCenterServiceActions from './components/CivicCenterServiceActions';
 import CivicCenterServiceContent from './components/CivicCenterServiceContent';
 
 const CivicCenterServiceList = () => {
+  const { id } = useParams();
+
   // translations
   const { t } = useTranslation(['civic_center_service', 'common']);
 
-  const { isLoading, data: services, error, refetch } = useCivicCenterServicesQuery();
+  const { isLoading, data: services, error, refetch } = useCivicCenterServicesQuery(id);
 
   if (isLoading) {
     return <Loading />;

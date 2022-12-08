@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -20,6 +21,7 @@ import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
+import { GetPracticeProgramFilterDto } from '../dto/get-practice-programs-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
 import { PracticeProgramService } from '../services/practice-program.service';
@@ -89,8 +91,15 @@ export class PracticeProgramController {
   }
 
   @Get()
-  async findAll(@ExtractUser() user: User): Promise<PracticeProgram[]> {
-    return this.practiceProgramService.findAll(user.organizationId);
+  async findAll(
+    @ExtractUser() user: User,
+    @Query() options: GetPracticeProgramFilterDto,
+  ): Promise<PracticeProgram[]> {
+    const organizationId =
+      user.role !== Role.SUPER_ADMIN
+        ? user.organizationId
+        : options.organizationId;
+    return this.practiceProgramService.findAll(organizationId);
   }
 
   @ApiParam({ name: 'id', type: String })

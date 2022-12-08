@@ -16,8 +16,12 @@ import {
 } from './CivicCenterService.service';
 import { CivicCenterServicePayload } from './interfaces/civic-center-service-payload.interface';
 
-export const useCivicCenterServicesQuery = () => {
-  return useQuery(['civic-center-services'], () => getCivicCenterServices(), { retry: 0 });
+export const useCivicCenterServicesQuery = (organizationId?: string) => {
+  return useQuery(
+    ['civic-center-services', organizationId],
+    () => getCivicCenterServices(organizationId),
+    { retry: 0 },
+  );
 };
 
 export const useGetCivicCenterServiceQuery = (civicCenterServiceId: string) => {
