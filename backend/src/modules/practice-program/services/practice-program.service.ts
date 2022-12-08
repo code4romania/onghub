@@ -15,7 +15,10 @@ import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { WorkingHoursParser } from '../constants/parsers.constants';
-import { PRACTICE_PROGRAM_FILTER_CONFIG } from '../constants/practice-program-filter.config';
+import {
+  PRACTICE_PROGRAM_FILTER_CONFIG,
+  PRACTICE_PROGRAM_GET_LIST_CONFIG,
+} from '../constants/practice-program-filter.config';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
 import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
@@ -299,12 +302,12 @@ export class PracticeProgramService {
   }
 
   public async findAll(organizationId: number): Promise<PracticeProgram[]> {
-    return this.practiceProgramRepository.getMany({
-      where: {
-        organizationId: organizationId,
-      },
-      relations: ['location', 'skills', 'domains', 'faculties'],
-    });
+    const programs = await this.practiceProgramRepository.getManyPaginated(
+      PRACTICE_PROGRAM_GET_LIST_CONFIG,
+      { limit: 0, page: 0, organizationId } as any,
+    );
+
+    return programs.items;
   }
 
   public async countActive(): Promise<number> {
@@ -364,14 +367,20 @@ export class PracticeProgramService {
     // for admin and employee check organizationId as search criteria
     const where = organizationId
       ? {
-        id,
-        organizationId,
-      }
+          id,
+          organizationId,
+        }
       : { id };
 
     const practiceProgram = await this.practiceProgramRepository.get({
       where: where,
-      relations: ['location', 'location.county', 'skills', 'domains', 'faculties'],
+      relations: [
+        'location',
+        'location.county',
+        'skills',
+        'domains',
+        'faculties',
+      ],
     });
 
     if (!practiceProgram) {

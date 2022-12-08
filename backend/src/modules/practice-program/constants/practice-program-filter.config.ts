@@ -82,3 +82,45 @@ export const PRACTICE_PROGRAM_FILTER_CONFIG = {
   },
   rangeColumn: ['startDate', 'endDate'] as [string, string],
 };
+
+export const PRACTICE_PROGRAM_GET_LIST_CONFIG = {
+  selectColumns: {
+    id: true,
+    title: true,
+    active: true,
+    deadline: true,
+    description: true,
+    startDate: true,
+    endDate: true,
+    isPeriodNotDetermined: true,
+    minWorkingHours: true,
+    maxWorkingHours: true,
+    link: true,
+    location: {
+      id: true,
+      name: true,
+    },
+    faculties: {
+      id: true,
+      name: true,
+    },
+    skills: {
+      id: true,
+      name: true,
+    },
+    domains: {
+      id: true,
+      name: true,
+    },
+  },
+  searchableColumns: [],
+  defaultSortBy: 'startDate',
+  defaultOrderDirection: OrderDirection.ASC,
+  relations: {
+    location: true,
+    faculties: true,
+    skills: true,
+    domains: true,
+  },
+  rangeColumn: ['startDate', 'endDate'] as [string, string],
+};
