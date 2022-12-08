@@ -21,6 +21,7 @@ export const dataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/migrations/*.js'],
+  migrationsRun: true,
   ssl:
     process.env.NODE_ENV === 'local' // enable SSL for REMOTE deployment, and disable for local to let migrations work
       ? false
