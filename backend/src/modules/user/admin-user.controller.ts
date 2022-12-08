@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Res,
   StreamableFile,
 } from '@nestjs/common';
 import {
@@ -29,6 +30,9 @@ import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { DownloadFiltersDto } from './dto/download-users.filter';
+import * as XLSX from 'xlsx';
+import { Response } from 'express';
+import * as Excel from 'exceljs';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
@@ -74,20 +78,38 @@ export class AdminUserController {
   @ApiQuery({ name: 'filters', type: DownloadFiltersDto })
   @ApiQuery({ name: 'organization_id', type: Number })
   @Get('download')
-  @Header(
-    'Content-Type',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  )
-  @Header('Content-Disposition', 'attachment; filename="Utilizatori.xlsx"')
+  // @Header(
+  //   'Content-Type',
+  //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  // )
+  // @Header('Content-Disposition', 'attachment; filename="Utilizatori.xlsx"')
   async downloadUsers(
+    @Res() res: Response,
     @ExtractUser() user: User,
     @Query() filters: DownloadFiltersDto,
     @Query('organization_id') organizationId?: number,
-  ): Promise<StreamableFile> {
-    return this.userService.getUsersForDownload(
+  ): Promise<any> {
+    const workbook = await this.userService.getUsersForDownload(
       filters,
       organizationId ? organizationId : user.organizationId,
     );
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="Utilizatori.csv"',
+    );
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+
+    await workbook.csv.write(res);
+
+    res.end();
+
+    // res.set('Content-Type', 'text/csv');
+    // res.setHeader('Content-Disposition', 'attachment; filename="SheetJS.csv"');
+    // res.setHeader('Content-Disposition', 'attachment; filename="SheetJS.csv"');
+    // res.end(XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]]));
+    // res.end(buffer);
   }
 
   @ApiParam({ name: 'id', type: Number })

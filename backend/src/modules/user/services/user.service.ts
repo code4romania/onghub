@@ -5,7 +5,6 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
-  StreamableFile,
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
@@ -39,7 +38,7 @@ import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
 import * as XLSX from 'xlsx';
-import { Response } from 'express';
+import * as Excel from 'exceljs';
 
 @Injectable()
 export class UserService {
@@ -362,7 +361,8 @@ export class UserService {
   public async getUsersForDownload(
     options: DownloadFiltersDto,
     organizationId: number,
-  ): Promise<StreamableFile> {
+    // ): Promise<StreamableFile> {
+  ): Promise<Excel.Workbook> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
       limit: 0,
@@ -376,22 +376,70 @@ export class UserService {
       { ...paginationOptions, organizationId },
     );
 
-    const userData = users.items.map((user) => {
-      return {
-        Nume: user.name,
-        Email: user.email,
-        Telefon: user.phone,
-        Status: user.status,
-        'Data adaugarii': user.createdOn,
-      };
-    });
+    const workbook = new Excel.Workbook();
+    const worksheet = workbook.addWorksheet('Utilizatori');
 
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(userData);
-    XLSX.utils.book_append_sheet(wb, ws, 'Utilizatori');
-    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+    worksheet.columns = [
+      {
+        header: 'Nume',
+        key: 'name',
+        width: 30,
+      },
+      {
+        header: 'Email',
+        key: 'email',
+        width: 30,
+      },
+      {
+        header: 'Telefon',
+        key: 'phone',
+        width: 20,
+      },
+      {
+        header: 'Status',
+        key: 'status',
+        width: 10,
+      },
+      {
+        header: 'Data adaugarii',
+        key: 'created_on',
+        width: 20,
+      },
+    ];
 
-    return new StreamableFile(buffer);
+    for (let i = 0; i < users.items.length; i++) {
+      worksheet.addRow({
+        name: users.items[i].name,
+        email: users.items[i].email,
+        phone: users.items[i].phone,
+        status: users.items[i].status,
+        created_on: users.items[i].createdOn.toLocaleString().slice(0, 10),
+      });
+    }
+
+    console.log(worksheet.getCell('B3').value);
+
+    return workbook;
+
+    // const userData = users.items.map((user) => {
+    //   return {
+    //     Nume: user.name,
+    //     Email: user.email,
+    //     Telefon: user.phone,
+    //     Status: user.status,
+    //     'Data adaugarii': user.createdOn,
+    //   };
+    // });
+
+    // const wb = XLSX.utils.book_new();
+    // const ws = XLSX.utils.json_to_sheet(userData);
+    // const csv = XLSX.utils.sheet_to_csv(ws);
+    // XLSX.utils.book_append_sheet(wb, ws, 'Utilizatori');
+    // const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'csv' });
+
+    // return new StreamableFile(buffer);
+
+    // return buffer;
   }
 
   // ****************************************************

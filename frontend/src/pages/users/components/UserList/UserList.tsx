@@ -237,8 +237,8 @@ const UserList = (props: { organizationId?: number }) => {
   /**
    * ACTIONS
    */
-  const onExport = () => {
-    getUsersForDownload(
+  const onExport = async () => {
+    const res = await getUsersForDownload(
       orderByColumn || '',
       orderDirection || OrderDirection.ASC,
       searchWord,
@@ -246,6 +246,13 @@ const UserList = (props: { organizationId?: number }) => {
       range,
       organizationId,
     );
+
+    const url = URL.createObjectURL(new Blob([res]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Utilizatori.csv');
+    document.body.appendChild(link);
+    link.click();
   };
 
   return (
