@@ -13,8 +13,14 @@ export const FILE_ERRORS = {
     message: 'Only PDF, DOC, DOCX, XLSX files allowed',
     errorCode: 'FILE_003',
   },
-  SIZE: {
-    message: `Maximum size is ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
+  IMAGE_SIZE: {
+    message: `Maximum size for images is ${MAX_UPLOAD_SIZE / 1024 / 1024} MB`,
     errorCode: 'FILE_004',
+  },
+  DOC_SIZE: {
+    message: `Maximum size for documents is ${
+      MAX_UPLOAD_SIZE / 1024 / 1024
+    } MB`,
+    errorCode: 'FILE_005',
   },
 };

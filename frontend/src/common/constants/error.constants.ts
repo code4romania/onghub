@@ -12,7 +12,8 @@ export const USER_ERRORS = {
 export const FILE_ERRORS: Record<string, string> = {
   FILE_002: i18n.t('common:upload.image'),
   FILE_003: i18n.t('common:upload.file'),
-  FILE_004: i18n.t('common:upload.size'),
+  FILE_004: i18n.t('common:upload.image_size'),
+  FILE_005: i18n.t('common:upload.document_size'),
   APP_003: i18n.t('common:upload.logo'),
   ORG_010: i18n.t('common:upload.statute'),
 };
