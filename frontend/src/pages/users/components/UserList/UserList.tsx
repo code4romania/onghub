@@ -61,7 +61,7 @@ const UserList = (props: { organizationId?: number }) => {
 
   useEffect(() => {
     if (users?.meta) {
-      setPage(1);
+      setPage(users.meta.currentPage);
       setRowsPerPage(users.meta.itemsPerPage);
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
@@ -303,6 +303,7 @@ const UserList = (props: { organizationId?: number }) => {
             paginationPerPage={users.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={users.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

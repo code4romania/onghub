@@ -72,7 +72,7 @@ const ApplicationListTable = () => {
 
   useEffect(() => {
     if (applications?.meta) {
-      setPage(1);
+      setPage(applications.meta.currentPage);
       setRowsPerPage(applications.meta.itemsPerPage);
       setOrderByColumn(applications.meta.orderByColumn);
       setOrderDirection(applications.meta.orderDirection);
@@ -277,6 +277,7 @@ const ApplicationListTable = () => {
             paginationPerPage={applications.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={applications.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

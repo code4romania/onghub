@@ -41,7 +41,7 @@ const FeedbackList = () => {
 
   useEffect(() => {
     if (feedbacks?.meta) {
-      setPage(1);
+      setPage(feedbacks.meta.currentPage);
       setRowsPerPage(feedbacks.meta.itemsPerPage);
       setOrderByColumn(feedbacks.meta.orderByColumn);
       setOrderDirection(feedbacks.meta.orderDirection);
@@ -155,6 +155,7 @@ const FeedbackList = () => {
             paginationPerPage={feedbacks.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={feedbacks.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

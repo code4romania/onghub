@@ -56,7 +56,7 @@ const ApplicationRequests = () => {
 
   useEffect(() => {
     if (requests?.meta) {
-      setPage(1);
+      setPage(requests.meta.currentPage);
       setRowsPerPage(requests.meta.itemsPerPage);
       setOrderByColumn(requests.meta.orderByColumn);
       setOrderDirection(requests.meta.orderDirection);
@@ -205,6 +205,7 @@ const ApplicationRequests = () => {
             paginationPerPage={requests.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={requests.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

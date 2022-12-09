@@ -62,7 +62,7 @@ const ApplicationNGOList = () => {
 
   useEffect(() => {
     if (applicationOrganizations?.meta) {
-      setPage(1);
+      setPage(applicationOrganizations.meta.currentPage);
       setRowsPerPage(applicationOrganizations.meta.itemsPerPage);
       setOrderByColumn(applicationOrganizations.meta.orderByColumn);
       setOrderDirection(applicationOrganizations.meta.orderDirection);
@@ -244,6 +244,7 @@ const ApplicationNGOList = () => {
             paginationPerPage={applicationOrganizations.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={applicationOrganizations.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}
