@@ -114,8 +114,8 @@ export const PRACTICE_PROGRAM_GET_LIST_CONFIG = {
     },
   },
   searchableColumns: [],
-  defaultSortBy: 'startDate',
-  defaultOrderDirection: OrderDirection.ASC,
+  defaultSortBy: 'createdOn',
+  defaultOrderDirection: OrderDirection.DESC,
   relations: {
     location: true,
     faculties: true,

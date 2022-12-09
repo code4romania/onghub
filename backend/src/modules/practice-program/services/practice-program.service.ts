@@ -323,7 +323,7 @@ export class PracticeProgramService {
       const { faculties, domains, workingHours, ...restOfFilters } =
         practiceProgramFilters;
 
-      // 1. get onlt active practice programs and map correctly ids for domains and faculties
+      // 1. get only active practice programs and map correctly ids for domains and faculties
       let paginationOptions: any = {
         ...restOfFilters,
         active: true,
