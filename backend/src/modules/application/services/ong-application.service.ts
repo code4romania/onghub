@@ -11,6 +11,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import DeleteAppRequestEvent from 'src/modules/notifications/events/delete-app-request-event.class';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { FindOneOptions } from 'typeorm';
 import {
   APPLICATION_ERRORS,
   APPLICATION_REQUEST_ERRORS,
@@ -441,5 +442,11 @@ export class OngApplicationService {
         error: err,
       });
     }
+  }
+
+  public findOngApplicationWithOptions(
+    conditions: FindOneOptions<OngApplication>,
+  ): Promise<OngApplication> {
+    return this.ongApplicationRepository.get(conditions);
   }
 }

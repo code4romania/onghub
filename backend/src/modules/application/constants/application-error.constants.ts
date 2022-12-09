@@ -51,6 +51,10 @@ export const ONG_APPLICATION_ERRORS = {
     message: 'Your organization is restricted to access this app',
     errorCode: 'ONG_APP_007',
   },
+  VALIDATE_ACCESS: {
+    message: 'Error while validating access to practice programs',
+    errorCode: 'ONG_APP_008',
+  },
 };
 
 export const USER_ONG_APPLICATION_ERRORS = {

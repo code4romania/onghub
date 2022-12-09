@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -17,6 +18,7 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { PracticeProgramAccessGuard } from 'src/modules/application/guards/practice-program-access.guard';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
@@ -28,6 +30,7 @@ import { PracticeProgramService } from '../services/practice-program.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
 @ApiTooManyRequestsResponse()
+@UseGuards(PracticeProgramAccessGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('practice-program')
