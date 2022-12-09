@@ -62,7 +62,7 @@ const Organizations = () => {
 
   useEffect(() => {
     if (organizations?.meta) {
-      setPage(1);
+      setPage(organizations.meta.currentPage);
       setRowsPerPage(organizations.meta.itemsPerPage);
       setOrderByColumn(organizations.meta.orderByColumn);
       setOrderDirection(organizations.meta.orderDirection);
@@ -247,6 +247,7 @@ const Organizations = () => {
             data={organizations.items}
             loading={isLoading}
             pagination
+            paginationDefaultPage={page}
             sortServer
             paginationPerPage={organizations.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
