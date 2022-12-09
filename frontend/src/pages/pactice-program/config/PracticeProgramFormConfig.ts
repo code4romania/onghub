@@ -1,4 +1,4 @@
-import { ALPHANUMERIC_REGEX, URL_REGEX } from '../../../common/helpers/format.helper';
+import { ALPHANUMERIC_REGEX, URL_REGEX, TITLE_REGEX } from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
 
@@ -102,7 +102,7 @@ export const PracticeProgramFormConfig: Record<string, any> = {
         message: translations.title.min,
       },
       pattern: {
-        value: ALPHANUMERIC_REGEX,
+        value: TITLE_REGEX,
         message: translations.title.pattern,
       },
     },

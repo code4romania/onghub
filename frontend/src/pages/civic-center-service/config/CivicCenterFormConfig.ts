@@ -3,6 +3,7 @@ import {
   EMAIL_REGEX,
   PHONE_REGEX,
   URL_REGEX,
+  TITLE_REGEX,
 } from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
@@ -150,7 +151,7 @@ export const CivicCenterFormConfig: Record<string, any> = {
         message: translations.name.min,
       },
       pattern: {
-        value: ALPHANUMERIC_REGEX,
+        value: TITLE_REGEX,
         message: translations.name.pattern,
       },
     },
