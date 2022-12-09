@@ -15,7 +15,7 @@ import { PracticeProgramService } from 'src/modules/practice-program/services/pr
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { AnafService } from 'src/shared/services';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, FindManyOptions, FindOperator, In } from 'typeorm';
 import { OrganizationFinancialService } from '.';
@@ -74,7 +74,7 @@ export class OrganizationService {
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
     private readonly anafService: AnafService,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,

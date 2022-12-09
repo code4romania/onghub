@@ -39,6 +39,7 @@ import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
 import * as XLSX from 'xlsx';
 import * as Excel from 'exceljs';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class UserService {
@@ -48,6 +49,7 @@ export class UserService {
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
+    private readonly fileManager: FileManagerService,
   ) {}
 
   // ****************************************************
@@ -361,8 +363,7 @@ export class UserService {
   public async getUsersForDownload(
     options: DownloadFiltersDto,
     organizationId: number,
-    // ): Promise<StreamableFile> {
-  ): Promise<Excel.Workbook> {
+  ): Promise<any> {
     const paginationOptions: any = {
       role: Role.EMPLOYEE,
       limit: 0,
@@ -376,70 +377,17 @@ export class UserService {
       { ...paginationOptions, organizationId },
     );
 
-    const workbook = new Excel.Workbook();
-    const worksheet = workbook.addWorksheet('Utilizatori');
+    const userData = users.items.map((user) => {
+      return {
+        Nume: user.name,
+        Email: user.email,
+        Telefon: user.phone,
+        Status: user.status,
+        'Data adaugarii': format(user.createdOn, 'yyyy-MM-dd'),
+      };
+    });
 
-    worksheet.columns = [
-      {
-        header: 'Nume',
-        key: 'name',
-        width: 30,
-      },
-      {
-        header: 'Email',
-        key: 'email',
-        width: 30,
-      },
-      {
-        header: 'Telefon',
-        key: 'phone',
-        width: 20,
-      },
-      {
-        header: 'Status',
-        key: 'status',
-        width: 10,
-      },
-      {
-        header: 'Data adaugarii',
-        key: 'created_on',
-        width: 20,
-      },
-    ];
-
-    for (let i = 0; i < users.items.length; i++) {
-      worksheet.addRow({
-        name: users.items[i].name,
-        email: users.items[i].email,
-        phone: users.items[i].phone,
-        status: users.items[i].status,
-        created_on: users.items[i].createdOn.toLocaleString().slice(0, 10),
-      });
-    }
-
-    console.log(worksheet.getCell('B3').value);
-
-    return workbook;
-
-    // const userData = users.items.map((user) => {
-    //   return {
-    //     Nume: user.name,
-    //     Email: user.email,
-    //     Telefon: user.phone,
-    //     Status: user.status,
-    //     'Data adaugarii': user.createdOn,
-    //   };
-    // });
-
-    // const wb = XLSX.utils.book_new();
-    // const ws = XLSX.utils.json_to_sheet(userData);
-    // const csv = XLSX.utils.sheet_to_csv(ws);
-    // XLSX.utils.book_append_sheet(wb, ws, 'Utilizatori');
-    // const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'csv' });
-
-    // return new StreamableFile(buffer);
-
-    // return buffer;
+    return userData;
   }
 
   // ****************************************************

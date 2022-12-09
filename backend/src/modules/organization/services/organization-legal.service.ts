@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { In } from 'typeorm';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
@@ -20,7 +20,7 @@ export class OrganizationLegalService {
   constructor(
     private readonly organizationLegalRepostory: OrganizationLegalRepository,
     private readonly contactService: ContactService,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
   ) {}
 
   public async update(
