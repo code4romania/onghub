@@ -45,7 +45,8 @@
       "show": "Filtre"
     },
     "unavailable": "Indisponibil",
-    "to_be_removed": "De eliminat"
+    "to_be_removed": "De eliminat",
+    "decimal": "Valori cu decimale nu sunt permise."
   },
   "menu": {
     "informations": "Informatii",
@@ -554,7 +555,6 @@
     "config": {
       "volunt_negative": "Numarul de voluntari nu poate fi un numar negativ.",
       "volunt_maxim": "Numarul de voluntari nu poate sa aiba mai mult de 6 cifre.",
-      "decimal": "Valori cu decimale nu sunt permise.",
       "contr_negative": "Numarul de contractori nu poate fi un numar negativ.",
       "contr_maxim": "Numarul de contractori nu poate sa aiba mai mult de 6 cifre.",
       "link_invalid": "Formatul link-ului este invalid.",

@@ -82,6 +82,7 @@ const translations = {
     helper: i18n.t('practice_program:form.faculties.helper'),
     placeholder: i18n.t('practice_program:form.faculties.placeholder'),
   },
+  decimal: i18n.t('common:decimal'),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -204,6 +205,9 @@ export const PracticeProgramFormConfig: Record<string, any> = {
         value: 0,
         message: translations.minWorkingHours.min,
       },
+      validate: {
+        integer: (value: number) => value % 1 == 0 || translations.decimal,
+      },
     },
     config: {
       type: 'number',
@@ -222,6 +226,9 @@ export const PracticeProgramFormConfig: Record<string, any> = {
       min: {
         value: 0,
         message: translations.maxWorkingHours.min,
+      },
+      validate: {
+        integer: (value: number) => value % 1 == 0 || translations.decimal,
       },
     },
     config: {
