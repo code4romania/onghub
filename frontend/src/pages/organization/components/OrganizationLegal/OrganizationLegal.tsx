@@ -143,7 +143,7 @@ const OrganizationLegal = () => {
         !(
           director.fullName === selectedDirector?.fullName &&
           director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.email
+          director.phone === selectedDirector?.phone
         ),
     );
     setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
