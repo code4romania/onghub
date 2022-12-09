@@ -93,6 +93,10 @@ const ApplicationListTable = () => {
     }
   }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [
       {

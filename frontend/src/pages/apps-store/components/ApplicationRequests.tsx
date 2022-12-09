@@ -71,6 +71,10 @@ const ApplicationRequests = () => {
     }
   }, [error, approveError, rejectError]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildRequestsActionColumn = (): TableColumn<IApplicationRequest> => {
     const activeRequestsMenuItems = [
       {

@@ -68,6 +68,10 @@ const RequestList = () => {
     }
   }, [error, approveError, rejectError]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildRequestsActionColumn = (): TableColumn<IOrganizationRequest> => {
     const activeRequestsMenuItems = [
       {

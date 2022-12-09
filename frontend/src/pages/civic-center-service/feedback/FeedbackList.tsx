@@ -52,6 +52,10 @@ const FeedbackList = () => {
     if (error) useErrorToast(t('action.load_error'));
   }, [error]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildFeedbackActionColumn = (): TableColumn<IFeedback> => {
     const feedbackMenuItems = [
       {

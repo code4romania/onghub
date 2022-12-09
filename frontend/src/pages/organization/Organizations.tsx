@@ -81,6 +81,10 @@ const Organizations = () => {
     activateOrganizationMutation.error,
   ]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   /**
    * FILTERS
    */

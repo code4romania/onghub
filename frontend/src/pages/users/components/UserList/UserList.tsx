@@ -87,6 +87,10 @@ const UserList = (props: { organizationId?: number }) => {
     removeUserMutation.error,
   ]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [
       {

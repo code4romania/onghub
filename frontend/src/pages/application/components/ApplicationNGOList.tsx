@@ -73,6 +73,10 @@ const ApplicationNGOList = () => {
     if (error) useErrorToast(t('list.load_error'));
   }, [error]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   const buildApplicationActionColumns = (): TableColumn<ApplicationOrganization> => {
     const restrictedApplicationMenu = [
       {
