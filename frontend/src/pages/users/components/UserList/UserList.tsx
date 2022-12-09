@@ -61,7 +61,7 @@ const UserList = (props: { organizationId?: number }) => {
 
   useEffect(() => {
     if (users?.meta) {
-      setPage(users.meta.currentPage);
+      setPage(1);
       setRowsPerPage(users.meta.itemsPerPage);
       setOrderByColumn(users.meta.orderByColumn);
       setOrderDirection(users.meta.orderDirection);
@@ -86,10 +86,6 @@ const UserList = (props: { organizationId?: number }) => {
     restoreUserAccessMutation.error,
     removeUserMutation.error,
   ]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildUserActionColumn = (): TableColumn<IUser> => {
     const activeUserMenuItems = [

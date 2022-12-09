@@ -41,7 +41,7 @@ const FeedbackList = () => {
 
   useEffect(() => {
     if (feedbacks?.meta) {
-      setPage(feedbacks.meta.currentPage);
+      setPage(1);
       setRowsPerPage(feedbacks.meta.itemsPerPage);
       setOrderByColumn(feedbacks.meta.orderByColumn);
       setOrderDirection(feedbacks.meta.orderDirection);
@@ -51,10 +51,6 @@ const FeedbackList = () => {
   useEffect(() => {
     if (error) useErrorToast(t('action.load_error'));
   }, [error]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildFeedbackActionColumn = (): TableColumn<IFeedback> => {
     const feedbackMenuItems = [

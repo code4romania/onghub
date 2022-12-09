@@ -53,7 +53,7 @@ const RequestList = () => {
 
   useEffect(() => {
     if (requests?.meta) {
-      setPage(requests.meta.currentPage);
+      setPage(1);
       setRowsPerPage(requests.meta.itemsPerPage);
       setOrderByColumn(requests.meta.orderByColumn);
       setOrderDirection(requests.meta.orderDirection);
@@ -67,10 +67,6 @@ const RequestList = () => {
       useErrorToast(t('status_error'));
     }
   }, [error, approveError, rejectError]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildRequestsActionColumn = (): TableColumn<IOrganizationRequest> => {
     const activeRequestsMenuItems = [

@@ -72,7 +72,7 @@ const ApplicationListTable = () => {
 
   useEffect(() => {
     if (applications?.meta) {
-      setPage(applications.meta.currentPage);
+      setPage(1);
       setRowsPerPage(applications.meta.itemsPerPage);
       setOrderByColumn(applications.meta.orderByColumn);
       setOrderDirection(applications.meta.orderDirection);
@@ -92,10 +92,6 @@ const ApplicationListTable = () => {
       useErrorToast(t('list.remove_error'));
     }
   }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
     const restrictedApplicationMenu = [

@@ -56,7 +56,7 @@ const ApplicationRequests = () => {
 
   useEffect(() => {
     if (requests?.meta) {
-      setPage(requests.meta.currentPage);
+      setPage(1);
       setRowsPerPage(requests.meta.itemsPerPage);
       setOrderByColumn(requests.meta.orderByColumn);
       setOrderDirection(requests.meta.orderDirection);
@@ -70,10 +70,6 @@ const ApplicationRequests = () => {
       useErrorToast(t('requests.status_error'));
     }
   }, [error, approveError, rejectError]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildRequestsActionColumn = (): TableColumn<IApplicationRequest> => {
     const activeRequestsMenuItems = [

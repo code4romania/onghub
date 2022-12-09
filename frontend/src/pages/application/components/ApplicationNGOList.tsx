@@ -62,7 +62,7 @@ const ApplicationNGOList = () => {
 
   useEffect(() => {
     if (applicationOrganizations?.meta) {
-      setPage(applicationOrganizations.meta.currentPage);
+      setPage(1);
       setRowsPerPage(applicationOrganizations.meta.itemsPerPage);
       setOrderByColumn(applicationOrganizations.meta.orderByColumn);
       setOrderDirection(applicationOrganizations.meta.orderDirection);
@@ -72,10 +72,6 @@ const ApplicationNGOList = () => {
   useEffect(() => {
     if (error) useErrorToast(t('list.load_error'));
   }, [error]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   const buildApplicationActionColumns = (): TableColumn<ApplicationOrganization> => {
     const restrictedApplicationMenu = [

@@ -62,7 +62,7 @@ const Organizations = () => {
 
   useEffect(() => {
     if (organizations?.meta) {
-      setPage(organizations.meta.currentPage);
+      setPage(1);
       setRowsPerPage(organizations.meta.itemsPerPage);
       setOrderByColumn(organizations.meta.orderByColumn);
       setOrderDirection(organizations.meta.orderDirection);
@@ -80,10 +80,6 @@ const Organizations = () => {
     restrictOrganizationMutation.error,
     activateOrganizationMutation.error,
   ]);
-
-  useEffect(() => {
-    setPage(1);
-  }, []);
 
   /**
    * FILTERS
