@@ -238,7 +238,7 @@ const UserList = (props: { organizationId?: number }) => {
    * ACTIONS
    */
   const onExport = async () => {
-    const res = await getUsersForDownload(
+    const { data, headers } = await getUsersForDownload(
       orderByColumn || '',
       orderDirection || OrderDirection.ASC,
       searchWord,
@@ -247,12 +247,16 @@ const UserList = (props: { organizationId?: number }) => {
       organizationId,
     );
 
-    const url = URL.createObjectURL(new Blob([res]));
+    const url = URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'Utilizatori.csv');
+    link.setAttribute(
+      'download',
+      headers?.['content-disposition']?.split('filename=')?.[1] || 'Utilizatori.xlsx',
+    );
     document.body.appendChild(link);
     link.click();
+    link.remove();
   };
 
   return (

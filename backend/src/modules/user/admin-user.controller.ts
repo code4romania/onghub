@@ -36,7 +36,7 @@ import { Response } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 
-// @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+@Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
 @ApiBearerAuth()
 export class AdminUserController {

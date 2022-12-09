@@ -1,3 +1,4 @@
+import { AxiosResponseHeaders } from 'axios';
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
@@ -77,7 +78,7 @@ export const getUsersForDownload = async (
   status?: UserStatus,
   interval?: Date[],
   organizationId?: number,
-): Promise<any> => {
+): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
   let requestUrl = `/user/download?orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
@@ -91,7 +92,11 @@ export const getUsersForDownload = async (
 
   if (organizationId) requestUrl = `${requestUrl}&organization_id=${organizationId}`;
 
-  return API.get(requestUrl).then((res) => res.data);
+  return API.get(requestUrl, {
+    responseType: 'arraybuffer', // MUST have to be able to create BLOB and download file
+  }).then((res) => {
+    return { data: res.data, headers: res.headers };
+  });
 };
 
 export const getUserById = async (userId: string) => {
