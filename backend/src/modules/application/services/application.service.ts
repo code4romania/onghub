@@ -29,6 +29,7 @@ import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplicationStatus } from '../enums/ong-application-status.enum';
+import { UserOngApplicationStatus } from '../enums/user-ong-application-status.enum';
 import { ApplicationAccess } from '../interfaces/application-access.interface';
 import { IOngApplicationDetails } from '../interfaces/ong-application.interface';
 import { ApplicationOngViewRepository } from '../repositories/application-ong-view.repository';
@@ -406,25 +407,70 @@ export class ApplicationService {
     return Promise.resolve(count);
   }
 
-  public async countActiveApplicationsForOng(
-    organizationId: number,
-  ): Promise<number> {
-    const applications = await this.applicationRepository
+  public async countActiveForAdmin(organizationId: number): Promise<number> {
+    const applicationCount = this.applicationRepository
       .getQueryBuilder()
       .leftJoin(
         'ong_application',
         'ongApp',
-        'ongApp.applicationId = application.id',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
       )
-      .where('ongApp.organizationId = :organizationId', { organizationId })
+      .where('ongApp.organizationId = :organizationId', {
+        organizationId,
+      })
       .andWhere('ongApp.status = :status', {
         status: OngApplicationStatus.ACTIVE,
       })
       .andWhere('application.status = :status', {
         status: ApplicationStatus.ACTIVE,
       })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
       .getCount();
 
-    return applications;
+    return applicationCount;
+  }
+
+  public async countActiveForEmployee(
+    organizationId: number,
+    userId: number,
+  ): Promise<number> {
+    const applicationCount = this.applicationRepository
+      .getQueryBuilder()
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .leftJoin(
+        'user_ong_application',
+        'userOngApp',
+        'userOngApp.ongApplicationId = ongApp.id',
+      )
+      .where('ongApp.organizationId = :organizationId', {
+        organizationId,
+      })
+      .andWhere('userOngApp.userId = :userId', { userId })
+      .andWhere('ongApp.status = :status', {
+        status: OngApplicationStatus.ACTIVE,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .orWhere('application.type = :type', {
+        type: ApplicationTypeEnum.INDEPENDENT,
+      })
+      .andWhere('application.status = :status', {
+        status: ApplicationStatus.ACTIVE,
+      })
+      .getCount();
+
+    return applicationCount;
   }
 }
