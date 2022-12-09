@@ -15,10 +15,7 @@ import { NomenclaturesService } from 'src/shared/services';
 import { In } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { WorkingHoursParser } from '../constants/parsers.constants';
-import {
-  PRACTICE_PROGRAM_FILTER_CONFIG,
-  PRACTICE_PROGRAM_GET_LIST_CONFIG,
-} from '../constants/practice-program-filter.config';
+import { PRACTICE_PROGRAM_FILTER_CONFIG } from '../constants/practice-program-filter.config';
 import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
 import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
@@ -302,12 +299,17 @@ export class PracticeProgramService {
   }
 
   public async findAll(organizationId: number): Promise<PracticeProgram[]> {
-    const programs = await this.practiceProgramRepository.getManyPaginated(
-      PRACTICE_PROGRAM_GET_LIST_CONFIG,
-      { limit: 0, page: 0, organizationId } as any,
-    );
+    const practicePrograms = await this.practiceProgramRepository.getMany({
+      where: {
+        organizationId,
+      },
+      order: {
+        createdOn: 'DESC',
+      },
+      relations: ['location', 'skills', 'domains', 'faculties'],
+    });
 
-    return programs.items;
+    return practicePrograms;
   }
 
   public async countActive(): Promise<number> {
