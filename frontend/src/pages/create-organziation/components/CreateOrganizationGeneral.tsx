@@ -60,6 +60,12 @@ const CreateOrganizationGeneral = () => {
     }
   }, [cities]);
 
+  useEffect(() => {
+    if (county && city && city.county.id !== county.id) {
+      setCity(null);
+    }
+  }, [county])
+
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setLogo(event.target.files[0]);

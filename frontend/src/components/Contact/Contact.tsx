@@ -12,6 +12,7 @@ interface ContactFormProps {
   configs: IInputConfig[];
   className?: string;
   id?: string;
+  disabled?: boolean;
 }
 
 const ContactForm = (props: ContactFormProps) => {
@@ -35,6 +36,7 @@ const ContactForm = (props: ContactFormProps) => {
                   id: props.id + '__' + config.key,
                 }}
                 readonly={props.readonly}
+                disabled={props.disabled}
               />
             );
           }}

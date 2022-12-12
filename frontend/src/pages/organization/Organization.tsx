@@ -103,7 +103,8 @@ const Organization = () => {
           />
         </span>
       </div>
-      <Outlet />
+      {/* context for disabling certain fields in organization general */}
+      <Outlet context={true} />
     </ContentWrapper>
   );
 };

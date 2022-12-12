@@ -29,6 +29,7 @@ export const useProfileQuery = (queryOptions?: any) => {
       setProfile(user);
       setOrganization(organization);
     },
+    retry: 0,
     ...queryOptions,
   });
 };

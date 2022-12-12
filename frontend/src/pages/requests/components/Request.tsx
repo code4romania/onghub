@@ -181,7 +181,8 @@ const Request = () => {
               />
             </span>
           </div>
-          <Outlet context={true} />
+          {/* context for enabling certain fields in organization general */}
+          <Outlet context={false} />
         </div>
       </ContentWrapper>
       {isApproveModalOpen && (

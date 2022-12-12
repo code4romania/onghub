@@ -147,7 +147,9 @@ const generateApplicationFormDataPayload = (
 
   // map steps correcly as array
   steps?.forEach((step: { item: string }) => {
-    payload.append('steps[]', step.item);
+    if (step.item) {
+      payload.append('steps[]', step.item);
+    }
   });
 
   // check if logo was attached and add file

@@ -75,7 +75,7 @@ const Router = () => {
         {/* End of Public URLS */}
 
         {/* Logged in users but Restricted */}
-        <Route path="/restricted" element={!isRestricted ? <Login /> : <RestrictedAccount />} />
+        <Route path="/restricted" element={!isRestricted ? <Navigate to={'/'} replace={true}></Navigate> : <RestrictedAccount />} />
 
         {/* Logged in Users */}
         <Route
