@@ -15,6 +15,7 @@ interface DataTableProps {
   paginationPerPage?: number;
   paginationRowsPerPageOptions?: number[];
   paginationTotalRows?: number;
+  paginationDefaultPage?: number;
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (rowsPerPage: number) => void;
   onSort?: (selectedColumn: TableColumn<any>, sortDirection: SortOrder, sortedRows: any[]) => void;
@@ -29,6 +30,7 @@ const DataTableComponent = ({
   paginationPerPage,
   paginationRowsPerPageOptions,
   paginationTotalRows,
+  paginationDefaultPage,
   onSort,
   onChangePage,
   onChangeRowsPerPage,
@@ -53,6 +55,7 @@ const DataTableComponent = ({
           rowsPerPageText: (t('rows_per_page') as string) || '',
           rangeSeparatorText: (t('range_separator_text') as string) || '',
         }}
+        paginationDefaultPage={paginationDefaultPage}
         responsive
         sortIcon={<ChevronDownIcon />}
         sortServer={sortServer}
