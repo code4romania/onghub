@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:14.18.0-alpine3.14 As development
+FROM --platform=linux/amd64 node:16.15.1-alpine As development
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM --platform=linux/amd64 node:14.18.0-alpine3.14 as production
+FROM --platform=linux/amd64 node:16.15.1-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -23,10 +23,6 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-COPY . .
-
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["sh","-c","npm run migration:run && node dist/main"]
-
-# CMD ["node", "dist/main"]
+CMD ["node", "dist/main"]

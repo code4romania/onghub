@@ -132,7 +132,7 @@ const OrganizationProfile = () => {
           />
         </span>
       </div>
-      <Outlet context={[false, isLoading, updateOrganization]} />
+      <Outlet context={[true, isLoading, updateOrganization]} />
       {isOrganizationDeleteModalOpen && (
         <ConfirmationModal
           title={t('restrict.title')}

@@ -1,3 +1,4 @@
+import { Auth } from 'aws-amplify';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header/Header';
@@ -9,7 +10,8 @@ const RestrictedAccount = () => {
 
   const { t } = useTranslation(restrictedReason);
 
-  const onGoBackToSite = () => {
+  const onGoBackToSite = async () => {
+    await Auth.signOut();
     setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
   };
 

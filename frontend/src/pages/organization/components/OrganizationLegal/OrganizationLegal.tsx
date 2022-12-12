@@ -131,12 +131,7 @@ const OrganizationLegal = () => {
 
   const onUpdateDirector = (contact: Partial<Contact>) => {
     const filteredDirectors = directors.filter(
-      (director: Partial<Contact>) =>
-        !(
-          director.fullName === selectedDirector?.fullName &&
-          director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.phone
-        ),
+      (director: Partial<Contact>) => director.id !== selectedDirector?.id,
     );
     setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
     setSelectedDirector(null);

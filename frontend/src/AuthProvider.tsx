@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: any) => {
   const { t } = useTranslation('user');
 
   // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
-  const { refetch: refetchUserProfile, error: fetchUserError } = useProfileQuery({
+  const { refetch: refetchUserProfile } = useProfileQuery({
     enabled: false,
   });
 
@@ -62,20 +62,15 @@ const AuthProvider = ({ children }: any) => {
             break;
           case USER_ERRORS.NOT_FOUND:
             useErrorToast(t('user.not_found'));
+            logout();
             break;
         }
-        logout();
       } finally {
         setIsLoading(false);
       }
     })();
   }, []);
 
-  useEffect(() => {
-    if (fetchUserError) {
-      logout();
-    }
-  }, [fetchUserError]);
 
   return (
     <AuthContext.Provider value={{ ...authState, role, setAuthState, logout }}>

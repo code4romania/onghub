@@ -258,7 +258,7 @@ const OrganizationGeneral = () => {
                       selected={value}
                       onChange={onChange}
                       readonly={readonly}
-                      disabled={!disabled}
+                      disabled={disabled}
                     />
                   );
                 }}
@@ -279,7 +279,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
-                      disabled={!disabled}
+                      disabled={disabled}
                     />
                   );
                 }}
@@ -300,7 +300,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                       }}
                       readonly={readonly}
-                      disabled={!disabled}
+                      disabled={disabled}
                     />
                   );
                 }}
@@ -467,6 +467,7 @@ const OrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
+                disabled={disabled}
               />
             </div>
             <div className="pt-8">

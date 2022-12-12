@@ -16,7 +16,9 @@ async function bootstrap() {
 
   app.use(helmet());
 
-  app.enableCors();
+  app.enableCors({
+    exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
+  });
 
   app.useLogger(app.get(Logger));
 
