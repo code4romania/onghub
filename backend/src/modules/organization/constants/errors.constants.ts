@@ -126,7 +126,7 @@ export const INVESTOR_ERRORS = {
 export const ORGANIZATION_REQUEST_ERRORS = {
   CREATE: {
     USER_EXISTS: {
-      message: 'User email already exists.',
+      message: 'User email or phone already exists.',
       errorCode: 'REQ_001',
     },
     REQ_EXISTS: {

@@ -26,7 +26,7 @@ import ConfirmationModal from '../../../../components/confim-removal-modal/Confi
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
-import * as XLSX from 'xlsx';
+import { getUsersForDownload } from '../../../../services/user/User.service';
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
@@ -41,6 +41,8 @@ const UserList = (props: { organizationId?: number }) => {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
   const { role } = useAuthContext();
 
+  const organizationId = props.organizationId;
+
   const { users } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
@@ -53,7 +55,7 @@ const UserList = (props: { organizationId?: number }) => {
     searchWord as string,
     status?.status,
     range,
-    props.organizationId as number,
+    organizationId as number,
   );
   const restrictUserAccessMutation = useRestrictUserMutation();
   const restoreUserAccessMutation = useRestoreUserMutation();
@@ -222,7 +224,6 @@ const UserList = (props: { organizationId?: number }) => {
   };
 
   const onResetFilters = () => {
-    console.log('snjfbhf');
     setStatus(null);
     setRange([]);
     setSearchWord(null);
@@ -236,20 +237,23 @@ const UserList = (props: { organizationId?: number }) => {
   /**
    * ACTIONS
    */
-  const onExport = () => {
-    const userData = users.items.map((item) => {
-      return {
-        [t('list_header.name')]: item.name,
-        [t('list_header.email')]: item.email,
-        [t('list_header.phone')]: item.phone,
-        [t('list_header.status')]: item.status,
-        [t('list_header.created')]: item.createdOn?.slice(0, 10),
-      };
-    });
-    const ws = XLSX.utils.json_to_sheet(userData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Users');
-    XLSX.writeFile(wb, 'users.xlsx');
+  const onExport = async () => {
+    const { data } = await getUsersForDownload(
+      orderByColumn || '',
+      orderDirection || OrderDirection.ASC,
+      searchWord,
+      status?.status,
+      range,
+      organizationId,
+    );
+
+    const url = URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Utilizatori.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   return (

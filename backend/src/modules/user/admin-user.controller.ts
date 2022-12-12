@@ -3,11 +3,13 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   ParseArrayPipe,
   Patch,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -26,12 +28,17 @@ import { User } from './entities/user.entity';
 import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
+import { DownloadFiltersDto } from './dto/download-users.filter';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
 @ApiBearerAuth()
 export class AdminUserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly fileManager: FileManagerService,
+  ) {}
 
   @ApiBody({ type: CreateUserDto })
   @Post('')
@@ -66,6 +73,27 @@ export class AdminUserController {
     @Query() filters: Partial<BaseFilterDto>,
   ): Promise<User[]> {
     return this.userService.getInvitedUsers(filters, user.organizationId);
+  }
+
+  @ApiQuery({ name: 'filters', type: DownloadFiltersDto })
+  @ApiQuery({ name: 'organization_id', type: Number })
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="Utilizatori.xlsx"')
+  async downloadUsers(
+    @Res({ passthrough: true }) res: any,
+    @ExtractUser() user: User,
+    @Query() filters: DownloadFiltersDto,
+    @Query('organization_id') organizationId?: number,
+  ): Promise<any> {
+    const data = await this.userService.getUsersForDownload(
+      filters,
+      organizationId || user.organizationId,
+    );
+    res.end(this.fileManager.jsonToExcelBuffer(data, 'Utilizatori'));
   }
 
   @ApiParam({ name: 'id', type: Number })

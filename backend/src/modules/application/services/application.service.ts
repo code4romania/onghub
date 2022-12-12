@@ -11,7 +11,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { FindManyOptions, In } from 'typeorm';
 import { APPLICATION_ERRORS } from '../constants/application-error.constants';
 import {
@@ -44,7 +44,7 @@ export class ApplicationService {
 
   constructor(
     private readonly applicationRepository: ApplicationRepository,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
     private readonly applicationTableViewRepository: ApplicationTableViewRepository,
     private readonly ongApplicationRepository: OngApplicationRepository,
     private readonly userOngApplicationRepository: UserOngApplicationRepository,
