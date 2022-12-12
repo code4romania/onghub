@@ -10,8 +10,8 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import DeleteAppRequestEvent from 'src/modules/notifications/events/delete-app-request-event.class';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
 import { FindOneOptions } from 'typeorm';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import {
   APPLICATION_ERRORS,
   APPLICATION_REQUEST_ERRORS,
@@ -36,7 +36,7 @@ export class OngApplicationService {
     private readonly ongApplicationRepository: OngApplicationRepository,
     private readonly applicationRepository: ApplicationRepository,
     private readonly userOngApplicationRepository: UserOngApplicationRepository,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 

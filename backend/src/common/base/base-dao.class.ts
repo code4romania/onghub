@@ -156,7 +156,7 @@ export abstract class BaseDAO<T> {
     // order conditions
     const orderOptions: FindOptionsOrder<any> = this.buildOrderQuery(
       orderBy || config.defaultSortBy,
-      orderDirection || OrderDirection.ASC,
+      orderDirection || config.defaultOrderDirection,
     );
 
     // full query

@@ -40,6 +40,12 @@ export class NomenclaturesService {
   }
 
   public getCitiesSearch(citySearchDto: CitySearchDto) {
+    if (citySearchDto.cityId) {
+      return this.citiesRepository.find({
+        where: { id: citySearchDto.cityId },
+      });
+    }
+
     if (
       citySearchDto.countyId === undefined &&
       citySearchDto.search === undefined

@@ -20,7 +20,7 @@ import {
   PartnerRepository,
 } from '../repositories';
 import { OrganizationReport } from '../entities';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import {
   INVESTOR_LIST,
   ORGANIZATION_FILES_DIR,
@@ -37,7 +37,7 @@ export class OrganizationReportService {
     private readonly partnerRepository: PartnerRepository,
     private readonly investorRepository: InvestorRepository,
     private readonly reportService: ReportService,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
   ) {}
 
   public async findOne(id: number): Promise<OrganizationReport> {

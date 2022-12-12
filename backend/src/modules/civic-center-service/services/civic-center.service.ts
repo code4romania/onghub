@@ -409,7 +409,7 @@ export class CivicCenterServiceService {
           status: OrganizationStatus.ACTIVE,
         },
         domains: domains?.length > 0 ? { id: In(domains) } : null,
-        ageCategory: ageCategories ? In(ageCategories) : null,
+        ageCategories: ageCategories ? In(ageCategories) : null,
       };
 
       // 2. return all paginated services

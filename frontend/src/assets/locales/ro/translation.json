@@ -35,7 +35,8 @@
     "upload": {
       "file": "Numai fisiere de tip PDF, DOC, DOCX, XLSX sunt permise pentru statutul organizatiei",
       "image": "Numai fisiere de tip PNG, JPG, JPEG sunt permise pentru logo",
-      "size": "Dimensiunea maxima a fisierului este de 6 MB",
+      "image_size": "Dimensiunea maxima pentru logo este de 6 MB",
+      "document_size": "Dimensiunea maxima pentru statutul organizatiei este de 6 MB",
       "logo": "Eroare la incarcarea logo-ului",
       "statute": "Eroare la incarcarea statutului organizatiei"
     },
@@ -827,8 +828,8 @@
         }
       },
       "step": {
-        "required": "Pasul este obligatoriu",
-        "invalid": "Pasul are un format invalid",
+        "min": "Pasul trebuie sa aiba minim 2 caractere",
+        "max": "Pasul trebuie sa aiba maxim 100 de caractere",
         "label": "Pas"
       }
     },
@@ -867,7 +868,7 @@
       "upload_description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună.",
       "steps_title": "Pasi pentru adaugarea aplicatiei",
       "steps_subtitle": "This information will be displayed publicly so be careful what you share",
-      "more_steps": "Adauga mai multi pasi",
+      "add_step": "Adauga pas",
       "delete_step": "Sterge pas"
     }
   },
