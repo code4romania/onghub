@@ -149,10 +149,6 @@ export const PracticeProgramFormConfig: Record<string, any> = {
         value: 3,
         message: translations.description.min,
       },
-      pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: translations.description.pattern,
-      },
     },
     config: {
       type: 'text',

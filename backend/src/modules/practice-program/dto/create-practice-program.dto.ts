@@ -24,7 +24,6 @@ export class CreatePracticeProgramDto {
   deadline?: Date;
 
   @IsString()
-  @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 3000)
   description: string;
 
