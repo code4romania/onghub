@@ -11,14 +11,12 @@ import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
 import { OrganizationGeneral } from '../entities';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
-import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationGeneralService {
   private readonly logger = new Logger(OrganizationGeneralService.name);
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
-    private readonly contactService: ContactService,
     private readonly fileManagerService: S3FileManagerService,
   ) {}
 
@@ -28,14 +26,7 @@ export class OrganizationGeneralService {
     logoPath?: string,
     logo?: Express.Multer.File[],
   ) {
-    let { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
-
-    if (contact) {
-      const contactEntity = await this.contactService.get({
-        where: { id: contact.id },
-      });
-      updateOrganizationData['contact'] = { ...contactEntity, ...contact };
-    }
+    let { ...updateOrganizationData } = updateOrganizationGeneralDto;
 
     if (logo) {
       if (updateOrganizationGeneralDto.logo) {
@@ -78,7 +69,7 @@ export class OrganizationGeneralService {
 
     let organizationGeneral = await this.organizationGeneralRepository.get({
       where: { id },
-      relations: ['city', 'county', 'contact'],
+      relations: ['city', 'county'],
     });
 
     if (logo) {

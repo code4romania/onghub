@@ -7,12 +7,11 @@ import { FILE_ERRORS } from '../../../../common/constants/error.constants';
 import {
   emptyStringToNull,
   fileToURL,
-  flatten,
   setUrlPrefix,
 } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
-import ContactForm from '../../../../components/Contact/Contact';
+import ContactForm from '../../../../components/Contact/ContactForm';
 import InputField from '../../../../components/InputField/InputField';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
@@ -64,9 +63,9 @@ const OrganizationGeneral = () => {
   const { t } = useTranslation(['general', 'organization', 'common']);
 
   useEffect(() => {
+    console.log(organizationGeneral);
     if (organizationGeneral) {
-      const contact = flatten(organizationGeneral.contact, {}, 'contact');
-      reset({ ...organizationGeneral, ...contact });
+      reset(organizationGeneral);
       setCounty(organizationGeneral.county);
       setCity(organizationGeneral.city);
     }
@@ -92,8 +91,7 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
-      data;
+    const { contact_email, contact_name, contact_phone, ...organizationGeneral } = data;
 
     setReadonly(true);
 
@@ -108,8 +106,7 @@ const OrganizationGeneral = () => {
       donationWebsite: setUrlPrefix(organizationGeneral.donationWebsite),
       redirectLink: setUrlPrefix(organizationGeneral.redirectLink),
       contact: {
-        ...contact,
-        fullName: contact_fullName,
+        name: contact_name,
         phone: contact_phone,
         email: contact_email,
       },

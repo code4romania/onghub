@@ -1,14 +1,7 @@
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsOptional,
-  IsString,
-  ValidateNested,
-  Matches,
-} from 'class-validator';
+import { IsArray, IsOptional, ValidateNested } from 'class-validator';
 import { Person } from 'src/modules/organization/dto/person.dto';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
-import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class CreateOrganizationLegalDto {
   /* Organization legal representative */

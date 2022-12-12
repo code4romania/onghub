@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import { Person } from '../../../common/interfaces/person.interface';
-import ContactForm from '../../../components/Contact/Contact';
+import ContactForm from '../../../components/Contact/ContactForm';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../components/section-header/SectionHeader';

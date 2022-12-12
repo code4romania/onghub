@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { useForm } from 'react-hook-form';
-import ContactForm from '../../../../../components/Contact/Contact';
+import ContactForm from '../../../../../components/Contact/ContactForm';
 import { Person } from '../../../../../common/interfaces/person.interface';
 import { OtherConfig } from './OtherConfig';
 import { useTranslation } from 'react-i18next';

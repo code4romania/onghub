@@ -67,7 +67,6 @@ export class OrganizationRequestService {
         'organization.organizationGeneral',
         'organization.organizationGeneral.city',
         'organization.organizationGeneral.county',
-        'organization.organizationGeneral.contact',
         'organization.organizationActivity',
         'organization.organizationActivity.federations',
         'organization.organizationActivity.coalitions',
@@ -218,7 +217,7 @@ export class OrganizationRequestService {
     );
 
     try {
-      // 7. Send email for Super amdin and admin with successful creation
+      // 7. Send email for Super admin and admin with successful creation
       const adminMailOptions: {
         template: string;
         subject: string;

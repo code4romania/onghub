@@ -4,7 +4,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { useForm } from 'react-hook-form';
 import { Contact } from '../../../interfaces/Contact.interface';
 import { DirectorConfig } from './DirectorConfig';
-import ContactForm from '../../../../../components/Contact/Contact';
+import ContactForm from '../../../../../components/Contact/ContactForm';
 import { useTranslation } from 'react-i18next';
 
 interface DirectorModalProps {

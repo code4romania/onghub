@@ -14,8 +14,8 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
-import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { OngContact } from './ong-contact.dto';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -167,9 +167,9 @@ export class CreateOrganizationGeneralDto {
   donationKeyword?: string;
 
   /* Organization contact person */
-  @Type(() => CreateContactDto)
+  @Type(() => OngContact)
   @ValidateNested()
-  contact: CreateContactDto;
+  contact: OngContact;
 
   /* Organization county id */
   @IsNumber()

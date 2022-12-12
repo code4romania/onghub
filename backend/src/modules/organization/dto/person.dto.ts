@@ -1,10 +1,4 @@
-import {
-  IsAlpha,
-  IsString,
-  Matches,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 
 export class Person {

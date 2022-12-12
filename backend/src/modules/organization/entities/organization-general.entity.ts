@@ -1,9 +1,9 @@
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Contact } from 'src/modules/organization/entities/contact.entity';
 import { City } from 'src/shared/entities/city.entity';
 import { County } from 'src/shared/entities/county.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { OngContact } from '../dto/ong-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Organization } from './organization.entity';
 
@@ -72,15 +72,8 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'donation_keyword', nullable: true })
   donationKeyword: string;
 
-  @Exclude()
-  @Column({ type: 'integer', nullable: true, name: 'contact_id' })
-  contactId: number;
-
-  @OneToOne(() => Contact, {
-    cascade: true,
-  })
-  @JoinColumn({ name: 'contact_id' })
-  contact: Contact;
+  @Column({ type: 'jsonb', name: 'contact_person', nullable: true })
+  contact: OngContact;
 
   @OneToOne(
     () => Organization,

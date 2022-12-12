@@ -1,8 +1,5 @@
-import {
-  OrganizationGeneral,
-  OrganizationLegal,
-} from 'src/modules/organization/entities';
-import { Column, Entity, ManyToMany, OneToOne } from 'typeorm';
+import { OrganizationLegal } from 'src/modules/organization/entities';
+import { Column, Entity, ManyToMany } from 'typeorm';
 import { BaseEntity } from '../../../common/base/base-entity.class';
 
 @Entity({ name: '_contact' })
@@ -22,11 +19,4 @@ export class Contact extends BaseEntity {
     { onDelete: 'CASCADE' },
   )
   organizationLegal: OrganizationLegal[];
-
-  @OneToOne(
-    (type) => OrganizationGeneral,
-    (organizationGeneral) => organizationGeneral.contact,
-    { onDelete: 'CASCADE' },
-  )
-  organizationGeneral: OrganizationGeneral;
 }

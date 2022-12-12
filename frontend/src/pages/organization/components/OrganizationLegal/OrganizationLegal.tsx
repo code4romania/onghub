@@ -10,7 +10,7 @@ import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { Person } from '../../../../common/interfaces/person.interface';
-import ContactForm from '../../../../components/Contact/Contact';
+import ContactForm from '../../../../components/Contact/ContactForm';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';

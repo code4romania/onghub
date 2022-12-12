@@ -421,7 +421,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
   },
   contact_name: {
-    key: 'contact_fullName',
+    key: 'contact_name',
     rules: {
       required: {
         value: true,

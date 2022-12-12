@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { fileToURL, flatten, setUrlPrefix } from '../../../common/helpers/format.helper';
+import { fileToURL, setUrlPrefix } from '../../../common/helpers/format.helper';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -47,8 +47,7 @@ const CreateOrganizationGeneral = () => {
 
   useEffect(() => {
     if (organization && organization.general) {
-      const contact = flatten(organization.general.contact, {}, 'contact');
-      reset({ ...organization.general, ...contact });
+      reset(organization.general);
       setCounty(organization.general.county);
       setCity(organization.general.city);
     }
@@ -64,7 +63,7 @@ const CreateOrganizationGeneral = () => {
     if (county && city && city.county.id !== county.id) {
       setCity(null);
     }
-  }, [county])
+  }, [county]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -77,16 +76,8 @@ const CreateOrganizationGeneral = () => {
 
   const handleSave = async (data: any) => {
     try {
-      const contact = {
-        ...data.contact,
-        fullName: data.contact_fullName,
-        phone: data.contact_phone,
-        email: data.contact_email,
-      };
-
       const organizationGeneral = {
         ...data,
-        contact,
         website: setUrlPrefix(data.website),
         facebook: setUrlPrefix(data.facebook),
         instagram: setUrlPrefix(data.instagram),
