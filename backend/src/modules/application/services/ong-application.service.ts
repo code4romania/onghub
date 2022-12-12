@@ -10,6 +10,7 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import DeleteAppRequestEvent from 'src/modules/notifications/events/delete-app-request-event.class';
+import { FindOneOptions } from 'typeorm';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import {
   APPLICATION_ERRORS,
@@ -441,5 +442,11 @@ export class OngApplicationService {
         error: err,
       });
     }
+  }
+
+  public findOngApplicationWithOptions(
+    conditions: FindOneOptions<OngApplication>,
+  ): Promise<OngApplication> {
+    return this.ongApplicationRepository.get(conditions);
   }
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApplicationModule } from '../application/application.module';
 import { CivicCenterController } from './controllers/civic-center.controller';
 import { FeedbackController } from './controllers/feedback.controller';
 import { CivicCenterService } from './entities/civic-center-service.entity';
@@ -10,7 +11,10 @@ import { CivicCenterServiceService } from './services/civic-center.service';
 import { FeedbackService } from './services/feedback.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CivicCenterService, Feedback])],
+  imports: [
+    TypeOrmModule.forFeature([CivicCenterService, Feedback]),
+    ApplicationModule,
+  ],
   controllers: [CivicCenterController, FeedbackController],
   providers: [
     CivicCenterServiceRepository,
