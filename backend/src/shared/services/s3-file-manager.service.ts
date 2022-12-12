@@ -25,8 +25,8 @@ interface FileUploadParams {
 }
 
 @Injectable()
-export class FileManagerService {
-  private readonly logger = new Logger(FileManagerService.name);
+export class S3FileManagerService {
+  private readonly logger = new Logger(S3FileManagerService.name);
 
   private readonly s3 = new AWS.S3({
     accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
