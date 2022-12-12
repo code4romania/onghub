@@ -25,8 +25,8 @@ interface FileUploadParams {
 }
 
 @Injectable()
-export class S3FileManagerService {
-  private readonly logger = new Logger(S3FileManagerService.name);
+export class FileManagerService {
+  private readonly logger = new Logger(FileManagerService.name);
 
   private readonly s3 = new AWS.S3({
     accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
@@ -68,7 +68,11 @@ export class S3FileManagerService {
     if (
       !files.every((file) => Buffer.byteLength(file.buffer) <= MAX_UPLOAD_SIZE)
     ) {
-      throw new PayloadTooLargeException(FILE_ERRORS.SIZE);
+      throw new PayloadTooLargeException(
+        fileType === FILE_TYPE.IMAGE
+          ? FILE_ERRORS.IMAGE_SIZE
+          : FILE_ERRORS.DOC_SIZE,
+      );
     }
   }
 
