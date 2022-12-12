@@ -37,8 +37,6 @@ import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
-import * as XLSX from 'xlsx';
-import * as Excel from 'exceljs';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()

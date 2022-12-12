@@ -10,7 +10,6 @@ import {
   Post,
   Query,
   Res,
-  StreamableFile,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -30,10 +29,6 @@ import { Role } from './enums/role.enum';
 import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { DownloadFiltersDto } from './dto/download-users.filter';
-import * as XLSX from 'xlsx';
-import * as Excel from 'exceljs';
-import { Response } from 'express';
-import { Public } from 'src/common/decorators/public.decorator';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
@@ -96,7 +91,7 @@ export class AdminUserController {
   ): Promise<any> {
     const data = await this.userService.getUsersForDownload(
       filters,
-      organizationId ?? user.organizationId,
+      organizationId || user.organizationId,
     );
     res.end(this.fileManager.jsonToExcelBuffer(data, 'Utilizatori'));
   }

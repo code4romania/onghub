@@ -238,7 +238,7 @@ const UserList = (props: { organizationId?: number }) => {
    * ACTIONS
    */
   const onExport = async () => {
-    const { data, headers } = await getUsersForDownload(
+    const { data } = await getUsersForDownload(
       orderByColumn || '',
       orderDirection || OrderDirection.ASC,
       searchWord,
@@ -250,10 +250,7 @@ const UserList = (props: { organizationId?: number }) => {
     const url = URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute(
-      'download',
-      headers?.['content-disposition']?.split('filename=')?.[1] || 'Utilizatori.xlsx',
-    );
+    link.setAttribute('download', 'Utilizatori.xlsx');
     document.body.appendChild(link);
     link.click();
     link.remove();
