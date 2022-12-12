@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -20,6 +21,7 @@ import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
+import { GetCivicCenterServicesFilterDto } from '../dto/get-services-filter.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
 import { CivicCenterServiceService } from '../services/civic-center.service';
@@ -89,8 +91,15 @@ export class CivicCenterController {
   }
 
   @Get()
-  async findAll(@ExtractUser() user: User): Promise<CivicCenterService[]> {
-    return this.civicCenterServiceService.findAll(user.organizationId);
+  async findAll(
+    @ExtractUser() user: User,
+    @Query() options: GetCivicCenterServicesFilterDto,
+  ): Promise<CivicCenterService[]> {
+    const organizationId =
+      user.role !== Role.SUPER_ADMIN
+        ? user.organizationId
+        : options.organizationId;
+    return this.civicCenterServiceService.findAll(organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })

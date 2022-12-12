@@ -27,8 +27,10 @@ export const getPracticeProgramById = (id: string): Promise<PracticeProgram> => 
   return API.get(`/practice-program/${id}`).then((res: AxiosResponse<PracticeProgram>) => res.data);
 };
 
-export const getPracticePrograms = (): Promise<PracticeProgram[]> => {
-  return API.get(`/practice-program`).then((res: AxiosResponse<PracticeProgram[]>) => res.data);
+export const getPracticePrograms = (organizationId?: string): Promise<PracticeProgram[]> => {
+  return API.get(`/practice-program`, { params: { organizationId } }).then(
+    (res: AxiosResponse<PracticeProgram[]>) => res.data,
+  );
 };
 
 export const enablePracticeProgram = (id: number): Promise<PracticeProgram> => {

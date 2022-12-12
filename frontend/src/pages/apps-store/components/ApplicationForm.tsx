@@ -257,6 +257,7 @@ const ApplicationForm = ({
                   <Controller
                     name={`steps.${index}.item`}
                     control={control}
+                    rules={AddAppConfig.step.rules}
                     render={({ field: { onChange, value } }) => {
                       return (
                         <InputField
@@ -289,18 +290,20 @@ const ApplicationForm = ({
                 }}
               >
                 <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-                {t('form.more_steps')}
+                {t('form.add_step')}
               </button>
-              <button
-                className="add-button sm:text-sm lg:text-base text-xs"
-                onClick={(e: any) => {
-                  e.preventDefault();
-                  remove(fields.length - 1);
-                }}
-              >
-                <XIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-                {t('form.delete_step')}
-              </button>
+              {fields.length > 0 && (
+                <button
+                  className="add-button sm:text-sm lg:text-base text-xs"
+                  onClick={(e: any) => {
+                    e.preventDefault();
+                    remove(fields.length - 1);
+                  }}
+                >
+                  <XIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
+                  {t('form.delete_step')}
+                </button>
+              )}
             </div>
           </div>
         </form>
