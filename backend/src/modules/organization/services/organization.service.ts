@@ -351,6 +351,7 @@ export class OrganizationService {
         'organizationReport.partners',
         'organizationReport.investors',
       ],
+      order: { organizationFinancial: { year: 'DESC' } },
     });
 
     if (!organization) {
