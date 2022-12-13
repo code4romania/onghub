@@ -8,7 +8,7 @@ const translations = {
   volunteer_maxim: i18n.t('open_data:config.volunt_maxim'),
   contractor_negative: i18n.t('open_data:config.contr_negative'),
   contractor_maxim: i18n.t('open_data:config.contr_maxim'),
-  decimal: i18n.t('open_data:config.decimal'),
+  decimal: i18n.t('common:decimal'),
   link_invalid: i18n.t('open_data:config.link_invalid'),
   link: i18n.t('open_data:config.link'),
   volunteers: i18n.t('open_data:config.volunteers'),
