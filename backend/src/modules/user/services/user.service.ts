@@ -36,6 +36,8 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
+import { DownloadFiltersDto } from '../dto/download-users.filter';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class UserService {
@@ -45,6 +47,7 @@ export class UserService {
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
+    private readonly fileManager: FileManagerService,
   ) {}
 
   // ****************************************************
@@ -189,7 +192,7 @@ export class UserService {
       ...options,
     };
 
-    // For Admin user we will sort by organizatioinId
+    // For Admin user we will sort by organizationId
     return this.userRepository.getManyPaginated(
       USER_FILTERS_CONFIG,
       organizationId
@@ -353,6 +356,36 @@ export class UserService {
     await this.cognitoService.resendInvite(user.email);
 
     return;
+  }
+
+  public async getUsersForDownload(
+    options: DownloadFiltersDto,
+    organizationId: number,
+  ): Promise<any> {
+    const paginationOptions: any = {
+      role: Role.EMPLOYEE,
+      limit: 0,
+      page: 0,
+      ...options,
+    };
+
+    // For Admin user we will sort by organizationId
+    const users = await this.userRepository.getManyPaginated(
+      USER_FILTERS_CONFIG,
+      { ...paginationOptions, organizationId },
+    );
+
+    const userData = users.items.map((user) => {
+      return {
+        Nume: user.name,
+        Email: user.email,
+        Telefon: user.phone,
+        Status: user.status,
+        'Data adaugarii': format(user.createdOn, 'yyyy-MM-dd'),
+      };
+    });
+
+    return userData;
   }
 
   // ****************************************************

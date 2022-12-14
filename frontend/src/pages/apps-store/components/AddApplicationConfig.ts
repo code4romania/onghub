@@ -52,8 +52,8 @@ const translations = {
     },
   },
   step: {
-    required: i18n.t('appstore:config.step.required'),
-    invalid: i18n.t('appstore:config.step.invalid'),
+    min: i18n.t('appstore:config.step.min'),
+    max: i18n.t('appstore:config.step.max'),
     label: i18n.t('appstore:config.step.label'),
   },
   url: i18n.t('common:url'),
@@ -244,6 +244,16 @@ export const AddAppConfig: Record<string, any> = {
   },
   step: {
     key: 'step',
+    rules: {
+      minLength: {
+        value: 2,
+        message: translations.step.min,
+      },
+      maxLength: {
+        value: 100,
+        message: translations.step.max,
+      },
+    },
     config: {
       type: 'text',
       label: translations.step.label,

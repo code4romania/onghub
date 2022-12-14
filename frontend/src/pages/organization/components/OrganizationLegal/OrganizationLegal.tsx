@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
 import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
@@ -15,14 +15,10 @@ import DataTableComponent from '../../../../components/data-table/DataTableCompo
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import { AuthContext } from '../../../../contexts/AuthContext';
-import {
-  useOrganizationByProfileMutation,
-  useOrganizationMutation,
-} from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
-import { REQUEST_LOCATION } from '../../constants/location.constants';
 import { Contact } from '../../interfaces/Contact.interface';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 import DirectorModal from './components/DirectorModal';
 import OtherModal from './components/OtherModal';
@@ -31,8 +27,6 @@ import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
 import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 
 const OrganizationLegal = () => {
-  const location = useLocation();
-
   const [isEditMode, setEditMode] = useState(false);
   const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   // directors
@@ -48,9 +42,7 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
-  const { mutate: updateOrganization } = location.pathname.includes(REQUEST_LOCATION)
-    ? useOrganizationMutation()
-    : useOrganizationByProfileMutation();
+  const { updateOrganization } = useOutletContext<OrganizationContext>();
 
   const { role } = useContext(AuthContext);
   // React i18n
@@ -139,12 +131,7 @@ const OrganizationLegal = () => {
 
   const onUpdateDirector = (contact: Partial<Contact>) => {
     const filteredDirectors = directors.filter(
-      (director: Partial<Contact>) =>
-        !(
-          director.fullName === selectedDirector?.fullName &&
-          director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.phone
-        ),
+      (director: Partial<Contact>) => director.id !== selectedDirector?.id,
     );
     setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
     setSelectedDirector(null);
@@ -227,7 +214,7 @@ const OrganizationLegal = () => {
         onSuccess: () => {
           setOrganizationStatute(null);
         },
-        onError: (error) => {
+        onError: (error: any) => {
           const createError: any = error;
           const err = createError.response.data;
           if (err.code) {

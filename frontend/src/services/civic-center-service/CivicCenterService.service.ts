@@ -44,8 +44,8 @@ export const getCivicCenterServiceById = (id: string): Promise<CivicCenterServic
   );
 };
 
-export const getCivicCenterServices = (): Promise<CivicCenterService[]> => {
-  return API.get('civic-center/services').then(
+export const getCivicCenterServices = (organizationId?: string): Promise<CivicCenterService[]> => {
+  return API.get('civic-center/services', { params: { organizationId } }).then(
     (res: AxiosResponse<CivicCenterService[]>) => res.data,
   );
 };

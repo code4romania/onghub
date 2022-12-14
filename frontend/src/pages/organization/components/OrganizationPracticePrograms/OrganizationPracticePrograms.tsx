@@ -9,7 +9,7 @@ const OrganizationPracticePrograms = () => {
   const navigate = useNavigate();
 
   // practice programs query
-  const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms();
+  const { data: practicePrograms, isLoading, error, refetch } = usePracticePrograms(id);
 
   const onAddPracticeProgram = () => {
     navigate(`/organizations/${id}/programs/add`);

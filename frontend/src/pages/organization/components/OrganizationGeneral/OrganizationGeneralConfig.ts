@@ -2,7 +2,7 @@ import {
   ALPHANUMERIC_REGEX,
   CUI_REGEX,
   NAME_REGEX,
-  NUMERIC_REGEX,
+  SMS_REGEX,
   RAF_NUMBER_REGEX,
   rangeOfYears,
   EMAIL_REGEX,
@@ -645,7 +645,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: translations.sms.length,
       },
       pattern: {
-        value: NUMERIC_REGEX,
+        value: SMS_REGEX,
         message: translations.sms.invalid,
       },
     },

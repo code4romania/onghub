@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { FindOneOptions } from 'typeorm';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
@@ -19,7 +19,7 @@ export class OrganizationGeneralService {
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
     private readonly contactService: ContactService,
-    private readonly fileManagerService: FileManagerService,
+    private readonly fileManagerService: S3FileManagerService,
   ) {}
 
   public async update(

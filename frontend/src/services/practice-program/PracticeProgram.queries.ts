@@ -44,6 +44,6 @@ export const useDisablePracticeProgramMutation = () => {
   return useMutation((id: number) => disablePracticeProgram(id));
 };
 
-export const usePracticePrograms = () => {
-  return useQuery(['practice-programs'], () => getPracticePrograms());
+export const usePracticePrograms = (organizationId?: string) => {
+  return useQuery(['practice-programs', organizationId], () => getPracticePrograms(organizationId));
 };

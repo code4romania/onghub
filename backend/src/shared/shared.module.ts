@@ -14,6 +14,7 @@ import {
 } from './entities';
 import { AnafService, NomenclaturesService } from './services';
 import { HttpModule } from '@nestjs/axios';
+import { S3FileManagerService } from './services/s3-file-manager.service';
 import { FileManagerService } from './services/file-manager.service';
 
 @Global()
@@ -32,7 +33,17 @@ import { FileManagerService } from './services/file-manager.service';
     HttpModule,
   ],
   controllers: [SharedController, NomenclaturesController],
-  providers: [NomenclaturesService, AnafService, FileManagerService],
-  exports: [NomenclaturesService, AnafService, FileManagerService],
+  providers: [
+    NomenclaturesService,
+    AnafService,
+    S3FileManagerService,
+    FileManagerService,
+  ],
+  exports: [
+    NomenclaturesService,
+    AnafService,
+    S3FileManagerService,
+    FileManagerService,
+  ],
 })
 export class SharedModule {}

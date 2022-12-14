@@ -4,7 +4,10 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
-import { useOrganizationQuery } from '../../services/organization/Organization.queries';
+import {
+  useOrganizationMutation,
+  useOrganizationQuery,
+} from '../../services/organization/Organization.queries';
 import { ORGANIZATION_EXTENDED_TABS } from './constants/Tabs.constants';
 import { IPageTab } from '../../common/interfaces/tabs.interface';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +31,8 @@ const Organization = () => {
 
   // load organization data
   const { error } = useOrganizationQuery(id as string);
+
+  const { mutate: updateOrganization, isLoading } = useOrganizationMutation();
 
   const { organizationGeneral } = useSelectedOrganization();
 
@@ -103,8 +108,7 @@ const Organization = () => {
           />
         </span>
       </div>
-      {/* context for disabling certain fields in organization general */}
-      <Outlet context={true} />
+      <Outlet context={{ disabled: true, isLoading, updateOrganization }} />
     </ContentWrapper>
   );
 };
