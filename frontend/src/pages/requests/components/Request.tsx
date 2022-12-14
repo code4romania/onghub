@@ -19,6 +19,7 @@ import { APPROVE_MODAL_CONFIG, REJECT_MODAL_CONFIG } from '../constants/Request.
 import { RequestStatus } from '../enum/RequestStatus.enum';
 import { ORGANIZATION_TABS } from '../../organization/constants/Tabs.constants';
 import Select from '../../../components/Select/Select';
+import { useOrganizationMutation } from '../../../services/organization/Organization.queries';
 
 const Request = () => {
   const { id } = useParams();
@@ -41,12 +42,15 @@ const Request = () => {
   // load organization data
   const { data: request, error, isLoading: dataLoading } = useOrganizationRequest(id || '');
 
+  const { mutate: updateOrganization, isLoading } = useOrganizationMutation();
+
   // apporve & reject
   const {
     mutateAsync: approveMutate,
     error: approveError,
     isLoading: approveLoading,
   } = useApproveOrganizationRequestMutation();
+
   const {
     mutateAsync: rejectMutate,
     error: rejectError,
@@ -181,8 +185,7 @@ const Request = () => {
               />
             </span>
           </div>
-          {/* context for enabling certain fields in organization general */}
-          <Outlet context={false} />
+          <Outlet context={{ disabled: false, isLoading, updateOrganization }} />
         </div>
       </ContentWrapper>
       {isApproveModalOpen && (
