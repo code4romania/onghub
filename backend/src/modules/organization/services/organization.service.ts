@@ -1248,20 +1248,6 @@ export class OrganizationService {
     return this.organizationRepository.count(findConditions);
   }
 
-  public async countOrganizationsWithActivePracticePrograms(): Promise<number> {
-    const counter = await this.organizationRepository.count({
-      where: { practicePrograms: true, status: OrganizationStatus.ACTIVE },
-    });
-    return counter;
-  }
-
-  public async countOrganizationsWithActiveServices(): Promise<number> {
-    const counter = await this.organizationRepository.count({
-      where: { civicCenterServices: true, status: OrganizationStatus.ACTIVE },
-    });
-    return counter;
-  }
-
   /**
    * Check if the organization has all the financial, report, partner and investor data corectly completed and update the completionStatus
    */
