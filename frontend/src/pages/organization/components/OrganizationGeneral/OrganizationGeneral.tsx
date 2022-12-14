@@ -4,12 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
-import {
-  emptyStringToNull,
-  fileToURL,
-  flatten,
-  setUrlPrefix,
-} from '../../../../common/helpers/format.helper';
+import { fileToURL, flatten, setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import ContactForm from '../../../../components/Contact/Contact';
@@ -110,7 +105,7 @@ const OrganizationGeneral = () => {
       {
         id: organization?.id as number,
         organization: {
-          general: emptyStringToNull(payload),
+          general: payload,
         },
         logo: file,
       },

@@ -9,4 +9,8 @@ export class CitySearchDto {
   @IsString()
   @MinLength(3)
   search?: string;
+
+  @IsNumber()
+  @IsOptional()
+  cityId?: number;
 }

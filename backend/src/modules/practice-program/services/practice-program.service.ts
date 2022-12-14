@@ -299,12 +299,17 @@ export class PracticeProgramService {
   }
 
   public async findAll(organizationId: number): Promise<PracticeProgram[]> {
-    return this.practiceProgramRepository.getMany({
+    const practicePrograms = await this.practiceProgramRepository.getMany({
       where: {
-        organizationId: organizationId,
+        organizationId,
+      },
+      order: {
+        createdOn: 'DESC',
       },
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
+
+    return practicePrograms;
   }
 
   public async countActive(): Promise<number> {
@@ -320,7 +325,7 @@ export class PracticeProgramService {
       const { faculties, domains, workingHours, ...restOfFilters } =
         practiceProgramFilters;
 
-      // 1. get onlt active practice programs and map correctly ids for domains and faculties
+      // 1. get only active practice programs and map correctly ids for domains and faculties
       let paginationOptions: any = {
         ...restOfFilters,
         active: true,
@@ -364,14 +369,20 @@ export class PracticeProgramService {
     // for admin and employee check organizationId as search criteria
     const where = organizationId
       ? {
-        id,
-        organizationId,
-      }
+          id,
+          organizationId,
+        }
       : { id };
 
     const practiceProgram = await this.practiceProgramRepository.get({
       where: where,
-      relations: ['location', 'location.county', 'skills', 'domains', 'faculties'],
+      relations: [
+        'location',
+        'location.county',
+        'skills',
+        'domains',
+        'faculties',
+      ],
     });
 
     if (!practiceProgram) {

@@ -7,6 +7,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -16,16 +18,19 @@ import {
   ApiTooManyRequestsResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { CivicCenterServiceAccessGuard } from 'src/modules/application/guards/civic-center-service-access.guard';
 import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
+import { GetCivicCenterServicesFilterDto } from '../dto/get-services-filter.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
 import { CivicCenterServiceService } from '../services/civic-center.service';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.EMPLOYEE)
 @ApiTooManyRequestsResponse()
+@UseGuards(CivicCenterServiceAccessGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiBearerAuth()
 @Controller('civic-center/services')
@@ -89,8 +94,15 @@ export class CivicCenterController {
   }
 
   @Get()
-  async findAll(@ExtractUser() user: User): Promise<CivicCenterService[]> {
-    return this.civicCenterServiceService.findAll(user.organizationId);
+  async findAll(
+    @ExtractUser() user: User,
+    @Query() options: GetCivicCenterServicesFilterDto,
+  ): Promise<CivicCenterService[]> {
+    const organizationId =
+      user.role !== Role.SUPER_ADMIN
+        ? user.organizationId
+        : options.organizationId;
+    return this.civicCenterServiceService.findAll(organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })

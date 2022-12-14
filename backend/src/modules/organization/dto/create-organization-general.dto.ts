@@ -156,8 +156,7 @@ export class CreateOrganizationGeneralDto {
   /* Organization donation sms number */
   @IsString()
   @IsOptional()
-  @Matches(REGEX.NUMERIC)
-  @Length(4, 4)
+  @Matches(REGEX.SMS)
   donationSMS?: string;
 
   /* Organization donation keyword */

@@ -244,6 +244,7 @@ const ApplicationNGOList = () => {
             paginationPerPage={applicationOrganizations.meta.itemsPerPage}
             paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
             paginationTotalRows={applicationOrganizations.meta.totalItems}
+            paginationDefaultPage={page}
             onChangeRowsPerPage={onRowsPerPageChange}
             onChangePage={onChangePage}
             onSort={onSort}

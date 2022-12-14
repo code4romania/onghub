@@ -35,12 +35,10 @@ export class CreateCivicCenterServiceDto {
   isPeriodNotDetermined: boolean;
 
   @IsString()
-  @Matches(REGEX.ALPHANUMERIC)
-  @Length(200, 250)
+  @Length(3, 250)
   shortDescription: string;
 
   @IsString()
-  @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 3000)
   longDescription: string;
 
@@ -61,7 +59,6 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @Matches(REGEX.ALPHANUMERIC)
   @Length(0, 1000)
   onlineAccessDescription: string;
 
@@ -80,7 +77,6 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @Matches(REGEX.ALPHANUMERIC)
   @Length(0, 1000)
   emailPhoneAccessDescription: string;
 

@@ -53,7 +53,7 @@ const PracticeProgramsList = ({
               </div>
             ))}
           {!!error && <p>{t('details.list_error')}</p>}
-          {!practicePrograms && !error && <p>{t('no_data', { ns: 'common' })}</p>}
+          {practicePrograms?.length === 0 && !error && <p>{t('no_data', { ns: 'common' })}</p>}
         </div>
       )}
     </ContentWrapper>
