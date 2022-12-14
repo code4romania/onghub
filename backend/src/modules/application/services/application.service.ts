@@ -261,9 +261,13 @@ export class ApplicationService {
     if (user.role === Role.EMPLOYEE) {
       applicationWithDetailsQuery
         .andWhere('userOngApp.userId = :userId', { userId: user.id })
-        .orWhere('application.type = :type', {
-          type: ApplicationTypeEnum.INDEPENDENT,
-        });
+        .orWhere(
+          'application.type = :type AND application.id = :applicationId',
+          {
+            type: ApplicationTypeEnum.INDEPENDENT,
+            applicationId,
+          },
+        );
     }
 
     const applicationWithDetails =
