@@ -217,12 +217,8 @@ export const CivicCenterFormConfig: Record<string, any> = {
         message: translations.shortDescription.max,
       },
       minLength: {
-        value: 200,
+        value: 3,
         message: translations.shortDescription.min,
-      },
-      pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: translations.shortDescription.pattern,
       },
     },
     config: {
@@ -246,10 +242,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
       minLength: {
         value: 3,
         message: translations.longDescription.min,
-      },
-      pattern: {
-        value: ALPHANUMERIC_REGEX,
-        message: translations.longDescription.pattern,
       },
     },
     config: {
@@ -321,10 +313,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
         maxLength: {
           value: 1000,
           message: translations.online.description.max,
-        },
-        pattern: {
-          value: ALPHANUMERIC_REGEX,
-          message: translations.online.description.pattern,
         },
       },
       config: {
@@ -400,10 +388,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
         maxLength: {
           value: 1000,
           message: translations.emailOrPhone.description.max,
-        },
-        pattern: {
-          value: ALPHANUMERIC_REGEX,
-          message: translations.emailOrPhone.description.pattern,
         },
       },
       config: {
