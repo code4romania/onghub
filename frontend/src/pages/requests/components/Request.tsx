@@ -185,7 +185,7 @@ const Request = () => {
               />
             </span>
           </div>
-          <Outlet context={[false, isLoading, updateOrganization]} />
+          <Outlet context={{ disabled: false, isLoading, updateOrganization }} />
         </div>
       </ContentWrapper>
       {isApproveModalOpen && (

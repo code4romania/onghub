@@ -18,6 +18,7 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { Contact } from '../../interfaces/Contact.interface';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 import DirectorModal from './components/DirectorModal';
 import OtherModal from './components/OtherModal';
@@ -41,8 +42,7 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
-  const [, , updateOrganization] =
-    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { updateOrganization } = useOutletContext<OrganizationContext>();
 
   const { role } = useContext(AuthContext);
   // React i18n

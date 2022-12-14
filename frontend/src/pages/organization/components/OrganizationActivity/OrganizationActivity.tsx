@@ -30,13 +30,13 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 
 const OrganizationActivity = () => {
   const { organization, organizationActivity } = useSelectedOrganization();
   const { domains, regions, federations, coalitions } = useNomenclature();
 
-  const [, , updateOrganization] =
-    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { updateOrganization } = useOutletContext<OrganizationContext>();
 
   const { role } = useContext(AuthContext);
 

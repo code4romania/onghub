@@ -108,7 +108,7 @@ const Organization = () => {
           />
         </span>
       </div>
-      <Outlet context={[true, isLoading, updateOrganization]} />
+      <Outlet context={{ disabled: true, isLoading, updateOrganization }} />
     </ContentWrapper>
   );
 };

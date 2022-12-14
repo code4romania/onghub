@@ -13,6 +13,7 @@ import { UserRole } from '../../../users/enums/UserRole.enum';
 import { FinancialType } from '../../enums/FinancialType.enum';
 import { Expense } from '../../interfaces/Expense.interface';
 import { Income } from '../../interfaces/Income.interface';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.interface';
 import ExpenseReportModal from './components/ExpenseReportModal';
 import IncomeReportModal from './components/IncomeReportModal';
@@ -24,8 +25,7 @@ const OrganizationFinancial = () => {
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
   const { organizationFinancial, organization } = useSelectedOrganization();
-  const [, isLoading, updateOrganization] =
-    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { isLoading, updateOrganization } = useOutletContext<OrganizationContext>();
 
   const { role } = useContext(AuthContext);
   const { t } = useTranslation(['financial', 'organization', 'common']);

@@ -26,6 +26,7 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
 import { Investor } from '../../interfaces/Investor.interface';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { Partner } from '../../interfaces/Partner.interface';
 import { Report } from '../../interfaces/Report.interface';
 import ReportSummaryModal from './components/ReportSummaryModal';
@@ -47,8 +48,8 @@ const OrganizationData = () => {
 
   const { organizationReport, organization } = useSelectedOrganization();
 
-  const [, updateReportPending, updateReport] =
-    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { isLoading: updateReportPending, updateOrganization: updateReport } =
+    useOutletContext<OrganizationContext>();
 
   const {
     mutate: uploadPartners,

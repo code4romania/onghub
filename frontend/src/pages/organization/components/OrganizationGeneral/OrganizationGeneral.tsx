@@ -17,6 +17,7 @@ import { useAuthContext } from '../../../../contexts/AuthContext';
 import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
+import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 
 const OrganizationGeneral = () => {
@@ -25,8 +26,7 @@ const OrganizationGeneral = () => {
   const [city, setCity] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
   const { cities, counties } = useNomenclature();
-  const [disabled, , updateOrganization] =
-    useOutletContext<[disabled: boolean, isLoading: boolean, updateOrganization: any]>();
+  const { disabled, updateOrganization } = useOutletContext<OrganizationContext>();
   const { role } = useAuthContext();
 
   const { organizationGeneral, organization } = useSelectedOrganization();
