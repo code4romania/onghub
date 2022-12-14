@@ -109,17 +109,6 @@ export const emptyStringToNull = (obj: any): any => {
   return newObj;
 };
 
-export const emptyArrayToNull = (obj: any): any => {
-  let newObj = {};
-  Object.keys(obj).forEach((key: any) => {
-    newObj = {
-      ...newObj,
-      [key]: Array.isArray(obj[key]) && obj[key].length === 0 ? null : obj[key],
-    };
-  });
-  return newObj;
-};
-
 // Returns an array of years.
 export const rangeOfYears = (start: number, end?: number) => {
   end = end || new Date().getFullYear();

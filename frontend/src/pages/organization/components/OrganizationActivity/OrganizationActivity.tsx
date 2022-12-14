@@ -21,7 +21,6 @@ import {
 } from '../../../../services/organization/Organization.queries';
 import MultiSelect from '../../../../components/multi-select/MultiSelect';
 import {
-  emptyArrayToNull,
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
@@ -35,6 +34,7 @@ import { UserRole } from '../../../users/enums/UserRole.enum';
 import { REQUEST_LOCATION } from '../../constants/location.constants';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { parseOrganizationActivityDataToPayload } from '../../../../services/organization/Organization.helper';
 
 const OrganizationActivity = () => {
   const { organization, organizationActivity } = useSelectedOrganization();
@@ -56,6 +56,7 @@ const OrganizationActivity = () => {
     formState: { errors },
     reset,
     watch,
+    getValues,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -80,13 +81,6 @@ const OrganizationActivity = () => {
     // data mappings for backend payload
     const activity = {
       ...data,
-      isPartOfFederation: str2bool(data.isPartOfFederation),
-      isPartOfCoalition: str2bool(data.isPartOfCoalition),
-      isPartOfInternationalOrganization: str2bool(data.isPartOfInternationalOrganization),
-      isSocialServiceViable: str2bool(data.isSocialServiceViable),
-      offersGrants: str2bool(data.offersGrants),
-      isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
-
       branches: data.branches ? [...data.branches.map(mapSelectToValue)] : [],
       cities: data.cities ? [...data.cities.map(mapSelectToValue)] : [],
       regions: data.regions ? [...data.regions.map(mapSelectToValue)] : [],
@@ -96,7 +90,7 @@ const OrganizationActivity = () => {
 
     mutate({
       id: organization?.id,
-      organization: { activity: emptyArrayToNull(activity) },
+      organization: { activity: parseOrganizationActivityDataToPayload(activity) },
     });
   };
 
@@ -144,6 +138,16 @@ const OrganizationActivity = () => {
       useErrorToast(t('save_error', { ns: 'organization' }));
     }
   }, [error]);
+
+  useEffect(() => {
+    // This is the only conditional form field who has input validation that's why we handle it differently
+    // TODO: Improve this
+    if (isPartOfInternationalOrganization && !str2bool(isPartOfInternationalOrganization)) {
+      // Remove international organization data from form
+      const { internationalOrganizationName, ...values } = getValues();
+      reset(values);
+    }
+  }, [isPartOfInternationalOrganization]);
 
   // edit mode
   const startEdit = () => {
