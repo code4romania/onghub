@@ -49,7 +49,7 @@ const DeleteRowConfirmationModal = ({ onClose, onConfirm }: DeleteRowConfirmatio
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 flex sm:flex-row flex-row-reverse">
+                <div className="mt-5 sm:mt-6 flex gap-4 sm:flex-row flex-row-reverse">
                   <button
                     type="button"
                     className="red-button sm:text-sm lg:text-base text-xs"
