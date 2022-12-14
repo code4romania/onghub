@@ -322,6 +322,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.reports || []}
             loading={updateReportPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
@@ -348,6 +350,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.partners || []}
             loading={uploadPartnersPending || deletePartnerPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
@@ -374,6 +378,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.investors || []}
             loading={uploadInvestorsPending || deleteInvestorPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
