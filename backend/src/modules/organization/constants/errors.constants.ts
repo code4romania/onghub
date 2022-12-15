@@ -107,6 +107,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while retrieving the organization',
     errorCode: 'ORG_025',
   },
+  UPDATE_GENERAL: {
+    message: 'Error while updaeing organization general',
+    errorCode: 'ORG_026',
+  },
 };
 
 export const PARTNER_ERRORS = {

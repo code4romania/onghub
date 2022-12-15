@@ -751,6 +751,9 @@ export class OrganizationService {
     const organization = await this.find(id);
 
     if (updateOrganizationDto.general) {
+      // validate logo size
+      this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+
       return this.organizationGeneralService.update(
         organization.organizationGeneralId,
         updateOrganizationDto.general,
@@ -767,6 +770,11 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.legal) {
+      this.fileManagerService.validateFiles(
+        organizationStatute,
+        FILE_TYPE.FILE,
+      );
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,

@@ -30,6 +30,8 @@ export class OrganizationGeneralService {
   ) {
     let { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
 
+    // 1. handle contact upload
+    // TODO: this will be deprecated
     if (contact) {
       const contactEntity = await this.contactService.get({
         where: { id: contact.id },
@@ -37,20 +39,28 @@ export class OrganizationGeneralService {
       updateOrganizationData['contact'] = { ...contactEntity, ...contact };
     }
 
+    // 2. handle logo
     if (logo) {
-      if (updateOrganizationGeneralDto.logo) {
-        await this.fileManagerService.deleteFiles([
-          updateOrganizationGeneralDto.logo,
-        ]);
-      }
-
       try {
+        // 2.1 Get logo path from database
+        const organizationGeneral =
+          await this.organizationGeneralRepository.get({
+            where: { id },
+          });
+
+        //2.2 Remove logo if we have any
+        if (organizationGeneral.logo) {
+          await this.fileManagerService.deleteFiles([organizationGeneral.logo]);
+        }
+
+        //2.3 Upload new logo file to s3
         const uploadedFile = await this.fileManagerService.uploadFiles(
           logoPath,
           logo,
           FILE_TYPE.IMAGE,
         );
 
+        // 2.4 Add new logo path to database
         updateOrganizationData = {
           ...updateOrganizationData,
           logo: uploadedFile[0],
@@ -71,27 +81,44 @@ export class OrganizationGeneralService {
       }
     }
 
-    await this.organizationGeneralRepository.save({
-      id,
-      ...updateOrganizationData,
-    });
+    // 3. Save organization general data
+    try {
+      await this.organizationGeneralRepository.save({
+        id,
+        ...updateOrganizationData,
+      });
 
-    let organizationGeneral = await this.organizationGeneralRepository.get({
-      where: { id },
-      relations: ['city', 'county', 'contact'],
-    });
+      let organizationGeneral = await this.organizationGeneralRepository.get({
+        where: { id },
+        relations: ['city', 'county', 'contact'],
+      });
 
-    if (logo) {
-      const logoPublicUrl = await this.fileManagerService.generatePresignedURL(
-        organizationGeneral.logo,
-      );
-      organizationGeneral = {
-        ...organizationGeneral,
-        logo: logoPublicUrl,
-      };
+      if (organizationGeneral.logo) {
+        const logoPublicUrl =
+          await this.fileManagerService.generatePresignedURL(
+            organizationGeneral.logo,
+          );
+        organizationGeneral = {
+          ...organizationGeneral,
+          logo: logoPublicUrl,
+        };
+      }
+
+      return organizationGeneral;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...ORGANIZATION_ERRORS.UPDATE_GENERAL,
+      });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.UPDATE_GENERAL,
+          error,
+        });
+      }
     }
-
-    return organizationGeneral;
   }
 
   public async findOne(
