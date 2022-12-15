@@ -321,6 +321,7 @@ const CreateOrganizationLegal = () => {
                     name="uploadPhoto"
                     id="create-organization-legal__statute-upload"
                     type="file"
+                    accept=".doc,.docx,.pdf"
                     onChange={onChangeFile}
                   />
                 </>
@@ -328,7 +329,7 @@ const CreateOrganizationLegal = () => {
               {organizationStatute && (
                 <a
                   href={fileToURL(organizationStatute) || ''}
-                  download
+                  download={organizationStatute?.name || ''}
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />

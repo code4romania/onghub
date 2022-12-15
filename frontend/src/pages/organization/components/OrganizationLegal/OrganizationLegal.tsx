@@ -358,6 +358,7 @@ const OrganizationLegal = () => {
                       name="uploadPhoto"
                       id="uploadPhoto"
                       type="file"
+                      accept=".doc,.docx,.pdf"
                       onChange={onChangeFile}
                     />
                   </>
