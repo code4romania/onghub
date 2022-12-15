@@ -28,6 +28,7 @@ import { OrganizationApplicationRequest } from '../interfaces/organization-appli
 import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
+import { Role } from 'src/modules/user/enums/role.enum';
 
 @Injectable()
 export class OngApplicationService {
@@ -107,6 +108,7 @@ export class OngApplicationService {
   public async findApplications(
     organizationId: number,
     options?: OrganizationApplicationFilterDto,
+    role?: Role,
   ): Promise<IOngApplication[]> {
     const { organizationId: ongId, userId, search, type } = options;
 
@@ -156,6 +158,12 @@ export class OngApplicationService {
         .orWhere('application.type = :type', {
           type: ApplicationTypeEnum.INDEPENDENT,
         });
+    }
+
+    if (role === Role.SUPER_ADMIN) {
+      applicationsQuery.where('ongApp.organizationId = :organizationId', {
+        organizationId,
+      });
     }
 
     if (search) {

@@ -95,8 +95,13 @@ export class ApplicationController {
   findOrganizationApplications(
     @Param('id') organizationId: number,
     @Query() filters: OrganizationApplicationFilterDto,
+    @ExtractUser() user: User,
   ): Promise<IOngApplication[]> {
-    return this.ongApplicationService.findApplications(organizationId, filters);
+    return this.ongApplicationService.findApplications(
+      organizationId,
+      filters,
+      user.role,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
