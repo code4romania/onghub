@@ -74,7 +74,7 @@ export const mapSelectToSkill = (
 // Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,
-  label: `${item.name}, jud. ${item.county.name}`,
+  label: `${item.name}, jud. ${item.county?.name}`,
   // label: `${item?.name}`,
 });
 
