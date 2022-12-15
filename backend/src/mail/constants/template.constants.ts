@@ -29,7 +29,8 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: () =>
         'O noua solicitare de creare de profil in ONG Hub a fost creata in sistem.',
       cta: {
-        link: (requestId) => `onghub.ro/requests/${requestId}/general`,
+        link: (requestId) =>
+          `${process.env.ONGHUB_LINK}requests/${requestId}/general`,
         label: 'Solicitare creare',
       },
     },
@@ -42,7 +43,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: () =>
         `Profilul tau ONG Hub a fost creat cu succes. Incepand de acum vei putea intra in cont si vei avea acces la toate aplicatiile disponibile pro-bono in ecosistemul dedicat societatii civile. Daca ai nevoie de ajutor, ne gasesti la ${process.env.MAIL_CONTACT}.`,
       cta: {
-        link: () => `www.onghub.ro/profile`,
+        link: () => `${process.env.ONGHUB_LINK}`,
         label: 'Organizatia ta',
       },
     },
@@ -83,7 +84,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
         `Administratorul organizatiei ${organizationName} doreste stergerea aplicatiei ${applicationName} din organizatia sa.`,
       cta: {
         link: (organizationId) =>
-          `onghub.ro/organizations/${organizationId}/applications`,
+          `${process.env.ONGHUB_LINK}organizations/${organizationId}/applications`,
         label: 'Organizatia',
       },
     },

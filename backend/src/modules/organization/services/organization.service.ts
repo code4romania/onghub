@@ -8,11 +8,8 @@ import {
 } from '@nestjs/common';
 import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
-import { MailService } from 'src/mail/services/mail.service';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
-import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { AnafService } from 'src/shared/services';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
@@ -60,6 +57,9 @@ import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
 
 @Injectable()
 export class OrganizationService {
@@ -76,9 +76,9 @@ export class OrganizationService {
     private readonly anafService: AnafService,
     private readonly fileManagerService: S3FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
-    private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async create(
@@ -926,38 +926,21 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.findWithUsers(organizationId);
+    const organization = await this.find(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
       throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
     }
-
-    const admins = organization.users.filter(
-      (item) => item.role === Role.ADMIN,
-    );
 
     await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
 
-    const {
-      template,
-      subject,
-      context: { title },
-    } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN;
-
-    await this.mailService.sendEmail({
-      to: admins.map((admin) => admin.email),
-      template,
-      subject,
-      context: {
-        title,
-        subtitle: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.subtitle(
-          organization.organizationGeneral.name,
-        ),
-      },
-    });
+    this.eventEmitter.emit(
+      EVENTS.RESTRICT_ORGANIZATION,
+      new RestrictOngEvent(organization.id),
+    );
 
     return organization;
   }
