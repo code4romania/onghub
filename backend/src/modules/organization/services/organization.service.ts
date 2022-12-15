@@ -914,6 +914,36 @@ export class OrganizationService {
     );
   }
 
+  public async deleteOrganizationStatute(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      return this.organizationLegalService.deleteOrganizationStatute(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+          error: err,
+        });
+      }
+    }
+  }
+
   /**
    * Will update the status from PENDING to ACTIVE
    *

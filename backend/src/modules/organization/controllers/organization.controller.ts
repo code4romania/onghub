@@ -285,6 +285,13 @@ export class OrganizationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
+  @Delete(':id/statute')
+  deleteOrganizationStatute(@Param('id') id: number) {
+    return this.organizationService.deleteOrganizationStatute(id);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
   @ApiBody({
     required: false,
     schema: {

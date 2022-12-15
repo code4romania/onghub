@@ -469,6 +469,9 @@
         "invalid": "Rolul are un format invalid.",
         "label": "Rol*"
       }
+    },
+    "errors": {
+      "ORG_027": "Eroare la stergerea documentului!"
     }
   },
   "financial": {
