@@ -14,7 +14,6 @@ import { CivicCenterServiceService } from 'src/modules/civic-center-service/serv
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { AnafService } from 'src/shared/services';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, FindManyOptions, FindOperator, In } from 'typeorm';
@@ -60,6 +59,9 @@ import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import CUIChangedEvent from '../events/CUI-changed-event.class';
+import { ORGANIZATION_EVENTS } from '../constants/events.constants';
 
 @Injectable()
 export class OrganizationService {
@@ -73,7 +75,6 @@ export class OrganizationService {
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
-    private readonly anafService: AnafService,
     private readonly fileManagerService: S3FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly mailService: MailService,
@@ -171,10 +172,11 @@ export class OrganizationService {
     const lastYear = new Date().getFullYear() - 1;
 
     // get anaf data
-    const financialInformation = await this.anafService.getFinancialInformation(
-      createOrganizationDto.general.cui,
-      lastYear,
-    );
+    const financialInformation =
+      await this.organizationFinancialService.getFinancialInformation(
+        createOrganizationDto.general.cui,
+        lastYear,
+      );
 
     // create the parent entry with default values
     const organization = await this.organizationRepository.save({
@@ -219,12 +221,9 @@ export class OrganizationService {
           FILE_TYPE.IMAGE,
         );
 
-        await this.organizationGeneralService.update(
-          organization.organizationGeneral.id,
-          {
-            logo: uploadedFile[0],
-          },
-        );
+        await this.organizationGeneralService.update(organization, {
+          logo: uploadedFile[0],
+        });
       }
 
       // upload organization statute
@@ -260,9 +259,12 @@ export class OrganizationService {
     return organization;
   }
 
-  public async find(id: number) {
+  public async find(id: number, options?: { relations?: string[] }) {
     const organization = await this.organizationRepository.get({
       where: { id },
+      ...(options?.relations?.length
+        ? { relations: [...options.relations] }
+        : {}),
     });
 
     if (!organization) {
@@ -740,7 +742,6 @@ export class OrganizationService {
 
   /**
    * Update organization will only update one child at the time
-   * TODO: Review if we put this in organization
    */
   public async update(
     id: number,
@@ -755,7 +756,7 @@ export class OrganizationService {
       this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
 
       return this.organizationGeneralService.update(
-        organization.organizationGeneralId,
+        organization,
         updateOrganizationDto.general,
         `${id}/${ORGANIZATION_FILES_DIR.LOGO}`,
         logo,
@@ -1235,10 +1236,11 @@ export class OrganizationService {
     // 2. Get data from ANAF
     let financialFromAnaf = null;
     try {
-      financialFromAnaf = await this.anafService.getFinancialInformation(
-        organization.organizationGeneral.cui,
-        year,
-      );
+      financialFromAnaf =
+        await this.organizationFinancialService.getFinancialInformation(
+          organization.organizationGeneral.cui,
+          year,
+        );
     } catch (err) {
       throw new InternalServerErrorException({
         ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ANAF_ERRORED,

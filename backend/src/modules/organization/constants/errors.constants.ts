@@ -115,6 +115,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while updating organization general',
     errorCode: 'ORG_026',
   },
+  UPDATE_CUI: {
+    message: 'Error while recreating financial information for changed CUI',
+    errorCode: 'ORG_028',
+  },
 };
 
 export const PARTNER_ERRORS = {

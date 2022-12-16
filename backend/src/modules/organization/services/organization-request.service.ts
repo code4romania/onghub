@@ -76,6 +76,7 @@ export class OrganizationRequestService {
         'organization.organizationActivity.coalitions',
         'organization.organizationActivity.domains',
         'organization.organizationActivity.cities',
+        'organization.organizationActivity.cities.county',
         'organization.organizationActivity.federations',
         'organization.organizationActivity.coalitions',
         'organization.organizationActivity.branches',
