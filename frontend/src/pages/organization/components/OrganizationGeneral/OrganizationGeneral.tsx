@@ -94,15 +94,15 @@ const OrganizationGeneral = () => {
     setReadonly(true);
 
     const payload = {
-      ...organizationGeneralData,
-      website: setUrlPrefix(organizationGeneralData.website),
-      facebook: setUrlPrefix(organizationGeneralData.facebook),
-      instagram: setUrlPrefix(organizationGeneralData.instagram),
-      twitter: setUrlPrefix(organizationGeneralData.twitter),
-      linkedin: setUrlPrefix(organizationGeneralData.linkedin),
-      tiktok: setUrlPrefix(organizationGeneralData.tiktok),
-      donationWebsite: setUrlPrefix(organizationGeneralData.donationWebsite),
-      redirectLink: setUrlPrefix(organizationGeneralData.redirectLink),
+      ...organizationGeneral,
+      website: setUrlPrefix(organizationGeneral.website),
+      facebook: setUrlPrefix(organizationGeneral.facebook),
+      instagram: setUrlPrefix(organizationGeneral.instagram),
+      twitter: setUrlPrefix(organizationGeneral.twitter),
+      linkedin: setUrlPrefix(organizationGeneral.linkedin),
+      tiktok: setUrlPrefix(organizationGeneral.tiktok),
+      donationWebsite: setUrlPrefix(organizationGeneral.donationWebsite),
+      redirectLink: setUrlPrefix(organizationGeneral.redirectLink),
       contact: {
         ...contact,
         fullName: contact_fullName,
