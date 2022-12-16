@@ -118,6 +118,8 @@ const OrganizationFinancial = () => {
           columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
           data={organizationFinancial}
           loading={isLoading}
+          defaultSortFieldId={'year'}
+          defaultSortAsc={false}
         />
         {isExpenseReportModalOpen && (
           <ExpenseReportModal

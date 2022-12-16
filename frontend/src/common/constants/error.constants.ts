@@ -20,4 +20,5 @@ export const FILE_ERRORS: Record<string, string> = {
   FILE_005: i18n.t('common:upload.document_size'),
   APP_003: i18n.t('common:upload.logo'),
   ORG_010: i18n.t('common:upload.statute'),
+  ORG_027: i18n.t('legal:errors.ORG_027'),
 };

@@ -19,6 +19,8 @@ interface DataTableProps {
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (rowsPerPage: number) => void;
   onSort?: (selectedColumn: TableColumn<any>, sortDirection: SortOrder, sortedRows: any[]) => void;
+  defaultSortFieldId?: string | number;
+  defaultSortAsc?: boolean;
 }
 
 const DataTableComponent = ({
@@ -34,6 +36,8 @@ const DataTableComponent = ({
   onSort,
   onChangePage,
   onChangeRowsPerPage,
+  defaultSortFieldId,
+  defaultSortAsc,
 }: DataTableProps) => {
   const { t } = useTranslation('pagination');
 
@@ -67,6 +71,8 @@ const DataTableComponent = ({
         onChangeRowsPerPage={onChangeRowsPerPage}
         noDataComponent={<EmptyContent />}
         progressComponent={<LoadingContent />}
+        defaultSortFieldId={defaultSortFieldId}
+        defaultSortAsc={defaultSortAsc}
       />
     </div>
   );

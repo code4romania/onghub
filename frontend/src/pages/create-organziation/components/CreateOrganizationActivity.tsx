@@ -20,12 +20,14 @@ import {
   useRegionsQuery,
 } from '../../../services/nomenclature/Nomenclature.queries';
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
+import { parseOrganizationActivityDataToPayload } from '../../../services/organization/Organization.helper';
 import { useNomenclature } from '../../../store/selectors';
 import {
   OrganizationActivityConfig,
   OrganizationAreaEnum,
 } from '../../organization/components/OrganizationActivity/OrganizationActivityConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import { ICreateOrganizationPayload } from '../interfaces/CreateOrganization.interface';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();
@@ -43,6 +45,7 @@ const CreateOrganizationActivity = () => {
     formState: { errors },
     reset,
     watch,
+    resetField,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -63,25 +66,10 @@ const CreateOrganizationActivity = () => {
 
   // submit
   const handleSave = (data: any) => {
-    // data mappings for backend payload
-    const activity = {
-      ...data,
-      isPartOfFederation: str2bool(data.isPartOfFederation),
-      isPartOfCoalition: str2bool(data.isPartOfCoalition),
-      isPartOfInternationalOrganization: str2bool(data.isPartOfInternationalOrganization),
-      isSocialServiceViable: str2bool(data.isSocialServiceViable),
-      offersGrants: str2bool(data.offersGrants),
-      hasBranches: str2bool(data.hasBranches),
-      isPublicIntrestOrganization: str2bool(data.isPublicIntrestOrganization),
-
-      branches: data.branches ? data.branches : [],
-      cities: data.cities ? data.cities : [],
-      regions: data.regions ? data.regions : [],
-      coalitions: data.coalitions ? data.coalitions : [],
-      federations: data.federations ? data.federations : [],
-    };
-
-    setOrganization((org: any) => ({ ...org, activity }));
+    setOrganization((org: ICreateOrganizationPayload) => ({
+      ...org,
+      activity: parseOrganizationActivityDataToPayload(data),
+    }));
 
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
   };
@@ -103,8 +91,19 @@ const CreateOrganizationActivity = () => {
     }
   }, [organization]);
 
+  useEffect(() => {
+    // This is the only conditional form field who has input validation that's why we handle it differently
+    // TODO: Improve this
+    if (isPartOfInternationalOrganization && !str2bool(isPartOfInternationalOrganization)) {
+      // Remove international organization data from form
+      resetField(OrganizationActivityConfig.internationalOrganizationName.key, {
+        defaultValue: '',
+      });
+    }
+  }, [isPartOfInternationalOrganization]);
+
   const loadOptionsCitiesSerch = async (searchWord: string) => {
-    return getCities(searchWord).then((res: any[]) => res.map(mapCitiesToSelect));
+    return getCities(searchWord).then((res) => res.map(mapCitiesToSelect));
   };
 
   return (

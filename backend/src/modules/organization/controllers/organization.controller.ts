@@ -25,6 +25,8 @@ import { FormDataBody } from 'src/common/decorators/form-data-body.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { ExtractUser } from 'src/modules/user/decorators/user.decorator';
+import { User } from 'src/modules/user/entities/user.entity';
 import { Role } from '../../user/enums/role.enum';
 import {
   INVESTOR_UPLOAD_SCHEMA,
@@ -281,6 +283,19 @@ export class OrganizationController {
     @Param('investorId') investorId: string,
   ) {
     return this.organizationService.deleteInvestor(+id, +investorId);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id/statute')
+  deleteOrganizationStatute(
+    @ExtractUser() user: User,
+    @Param('id') id: number,
+  ) {
+    // for admin user.organizationId has precedence
+    return this.organizationService.deleteOrganizationStatute(
+      user?.organizationId || id,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)
