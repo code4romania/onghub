@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
+import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -14,7 +15,9 @@ import ContactForm from '../../../../components/Contact/Contact';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
+import Spinner from '../../../../components/spinner/Spinner';
 import { AuthContext } from '../../../../contexts/AuthContext';
+import { useDeleteOrganizationStatuteMutation } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { Contact } from '../../interfaces/Contact.interface';
@@ -43,6 +46,8 @@ const OrganizationLegal = () => {
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
   const { updateOrganization } = useOutletContext<OrganizationContext>();
+  const { mutate: deleteOrganizationStatute, isLoading: isRemovingOrganizationStatute } =
+    useDeleteOrganizationStatuteMutation();
 
   const { role } = useContext(AuthContext);
   // React i18n
@@ -241,7 +246,24 @@ const OrganizationLegal = () => {
   const onRemoveOrganizationStatute = (event: any) => {
     event.stopPropagation();
     event.preventDefault();
-    setOrganizationStatute(null);
+
+    // 1. check if we have a path in s3 and remove it
+    if (organizationLegal?.organizationStatute) {
+      deleteOrganizationStatute(
+        { organizationId: organization?.id as number },
+        {
+          onError: (error: any) => {
+            useErrorToast(FILE_ERRORS[error?.response.data.code]);
+          },
+          onSettled: () => {
+            setOrganizationStatute(null);
+          },
+        },
+      );
+    } else {
+      // 2. the file is only in memory so we clear state
+      setOrganizationStatute(null);
+    }
   };
 
   return (
@@ -344,20 +366,21 @@ const OrganizationLegal = () => {
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode &&
-                organizationLegal?.organizationStatute === null &&
+                !organizationLegal?.organizationStatute &&
                 organizationStatute === null && (
                   <>
                     <label
-                      htmlFor="uploadPhoto"
+                      htmlFor="uploadStatute"
                       className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       {t('statute_upload')}
                     </label>
                     <input
                       className="h-0 w-0"
-                      name="uploadPhoto"
-                      id="uploadPhoto"
+                      name="uploadStatute"
+                      id="uploadStatute"
                       type="file"
+                      accept={FILE_TYPES_ACCEPT.STATUTE}
                       onChange={onChangeFile}
                     />
                   </>
@@ -370,12 +393,13 @@ const OrganizationLegal = () => {
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
-                  {isEditMode && (
+                  {isEditMode && !isRemovingOrganizationStatute && (
                     <XIcon
                       className="ml-2 w-4 h-4 text-gray-600"
                       onClick={onRemoveOrganizationStatute}
                     />
                   )}
+                  {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
                 </a>
               )}
             </div>

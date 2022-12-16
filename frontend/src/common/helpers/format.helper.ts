@@ -74,7 +74,7 @@ export const mapSelectToSkill = (
 // Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,
-  label: `${item.name}, jud. ${item.county.name}`,
+  label: `${item.name}, jud. ${item.county?.name}`,
   // label: `${item?.name}`,
 });
 
@@ -100,17 +100,6 @@ export const str2boolObject = (item: any) => {
 
 export const fileToURL = (file: File | null) => {
   return file ? URL.createObjectURL(file) : null;
-};
-
-export const emptyArrayToNull = (obj: any): any => {
-  let newObj = {};
-  Object.keys(obj).forEach((key: any) => {
-    newObj = {
-      ...newObj,
-      [key]: Array.isArray(obj[key]) && obj[key].length === 0 ? null : obj[key],
-    };
-  });
-  return newObj;
 };
 
 // Returns an array of years.

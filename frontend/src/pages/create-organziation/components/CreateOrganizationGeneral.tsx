@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { fileToURL, flatten, setUrlPrefix } from '../../../common/helpers/format.helper';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
@@ -64,7 +65,7 @@ const CreateOrganizationGeneral = () => {
     if (county && city && city.county.id !== county.id) {
       setCity(null);
     }
-  }, [county])
+  }, [county]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -401,7 +402,7 @@ const CreateOrganizationGeneral = () => {
                         name="uploadPhoto"
                         id="create-organization-general__logo-upload"
                         type="file"
-                        accept="image/png, image/jpeg, image/svg"
+                        accept={FILE_TYPES_ACCEPT.LOGO}
                         onChange={onChangeFile}
                       />
                     </>

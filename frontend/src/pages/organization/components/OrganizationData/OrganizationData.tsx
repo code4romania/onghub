@@ -4,6 +4,7 @@ import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import readXlsxFile from 'read-excel-file';
+import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -322,6 +323,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.reports || []}
             loading={updateReportPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
@@ -348,6 +351,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.partners || []}
             loading={uploadPartnersPending || deletePartnerPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
@@ -374,6 +379,8 @@ const OrganizationData = () => {
             }
             data={organizationReport?.investors || []}
             loading={uploadInvestorsPending || deleteInvestorPending}
+            defaultSortFieldId={'year'}
+            defaultSortAsc={false}
           />
         </>
       </CardPanel>
@@ -382,7 +389,7 @@ const OrganizationData = () => {
         id="upload"
         name="upload"
         type="file"
-        accept=".xls,.xlsx"
+        accept={FILE_TYPES_ACCEPT.EXCEL}
         onChange={onUploadNewList}
       />
       {isActivitySummaryModalOpen && selectedReport && (
