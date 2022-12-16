@@ -88,21 +88,21 @@ const OrganizationGeneral = () => {
       logo,
       cityId,
       countyId,
-      ...organizationGeneral
+      ...organizationGeneralData
     } = data;
 
     setReadonly(true);
 
     const payload = {
-      ...organizationGeneral,
-      website: setUrlPrefix(organizationGeneral.website),
-      facebook: setUrlPrefix(organizationGeneral.facebook),
-      instagram: setUrlPrefix(organizationGeneral.instagram),
-      twitter: setUrlPrefix(organizationGeneral.twitter),
-      linkedin: setUrlPrefix(organizationGeneral.linkedin),
-      tiktok: setUrlPrefix(organizationGeneral.tiktok),
-      donationWebsite: setUrlPrefix(organizationGeneral.donationWebsite),
-      redirectLink: setUrlPrefix(organizationGeneral.redirectLink),
+      ...organizationGeneralData,
+      website: setUrlPrefix(organizationGeneralData.website),
+      facebook: setUrlPrefix(organizationGeneralData.facebook),
+      instagram: setUrlPrefix(organizationGeneralData.instagram),
+      twitter: setUrlPrefix(organizationGeneralData.twitter),
+      linkedin: setUrlPrefix(organizationGeneralData.linkedin),
+      tiktok: setUrlPrefix(organizationGeneralData.tiktok),
+      donationWebsite: setUrlPrefix(organizationGeneralData.donationWebsite),
+      redirectLink: setUrlPrefix(organizationGeneralData.redirectLink),
       contact: {
         ...contact,
         fullName: contact_fullName,
@@ -139,12 +139,11 @@ const OrganizationGeneral = () => {
         onError: (err: any) => {
           const response = err.response?.data?.message;
           if (Array.isArray(response)) {
-            const mappedErrors = response.map(
-              (error) =>
-                ORGANIZATION_ERRORS[error.response.errorCode] ||
-                FILE_ERRORS[error.response.errorCode],
-            );
+            const mappedErrors = response.map((error) => ORGANIZATION_ERRORS[error.errorCode]);
             setValidationErrors(mappedErrors);
+          }
+          if (err.response.data.code) {
+            setValidationErrors([FILE_ERRORS[err.response.data.code]]);
           }
         },
       },

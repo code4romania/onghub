@@ -750,7 +750,12 @@ export class OrganizationService {
 
     if (updateOrganizationDto.general) {
       // validate logo size
-      this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+      try {
+        this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+      } catch (error) {
+        this.logger.error({ error });
+        throw error;
+      }
 
       return this.organizationGeneralService.update(
         organization,

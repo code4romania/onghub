@@ -53,68 +53,32 @@ export class OrganizationGeneralService {
     const errors = [];
 
     // 1. Validate unicity of received data
-    // 1.1 For NGO name
-    if (updateOrganizationData.name) {
-      const checkOrganizationName =
-        await this.organizationGeneralRepository.get({
-          where: { name: updateOrganizationData.name },
-        });
-      if (checkOrganizationName) {
+    const organizationGenerals =
+      await this.organizationGeneralRepository.getMany({});
+    for (let i = 0; i < organizationGenerals.length; i++) {
+      if (organizationGenerals[i].name === updateOrganizationData?.name) {
         errors.push(
-          new BadRequestException(
-            ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
-          ),
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        );
+      }
+      if (organizationGenerals[i].alias === updateOrganizationData?.alias) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_ALIAS_EXISTS,
+        );
+      }
+      if (organizationGenerals[i].email === updateOrganizationData?.email) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_EMAIL_EXISTS,
+        );
+      }
+      if (organizationGenerals[i].phone === updateOrganizationData?.phone) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
         );
       }
     }
 
-    // 1.2 For NGO alias
-    if (updateOrganizationData.alias) {
-      const checkOrganizationAlias =
-        await this.organizationGeneralRepository.get({
-          where: { alias: updateOrganizationData.alias },
-        });
-      console.log(checkOrganizationAlias);
-      if (checkOrganizationAlias) {
-        errors.push(
-          new BadRequestException(
-            ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_ALIAS_EXISTS,
-          ),
-        );
-      }
-    }
-
-    // 1.3 For NGO email
-    if (updateOrganizationData.email) {
-      const checkOrganizationEmail =
-        await this.organizationGeneralRepository.get({
-          where: { email: updateOrganizationData.email },
-        });
-      if (checkOrganizationEmail) {
-        errors.push(
-          new BadRequestException(
-            ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_EMAIL_EXISTS,
-          ),
-        );
-      }
-    }
-
-    // 1.4 For NGO phone
-    if (updateOrganizationData.phone) {
-      const checkOrganizationPhone =
-        await this.organizationGeneralRepository.get({
-          where: { phone: updateOrganizationData.phone },
-        });
-      if (checkOrganizationPhone) {
-        errors.push(
-          new BadRequestException(
-            ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
-          ),
-        );
-      }
-    }
-
-    // 1. handle contact upload
+    // 2. handle contact upload
     // TODO: this will be deprecated
     if (contact) {
       const contactEntity = await this.contactService.get({
@@ -123,22 +87,22 @@ export class OrganizationGeneralService {
       updateOrganizationData['contact'] = { ...contactEntity, ...contact };
     }
 
-    // 2. handle logo
+    // 3. handle logo
     if (logo) {
       try {
-        //2.1 Remove logo if we have any
+        //3.1 Remove logo if we have any
         if (currentLogoPath) {
           await this.fileManagerService.deleteFiles([currentLogoPath]);
         }
 
-        //2.2 Upload new logo file to s3
+        //3.2 Upload new logo file to s3
         const uploadedFile = await this.fileManagerService.uploadFiles(
           logoPath,
           logo,
           FILE_TYPE.IMAGE,
         );
 
-        // 2.3 Add new logo path to database
+        // 3.3 Add new logo path to database
         updateOrganizationData = {
           ...updateOrganizationData,
           logo: uploadedFile[0],
@@ -148,16 +112,7 @@ export class OrganizationGeneralService {
           error: { error },
           ...ORGANIZATION_ERRORS.UPLOAD,
         });
-        if (error instanceof HttpException) {
-          errors.push(error);
-        } else {
-          errors.push(
-            new InternalServerErrorException({
-              ...ORGANIZATION_ERRORS.UPLOAD,
-              error,
-            }),
-          );
-        }
+        errors.push(ORGANIZATION_ERRORS.UPLOAD);
       }
     }
 
@@ -165,7 +120,7 @@ export class OrganizationGeneralService {
       throw new BadRequestException(errors);
     }
 
-    // 3. Save organization general data
+    // 4. Save organization general data
     try {
       await this.organizationGeneralRepository.save({
         id: organization.organizationGeneral.id,
