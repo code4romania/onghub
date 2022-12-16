@@ -1268,6 +1268,28 @@ export class OrganizationService {
     return this.organizationRepository.count(findConditions);
   }
 
+  public async countOrganizationsWithActivePracticePrograms(): Promise<number> {
+    return this.organizationRepository.count({
+      where: {
+        status: OrganizationStatus.ACTIVE,
+        practicePrograms: {
+          active: true,
+        },
+      },
+    });
+  }
+
+  public async countOrganizationsWithActiveCivicCenterServices(): Promise<number> {
+    return this.organizationRepository.count({
+      where: {
+        status: OrganizationStatus.ACTIVE,
+        civicCenterServices: {
+          active: true,
+        },
+      },
+    });
+  }
+
   /**
    * Check if the organization has all the financial, report, partner and investor data corectly completed and update the completionStatus
    */
