@@ -168,7 +168,7 @@ export class OrganizationGeneralService {
     // 3. Save organization general data
     try {
       await this.organizationGeneralRepository.save({
-        id,
+        id: organization.organizationGeneral.id,
         ...updateOrganizationData,
       });
 
