@@ -64,6 +64,10 @@ export const ORGANIZATION_ERRORS = {
       message: 'Error while deleting the organization',
       errorCode: 'ORG_015',
     },
+    STATUTE: {
+      message: 'Error while deleting the organization statute',
+      errorCode: 'ORG_027',
+    },
   },
   ALREADY_RESTRICTED: {
     message: 'Organization is already RESTRICTED',
@@ -107,9 +111,13 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while retrieving the organization',
     errorCode: 'ORG_025',
   },
+  UPDATE_GENERAL: {
+    message: 'Error while updating organization general',
+    errorCode: 'ORG_026',
+  },
   UPDATE_CUI: {
     message: 'Error while recreating financial information for changed CUI',
-    errorCode: 'ORG_026',
+    errorCode: 'ORG_028',
   },
 };
 

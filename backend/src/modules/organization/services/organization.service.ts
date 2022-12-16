@@ -752,6 +752,9 @@ export class OrganizationService {
     const organization = await this.find(id);
 
     if (updateOrganizationDto.general) {
+      // validate logo size
+      this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+
       return this.organizationGeneralService.update(
         organization,
         updateOrganizationDto.general,
@@ -768,6 +771,11 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.legal) {
+      this.fileManagerService.validateFiles(
+        organizationStatute,
+        FILE_TYPE.FILE,
+      );
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
@@ -905,6 +913,36 @@ export class OrganizationService {
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
+  }
+
+  public async deleteOrganizationStatute(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteOrganizationStatute(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+          error: err,
+        });
+      }
+    }
   }
 
   /**
