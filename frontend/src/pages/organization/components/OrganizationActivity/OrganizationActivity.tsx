@@ -49,8 +49,8 @@ const OrganizationActivity = () => {
     control,
     formState: { errors },
     reset,
+    resetField,
     watch,
-    getValues,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -139,8 +139,9 @@ const OrganizationActivity = () => {
     // TODO: Improve this
     if (isPartOfInternationalOrganization && !str2bool(isPartOfInternationalOrganization)) {
       // Remove international organization data from form
-      const { internationalOrganizationName, ...values } = getValues();
-      reset(values);
+      resetField(OrganizationActivityConfig.internationalOrganizationName.key, {
+        defaultValue: '',
+      });
     }
   }, [isPartOfInternationalOrganization]);
 
