@@ -57,9 +57,6 @@ import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import CUIChangedEvent from '../events/CUI-changed-event.class';
-import { ORGANIZATION_EVENTS } from '../constants/events.constants';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
 

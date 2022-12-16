@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import {
+  IMailOptions,
+  MAIL_OPTIONS,
+} from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
 import { Role } from 'src/modules/user/enums/role.enum';
@@ -77,11 +80,8 @@ export class NotificationsService {
     const { adminEmail, requestId } = payload;
     try {
       // 1. Send email to admin
-      const adminMailOptions: {
-        template: string;
-        subject: string;
-        context: { title: string; subtitle: () => string };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
+      const adminMailOptions: IMailOptions =
+        MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
 
       await this.mailService.sendEmail({
         to: adminEmail,
@@ -98,18 +98,8 @@ export class NotificationsService {
         where: { role: Role.SUPER_ADMIN },
       });
 
-      const superadminMailOptions: {
-        template: string;
-        subject: string;
-        context: {
-          title: string;
-          subtitle: () => string;
-          cta?: {
-            link: (id: string) => string;
-            label: string;
-          };
-        };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
+      const superadminMailOptions: IMailOptions =
+        MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
 
       await this.mailService.sendEmail({
         to: superAdmins.map((item) => item.email),
@@ -256,7 +246,10 @@ export class NotificationsService {
         },
       });
     } catch (error) {
-      this.logger.error({ error });
+      this.logger.error({
+        ...NOTIFICATIONS_ERRORS.RESTRICT_ONG,
+        error,
+      });
     }
   }
 }

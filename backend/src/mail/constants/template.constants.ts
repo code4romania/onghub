@@ -1,6 +1,6 @@
 const ORGANIZATION_REQUEST = './mail-template';
 
-interface IMailOptions {
+export interface IMailOptions {
   template: string;
   subject: string;
   context: {
