@@ -8,9 +8,6 @@ import {
 } from 'class-validator';
 
 export class CreateFeedbackDto {
-  @IsNumber()
-  civicCenterServiceId: number;
-
   @IsString()
   @Length(3, 100)
   fullName: string;
@@ -20,7 +17,7 @@ export class CreateFeedbackDto {
   interactionDate: string;
 
   @IsString()
-  @Length(50, 500)
+  @Length(3, 500)
   message: string;
 
   @IsNumber()
