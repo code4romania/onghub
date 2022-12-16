@@ -9,6 +9,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { fileToURL } from '../../../common/helpers/format.helper';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
@@ -237,7 +238,7 @@ const ApplicationForm = ({
                   name="uploadPhoto"
                   id="uploadPhoto"
                   type="file"
-                  accept="image/png, image/jpeg, image/svg"
+                  accept={FILE_TYPES_ACCEPT.LOGO}
                   onChange={onChangeFile.bind(this)}
                 />
               </>

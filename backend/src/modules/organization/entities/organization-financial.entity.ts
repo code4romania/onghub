@@ -5,9 +5,18 @@ import { Income } from '../dto/income.dto';
 import { Expense } from '../dto/expense.dto';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class OrganizationFinancial extends BaseEntity {
+  @Exclude()
+  @Column({
+    type: 'integer',
+    nullable: false,
+    name: 'organizationId',
+  })
+  organizationId: number;
+
   @ManyToOne(
     () => Organization,
     (organization) => organization.organizationFinancial,
