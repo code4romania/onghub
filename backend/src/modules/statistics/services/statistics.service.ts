@@ -309,19 +309,13 @@ export class StatisticsService {
 
       switch (pullingType) {
         case ApplicationPullingType.PRACTICE_PROGRAM:
-          ongsWithApplication = await (
-            await this.organizationsService.findAllOrganizationsWithActivePracticePrograms(
-              { limit: 0, page: 0 },
-            )
-          ).meta.totalItems;
+          ongsWithApplication =
+            await this.organizationsService.countOrganizationsWithActivePracticePrograms();
           activeItems = await this.practiceProgramService.countActive();
           break;
         case ApplicationPullingType.CIVIC_SERVICE:
-          ongsWithApplication = await (
-            await this.organizationsService.findAllOrganizationsWithActiveServices(
-              { limit: 0, page: 0 },
-            )
-          ).meta.totalItems;
+          ongsWithApplication =
+            await this.organizationsService.countOrganizationsWithActiveCivicCenterServices();
           activeItems = await this.civicCenterService.countActive();
           break;
         default:
