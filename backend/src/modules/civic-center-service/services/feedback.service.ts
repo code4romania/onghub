@@ -5,25 +5,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from 'src/modules/user/entities/user.entity';
-import { FindManyOptions } from 'typeorm';
+import { FindManyOptions, In } from 'typeorm';
 import { FEEDBACK_ERRORS } from '../constants/errors.constants';
 import { CreateFeedbackDto } from '../dto/create-feedback.dto';
-import { CivicCenterFeedback } from '../entities/civic-center-feedback.entity';
-import { CivicCenterFeedbackRepository } from '../repositories/civic-center-feedback.repository';
+import { Feedback } from '../entities/feedback.entity';
+import { FeedbackRepository } from '../repositories/feedback.repository';
 import { FEEDBACK_FILTERS_CONFIG } from '../constants/feedback-filters.config';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 
 @Injectable()
-export class CivicCenterFeedbackService {
-  constructor(
-    private readonly feedbackRepository: CivicCenterFeedbackRepository,
-  ) {}
+export class FeedbackService {
+  constructor(private readonly feedbackRepository: FeedbackRepository) {}
 
-  public async create(
-    id: number,
-    data: CreateFeedbackDto,
-  ): Promise<CivicCenterFeedback> {
+  public async create(id: number, data: CreateFeedbackDto): Promise<Feedback> {
     try {
       return this.feedbackRepository.save({
         civicCenterServiceId: id,
@@ -42,15 +37,15 @@ export class CivicCenterFeedbackService {
   }
 
   public async findMany(
-    options: FindManyOptions<CivicCenterFeedback>,
-  ): Promise<CivicCenterFeedback[]> {
+    options: FindManyOptions<Feedback>,
+  ): Promise<Feedback[]> {
     return this.feedbackRepository.getMany(options);
   }
 
   public async findManyPaginated(
     user: User,
     options: BaseFilterDto,
-  ): Promise<Pagination<CivicCenterFeedback>> {
+  ): Promise<Pagination<Feedback>> {
     const paginationOptions: any = {
       civicCenterService: {
         organizationId: user.organizationId,
@@ -64,7 +59,7 @@ export class CivicCenterFeedbackService {
     );
   }
 
-  public async findOne(id: number): Promise<CivicCenterFeedback> {
+  public async findOne(id: number): Promise<Feedback> {
     const feedback = await this.feedbackRepository.get({ where: { id } });
 
     if (!feedback) {

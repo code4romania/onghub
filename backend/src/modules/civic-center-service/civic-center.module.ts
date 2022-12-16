@@ -4,24 +4,24 @@ import { ApplicationModule } from '../application/application.module';
 import { CivicCenterController } from './controllers/civic-center.controller';
 import { FeedbackController } from './controllers/feedback.controller';
 import { CivicCenterService } from './entities/civic-center-service.entity';
-import { CivicCenterFeedback } from './entities/civic-center-feedback.entity';
+import { Feedback } from './entities/feedback.entity';
 import { CivicCenterServiceRepository } from './repositories/civic-center-service.repository';
-import { CivicCenterFeedbackRepository } from './repositories/civic-center-feedback.repository';
+import { FeedbackRepository } from './repositories/feedback.repository';
 import { CivicCenterServiceService } from './services/civic-center.service';
-import { CivicCenterFeedbackService } from './services/civic-center-feedback.service';
+import { FeedbackService } from './services/feedback.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CivicCenterService, CivicCenterFeedback]),
+    TypeOrmModule.forFeature([CivicCenterService, Feedback]),
     ApplicationModule,
   ],
   controllers: [CivicCenterController, FeedbackController],
   providers: [
     CivicCenterServiceRepository,
-    CivicCenterFeedbackRepository,
+    FeedbackRepository,
     CivicCenterServiceService,
-    CivicCenterFeedbackService,
+    FeedbackService,
   ],
-  exports: [CivicCenterServiceService, CivicCenterFeedbackService],
+  exports: [CivicCenterServiceService, FeedbackService],
 })
 export class CivicCenterModule {}
