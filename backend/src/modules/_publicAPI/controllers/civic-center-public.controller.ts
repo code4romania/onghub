@@ -3,8 +3,8 @@ import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { CreateFeedbackDto } from 'src/modules/civic-center-service/dto/create-feedback.dto';
-import { Feedback } from 'src/modules/civic-center-service/entities/feedback.entity';
-import { FeedbackService } from 'src/modules/civic-center-service/services/feedback.service';
+import { CivicCenterFeedback } from 'src/modules/civic-center-service/entities/civic-center-feedback.entity';
+import { CivicCenterFeedbackService } from 'src/modules/civic-center-service/services/civic-center-feedback.service';
 import { OrganizationWithServices } from 'src/modules/organization/interfaces/OrganizationWithServices.interface';
 import { CivicCenterServiceSearchFilterDto } from '../../civic-center-service/dto/civic-center-service-search-filter.dto';
 import { CivicCenterService } from '../../civic-center-service/entities/civic-center-service.entity';
@@ -18,7 +18,7 @@ import { CivicCenterPublicService } from '../services/civic-center-public.servic
 export class CivicCenterPublicController {
   constructor(
     private readonly civicCenterServicePublic: CivicCenterPublicService,
-    private readonly feedbackService: FeedbackService,
+    private readonly civicCenterFeedbackService: CivicCenterFeedbackService,
   ) {}
 
   @Public()
@@ -60,11 +60,10 @@ export class CivicCenterPublicController {
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: CreateFeedbackDto })
   @Post('/service/:id/feedback')
-  async create(
+  async createServiceFeedback(
     @Param('id') id: string,
     @Body() body: CreateFeedbackDto,
-  ): Promise<Feedback> {
-    console.log(body);
-    return this.feedbackService.create(+id, body);
+  ): Promise<CivicCenterFeedback> {
+    return this.civicCenterFeedbackService.create(+id, body);
   }
 }

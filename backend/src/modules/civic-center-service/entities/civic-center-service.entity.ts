@@ -12,7 +12,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { AgeCategory } from '../../practice-program/enums/age-category.enum';
-import { Feedback } from './feedback.entity';
+import { CivicCenterFeedback } from './civic-center-feedback.entity';
 
 @Entity()
 export class CivicCenterService extends BaseEntity {
@@ -140,6 +140,9 @@ export class CivicCenterService extends BaseEntity {
   @JoinColumn({ name: 'organization_id' })
   organization?: Organization;
 
-  @OneToMany((type) => Feedback, (feedback) => feedback.civicCenterService)
-  feedbacks: Feedback[];
+  @OneToMany(
+    (type) => CivicCenterFeedback,
+    (feedback) => feedback.civicCenterService,
+  )
+  feedbacks: CivicCenterFeedback[];
 }

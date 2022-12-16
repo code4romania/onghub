@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { CivicCenterService } from './civic-center-service.entity';
 
 @Entity()
-export class Feedback extends BaseEntity {
+export class CivicCenterFeedback extends BaseEntity {
   @Column({ type: 'varchar', name: 'full_name' })
   fullName: string;
 
