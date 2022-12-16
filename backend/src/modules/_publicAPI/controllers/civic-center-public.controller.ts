@@ -64,7 +64,6 @@ export class CivicCenterPublicController {
     @Param('id') id: string,
     @Body() body: CreateFeedbackDto,
   ): Promise<Feedback> {
-    console.log(body);
     return this.feedbackService.create(+id, body);
   }
 }
