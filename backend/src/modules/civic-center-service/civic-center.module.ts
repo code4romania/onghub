@@ -22,6 +22,6 @@ import { FeedbackService } from './services/feedback.service';
     CivicCenterServiceService,
     FeedbackService,
   ],
-  exports: [CivicCenterServiceService],
+  exports: [CivicCenterServiceService, FeedbackService],
 })
 export class CivicCenterModule {}

@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import {
+  IMailOptions,
+  MAIL_OPTIONS,
+} from 'src/mail/constants/template.constants';
 import { MailService } from 'src/mail/services/mail.service';
 import { OrganizationService } from 'src/modules/organization/services';
 import { Role } from 'src/modules/user/enums/role.enum';
@@ -10,7 +13,9 @@ import { EVENTS } from '../constants/events.contants';
 import ApproveOngRequestEvent from '../events/approve-ong-request-event.class';
 import CreateOngRequestEvent from '../events/create-ong-request-event.class';
 import DeleteAppRequestEvent from '../events/delete-app-request-event.class';
+import DisableOngRequestEvent from '../events/disable-ong-request-event.class';
 import RejectOngRequestEvent from '../events/reject-ong-request-event.class';
+import RestrictOngEvent from '../events/restrict-ong-event.class';
 
 @Injectable()
 export class NotificationsService {
@@ -41,7 +46,8 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          cta: { label },
+          subtitle,
+          cta: { link, label },
         },
       } = MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE;
 
@@ -51,15 +57,12 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.subtitle(
-              organziation.organizationGeneral.name,
-              applicationName,
-            ),
+          subtitle: subtitle(
+            organziation.organizationGeneral.name,
+            applicationName,
+          ),
           cta: {
-            link: MAIL_OPTIONS.ORGANIZATION_APPLICATION_REQUEST_DELETE.context.cta.link(
-              organizationId.toString(),
-            ),
+            link: link(organizationId.toString()),
             label,
           },
         },
@@ -77,11 +80,8 @@ export class NotificationsService {
     const { adminEmail, requestId } = payload;
     try {
       // 1. Send email to admin
-      const adminMailOptions: {
-        template: string;
-        subject: string;
-        context: { title: string };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
+      const adminMailOptions: IMailOptions =
+        MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN;
 
       await this.mailService.sendEmail({
         to: adminEmail,
@@ -89,7 +89,7 @@ export class NotificationsService {
         subject: adminMailOptions.subject,
         context: {
           title: adminMailOptions.context.title,
-          subtitle: MAIL_OPTIONS.ORGANIZATION_CREATE_ADMIN.context.subtitle(),
+          subtitle: adminMailOptions.context.subtitle(),
         },
       });
 
@@ -98,11 +98,8 @@ export class NotificationsService {
         where: { role: Role.SUPER_ADMIN },
       });
 
-      const superadminMailOptions: {
-        template: string;
-        subject: string;
-        context: { title: string };
-      } = MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
+      const superadminMailOptions: IMailOptions =
+        MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN;
 
       await this.mailService.sendEmail({
         to: superAdmins.map((item) => item.email),
@@ -110,13 +107,10 @@ export class NotificationsService {
         subject: superadminMailOptions.subject,
         context: {
           title: superadminMailOptions.context.title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.subtitle(),
+          subtitle: superadminMailOptions.context.subtitle(),
           cta: {
-            link: MAIL_OPTIONS.ORGANIZATION_CREATE_SUPERADMIN.context.cta.link(
-              requestId.toString(),
-            ),
-            label: '',
+            link: superadminMailOptions.context.cta.link(requestId.toString()),
+            label: superadminMailOptions.context.cta.label,
           },
         },
       });
@@ -137,7 +131,8 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          cta: { label },
+          subtitle,
+          cta: { label, link },
         },
       } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
 
@@ -147,12 +142,9 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.subtitle(),
+          subtitle: subtitle(),
           cta: {
-            link: MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL.context.cta.link(
-              'www.google.com',
-            ),
+            link: link(process.env.ONGHUB_LINK),
             label,
           },
         },
@@ -173,7 +165,7 @@ export class NotificationsService {
       const {
         template,
         subject,
-        context: { title },
+        context: { title, subtitle },
       } = MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION;
 
       await this.mailService.sendEmail({
@@ -182,8 +174,7 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_REQUEST_REJECTION.context.subtitle(),
+          subtitle: subtitle(),
         },
       });
     } catch (error) {
@@ -195,7 +186,7 @@ export class NotificationsService {
   }
 
   @OnEvent(EVENTS.DISABLE_ORGANIZATION_REQUEST)
-  async handleDisableOrganizationRequest(payload: any) {
+  async handleDisableOrganizationRequest(payload: DisableOngRequestEvent) {
     try {
       const { organizationName } = payload;
 
@@ -206,7 +197,7 @@ export class NotificationsService {
       const {
         template,
         subject,
-        context: { title },
+        context: { title, subtitle },
       } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN;
 
       await this.mailService.sendEmail({
@@ -215,15 +206,48 @@ export class NotificationsService {
         subject,
         context: {
           title,
-          subtitle:
-            MAIL_OPTIONS.ORGANIZATION_RESTRICT_SUPERADMIN.context.subtitle(
-              organizationName,
-            ),
+          subtitle: subtitle(organizationName),
         },
       });
     } catch (error) {
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_ONG_DISABLE,
+        error,
+      });
+    }
+  }
+
+  @OnEvent(EVENTS.RESTRICT_ORGANIZATION)
+  async handleRestrictOrganization(payload: RestrictOngEvent) {
+    try {
+      const { organizationId } = payload;
+
+      const organization = await this.organizationService.findWithUsers(
+        organizationId,
+      );
+
+      const admins = organization.users.filter(
+        (user) => user.role === Role.ADMIN,
+      );
+
+      const {
+        template,
+        subject,
+        context: { title, subtitle },
+      } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN;
+
+      await this.mailService.sendEmail({
+        to: admins.map((admin) => admin.email),
+        template,
+        subject,
+        context: {
+          title,
+          subtitle: subtitle(organization.organizationGeneral.name),
+        },
+      });
+    } catch (error) {
+      this.logger.error({
+        ...NOTIFICATIONS_ERRORS.RESTRICT_ONG,
         error,
       });
     }

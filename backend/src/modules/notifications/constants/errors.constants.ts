@@ -19,4 +19,8 @@ export const NOTIFICATIONS_ERRORS = {
     message: 'Error while disabling an organization',
     errorCode: 'NOT_005',
   },
+  RESTRICT_ONG: {
+    message: 'Error while restricting organization',
+    errorCode: 'NOT_006',
+  },
 };

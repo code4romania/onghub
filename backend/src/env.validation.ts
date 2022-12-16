@@ -79,7 +79,9 @@ class EnvironmentVariables {
   @IsString()
   MAIL_PASS;
   @IsString()
-  MAIL_FROM;
+  MAIL_FROM: string;
+  @IsString()
+  MAIL_CONTACT: string;
 
   @IsString()
   AWS_S3_BUCKET_NAME_PUBLIC: string;
@@ -87,6 +89,9 @@ class EnvironmentVariables {
   @IsString()
   @Length(32)
   ENCRYPTION_KEY: string;
+
+  @IsString()
+  ONGHUB_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {
