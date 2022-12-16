@@ -4,12 +4,16 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { FindOneOptions } from 'typeorm';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
+import { ORGANIZATION_EVENTS } from '../constants/events.constants';
 import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general.dto';
-import { OrganizationGeneral } from '../entities';
+import { Organization, OrganizationGeneral } from '../entities';
+import { OrganizationStatus } from '../enums/organization-status.enum';
+import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
 import { ContactService } from './contact.service';
 
@@ -20,14 +24,27 @@ export class OrganizationGeneralService {
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
     private readonly contactService: ContactService,
     private readonly fileManagerService: S3FileManagerService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async update(
-    id: number,
+    organization: Organization,
     updateOrganizationGeneralDto: UpdateOrganizationGeneralDto,
     logoPath?: string,
     logo?: Express.Multer.File[],
   ) {
+    const { cui: currentCUI } = await this.organizationGeneralRepository.get({
+      where: { id: organization.organizationGeneralId },
+    });
+
+    // Validation 1: Check if the CUI has changed to update the financial data
+    if (updateOrganizationGeneralDto.cui !== currentCUI) {
+      this.eventEmitter.emit(
+        ORGANIZATION_EVENTS.CUI_CHANGED,
+        new CUIChangedEvent(organization.id, updateOrganizationGeneralDto.cui),
+      );
+    }
+
     let { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
 
     if (contact) {
@@ -72,12 +89,12 @@ export class OrganizationGeneralService {
     }
 
     await this.organizationGeneralRepository.save({
-      id,
+      id: organization.organizationGeneralId,
       ...updateOrganizationData,
     });
 
     let organizationGeneral = await this.organizationGeneralRepository.get({
-      where: { id },
+      where: { id: organization.organizationGeneralId },
       relations: ['city', 'county', 'contact'],
     });
 

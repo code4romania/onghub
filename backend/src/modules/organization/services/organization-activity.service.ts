@@ -11,7 +11,7 @@ export class OrganizationActivityService {
   constructor(
     private readonly organizationActivityRepository: OrganizationActivityRepository,
     private readonly nomenclaturesService: NomenclaturesService,
-  ) { }
+  ) {}
 
   public async update(
     id: number,
@@ -151,10 +151,10 @@ export class OrganizationActivityService {
         'branches.county',
         'domains',
         'cities',
+        'cities.county',
         'federations',
         'coalitions',
         'regions',
-        'cities.county'
       ],
     });
   }
