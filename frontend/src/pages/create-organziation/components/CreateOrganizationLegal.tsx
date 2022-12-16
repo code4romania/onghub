@@ -11,6 +11,7 @@ import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import { Person } from '../../../common/interfaces/person.interface';
 import ContactForm from '../../../components/Contact/Contact';
@@ -318,9 +319,10 @@ const CreateOrganizationLegal = () => {
                   </label>
                   <input
                     className="h-0 w-0"
-                    name="uploadPhoto"
+                    name="uploadStatute"
                     id="create-organization-legal__statute-upload"
                     type="file"
+                    accept={FILE_TYPES_ACCEPT.STATUTE}
                     onChange={onChangeFile}
                   />
                 </>
@@ -328,7 +330,7 @@ const CreateOrganizationLegal = () => {
               {organizationStatute && (
                 <a
                   href={fileToURL(organizationStatute) || ''}
-                  download
+                  download={organizationStatute?.name || ''}
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />

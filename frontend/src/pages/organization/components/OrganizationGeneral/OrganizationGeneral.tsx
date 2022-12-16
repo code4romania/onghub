@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
+import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { fileToURL, flatten, setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -78,8 +79,16 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
-      data;
+    const {
+      contact_email,
+      contact_fullName,
+      contact_phone,
+      contact,
+      logo,
+      cityId,
+      countyId,
+      ...organizationGeneral
+    } = data;
 
     setReadonly(true);
 
@@ -427,7 +436,7 @@ const OrganizationGeneral = () => {
                         name="uploadPhoto"
                         id="uploadPhoto"
                         type="file"
-                        accept="image/png, image/jpeg, image/svg"
+                        accept={FILE_TYPES_ACCEPT.LOGO}
                         onChange={onChangeFile}
                       />
                     </>

@@ -13,6 +13,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
+import { ToNumber } from 'src/common/decorators/to-number.decorator';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 import { CreateContactDto } from 'src/modules/organization/dto/create-contact.dto';
 import { OrganizationType } from '../enums/organization-type.enum';
@@ -172,12 +173,12 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization county id */
   @IsNumber()
-  @Type(() => Number)
+  @ToNumber()
   countyId: number;
 
   /* Organization city id */
   @IsNumber()
-  @Type(() => Number)
+  @ToNumber()
   cityId: number;
 
   /* logo */
