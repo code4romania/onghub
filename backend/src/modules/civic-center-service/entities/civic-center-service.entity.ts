@@ -142,7 +142,7 @@ export class CivicCenterService extends BaseEntity {
 
   @OneToMany(
     (type) => CivicCenterFeedback,
-    (feedback) => feedback.civicCenterService,
+    (civicCenterFeedback) => civicCenterFeedback.civicCenterService,
   )
-  feedbacks: CivicCenterFeedback[];
+  civicCenterFeedback: CivicCenterFeedback[];
 }
