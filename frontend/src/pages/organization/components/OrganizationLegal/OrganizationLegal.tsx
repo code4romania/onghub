@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
 import { FILE_ERRORS } from '../../../../common/constants/error.constants';
+import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
@@ -369,17 +370,17 @@ const OrganizationLegal = () => {
                 organizationStatute === null && (
                   <>
                     <label
-                      htmlFor="uploadPhoto"
+                      htmlFor="uploadStatute"
                       className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       {t('statute_upload')}
                     </label>
                     <input
                       className="h-0 w-0"
-                      name="uploadPhoto"
-                      id="uploadPhoto"
+                      name="uploadStatute"
+                      id="uploadStatute"
                       type="file"
-                      accept=".doc,.docx,.pdf"
+                      accept={FILE_TYPES_ACCEPT.STATUTE}
                       onChange={onChangeFile}
                     />
                   </>

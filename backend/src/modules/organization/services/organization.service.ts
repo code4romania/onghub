@@ -924,7 +924,7 @@ export class OrganizationService {
         relations: ['organizationLegal'],
       });
 
-      return this.organizationLegalService.deleteOrganizationStatute(
+      await this.organizationLegalService.deleteOrganizationStatute(
         organization.organizationLegalId,
       );
     } catch (error) {
