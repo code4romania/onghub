@@ -232,11 +232,11 @@ export class UserService {
       andWhereQuery[config.rangeColumn] = Between(
         format(
           typeof start === 'string' ? new Date(start) : start,
-          DATE_CONSTANTS.DB_FORMAT,
+          DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
         ),
         format(
           typeof end === 'string' ? new Date(end) : end,
-          DATE_CONSTANTS.DB_FORMAT,
+          DATE_CONSTANTS.YYYY_MM_DD_HH_SS,
         ),
       );
     }

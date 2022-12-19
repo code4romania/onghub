@@ -1,3 +1,4 @@
 export const DATE_CONSTANTS = {
-  DB_FORMAT: 'yyyy-MM-dd HH:MM:SS',
+  YYYY_MM_DD_HH_SS: 'yyyy-MM-dd HH:MM:SS',
+  YYYY_MM_DD: 'yyyy-MM-dd',
 };
