@@ -47,7 +47,8 @@
     },
     "unavailable": "Indisponibil",
     "to_be_removed": "De eliminat",
-    "decimal": "Valori cu decimale nu sunt permise."
+    "decimal": "Valori cu decimale nu sunt permise.",
+    "unknown_error": "A aparut o eroare necunoscuta"
   },
   "menu": {
     "informations": "Informatii",
@@ -98,7 +99,7 @@
     "error": "Organizatia nu s-a putut incarca",
     "my_organization": "Organizatia mea",
     "description": "Administreaza de aici profilul tau de organizatie pentru a putea accesa aplicatiile disponibile.",
-    "no_access": "Lorem ipsum. Organizatia ta a fost restrictionata. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
+    "no_access": "Organizatia ta a fost restrictionata. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
     "inactive": "Ups! Organizatia ta este inactiva.",
     "back": "Inapoi la website",
     "send_mail": "Trimite E-Mail",
@@ -127,7 +128,7 @@
       "save": "Salveaza"
     },
     "create": {
-      "congratulations": "Feclicitari",
+      "congratulations": "Felicitari",
       "success": "Ai completat cu succes formularul de aplicare pentru ONG Hub. Pe adresa de e-mail indicată, ai primit confirmarea aplicării și o copie a formularului completat. Te vom contacta în cel mai scurt timp pentru a continua procesul de implementare al ONG Hub pentru organizația ta.",
       "again": "Incearca din nou",
       "steps": {
@@ -471,6 +472,7 @@
       }
     },
     "errors": {
+      "ORG_026": "Eroare la actualizarea datelor generale",
       "ORG_027": "Eroare la stergerea documentului!"
     }
   },

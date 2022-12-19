@@ -1,11 +1,16 @@
 import i18n from '../config/i18n';
 
+export const UNKNOWN_ERROR = (errorCode = 'UNK') =>
+  `[${errorCode}] ${i18n.t('common:unknown_error')}`;
+
+// TODO: move into organization page module
 export const ORGANIZATION_ERRORS: Record<string, string> = {
   RESTRICT: 'ORG_020',
   REQ_009: i18n.t('organization:create.errors.REQ_009'),
   REQ_010: i18n.t('organization:create.errors.REQ_010'),
   REQ_011: i18n.t('organization:create.errors.REQ_011'),
   REQ_012: i18n.t('organization:create.errors.REQ_012'),
+  UPDATE_GENERAL: i18n.t('organization:create.errors.ORG_026'),
 };
 
 export const USER_ERRORS = {

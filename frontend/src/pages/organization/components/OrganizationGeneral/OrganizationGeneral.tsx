@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
-import { FILE_ERRORS, ORGANIZATION_ERRORS } from '../../../../common/constants/error.constants';
+import {
+  FILE_ERRORS,
+  ORGANIZATION_ERRORS,
+  UNKNOWN_ERROR,
+} from '../../../../common/constants/error.constants';
 import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { fileToURL, flatten, setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
@@ -91,8 +95,6 @@ const OrganizationGeneral = () => {
       ...organizationGeneralData
     } = data;
 
-    setReadonly(true);
-
     const payload = {
       ...organizationGeneralData,
       website: setUrlPrefix(organizationGeneralData.website),
@@ -111,19 +113,6 @@ const OrganizationGeneral = () => {
       },
     };
 
-    if (organizationGeneral?.name === payload.name) {
-      delete payload.name;
-    }
-    if (organizationGeneral?.alias === payload.alias) {
-      delete payload.alias;
-    }
-    if (organizationGeneral?.email === payload.email) {
-      delete payload.email;
-    }
-    if (organizationGeneral?.phone === payload.phone) {
-      delete payload.phone;
-    }
-
     updateOrganization(
       {
         id: organization?.id as number,
@@ -135,15 +124,19 @@ const OrganizationGeneral = () => {
       {
         onSuccess: () => {
           setFile(null);
+          setReadonly(true);
         },
         onError: (err: any) => {
           const response = err.response?.data?.message;
           if (Array.isArray(response)) {
             const mappedErrors = response.map((error) => ORGANIZATION_ERRORS[error.errorCode]);
             setValidationErrors(mappedErrors);
-          }
-          if (err.response.data.code) {
-            setValidationErrors([FILE_ERRORS[err.response.data.code]]);
+          } else if (err?.response?.data?.code) {
+            setValidationErrors([
+              FILE_ERRORS[err.response.data.code] || UNKNOWN_ERROR(err.response.data.code),
+            ]);
+          } else {
+            setValidationErrors([UNKNOWN_ERROR()]);
           }
         },
       },

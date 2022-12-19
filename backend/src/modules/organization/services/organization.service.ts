@@ -749,18 +749,10 @@ export class OrganizationService {
     const organization = await this.find(id);
 
     if (updateOrganizationDto.general) {
-      // validate logo size
-      try {
-        this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
-      } catch (error) {
-        this.logger.error({ error });
-        throw error;
-      }
-
       return this.organizationGeneralService.update(
         organization,
         updateOrganizationDto.general,
-        `${id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+        `${id}/${ORGANIZATION_FILES_DIR.LOGO}`, // TODO: move inside .update
         logo,
       );
     }

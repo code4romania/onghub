@@ -8,7 +8,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
-import { FindOneOptions } from 'typeorm';
+import { FindOneOptions, Not } from 'typeorm';
 import {
   ORGANIZATION_ERRORS,
   ORGANIZATION_REQUEST_ERRORS,
@@ -41,44 +41,17 @@ export class OrganizationGeneralService {
         where: { id: organization.organizationGeneralId },
       });
 
-    // Validation 1: Check if the CUI has changed to update the financial data
-    if (updateOrganizationGeneralDto.cui !== currentCUI) {
-      this.eventEmitter.emit(
-        ORGANIZATION_EVENTS.CUI_CHANGED,
-        new CUIChangedEvent(organization.id, updateOrganizationGeneralDto.cui),
-      );
-    }
+    // Validation 1: FILES VALIDATION - type and size check
+    this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+
+    // Validation 2: UNIQUE - some values must be unique
+    await this.validateDataUnicity(
+      organization.organizationGeneralId,
+      updateOrganizationGeneralDto,
+    );
 
     let { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
-    const errors = [];
 
-    // 1. Validate unicity of received data
-    const organizationGenerals =
-      await this.organizationGeneralRepository.getMany({});
-    for (let i = 0; i < organizationGenerals.length; i++) {
-      if (organizationGenerals[i].name === updateOrganizationData?.name) {
-        errors.push(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
-        );
-      }
-      if (organizationGenerals[i].alias === updateOrganizationData?.alias) {
-        errors.push(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_ALIAS_EXISTS,
-        );
-      }
-      if (organizationGenerals[i].email === updateOrganizationData?.email) {
-        errors.push(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_EMAIL_EXISTS,
-        );
-      }
-      if (organizationGenerals[i].phone === updateOrganizationData?.phone) {
-        errors.push(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
-        );
-      }
-    }
-
-    // 2. handle contact upload
     // TODO: this will be deprecated
     if (contact) {
       const contactEntity = await this.contactService.get({
@@ -87,7 +60,7 @@ export class OrganizationGeneralService {
       updateOrganizationData['contact'] = { ...contactEntity, ...contact };
     }
 
-    // 3. handle logo
+    // Processing 1: Save new logo
     if (logo) {
       try {
         //3.1 Remove logo if we have any
@@ -112,18 +85,14 @@ export class OrganizationGeneralService {
           error: { error },
           ...ORGANIZATION_ERRORS.UPLOAD,
         });
-        errors.push(ORGANIZATION_ERRORS.UPLOAD);
+        throw new InternalServerErrorException(ORGANIZATION_ERRORS.UPLOAD);
       }
     }
 
-    if (errors.length) {
-      throw new BadRequestException(errors);
-    }
-
-    // 4. Save organization general data
+    // Processing 2: Update the data
     try {
       await this.organizationGeneralRepository.save({
-        id: organization.organizationGeneral.id,
+        id: organization.organizationGeneralId,
         ...updateOrganizationData,
       });
 
@@ -132,6 +101,18 @@ export class OrganizationGeneralService {
         relations: ['city', 'county', 'contact'],
       });
 
+      // Effect 1: Update financial data if CUI has changed
+      if (updateOrganizationGeneralDto.cui !== currentCUI) {
+        this.eventEmitter.emit(
+          ORGANIZATION_EVENTS.CUI_CHANGED,
+          new CUIChangedEvent(
+            organization.id,
+            updateOrganizationGeneralDto.cui,
+          ),
+        );
+      }
+
+      // Effect 2: Prepare the logo URL if the logo changed
       if (organizationGeneral.logo) {
         const logoPublicUrl =
           await this.fileManagerService.generatePresignedURL(
@@ -164,5 +145,48 @@ export class OrganizationGeneralService {
     options: FindOneOptions<OrganizationGeneral>,
   ): Promise<OrganizationGeneral> {
     return this.organizationGeneralRepository.get(options);
+  }
+
+  private async validateDataUnicity(
+    orgGeneralId: number,
+    newDTO: UpdateOrganizationGeneralDto,
+  ) {
+    const errors = [];
+    const existing = await this.organizationGeneralRepository.getMany({
+      where: [
+        { id: Not(orgGeneralId), name: newDTO?.name },
+        { id: Not(orgGeneralId), alias: newDTO?.alias },
+        { id: Not(orgGeneralId), email: newDTO?.email },
+        { id: Not(orgGeneralId), phone: newDTO?.phone },
+      ],
+    });
+    for (let i = 0; i < existing.length; i++) {
+      if (existing[i].name === newDTO?.name) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_NAME_EXISTS,
+        );
+      }
+      if (existing[i].alias === newDTO?.alias) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_ALIAS_EXISTS,
+        );
+      }
+      if (existing[i].email === newDTO?.email) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_EMAIL_EXISTS,
+        );
+      }
+      if (existing[i].phone === newDTO?.phone) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
+        );
+      }
+    }
+
+    if (errors.length) {
+      throw new BadRequestException(errors);
+    }
+
+    return;
   }
 }
