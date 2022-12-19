@@ -335,7 +335,7 @@ export class PracticeProgramService {
         },
         faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
         domains: domains?.length > 0 ? { id: In(domains) } : null,
-        deadline: Raw((alias) => `${alias} >= :date OR ${alias} IS NULL`, {
+        deadline: Raw((alias) => `(${alias} >= :date OR ${alias} IS NULL)`, {
           date: format(new Date(), DATE_CONSTANTS.YYYY_MM_DD),
         }),
       };
