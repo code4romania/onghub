@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TableColumn } from 'react-data-table-component';
+import { SortOrder, TableColumn } from 'react-data-table-component';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
@@ -16,6 +16,7 @@ import { ReplyIcon, TrashIcon } from '@heroicons/react/outline';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { IInvite } from '../../interfaces/Invite.interface';
+import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
 
 const UserInvites = () => {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
@@ -24,12 +25,19 @@ const UserInvites = () => {
   );
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [range, setRange] = useState<Date[]>([]);
+  const [orderByColumn, setOrderByColumn] = useState<string>();
+  const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
   const { invites } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
 
-  const { isLoading, error, refetch } = useInviteesQuery(searchWord as string, range);
+  const { isLoading, error, refetch } = useInviteesQuery(
+    orderByColumn as string,
+    orderDirection as OrderDirection,
+    searchWord as string,
+    range,
+  );
   const removeUserMutation = useRemoveUserMutation();
   const resendInviteMutation = useResendInviteMutation();
 
@@ -118,6 +126,15 @@ const UserInvites = () => {
     setSearchWord(null);
   };
 
+  const onSort = (column: TableColumn<string>, direction: SortOrder) => {
+    setOrderByColumn(column.id as string);
+    setOrderDirection(
+      direction.toLocaleUpperCase() === OrderDirection.ASC
+        ? OrderDirection.ASC
+        : OrderDirection.DESC,
+    );
+  };
+
   return (
     <div>
       <DataTableFilters
@@ -150,6 +167,8 @@ const UserInvites = () => {
             columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
             data={invites}
             loading={isLoading}
+            sortServer
+            onSort={onSort}
           />
         </div>
         {isConfirmRemoveModalOpen && (

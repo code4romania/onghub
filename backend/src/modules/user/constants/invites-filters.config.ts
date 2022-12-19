@@ -8,7 +8,7 @@ export const INVITE_FILTERS_CONFIG = {
     phone: true,
     createdOn: true,
   },
-  searchableColumns: ['name', 'email'],
+  searchableColumns: ['name'],
   defaultSortBy: 'name',
   defaultOrderDirection: OrderDirection.ASC,
   relations: {},

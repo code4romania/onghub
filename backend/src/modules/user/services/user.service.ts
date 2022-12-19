@@ -212,8 +212,6 @@ export class UserService {
     options: Partial<BaseFilterDto>,
     organizationId?: number,
   ): Promise<User[]> {
-    const { search, start, end } = options;
-    const config = INVITE_FILTERS_CONFIG;
     const data = await this.cognitoService.getCognitoUsers(
       CognitoUserStatus.FORCE_CHANGE_PASSWORD,
     );
@@ -222,57 +220,20 @@ export class UserService {
       return item.Attributes.find((attr) => attr.Name === 'email').Value;
     });
 
-    // filters (and where)
-    const orWhereQuery = [];
-    const andWhereQuery: any = {};
-
-    // handle range
-    if (config.rangeColumn && start && end) {
-      andWhereQuery[config.rangeColumn] = Between(
-        format(
-          typeof start === 'string' ? new Date(start) : start,
-          'yyyy-MM-dd HH:MM:SS',
-        ),
-        format(
-          typeof end === 'string' ? new Date(end) : end,
-          'yyyy-MM-dd HH:MM:SS',
-        ),
-      );
-    }
-
-    // search query
-    if (search) {
-      const where = config.searchableColumns.map((column: string) => ({
-        ...andWhereQuery,
-        [column]: ILike(`%${search}%`),
-      }));
-      orWhereQuery.push(...where);
-    } else {
-      if (Object.keys(andWhereQuery).length > 0)
-        orWhereQuery.push(andWhereQuery);
-    }
-
-    // full query
-    let query: FindManyOptions<User> = {
-      select: config.selectColumns,
-      relations: config.relations,
+    const paginationOptions: any = {
+      ...options,
+      limit: 0,
+      page: 0,
+      organizationId,
+      email: In(emails),
     };
 
-    if (orWhereQuery.length > 0) {
-      query = {
-        ...query,
-        where: orWhereQuery,
-      };
-    }
+    const invitees = await this.userRepository.getManyPaginated(
+      INVITE_FILTERS_CONFIG,
+      paginationOptions,
+    );
 
-    const response = await this.findMany({
-      where: organizationId
-        ? { organizationId, email: In(emails) }
-        : { email: In(emails) },
-      ...query,
-    });
-
-    return response;
+    return invitees.items;
   }
 
   async remove(user: User): Promise<string> {
