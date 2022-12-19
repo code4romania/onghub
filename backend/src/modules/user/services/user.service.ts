@@ -38,6 +38,7 @@ import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { DATE_CONSTANTS } from 'src/common/constants/date.constants';
 
 @Injectable()
 export class UserService {
@@ -231,11 +232,11 @@ export class UserService {
       andWhereQuery[config.rangeColumn] = Between(
         format(
           typeof start === 'string' ? new Date(start) : start,
-          'yyyy-MM-dd HH:MM:SS',
+          DATE_CONSTANTS.DB_FORMAT,
         ),
         format(
           typeof end === 'string' ? new Date(end) : end,
-          'yyyy-MM-dd HH:MM:SS',
+          DATE_CONSTANTS.DB_FORMAT,
         ),
       );
     }

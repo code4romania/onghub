@@ -23,6 +23,7 @@ import {
 import { PaginationMeta } from '../interfaces/pagination-meta';
 import { BaseFilterDto } from './base-filter.dto';
 import { OperatorSymbolToFunction } from '../helpers/operator-to-function.map';
+import { DATE_CONSTANTS } from '../constants/date.constants';
 
 export abstract class BaseDAO<T> {
   constructor(private readonly repository: Repository<T>) {}
@@ -119,26 +120,65 @@ export abstract class BaseDAO<T> {
     }
 
     // handle range
-    if (config.rangeColumn && start && end) {
-      // calculate range based on one single
-      if (typeof config.rangeColumn === 'string') {
-        andWherQuery[config.rangeColumn] = this.betweenDates(start, end);
+    if (config.rangeColumn) {
+      // Validate when both sides of the interval are provided by the user
+      if (start && end) {
+        // calculate range based on one single
+        if (typeof config.rangeColumn === 'string') {
+          andWherQuery[config.rangeColumn] = this.betweenDates(start, end);
+        }
+
+        // calculate range based on 2 columns, if rangecolumn comes as an array
+        if (typeof config.rangeColumn === 'object') {
+          // build interval conditions
+          const intervalIntersection = this.checkTwoIntervalIntersection(
+            config.rangeColumn[0],
+            config.rangeColumn[1],
+            start,
+            end,
+          );
+
+          andWherQuery = {
+            ...andWherQuery,
+            ...intervalIntersection,
+          };
+        }
       }
+      // validate if only the left side of the interval is available
+      else if (start) {
+        // validate one range column
+        if (typeof config.rangeColumn === 'string') {
+          // get all results which have the range column value smaller than the the start value
+          andWherQuery[config.rangeColumn] = MoreThanOrEqual(
+            format(start, DATE_CONSTANTS.DB_FORMAT),
+          );
+        }
 
-      // calculate range based on 2 columns, if rangecolumn comes as an array
-      if (typeof config.rangeColumn === 'object') {
-        // build interval conditions
-        const intervalIntersection = this.checkTwoIntervalIntersection(
-          config.rangeColumn[0],
-          config.rangeColumn[1],
-          start,
-          end,
-        );
+        // validate 2 range columns
+        if (typeof config.rangeColumn === 'object') {
+          // get all results which have the first range column (startDate) value smaller than the the start value
+          andWherQuery[config.rangeColumn[0]] = MoreThanOrEqual(
+            format(start, DATE_CONSTANTS.DB_FORMAT),
+          );
+        }
+      }
+      // validate if only the right side of the interval is provided
+      else if (end) {
+        // validate one range column
+        if (typeof config.rangeColumn === 'string') {
+          // get all results which have the range column value bigger than the the start value
+          andWherQuery[config.rangeColumn] = LessThanOrEqual(
+            format(end, DATE_CONSTANTS.DB_FORMAT),
+          );
+        }
 
-        andWherQuery = {
-          ...andWherQuery,
-          ...intervalIntersection,
-        };
+        // validate 2 range columns
+        if (typeof config.rangeColumn === 'object') {
+          // get all results which have the second range column (endDate) value smaller than the the start value
+          andWherQuery[config.rangeColumn[1]] = LessThanOrEqual(
+            format(end, DATE_CONSTANTS.DB_FORMAT),
+          );
+        }
       }
     }
 
@@ -266,10 +306,10 @@ export abstract class BaseDAO<T> {
 
     return {
       [startDateColumn]: LessThanOrEqual(
-        format(endDate, 'yyyy-MM-dd HH:MM:SS'),
+        format(endDate, DATE_CONSTANTS.DB_FORMAT),
       ),
       [endDateColumn]: MoreThanOrEqual(
-        format(startDate, 'yyyy-MM-dd HH:MM:SS'),
+        format(startDate, DATE_CONSTANTS.DB_FORMAT),
       ),
     };
   };
@@ -288,8 +328,8 @@ export abstract class BaseDAO<T> {
     endDate.setSeconds(59);
 
     return Between(
-      format(startDate, 'yyyy-MM-dd HH:MM:SS'),
-      format(endDate, 'yyyy-MM-dd HH:MM:SS'),
+      format(startDate, DATE_CONSTANTS.DB_FORMAT),
+      format(endDate, DATE_CONSTANTS.DB_FORMAT),
     );
   };
 }
