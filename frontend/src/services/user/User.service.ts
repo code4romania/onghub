@@ -32,8 +32,17 @@ export const resendInvite = async (id: number): Promise<any> => {
   return API.patch(`/user/${id}/resend-invite`).then((res) => res.data);
 };
 
-export const getInvitees = async (search?: string, interval?: Date[]): Promise<IInvite[]> => {
-  let requestUrl = `/user/invitees?orderDirection=ASC`;
+export const getInvitees = async (
+  orderBy?: string,
+  orderDirection?: string,
+  search?: string,
+  interval?: Date[],
+): Promise<IInvite[]> => {
+  let requestUrl = `/user/invitees?limit=0&page=0`;
+
+  if (orderBy) requestUrl = `${requestUrl}&orderBy=${orderBy}`;
+
+  if (orderDirection) requestUrl = `${requestUrl}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;
 
