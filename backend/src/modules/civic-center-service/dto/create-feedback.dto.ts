@@ -9,15 +9,15 @@ import {
 
 export class CreateFeedbackDto {
   @IsString()
-  @Length(3, 100)
+  @Length(3, 200)
   fullName: string;
 
   @IsString()
-  @MaxLength(30)
+  @MaxLength(50)
   interactionDate: string;
 
   @IsString()
-  @Length(3, 500)
+  @MaxLength(500)
   message: string;
 
   @IsNumber()
