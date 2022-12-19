@@ -3,6 +3,7 @@ import {
   FindOperator,
   LessThanOrEqual,
   MoreThanOrEqual,
+  Raw,
 } from 'typeorm';
 import { format } from 'date-fns';
 import {
@@ -308,8 +309,11 @@ export abstract class BaseDAO<T> {
       [startDateColumn]: LessThanOrEqual(
         format(endDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
       ),
-      [endDateColumn]: MoreThanOrEqual(
-        format(startDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+      [endDateColumn]: Raw(
+        (alias) => `(${alias} >= :date OR ${alias} is NULL)`,
+        {
+          date: format(startDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+        },
       ),
     };
   };

@@ -13,7 +13,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
-import { In, MoreThanOrEqual } from 'typeorm';
+import { In, Raw } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { WorkingHoursParser } from '../constants/parsers.constants';
 import { PRACTICE_PROGRAM_FILTER_CONFIG } from '../constants/practice-program-filter.config';
@@ -335,9 +335,9 @@ export class PracticeProgramService {
         },
         faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
         domains: domains?.length > 0 ? { id: In(domains) } : null,
-        deadline: MoreThanOrEqual(
-          format(new Date(), DATE_CONSTANTS.YYYY_MM_DD),
-        ),
+        deadline: Raw((alias) => `${alias} >= :date OR ${alias} IS NULL`, {
+          date: format(new Date(), DATE_CONSTANTS.YYYY_MM_DD),
+        }),
       };
 
       // 2. set correct mappings for working hours
