@@ -337,7 +337,7 @@ export class CivicCenterServiceService {
     CivicCenterService & { organizationId: number; organizationName: string }
   > {
     const service = await this.civicCenterServiceRepository.get({
-      where: { id },
+      where: { id, active: true },
       relations: [
         'location',
         'domains',
