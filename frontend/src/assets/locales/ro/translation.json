@@ -405,6 +405,14 @@
       "edit_relevant": "Editare alta persoana relevanta in organizatie",
       "add_relevant": "Adaugare alta persoana relevanta in organizatie"
     },
+    "delete_director_modal": {
+      "title": "Esti sigur ca doresti stergerea directorului?",
+      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis."
+    },
+    "delete_other_modal": {
+      "title": "Esti sigur ca doresti stergerea persoanei relevante?",
+      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis."
+    },
     "header": {
       "name": "Nume si prenume",
       "role": "Rol",
