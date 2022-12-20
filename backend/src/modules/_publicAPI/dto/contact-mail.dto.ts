@@ -1,16 +1,16 @@
-import { IsString, Length, MaxLength } from 'class-validator';
+import { IsString, Length, MaxLength, MinLength } from 'class-validator';
 
 export class ContactMailDto {
   @IsString()
-  @Length(3, 100)
+  @Length(3, 200)
   from: string;
 
   @IsString()
-  @MaxLength(250)
+  @MaxLength(1500)
   text: string;
 
   @IsString()
-  @Length(3, 100)
+  @MinLength(3)
   sender: string;
 
   @IsString()
