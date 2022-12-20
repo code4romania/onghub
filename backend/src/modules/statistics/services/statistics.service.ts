@@ -28,6 +28,8 @@ import { ILandingCounter } from '../interfaces/landing-counters.interface';
 import { APPLICATION_ERRORS } from 'src/modules/application/constants/application-error.constants';
 import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
+import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { In } from 'typeorm';
 
 @Injectable()
 export class StatisticsService {
@@ -229,7 +231,9 @@ export class StatisticsService {
           },
         });
 
-      const numberOfUsers = await this.userService.countUsers();
+      const numberOfUsers = await this.userService.countUsers({
+        where: { status: In([UserStatus.ACTIVE, UserStatus.RESTRICTED]) },
+      });
 
       const numberOfPendingRequests =
         await this.organizationRequestService.countOrganizationRequest({
@@ -244,8 +248,8 @@ export class StatisticsService {
         numberOfPendingRequests,
         numberOfUsers,
         meanNumberOfUsers:
-          numberOfActiveOrganizations && numberOfUsers
-            ? Math.ceil(numberOfActiveOrganizations / numberOfUsers)
+          numberOfUsers && numberOfActiveOrganizations
+            ? Math.ceil(numberOfUsers / numberOfActiveOrganizations)
             : 0,
         numberOfApps,
       };
@@ -276,7 +280,11 @@ export class StatisticsService {
             )
           : await this.applicationService.countActiveForAdmin(organizationId);
       const numberOfUsers = await this.userService.countUsers({
-        where: { organizationId, role: Role.EMPLOYEE },
+        where: {
+          organizationId,
+          role: Role.EMPLOYEE,
+          status: In([UserStatus.ACTIVE, UserStatus.RESTRICTED]),
+        },
       });
 
       return {
