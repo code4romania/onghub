@@ -55,12 +55,12 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Matches(REGEX.LINK)
-  onlineAccessLink: string;
+  onlineAccessLink?: string;
 
   @IsString()
   @IsOptional()
   @Length(0, 1000)
-  onlineAccessDescription: string;
+  onlineAccessDescription?: string;
 
   @IsBoolean()
   hasEmailPhoneAccess: boolean;
@@ -68,17 +68,17 @@ export class CreateCivicCenterServiceDto {
   @IsEmail()
   @IsOptional()
   @MaxLength(50)
-  emailAccess: string;
+  emailAccess?: string;
 
   @IsString()
   @IsOptional()
   @IsValidPhone()
-  phoneAccess: string;
+  phoneAccess?: string;
 
   @IsString()
   @IsOptional()
   @Length(0, 1000)
-  emailPhoneAccessDescription: string;
+  emailPhoneAccessDescription?: string;
 
   @IsBoolean()
   hasPhysicalAccess: boolean;
@@ -86,16 +86,16 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @Length(0, 300)
-  physicalAccessAddress: string;
+  physicalAccessAddress?: string;
 
   @IsString()
   @IsOptional()
   @Length(0, 1000)
-  physicalAccessDescription: string;
+  physicalAccessDescription?: string;
 
   @IsBoolean()
   @IsOptional()
-  active: boolean;
+  active?: boolean;
 
   @IsNumber()
   @IsOptional()
