@@ -111,4 +111,39 @@ export class OrganizationLegalService {
 
     return organizationLegal;
   }
+
+  public async deleteOrganizationStatute(
+    organizationLegalId: number,
+  ): Promise<void> {
+    try {
+      // 1. Query organization legal data
+      const organizationLegal = await this.organizationLegalRepostory.get({
+        where: { id: organizationLegalId },
+      });
+
+      if (organizationLegal?.organizationStatute) {
+        // 2. remove file from s3
+        await this.fileManagerService.deleteFiles([
+          organizationLegal.organizationStatute,
+        ]);
+
+        // 3. remove path from database
+        await this.organizationLegalRepostory.save({
+          ...organizationLegal,
+          organizationStatute: null,
+        });
+      }
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+      });
+
+      const err = error?.response;
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+        error: err,
+      });
+    }
+  }
 }

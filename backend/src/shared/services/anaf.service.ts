@@ -34,32 +34,4 @@ export class AnafService {
 
     return lastValueFrom(company);
   }
-
-  // TODO: move in organization.service something. No business logic allowed here.
-  public async getFinancialInformation(
-    cui: string,
-    year: number,
-  ): Promise<FinancialInformation> {
-    const anafData = await this.getAnafData(cui, year);
-
-    if (!anafData || (anafData && anafData.length === 0)) {
-      return null;
-    }
-
-    const income = anafData.find((obj) => {
-      return obj.indicator === 'I38';
-    });
-    const expense = anafData.find((obj) => {
-      return obj.indicator === 'I40';
-    });
-    const employees = anafData.find((obj) => {
-      return obj.indicator === 'I46';
-    });
-
-    return {
-      numberOfEmployees: employees?.val_indicator,
-      totalExpense: expense?.val_indicator,
-      totalIncome: income?.val_indicator,
-    };
-  }
 }

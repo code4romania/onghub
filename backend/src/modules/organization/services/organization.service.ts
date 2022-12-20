@@ -8,13 +8,9 @@ import {
 } from '@nestjs/common';
 import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
-import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
-import { MailService } from 'src/mail/services/mail.service';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
-import { Role } from 'src/modules/user/enums/role.enum';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { AnafService } from 'src/shared/services';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { NomenclaturesService } from 'src/shared/services/nomenclatures.service';
 import { DataSource, FindManyOptions, FindOperator, In } from 'typeorm';
@@ -60,6 +56,9 @@ import { OrganizationActivityService } from './organization-activity.service';
 import { OrganizationGeneralService } from './organization-general.service';
 import { OrganizationLegalService } from './organization-legal.service';
 import { OrganizationReportService } from './organization-report.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
 
 @Injectable()
 export class OrganizationService {
@@ -73,12 +72,11 @@ export class OrganizationService {
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly nomenclaturesService: NomenclaturesService,
-    private readonly anafService: AnafService,
     private readonly fileManagerService: S3FileManagerService,
     private readonly organizationViewRepository: OrganizationViewRepository,
-    private readonly mailService: MailService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   public async create(
@@ -171,10 +169,11 @@ export class OrganizationService {
     const lastYear = new Date().getFullYear() - 1;
 
     // get anaf data
-    const financialInformation = await this.anafService.getFinancialInformation(
-      createOrganizationDto.general.cui,
-      lastYear,
-    );
+    const financialInformation =
+      await this.organizationFinancialService.getFinancialInformation(
+        createOrganizationDto.general.cui,
+        lastYear,
+      );
 
     // create the parent entry with default values
     const organization = await this.organizationRepository.save({
@@ -219,12 +218,9 @@ export class OrganizationService {
           FILE_TYPE.IMAGE,
         );
 
-        await this.organizationGeneralService.update(
-          organization.organizationGeneral.id,
-          {
-            logo: uploadedFile[0],
-          },
-        );
+        await this.organizationGeneralService.update(organization, {
+          logo: uploadedFile[0],
+        });
       }
 
       // upload organization statute
@@ -260,9 +256,12 @@ export class OrganizationService {
     return organization;
   }
 
-  public async find(id: number) {
+  public async find(id: number, options?: { relations?: string[] }) {
     const organization = await this.organizationRepository.get({
       where: { id },
+      ...(options?.relations?.length
+        ? { relations: [...options.relations] }
+        : {}),
     });
 
     if (!organization) {
@@ -740,7 +739,6 @@ export class OrganizationService {
 
   /**
    * Update organization will only update one child at the time
-   * TODO: Review if we put this in organization
    */
   public async update(
     id: number,
@@ -752,9 +750,9 @@ export class OrganizationService {
 
     if (updateOrganizationDto.general) {
       return this.organizationGeneralService.update(
-        organization.organizationGeneralId,
+        organization,
         updateOrganizationDto.general,
-        `${id}/${ORGANIZATION_FILES_DIR.LOGO}`,
+        `${id}/${ORGANIZATION_FILES_DIR.LOGO}`, // TODO: move inside .update
         logo,
       );
     }
@@ -767,6 +765,11 @@ export class OrganizationService {
     }
 
     if (updateOrganizationDto.legal) {
+      this.fileManagerService.validateFiles(
+        organizationStatute,
+        FILE_TYPE.FILE,
+      );
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
@@ -906,6 +909,36 @@ export class OrganizationService {
     );
   }
 
+  public async deleteOrganizationStatute(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteOrganizationStatute(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+          error: err,
+        });
+      }
+    }
+  }
+
   /**
    * Will update the status from PENDING to ACTIVE
    *
@@ -926,38 +959,21 @@ export class OrganizationService {
   }
 
   public async restrict(organizationId: number) {
-    const organization = await this.findWithUsers(organizationId);
+    const organization = await this.find(organizationId);
 
     if (organization.status === OrganizationStatus.RESTRICTED) {
       throw new BadRequestException(ORGANIZATION_ERRORS.ALREADY_RESTRICTED);
     }
-
-    const admins = organization.users.filter(
-      (item) => item.role === Role.ADMIN,
-    );
 
     await this.organizationRepository.updateOne({
       id: organizationId,
       status: OrganizationStatus.RESTRICTED,
     });
 
-    const {
-      template,
-      subject,
-      context: { title },
-    } = MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN;
-
-    await this.mailService.sendEmail({
-      to: admins.map((admin) => admin.email),
-      template,
-      subject,
-      context: {
-        title,
-        subtitle: MAIL_OPTIONS.ORGANIZATION_RESTRICT_ADMIN.context.subtitle(
-          organization.organizationGeneral.name,
-        ),
-      },
-    });
+    this.eventEmitter.emit(
+      EVENTS.RESTRICT_ORGANIZATION,
+      new RestrictOngEvent(organization.id),
+    );
 
     return organization;
   }
@@ -1197,10 +1213,11 @@ export class OrganizationService {
     // 2. Get data from ANAF
     let financialFromAnaf = null;
     try {
-      financialFromAnaf = await this.anafService.getFinancialInformation(
-        organization.organizationGeneral.cui,
-        year,
-      );
+      financialFromAnaf =
+        await this.organizationFinancialService.getFinancialInformation(
+          organization.organizationGeneral.cui,
+          year,
+        );
     } catch (err) {
       throw new InternalServerErrorException({
         ...ORGANIZATION_ERRORS.CREATE_NEW_REPORTING_ENTRIES.ANAF_ERRORED,
@@ -1246,6 +1263,28 @@ export class OrganizationService {
     findConditions?: FindManyOptions<Organization>,
   ): Promise<number> {
     return this.organizationRepository.count(findConditions);
+  }
+
+  public async countOrganizationsWithActivePracticePrograms(): Promise<number> {
+    return this.organizationRepository.count({
+      where: {
+        status: OrganizationStatus.ACTIVE,
+        practicePrograms: {
+          active: true,
+        },
+      },
+    });
+  }
+
+  public async countOrganizationsWithActiveCivicCenterServices(): Promise<number> {
+    return this.organizationRepository.count({
+      where: {
+        status: OrganizationStatus.ACTIVE,
+        civicCenterServices: {
+          active: true,
+        },
+      },
+    });
   }
 
   /**

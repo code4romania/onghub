@@ -34,6 +34,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException(USER_ERRORS.GET);
     }
 
+    // First time login, the user is PENDING with token received, so the account is activated now
+    if (user.status === UserStatus.PENDING) {
+      await this.userService.restoreAccess([user.id], undefined);
+    }
+
     if (user?.organization?.status === OrganizationStatus.RESTRICTED) {
       throw new UnauthorizedException(ORGANIZATION_ERRORS.RESTRICTED);
     }

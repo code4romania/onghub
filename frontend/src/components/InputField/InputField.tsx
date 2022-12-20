@@ -21,7 +21,7 @@ const InputField = (props: {
 
       <div className="mt-1 relative rounded-md">
         {!props.readonly && props.config.addOn && props.config.addOn()}
-        {props.readonly && <span>{props.config.defaultValue || '-'}</span>}
+        {props.readonly && <span className="break-words">{props.config.defaultValue || '-'}</span>}
         {!props.readonly && (
           <>
             <input

@@ -34,7 +34,7 @@ const DataTableFilters = ({
   }, [searchValue]);
 
   const onDebouncedSearch = useMemo(() => {
-    return debouce(onSearch, 300);
+    return debouce(onSearch, 800);
   }, []);
 
   const resetFilters = () => {

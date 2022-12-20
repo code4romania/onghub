@@ -3,11 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useOutletContext } from 'react-router-dom';
-import { FILE_ERRORS } from '../../../../common/constants/error.constants';
+import {
+  FILE_ERRORS,
+  ORGANIZATION_ERRORS,
+  UNKNOWN_ERROR,
+} from '../../../../common/constants/error.constants';
+import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { fileToURL, flatten, setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
-import { useErrorToast } from '../../../../common/hooks/useToast';
 import ContactForm from '../../../../components/Contact/Contact';
+import ErrorsBanner from '../../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../../components/InputField/InputField';
 import RadioGroup from '../../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../../components/section-header/SectionHeader';
@@ -28,6 +33,7 @@ const OrganizationGeneral = () => {
   const { cities, counties } = useNomenclature();
   const { disabled, updateOrganization } = useOutletContext<OrganizationContext>();
   const { role } = useAuthContext();
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const { organizationGeneral, organization } = useSelectedOrganization();
 
@@ -78,21 +84,27 @@ const OrganizationGeneral = () => {
   };
 
   const handleSave = (data: any) => {
-    const { contact_email, contact_fullName, contact_phone, contact, ...organizationGeneral } =
-      data;
-
-    setReadonly(true);
+    const {
+      contact_email,
+      contact_fullName,
+      contact_phone,
+      contact,
+      logo,
+      cityId,
+      countyId,
+      ...organizationGeneralData
+    } = data;
 
     const payload = {
-      ...organizationGeneral,
-      website: setUrlPrefix(organizationGeneral.website),
-      facebook: setUrlPrefix(organizationGeneral.facebook),
-      instagram: setUrlPrefix(organizationGeneral.instagram),
-      twitter: setUrlPrefix(organizationGeneral.twitter),
-      linkedin: setUrlPrefix(organizationGeneral.linkedin),
-      tiktok: setUrlPrefix(organizationGeneral.tiktok),
-      donationWebsite: setUrlPrefix(organizationGeneral.donationWebsite),
-      redirectLink: setUrlPrefix(organizationGeneral.redirectLink),
+      ...organizationGeneralData,
+      website: setUrlPrefix(organizationGeneralData.website),
+      facebook: setUrlPrefix(organizationGeneralData.facebook),
+      instagram: setUrlPrefix(organizationGeneralData.instagram),
+      twitter: setUrlPrefix(organizationGeneralData.twitter),
+      linkedin: setUrlPrefix(organizationGeneralData.linkedin),
+      tiktok: setUrlPrefix(organizationGeneralData.tiktok),
+      donationWebsite: setUrlPrefix(organizationGeneralData.donationWebsite),
+      redirectLink: setUrlPrefix(organizationGeneralData.redirectLink),
       contact: {
         ...contact,
         fullName: contact_fullName,
@@ -112,13 +124,19 @@ const OrganizationGeneral = () => {
       {
         onSuccess: () => {
           setFile(null);
+          setReadonly(true);
         },
-        onError: (error: any) => {
-          const err = error.response.data;
-          if (err.code) {
-            useErrorToast(FILE_ERRORS[err.code]);
+        onError: (err: any) => {
+          const response = err.response?.data?.message;
+          if (Array.isArray(response)) {
+            const mappedErrors = response.map((error) => ORGANIZATION_ERRORS[error.errorCode]);
+            setValidationErrors(mappedErrors);
+          } else if (err?.response?.data?.code) {
+            setValidationErrors([
+              FILE_ERRORS[err.response.data.code] || UNKNOWN_ERROR(err.response.data.code),
+            ]);
           } else {
-            useErrorToast(t('save_error', { ns: 'organization' }));
+            setValidationErrors([UNKNOWN_ERROR()]);
           }
         },
       },
@@ -427,7 +445,7 @@ const OrganizationGeneral = () => {
                         name="uploadPhoto"
                         id="uploadPhoto"
                         type="file"
-                        accept="image/png, image/jpeg, image/svg"
+                        accept={FILE_TYPES_ACCEPT.LOGO}
                         onChange={onChangeFile}
                       />
                     </>
@@ -697,6 +715,9 @@ const OrganizationGeneral = () => {
             </div>
           </form>
         </div>
+        {validationErrors.length > 0 && (
+          <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
+        )}
       </div>
     </div>
   );

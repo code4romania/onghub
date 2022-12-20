@@ -64,6 +64,10 @@ export const ORGANIZATION_ERRORS = {
       message: 'Error while deleting the organization',
       errorCode: 'ORG_015',
     },
+    STATUTE: {
+      message: 'Error while deleting the organization statute',
+      errorCode: 'ORG_027',
+    },
   },
   ALREADY_RESTRICTED: {
     message: 'Organization is already RESTRICTED',
@@ -106,6 +110,14 @@ export const ORGANIZATION_ERRORS = {
   GET_ORGANIZATION_WITH_ACTIVE_SERVICES: {
     message: 'Error while retrieving the organization',
     errorCode: 'ORG_025',
+  },
+  UPDATE_GENERAL: {
+    message: 'Error while updating organization general',
+    errorCode: 'ORG_026',
+  },
+  UPDATE_CUI: {
+    message: 'Error while recreating financial information for changed CUI',
+    errorCode: 'ORG_028',
   },
 };
 
@@ -150,15 +162,15 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       errorCode: 'REQ_009',
     },
     ORGANIZATION_ALIAS_EXISTS: {
-      message: 'An organization with this alias arleady exists',
+      message: 'An organization with this alias already exists',
       errorCode: 'REQ_010',
     },
     ORGANIZATION_EMAIL_EXISTS: {
-      message: 'An organization with this email arleady exists',
+      message: 'An organization with this email already exists',
       errorCode: 'REQ_011',
     },
     ORGANIZATION_PHONE_EXISTS: {
-      message: 'An organization with this phone arleady exists',
+      message: 'An organization with this phone already exists',
       errorCode: 'REQ_012',
     },
   },

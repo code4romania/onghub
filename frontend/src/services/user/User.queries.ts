@@ -77,13 +77,22 @@ export const useUsersQuery = (
 //   );
 // };
 
-export const useInviteesQuery = (search?: string, interval?: Date[]) => {
+export const useInviteesQuery = (
+  orderBy?: string,
+  orderDirection?: string,
+  search?: string,
+  interval?: Date[],
+) => {
   const { setInvites } = useStore();
-  return useQuery(['invitees', search, interval], () => getInvitees(search, interval), {
-    onSuccess: (data: IInvite[]) => {
-      setInvites(data);
+  return useQuery(
+    ['invitees', orderBy, orderDirection, search, interval],
+    () => getInvitees(orderBy, orderDirection, search, interval),
+    {
+      onSuccess: (data: IInvite[]) => {
+        setInvites(data);
+      },
     },
-  });
+  );
 };
 
 export const useSelectedUserQuery = (userId: string) => {

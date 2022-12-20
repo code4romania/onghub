@@ -69185,36 +69185,6 @@ export const CITIES = [
     name: 'Zvorsca',
   },
   {
-    id: 13845,
-    countyId: 11,
-    name: 'Sector 1',
-  },
-  {
-    id: 13846,
-    countyId: 11,
-    name: 'Sector 2',
-  },
-  {
-    id: 13847,
-    countyId: 11,
-    name: 'Sector 3',
-  },
-  {
-    id: 13848,
-    countyId: 11,
-    name: 'Sector 4',
-  },
-  {
-    id: 13849,
-    countyId: 11,
-    name: 'Sector 5',
-  },
-  {
-    id: 13850,
-    countyId: 11,
-    name: 'Sector 6',
-  },
-  {
     id: 13851,
     countyId: 36,
     name: '1 Decembrie',

@@ -153,6 +153,10 @@ export const activateOrganization = (id: number): Promise<any> => {
   return API.patch(`organization/${id}/activate`).then((res) => res.data);
 };
 
+export const deleteOrganizationStatute = (organizationId: number) => {
+  return API.delete(`organization/${organizationId}/statute`).then((res) => res.data);
+};
+
 const generateOrganizationFormDataPayload = (
   update: any,
   logo?: File | null,

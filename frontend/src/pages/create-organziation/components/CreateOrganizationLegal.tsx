@@ -11,13 +11,14 @@ import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
 import { Person } from '../../../common/interfaces/person.interface';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import ContactForm from '../../../components/Contact/Contact';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../components/section-header/SectionHeader';
-import DeleteRowConfirmationModal from '../../organization/components/OrganizationLegal/components/DeleteRowConfirmationModal';
 import DirectorModal from '../../organization/components/OrganizationLegal/components/DirectorModal';
 import OtherModal from '../../organization/components/OrganizationLegal/components/OtherModal';
 import { OrganizationLegalConfig } from '../../organization/components/OrganizationLegal/OrganizationLegalConfig';
@@ -318,9 +319,10 @@ const CreateOrganizationLegal = () => {
                   </label>
                   <input
                     className="h-0 w-0"
-                    name="uploadPhoto"
+                    name="uploadStatute"
                     id="create-organization-legal__statute-upload"
                     type="file"
+                    accept={FILE_TYPES_ACCEPT.STATUTE}
                     onChange={onChangeFile}
                   />
                 </>
@@ -328,7 +330,7 @@ const CreateOrganizationLegal = () => {
               {organizationStatute && (
                 <a
                   href={fileToURL(organizationStatute) || ''}
-                  download
+                  download={organizationStatute?.name || ''}
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
@@ -368,7 +370,11 @@ const CreateOrganizationLegal = () => {
             />
           )}
           {isDeleteDirectorModalOpen && (
-            <DeleteRowConfirmationModal
+            <ConfirmationModal
+              title={t('delete_director_modal.title')}
+              description={t('delete_director_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
               onClose={() => {
                 setIsDeleteDirectorModalOpen(false);
                 setSelectedDirector(null);
@@ -377,7 +383,11 @@ const CreateOrganizationLegal = () => {
             />
           )}
           {isDeleteOtheModalOpen && (
-            <DeleteRowConfirmationModal
+            <ConfirmationModal
+              title={t('delete_other_modal.title')}
+              description={t('delete_other_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
               onClose={() => {
                 setIsDeleteOtherModalOpen(false);
                 setSelectedOther(null);

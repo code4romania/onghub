@@ -18,9 +18,12 @@ import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 export class FeedbackService {
   constructor(private readonly feedbackRepository: FeedbackRepository) {}
 
-  public async create(data: CreateFeedbackDto): Promise<Feedback> {
+  public async create(id: number, data: CreateFeedbackDto): Promise<Feedback> {
     try {
-      return this.feedbackRepository.save(data);
+      return this.feedbackRepository.save({
+        civicCenterServiceId: id,
+        ...data,
+      });
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

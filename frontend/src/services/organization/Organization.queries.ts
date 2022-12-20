@@ -19,6 +19,7 @@ import {
   activateOrganization,
   deleteInvestors,
   deleteInvestorsByProfile,
+  deleteOrganizationStatute,
   deletePartners,
   deletePartnersByProfile,
   getOrganization,
@@ -350,4 +351,20 @@ export const useDeleteInvestorByProfileMutation = () => {
 
 export const useRestrictOrganizationRequestMutation = () => {
   return useMutation(() => restrictOrganizationRequest());
+};
+
+export const useDeleteOrganizationStatuteMutation = () => {
+  const { setOrganizationLegal, organizationLegal } = useStore();
+  return useMutation(
+    ({ organizationId }: { organizationId: number }) => deleteOrganizationStatute(organizationId),
+    {
+      onSuccess: () => {
+        // the request returns only success (200) then we remove the statute s3 path from the store
+        setOrganizationLegal({
+          ...(organizationLegal as IOrganizationLegal),
+          organizationStatute: undefined,
+        });
+      },
+    },
+  );
 };
