@@ -39,6 +39,19 @@ const CreateCivicCenterService = () => {
 
   const onSubmit = async (data: CivicCenterServicePayload) => {
     if (isFormValid) {
+      if (!data.hasOnlineAccess) {
+        delete data.onlineAccessLink;
+        delete data.onlineAccessDescription;
+      }
+      if (!data.hasEmailPhoneAccess) {
+        delete data.emailAccess;
+        delete data.phoneAccess;
+        delete data.emailPhoneAccessDescription;
+      }
+      if (!data.hasPhysicalAccess) {
+        delete data.physicalAccessAddress;
+        delete data.physicalAccessDescription;
+      }
       // create civic center service request
       await createCivicCenterService(
         {

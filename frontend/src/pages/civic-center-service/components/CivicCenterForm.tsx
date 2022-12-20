@@ -308,7 +308,6 @@ const CivicCenterForm = ({
                             defaultValue: value,
                             onChange: onChange,
                           }}
-                          disabled={!hasOnlineAccess}
                         />
                       );
                     }}
@@ -328,7 +327,6 @@ const CivicCenterForm = ({
                             defaultValue: value,
                             onChange: onChange,
                           }}
-                          disabled={!hasOnlineAccess}
                         />
                       );
                     }}
@@ -377,7 +375,6 @@ const CivicCenterForm = ({
                             onChange: onChange,
                             id: 'create-civic-center-service__email',
                           }}
-                          disabled={!hasEmailPhoneAccess}
                         />
                       );
                     }}
@@ -400,7 +397,6 @@ const CivicCenterForm = ({
                             onChange: onChange,
                             id: 'create-organization-general__org-phone',
                           }}
-                          disabled={!hasEmailPhoneAccess}
                         />
                       );
                     }}
@@ -422,7 +418,6 @@ const CivicCenterForm = ({
                             defaultValue: value,
                             onChange: onChange,
                           }}
-                          disabled={!hasEmailPhoneAccess}
                         />
                       );
                     }}
@@ -470,7 +465,6 @@ const CivicCenterForm = ({
                             defaultValue: value,
                             onChange: onChange,
                           }}
-                          disabled={!hasPhysicalAccess}
                         />
                       );
                     }}
@@ -492,7 +486,6 @@ const CivicCenterForm = ({
                             value: value,
                             onChange: onChange,
                           }}
-                          disabled={!hasPhysicalAccess}
                         />
                       );
                     }}
