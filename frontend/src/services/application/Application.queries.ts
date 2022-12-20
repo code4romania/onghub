@@ -59,9 +59,9 @@ export const useApplicationsQuery = (
 };
 
 // As an Admin you will receive all the Applications + Status (your relationship with that application -> ONGApp table entry).
-export const useOngApplicationsQuery = (organizationId?: number) => {
+export const useOngApplicationsQuery = (showAllApps?: boolean) => {
   const { setOngApplications } = useStore();
-  return useQuery(['ongApplications', organizationId], () => getOngApplications(organizationId), {
+  return useQuery(['ongApplications', showAllApps], () => getOngApplications(showAllApps), {
     onSuccess: (data: ApplicationWithOngStatus[]) => {
       setOngApplications(data);
     },

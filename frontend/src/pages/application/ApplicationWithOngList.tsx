@@ -56,7 +56,7 @@ const ApplicationWithOngList = () => {
   }
 
   const naivgateBack = () => {
-    navigate('/all-apps');
+    navigate('/applications');
   };
 
   return (

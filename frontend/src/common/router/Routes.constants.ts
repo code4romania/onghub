@@ -26,15 +26,15 @@ export const EMPLOYEE_ROUTES = [
 
 export const ADMIN_ROUTES = [
   { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
-  { id: 1, name: translations.organization, href: 'organization', icon: SunIcon },
-  { id: 2, name: translations.users, href: 'users', icon: UserGroupIcon },
-  { id: 3, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
-  { id: 4, name: translations.store, href: 'all-apps', icon: CollectionIcon },
+  { id: 1, name: translations.organization, href: 'organization/general', icon: SunIcon },
+  { id: 2, name: translations.users, href: 'users/list', icon: UserGroupIcon },
+  { id: 3, name: translations.apps, href: 'applications/my-apps', icon: ViewGridAddIcon },
+  { id: 4, name: translations.store, href: 'applications/all', icon: CollectionIcon },
 ];
 
 export const SUPER_ADMIN_ROUTES = [
   { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
   { id: 1, name: translations.organizations, href: 'organizations', icon: DatabaseIcon },
   { id: 2, name: translations.requests, href: 'requests', icon: UserAddIcon },
-  { id: 3, name: translations.store, href: 'all-apps', icon: CollectionIcon },
+  { id: 3, name: translations.store, href: 'applications', icon: CollectionIcon },
 ];

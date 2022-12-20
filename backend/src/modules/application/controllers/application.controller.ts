@@ -92,15 +92,13 @@ export class ApplicationController {
   @ApiParam({ name: 'id', type: String })
   @ApiQuery({ type: () => OrganizationApplicationFilterDto })
   @Get('organization/:id')
-  findOrganizationApplications(
+  findApplicationsByOrganizationId(
     @Param('id') organizationId: number,
     @Query() filters: OrganizationApplicationFilterDto,
-    @ExtractUser() user: User,
   ): Promise<IOngApplication[]> {
-    return this.ongApplicationService.findApplications(
+    return this.ongApplicationService.findApplicationsByOrganizationId(
       organizationId,
       filters,
-      user.role,
     );
   }
 

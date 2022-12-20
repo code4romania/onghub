@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import ApplicationListCards from '../apps-store/components/ApplicationListCards';
 
-const MyApps = () => {
-  const { t } = useTranslation('my_apps');
+const AllApps = () => {
+  const { t } = useTranslation('appstore');
 
   return (
-    <ContentWrapper title={t('title')} subtitle={t('subtitle')}>
-      <ApplicationListCards />
+    <ContentWrapper title={t('all')} subtitle={t('description')}>
+      <ApplicationListCards showAllApps />
     </ContentWrapper>
   );
 };
 
-export default MyApps;
+export default AllApps;
