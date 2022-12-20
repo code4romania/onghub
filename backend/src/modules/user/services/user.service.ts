@@ -8,15 +8,7 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import {
-  Between,
-  FindManyOptions,
-  FindOneOptions,
-  ILike,
-  In,
-  Not,
-  UpdateResult,
-} from 'typeorm';
+import { FindManyOptions, FindOneOptions, Not, UpdateResult } from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -30,14 +22,11 @@ import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
 import { Access } from 'src/modules/application/interfaces/application-access.interface';
-import { CognitoUserStatus } from '../enums/cognito-user-status.enum';
 import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
-import { UserType } from '@aws-sdk/client-cognito-identity-provider';
 import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
-import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @Injectable()
 export class UserService {
@@ -47,7 +36,6 @@ export class UserService {
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
-    private readonly fileManager: FileManagerService,
   ) {}
 
   // ****************************************************
@@ -210,22 +198,14 @@ export class UserService {
 
   async getInvitedUsers(
     options: Partial<BaseFilterDto>,
-    organizationId?: number,
+    organizationId: number,
   ): Promise<User[]> {
-    const data = await this.cognitoService.getCognitoUsers(
-      CognitoUserStatus.FORCE_CHANGE_PASSWORD,
-    );
-
-    const emails: string[] = data.map((item: UserType) => {
-      return item.Attributes.find((attr) => attr.Name === 'email').Value;
-    });
-
     const paginationOptions: any = {
       ...options,
       limit: 0,
       page: 0,
       organizationId,
-      email: In(emails),
+      status: UserStatus.PENDING,
     };
 
     const invitees = await this.userRepository.getManyPaginated(
@@ -383,7 +363,6 @@ export class UserService {
       // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
-        status: UserStatus.ACTIVE,
         cognitoId,
       });
       return user;
