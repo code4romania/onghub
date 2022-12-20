@@ -306,10 +306,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
     description: {
       key: 'onlineAccessDescription',
       rules: {
-        required: {
-          value: true,
-          message: translations.online.description.required,
-        },
         maxLength: {
           value: 1000,
           message: translations.online.description.max,
@@ -381,10 +377,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
     description: {
       key: 'emailPhoneAccessDescription',
       rules: {
-        required: {
-          value: true,
-          message: translations.emailOrPhone.description.required,
-        },
         maxLength: {
           value: 1000,
           message: translations.emailOrPhone.description.max,
@@ -424,10 +416,6 @@ export const CivicCenterFormConfig: Record<string, any> = {
     description: {
       key: 'physicalAccessDescription',
       rules: {
-        required: {
-          value: true,
-          message: translations.physical.description.required,
-        },
         maxLength: {
           value: 3000,
           message: translations.physical.description.max,
