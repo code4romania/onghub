@@ -1,6 +1,13 @@
 import { compareAsc } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { Control, Controller, DeepRequired, FieldErrorsImpl, UseFormWatch } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  DeepRequired,
+  FieldErrorsImpl,
+  UseFormResetField,
+  UseFormWatch,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { mapCitiesToSelect } from '../../../common/helpers/format.helper';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
@@ -23,6 +30,7 @@ interface CivicCenterFormProps {
   errors: FieldErrorsImpl<DeepRequired<CivicCenterServicePayload>>;
   watch: UseFormWatch<CivicCenterServicePayload>;
   onChangeFormValidity: (isValid: boolean) => void;
+  resetField: UseFormResetField<CivicCenterServicePayload>;
 }
 
 const CivicCenterForm = ({
@@ -30,6 +38,7 @@ const CivicCenterForm = ({
   errors,
   watch,
   onChangeFormValidity,
+  resetField,
 }: CivicCenterFormProps) => {
   const { domains } = useNomenclature();
 
@@ -75,6 +84,22 @@ const CivicCenterForm = ({
     // update additional validatity flag for period
     onChangeFormValidity(!(civicCenterProgramPeriodError || civicCenterMandatoryAccessError));
   }, [civicCenterProgramPeriodError, civicCenterMandatoryAccessError]);
+
+  useEffect(() => {
+    if (!hasOnlineAccess) {
+      resetField(CivicCenterFormConfig.online.link.key, { defaultValue: null });
+      resetField(CivicCenterFormConfig.online.description.key, { defaultValue: null });
+    }
+    if (!hasEmailPhoneAccess) {
+      resetField(CivicCenterFormConfig.emailOrPhone.email.key, { defaultValue: null });
+      resetField(CivicCenterFormConfig.emailOrPhone.phone.key, { defaultValue: null });
+      resetField(CivicCenterFormConfig.emailOrPhone.description.key, { defaultValue: null });
+    }
+    if (!hasPhysicalAccess) {
+      resetField(CivicCenterFormConfig.physical.address.key, { defaultValue: null });
+      resetField(CivicCenterFormConfig.physical.description.key, { defaultValue: null });
+    }
+  }, [hasOnlineAccess, hasEmailPhoneAccess, hasPhysicalAccess]);
 
   const loadOptionsCitiesSerch = async (searchWord: string) => {
     return getCities(searchWord).then((res) => res.map(mapCitiesToSelect));

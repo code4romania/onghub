@@ -32,6 +32,7 @@ const EditCivicCenterService = () => {
     formState: { errors },
     reset,
     watch,
+    resetField,
   } = useForm<CivicCenterServicePayload>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -112,6 +113,7 @@ const EditCivicCenterService = () => {
           errors={errors}
           watch={watch}
           onChangeFormValidity={setIsFormValid}
+          resetField={resetField}
         />
       </div>
     </ContentWrapper>

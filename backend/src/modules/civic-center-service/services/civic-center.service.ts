@@ -125,13 +125,17 @@ export class CivicCenterServiceService {
         domains,
         ...(civicCenterServicePayload.hasOnlineAccess
           ? { onlineAccessLink, onlineAccessDescription }
-          : {}),
+          : { onlineAccessLink: null, onlineAccessDescription: null }),
         ...(civicCenterServicePayload.hasEmailPhoneAccess
           ? { emailAccess, phoneAccess, emailPhoneAccessDescription }
-          : {}),
+          : {
+              emailAccess: null,
+              phoneAccess: null,
+              emailPhoneAccessDescription: null,
+            }),
         ...(civicCenterServicePayload.hasPhysicalAccess
           ? { physicalAccessAddress, physicalAccessDescription }
-          : {}),
+          : { physicalAccessAddress: null, physicalAccessDescription: null }),
       });
     } catch (error) {
       this.logger.error({
@@ -307,13 +311,17 @@ export class CivicCenterServiceService {
         domains,
         ...(civicCenterServicePayload.hasOnlineAccess
           ? { onlineAccessLink, onlineAccessDescription }
-          : {}),
+          : { onlineAccessLink: null, onlineAccessDescription: null }),
         ...(civicCenterServicePayload.hasEmailPhoneAccess
           ? { emailAccess, phoneAccess, emailPhoneAccessDescription }
-          : {}),
+          : {
+              emailAccess: null,
+              phoneAccess: null,
+              emailPhoneAccessDescription: null,
+            }),
         ...(civicCenterServicePayload.hasPhysicalAccess
           ? { physicalAccessAddress, physicalAccessDescription }
-          : {}),
+          : { physicalAccessAddress: null, physicalAccessDescription: null }),
       });
     } catch (error) {
       this.logger.error({

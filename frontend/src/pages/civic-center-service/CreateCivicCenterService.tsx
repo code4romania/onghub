@@ -28,6 +28,7 @@ const CreateCivicCenterService = () => {
     formState: { errors },
     reset,
     watch,
+    resetField,
   } = useForm<CivicCenterServicePayload>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -39,19 +40,6 @@ const CreateCivicCenterService = () => {
 
   const onSubmit = async (data: CivicCenterServicePayload) => {
     if (isFormValid) {
-      if (!data.hasOnlineAccess) {
-        delete data.onlineAccessLink;
-        delete data.onlineAccessDescription;
-      }
-      if (!data.hasEmailPhoneAccess) {
-        delete data.emailAccess;
-        delete data.phoneAccess;
-        delete data.emailPhoneAccessDescription;
-      }
-      if (!data.hasPhysicalAccess) {
-        delete data.physicalAccessAddress;
-        delete data.physicalAccessDescription;
-      }
       // create civic center service request
       await createCivicCenterService(
         {
@@ -108,6 +96,7 @@ const CreateCivicCenterService = () => {
           errors={errors}
           watch={watch}
           onChangeFormValidity={setIsFormValid}
+          resetField={resetField}
         />
       </div>
     </ContentWrapper>
