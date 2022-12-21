@@ -49,7 +49,7 @@ const AddApplication = () => {
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
-          navigate('/application');
+          navigate('/applications');
         },
         onError: (error) => {
           const createError: any = error;

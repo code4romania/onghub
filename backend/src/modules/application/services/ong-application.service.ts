@@ -119,9 +119,13 @@ export class OngApplicationService {
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId },
       )
-      .where('ongApp.organizationId = :organizationId', {
-        organizationId,
-      });
+      .where(
+        'ongApp.organizationId = :organizationId and ongApp.status != :status',
+        {
+          organizationId,
+          status: OngApplicationStatus.PENDING,
+        },
+      );
 
     // 2. filter by search word
     if (search) {

@@ -21,7 +21,7 @@ const translations = {
 export const EMPLOYEE_ROUTES = [
   { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
   { id: 1, name: translations.organization, href: 'organization', icon: SunIcon },
-  { id: 2, name: translations.apps, href: 'apps', icon: ViewGridAddIcon },
+  { id: 2, name: translations.apps, href: 'applications', icon: ViewGridAddIcon },
 ];
 
 export const ADMIN_ROUTES = [
