@@ -402,7 +402,7 @@ export class PracticeProgramService {
     PracticeProgram & { organizationId: number; organizationName: string }
   > {
     const practiceProgram = await this.practiceProgramRepository.get({
-      where: { id },
+      where: { id, active: true },
       relations: [
         'location',
         'skills',
