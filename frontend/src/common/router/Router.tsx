@@ -32,7 +32,6 @@ import ApplicationDetails from '../../pages/application/components/ApplicationDe
 import ApplicationNGOList from '../../pages/application/components/ApplicationNGOList';
 import RestrictedAccount from '../../pages/restricted-account/RestrictedAccount';
 import MyApps from '../../pages/my-apps/MyApps';
-import ApplicationList from '../../pages/apps-store/components/ApplicationList';
 import ApplicationRequests from '../../pages/apps-store/components/ApplicationRequests';
 import RoleGuard from '../guards/RoleGuard';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
@@ -52,6 +51,8 @@ import CivicCenterWrapper from '../../pages/civic-center-service/CivicCenterWrap
 import CivicCenterServiceList from '../../pages/civic-center-service/CivicCenterServiceList';
 import OrganizationPracticePrograms from '../../pages/organization/components/OrganizationPracticePrograms/OrganizationPracticePrograms';
 import OrganizationServices from '../../pages/organization/components/OrganizationServices/OrganizationServices';
+import ApplicationListTable from '../../pages/apps-store/components/ApplicationListTable';
+import AllApps from '../../pages/my-apps/AllApps';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -75,7 +76,12 @@ const Router = () => {
         {/* End of Public URLS */}
 
         {/* Logged in users but Restricted */}
-        <Route path="/restricted" element={!isRestricted ? <Navigate to={'/'} replace={true}></Navigate> : <RestrictedAccount />} />
+        <Route
+          path="/restricted"
+          element={
+            !isRestricted ? <Navigate to={'/'} replace={true}></Navigate> : <RestrictedAccount />
+          }
+        />
 
         {/* Logged in Users */}
         <Route
@@ -86,16 +92,6 @@ const Router = () => {
             </AuthGuard>
           }
         >
-          {/* Admin and Employee */}
-          <Route
-            path="apps"
-            element={
-              <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
-                <MyApps />
-              </RoleGuard>
-            }
-          ></Route>
-
           {/* Admin only */}
           <Route
             path="user"
@@ -113,28 +109,6 @@ const Router = () => {
               </RoleGuard>
             }
           />
-
-          {/* SuperAdmin and Admin */}
-          <Route
-            path="all-apps"
-            element={
-              <RoleGuard roles={[UserRole.SUPER_ADMIN, UserRole.ADMIN]}>
-                <AllApplications />
-              </RoleGuard>
-            }
-          >
-            <Route index element={<Navigate to={'overview'} replace={true}></Navigate>} />
-            <Route path="overview" element={<ApplicationList />} />
-            <Route
-              path="requests"
-              element={
-                // Special Route just for SuperAdmin
-                <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                  <ApplicationRequests />
-                </RoleGuard>
-              }
-            />
-          </Route>
 
           <Route
             path="users"
@@ -187,22 +161,6 @@ const Router = () => {
             element={
               <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
                 <Organizations />
-              </RoleGuard>
-            }
-          />
-          <Route
-            path="all-apps/new"
-            element={
-              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                <AddApplication />
-              </RoleGuard>
-            }
-          />
-          <Route
-            path="application/:id/edit"
-            element={
-              <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                <EditApplication />
               </RoleGuard>
             }
           />
@@ -285,31 +243,100 @@ const Router = () => {
             }
           ></Route>
 
-          {role === UserRole.SUPER_ADMIN ? (
-            <Route
-              path={'application/:id'}
-              element={
-                <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
-                  <ApplicationWithOngList />
-                </RoleGuard>
-              }
-            >
-              <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
-              <Route path="details" element={<ApplicationDetails />} />
-              <Route path="installs" element={<ApplicationNGOList />} />
-            </Route>
-          ) : (
-            <Route
-              path={'application/:id'}
-              element={
-                <RoleGuard roles={[UserRole.ADMIN, UserRole.EMPLOYEE]}>
-                  <Application />
-                </RoleGuard>
-              }
-            >
-              <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
-              <Route path="details" element={<ApplicationDetails />} />
-            </Route>
+          {/* APPLICATION ROUTES */}
+
+          {/* Super-Admin */}
+          {role === UserRole.SUPER_ADMIN && (
+            <>
+              {/* Show list of applications/requests with Tabs */}
+              <Route
+                path="applications"
+                element={
+                  <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                    <AllApplications />
+                  </RoleGuard>
+                }
+              >
+                <Route index element={<Navigate to={'overview'} replace={true}></Navigate>} />
+                <Route path="overview" element={<ApplicationListTable />} />
+                <Route path="requests" element={<ApplicationRequests />} />
+              </Route>
+
+              {/* Show application details */}
+              <Route
+                path="application"
+                element={
+                  <RoleGuard roles={[UserRole.SUPER_ADMIN]}>
+                    <Outlet />
+                  </RoleGuard>
+                }
+              >
+                <Route index element={<Navigate to={'new'} replace={true}></Navigate>} />
+                <Route path="new" element={<AddApplication />} />
+                <Route path=":id" element={<ApplicationWithOngList />}>
+                  <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
+                  <Route path="details" element={<ApplicationDetails />} />
+                  <Route path="installs" element={<ApplicationNGOList />} />
+                </Route>
+                <Route path=":id/edit" element={<EditApplication />} />
+              </Route>
+            </>
+          )}
+
+          {/* Admin */}
+          {role === UserRole.ADMIN && (
+            <>
+              <Route
+                path="applications"
+                element={
+                  <RoleGuard roles={[UserRole.ADMIN]}>
+                    <Outlet />
+                  </RoleGuard>
+                }
+              >
+                <Route index element={<Navigate to={'all'} replace={true}></Navigate>} />
+                <Route path="all" element={<AllApps />} />
+                <Route path="my-apps" element={<MyApps />} />
+              </Route>
+
+              <Route
+                path={'application/:id'}
+                element={
+                  <RoleGuard roles={[UserRole.ADMIN]}>
+                    <Application />
+                  </RoleGuard>
+                }
+              >
+                <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
+                <Route path="details" element={<ApplicationDetails />} />
+              </Route>
+            </>
+          )}
+
+          {/* Employee */}
+          {role === UserRole.EMPLOYEE && (
+            <>
+              <Route
+                path="applications"
+                element={
+                  <RoleGuard roles={[UserRole.EMPLOYEE]}>
+                    <MyApps />
+                  </RoleGuard>
+                }
+              />
+
+              <Route
+                path={'application/:id'}
+                element={
+                  <RoleGuard roles={[UserRole.EMPLOYEE]}>
+                    <Application />
+                  </RoleGuard>
+                }
+              >
+                <Route index element={<Navigate to={'details'} replace={true}></Navigate>} />
+                <Route path="details" element={<ApplicationDetails />} />
+              </Route>
+            </>
           )}
 
           {/* Practice programs */}

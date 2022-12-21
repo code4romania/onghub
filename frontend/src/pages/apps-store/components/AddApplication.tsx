@@ -49,7 +49,7 @@ const AddApplication = () => {
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
-          navigate('/all-apps');
+          navigate('/applications');
         },
         onError: (error) => {
           const createError: any = error;
@@ -74,7 +74,7 @@ const AddApplication = () => {
       subtitle={t('create.description')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
-        onBtnClick: () => navigate('/all-apps'),
+        onBtnClick: () => navigate('/applications'),
       }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
