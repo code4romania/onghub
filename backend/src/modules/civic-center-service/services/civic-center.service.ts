@@ -31,120 +31,35 @@ export class CivicCenterServiceService {
   public async create(
     createCivicCenterServiceDto: CreateCivicCenterServiceDto,
   ): Promise<CivicCenterService> {
-    try {
-      const {
-        locationId,
-        domains: domainsIds,
-        onlineAccessLink,
-        onlineAccessDescription,
-        emailAccess,
-        phoneAccess,
-        emailPhoneAccessDescription,
-        physicalAccessAddress,
-        physicalAccessDescription,
-        ...civicCenterServicePayload
-      } = createCivicCenterServiceDto;
+    // 1. Get location
+    const location = await this.nomenclatureService.getCities({
+      where: { id: createCivicCenterServiceDto.locationId },
+    });
 
-      // 1. get location
-      const location = await this.nomenclatureService.getCities({
-        where: { id: locationId },
-      });
+    // 2. Get domains
+    const domains = await this.nomenclatureService.getDomains({
+      where: {
+        id: In(createCivicCenterServiceDto.domains),
+      },
+    });
 
-      // 2. get domains
-      const domains = await this.nomenclatureService.getDomains({
-        where: {
-          id: In(domainsIds),
-        },
-      });
-
-      // 3.1. check if undetermined flag and end date have correct values
-      if (
-        civicCenterServicePayload.endDate &&
-        civicCenterServicePayload.isPeriodNotDetermined
-      ) {
-        civicCenterServicePayload.endDate === null;
-      }
-
-      // 3.2 check if service startDate is after endDate
-      if (
-        civicCenterServicePayload.endDate &&
-        compareAsc(
-          civicCenterServicePayload.startDate,
-          civicCenterServicePayload.endDate,
-        ) > 0
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.START_DATE_AFTER_END_DATE,
-        );
-      }
-
-      // 4. check at least one service access has been provided
-      if (
-        !(
-          civicCenterServicePayload.hasOnlineAccess ||
-          civicCenterServicePayload.hasEmailPhoneAccess ||
-          civicCenterServicePayload.hasPhysicalAccess
-        )
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
-        );
-      }
-
-      // 5. check onlineAccessLink is filled if hasOnlineAccess is true
-      if (civicCenterServicePayload.hasOnlineAccess && !onlineAccessLink) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
-        );
-      }
-
-      // 6. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
-      if (
-        civicCenterServicePayload.hasEmailPhoneAccess &&
-        !(emailAccess && phoneAccess)
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
-        );
-      }
-
-      // 7. check physicalAccessAddress is filled if hasPhysicalAccess is true
-      if (
-        civicCenterServicePayload.hasPhysicalAccess &&
-        !physicalAccessAddress
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
-        );
-      }
-
-      // 8. create new civic center service
-      return this.civicCenterServiceRepository.save({
-        ...civicCenterServicePayload,
-        location: location[0],
-        domains,
-        onlineAccessLink,
-        onlineAccessDescription,
-        emailAccess,
-        phoneAccess,
-        emailPhoneAccessDescription,
-        physicalAccessAddress,
-        physicalAccessDescription,
-      });
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
-      });
-      if (error instanceof HttpException) {
-        throw error;
-      } else {
-        throw new BadRequestException({
-          error: { error },
-          ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
-        });
-      }
+    // 3. Check if undetermined flag and end date have correct values
+    if (
+      createCivicCenterServiceDto.endDate &&
+      createCivicCenterServiceDto.isPeriodNotDetermined
+    ) {
+      createCivicCenterServiceDto.endDate = null;
     }
+
+    // 4. Validate received data
+    await this.validateData(createCivicCenterServiceDto);
+
+    // 5. Create new civic center service
+    return this.civicCenterServiceRepository.save({
+      ...createCivicCenterServiceDto,
+      location: location[0],
+      domains,
+    });
   }
 
   public async updateServicetatus(
@@ -199,132 +114,42 @@ export class CivicCenterServiceService {
     id: number,
     updateCivicCenterServiceDto: UpdateCivicCenterServiceDto,
   ): Promise<CivicCenterService> {
-    try {
-      // 1. get service
-      const civicService = await this.civicCenterServiceRepository.get({
-        where: { id },
-      });
-      if (!civicService) {
-        throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
-      }
-
-      const {
-        locationId,
-        domains: domainsIds,
-        onlineAccessLink,
-        onlineAccessDescription,
-        emailAccess,
-        phoneAccess,
-        emailPhoneAccessDescription,
-        physicalAccessAddress,
-        physicalAccessDescription,
-        ...civicCenterServicePayload
-      } = updateCivicCenterServiceDto;
-
-      // 2. get location
-      let location = null;
-      if (locationId) {
-        location = await this.nomenclatureService.getCities({
-          where: { id: locationId },
-        });
-      }
-
-      // 3. get domains
-      let domains = [];
-      if (domainsIds?.length > 0) {
-        domains = await this.nomenclatureService.getDomains({
-          where: {
-            id: In(domainsIds),
-          },
-        });
-      }
-
-      // 4. check if service startDate is after endDate
-      const startDate =
-        civicCenterServicePayload.startDate || civicService.startDate;
-      const endDate = civicCenterServicePayload.endDate || civicService.endDate;
-      if (endDate && compareAsc(startDate, endDate) > 0) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.START_DATE_AFTER_END_DATE,
-        );
-      }
-
-      // 5. check at least one service access has been provided
-      const hasOnlineAccess =
-        civicCenterServicePayload.hasOnlineAccess !== undefined
-          ? civicCenterServicePayload.hasOnlineAccess
-          : civicService.hasOnlineAccess;
-      const hasEmailPhoneAccess =
-        civicCenterServicePayload.hasEmailPhoneAccess !== undefined
-          ? civicCenterServicePayload.hasEmailPhoneAccess
-          : civicService.hasEmailPhoneAccess;
-      const hasPhysicalAccess =
-        civicCenterServicePayload.hasPhysicalAccess !== undefined
-          ? civicCenterServicePayload.hasPhysicalAccess
-          : civicService.hasPhysicalAccess;
-
-      if (!(hasOnlineAccess || hasEmailPhoneAccess || hasPhysicalAccess)) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
-        );
-      }
-
-      // 6. check onlineAccessLink is filled if hasOnlineAccess is true
-      if (civicCenterServicePayload.hasOnlineAccess && !onlineAccessLink) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
-        );
-      }
-
-      // 7. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
-      if (
-        civicCenterServicePayload.hasEmailPhoneAccess &&
-        !(emailAccess && phoneAccess)
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
-        );
-      }
-
-      // 8. check physicalAccessAddress is filled if hasPhysicalAccess is true
-      if (
-        civicCenterServicePayload.hasPhysicalAccess &&
-        !physicalAccessAddress
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
-        );
-      }
-
-      // 9. update service
-      return this.civicCenterServiceRepository.save({
-        ...civicService,
-        ...civicCenterServicePayload,
-        location: location || civicService.location,
-        endDate,
-        domains,
-        onlineAccessLink,
-        onlineAccessDescription,
-        emailAccess,
-        phoneAccess,
-        emailPhoneAccessDescription,
-        physicalAccessAddress,
-        physicalAccessDescription,
-      });
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...CIVIC_CENTER_SERVICE_ERRORS.UPDATE,
-      });
-      if (error instanceof HttpException) {
-        throw error;
-      } else {
-        throw new BadRequestException({
-          error: { error },
-          ...CIVIC_CENTER_SERVICE_ERRORS.UPDATE,
-        });
-      }
+    // 1. Get service and if it exists
+    const civicService = await this.civicCenterServiceRepository.get({
+      where: { id },
+    });
+    if (!civicService) {
+      throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
     }
+
+    // 2. Get location
+    let location = null;
+    if (updateCivicCenterServiceDto.locationId) {
+      location = await this.nomenclatureService.getCities({
+        where: { id: updateCivicCenterServiceDto.locationId },
+      });
+    }
+
+    // 3. Get domains
+    let domains = [];
+    if (updateCivicCenterServiceDto.domains?.length > 0) {
+      domains = await this.nomenclatureService.getDomains({
+        where: {
+          id: In(updateCivicCenterServiceDto.domains),
+        },
+      });
+    }
+
+    // 4. Validate received data
+    await this.validateData(updateCivicCenterServiceDto);
+
+    // 5. Update service
+    return this.civicCenterServiceRepository.save({
+      ...civicService,
+      ...updateCivicCenterServiceDto,
+      location: location || civicService.location,
+      domains,
+    });
   }
 
   public async findWithOrganization(
@@ -461,5 +286,63 @@ export class CivicCenterServiceService {
 
   public async countActive(): Promise<number> {
     return this.civicCenterServiceRepository.count({ where: { active: true } });
+  }
+
+  private async validateData(data: UpdateCivicCenterServiceDto): Promise<void> {
+    try {
+      // 1. Check if service startDate is after endDate
+      if (data.endDate && compareAsc(data.startDate, data.endDate) > 0) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.START_DATE_AFTER_END_DATE,
+        );
+      }
+
+      // 2. check at least one service access has been provided
+      if (
+        !(
+          data.hasOnlineAccess ||
+          data.hasEmailPhoneAccess ||
+          data.hasPhysicalAccess
+        )
+      ) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
+        );
+      }
+
+      // 3. check onlineAccessLink is filled if hasOnlineAccess is true
+      if (data.hasOnlineAccess && !data.onlineAccessLink) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
+        );
+      }
+
+      // 4. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
+      if (data.hasEmailPhoneAccess && !(data.emailAccess && data.phoneAccess)) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
+        );
+      }
+
+      // 5. check physicalAccessAddress is filled if hasPhysicalAccess is true
+      if (data.hasPhysicalAccess && !data.physicalAccessAddress) {
+        throw new BadRequestException(
+          CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
+        );
+      }
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
+      });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
+        });
+      }
+    }
   }
 }
