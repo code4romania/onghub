@@ -1108,11 +1108,11 @@
       },
       "short_description": {
         "required": "Descrierea este obligatorie",
-        "min": "Descrierea nu poate sa aiba mai putin de 200 caractere",
+        "min": "Descrierea nu poate sa aiba mai putin de 3 caractere",
         "max": "Descrierea nu poate sa aiba mai mult de 250 caractere",
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurta serviciu*",
-        "helper": "Descriere serviciu oferit in 200-250 caractere",
+        "helper": "Descriere serviciu oferit in 3-250 caractere",
         "placeholder": "Lorem ipsum"
       },
       "long_description": {
