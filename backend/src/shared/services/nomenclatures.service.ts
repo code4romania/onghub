@@ -43,6 +43,7 @@ export class NomenclaturesService {
     if (citySearchDto.cityId) {
       return this.citiesRepository.find({
         where: { id: citySearchDto.cityId },
+        relations: ['county'],
       });
     }
 

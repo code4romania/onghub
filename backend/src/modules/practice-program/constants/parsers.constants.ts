@@ -4,7 +4,6 @@ import { WorkingHours } from '../enums/working-hours.enum';
 export const WorkingHoursParser = {
   [WorkingHours['0_30']]: {
     minWorkingHours: LessThanOrEqual(30),
-    maxWorkingHours: MoreThan(0),
   },
   [WorkingHours['30_50']]: {
     minWorkingHours: LessThanOrEqual(50),
