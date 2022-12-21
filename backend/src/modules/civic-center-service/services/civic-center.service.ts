@@ -123,19 +123,13 @@ export class CivicCenterServiceService {
         ...civicCenterServicePayload,
         location: location[0],
         domains,
-        ...(civicCenterServicePayload.hasOnlineAccess
-          ? { onlineAccessLink, onlineAccessDescription }
-          : { onlineAccessLink: null, onlineAccessDescription: null }),
-        ...(civicCenterServicePayload.hasEmailPhoneAccess
-          ? { emailAccess, phoneAccess, emailPhoneAccessDescription }
-          : {
-              emailAccess: null,
-              phoneAccess: null,
-              emailPhoneAccessDescription: null,
-            }),
-        ...(civicCenterServicePayload.hasPhysicalAccess
-          ? { physicalAccessAddress, physicalAccessDescription }
-          : { physicalAccessAddress: null, physicalAccessDescription: null }),
+        onlineAccessLink,
+        onlineAccessDescription,
+        emailAccess,
+        phoneAccess,
+        emailPhoneAccessDescription,
+        physicalAccessAddress,
+        physicalAccessDescription,
       });
     } catch (error) {
       this.logger.error({
@@ -309,19 +303,13 @@ export class CivicCenterServiceService {
         location: location || civicService.location,
         endDate,
         domains,
-        ...(civicCenterServicePayload.hasOnlineAccess
-          ? { onlineAccessLink, onlineAccessDescription }
-          : { onlineAccessLink: null, onlineAccessDescription: null }),
-        ...(civicCenterServicePayload.hasEmailPhoneAccess
-          ? { emailAccess, phoneAccess, emailPhoneAccessDescription }
-          : {
-              emailAccess: null,
-              phoneAccess: null,
-              emailPhoneAccessDescription: null,
-            }),
-        ...(civicCenterServicePayload.hasPhysicalAccess
-          ? { physicalAccessAddress, physicalAccessDescription }
-          : { physicalAccessAddress: null, physicalAccessDescription: null }),
+        onlineAccessLink,
+        onlineAccessDescription,
+        emailAccess,
+        phoneAccess,
+        emailPhoneAccessDescription,
+        physicalAccessAddress,
+        physicalAccessDescription,
       });
     } catch (error) {
       this.logger.error({
