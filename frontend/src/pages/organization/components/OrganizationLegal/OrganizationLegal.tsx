@@ -11,6 +11,7 @@ import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import { Person } from '../../../../common/interfaces/person.interface';
+import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import ContactForm from '../../../../components/Contact/Contact';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
@@ -22,7 +23,6 @@ import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { Contact } from '../../interfaces/Contact.interface';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
-import DeleteRowConfirmationModal from './components/DeleteRowConfirmationModal';
 import DirectorModal from './components/DirectorModal';
 import OtherModal from './components/OtherModal';
 import { OrganizationLegalConfig } from './OrganizationLegalConfig';
@@ -427,7 +427,11 @@ const OrganizationLegal = () => {
             />
           )}
           {isDeleteDirectorModalOpen && (
-            <DeleteRowConfirmationModal
+            <ConfirmationModal
+              title={t('delete_director_modal.title')}
+              description={t('delete_director_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
               onClose={() => {
                 setIsDeleteDirectorModalOpen(false);
                 setSelectedDirector(null);
@@ -436,7 +440,11 @@ const OrganizationLegal = () => {
             />
           )}
           {isDeleteOtheModalOpen && (
-            <DeleteRowConfirmationModal
+            <ConfirmationModal
+              title={t('delete_other_modal.title')}
+              description={t('delete_other_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
               onClose={() => {
                 setIsDeleteOtherModalOpen(false);
                 setSelectedOther(null);

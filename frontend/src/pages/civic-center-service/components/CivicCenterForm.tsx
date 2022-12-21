@@ -289,7 +289,7 @@ const CivicCenterForm = ({
                   );
                 }}
               />
-              {hasOnlineAccess ? (
+              {hasOnlineAccess && (
                 <>
                   <Controller
                     key={CivicCenterFormConfig.online.link.key}
@@ -334,49 +334,6 @@ const CivicCenterForm = ({
                     }}
                   />
                 </>
-              ) : (
-                <>
-                  <Controller
-                    key={CivicCenterFormConfig.online.link.key}
-                    name={CivicCenterFormConfig.online.link.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <InputField
-                          config={{
-                            ...CivicCenterFormConfig.online.link.config,
-                            name: CivicCenterFormConfig.online.link.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.online.link.key
-                            ]?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                          }}
-                          disabled={!hasOnlineAccess}
-                        />
-                      );
-                    }}
-                  />
-                  <Controller
-                    key={CivicCenterFormConfig.online.description.key}
-                    name={CivicCenterFormConfig.online.description.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <Textarea
-                          config={{
-                            ...CivicCenterFormConfig.online.description.config,
-                            name: CivicCenterFormConfig.online.description.key,
-                            error: errors.onlineAccessDescription?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                          }}
-                          disabled={!hasOnlineAccess}
-                        />
-                      );
-                    }}
-                  />
-                </>
               )}
             </div>
             <div className="flex flex-col gap-4 py-8">
@@ -400,7 +357,7 @@ const CivicCenterForm = ({
                   );
                 }}
               />
-              {hasEmailPhoneAccess ? (
+              {hasEmailPhoneAccess && (
                 <>
                   <Controller
                     key={CivicCenterFormConfig.emailOrPhone.email.key}
@@ -471,74 +428,6 @@ const CivicCenterForm = ({
                     }}
                   />
                 </>
-              ) : (
-                <>
-                  <Controller
-                    key={CivicCenterFormConfig.emailOrPhone.email.key}
-                    name={CivicCenterFormConfig.emailOrPhone.email.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <InputField
-                          config={{
-                            ...CivicCenterFormConfig.emailOrPhone.email.config,
-                            name: CivicCenterFormConfig.emailOrPhone.email.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.emailOrPhone.email.key
-                            ]?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                            id: 'create-civic-center-service__email',
-                          }}
-                          disabled={!hasEmailPhoneAccess}
-                        />
-                      );
-                    }}
-                  />
-                  <Controller
-                    key={CivicCenterFormConfig.emailOrPhone.phone.key}
-                    name={CivicCenterFormConfig.emailOrPhone.phone.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <InputField
-                          config={{
-                            ...CivicCenterFormConfig.emailOrPhone.phone.config,
-                            name: CivicCenterFormConfig.emailOrPhone.phone.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.emailOrPhone.phone.key
-                            ]?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                            id: 'create-organization-general__org-phone',
-                          }}
-                          disabled={!hasEmailPhoneAccess}
-                        />
-                      );
-                    }}
-                  />
-                  <Controller
-                    key={CivicCenterFormConfig.emailOrPhone.description.key}
-                    name={CivicCenterFormConfig.emailOrPhone.description.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <Textarea
-                          config={{
-                            ...CivicCenterFormConfig.emailOrPhone.description.config,
-                            name: CivicCenterFormConfig.emailOrPhone.description.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.emailOrPhone.description.key
-                            ]?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                          }}
-                          disabled={!hasEmailPhoneAccess}
-                        />
-                      );
-                    }}
-                  />
-                </>
               )}
             </div>
             <div className="flex flex-col gap-4 py-8">
@@ -562,7 +451,7 @@ const CivicCenterForm = ({
                   );
                 }}
               />
-              {hasPhysicalAccess ? (
+              {hasPhysicalAccess && (
                 <>
                   <Controller
                     key={CivicCenterFormConfig.physical.address.key}
@@ -590,51 +479,6 @@ const CivicCenterForm = ({
                     key={CivicCenterFormConfig.physical.description.key}
                     name={CivicCenterFormConfig.physical.description.key}
                     rules={CivicCenterFormConfig.physical.description.rules}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <RichText
-                          config={{
-                            ...CivicCenterFormConfig.physical.description.config,
-                            name: CivicCenterFormConfig.physical.description.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.physical.description.key
-                            ]?.message,
-                            value: value,
-                            onChange: onChange,
-                          }}
-                          disabled={!hasPhysicalAccess}
-                        />
-                      );
-                    }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Controller
-                    key={CivicCenterFormConfig.physical.address.key}
-                    name={CivicCenterFormConfig.physical.address.key}
-                    control={control}
-                    render={({ field: { onChange, value } }) => {
-                      return (
-                        <InputField
-                          config={{
-                            ...CivicCenterFormConfig.physical.address.config,
-                            name: CivicCenterFormConfig.physical.address.key,
-                            error: (errors as Record<string, { message: string }>)[
-                              CivicCenterFormConfig.physical.address.key
-                            ]?.message,
-                            defaultValue: value,
-                            onChange: onChange,
-                          }}
-                          disabled={!hasPhysicalAccess}
-                        />
-                      );
-                    }}
-                  />
-                  <Controller
-                    key={CivicCenterFormConfig.physical.description.key}
-                    name={CivicCenterFormConfig.physical.description.key}
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (

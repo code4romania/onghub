@@ -91,30 +91,27 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 5. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
-      if (
-        civicCenterServicePayload.hasOnlineAccess &&
-        !(onlineAccessLink && onlineAccessDescription)
-      ) {
+      // 5. check onlineAccessLink is filled if hasOnlineAccess is true
+      if (civicCenterServicePayload.hasOnlineAccess && !onlineAccessLink) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
         );
       }
 
-      // 6. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
+      // 6. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
       if (
         civicCenterServicePayload.hasEmailPhoneAccess &&
-        !(emailAccess && phoneAccess && emailPhoneAccessDescription)
+        !(emailAccess && phoneAccess)
       ) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
         );
       }
 
-      // 7. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
+      // 7. check physicalAccessAddress is filled if hasPhysicalAccess is true
       if (
         civicCenterServicePayload.hasPhysicalAccess &&
-        !(physicalAccessAddress && physicalAccessDescription)
+        !physicalAccessAddress
       ) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
@@ -274,30 +271,27 @@ export class CivicCenterServiceService {
         );
       }
 
-      // 6. check onlineAccessLink and onlineAccessDescription are filled if hasOnlineAccess is true
-      if (
-        civicCenterServicePayload.hasOnlineAccess &&
-        !(onlineAccessLink && onlineAccessDescription)
-      ) {
+      // 6. check onlineAccessLink is filled if hasOnlineAccess is true
+      if (civicCenterServicePayload.hasOnlineAccess && !onlineAccessLink) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
         );
       }
 
-      // 7. check emailAccess, phoneAccess and emailPhoneAccessDescription are filled if hasEmailPhoneAccess is true
+      // 7. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
       if (
         civicCenterServicePayload.hasEmailPhoneAccess &&
-        !(emailAccess && phoneAccess && emailPhoneAccessDescription)
+        !(emailAccess && phoneAccess)
       ) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
         );
       }
 
-      // 8. check physicalAccessAddress and physicalAccessDescription are filled if hasPhysicalAccess is true
+      // 8. check physicalAccessAddress is filled if hasPhysicalAccess is true
       if (
         civicCenterServicePayload.hasPhysicalAccess &&
-        !(physicalAccessAddress && physicalAccessDescription)
+        !physicalAccessAddress
       ) {
         throw new BadRequestException(
           CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
