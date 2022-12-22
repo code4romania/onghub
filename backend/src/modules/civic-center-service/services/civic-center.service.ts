@@ -31,35 +31,52 @@ export class CivicCenterServiceService {
   public async create(
     createCivicCenterServiceDto: CreateCivicCenterServiceDto,
   ): Promise<CivicCenterService> {
-    // 1. Get location
-    const location = await this.nomenclatureService.getCities({
-      where: { id: createCivicCenterServiceDto.locationId },
-    });
+    try {
+      // 1. Get location
+      const location = await this.nomenclatureService.getCities({
+        where: { id: createCivicCenterServiceDto.locationId },
+      });
 
-    // 2. Get domains
-    const domains = await this.nomenclatureService.getDomains({
-      where: {
-        id: In(createCivicCenterServiceDto.domains),
-      },
-    });
+      // 2. Get domains
+      const domains = await this.nomenclatureService.getDomains({
+        where: {
+          id: In(createCivicCenterServiceDto.domains),
+        },
+      });
 
-    // 3. Check if undetermined flag and end date have correct values
-    if (
-      createCivicCenterServiceDto.endDate &&
-      createCivicCenterServiceDto.isPeriodNotDetermined
-    ) {
-      createCivicCenterServiceDto.endDate = null;
+      // 3. Check if undetermined flag and end date have correct values
+      if (
+        createCivicCenterServiceDto.endDate &&
+        createCivicCenterServiceDto.isPeriodNotDetermined
+      ) {
+        createCivicCenterServiceDto.endDate = null;
+      }
+
+      // 4. Validate received data
+      await this.validateData(createCivicCenterServiceDto);
+
+      // 5. Create new civic center service
+      const service = await this.civicCenterServiceRepository.save({
+        ...createCivicCenterServiceDto,
+        location: location[0],
+        domains,
+      });
+
+      return service;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
+      });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
+        });
+      }
     }
-
-    // 4. Validate received data
-    await this.validateData(createCivicCenterServiceDto);
-
-    // 5. Create new civic center service
-    return this.civicCenterServiceRepository.save({
-      ...createCivicCenterServiceDto,
-      location: location[0],
-      domains,
-    });
   }
 
   public async updateServicetatus(
@@ -114,42 +131,53 @@ export class CivicCenterServiceService {
     id: number,
     updateCivicCenterServiceDto: UpdateCivicCenterServiceDto,
   ): Promise<CivicCenterService> {
-    // 1. Get service and if it exists
-    const civicService = await this.civicCenterServiceRepository.get({
-      where: { id },
-    });
-    if (!civicService) {
-      throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
-    }
+    try {
+      // 1. Get service and if it exists
+      const civicService = await this.civicCenterServiceRepository.get({
+        where: { id },
+      });
+      if (!civicService) {
+        throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
+      }
 
-    // 2. Get location
-    let location = null;
-    if (updateCivicCenterServiceDto.locationId) {
-      location = await this.nomenclatureService.getCities({
+      // 2. Get location
+      const location = await this.nomenclatureService.getCities({
         where: { id: updateCivicCenterServiceDto.locationId },
       });
-    }
 
-    // 3. Get domains
-    let domains = [];
-    if (updateCivicCenterServiceDto.domains?.length > 0) {
-      domains = await this.nomenclatureService.getDomains({
+      // 3. Get domains
+      let domains = await this.nomenclatureService.getDomains({
         where: {
           id: In(updateCivicCenterServiceDto.domains),
         },
       });
+
+      // 4. Validate received data
+      await this.validateData(updateCivicCenterServiceDto);
+
+      // 5. Update service
+      const service = await this.civicCenterServiceRepository.save({
+        ...civicService,
+        ...updateCivicCenterServiceDto,
+        location: location[0],
+        domains,
+      });
+
+      return service;
+    } catch (error) {
+      this.logger.error({
+        error: { error },
+        ...CIVIC_CENTER_SERVICE_ERRORS.UPDATE,
+      });
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        throw new BadRequestException({
+          error: { error },
+          ...CIVIC_CENTER_SERVICE_ERRORS.UPDATE,
+        });
+      }
     }
-
-    // 4. Validate received data
-    await this.validateData(updateCivicCenterServiceDto);
-
-    // 5. Update service
-    return this.civicCenterServiceRepository.save({
-      ...civicService,
-      ...updateCivicCenterServiceDto,
-      location: location || civicService.location,
-      domains,
-    });
   }
 
   public async findWithOrganization(
@@ -289,60 +317,41 @@ export class CivicCenterServiceService {
   }
 
   private async validateData(data: UpdateCivicCenterServiceDto): Promise<void> {
-    try {
-      // 1. Check if service startDate is after endDate
-      if (data.endDate && compareAsc(data.startDate, data.endDate) > 0) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.START_DATE_AFTER_END_DATE,
-        );
-      }
+    // 1. Check if service startDate is after endDate
+    if (data.endDate && compareAsc(data.startDate, data.endDate) > 0) {
+      throw new BadRequestException(
+        CIVIC_CENTER_SERVICE_ERRORS.START_DATE_AFTER_END_DATE,
+      );
+    }
 
-      // 2. check at least one service access has been provided
-      if (
-        !(
-          data.hasOnlineAccess ||
-          data.hasEmailPhoneAccess ||
-          data.hasPhysicalAccess
-        )
-      ) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS,
-        );
-      }
+    // 2. check at least one service access has been provided
+    if (
+      !(
+        data.hasOnlineAccess ||
+        data.hasEmailPhoneAccess ||
+        data.hasPhysicalAccess
+      )
+    ) {
+      throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.SERVICE_ACCESS);
+    }
 
-      // 3. check onlineAccessLink is filled if hasOnlineAccess is true
-      if (data.hasOnlineAccess && !data.onlineAccessLink) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS,
-        );
-      }
+    // 3. check onlineAccessLink is filled if hasOnlineAccess is true
+    if (data.hasOnlineAccess && !data.onlineAccessLink) {
+      throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.ONLINE_ACCESS);
+    }
 
-      // 4. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
-      if (data.hasEmailPhoneAccess && !(data.emailAccess && data.phoneAccess)) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
-        );
-      }
+    // 4. check emailAccess and phoneAccess are filled if hasEmailPhoneAccess is true
+    if (data.hasEmailPhoneAccess && !(data.emailAccess && data.phoneAccess)) {
+      throw new BadRequestException(
+        CIVIC_CENTER_SERVICE_ERRORS.EMAIL_PHONE_ACCESS,
+      );
+    }
 
-      // 5. check physicalAccessAddress is filled if hasPhysicalAccess is true
-      if (data.hasPhysicalAccess && !data.physicalAccessAddress) {
-        throw new BadRequestException(
-          CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
-        );
-      }
-    } catch (error) {
-      this.logger.error({
-        error: { error },
-        ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
-      });
-      if (error instanceof HttpException) {
-        throw error;
-      } else {
-        throw new BadRequestException({
-          error: { error },
-          ...CIVIC_CENTER_SERVICE_ERRORS.CREATE,
-        });
-      }
+    // 5. check physicalAccessAddress is filled if hasPhysicalAccess is true
+    if (data.hasPhysicalAccess && !data.physicalAccessAddress) {
+      throw new BadRequestException(
+        CIVIC_CENTER_SERVICE_ERRORS.PHYSICAL_ACCESS,
+      );
     }
   }
 }
