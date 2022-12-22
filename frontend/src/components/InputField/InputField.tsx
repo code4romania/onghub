@@ -1,6 +1,5 @@
 import React from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
 const InputField = (props: {
@@ -53,11 +52,6 @@ const InputField = (props: {
               </label>
             )}
           </>
-        )}
-        {props.config.error && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
-          </div>
         )}
       </div>
       {!props.config.error && !props.readonly && (
