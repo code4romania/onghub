@@ -13,10 +13,10 @@ const Layout = () => {
       <Header openSlidingMenu={setSlidingMenuOpen} />
       <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
       <div className="flex sm:p-6 p-4">
-        <div className="menu hidden lg:flex">
+        <div className="menu hidden xl:flex">
           <Menu />
         </div>
-        <div className="content w-full lg:pl-6">
+        <div className="content w-full xl:pl-6">
           <Outlet />
         </div>
       </div>
