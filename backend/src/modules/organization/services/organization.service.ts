@@ -329,7 +329,6 @@ export class OrganizationService {
         'organizationGeneral',
         'organizationGeneral.city',
         'organizationGeneral.county',
-        'organizationGeneral.contact',
         'organizationActivity',
         'organizationActivity.federations',
         'organizationActivity.coalitions',
@@ -431,7 +430,6 @@ export class OrganizationService {
         relations: [
           'organizationGeneral',
           'organizationGeneral.city',
-          'organizationGeneral.contact',
           'organizationGeneral.city.county',
           'organizationActivity',
           'organizationActivity.domains',
@@ -518,7 +516,6 @@ export class OrganizationService {
         relations: [
           'organizationGeneral',
           'organizationGeneral.city',
-          'organizationGeneral.contact',
           'organizationGeneral.city.county',
           'organizationActivity',
           'organizationActivity.domains',
@@ -1052,11 +1049,6 @@ export class OrganizationService {
       await queryRunner.manager.delete(
         OrganizationGeneral,
         organization.organizationGeneralId,
-      );
-
-      await queryRunner.manager.delete(
-        Contact,
-        organization.organizationGeneral.contactId,
       );
 
       await queryRunner.commitTransaction();

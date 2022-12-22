@@ -27,7 +27,7 @@ export interface IOrganizationGeneral extends BaseEntity {
   redirectLink: string;
   donationSMS: string;
   donationKeyword: string;
-  contact: Contact;
+  contact: Partial<Contact>;
   city: City;
   county: County;
   cityId?: number;

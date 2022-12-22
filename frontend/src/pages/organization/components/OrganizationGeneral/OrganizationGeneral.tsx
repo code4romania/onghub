@@ -480,7 +480,7 @@ const OrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
-                disabled={disabled}
+                disabled={true}
               />
             </div>
             <div className="pt-8">

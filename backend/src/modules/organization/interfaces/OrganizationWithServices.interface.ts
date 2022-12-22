@@ -1,6 +1,6 @@
 import { CivicCenterService } from 'src/modules/civic-center-service/entities/civic-center-service.entity';
 import { Domain } from 'src/shared/entities';
-import { Contact } from '../entities';
+import { ContactPerson } from '../dto/contact-person.dto';
 
 export interface OrganizationWithServices {
   id: number;
@@ -8,7 +8,7 @@ export interface OrganizationWithServices {
   description: string;
   logo: string;
   domains: Domain[];
-  contact: Contact;
+  contact: ContactPerson;
   city: string;
   county: string;
   facebook?: string;
