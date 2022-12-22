@@ -10,7 +10,7 @@ import {
   useGetCivicCenterServiceQuery,
 } from '../../services/civic-center-service/CivicCenterService.queries';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
-import { mapToId, setUrlPrefix } from '../../common/helpers/format.helper';
+import { mapCitiesToSelect, mapToId, setUrlPrefix } from '../../common/helpers/format.helper';
 
 const EditCivicCenterService = () => {
   const navigate = useNavigate();
@@ -42,11 +42,14 @@ const EditCivicCenterService = () => {
     if (civicCenterService) {
       const { startDate, endDate, domains, ...formData } = civicCenterService;
 
+      const location = mapCitiesToSelect(civicCenterService.location);
+
       reset({
         ...formData,
         domains: domains.map(mapToId),
         startDate: new Date(startDate),
         endDate: endDate ? new Date(endDate) : endDate,
+        location,
       });
     }
   }, [civicCenterService]);

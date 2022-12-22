@@ -19,6 +19,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { CivicCenterServiceSearchFilterDto } from '../dto/civic-center-service-search-filter.dto';
 import { CIVIC_SERVICE_FILTERS_CONFIG } from '../constants/civic-center-filters.config';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
+import { City, Domain } from 'src/shared/entities';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -140,17 +141,23 @@ export class CivicCenterServiceService {
         throw new BadRequestException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
       }
 
-      // 2. Get location
-      const location = await this.nomenclatureService.getCities({
-        where: { id: updateCivicCenterServiceDto.locationId },
-      });
+      let location: City;
+      // 2. Check for location and get it
+      if (updateCivicCenterServiceDto.locationId) {
+        location = await this.nomenclatureService.getCity({
+          where: { id: updateCivicCenterServiceDto.locationId },
+        });
+      }
 
-      // 3. Get domains
-      let domains = await this.nomenclatureService.getDomains({
-        where: {
-          id: In(updateCivicCenterServiceDto.domains),
-        },
-      });
+      // 3. Check for domains and get them
+      let domains: Domain[];
+      if (updateCivicCenterServiceDto.domains) {
+        domains = await this.nomenclatureService.getDomains({
+          where: {
+            id: In(updateCivicCenterServiceDto.domains),
+          },
+        });
+      }
 
       // 4. Validate received data
       await this.validateData(updateCivicCenterServiceDto);
@@ -159,8 +166,8 @@ export class CivicCenterServiceService {
       const service = await this.civicCenterServiceRepository.save({
         ...civicService,
         ...updateCivicCenterServiceDto,
-        location: location[0],
-        domains,
+        location: location || civicService.location,
+        domains: domains || civicService.domains,
       });
 
       return service;
@@ -284,7 +291,7 @@ export class CivicCenterServiceService {
 
     const practiceProgram = await this.civicCenterServiceRepository.get({
       where,
-      relations: ['location', 'domains'],
+      relations: ['location', 'location.county', 'domains'],
     });
 
     if (!practiceProgram) {

@@ -8,7 +8,7 @@ import {
   Region,
   Skill,
 } from 'src/shared/entities';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { NOMENCLATURE_ERRORS } from '../constants/nomenclature-error.constants';
 import { Coalition } from '../entities/coalition.entity';
@@ -34,6 +34,10 @@ export class NomenclaturesService {
     @InjectRepository(Skill)
     private readonly skillsRepository: Repository<Skill>,
   ) {}
+
+  public getCity(conditions: FindOneOptions<City>) {
+    return this.citiesRepository.findOne(conditions);
+  }
 
   public getCities(conditions: FindManyOptions<City>) {
     return this.citiesRepository.find(conditions);
