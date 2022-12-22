@@ -72,7 +72,7 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'donation_keyword', nullable: true })
   donationKeyword: string;
 
-  @Column({ type: 'jsonb', name: 'contact_person', nullable: true })
+  @Column({ type: 'jsonb', name: 'contact_person' })
   contact: ContactPerson;
 
   @OneToOne(
