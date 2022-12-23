@@ -2,7 +2,7 @@ import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { City } from '../../../common/interfaces/city.interface';
 import { County } from '../../../common/interfaces/county.interface';
 import { OrganizationTypeEnum } from '../enums/OrganizationType.enum';
-import { Contact } from './Contact.interface';
+import { ContactPerson } from './ContactPerson.interface';
 
 export interface IOrganizationGeneral extends BaseEntity {
   id: number;
@@ -27,7 +27,7 @@ export interface IOrganizationGeneral extends BaseEntity {
   redirectLink: string;
   donationSMS: string;
   donationKeyword: string;
-  contact: Partial<Contact>;
+  contact: ContactPerson;
   city: City;
   county: County;
   cityId?: number;

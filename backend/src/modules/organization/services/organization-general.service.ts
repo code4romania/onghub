@@ -48,8 +48,6 @@ export class OrganizationGeneralService {
       updateOrganizationGeneralDto,
     );
 
-    let { ...updateOrganizationData } = updateOrganizationGeneralDto;
-
     // Processing 1: Save new logo
     if (logo) {
       try {
@@ -66,8 +64,8 @@ export class OrganizationGeneralService {
         );
 
         // 3.3 Add new logo path to database
-        updateOrganizationData = {
-          ...updateOrganizationData,
+        updateOrganizationGeneralDto = {
+          ...updateOrganizationGeneralDto,
           logo: uploadedFile[0],
         };
       } catch (error) {
@@ -83,7 +81,7 @@ export class OrganizationGeneralService {
     try {
       await this.organizationGeneralRepository.save({
         id: organization.organizationGeneralId,
-        ...updateOrganizationData,
+        ...updateOrganizationGeneralDto,
       });
 
       let organizationGeneral = await this.organizationGeneralRepository.get({

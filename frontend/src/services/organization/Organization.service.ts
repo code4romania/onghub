@@ -13,7 +13,7 @@ import {
   mapEntityToFormData,
   mapOrganizationActivityToFormData,
   mapOrganizationFinancialToFormData,
-  mapOrganizationGeneralToFormDara,
+  mapOrganizationGeneralToFormData,
   mapOrganizationLegalToFormData,
 } from './OrganizationFormDataMapper.service';
 
@@ -164,7 +164,7 @@ const generateOrganizationFormDataPayload = (
   let payload = new FormData();
 
   if (update.general) {
-    payload = mapOrganizationGeneralToFormDara(payload, update.general, 'general');
+    payload = mapOrganizationGeneralToFormData(payload, update.general, 'general');
   }
 
   if (update.activity) {
