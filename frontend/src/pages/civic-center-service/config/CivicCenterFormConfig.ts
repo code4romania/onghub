@@ -414,7 +414,7 @@ export const CivicCenterFormConfig: Record<string, any> = {
       key: 'physicalAccessDescription',
       rules: {
         maxLength: {
-          value: 1000,
+          value: 3000,
           message: translations.physical.description.max,
         },
       },
