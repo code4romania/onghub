@@ -3,7 +3,7 @@ import { BaseEntity } from 'src/common/base/base-entity.class';
 import { City } from 'src/shared/entities/city.entity';
 import { County } from 'src/shared/entities/county.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { ContactPerson } from '../dto/contact-person.dto';
+import { ContactPerson } from '../interfaces/contact-person.interface';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Organization } from './organization.entity';
 
