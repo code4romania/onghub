@@ -24,7 +24,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
         <div className="w-full flex gap-4 justify-between items-center">
           <div className="flex gap-4">
             {isAuthenticated && (
-              <div className="flex lg:hidden items-center">
+              <div className="flex xl:hidden items-center">
                 <button
                   className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                   onClick={() => openSlidingMenu(true)}

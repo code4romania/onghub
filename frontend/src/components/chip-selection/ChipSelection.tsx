@@ -27,7 +27,7 @@ export const Chip = ({ item, selected, readonly, onClick, id }: ChipProps) => {
     <span
       className={classNames(
         selected ? 'font-semibold bg-green-50' : 'font-normal bg-gray-100',
-        'h-9 inline-flex items-center px-5 py-2.5 rounded-full  text-sm  text-gray-800 cursor-pointer',
+        'h-fit inline-flex items-center px-5 py-2.5 rounded-3xl min-h-[2.25rem] text-sm text-gray-800 cursor-pointer',
       )}
       onClick={() => !readonly && onClick(item.id)}
       id={`${id}__input-${item.name}`}
