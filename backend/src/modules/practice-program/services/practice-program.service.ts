@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc, format } from 'date-fns';
 import { DATE_CONSTANTS } from 'src/common/constants/date.constants';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
@@ -305,7 +306,7 @@ export class PracticeProgramService {
         organizationId,
       },
       order: {
-        createdOn: 'DESC',
+        createdOn: OrderDirection.DESC,
       },
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
