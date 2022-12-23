@@ -10,13 +10,11 @@ import {
   Matches,
   Max,
   MaxLength,
-  ValidateNested,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { ToNumber } from 'src/common/decorators/to-number.decorator';
 import { IsValidPhone } from 'src/common/decorators/validation.decorator';
 import { OrganizationType } from '../enums/organization-type.enum';
-import { ContactPerson } from './contact-person.dto';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -165,11 +163,6 @@ export class CreateOrganizationGeneralDto {
   @MaxLength(10)
   @Matches(REGEX.NAME)
   donationKeyword?: string;
-
-  /* Organization contact person */
-  @Type(() => ContactPerson)
-  @ValidateNested()
-  contact: ContactPerson;
 
   /* Organization county id */
   @IsNumber()
