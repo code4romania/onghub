@@ -22,11 +22,11 @@ const Application = () => {
   }
 
   if (error) {
-    navigate('/apps');
+    navigate('/applications');
   }
 
   const navigateBack = () => {
-    navigate(-2);
+    navigate(-1);
   };
 
   return (

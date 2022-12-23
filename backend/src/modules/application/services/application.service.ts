@@ -175,7 +175,7 @@ export class ApplicationService {
     const applicationsQuery = await this.applicationRepository
       .getQueryBuilder()
       .select([
-        'ongApp.id as id',
+        'DISTINCT(ongApp.id) as id',
         'application.logo as logo',
         'application.name as name',
         'userOngApp.status as status',

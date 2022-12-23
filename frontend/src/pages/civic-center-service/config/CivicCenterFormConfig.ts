@@ -78,7 +78,6 @@ const translations = {
       placeholder: i18n.t('civic_center_service:form.online.link.placeholder'),
     },
     description: {
-      required: i18n.t('civic_center_service:form.online.description.required'),
       max: i18n.t('civic_center_service:form.online.description.max'),
       pattern: i18n.t('civic_center_service:form.online.description.pattern'),
       label: i18n.t('civic_center_service:form.online.description.label'),
@@ -105,7 +104,6 @@ const translations = {
       max: i18n.t('civic_center_service:form.email_or_phone.phone.max'),
     },
     description: {
-      required: i18n.t('civic_center_service:form.email_or_phone.description.required'),
       max: i18n.t('civic_center_service:form.email_or_phone.description.max'),
       pattern: i18n.t('civic_center_service:form.email_or_phone.description.pattern'),
       label: i18n.t('civic_center_service:form.email_or_phone.description.label'),
@@ -124,7 +122,6 @@ const translations = {
       helper: i18n.t('civic_center_service:form.physical.address.helper'),
     },
     description: {
-      required: i18n.t('civic_center_service:form.physical.description.required'),
       max: i18n.t('civic_center_service:form.physical.description.max'),
       label: i18n.t('civic_center_service:form.physical.description.label'),
       placeholder: i18n.t('civic_center_service:form.physical.description.placeholder'),

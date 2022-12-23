@@ -28,6 +28,7 @@ import { OrganizationApplicationRequest } from '../interfaces/organization-appli
 import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
+import { OngApplicationFilterDto } from '../dto/ong-application-filters.dto';
 
 @Injectable()
 export class OngApplicationService {
@@ -100,22 +101,62 @@ export class OngApplicationService {
   }
 
   /**
+   * Get all applications assigned to an organization with statuses
+   */
+  public async findApplicationsByOrganizationId(
+    organizationId: number,
+    options?: OrganizationApplicationFilterDto,
+  ): Promise<IOngApplication[]> {
+    const { search, type } = options;
+
+    // 1. base query
+    const applicationsQuery = this.applicationRepository
+      .getQueryBuilder()
+      .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        'ong_application',
+        'ongApp',
+        'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
+        { organizationId },
+      )
+      .where(
+        'ongApp.organizationId = :organizationId and ongApp.status != :status',
+        {
+          organizationId,
+          status: OngApplicationStatus.PENDING,
+        },
+      );
+
+    // 2. filter by search word
+    if (search) {
+      applicationsQuery.andWhere('application.name ilike :name', {
+        name: `%${search}%`,
+      });
+    }
+
+    // 3. filter by application type
+    if (type) {
+      applicationsQuery.andWhere('application.type = :type', { type });
+    }
+
+    const applications = await applicationsQuery.execute();
+
+    return this.fileManagerService.mapLogoToEntity<IOngApplication>(
+      applications,
+    );
+  }
+
+  /**
    * @description
    * Get all applications assigned to an ONG
    * An application is assigned to an ong if it is in OngApplication table in statsu ACTIVE, RESTRICTED, PENDING
    */
-  public async findApplications(
+  public async findOrganizationApplications(
     organizationId: number,
-    options?: OrganizationApplicationFilterDto,
+    options?: OngApplicationFilterDto,
   ): Promise<IOngApplication[]> {
-    const { organizationId: ongId, userId, search, type } = options;
-
-    // 1. This validates that only admins and employees can call this
-    if (!organizationId) {
-      return;
-    }
-
-    // 2. base query
+    const { userId, showAllApps } = options;
+    // 1. base query - get all available applications with statuses for organization
     const applicationsQuery = this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
@@ -126,53 +167,36 @@ export class OngApplicationService {
         { organizationId },
       );
 
+    // 2. Get only the applications assigned to your organization and the independent applications
+    if (!showAllApps) {
+      applicationsQuery.where(
+        'ongApp.organizationId = :organizationId AND ongApp.status != :status OR application.type = :type',
+        {
+          organizationId,
+          status: OngApplicationStatus.PENDING,
+          type: ApplicationTypeEnum.INDEPENDENT,
+        },
+      );
+    }
+
     // 3. Handle my applications for employee
-    if (userId && ongId) {
+    if (userId) {
       applicationsQuery
         .leftJoin(
           'user_ong_application',
           'userOngApp',
           'userOngApp.ongApplicationId = ongApp.id',
         )
-        .where('ongApp.organizationId = :organizationId', {
-          organizationId: ongId,
-        })
-        .andWhere('userOngApp.userId = :userId', { userId })
-        .andWhere('ongApp.status != :status', {
-          status: OngApplicationStatus.PENDING,
-        })
+        .where(
+          'ongApp.organizationId = :organizationId AND userOngApp.userId = :userId',
+          {
+            organizationId,
+            userId,
+          },
+        )
         .orWhere('application.type = :type', {
           type: ApplicationTypeEnum.INDEPENDENT,
         });
-    } else if (ongId) {
-      // 4. Handle My applications for Admin
-      applicationsQuery
-        .where('ongApp.organizationId = :organizationId', {
-          organizationId: ongId,
-        })
-        .andWhere('ongApp.status != :status', {
-          status: OngApplicationStatus.PENDING,
-        })
-        .orWhere('application.type = :type', {
-          type: ApplicationTypeEnum.INDEPENDENT,
-        });
-    }
-
-    if (search) {
-      applicationsQuery
-        .where('ongApp.organizationId = :organizationId', {
-          organizationId,
-        })
-        .andWhere('application.name ilike :name', {
-          name: `%${search}%`,
-        });
-    }
-    if (type) {
-      applicationsQuery
-        .where('ongApp.organizationId = :organizationId', {
-          organizationId,
-        })
-        .andWhere('application.type = :type', { type });
     }
 
     const applications = await applicationsQuery.execute();

@@ -37,9 +37,9 @@ const CivicCenterAccessDetail = ({ title, description }: CivicCenterAccessDetail
 );
 
 const CivicCenterAccessDetailsRow = ({ label, value }: CivicCenterAccessDetailsRowProps) => (
-  <div className="flex flex-row items-center justify-start gap-2 text-base">
-    <span className="font-titilliumBold text-gray-600">{label}</span>
-    <span className="font-titillium">{value}</span>
+  <div className="flex lg:flex-row flex-col justify-start gap-2 text-base items-baseline">
+    <span className="font-titilliumBold text-gray-600 shrink-0">{label}</span>
+    <span className="font-titillium break-all">{value}</span>
   </div>
 );
 

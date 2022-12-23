@@ -25,6 +25,7 @@ import { OngApplicationService } from 'src/modules/application/services/ong-appl
 import { OngApplication } from 'src/modules/application/entities/ong-application.entity';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 import { ApplicationService } from '../services/application.service';
+import { OngApplicationFilterDto } from '../dto/ong-application-filters.dto';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -40,14 +41,17 @@ export class OrganizationApplicationController {
   @ApiQuery({ type: () => OrganizationApplicationFilterDto })
   @Get()
   findApplications(
-    @Query() filters: OrganizationApplicationFilterDto,
+    @Query() filters: OngApplicationFilterDto,
     @ExtractUser() user: User,
   ): Promise<IOngApplication[]> {
     const userId = user.role === Role.EMPLOYEE ? user.id : undefined;
-    return this.ongApplicationService.findApplications(user.organizationId, {
-      ...filters,
-      userId,
-    });
+    return this.ongApplicationService.findOrganizationApplications(
+      user.organizationId,
+      {
+        ...filters,
+        userId,
+      },
+    );
   }
 
   @Roles(Role.ADMIN)

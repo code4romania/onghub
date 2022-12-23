@@ -98,13 +98,12 @@ export const getOrganizationApplications = (
   search?: string,
   type?: ApplicationTypeEnum,
 ): Promise<ApplicationWithOngStatus[]> => {
-  let requestUrl = `/application/organization/${id}`;
-
-  if (search) requestUrl = `${requestUrl}?search=${search}`;
-
-  if (type) requestUrl = `${requestUrl}?type=${type}`;
-
-  return API.get(requestUrl).then((res) => res.data);
+  return API.get(`/application/organization/${id}`, {
+    params: {
+      search,
+      type,
+    },
+  }).then((res) => res.data);
 };
 
 export const getOrganizationApplicationRequests = (

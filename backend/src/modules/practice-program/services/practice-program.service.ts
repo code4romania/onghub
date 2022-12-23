@@ -7,12 +7,14 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { compareAsc } from 'date-fns';
+import { compareAsc, format } from 'date-fns';
+import { DATE_CONSTANTS } from 'src/common/constants/date.constants';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
-import { In } from 'typeorm';
+import { In, Raw } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { WorkingHoursParser } from '../constants/parsers.constants';
 import { PRACTICE_PROGRAM_FILTER_CONFIG } from '../constants/practice-program-filter.config';
@@ -304,7 +306,7 @@ export class PracticeProgramService {
         organizationId,
       },
       order: {
-        createdOn: 'DESC',
+        createdOn: OrderDirection.DESC,
       },
       relations: ['location', 'skills', 'domains', 'faculties'],
     });
@@ -334,6 +336,9 @@ export class PracticeProgramService {
         },
         faculties: faculties?.length > 0 ? { id: In(faculties) } : null,
         domains: domains?.length > 0 ? { id: In(domains) } : null,
+        deadline: Raw((alias) => `(${alias} >= :date OR ${alias} IS NULL)`, {
+          date: format(new Date(), DATE_CONSTANTS.YYYY_MM_DD),
+        }),
       };
 
       // 2. set correct mappings for working hours
@@ -398,7 +403,7 @@ export class PracticeProgramService {
     PracticeProgram & { organizationId: number; organizationName: string }
   > {
     const practiceProgram = await this.practiceProgramRepository.get({
-      where: { id },
+      where: { id, active: true },
       relations: [
         'location',
         'skills',
