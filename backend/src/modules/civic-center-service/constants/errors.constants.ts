@@ -8,15 +8,15 @@ export const CIVIC_CENTER_SERVICE_ERRORS = {
     errorCode: 'CCS_002',
   },
   ONLINE_ACCESS: {
-    message: 'Online access link and description are required',
+    message: 'Online access link is required',
     errorCode: 'CCS_003',
   },
   EMAIL_PHONE_ACCESS: {
-    message: 'Email, phone and access description are required',
+    message: 'Email and phone access are required',
     errorCode: 'CCS_004',
   },
   PHYSICAL_ACCESS: {
-    message: 'Address and access description are required',
+    message: 'Physical access address is required',
     errorCode: 'CCS_005',
   },
   UPDATE: {

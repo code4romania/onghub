@@ -40,7 +40,7 @@ const Dashboard = () => {
                   statistics.isOrganizationUpdated,
                 )}
               />
-              <div className="flex flex-col sm:flex-row gap-4 w-full">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <ExetendedStatisticsCard
                   stat={AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
                     statistics.numberOfInstalledApps,
@@ -59,7 +59,7 @@ const Dashboard = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-4 w">
+            <div className="flex gap-4 lg:w-1/3">
               <ExetendedStatisticsCard
                 stat={AdminEmployeeDashboardExtendedStatisticsMapping.activity({
                   organizationCreatedOn: statistics.organizationCreatedOn,
@@ -72,7 +72,7 @@ const Dashboard = () => {
             <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
               {t('about')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
               <StatisticsCard
                 stat={{
                   ...AdminDashboardSimpleStatisticsMapping.numberOfApps,
@@ -85,6 +85,7 @@ const Dashboard = () => {
                   count: statistics.hubStatistics.numberOfActiveOrganizations,
                 }}
               />
+              <div className="basis-1/3" />
             </div>
           </div>
         </div>
