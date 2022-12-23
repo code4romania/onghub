@@ -1190,7 +1190,7 @@
           "helper": "Introduceti locatia exacta de unde o persoana poate accesa serviciul"
         },
         "description": {
-          "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
+          "max": "Descrierea formatata nu poate sa aiba mai mult de 1000 caractere",
           "label": "Descriere access fizic",
           "placeholder": "Lorem ipsum",
           "helper": "Mentioneaza orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"
