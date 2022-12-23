@@ -34,7 +34,7 @@ export class CivicCenterServiceService {
   ): Promise<CivicCenterService> {
     try {
       // 1. Get location
-      const location = await this.nomenclatureService.getCities({
+      const location = await this.nomenclatureService.getCity({
         where: { id: createCivicCenterServiceDto.locationId },
       });
 
@@ -59,7 +59,7 @@ export class CivicCenterServiceService {
       // 5. Create new civic center service
       const service = await this.civicCenterServiceRepository.save({
         ...createCivicCenterServiceDto,
-        location: location[0],
+        location: location,
         domains,
       });
 
