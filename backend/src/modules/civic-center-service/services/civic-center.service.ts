@@ -19,6 +19,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { CivicCenterServiceSearchFilterDto } from '../dto/civic-center-service-search-filter.dto';
 import { CIVIC_SERVICE_FILTERS_CONFIG } from '../constants/civic-center-filters.config';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
+import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -363,6 +364,9 @@ export class CivicCenterServiceService {
     return this.civicCenterServiceRepository.getMany({
       where: { organizationId },
       relations: ['location', 'domains'],
+      order: {
+        createdOn: OrderDirection.DESC,
+      },
     });
   }
 
