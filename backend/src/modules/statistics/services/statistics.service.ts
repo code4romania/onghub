@@ -30,6 +30,7 @@ import { Role } from 'src/modules/user/enums/role.enum';
 import { ApplicationService } from 'src/modules/application/services/application.service';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { In } from 'typeorm';
+import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 
 @Injectable()
 export class StatisticsService {
@@ -232,7 +233,12 @@ export class StatisticsService {
         });
 
       const numberOfUsers = await this.userService.countUsers({
-        where: { status: In([UserStatus.ACTIVE, UserStatus.RESTRICTED]) },
+        where: {
+          status: In([UserStatus.ACTIVE, UserStatus.RESTRICTED]),
+          organization: {
+            status: OrganizationStatus.ACTIVE,
+          },
+        },
       });
 
       const numberOfPendingRequests =
@@ -240,7 +246,9 @@ export class StatisticsService {
           where: { status: RequestStatus.PENDING },
         });
 
-      const numberOfApps = await this.applicationService.countApplications();
+      const numberOfApps = await this.applicationService.countApplications({
+        where: { status: ApplicationStatus.ACTIVE },
+      });
 
       return {
         numberOfActiveOrganizations,
@@ -346,7 +354,9 @@ export class StatisticsService {
         where: { status: OrganizationStatus.ACTIVE },
       });
     const numberOfApplications =
-      await this.applicationService.countApplications();
+      await this.applicationService.countApplications({
+        where: { status: ApplicationStatus.ACTIVE },
+      });
 
     return {
       numberOfActiveOrganizations,

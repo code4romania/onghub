@@ -15,15 +15,15 @@ export interface CivicCenterServicePayload extends BaseEntity {
   ageCategories: AgeCategory[];
   isPeriodNotDetermined: boolean;
   hasOnlineAccess: boolean;
-  onlineAccessLink?: string;
-  onlineAccessDescription?: string;
+  onlineAccessLink?: string | null;
+  onlineAccessDescription?: string | null;
   hasEmailPhoneAccess: boolean;
-  emailAccess?: string;
-  phoneAccess?: string;
-  emailPhoneAccessDescription?: string;
+  emailAccess?: string | null;
+  phoneAccess?: string | null;
+  emailPhoneAccessDescription?: string | null;
   hasPhysicalAccess: boolean;
-  physicalAccessAddress?: string;
-  physicalAccessDescription?: string;
+  physicalAccessAddress?: string | null;
+  physicalAccessDescription?: string | null;
   active: boolean;
   organizationId?: string;
 }

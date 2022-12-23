@@ -1108,11 +1108,11 @@
       },
       "short_description": {
         "required": "Descrierea este obligatorie",
-        "min": "Descrierea nu poate sa aiba mai putin de 200 caractere",
+        "min": "Descrierea nu poate sa aiba mai putin de 3 caractere",
         "max": "Descrierea nu poate sa aiba mai mult de 250 caractere",
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurta serviciu*",
-        "helper": "Descriere serviciu oferit in 200-250 caractere",
+        "helper": "Descrie serviciul oferit in 3-250 caractere",
         "placeholder": "Lorem ipsum"
       },
       "long_description": {
@@ -1146,7 +1146,6 @@
           "placeholder": ""
         },
         "description": {
-          "required": "Descrierea este obligatorie",
           "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access online",
@@ -1173,7 +1172,6 @@
           "label": "E-mail*"
         },
         "description": {
-          "required": "Descrierea este obligatorie",
           "max": "Descrierea nu poate sa aiba mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access prin email",
@@ -1192,7 +1190,6 @@
           "helper": "Introduceti locatia exacta de unde o persoana poate accesa serviciul"
         },
         "description": {
-          "required": "Descrierea este obligatorie",
           "max": "Descrierea formatata nu poate sa aiba mai mult de 1000 caractere",
           "label": "Descriere access fizic",
           "placeholder": "Lorem ipsum",
