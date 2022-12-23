@@ -25,12 +25,12 @@ interface CivicCenterAccessDetailsRowProps {
 
 const CivicCenterAccessDetail = ({ title, description }: CivicCenterAccessDetailProps) => (
   <div className="pb-4">
-    <h4 className="flex items-center  justify-start gap-2">
+    <h4 className="flex items-center justify-start gap-2">
       <CheckCircleIcon className="w-5 h-5 text-green" />
-      <span className="font-titilliumBold text-base text-gray-800">{title}</span>
+      <span className="font-titilliumBold text-base text-gray-800 break-all">{title}</span>
     </h4>
     <p
-      className="font-normal text-sm text-gray-500 richtext_html"
+      className="font-normal text-sm text-gray-500 richtext_html break-all"
       dangerouslySetInnerHTML={{ __html: description || '' }}
     />
   </div>
@@ -50,13 +50,13 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
     <section className="divide-y divide-gray-100">
       <div className="flex flex-col gap-2 pb-8">
         <p className="flex font-titilliumSemiBold text-base items-center gap-2">
-          <LocationMarkerIcon className="h-4 w-4" />
-          <span>{service.location.name}</span>
+          <LocationMarkerIcon className="h-4 w-4 min-h-[1rem] min-w-[1rem]" />
+          <span className="break-all">{service.location.name}</span>
         </p>
-        <h3 className="font-titilliumBold text-2xl">{service.name}</h3>
+        <h3 className="font-titilliumBold text-2xl break-all">{service.name}</h3>
         <div className="flex flex-col gap-4 font-titillium text-base">
-          <p>{service?.shortDescription}</p>
-          <p>{service?.longDescription}</p>
+          <p className="break-all">{service?.shortDescription}</p>
+          <p className="break-all">{service?.longDescription}</p>
         </div>
         <div className="flex flex-col gap-2 md:gap-4 md:flex-row md:flex-wrap">
           <CivicCenterAccessDetailsRow
