@@ -172,7 +172,7 @@ const ExpenseReportModal = ({
                         <td className="whitespace-nowrap py-7 pl-4 pr-3 sm:text-sm lg:text-base text-xs font-bold text-gray-700 sm:pl-6">
                           {t('modal.defalcat')}
                         </td>
-                        <td className="whitespace-nowrap py-4 px-3 sm:text-sm lg:text-base text-xs font-bold ">
+                        <td className="sm:whitespace-nowrap py-4 px-3 sm:text-sm lg:text-base text-xs font-bold ">
                           {`${totalDefalcat} `}
                           {totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
