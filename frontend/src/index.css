@@ -72,6 +72,10 @@
   .show-more-text {
     @apply text-blue-500 cursor-pointer underline;
   }
+
+  .break-word {
+    word-break: break-word;
+  }
 }
 
 @layer utilities {
