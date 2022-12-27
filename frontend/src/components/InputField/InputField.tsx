@@ -31,12 +31,13 @@ const InputField = (props: {
               onBlur={props.config.onBlur}
               className={classNames(
                 props.config.error
-                  ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 '
+                  ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 pr-10'
                   : 'focus:ring-indigo-500 focus:border-indigo-500',
                 props.config.addOn ? 'pl-10' : 'pl-4',
                 props.config.type === 'checkbox'
                   ? ''
-                  : 'block w-full pr-10 border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
+                  : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
+                'min-w-[6.5rem]',
               )}
               placeholder={props.config.placeholder}
               defaultValue={props.config.defaultValue}
@@ -66,7 +67,10 @@ const InputField = (props: {
         </p>
       )}
       {props.config.error && (
-        <p className="mt-1 sm:text-sm text-xs text-red-600" id={`${props.config.id}__input-error`}>
+        <p
+          className="mt-1 sm:text-sm text-xs text-red-600 whitespace-pre-wrap"
+          id={`${props.config.id}__input-error`}
+        >
           {props.config.error}
         </p>
       )}
