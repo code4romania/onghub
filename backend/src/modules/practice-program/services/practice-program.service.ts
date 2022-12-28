@@ -14,6 +14,7 @@ import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { In, Raw } from 'typeorm';
 import { PRACTICE_PROGRAMS_ERRORS } from '../constants/errors.constants';
 import { WorkingHoursParser } from '../constants/parsers.constants';
@@ -22,6 +23,7 @@ import { CreatePracticeProgramDto } from '../dto/create-practice-program.dto';
 import { PracticeProgramFilterDto } from '../dto/practice-program-filter.dto';
 import { UpdatePracticeProgramDto } from '../dto/update-practice-program.dto';
 import { PracticeProgram } from '../entities/practice-program.entity';
+import { PracticeProgramFlat } from '../interfaces/PracticeProgramsFlat';
 import { PracticeProgramRepository } from '../repositories/practice-program.repository';
 
 @Injectable()
@@ -30,6 +32,7 @@ export class PracticeProgramService {
   constructor(
     private readonly practiceProgramRepository: PracticeProgramRepository,
     private readonly nomenclatureService: NomenclaturesService,
+    private readonly fileManagerService: S3FileManagerService,
   ) {}
 
   public async create(
@@ -322,7 +325,7 @@ export class PracticeProgramService {
 
   public async searchPracticePrograms(
     practiceProgramFilters: PracticeProgramFilterDto,
-  ): Promise<Pagination<PracticeProgram>> {
+  ): Promise<Pagination<PracticeProgramFlat>> {
     try {
       const { faculties, domains, workingHours, ...restOfFilters } =
         practiceProgramFilters;
@@ -350,10 +353,25 @@ export class PracticeProgramService {
       }
 
       // 3. return all paginated practice programs with organizations
-      return this.practiceProgramRepository.getManyPaginated(
-        PRACTICE_PROGRAM_FILTER_CONFIG,
-        paginationOptions,
-      );
+      const practicePrograms =
+        await this.practiceProgramRepository.getManyPaginated(
+          PRACTICE_PROGRAM_FILTER_CONFIG,
+          paginationOptions,
+        );
+
+      // 5. flatten the request
+      const flattenPrograms = this.flattenPraticePrograms(practicePrograms);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<PracticeProgramFlat>(
+          flattenPrograms.items,
+        );
+
+      return {
+        ...flattenPrograms,
+        items,
+      };
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -461,8 +479,42 @@ export class PracticeProgramService {
         deadline: true,
       },
       relations: ['location'],
-      where: { organizationId },
+      where: {
+        organizationId,
+        active: true,
+        deadline: Raw((alias) => `(${alias} >= :date OR ${alias} IS NULL)`, {
+          date: format(new Date(), DATE_CONSTANTS.YYYY_MM_DD),
+        }),
+      },
     });
+  }
+
+  private flattenPraticePrograms(
+    organizations: Pagination<PracticeProgram>,
+  ): Pagination<
+    PracticeProgram & {
+      organizationName: string;
+      organizationId: number;
+      logo: string;
+    }
+  > {
+    const { items, meta } = organizations;
+
+    const flatItems = items.reduce((previous, current) => {
+      const { organization, ...practiceProgram } = current;
+      previous.push({
+        ...practiceProgram,
+        organizationId: organization?.id,
+        organizationName: organization?.organizationGeneral?.name,
+        logo: organization?.organizationGeneral?.logo,
+      });
+      return previous;
+    }, []);
+
+    return {
+      items: flatItems,
+      meta,
+    };
   }
 
   private async saveAndGetSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
