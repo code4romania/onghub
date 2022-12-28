@@ -20,7 +20,7 @@ export class DropContact1672232907420 implements MigrationInterface {
       `ALTER TABLE "organization_general" DROP COLUMN "contact_person"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "organization_general" ADD "contact_person" jsonb`,
+      `ALTER TABLE "organization_general" ADD "contact_person" jsonb NOT NULL`,
     );
   }
 
