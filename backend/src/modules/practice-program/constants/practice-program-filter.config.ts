@@ -16,44 +16,12 @@ export const PRACTICE_PROGRAM_FILTER_CONFIG = {
       id: true,
       name: true,
     },
-    faculties: {
-      id: true,
-      name: true,
-    },
-    skills: {
-      id: true,
-      name: true,
-    },
-    domains: {
-      id: true,
-      name: true,
-    },
     organization: {
       id: true,
       organizationGeneral: {
         id: true,
         name: true,
-        description: true,
-        phone: true,
-        email: true,
-        city: {
-          id: true,
-          name: true,
-        },
-        county: {
-          id: true,
-          name: true,
-        },
-        facebook: true,
-        instagram: true,
-        twitter: true,
-      },
-      organizationActivity: {
-        id: true,
-        domains: {
-          id: true,
-          name: true,
-        },
+        logo: true,
       },
     },
   },
@@ -74,9 +42,6 @@ export const PRACTICE_PROGRAM_FILTER_CONFIG = {
       organizationGeneral: {
         city: true,
         county: true,
-      },
-      organizationActivity: {
-        domains: true,
       },
     },
   },
