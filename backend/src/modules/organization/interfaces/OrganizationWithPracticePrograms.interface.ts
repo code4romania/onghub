@@ -1,6 +1,6 @@
 import { PracticeProgram } from 'src/modules/practice-program/entities/practice-program.entity';
 import { Domain } from 'src/shared/entities';
-import { Contact } from '../entities';
+import { ContactPerson } from './contact-person.interface';
 
 export interface OrganizationWithPracticePrograms {
   id: number;
@@ -8,7 +8,7 @@ export interface OrganizationWithPracticePrograms {
   description: string;
   logo: string;
   domains: Domain[];
-  contact: Contact;
+  contact: ContactPerson;
   city: string;
   county: string;
   facebook?: string;

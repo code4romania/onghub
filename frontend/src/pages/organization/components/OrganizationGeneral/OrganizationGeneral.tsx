@@ -88,7 +88,6 @@ const OrganizationGeneral = () => {
       contact_email,
       contact_fullName,
       contact_phone,
-      contact,
       logo,
       cityId,
       countyId,
@@ -106,7 +105,6 @@ const OrganizationGeneral = () => {
       donationWebsite: setUrlPrefix(organizationGeneralData.donationWebsite),
       redirectLink: setUrlPrefix(organizationGeneralData.redirectLink),
       contact: {
-        ...contact,
         fullName: contact_fullName,
         phone: contact_phone,
         email: contact_email,
@@ -480,7 +478,6 @@ const OrganizationGeneral = () => {
                   OrganizationGeneralConfig.contact_email,
                   OrganizationGeneralConfig.contact_phone,
                 ]}
-                disabled={disabled}
               />
             </div>
             <div className="pt-8">

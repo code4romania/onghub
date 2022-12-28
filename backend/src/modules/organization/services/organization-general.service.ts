@@ -18,14 +18,12 @@ import { UpdateOrganizationGeneralDto } from '../dto/update-organization-general
 import { Organization, OrganizationGeneral } from '../entities';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { OrganizationGeneralRepository } from '../repositories/organization-general.repository';
-import { ContactService } from './contact.service';
 
 @Injectable()
 export class OrganizationGeneralService {
   private readonly logger = new Logger(OrganizationGeneralService.name);
   constructor(
     private readonly organizationGeneralRepository: OrganizationGeneralRepository,
-    private readonly contactService: ContactService,
     private readonly fileManagerService: S3FileManagerService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
@@ -50,16 +48,6 @@ export class OrganizationGeneralService {
       updateOrganizationGeneralDto,
     );
 
-    let { contact, ...updateOrganizationData } = updateOrganizationGeneralDto;
-
-    // TODO: this will be deprecated
-    if (contact) {
-      const contactEntity = await this.contactService.get({
-        where: { id: contact.id },
-      });
-      updateOrganizationData['contact'] = { ...contactEntity, ...contact };
-    }
-
     // Processing 1: Save new logo
     if (logo) {
       try {
@@ -76,8 +64,8 @@ export class OrganizationGeneralService {
         );
 
         // 3.3 Add new logo path to database
-        updateOrganizationData = {
-          ...updateOrganizationData,
+        updateOrganizationGeneralDto = {
+          ...updateOrganizationGeneralDto,
           logo: uploadedFile[0],
         };
       } catch (error) {
@@ -93,12 +81,12 @@ export class OrganizationGeneralService {
     try {
       await this.organizationGeneralRepository.save({
         id: organization.organizationGeneralId,
-        ...updateOrganizationData,
+        ...updateOrganizationGeneralDto,
       });
 
       let organizationGeneral = await this.organizationGeneralRepository.get({
         where: { id: organization.organizationGeneralId },
-        relations: ['city', 'county', 'contact'],
+        relations: ['city', 'county'],
       });
 
       // Effect 1: Update financial data if CUI has changed

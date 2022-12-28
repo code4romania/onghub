@@ -11,7 +11,7 @@ import API from '../API';
 import {
   mapAdminToFormData,
   mapOrganizationActivityToFormData,
-  mapOrganizationGeneralToFormDara,
+  mapOrganizationGeneralToFormData,
   mapOrganizationLegalToFormData,
 } from '../organization/OrganizationFormDataMapper.service';
 import { ValidateCreateOrganizationRequest } from './interfaces/Request.dto';
@@ -26,7 +26,7 @@ export const createOrganizationRequest = (
   // create form data payload
   let payload = new FormData();
   payload = mapAdminToFormData(payload, createRequestDTO.admin);
-  payload = mapOrganizationGeneralToFormDara(
+  payload = mapOrganizationGeneralToFormData(
     payload,
     createRequestDTO.general,
     'organization[general]',

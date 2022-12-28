@@ -70,7 +70,6 @@ export class OrganizationRequestService {
         'organization.organizationGeneral',
         'organization.organizationGeneral.city',
         'organization.organizationGeneral.county',
-        'organization.organizationGeneral.contact',
         'organization.organizationActivity',
         'organization.organizationActivity.federations',
         'organization.organizationActivity.coalitions',
