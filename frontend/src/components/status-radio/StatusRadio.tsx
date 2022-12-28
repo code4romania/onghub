@@ -14,7 +14,7 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
       <div
         className={classNames(
           !active ? 'bg-gray-900 text-white' : '',
-          'flex-1 py-2 cursor-pointer rounded-l-md flex items-center justify-center',
+          'flex-1 py-2 cursor-pointer rounded-l-md flex items-center justify-center text-sm',
         )}
         onClick={setActive.bind(null, false)}
       >
@@ -23,7 +23,7 @@ const StatusRadioComponent = ({ active, setActive }: StatusRadioComponentProps) 
       <div
         className={classNames(
           active ? 'bg-green text-white' : '',
-          'flex-1 py-2 cursor-pointer rounded-r-md flex items-center justify-center',
+          'flex-1 py-2 cursor-pointer rounded-r-md flex items-center justify-center text-sm',
         )}
         onClick={setActive.bind(null, true)}
       >
