@@ -408,11 +408,8 @@ export class OrganizationService {
             facebook: true,
             twitter: true,
             instagram: true,
-            contact: {
-              fullName: true,
-              email: true,
-              phone: true,
-            },
+            email: true,
+            phone: true,
             city: {
               name: true,
               county: {
@@ -494,11 +491,8 @@ export class OrganizationService {
             facebook: true,
             twitter: true,
             instagram: true,
-            contact: {
-              fullName: true,
-              email: true,
-              phone: true,
-            },
+            phone: true,
+            email: true,
             city: {
               name: true,
               county: {
