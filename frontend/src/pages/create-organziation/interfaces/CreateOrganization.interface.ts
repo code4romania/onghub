@@ -4,6 +4,7 @@ import { Person } from '../../../common/interfaces/person.interface';
 import { OrganizationAreaEnum } from '../../organization/components/OrganizationActivity/OrganizationActivityConfig';
 import { OrganizationTypeEnum } from '../../organization/enums/OrganizationType.enum';
 import { Contact } from '../../organization/interfaces/Contact.interface';
+import { ContactPerson } from '../../organization/interfaces/ContactPerson.interface';
 
 export interface ICreateOrganizationUser {
   name: string;
@@ -40,7 +41,7 @@ export interface ICreateOrganizationGeneral {
   redirectLink: string;
   donationSMS: string;
   donationKeyword: string;
-  contact: Contact;
+  contact: ContactPerson;
   city: City;
   county: County;
   cityId?: number;
