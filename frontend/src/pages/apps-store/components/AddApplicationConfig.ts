@@ -56,7 +56,7 @@ const translations = {
     max: i18n.t('appstore:config.step.max'),
     label: i18n.t('appstore:config.step.label'),
   },
-  url: i18n.t('common:url'),
+  url: i18n.t('common:invalid_url'),
 };
 
 export const PullingTypeOptions = [

@@ -13,7 +13,7 @@ import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/Orga
 import i18n from '../../../../common/config/i18n';
 
 const translations = {
-  url: i18n.t('common:url'),
+  url: i18n.t('common:invalid_url'),
   name: {
     required: i18n.t('general:config.name.required'),
     max: i18n.t('general:config.name.max'),

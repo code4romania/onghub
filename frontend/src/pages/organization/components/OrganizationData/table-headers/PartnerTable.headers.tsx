@@ -14,7 +14,7 @@ const translations = {
   status: i18n.t('common:status'),
   update: i18n.t('common:updated_on'),
   completed: i18n.t('common:completion_status.completed'),
-  incompleted: i18n.t('common:completion_status.incompleted'),
+  not_completed: i18n.t('common:completion_status.not_completed'),
 };
 
 export const PartnerTableHeaders: TableColumn<Partner>[] = [
@@ -50,7 +50,7 @@ export const PartnerTableHeaders: TableColumn<Partner>[] = [
         value={
           row.status === CompletionStatus.COMPLETED
             ? translations.completed
-            : translations.incompleted
+            : translations.not_completed
         }
       />
     ),

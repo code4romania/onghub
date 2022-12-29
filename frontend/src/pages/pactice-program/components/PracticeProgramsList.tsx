@@ -30,7 +30,7 @@ const PracticeProgramsList = ({
     <ContentWrapper
       title={!hideTitle ? t('list.title') : ''}
       addButton={{
-        btnLabel: t('list.add_button'),
+        btnLabel: t('add.title'),
         onBtnClick: onAddPracticeProgram,
         visible: true,
       }}
