@@ -79,14 +79,14 @@ const CreateOrganizationActivity = () => {
     if (organization && organization.activity) {
       reset({
         ...organization.activity,
-        isPartOfFederation: organization.activity.isPartOfFederation.toString(),
-        isPartOfCoalition: organization.activity.isPartOfCoalition.toString(),
+        isPartOfFederation: organization.activity.isPartOfFederation?.toString(),
+        isPartOfCoalition: organization.activity.isPartOfCoalition?.toString(),
         isPartOfInternationalOrganization:
-          organization.activity.isPartOfInternationalOrganization.toString(),
-        isSocialServiceViable: organization.activity.isSocialServiceViable.toString(),
-        offersGrants: organization.activity.offersGrants.toString(),
-        hasBranches: organization.activity.hasBranches.toString(),
-        isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization.toString(),
+          organization.activity.isPartOfInternationalOrganization?.toString(),
+        isSocialServiceViable: organization.activity.isSocialServiceViable?.toString(),
+        offersGrants: organization.activity.offersGrants?.toString(),
+        hasBranches: organization.activity.hasBranches?.toString(),
+        isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization?.toString(),
       });
     }
   }, [organization]);
