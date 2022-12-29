@@ -22,7 +22,7 @@ export const mapOrganizationGeneralToFormData = (
   const { city, county, contact, ...organizationGeneral } = general;
 
   // map basic organization general fields
-  const organizationGeneralPayload = mapEntityToFormData(
+  let organizationGeneralPayload = mapEntityToFormData(
     payload,
     organizationGeneralKey,
     organizationGeneral,
@@ -33,15 +33,14 @@ export const mapOrganizationGeneralToFormData = (
   organizationGeneralPayload.append(`${organizationGeneralKey}[cityId]`, city?.id.toString());
 
   if (contact) {
-    const organizationWithContactPayload = mapEntityToFormData(
+    organizationGeneralPayload = mapEntityToFormData(
       organizationGeneralPayload,
       `${organizationGeneralKey}[contact]`,
       contact,
     );
-    return organizationWithContactPayload;
-  } else {
-    return organizationGeneralPayload;
   }
+
+  return organizationGeneralPayload;
 };
 
 export const mapOrganizationActivityToFormData = (
