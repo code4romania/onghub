@@ -19,12 +19,12 @@
     "information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "next": "Mai departe",
     "send": "Trimite",
-    "url": "URL-ul are un format invalid",
+    "invalid_url": "URL-ul are un format invalid",
     "processing": "Se proceseaza...",
     "loading": "Se incarca...",
     "completion_status": {
       "completed": "Completat",
-      "incompleted": "Necompletat"
+      "not_completed": "Necompletat"
     },
     "restricted": "Restrictionat",
     "active": "Activ",
@@ -48,7 +48,9 @@
     "unavailable": "Indisponibil",
     "to_be_removed": "De eliminat",
     "decimal": "Valori cu decimale nu sunt permise.",
-    "unknown_error": "A aparut o eroare necunoscuta"
+    "unknown_error": "A aparut o eroare necunoscuta",
+    "yes": "Da",
+    "no": "Nu"
   },
   "menu": {
     "informations": "Informatii",
@@ -124,7 +126,7 @@
     "data_update": "Te rugam sa actualizezi datele din aceasta sectiune la un interval stabilit de timp.",
     "modal": {
       "cancel": "Anuleaza modificari",
-      "close": "Close",
+      "close": "Inchide",
       "save": "Salveaza"
     },
     "create": {
@@ -178,7 +180,7 @@
       }
     },
     "restrict": {
-      "title": "Esti sigu ca doresti sa stergi organizatia din ONG Hub?",
+      "title": "Esti sigur ca doresti sa stergi organizatia din ONG Hub?",
       "description": "Lorem ipsum. Eliminarea organizației din ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal, iar datele se vor pierde. Dacă dorești să elimini definitiv organizația, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul.",
       "confirm": "Sterge organizatia",
       "request_success": "Cerere trimisa cu succes",
@@ -343,15 +345,11 @@
       "coalitions": {
         "part_of": "Organizatia apartine de una sau mai multe coalitii?*",
         "helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu",
         "label": "Mentioneaza coalitii*"
       },
       "international": {
         "part_of": "Organizatia ta face parte dintr-o organizatie internationala?*",
         "part_of_helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu",
         "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
         "min": "Numele organizatiei poate sa aiba mnim 3 caractere.",
         "invalid": "Formatul este invalid.",
@@ -361,28 +359,20 @@
       "branches": {
         "has_any": "Organizatia are filiale sau sucursale?*",
         "has_any_helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu",
         "label": "Localitati in care organizatia are filiale sau sucursale*",
         "helper": "Cauta in lista"
       },
       "social": {
         "label": "Esti ONG acreditat pentru servicii sociale?*",
-        "helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu"
+        "helper": "De exemplu, lorem ipsum. Help text."
       },
       "grants": {
         "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
-        "helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu"
+        "helper": "De exemplu, lorem ipsum. Help text."
       },
       "public": {
         "label": "Esti declarat ONG de interes public?*",
-        "helper": "De exemplu, lorem ipsum. Help text.",
-        "yes": "Da",
-        "no": "Nu"
+        "helper": "De exemplu, lorem ipsum. Help text."
       }
     }
   },
@@ -608,11 +598,6 @@
       "title": "Esti sigur ca doresti respingerea requestului",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
     }
-  },
-  "delete_row": {
-    "delete": "Stergeti randul?",
-    "information": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis.",
-    "no_delete": "Nu Sterge"
   },
   "user": {
     "title": "Utilizatori",
@@ -1050,7 +1035,7 @@
       "add_button": "Adauga Serviciu"
     },
     "list": {
-      "error": "Eroare la incarcarea listei"
+      "error": "Eroare la incarcarea listei de servicii"
     },
     "add": {
       "title": "Adauga Serviciu",
@@ -1328,8 +1313,7 @@
       }
     },
     "list": {
-      "title": "Programele mele de practica",
-      "add_button": "Adauga program de practica"
+      "title": "Programele mele de practica"
     },
     "details": {
       "deadline": "Deadline aplicare",

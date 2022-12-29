@@ -18,7 +18,7 @@ const translations = {
   not_available: i18n.t('open_data:report.not_available'),
   report: i18n.t('open_data:report.report'),
   completed: i18n.t('common:completion_status.completed'),
-  incompleted: i18n.t('common:completion_status.incompleted'),
+  not_completed: i18n.t('common:completion_status.not_completed'),
 };
 
 export const ReportsTableHeaders: TableColumn<Report>[] = [
@@ -74,7 +74,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
         value={
           row.status === CompletionStatus.COMPLETED
             ? translations.completed
-            : translations.incompleted
+            : translations.not_completed
         }
       />
     ),
