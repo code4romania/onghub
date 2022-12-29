@@ -14,6 +14,14 @@ export const CIVIC_SERVICE_FILTERS_CONFIG = {
     hasOnlineAccess: true,
     hasEmailPhoneAccess: true,
     hasPhysicalAccess: true,
+    organization: {
+      id: true,
+      organizationGeneral: {
+        id: true,
+        name: true,
+        logo: true,
+      },
+    },
   },
   searchableColumns: [
     'name',
@@ -27,5 +35,11 @@ export const CIVIC_SERVICE_FILTERS_CONFIG = {
   rangeColumn: ['startDate', 'endDate'] as [string, string],
   relations: {
     location: true,
+    organization: {
+      organizationGeneral: {
+        city: true,
+        county: true,
+      },
+    },
   },
 };

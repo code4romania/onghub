@@ -10,6 +10,7 @@ import {
 import { compareAsc, format } from 'date-fns';
 import { DATE_CONSTANTS } from 'src/common/constants/date.constants';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
+import { flattenPullingTypeEntity } from 'src/common/helpers/flatten-pulling-type.helper';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
@@ -360,7 +361,8 @@ export class PracticeProgramService {
         );
 
       // 5. flatten the request
-      const flattenPrograms = this.flattenPraticePrograms(practicePrograms);
+      const flattenPrograms =
+        flattenPullingTypeEntity<PracticeProgram>(practicePrograms);
 
       // 6. map the logo to organization
       const items =
@@ -487,34 +489,6 @@ export class PracticeProgramService {
         }),
       },
     });
-  }
-
-  private flattenPraticePrograms(
-    organizations: Pagination<PracticeProgram>,
-  ): Pagination<
-    PracticeProgram & {
-      organizationName: string;
-      organizationId: number;
-      logo: string;
-    }
-  > {
-    const { items, meta } = organizations;
-
-    const flatItems = items.reduce((previous, current) => {
-      const { organization, ...practiceProgram } = current;
-      previous.push({
-        ...practiceProgram,
-        organizationId: organization?.id,
-        organizationName: organization?.organizationGeneral?.name,
-        logo: organization?.organizationGeneral?.logo,
-      });
-      return previous;
-    }, []);
-
-    return {
-      items: flatItems,
-      meta,
-    };
   }
 
   private async saveAndGetSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
