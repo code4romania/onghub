@@ -45,7 +45,7 @@ const AuthProvider = ({ children }: any) => {
         setRole(profile?.role as UserRole);
       } catch (error: any) {
         const err = error?.response?.data;
-        switch (err.code) {
+        switch (err?.code) {
           case USER_ERRORS.RESTRICT:
             setAuthState({
               ...authState,
@@ -70,7 +70,6 @@ const AuthProvider = ({ children }: any) => {
       }
     })();
   }, []);
-
 
   return (
     <AuthContext.Provider value={{ ...authState, role, setAuthState, logout }}>
