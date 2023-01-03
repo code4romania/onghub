@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { compareAsc } from 'date-fns';
 import { NomenclaturesService } from 'src/shared/services';
-import { In } from 'typeorm';
+import { ArrayOverlap, In } from 'typeorm';
 import { CreateCivicCenterServiceDto } from '../dto/create-civic-center-service.dto';
 import { UpdateCivicCenterServiceDto } from '../dto/update-civic-center-service.dto';
 import { CivicCenterService } from '../entities/civic-center-service.entity';
@@ -267,7 +267,7 @@ export class CivicCenterServiceService {
           status: OrganizationStatus.ACTIVE,
         },
         domains: domains?.length > 0 ? { id: In(domains) } : null,
-        ageCategories: ageCategories ? In(ageCategories) : null,
+        ageCategories: ageCategories ? ArrayOverlap(ageCategories) : null,
       };
 
       // 2. return all paginated services
