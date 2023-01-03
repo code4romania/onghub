@@ -4,6 +4,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { CreateFeedbackDto } from 'src/modules/civic-center-service/dto/create-feedback.dto';
 import { Feedback } from 'src/modules/civic-center-service/entities/feedback.entity';
+import { CivicCenterServiceFlat } from 'src/modules/civic-center-service/interfaces/CivicCenterServiceFlat';
 import { FeedbackService } from 'src/modules/civic-center-service/services/feedback.service';
 import { OrganizationWithServices } from 'src/modules/organization/interfaces/OrganizationWithServices.interface';
 import { CivicCenterServiceSearchFilterDto } from '../../civic-center-service/dto/civic-center-service-search-filter.dto';
@@ -25,7 +26,7 @@ export class CivicCenterPublicController {
   @Get('/search')
   async searchCivicServices(
     @Query() civicCenterFilters: CivicCenterServiceSearchFilterDto,
-  ): Promise<Pagination<CivicCenterService>> {
+  ): Promise<Pagination<CivicCenterServiceFlat>> {
     return this.civicCenterServicePublic.search(civicCenterFilters);
   }
 

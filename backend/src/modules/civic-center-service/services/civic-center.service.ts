@@ -21,6 +21,9 @@ import { CIVIC_SERVICE_FILTERS_CONFIG } from '../constants/civic-center-filters.
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { City, Domain } from 'src/shared/entities';
+import { flattenPullingTypeEntity } from 'src/common/helpers/flatten-pulling-type.helper';
+import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
+import { CivicCenterServiceFlat } from '../interfaces/CivicCenterServiceFlat';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -28,6 +31,7 @@ export class CivicCenterServiceService {
   constructor(
     private readonly civicCenterServiceRepository: CivicCenterServiceRepository,
     private readonly nomenclatureService: NomenclaturesService,
+    private readonly fileManagerService: S3FileManagerService,
   ) {}
 
   public async create(
@@ -250,7 +254,7 @@ export class CivicCenterServiceService {
 
   public async searchCivicCenterServices(
     civicCenterServiceFilterDto: CivicCenterServiceSearchFilterDto,
-  ): Promise<Pagination<CivicCenterService>> {
+  ): Promise<Pagination<CivicCenterServiceFlat>> {
     try {
       const { domains, ageCategories, ...restOfFilters } =
         civicCenterServiceFilterDto;
@@ -267,10 +271,25 @@ export class CivicCenterServiceService {
       };
 
       // 2. return all paginated services
-      return this.civicCenterServiceRepository.getManyPaginated(
+      const services = await this.civicCenterServiceRepository.getManyPaginated(
         CIVIC_SERVICE_FILTERS_CONFIG,
         paginationOptions,
       );
+
+      // 5. flatten the request
+      const flattenPrograms =
+        flattenPullingTypeEntity<CivicCenterService>(services);
+
+      // 6. map the logo to organization
+      const items =
+        await this.fileManagerService.mapLogoToEntity<CivicCenterServiceFlat>(
+          flattenPrograms.items,
+        );
+
+      return {
+        ...flattenPrograms,
+        items,
+      };
     } catch (error) {
       this.logger.error({
         error: { error },
