@@ -47,10 +47,8 @@ export class UserStatusGuard implements CanActivate {
       return true;
     }
 
-    if (user.status !== UserStatus.ACTIVE) {
-      throw new ForbiddenException(
-        USER_ERRORS.INVALID_STATUS(user.status.toUpperCase()),
-      );
+    if (user.status === UserStatus.RESTRICTED) {
+      throw new ForbiddenException(USER_ERRORS.RESTRICTED);
     } else {
       return true;
     }
