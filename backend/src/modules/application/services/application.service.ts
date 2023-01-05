@@ -358,7 +358,18 @@ export class ApplicationService {
 
   public async delete(id: number): Promise<void> {
     try {
-      // 1. get all organization who have access to this application
+      // 1. Check if application exists
+      const application = await this.applicationRepository.get({
+        where: { id },
+      });
+
+      if (!application) {
+        throw new NotFoundException({
+          ...APPLICATION_ERRORS.GET,
+        });
+      }
+
+      // 2. Get all organization who have access to this application
       const ongApplications = await this.ongApplicationRepository.getMany({
         where: { applicationId: id },
       });
@@ -366,17 +377,24 @@ export class ApplicationService {
       // map organization ids for easy usage
       const ongApplicationsIds = ongApplications.map((app) => app.id);
 
-      // 2. check if any organizations have access to the app
+      // 3. check if any organizations have access to the app
       if (ongApplications.length > 0) {
-        // 2.1 remove all user organization application connections
-        await this.userOngApplicationRepository.remove({
+        // 3.1 remove all user organization application connections
+        const removeUserAppLink = this.userOngApplicationRepository.remove({
           where: { ongApplicationId: In(ongApplicationsIds) },
         });
 
-        // 2.2. remove all organization application connections
-        await this.ongApplicationRepository.remove({
+        // 3.2. remove all organization application connections
+        const removeNgoAppLink = this.ongApplicationRepository.remove({
           where: { id: In(ongApplicationsIds) },
         });
+
+        await Promise.all([removeUserAppLink, removeNgoAppLink]);
+      }
+
+      // 4. Delete logo from S3
+      if (application.logo) {
+        await this.fileManagerService.deleteFiles([application.logo]);
       }
 
       // 3. Remove tha actual application
