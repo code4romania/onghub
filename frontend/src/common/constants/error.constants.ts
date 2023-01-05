@@ -15,6 +15,7 @@ export const ORGANIZATION_ERRORS: Record<string, string> = {
 
 export const USER_ERRORS = {
   RESTRICT: 'USR_012',
+  INVALID_STATUS: 'USR_015',
   NOT_FOUND: 'USR_007',
 };
 
@@ -26,4 +27,10 @@ export const FILE_ERRORS: Record<string, string> = {
   APP_003: i18n.t('common:upload.logo'),
   ORG_010: i18n.t('common:upload.statute'),
   ORG_027: i18n.t('legal:errors.ORG_027'),
+};
+
+export const RESTRICTED_USER_ERRORS: Record<string, string> = {
+  ORG_020: i18n.t('organization:no_access'),
+  USR_012: i18n.t('account:no_access'),
+  USR_015: i18n.t('account:no_access'),
 };

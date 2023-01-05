@@ -5,7 +5,11 @@ import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
 import { Loading } from './components/loading/Loading';
 import { UserRole } from './pages/users/enums/UserRole.enum';
-import { ORGANIZATION_ERRORS, USER_ERRORS } from './common/constants/error.constants';
+import {
+  ORGANIZATION_ERRORS,
+  RESTRICTED_USER_ERRORS,
+  USER_ERRORS,
+} from './common/constants/error.constants';
 import { useErrorToast } from './common/hooks/useToast';
 import { useTranslation } from 'react-i18next';
 
@@ -47,17 +51,11 @@ const AuthProvider = ({ children }: any) => {
         const err = error?.response?.data;
         switch (err?.code) {
           case USER_ERRORS.RESTRICT:
-            setAuthState({
-              ...authState,
-              isRestricted: true,
-              restrictedReason: 'account',
-            });
-            break;
           case ORGANIZATION_ERRORS.RESTRICT:
             setAuthState({
               ...authState,
               isRestricted: true,
-              restrictedReason: 'organization',
+              restrictedReason: RESTRICTED_USER_ERRORS[err?.code],
             });
             break;
           case USER_ERRORS.NOT_FOUND:

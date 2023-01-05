@@ -55,4 +55,8 @@ export const USER_ERRORS = {
     message: 'User is not part of an organization',
     errorCode: 'USR_014',
   },
+  INVALID_STATUS: (status: string) => ({
+    message: `Cannot access resource because user status is #${status}`,
+    errorCode: 'USR_015',
+  }),
 };

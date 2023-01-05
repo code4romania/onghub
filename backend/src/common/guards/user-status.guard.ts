@@ -3,9 +3,11 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
 import { User } from 'src/modules/user/entities/user.entity';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
@@ -32,8 +34,9 @@ export class UserStatusGuard implements CanActivate {
     const user: User = req.user;
 
     if (!user) {
-      throw new ForbiddenException(`User does not exist in request`);
+      throw new UnauthorizedException(USER_ERRORS.GET);
     }
+
     // Some requests may be decorated to allow users with other statuses than ACTIVE to access the resource (e.g. GET /user)
     const allowedStatuses = this.reflector.get<string[]>(
       ALLOWED_STATUSES,
@@ -45,9 +48,8 @@ export class UserStatusGuard implements CanActivate {
     }
 
     if (user.status !== UserStatus.ACTIVE) {
-      // TODO: create custom exception to be handled by the FE interceptor and logout the user with the proper message
       throw new ForbiddenException(
-        `Cannot access resource because user status is #${user.status.toUpperCase()}`,
+        USER_ERRORS.INVALID_STATUS(user.status.toUpperCase()),
       );
     } else {
       return true;
