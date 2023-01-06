@@ -150,7 +150,8 @@
         "REQ_009": "Exista deja o organizatie cu aceasta denumire",
         "REQ_010": "Exista deja o organizatie cu acest alias",
         "REQ_011": "Exista deja o organizatie cu acest email",
-        "REQ_012": "Exista deja o organizatie cu acest numar de telefon"
+        "REQ_012": "Exista deja o organizatie cu acest numar de telefon",
+        "REQ_013": "Exista deja o cerere cu acest email sau cu acest numar de telefon."
       }
     },
     "filters": {

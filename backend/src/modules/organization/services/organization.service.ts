@@ -6,7 +6,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
@@ -59,6 +58,7 @@ import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
+import { formatPhoneRo } from 'src/common/helpers/formatters.helper';
 
 @Injectable()
 export class OrganizationService {
@@ -184,6 +184,12 @@ export class OrganizationService {
           ...createUserRequestDto,
         },
         ...createOrganizationDto.general,
+        name: createOrganizationDto.general.name.trim(),
+        alias: createOrganizationDto.general.alias.trim(),
+        cui: createOrganizationDto.general.cui.trim(),
+        rafNumber: createOrganizationDto.general.rafNumber.trim(),
+        email: createOrganizationDto.general.email.trim(),
+        phone: formatPhoneRo(createOrganizationDto.general.phone),
       },
       organizationActivity: {
         ...createOrganizationDto.activity,
@@ -1137,11 +1143,7 @@ export class OrganizationService {
       );
     }
 
-    const formattedPhone = formatNumber(
-      phone.trim().split(' ').join(''),
-      'RO',
-      'E.164',
-    );
+    const formattedPhone = formatPhoneRo(phone);
 
     const organizationWithPhone = await this.organizationGeneralService.findOne(
       {

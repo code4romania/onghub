@@ -18,13 +18,13 @@ import { ORGANIZATION_REQUEST_ERRORS } from '../constants/errors.constants';
 import { FindManyOptions } from 'typeorm';
 import { MAIL_ERRORS } from 'src/mail/constants/errors.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { formatNumber } from 'libphonenumber-js';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import CreateOngRequestEvent from 'src/modules/notifications/events/create-ong-request-event.class';
 import ApproveOngRequestEvent from 'src/modules/notifications/events/approve-ong-request-event.class';
 import RejectOngRequestEvent from 'src/modules/notifications/events/reject-ong-request-event.class';
 import DisableOngRequestEvent from 'src/modules/notifications/events/disable-ong-request-event.class';
+import { formatPhoneRo } from 'src/common/helpers/formatters.helper';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -127,15 +127,12 @@ export class OrganizationRequestService {
 
     // 1. validate admin
     if (admin) {
+      // check if there is an user with this data
       const user = await this.userService.findOne({
         where: [
-          { email: admin.email },
+          { email: admin.email.trim() },
           {
-            phone: formatNumber(
-              admin.phone.trim().split(' ').join(''),
-              'RO',
-              'E.164',
-            ),
+            phone: formatPhoneRo(admin.phone),
           },
         ],
       });
@@ -144,6 +141,25 @@ export class OrganizationRequestService {
         errors.push(
           new BadRequestException(
             ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+          ),
+        );
+      }
+
+      // check if there is a pending request with this admin data
+      const request = await this.organizationRequestRepository.get({
+        where: [
+          { email: admin.email.trim(), status: RequestStatus.PENDING },
+          {
+            phone: formatPhoneRo(admin.phone),
+            status: RequestStatus.PENDING,
+          },
+        ],
+      });
+
+      if (request) {
+        errors.push(
+          new BadRequestException(
+            ORGANIZATION_REQUEST_ERRORS.CREATE.REQUEST_EXISTS,
           ),
         );
       }
@@ -158,12 +174,12 @@ export class OrganizationRequestService {
 
         errors.push(
           ...(await this.organizationService.validateOrganizationGeneral(
-            cui,
-            rafNumber,
-            name,
-            email,
-            phone,
-            alias,
+            cui.trim(),
+            rafNumber.trim(),
+            name.trim(),
+            email.trim(),
+            phone.trim(),
+            alias.trim(),
           )),
         );
       }
@@ -197,7 +213,10 @@ export class OrganizationRequestService {
     const foundRequest = await this.organizationRequestRepository.get({
       where: [
         { email: createReqDto.admin.email, status: RequestStatus.PENDING },
-        { phone: createReqDto.admin.phone, status: RequestStatus.PENDING },
+        {
+          phone: formatPhoneRo(createReqDto.admin.phone),
+          status: RequestStatus.PENDING,
+        },
       ],
     });
 
@@ -225,7 +244,7 @@ export class OrganizationRequestService {
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
-        phone: createReqDto.admin.phone,
+        phone: formatPhoneRo(createReqDto.admin.phone),
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
       });
