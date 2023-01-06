@@ -69,7 +69,12 @@ export class CivicCenterService extends BaseEntity {
   })
   domains: Domain[];
 
-  @Column({ type: 'simple-array', name: 'age_categories' })
+  @Column({
+    type: 'enum',
+    enum: AgeCategory,
+    array: true,
+    name: 'age_categories',
+  })
   ageCategories: AgeCategory[];
 
   @Column({ type: 'boolean', name: 'has_online_access', default: false })
