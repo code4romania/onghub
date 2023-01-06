@@ -159,7 +159,7 @@ export class OrganizationRequestService {
       if (request) {
         errors.push(
           new BadRequestException(
-            ORGANIZATION_REQUEST_ERRORS.CREATE.REQUEST_EXISTS,
+            ORGANIZATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
           ),
         );
       }

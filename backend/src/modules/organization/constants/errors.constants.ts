@@ -173,10 +173,6 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       message: 'An organization with this phone already exists',
       errorCode: 'REQ_012',
     },
-    REQUEST_EXISTS: {
-      message: 'A request with this email or phone already exists',
-      errorCode: 'REQ_013',
-    },
   },
   UPDATE: {
     NOT_PENDING: {
