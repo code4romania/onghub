@@ -223,7 +223,15 @@ export class UserService {
     }
 
     try {
-      await this.userRepository.delete({ cognitoId: user.cognitoId });
+      // 1. Remove all associated apps with the user
+      this.userOngApplicationService.remove({
+        where: { userId: user.id },
+      });
+      // 2. Remove the user from the DB
+      await this.userRepository.remove({
+        where: { cognitoId: user.cognitoId },
+      });
+      // 3. Delete the user from Cognito
       await this.cognitoService.deleteUser(user.cognitoId);
       return user.cognitoId;
     } catch (error) {
