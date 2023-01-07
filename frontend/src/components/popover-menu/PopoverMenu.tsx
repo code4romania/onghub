@@ -74,8 +74,8 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                   {menuItems.map((item) => (
                     <div key={item.name}>
                       {item.type === PopoverMenuRowType.DOWNLOAD && (
-                        <a
-                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                        <label
+                          className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
                             item.onClick(row);
                             close();
@@ -85,14 +85,13 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                             className="text-gray-900 flex-shrink-0 h-5 w-5"
                             aria-hidden="true"
                           />
-                          <div className="ml-2.5">
-                            <label className="text-gray-900 text-xm font-normal">{item.name}</label>
-                          </div>
-                        </a>
+                          <label className="text-gray-900 text-xm font-normal">{item.name}</label>
+                        </label>
                       )}
                       {item.type === PopoverMenuRowType.UPLOAD && (
-                        <a
-                          className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                        <label
+                          htmlFor="upload"
+                          className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
                             item.onClick(row);
                             close();
@@ -102,17 +101,13 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                             className="text-gray-900 flex-shrink-0 h-5 w-5"
                             aria-hidden="true"
                           />
-                          <div className="ml-2.5">
-                            <label htmlFor="upload" className="text-gray-900 text-xm font-normal">
-                              {item.name}
-                            </label>
-                          </div>
-                        </a>
+                          <label className="text-gray-900 text-xm font-normal">{item.name}</label>
+                        </label>
                       )}
                       {item.type !== PopoverMenuRowType.DOWNLOAD &&
                         item.type !== PopoverMenuRowType.UPLOAD && (
-                          <a
-                            className="-m-2.5 p-2.5 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                          <label
+                            className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                             onClick={() => {
                               item.onClick(row);
                               close();
@@ -125,17 +120,15 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                               )}
                               aria-hidden="true"
                             />
-                            <div className="ml-2.5">
-                              <label
-                                className={classNames(
-                                  handleStyling(item.type),
-                                  'text-xm font-normal',
-                                )}
-                              >
-                                {item.name}
-                              </label>
-                            </div>
-                          </a>
+                            <label
+                              className={classNames(
+                                handleStyling(item.type),
+                                'text-xm font-normal',
+                              )}
+                            >
+                              {item.name}
+                            </label>
+                          </label>
                         )}
                     </div>
                   ))}
