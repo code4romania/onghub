@@ -39,7 +39,7 @@ const SuperAdminDashboard = () => {
             />
           ))}
       </div>
-      <div className="flex flex-wrap gap-4 pt-4">
+      <div className="grid grid-cols-graphs-mobile md:grid-cols-graphs-tablet 3xl:grid-cols-graphs-desktop gap-4 pt-4">
         <RequestsLineChart />
         <OrganizationsLineChart />
       </div>
