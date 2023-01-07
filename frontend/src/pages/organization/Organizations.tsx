@@ -135,6 +135,7 @@ const Organizations = () => {
         name: t('view'),
         icon: EyeIcon,
         onClick: onViewOrganization,
+        type: PopoverMenuRowType.INFO,
       },
       {
         name: t('restrict'),
@@ -149,11 +150,13 @@ const Organizations = () => {
         name: t('view'),
         icon: EyeIcon,
         onClick: onViewOrganization,
+        type: PopoverMenuRowType.INFO,
       },
       {
         name: t('activate'),
         icon: RefreshIcon,
         onClick: onActivateOrganization,
+        type: PopoverMenuRowType.SUCCESS,
       },
     ];
 

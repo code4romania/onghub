@@ -79,7 +79,7 @@ const ApplicationNGOList = () => {
         name: t('list.activate'),
         icon: ShieldCheckIcon,
         onClick: onActivateApplication,
-        type: PopoverMenuRowType.INFO,
+        type: PopoverMenuRowType.SUCCESS,
       },
       {
         name: t('list.remove'),
