@@ -24,7 +24,7 @@ const StatusBadge = ({ status, value }: StatusBadgeProps) => {
     >
       <svg
         className={classNames(
-          'mr-1.5 h-2 w-2',
+          'mr-1.5 h-2 w-2 min-w-[0.5rem] min-h-[0.5rem]',
           status === BadgeStatus.SUCCESS ? 'text-green-400' : '',
           status === BadgeStatus.ERROR ? 'text-red-400' : '',
           status === BadgeStatus.WARNING ? 'text-warning-400' : '',

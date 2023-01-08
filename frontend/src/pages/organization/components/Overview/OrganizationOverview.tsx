@@ -52,7 +52,7 @@ const OrganizationOverview = () => {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 lg:w-1/3">
               <ExetendedStatisticsCard
                 stat={SuperAdminOverviewExtendedStatisticsMapping.activity({
                   organizationCreatedOn: data.organizationCreatedOn,

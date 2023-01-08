@@ -27,7 +27,7 @@ const ContentWrapper = ({
   deleteButton,
 }: ContentWrapperProps) => {
   return (
-    <section>
+    <section className="w-full flex flex-col gap-y-6">
       <div className="flex justify-between items-center gap-y-3">
         <div className="flex sm:flex-row flex-col gap-y-4">
           {backButton && (
@@ -77,10 +77,8 @@ const ContentWrapper = ({
           )}
         </div>
       </div>
-      {subtitle && (
-        <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">{subtitle}</p>
-      )}
-      <div className="py-1 md:py-3 lg:py-6">{children}</div>
+      {subtitle && <p className="text-gray-400 sm:text-sm lg:text-base text-xs">{subtitle}</p>}
+      <div>{children}</div>
     </section>
   );
 };

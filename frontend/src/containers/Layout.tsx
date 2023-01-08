@@ -9,14 +9,14 @@ const Layout = () => {
   const [isSlidingMenuOpen, setSlidingMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="w-screen h-screen max-w-full ">
+    <div className="w-screen h-screen max-w-full">
       <Header openSlidingMenu={setSlidingMenuOpen} />
       <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
-      <div className="flex sm:p-6 p-4">
+      <div className="flex flex-row sm:p-6 p-4 gap-6">
         <div className="menu hidden xl:flex">
           <Menu />
         </div>
-        <div className="content w-full xl:pl-6">
+        <div className="content w-full flex">
           <Outlet />
         </div>
       </div>
