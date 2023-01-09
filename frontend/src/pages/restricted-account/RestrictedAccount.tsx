@@ -8,7 +8,7 @@ import restrictedImg from './../../assets/images/Wavy_Tech-08_Single-04 modified
 const RestrictedAccount = () => {
   const { setAuthState, restrictedReason } = useAuthContext();
 
-  const { t } = useTranslation(restrictedReason);
+  const { t } = useTranslation('account');
 
   const onGoBackToSite = async () => {
     await Auth.signOut();
@@ -22,7 +22,7 @@ const RestrictedAccount = () => {
         <div className="flex-1 flex flex-col items-start px-20 justify-center max-h-136 max-w-2xl gap-6">
           <h1 className="font-titilliumBold text-2xl md:text-4xl ">{t('inactive')}</h1>
           <p className="font-normal sm:text-lg lg:text-xl text-md">
-            {t('no_access')}{' '}
+            {restrictedReason}{' '}
             <span className="text-green font-semibold">{process.env.REACT_APP_CONTACT_EMAIL}</span>
           </p>
           <div className="flex items-start flex-col sm:flex-row">
