@@ -12,7 +12,8 @@ import {
   MaxLength,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
-import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
+import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 
 export class CreateCivicCenterServiceDto {
@@ -72,7 +73,8 @@ export class CreateCivicCenterServiceDto {
 
   @IsString()
   @IsOptional()
-  @IsValidPhone()
+  @IsPhoneValid()
+  @ToRoPhoneNumber()
   phoneAccess?: string;
 
   @IsString()

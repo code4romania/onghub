@@ -6,7 +6,6 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { formatNumber } from 'libphonenumber-js';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { CivicCenterServiceService } from 'src/modules/civic-center-service/services/civic-center.service';
 import { PracticeProgramService } from 'src/modules/practice-program/services/practice-program.service';
@@ -1137,15 +1136,9 @@ export class OrganizationService {
       );
     }
 
-    const formattedPhone = formatNumber(
-      phone.trim().split(' ').join(''),
-      'RO',
-      'E.164',
-    );
-
     const organizationWithPhone = await this.organizationGeneralService.findOne(
       {
-        where: { phone: formattedPhone },
+        where: { phone },
       },
     );
 

@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
+import { InternalErrors } from '../../../common/errors/internal-errors';
 import { fileToURL, setUrlPrefix } from '../../../common/helpers/format.helper';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
@@ -15,7 +16,6 @@ import { useCreateOrganizationRequestValidationMutation } from '../../../service
 import { useNomenclature } from '../../../store/selectors';
 import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
-import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationErrors.constant';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -97,8 +97,8 @@ const CreateOrganizationGeneral = () => {
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
-        const mappedErrors = response.map(
-          (error) => CREATE_ORGANIZATION_ERRORS[error.response.errorCode],
+        const mappedErrors = response.map((error) =>
+          InternalErrors.createOrganizationErrors.getError(error?.response?.errorCode),
         );
         setValidationErrors(mappedErrors);
       }
