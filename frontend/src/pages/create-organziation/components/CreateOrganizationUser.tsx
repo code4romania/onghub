@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { InternalErrors } from '../../../common/errors/internal-errors';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import InputField from '../../../components/InputField/InputField';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { CreateOrganizationUserConfig } from '../configs/CreateOrganizationUserConfig';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
-import { CREATE_ORGANIZATION_ERRORS } from '../constants/CreateOrganizationErrors.constant';
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
@@ -52,8 +52,8 @@ const CreateOrganizationUser = () => {
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
-        const mappedErrors = response.map(
-          (error) => CREATE_ORGANIZATION_ERRORS[error.response.errorCode],
+        const mappedErrors = response.map((error) =>
+          InternalErrors.createOrganizationErrors.getError(error?.response?.errorCode),
         );
         setValidationErrors(mappedErrors);
       }
