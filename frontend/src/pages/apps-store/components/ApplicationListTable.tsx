@@ -263,38 +263,36 @@ const ApplicationListTable = () => {
             {t('all')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
-            data={applications.items}
-            loading={
-              isLoading ||
-              activateApplicationLoading ||
-              deactivateApplicationLoading ||
-              removeApplicationLoading
-            }
-            pagination
-            sortServer
-            paginationPerPage={applications.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={applications.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
-        {applicationToBeRemoved && (
-          <ConfirmationModal
-            title={t('list.confirmation')}
-            description={t('list.description')}
-            closeBtnLabel={t('back', { ns: 'common' })}
-            confirmBtnLabel={t('delete', { ns: 'common' })}
-            onClose={onCancelRemoveApplication}
-            onConfirm={onConfirmDeleteApplication}
-          />
-        )}
+        <DataTableComponent
+          columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
+          data={applications.items}
+          loading={
+            isLoading ||
+            activateApplicationLoading ||
+            deactivateApplicationLoading ||
+            removeApplicationLoading
+          }
+          pagination
+          sortServer
+          paginationPerPage={applications.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={applications.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
       </div>
+      {applicationToBeRemoved && (
+        <ConfirmationModal
+          title={t('list.confirmation')}
+          description={t('list.description')}
+          closeBtnLabel={t('back', { ns: 'common' })}
+          confirmBtnLabel={t('delete', { ns: 'common' })}
+          onClose={onCancelRemoveApplication}
+          onConfirm={onConfirmDeleteApplication}
+        />
+      )}
     </div>
   );
 };

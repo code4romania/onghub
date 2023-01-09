@@ -31,7 +31,7 @@ const Application = () => {
 
   return (
     <ContentWrapper
-      title={t('title')}
+      title={application?.name || t('title')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
         onBtnClick: navigateBack,

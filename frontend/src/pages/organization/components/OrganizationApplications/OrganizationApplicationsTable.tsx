@@ -185,24 +185,22 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
             {t('active_apps')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
-            data={
-              applications
-                ? applications.filter(
-                    (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
-                  )
-                : []
-            }
-            loading={
-              isApplicationsLoading ||
-              isRestoringAppccess ||
-              isRestrictingAccess ||
-              isRemovingApplication
-            }
-          />
-        </div>
+        <DataTableComponent
+          columns={[...OrganizationApplicationsTableHeaders, buildApplicationActionColumn()]}
+          data={
+            applications
+              ? applications.filter(
+                  (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
+                )
+              : []
+          }
+          loading={
+            isApplicationsLoading ||
+            isRestoringAppccess ||
+            isRestrictingAccess ||
+            isRemovingApplication
+          }
+        />
         {removalCandidate && (
           <ConfirmationModal
             title={t('remove_app_modal.title')}

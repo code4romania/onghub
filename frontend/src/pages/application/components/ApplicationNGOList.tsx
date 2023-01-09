@@ -232,35 +232,31 @@ const ApplicationNGOList = () => {
             {t('list.title')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...ApplicationNGOListTableHeaders, buildApplicationActionColumns()]}
-            data={applicationOrganizations.items}
-            loading={
-              isLoading || isRemovingApplication || isRestoringAppccess || isRestrictingAccess
-            }
-            pagination
-            sortServer
-            paginationPerPage={applicationOrganizations.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={applicationOrganizations.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
-        {removalCandidate && (
-          <ConfirmationModal
-            title={t('applications:remove_app_modal.title')}
-            description={t('applications:remove_app_modal.description')}
-            closeBtnLabel={t('common:back')}
-            confirmBtnLabel={t('common:delete')}
-            onClose={setRemovalCandidate.bind(null, null)}
-            onConfirm={onConfirmDelete}
-          />
-        )}
+        <DataTableComponent
+          columns={[...ApplicationNGOListTableHeaders, buildApplicationActionColumns()]}
+          data={applicationOrganizations.items}
+          loading={isLoading || isRemovingApplication || isRestoringAppccess || isRestrictingAccess}
+          pagination
+          sortServer
+          paginationPerPage={applicationOrganizations.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={applicationOrganizations.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
       </div>
+      {removalCandidate && (
+        <ConfirmationModal
+          title={t('applications:remove_app_modal.title')}
+          description={t('applications:remove_app_modal.description')}
+          closeBtnLabel={t('common:back')}
+          confirmBtnLabel={t('common:delete')}
+          onClose={setRemovalCandidate.bind(null, null)}
+          onConfirm={onConfirmDelete}
+        />
+      )}
     </>
   );
 };

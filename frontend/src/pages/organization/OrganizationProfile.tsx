@@ -82,7 +82,7 @@ const OrganizationProfile = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex justify-between mt-1">
         <span className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
           {t('my_organization')}

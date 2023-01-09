@@ -26,7 +26,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'name',
     name: translations.ong,
     sortable: true,
-    minWidth: '15rem',
+    minWidth: '5rem',
     grow: 2,
     cell: (row: IOrganizationView) => <NameWithLogo name={row.name} logo={row.logo} />,
   },
@@ -34,6 +34,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'userCount',
     name: translations.users,
     sortable: true,
+    minWidth: '5rem',
     grow: 1,
     selector: (row: IOrganizationView) => row.userCount,
   },
@@ -42,7 +43,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     name: translations.register,
     sortable: true,
     grow: 1,
-    minWidth: '10rem',
+    minWidth: '7rem',
     selector: (row: IOrganizationView) => formatDate(row.createdOn as string),
   },
   {
@@ -66,7 +67,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     name: translations.updated_on,
     sortable: true,
     grow: 1,
-    minWidth: '15rem',
+    minWidth: '7rem',
     selector: (row: IOrganizationView) => formatDate(row?.updatedOn as string),
   },
   {
@@ -74,7 +75,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     sortable: true,
     name: translations.status,
     grow: 1,
-    minWidth: '15rem',
+    minWidth: '7rem',
     cell: (row: IOrganizationView) => (
       <StatusBadge
         status={

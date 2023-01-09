@@ -51,7 +51,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: translations.sum,
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
-    minWidth: '10rem',
+    minWidth: '7rem',
     grow: 0.5,
   },
   {
