@@ -7,7 +7,8 @@ import {
   Matches,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
-import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
+import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 
 export class CreateContactDto {
   @IsString()
@@ -18,7 +19,8 @@ export class CreateContactDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsValidPhone()
+  @IsPhoneValid()
+  @ToRoPhoneNumber()
   phone: string;
 
   @IsEmail()

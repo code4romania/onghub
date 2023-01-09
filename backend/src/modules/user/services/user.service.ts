@@ -26,7 +26,6 @@ import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
-import { formatPhoneRo } from 'src/common/helpers/formatters.helper';
 
 @Injectable()
 export class UserService {
@@ -109,8 +108,6 @@ export class UserService {
   ): Promise<User> {
     try {
       const { applicationAccess, ...userData } = payload;
-      const formattedPhone = formatPhoneRo(userData.phone);
-      userData.phone = formattedPhone;
 
       // 1. Check if user with received data exists
       const phoneCheck = await this.findOne({
@@ -340,9 +337,6 @@ export class UserService {
   }
 
   private async create(createUserDto: CreateUserDto): Promise<User> {
-    const formattedPhone = formatPhoneRo(createUserDto.phone);
-    createUserDto.phone = formattedPhone;
-
     try {
       // 1. Check if user already exists with received data
       if (

@@ -36,6 +36,7 @@ import { CreateOrganizationRequestDto } from '../dto/create-organization-request
 import { GetOrganizationWithPracticeProgramsFilterDto } from '../dto/get-organization-with-practice-programs-fillter.dto';
 import { OrganizationFilterDto } from '../dto/organization-filter.dto';
 import { UpdateOrganizationDto } from '../dto/update-organization.dto';
+import { ValidateCreateOrganizationRequestDto } from '../dto/validate-create-organization-request.dto';
 import { Organization } from '../entities';
 import { OrganizationRequest } from '../entities/organization-request.entity';
 import { OrganizationView } from '../entities/organization-view.entity';
@@ -124,9 +125,12 @@ export class OrganizationController {
   @ApiBody({ type: CreateOrganizationRequestDto })
   @Post('request/validate')
   validate(
-    @Body() createRequestDto: Partial<CreateOrganizationRequestDto>,
+    @Body()
+    validateCreateOrganizationRequestDto: ValidateCreateOrganizationRequestDto,
   ): Promise<any[]> {
-    return this.organizationRequestService.validate(createRequestDto);
+    return this.organizationRequestService.validate(
+      validateCreateOrganizationRequestDto,
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)

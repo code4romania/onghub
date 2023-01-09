@@ -24,7 +24,7 @@ import CreateOngRequestEvent from 'src/modules/notifications/events/create-ong-r
 import ApproveOngRequestEvent from 'src/modules/notifications/events/approve-ong-request-event.class';
 import RejectOngRequestEvent from 'src/modules/notifications/events/reject-ong-request-event.class';
 import DisableOngRequestEvent from 'src/modules/notifications/events/disable-ong-request-event.class';
-import { formatPhoneRo } from 'src/common/helpers/formatters.helper';
+import { ValidateCreateOrganizationRequestDto } from '../dto/validate-create-organization-request.dto';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -120,7 +120,7 @@ export class OrganizationRequestService {
   }
 
   public async validate(
-    createRequestDto: Partial<CreateOrganizationRequestDto>,
+    createRequestDto: ValidateCreateOrganizationRequestDto,
   ): Promise<any[]> {
     const { admin, organization } = createRequestDto;
     const errors = [];
@@ -130,9 +130,9 @@ export class OrganizationRequestService {
       // check if there is an user with this data
       const user = await this.userService.findOne({
         where: [
-          { email: admin.email.trim() },
+          { email: admin.email },
           {
-            phone: formatPhoneRo(admin.phone),
+            phone: admin.phone,
           },
         ],
       });
@@ -148,9 +148,9 @@ export class OrganizationRequestService {
       // check if there is a pending request with this admin data
       const request = await this.organizationRequestRepository.get({
         where: [
-          { email: admin.email.trim(), status: RequestStatus.PENDING },
+          { email: admin.email, status: RequestStatus.PENDING },
           {
-            phone: formatPhoneRo(admin.phone),
+            phone: admin.phone,
             status: RequestStatus.PENDING,
           },
         ],
@@ -174,12 +174,12 @@ export class OrganizationRequestService {
 
         errors.push(
           ...(await this.organizationService.validateOrganizationGeneral(
-            cui.trim(),
-            rafNumber.trim(),
-            name.trim(),
-            email.trim(),
-            phone.trim(),
-            alias.trim(),
+            cui,
+            rafNumber,
+            name,
+            email,
+            phone,
+            alias,
           )),
         );
       }
@@ -214,7 +214,7 @@ export class OrganizationRequestService {
       where: [
         { email: createReqDto.admin.email, status: RequestStatus.PENDING },
         {
-          phone: formatPhoneRo(createReqDto.admin.phone),
+          phone: createReqDto.admin.phone,
           status: RequestStatus.PENDING,
         },
       ],
@@ -244,7 +244,7 @@ export class OrganizationRequestService {
       const request = await this.organizationRequestRepository.save({
         name: createReqDto.admin.name,
         email: createReqDto.admin.email,
-        phone: formatPhoneRo(createReqDto.admin.phone),
+        phone: createReqDto.admin.phone,
         organizationName: createReqDto.organization.general.name,
         organizationId: organization.id,
       });

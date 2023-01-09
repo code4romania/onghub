@@ -9,7 +9,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
-import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
+import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
+import { Trim } from 'src/common/decorators/trim.decorator';
 import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organization.dto';
 
 export class CreateUserRequestDto {
@@ -17,16 +19,19 @@ export class CreateUserRequestDto {
   @IsNotEmpty()
   @Length(5, 100)
   @Matches(REGEX.NAME)
+  @Trim()
   name: string;
 
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(50)
+  @Trim()
   email: string;
 
   @IsString()
   @IsNotEmpty()
-  @IsValidPhone()
+  @ToRoPhoneNumber()
+  @IsPhoneValid()
   phone: string;
 }
 

@@ -58,7 +58,6 @@ import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
-import { formatPhoneRo } from 'src/common/helpers/formatters.helper';
 
 @Injectable()
 export class OrganizationService {
@@ -184,12 +183,6 @@ export class OrganizationService {
           ...createUserRequestDto,
         },
         ...createOrganizationDto.general,
-        name: createOrganizationDto.general.name.trim(),
-        alias: createOrganizationDto.general.alias.trim(),
-        cui: createOrganizationDto.general.cui.trim(),
-        rafNumber: createOrganizationDto.general.rafNumber.trim(),
-        email: createOrganizationDto.general.email.trim(),
-        phone: formatPhoneRo(createOrganizationDto.general.phone),
       },
       organizationActivity: {
         ...createOrganizationDto.activity,
@@ -1143,11 +1136,9 @@ export class OrganizationService {
       );
     }
 
-    const formattedPhone = formatPhoneRo(phone);
-
     const organizationWithPhone = await this.organizationGeneralService.findOne(
       {
-        where: { phone: formattedPhone },
+        where: { phone },
       },
     );
 
