@@ -2,5 +2,5 @@ import { CreateOrganizationError } from './entities/create-organization-errors.c
 
 // Here we list all the group of errors for every page
 export class InternalErrors {
-  public static createOrganizationErrors = new CreateOrganizationError();
+  public static createOrganizationErrors = CreateOrganizationError.getInstance();
 }

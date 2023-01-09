@@ -7,6 +7,6 @@ export const Trim = () =>
       return value;
     }
 
-    // remove space before and after the
+    // remove space before and after the value
     return value.trim();
   });

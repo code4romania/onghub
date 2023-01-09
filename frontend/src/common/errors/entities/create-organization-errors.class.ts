@@ -14,7 +14,9 @@ const enum CREATE_ORGANIZARION_ERRORS {
 }
 
 export class CreateOrganizationError extends ErrorClass<CREATE_ORGANIZARION_ERRORS> {
-  constructor() {
+  private static instance: CreateOrganizationError;
+
+  private constructor() {
     super({
       [CREATE_ORGANIZARION_ERRORS.REQ_001]: i18n.t('organization:create.errors.REQ_001'),
       [CREATE_ORGANIZARION_ERRORS.REQ_002]: i18n.t('organization:create.errors.REQ_002'),
@@ -26,5 +28,13 @@ export class CreateOrganizationError extends ErrorClass<CREATE_ORGANIZARION_ERRO
       [CREATE_ORGANIZARION_ERRORS.ORG_010]: i18n.t('common:upload.statute'),
       [CREATE_ORGANIZARION_ERRORS.ORG_027]: i18n.t('legal:errors.ORG_027'),
     });
+  }
+
+  public static getInstance(): CreateOrganizationError {
+    if (!CreateOrganizationError.instance) {
+      CreateOrganizationError.instance = new CreateOrganizationError();
+    }
+
+    return CreateOrganizationError.instance;
   }
 }
