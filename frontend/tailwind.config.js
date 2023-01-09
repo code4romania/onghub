@@ -125,6 +125,14 @@ module.exports = {
         128: '32rem',
         136: '34rem',
       },
+      gridTemplateColumns: {
+        'graphs-desktop': 'repeat(auto-fill, minmax(54rem, 1fr))',
+        'graphs-tablet': 'repeat(auto-fill, minmax(40rem, 1fr))',
+        'graphs-mobile': 'repeat(auto-fill, minmax(15rem, 1fr))',
+      },
+      screens: {
+        '3xl': '2100px',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],
