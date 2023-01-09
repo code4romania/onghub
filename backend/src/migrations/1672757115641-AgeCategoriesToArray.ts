@@ -11,7 +11,7 @@ export class AgeCategoriesToArray1672757115641 implements MigrationInterface {
       `CREATE TYPE "public"."civic_center_service_age_categories_enum" AS ENUM('0-18', '18-25', '25-35', '35-60', '60+')`,
     );
     await queryRunner.query(
-      `ALTER TABLE "civic_center_service" ADD "age_categories" "public"."civic_center_service_age_categories_enum" array NOT NULL`,
+      `ALTER TABLE "civic_center_service" ADD "age_categories" "public"."civic_center_service_age_categories_enum" array NOT NULL DEFAULT '{0-18,18-25, 25-35,35-60,60+}';`, // ANDREW: added all default values in the migration to avoid migrating existing values
     );
   }
 

@@ -36,8 +36,7 @@ const InputField = (props: {
                 props.config.addOn ? 'pl-10' : 'pl-4',
                 props.config.type === 'checkbox'
                   ? ''
-                  : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100',
-                'min-w-[6.5rem]',
+                  : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100 min-w-[6.5rem]',
               )}
               placeholder={props.config.placeholder}
               defaultValue={props.config.defaultValue}

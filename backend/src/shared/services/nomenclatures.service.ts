@@ -76,7 +76,7 @@ export class NomenclaturesService {
         .andWhere('_city.name ilike :name', {
           name: `${citySearchDto.search}%`,
         })
-        .limit(5)
+        .limit(100)
         .getMany();
     } else if (citySearchDto.countyId) {
       return query
@@ -89,7 +89,7 @@ export class NomenclaturesService {
         .where('_city.name ilike :name', {
           name: `${citySearchDto.search}%`,
         })
-        .limit(5)
+        .limit(100)
         .getMany();
     }
   }

@@ -119,6 +119,7 @@ const ApplicationListTable = () => {
         name: t('list.view'),
         icon: EyeIcon,
         onClick: onView,
+        type: PopoverMenuRowType.INFO,
       },
       {
         name: t('list.restrict'),
