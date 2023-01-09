@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useAuthContext } from '../contexts/AuthContext';
 import { RESTRICTED_USER_ERRORS } from '../common/constants/error.constants';
+import i18n from '../common/config/i18n';
 
 const API = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
@@ -47,35 +48,36 @@ interface AxiosInterceptorProps {
 const AxiosInterceptor = ({ children }: AxiosInterceptorProps) => {
   const { setAuthState } = useAuthContext();
 
-  const responseInterceptor = API.interceptors.response.use(
-    async (response) => {
-      return response;
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (error: any) => {
-      // Redirect to login once we have restricted access
-      if (error.response.status === 401) {
-        await Auth.signOut();
-        // set initial application state
-        setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
-      }
-
-      // If use doesn't have access to resource redirect to home
-      if (error.response.status === 403) {
-        // this will trigger the redirect to restricted page
-        setAuthState({
-          isAuthenticated: true,
-          isRestricted: true,
-          restrictedReason: RESTRICTED_USER_ERRORS[error?.response?.data?.code],
-        });
-      }
-
-      // if not any of the auth error codes throw the error
-      throw error;
-    },
-  );
-
   useEffect(() => {
+    const responseInterceptor = API.interceptors.response.use(
+      async (response) => {
+        return response;
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async (error: any) => {
+        // Redirect to login once we have restricted access
+        if (error.response.status === 401) {
+          await Auth.signOut();
+          // set initial application state
+          setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
+        }
+
+        // If use doesn't have access to resource redirect to home
+        if (error.response.status === 403) {
+          // this will trigger the redirect to restricted page
+          setAuthState({
+            isAuthenticated: true,
+            isRestricted: true,
+            restrictedReason:
+              RESTRICTED_USER_ERRORS[error?.response?.data?.code] || i18n.t('common:unknown_error'),
+          });
+        }
+
+        // if not any of the auth error codes throw the error
+        throw error;
+      },
+    );
+
     return () => {
       /**
        * we should eject previous interceptors in the clean up function, in case we do not
