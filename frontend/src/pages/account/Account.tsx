@@ -63,7 +63,7 @@ const Account = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="flex items-start justify-between pt-1 pr-1 pb-6">
         <div className="flex flex-col">
           <p className="text-gray-800 font-titilliumBold sm:text-2xl lg:text-3xl text-lg">
@@ -138,76 +138,72 @@ const Account = () => {
           </div>
         )}
         {!readonly && (
-          <div className="p-5 lg:p-10 flex flex-col gap-4 xl:w-1/2 w-full">
-            <div className="flex gap-4 w-full">
-              <Controller
-                key={AccountConfig.oldPassword.key}
-                name={AccountConfig.oldPassword.key}
-                rules={AccountConfig.oldPassword.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...AccountConfig.oldPassword.config,
+          <div className="p-5 lg:p-10 grid sm:grid-cols-2 grid-cols-1 gap-4 xl:w-1/2 w-full">
+            <Controller
+              key={AccountConfig.oldPassword.key}
+              name={AccountConfig.oldPassword.key}
+              rules={AccountConfig.oldPassword.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputField
+                    config={{
+                      ...AccountConfig.oldPassword.config,
 
-                        name: AccountConfig.oldPassword.key,
-                        error: errors[AccountConfig.oldPassword.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-              <div className="flex w-full"></div>
-            </div>
-            <div className="flex gap-4">
-              <Controller
-                key={AccountConfig.newPassword.key}
-                name={AccountConfig.newPassword.key}
-                rules={AccountConfig.newPassword.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...AccountConfig.newPassword.config,
-                        name: AccountConfig.newPassword.key,
-                        error: errors[AccountConfig.newPassword.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-              <Controller
-                key={AccountConfig.matchPassword.key}
-                name={AccountConfig.matchPassword.key}
-                rules={{
-                  ...AccountConfig.matchPassword.rules,
-                  validate: (value) => value === newPassword || t('wrong_password'),
-                }}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...AccountConfig.matchPassword.config,
-                        name: AccountConfig.matchPassword.key,
-                        error: errors[AccountConfig.matchPassword.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-            </div>
+                      name: AccountConfig.oldPassword.key,
+                      error: errors[AccountConfig.oldPassword.key]?.message,
+                      defaultValue: value,
+                      onChange: onChange,
+                    }}
+                    readonly={readonly}
+                  />
+                );
+              }}
+            />
+            <div className="w-full sm:flex hidden"></div>
+            <Controller
+              key={AccountConfig.newPassword.key}
+              name={AccountConfig.newPassword.key}
+              rules={AccountConfig.newPassword.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputField
+                    config={{
+                      ...AccountConfig.newPassword.config,
+                      name: AccountConfig.newPassword.key,
+                      error: errors[AccountConfig.newPassword.key]?.message,
+                      defaultValue: value,
+                      onChange: onChange,
+                    }}
+                    readonly={readonly}
+                  />
+                );
+              }}
+            />
+            <Controller
+              key={AccountConfig.matchPassword.key}
+              name={AccountConfig.matchPassword.key}
+              rules={{
+                ...AccountConfig.matchPassword.rules,
+                validate: (value) => value === newPassword || t('wrong_password'),
+              }}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputField
+                    config={{
+                      ...AccountConfig.matchPassword.config,
+                      name: AccountConfig.matchPassword.key,
+                      error: errors[AccountConfig.matchPassword.key]?.message,
+                      defaultValue: value,
+                      onChange: onChange,
+                    }}
+                    readonly={readonly}
+                  />
+                );
+              }}
+            />
           </div>
         )}
       </div>
@@ -223,7 +219,7 @@ const Account = () => {
           onConfirm={handleUserDelete}
         />
       )}
-    </div>
+    </>
   );
 };
 
