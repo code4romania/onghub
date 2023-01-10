@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChartOption, CHART_COLORS, DataSet } from '../../../components/line-chart/chart.config';
 import LineChart from '../../../components/line-chart/LineChart';
-import { Loading } from '../../../components/loading/Loading';
 import { useOrganizationStatistics } from '../../../services/statistics/statistics.queries';
 import StatisticsErrorBanner from './StatisticsErrorBanner';
 
@@ -41,10 +40,6 @@ const OrganizationsLineChart = () => {
     ]);
   };
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   if (error) {
     return <StatisticsErrorBanner message={t('statistics.organization_statistics_error')} />;
   }
@@ -55,6 +50,7 @@ const OrganizationsLineChart = () => {
       title={t('statistics.organization_chart')}
       activeFiler={activeFilter}
       onUpdateChart={(filter) => setActiveFilter(filter)}
+      isLoading={isLoading}
     />
   );
 };

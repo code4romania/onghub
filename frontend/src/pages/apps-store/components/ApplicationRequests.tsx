@@ -195,22 +195,20 @@ const ApplicationRequests = () => {
             {t('requests.requests')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...ApplicationRequestsTableHeaders, buildRequestsActionColumn()]}
-            data={requests.items}
-            loading={isLoading}
-            pagination
-            sortServer
-            paginationPerPage={requests.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={requests.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
+        <DataTableComponent
+          columns={[...ApplicationRequestsTableHeaders, buildRequestsActionColumn()]}
+          data={requests.items}
+          loading={isLoading}
+          pagination
+          sortServer
+          paginationPerPage={requests.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={requests.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
       </div>
       {isApproveModalOpen && selectedRow && (
         <ConfirmationModal

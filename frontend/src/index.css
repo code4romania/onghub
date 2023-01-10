@@ -86,6 +86,10 @@
   }
 }
 
+.rdt_TableWrapper {
+  @apply pb-2 !important;
+}
+
 /* Overrride default overflow for datatables to allow popovers */
 .rdt_TableWrapper div {
   overflow-x: initial !important;

@@ -25,7 +25,6 @@ import { Access } from 'src/modules/application/interfaces/application-access.in
 import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
-import { formatNumber } from 'libphonenumber-js';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
 
 @Injectable()
@@ -109,8 +108,6 @@ export class UserService {
   ): Promise<User> {
     try {
       const { applicationAccess, ...userData } = payload;
-      const formattedPhone = formatNumber(userData.phone, 'RO', 'E.164');
-      userData.phone = formattedPhone;
 
       // 1. Check if user with received data exists
       const phoneCheck = await this.findOne({
@@ -223,7 +220,15 @@ export class UserService {
     }
 
     try {
-      await this.userRepository.delete({ cognitoId: user.cognitoId });
+      // 1. Remove all associated apps with the user
+      this.userOngApplicationService.remove({
+        where: { userId: user.id },
+      });
+      // 2. Remove the user from the DB
+      await this.userRepository.remove({
+        where: { cognitoId: user.cognitoId },
+      });
+      // 3. Delete the user from Cognito
       await this.cognitoService.deleteUser(user.cognitoId);
       return user.cognitoId;
     } catch (error) {
@@ -340,9 +345,6 @@ export class UserService {
   }
 
   private async create(createUserDto: CreateUserDto): Promise<User> {
-    const formattedPhone = formatNumber(createUserDto.phone, 'RO', 'E.164');
-    createUserDto.phone = formattedPhone;
-
     try {
       // 1. Check if user already exists with received data
       if (

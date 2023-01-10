@@ -145,22 +145,21 @@ const FeedbackList = () => {
             {t('title')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...FeedbackListTableHeaders, buildFeedbackActionColumn()]}
-            data={feedbacks.items}
-            loading={isLoading}
-            pagination
-            sortServer
-            paginationPerPage={feedbacks.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={feedbacks.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
+        ={' '}
+        <DataTableComponent
+          columns={[...FeedbackListTableHeaders, buildFeedbackActionColumn()]}
+          data={feedbacks.items}
+          loading={isLoading}
+          pagination
+          sortServer
+          paginationPerPage={feedbacks.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={feedbacks.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
             title={t('remove_modal.title')}

@@ -297,22 +297,20 @@ const UserList = (props: { organizationId?: number }) => {
             {t('list.download')}
           </button>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...UserListTableHeaders, buildUserActionColumn()]}
-            data={users.items}
-            loading={isLoading}
-            pagination
-            sortServer
-            paginationPerPage={users.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={users.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
+        <DataTableComponent
+          columns={[...UserListTableHeaders, buildUserActionColumn()]}
+          data={users.items}
+          loading={isLoading}
+          pagination
+          sortServer
+          paginationPerPage={users.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={users.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
             title={t('list.confirmation')}

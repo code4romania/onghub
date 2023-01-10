@@ -117,7 +117,7 @@ const Request = () => {
   }
 
   return (
-    <div>
+    <>
       <ContentWrapper
         title={request?.organization.organizationGeneral.name || ''}
         subtitle={t('description')}
@@ -202,7 +202,7 @@ const Request = () => {
           onConfirm={onReject}
         />
       )}
-    </div>
+    </>
   );
 };
 

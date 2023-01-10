@@ -38,12 +38,12 @@ const ServerSelect = ({
   const onSearch = (inputValue: string) => (inputValue?.length >= 3 ? loadOptions(inputValue) : []);
 
   const debouncedLoadOptions = debounce(onSearch as any, 500, {
-    leading: false,
+    leading: true,
   });
 
   useEffect(() => {
     setDefaultValue(value);
-  }, [value])
+  }, [value]);
 
   return (
     <div>
@@ -63,7 +63,7 @@ const ServerSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={readonly}
               selected={false}
-              onClick={() => { }}
+              onClick={() => {}}
               id={id}
             />
           ))}

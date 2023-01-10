@@ -162,15 +162,13 @@ const UserInvites = () => {
             Descarca Tabel
           </button> */}
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
-            data={invites}
-            loading={isLoading}
-            sortServer
-            onSort={onSort}
-          />
-        </div>
+        <DataTableComponent
+          columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
+          data={invites}
+          loading={isLoading}
+          sortServer
+          onSort={onSort}
+        />
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal
             title={t('invites.confirmation')}

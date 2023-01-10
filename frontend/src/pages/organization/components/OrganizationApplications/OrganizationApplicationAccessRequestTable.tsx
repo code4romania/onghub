@@ -93,16 +93,14 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
           {t('pending_app_requests')}
         </p>
       </div>
-      <div className="pb-2">
-        <DataTableComponent
-          columns={[
-            ...OrganizationApplicationRequestsTableHeaders,
-            buildApplicationRequestActionColumn(),
-          ]}
-          data={organizationApplicationRequests || []}
-          loading={isApplicationRequestsLoading || isRejectingRequest || isApprovingRequest}
-        />
-      </div>
+      <DataTableComponent
+        columns={[
+          ...OrganizationApplicationRequestsTableHeaders,
+          buildApplicationRequestActionColumn(),
+        ]}
+        data={organizationApplicationRequests || []}
+        loading={isApplicationRequestsLoading || isRejectingRequest || isApprovingRequest}
+      />
       {rejectionCandidate && (
         <ConfirmationModal
           title={t('reject_request_modal.title')}

@@ -12,8 +12,10 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { ToNumber } from 'src/common/decorators/to-number.decorator';
-import { IsValidPhone } from 'src/common/decorators/validation.decorator';
+import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
 import { OrganizationType } from '../enums/organization-type.enum';
+import { Trim } from 'src/common/decorators/trim.decorator';
+import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -23,12 +25,14 @@ export class CreateOrganizationGeneralDto {
   @IsNotEmpty()
   @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 100)
+  @Trim()
   name: string;
 
   /* Organization alias */
   @IsNotEmpty()
   @Matches(REGEX.ALPHANUMERIC)
   @Length(3, 100)
+  @Trim()
   alias: string;
 
   /* Organization type */
@@ -39,12 +43,14 @@ export class CreateOrganizationGeneralDto {
   @IsEmail()
   @IsNotEmpty()
   @MaxLength(50)
+  @Trim()
   email: string;
 
   /* Organization phone */
   @IsString()
   @IsNotEmpty()
-  @IsValidPhone()
+  @IsPhoneValid()
+  @ToRoPhoneNumber()
   phone: string;
 
   /* Organization year created */
@@ -59,6 +65,7 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @MaxLength(12)
   @Matches(REGEX.CUI)
+  @Trim()
   cui: string;
 
   /* 
@@ -68,6 +75,7 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @MaxLength(20)
   @Matches(REGEX.RAF)
+  @Trim()
   rafNumber: string;
 
   /* Organization short description */

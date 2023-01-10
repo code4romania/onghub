@@ -238,28 +238,26 @@ const Organizations = () => {
           </div>
         </div>
       </DataTableFilters>
-      <div className="w-full bg-white shadow rounded-lg my-6">
+      <div className="bg-white shadow rounded-lg my-6">
         <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
             {t('list')}
           </p>
         </div>
-        <div className="pb-2">
-          <DataTableComponent
-            columns={[...OrganizationsTableHeaders, buildOrganizationsActionColumn()]}
-            data={organizations.items}
-            loading={isLoading}
-            pagination
-            sortServer
-            paginationPerPage={organizations.meta.itemsPerPage}
-            paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
-            paginationTotalRows={organizations.meta.totalItems}
-            paginationDefaultPage={page}
-            onChangeRowsPerPage={onRowsPerPageChange}
-            onChangePage={onChangePage}
-            onSort={onSort}
-          />
-        </div>
+        <DataTableComponent
+          columns={[...OrganizationsTableHeaders, buildOrganizationsActionColumn()]}
+          data={organizations.items}
+          loading={isLoading}
+          pagination
+          sortServer
+          paginationPerPage={organizations.meta.itemsPerPage}
+          paginationRowsPerPageOptions={PaginationConfig.rowsPerPageOptions}
+          paginationTotalRows={organizations.meta.totalItems}
+          paginationDefaultPage={page}
+          onChangeRowsPerPage={onRowsPerPageChange}
+          onChangePage={onChangePage}
+          onSort={onSort}
+        />
       </div>
     </ContentWrapper>
   );

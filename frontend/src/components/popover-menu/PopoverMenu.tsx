@@ -85,7 +85,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                             className="text-gray-900 flex-shrink-0 h-5 w-5"
                             aria-hidden="true"
                           />
-                          <label className="text-gray-900 text-xm font-normal">{item.name}</label>
+                          <div className="text-gray-900 text-xm font-normal">{item.name}</div>
                         </label>
                       )}
                       {item.type === PopoverMenuRowType.UPLOAD && (
@@ -101,7 +101,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                             className="text-gray-900 flex-shrink-0 h-5 w-5"
                             aria-hidden="true"
                           />
-                          <label className="text-gray-900 text-xm font-normal">{item.name}</label>
+                          <div className="text-gray-900 text-xm font-normal">{item.name}</div>
                         </label>
                       )}
                       {item.type !== PopoverMenuRowType.DOWNLOAD &&
@@ -120,14 +120,14 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                               )}
                               aria-hidden="true"
                             />
-                            <label
+                            <div
                               className={classNames(
                                 handleStyling(item.type),
                                 'text-xm font-normal',
                               )}
                             >
                               {item.name}
-                            </label>
+                            </div>
                           </label>
                         )}
                     </div>

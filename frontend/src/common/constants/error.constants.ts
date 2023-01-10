@@ -27,3 +27,8 @@ export const FILE_ERRORS: Record<string, string> = {
   ORG_010: i18n.t('common:upload.statute'),
   ORG_027: i18n.t('legal:errors.ORG_027'),
 };
+
+export const RESTRICTED_USER_ERRORS: Record<string, string> = {
+  ORG_020: i18n.t('organization:no_access'),
+  USR_012: i18n.t('account:no_access'),
+};
