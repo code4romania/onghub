@@ -334,6 +334,7 @@ const OrganizationData = () => {
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
               <a
+                aria-label={t('partners.download')}
                 href={partnersLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download
@@ -362,6 +363,7 @@ const OrganizationData = () => {
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
               <a
+                aria-label={t('investors.download')}
                 href={investorsLink}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download

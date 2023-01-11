@@ -16,7 +16,11 @@ const ReportTableRow = ({ label, config, readonly }: ReportTableRowProps) => {
     <tr key={label}>
       <td className="whitespace-nowrap pt-5 pb-3 px-3 sm:text-lg lg:text-base text-xs font-normal text-gray-900 flex">
         {label}
-        <a href="#" className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500">
+        <a
+          aria-label={t('report_row')}
+          href="#"
+          className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
+        >
           <span className="sr-only">{t('report_row')}</span>
           <QuestionMarkCircleIcon className="h-5 w-5" aria-hidden="true" />
         </a>

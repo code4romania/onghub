@@ -82,6 +82,7 @@ const CreateCivicCenterService = () => {
             {t('add.card_title')}
           </span>
           <button
+            aria-label={isLoading ? t('processing', { ns: 'common' }) : t('save', { ns: 'common' })}
             type="button"
             className="save-button sm:text-sm lg:text-base text-xs"
             disabled={isLoading}

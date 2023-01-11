@@ -137,6 +137,7 @@ const Request = () => {
               </div>
               <div className="flex gap-4">
                 <button
+                  aria-label={t('reject')}
                   type="button"
                   className="red-button gap-2 sm:text-sm lg:text-base text-xs items-center"
                   onClick={() => setRejectModalOpen(true)}
@@ -144,6 +145,7 @@ const Request = () => {
                   <XIcon className="w-5 h-5" /> {t('reject')}
                 </button>
                 <button
+                  aria-label={t('approve')}
                   type="button"
                   className="save-button gap-2 sm:text-sm lg:text-base text-xs items-center"
                   onClick={() => setApproveModalOpen(true)}
@@ -160,6 +162,7 @@ const Request = () => {
             >
               {ORGANIZATION_TABS.map((tab) => (
                 <a
+                  aria-label={tab.name}
                   key={tab.name}
                   onClick={() => onTabClick(tab)}
                   className={classNames(

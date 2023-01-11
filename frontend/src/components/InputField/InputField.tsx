@@ -12,7 +12,7 @@ const InputField = (props: {
     <div className="relative w-full">
       {props.config.label && props.config.type !== 'checkbox' && (
         <label
-          htmlFor="email"
+          htmlFor={`${props.config.id}__input`}
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
         >
           {props.config.label}

@@ -277,6 +277,7 @@ const CreateOrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                aria-label={t('add')}
                 id="create-organization-legal__button__add-director"
                 type="button"
                 className="add-button max-w-[12rem]"
@@ -295,6 +296,7 @@ const CreateOrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                aria-label={t('add')}
                 id="create-organization-legal__button__add-other"
                 type="button"
                 className="add-button max-w-[12rem]"
@@ -329,6 +331,7 @@ const CreateOrganizationLegal = () => {
               )}
               {organizationStatute && (
                 <a
+                  aria-label={t('file_name')}
                   href={fileToURL(organizationStatute) || ''}
                   download={organizationStatute?.name || ''}
                   className="text-indigo-600 font-medium text-sm flex items-center"
@@ -398,6 +401,7 @@ const CreateOrganizationLegal = () => {
         </div>
         <div className="pt-5 sm:pt-6 sm:flex sm:flex-row-reverse">
           <button
+            aria-aria-label={t('send', { ns: 'common' })}
             id="create-organization-legal__button-send"
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
@@ -406,6 +410,7 @@ const CreateOrganizationLegal = () => {
             {t('send', { ns: 'common' })}
           </button>
           <button
+            aria-label={t('back', { ns: 'common' })}
             id="create-organization-legal__button-back"
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"

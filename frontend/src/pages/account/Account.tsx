@@ -75,6 +75,7 @@ const Account = () => {
         </div>
         {role === UserRole.EMPLOYEE && (
           <button
+            aria-label={t('close.account')}
             type="button"
             className="red-button"
             onClick={() => {
@@ -93,6 +94,7 @@ const Account = () => {
           <div className="flex gap-4">
             {!readonly && (
               <button
+                aria-label={t('common:back')}
                 type="button"
                 className={'edit-button'}
                 onClick={() => {
@@ -100,11 +102,12 @@ const Account = () => {
                   setReadonly(true);
                 }}
               >
-                {'Inapoi'}
+                {t('common:back')}
               </button>
             )}
 
             <button
+              aria-label={readonly ? t('change_password') : t('save', { ns: 'common' })}
               type="button"
               className={classNames(
                 readonly ? 'edit-button' : 'save-button',

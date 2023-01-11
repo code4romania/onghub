@@ -30,7 +30,7 @@ const DatePickerInput = ({
     <div className="relative w-full">
       {label && (
         <label
-          htmlFor="email"
+          htmlFor={props?.id}
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
         >
           {label}
@@ -44,6 +44,7 @@ const DatePickerInput = ({
           dateFormat="dd.MM.yyyy"
           selected={value}
           placeholderText={placeholder}
+          id={props.id}
         />
         {error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

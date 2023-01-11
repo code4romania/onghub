@@ -49,6 +49,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
     cell: (row: Report) =>
       row.report ? (
         <a
+          aria-label={`${translations.report}${row.year}`}
           className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
           href={row.report || ''}
           target="_blank"

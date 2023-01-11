@@ -84,6 +84,7 @@ const AddApplication = () => {
           </span>
 
           <button
+            aria-label={t('save', { ns: 'common' })}
             type="button"
             className="save-button sm:text-sm lg:text-base text-xs"
             onClick={handleSubmit(onSubmit)}

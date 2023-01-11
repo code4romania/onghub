@@ -21,6 +21,7 @@ const CardPanel = ({ title, children, btnLabel, loading, onSave }: CardPanelProp
         </span>
         {onSave && (
           <button
+            aria-label={loading ? t('processing') : `${btnLabel || t('save')}`}
             type="button"
             className="save-button sm:text-sm lg:text-base text-xs"
             onClick={onSave}

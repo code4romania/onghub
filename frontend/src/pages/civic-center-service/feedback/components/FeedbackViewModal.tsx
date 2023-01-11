@@ -60,7 +60,11 @@ const FeedbackViewModal = ({
                       >
                         {t('view_modal.details')}
                       </Dialog.Title>
-                      <button className="right-5 fixed w-min" onClick={onClose}>
+                      <button
+                        aria-label={t('common:close')}
+                        className="right-5 fixed w-min"
+                        onClick={onClose}
+                      >
                         <XIcon className="mx-auto sm:h-5 sm:w-5 h-4 w-4" />
                       </button>
                     </div>

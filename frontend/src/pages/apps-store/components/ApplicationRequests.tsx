@@ -185,6 +185,7 @@ const ApplicationRequests = () => {
               label={t('requests.date_added')}
               onChange={onDateChange}
               value={range.length > 0 ? range : undefined}
+              id="aplication-requests-date-added__input"
             />
           </div>
         </div>

@@ -33,7 +33,7 @@ const CreatableMultiSelect = ({
     <div>
       {label && (
         <label
-          htmlFor="email"
+          htmlFor={id}
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
         >
           {label}

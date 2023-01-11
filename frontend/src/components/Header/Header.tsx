@@ -26,6 +26,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
             {isAuthenticated && !isRestricted && (
               <div className="flex xl:hidden items-center">
                 <button
+                  aria-label="Menu"
                   className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                   onClick={() => openSlidingMenu(true)}
                 >
@@ -43,6 +44,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
           </div>
           {!isAuthenticated && !isRestricted && (
             <button
+              aria-label={t('enter')}
               className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
               onClick={(e) => Auth.federatedSignIn()}
             >
@@ -75,6 +77,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
+                            aria-label={t('my_account')}
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                               'group flex items-center px-4 py-2 sm:text-sm text-xs',
@@ -92,6 +95,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
+                            aria-label={t('log_out')}
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                               'group flex items-center px-4 py-2 sm:text-sm text-xs',

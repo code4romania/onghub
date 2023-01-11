@@ -64,6 +64,7 @@ const DataTableFilters = ({
         </div>
         <div className="flex items-center gap-x-4 sm:ml-auto ml-0">
           <button
+            aria-label={filtersCollapsed ? t('filters.hide') : t('filters.show')}
             type="button"
             className="edit-button sm:text-sm lg:text-base text-xs"
             onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
@@ -73,6 +74,7 @@ const DataTableFilters = ({
           </button>
           {filtersCollapsed && (
             <button
+              aria-label={t('filters.reset')}
               type="button"
               className="edit-button bg-gray-50 sm:text-sm lg:text-base text-xs"
               onClick={resetFilters}

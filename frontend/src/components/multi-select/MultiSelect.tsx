@@ -30,16 +30,17 @@ const MultiSelect = ({
   options,
   id,
 }: MultiSelectConfig) => {
-
   const [defaultValue, setDefaultValue] = useState<any[]>([]);
 
-  useEffect(() => { setDefaultValue(value) }, [value])
+  useEffect(() => {
+    setDefaultValue(value);
+  }, [value]);
 
   return (
     <div>
       {label && (
         <label
-          htmlFor="email"
+          htmlFor={id}
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
         >
           {label}
@@ -53,7 +54,7 @@ const MultiSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={true}
               selected={false}
-              onClick={() => { }}
+              onClick={() => {}}
               id={id}
             />
           ))}

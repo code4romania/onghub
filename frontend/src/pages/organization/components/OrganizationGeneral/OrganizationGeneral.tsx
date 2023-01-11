@@ -150,6 +150,7 @@ const OrganizationGeneral = () => {
 
         {role !== UserRole.EMPLOYEE && (
           <button
+            aria-label={readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
             type="button"
             className={classNames(
               readonly ? 'edit-button' : 'save-button',
@@ -425,8 +426,9 @@ const OrganizationGeneral = () => {
                       </svg>
                     ) : (
                       <img
+                        alt="Organization logo"
                         src={fileToURL(file) || (organizationGeneral?.logo as string)}
-                        className="h-20 w-80"
+                        className="h-20 w-80 object-cover"
                       />
                     )}
                   </span>

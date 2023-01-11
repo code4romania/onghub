@@ -169,6 +169,7 @@ const CivicCenterForm = ({
                           CivicCenterFormConfig.startDate.key
                         ]?.message?.toString() || civicCenterProgramPeriodError
                       }
+                      id="service-form__date-start__input"
                     />
                   );
                 }}
@@ -190,6 +191,7 @@ const CivicCenterForm = ({
                             CivicCenterFormConfig.endDate.key
                           ]?.message?.toString() || civicCenterProgramPeriodError
                         }
+                        id="service-form__date-end__input"
                       />
                     );
                   }}

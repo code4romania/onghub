@@ -38,16 +38,22 @@ const CardActions = ({
     <div className="flex flex-col gap-4 p-4 mt-8 border-t border-gray-100 itens-center md:m-0 md:pl-[25%] md:py-0 md:pr-0 md:items-end md:border-none">
       <StatusRadioComponent active={active} setActive={onActiveChange} />
       <button
+        aria-label={t('view', { ns: 'common' })}
         className="edit-button w-full flex gap-4 justify-center disabled:bg-gray-50"
         onClick={onGoToView}
         disabled={!active}
       >
         {t('view', { ns: 'common' })}
       </button>
-      <button className="edit-button w-full flex gap-4 justify-center" onClick={onEdit}>
+      <button
+        aria-label={t('edit', { ns: 'common' })}
+        className="edit-button w-full flex gap-4 justify-center"
+        onClick={onEdit}
+      >
         {t('edit', { ns: 'common' })}
       </button>
       <button
+        aria-label={!isLoading ? t('delete', { ns: 'common' }) : t('loading', { ns: 'common' })}
         className="delete-button w-full flex gap-4 disabled:bg-gray-100"
         onClick={setIsDeleteConfirmationModalOpen.bind(null, true)}
         disabled={isLoading}
