@@ -145,7 +145,6 @@ const FeedbackList = () => {
             {t('title')}
           </p>
         </div>
-        ={' '}
         <DataTableComponent
           columns={[...FeedbackListTableHeaders, buildFeedbackActionColumn()]}
           data={feedbacks.items}
