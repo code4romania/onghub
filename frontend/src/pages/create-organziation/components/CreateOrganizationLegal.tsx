@@ -244,7 +244,7 @@ const CreateOrganizationLegal = () => {
             />
             <form className="space-y-8">
               <ContactForm
-                className="flex-row gap-x-6"
+                className="flex-row gap-x-6 sm:flex-nowrap flex-wrap"
                 control={control}
                 errors={errors}
                 readonly={!isEditMode}
