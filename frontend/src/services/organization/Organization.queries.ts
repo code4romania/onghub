@@ -191,7 +191,7 @@ export const useOrganizationMutation = () => {
 export const useUploadPartnersList = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
-    ({ id, partnerId, data }: { id: number; partnerId: number; data: FormData }) =>
+    ({ id, partnerId, data }: { id: string; partnerId: number; data: FormData }) =>
       uploadPartners(id, partnerId, data),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
@@ -202,7 +202,7 @@ export const useUploadPartnersList = () => {
 export const useUploadInvestorsList = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
-    ({ id, investorId, data }: { id: number; investorId: number; data: FormData }) =>
+    ({ id, investorId, data }: { id: string; investorId: number; data: FormData }) =>
       uploadInvestors(id, investorId, data),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
@@ -213,7 +213,7 @@ export const useUploadInvestorsList = () => {
 export const useDeletePartnerMutation = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
-    ({ id, partnerId }: { id: number; partnerId: number }) => deletePartners(id, partnerId),
+    ({ id, partnerId }: { id: string; partnerId: number }) => deletePartners(id, partnerId),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
@@ -223,7 +223,7 @@ export const useDeletePartnerMutation = () => {
 export const useDeleteInvestorMutation = () => {
   const { setOrganizationReport } = useStore();
   return useMutation(
-    ({ id, investorId }: { id: number; investorId: number }) => deleteInvestors(id, investorId),
+    ({ id, investorId }: { id: string; investorId: number }) => deleteInvestors(id, investorId),
     {
       onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
     },
@@ -239,7 +239,6 @@ export const useActivateOrganizationMutation = () => {
 };
 
 /**EMPLOYEE & ADMIN */
-
 export const useOrganizationByProfileQuery = () => {
   const {
     setOrganizationGeneral,
