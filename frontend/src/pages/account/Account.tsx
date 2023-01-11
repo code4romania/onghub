@@ -5,7 +5,7 @@ import InputField from '../../components/InputField/InputField';
 import { AccountConfig } from './AccountConfig';
 import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
-import { useUserMutation } from '../../services/user/User.queries';
+import { useProfileQuery, useUserMutation } from '../../services/user/User.queries';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useUser } from '../../store/user/User.selectors';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
@@ -15,6 +15,9 @@ import { UserRole } from '../users/enums/UserRole.enum';
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
   const { logout } = useAuthContext();
+  // refetching the profile here validates that the user has access to it's data (is not restricted)
+  useProfileQuery();
+
   const {
     handleSubmit,
     control,
