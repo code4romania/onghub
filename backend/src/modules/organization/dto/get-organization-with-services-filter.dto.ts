@@ -12,5 +12,5 @@ export class GetOrganizationWithServicesFilterDto extends OmitType(
 
   @IsNumber()
   @IsOptional()
-  cityId?: number;
+  locationId?: number;
 }
