@@ -78,6 +78,7 @@ const ApplicationForm = ({
                       error: errors.name?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'application-form__name',
                     }}
                   />
                 );
@@ -100,6 +101,7 @@ const ApplicationForm = ({
                       error: errors.shortDescription?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'application-form__short-description',
                     }}
                   />
                 );
@@ -119,6 +121,7 @@ const ApplicationForm = ({
                       error: errors.description?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'application-form__description',
                     }}
                   />
                 );
@@ -138,6 +141,7 @@ const ApplicationForm = ({
                       error: errors.website?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'application-form__website',
                     }}
                   />
                 );
@@ -159,6 +163,7 @@ const ApplicationForm = ({
                         error: errors.loginLink?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'application-form__login-link',
                       }}
                     />
                   );
@@ -179,6 +184,7 @@ const ApplicationForm = ({
                       error: errors.videoLink?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'application-form__video-link',
                     }}
                   />
                 );
@@ -193,7 +199,7 @@ const ApplicationForm = ({
                 return (
                   <Select
                     config={{
-                      id: 'create-application__pulling-type',
+                      id: 'application-form__pulling-type',
                       ...AddAppConfig.pullingType.config,
                     }}
                     selected={value}
@@ -278,6 +284,7 @@ const ApplicationForm = ({
                               )?.steps[index]?.item?.message as any),
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'application-form__step',
                           }}
                         />
                       );

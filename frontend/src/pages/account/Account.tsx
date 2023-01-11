@@ -153,11 +153,11 @@ const Account = () => {
                     <InputField
                       config={{
                         ...AccountConfig.oldPassword.config,
-
                         name: AccountConfig.oldPassword.key,
                         error: errors[AccountConfig.oldPassword.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'account__old-password',
                       }}
                       readonly={readonly}
                     />
@@ -181,6 +181,7 @@ const Account = () => {
                         error: errors[AccountConfig.newPassword.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'account__new-password',
                       }}
                       readonly={readonly}
                     />
@@ -204,6 +205,7 @@ const Account = () => {
                         error: errors[AccountConfig.matchPassword.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'account__match-password',
                       }}
                       readonly={readonly}
                     />

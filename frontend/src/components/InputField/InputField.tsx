@@ -48,7 +48,10 @@ const InputField = (props: {
               id={`${props.config.id}__input`}
             />
             {props.config.type === 'checkbox' && (
-              <label className="sm:text-sm lg:text-base text-xs font-medium ml-2 text-gray-700">
+              <label
+                htmlFor={`${props.config.id}__input`}
+                className="sm:text-sm lg:text-base text-xs font-medium ml-2 text-gray-700"
+              >
                 {props.config.label}
               </label>
             )}

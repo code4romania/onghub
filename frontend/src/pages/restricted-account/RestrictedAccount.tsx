@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header/Header';
 import { useAuthContext } from '../../contexts/AuthContext';
-import restrictedImg from './../../assets/images/Wavy_Tech-08_Single-04 modified 1.svg';
+import restrictedImg from './../../assets/images/restricted.webp';
 
 const RestrictedAccount = () => {
   const { setAuthState, restrictedReason } = useAuthContext();

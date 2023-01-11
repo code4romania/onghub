@@ -354,6 +354,7 @@ const OrganizationActivity = () => {
                           ?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'organization-activity__name',
                     }}
                     readonly={readonly}
                   />

@@ -100,6 +100,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__no-volunteers',
                           }}
                         />
                       );
@@ -119,6 +120,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.numberOfContractors.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__no-contractors',
                           }}
                         />
                       );
@@ -138,6 +140,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.report.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__report',
                           }}
                         />
                       );
