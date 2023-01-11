@@ -420,6 +420,7 @@ export class OrganizationService {
             id: true,
             domains: {
               name: true,
+              id: true,
             },
           },
         },
@@ -503,6 +504,7 @@ export class OrganizationService {
             id: true,
             domains: {
               name: true,
+              id: true,
             },
           },
         },
