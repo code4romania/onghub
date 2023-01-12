@@ -81,6 +81,10 @@
   .break-word {
     word-break: break-word;
   }
+
+  .grid-list {
+    @apply grid grid-cols-cards gap-4;
+  }
 }
 
 @layer utilities {

@@ -237,13 +237,13 @@
         "min": "Numarul de telefon poate sa aiba minim 10 caractere",
         "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
         "invalid": "Numarul de telefon are un format invalid",
-        "label": "Telefon contact organizatie",
+        "label": "Telefon contact organizatie*",
         "helper": "Exemplu: numarul telefonului de la sediu"
       },
       "year": {
         "required": "Anul infintarii este obligatoriu.",
         "max": "Anul infintarii poate sa aiba maxim 4 caractere",
-        "label": "Anul infintarii"
+        "label": "Anul infintarii*"
       },
       "cui": {
         "required": "CUI-ul este obligatoriu",
@@ -693,7 +693,7 @@
         "max": "Numarul de telefon poate sa aiba maxim 15 caractere",
         "min": "Numarul de telefon poate sa aiba minim 10 caractere",
         "invalid": "Numarul de telefon are un format invalid",
-        "label": "Telefon"
+        "label": "Telefon*"
       }
     }
   },

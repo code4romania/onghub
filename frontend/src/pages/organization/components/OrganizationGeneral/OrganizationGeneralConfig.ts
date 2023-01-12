@@ -66,7 +66,7 @@ const translations = {
     max: i18n.t('general:config.raf.max'),
     min: i18n.t('general:config.raf.min'),
     invalid: i18n.t('general:config.raf.invalid'),
-    label: i18n.t('general:config.raf.invalid'),
+    label: i18n.t('general:config.raf.label'),
   },
   city: {
     required: i18n.t('general:config.city.required'),
@@ -547,7 +547,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
     config: {
       type: 'text',
-      label: 'Instagram*',
+      label: 'Instagram',
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,

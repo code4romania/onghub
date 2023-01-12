@@ -97,7 +97,7 @@ export default function ProgressSteps({ disabled }: { disabled: boolean }) {
     <nav aria-label="Progress">
       <ol
         role="list"
-        className="space-y-4 md:flex md:space-y-0 md:space-x-8 bg-white rounded-lg shadow p-5 sm:p-10  m-1"
+        className="space-y-4 md:flex md:space-y-0 md:space-x-8 bg-white rounded-lg shadow p-5 sm:p-10"
       >
         {steps.map((step) => (
           <li key={step.name} className="md:flex-1 cursor-pointer">

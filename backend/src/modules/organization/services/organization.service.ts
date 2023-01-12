@@ -420,6 +420,7 @@ export class OrganizationService {
             id: true,
             domains: {
               name: true,
+              id: true,
             },
           },
         },
@@ -503,6 +504,7 @@ export class OrganizationService {
             id: true,
             domains: {
               name: true,
+              id: true,
             },
           },
         },
@@ -561,7 +563,7 @@ export class OrganizationService {
     options: GetOrganizationWithPracticeProgramsFilterDto,
   ): Promise<Pagination<any>> {
     try {
-      const { domains, cityId, ...filters } = options;
+      const { domains, locationId, ...filters } = options;
 
       // 1. get only organization with active practice programs
       let paginationOptions: GetOrganizationWithPracticeProgramsFilterDto & {
@@ -600,12 +602,12 @@ export class OrganizationService {
       }
 
       // 3. add filter by city if provided
-      if (cityId) {
+      if (locationId) {
         paginationOptions = {
           ...paginationOptions,
           organizationGeneral: {
             city: {
-              id: cityId,
+              id: locationId,
             },
           },
         };
@@ -646,7 +648,7 @@ export class OrganizationService {
     options: GetOrganizationWithServicesFilterDto,
   ): Promise<Pagination<OrganizationFlat>> {
     try {
-      const { domains, cityId, ...filters } = options;
+      const { domains, locationId, ...filters } = options;
 
       // 1. get only organization with active services
       let paginationOptions: GetOrganizationWithServicesFilterDto & {
@@ -685,12 +687,12 @@ export class OrganizationService {
       }
 
       // 3. add filter by city if provided
-      if (cityId) {
+      if (locationId) {
         paginationOptions = {
           ...paginationOptions,
           organizationGeneral: {
             city: {
-              id: cityId,
+              id: locationId,
             },
           },
         };

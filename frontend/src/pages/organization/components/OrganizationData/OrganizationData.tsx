@@ -2,7 +2,7 @@ import { DownloadIcon, PencilIcon, TrashIcon, UploadIcon } from '@heroicons/reac
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import readXlsxFile from 'read-excel-file';
 import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
 import { setUrlPrefix } from '../../../../common/helpers/format.helper';
@@ -19,8 +19,12 @@ import {
 } from '../../../../services/files/File.service';
 import {
   useDeleteInvestorByProfileMutation,
+  useDeleteInvestorMutation,
   useDeletePartnerByProfileMutation,
+  useDeletePartnerMutation,
   useUploadInvestorsByProfileList,
+  useUploadInvestorsList,
+  useUploadPartnersList,
   useUploadPartnersListByProfile,
 } from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
@@ -36,6 +40,7 @@ import { PartnerTableHeaders } from './table-headers/PartnerTable.headers';
 import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
 
 const OrganizationData = () => {
+  const { id } = useParams();
   // static links for partners and investors tables
   const [investorsLink, setInvestorsLink] = useState<string>('');
   const [partnersLink, setPartnersLink] = useState<string>('');
@@ -52,28 +57,54 @@ const OrganizationData = () => {
   const { isLoading: updateReportPending, updateOrganization: updateReport } =
     useOutletContext<OrganizationContext>();
 
+  // super-admin
   const {
     mutate: uploadPartners,
     error: uploadPartnersError,
     isLoading: uploadPartnersPending,
-  } = useUploadPartnersListByProfile();
+  } = useUploadPartnersList();
 
   const {
     mutate: uploadInvestors,
     error: uploadInvestorsError,
     isLoading: uploadInvestorsPending,
-  } = useUploadInvestorsByProfileList();
+  } = useUploadInvestorsList();
 
   const {
     mutate: deleteInvestor,
     error: deleteInvestorError,
     isLoading: deleteInvestorPending,
-  } = useDeleteInvestorByProfileMutation();
+  } = useDeleteInvestorMutation();
 
   const {
     mutate: deletePartner,
     error: deletePartnerError,
     isLoading: deletePartnerPending,
+  } = useDeletePartnerMutation();
+
+  // admin
+  const {
+    mutate: uploadPartnersByProfile,
+    error: uploadPartnersByProfileError,
+    isLoading: uploadPartnersByProfilePending,
+  } = useUploadPartnersListByProfile();
+
+  const {
+    mutate: uploadInvestorsByProfile,
+    error: uploadInvestorsByProfileError,
+    isLoading: uploadInvestorsByProfilePending,
+  } = useUploadInvestorsByProfileList();
+
+  const {
+    mutate: deleteInvestorByProfile,
+    error: deleteInvestorByProfileError,
+    isLoading: deleteInvestorByProfilePending,
+  } = useDeleteInvestorByProfileMutation();
+
+  const {
+    mutate: deletePartnerByProfile,
+    error: deletePartnerByProfileError,
+    isLoading: deletePartnerByProfilePending,
   } = useDeletePartnerByProfileMutation();
 
   useEffect(() => {
@@ -81,9 +112,27 @@ const OrganizationData = () => {
   }, []);
 
   useEffect(() => {
-    if (uploadPartnersError || uploadInvestorsError || deleteInvestorError || deletePartnerError)
+    if (
+      uploadPartnersError ||
+      uploadInvestorsError ||
+      deleteInvestorError ||
+      deletePartnerError ||
+      uploadPartnersByProfileError ||
+      uploadInvestorsByProfileError ||
+      deleteInvestorByProfileError ||
+      deletePartnerByProfileError
+    )
       useErrorToast(t('load_error'));
-  }, [uploadPartnersError, uploadInvestorsError, deleteInvestorError, deletePartnerError]);
+  }, [
+    uploadPartnersError,
+    uploadInvestorsError,
+    deleteInvestorError,
+    deletePartnerError,
+    uploadPartnersByProfileError,
+    uploadInvestorsByProfileError,
+    deleteInvestorByProfileError,
+    deletePartnerByProfileError,
+  ]);
 
   const initTemplateData = async () => {
     setInvestorsLink(await getInvestorsTemplate());
@@ -135,6 +184,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadPartners',
       },
       {
         name: t('delete'),
@@ -144,12 +194,40 @@ const OrganizationData = () => {
       },
     ];
 
+    const superAdminMenuItems = [
+      {
+        name: t('download'),
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        type: PopoverMenuRowType.DOWNLOAD,
+      },
+      {
+        name: t('upload'),
+        icon: UploadIcon,
+        onClick: setSelectedPartner,
+        type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadPartners',
+      },
+      {
+        name: t('delete'),
+        icon: TrashIcon,
+        onClick: onDeletePartnerByOrganizationId,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
     return {
       name: '',
       cell: (row: Partner) => (
         <PopoverMenu
           row={row}
-          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+          menuItems={
+            id
+              ? superAdminMenuItems
+              : role === UserRole.EMPLOYEE
+              ? employeeMenuItems
+              : adminMenuItems
+          }
         />
       ),
       width: '50px',
@@ -179,6 +257,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadInvestors',
       },
       {
         name: t('delete'),
@@ -188,12 +267,40 @@ const OrganizationData = () => {
       },
     ];
 
+    const superAdminMenuItems = [
+      {
+        name: t('download'),
+        icon: DownloadIcon,
+        onClick: onDownloadFile,
+        type: PopoverMenuRowType.DOWNLOAD,
+      },
+      {
+        name: t('upload'),
+        icon: UploadIcon,
+        onClick: setSelectedInvestor,
+        type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadInvestors',
+      },
+      {
+        name: t('delete'),
+        icon: TrashIcon,
+        onClick: onDeleteInvestorByOrganizationId,
+        type: PopoverMenuRowType.REMOVE,
+      },
+    ];
+
     return {
       name: '',
       cell: (row: Investor) => (
         <PopoverMenu
           row={row}
-          menuItems={role === UserRole.EMPLOYEE ? employeeMenuItems : adminMenuItems}
+          menuItems={
+            id
+              ? superAdminMenuItems
+              : role === UserRole.EMPLOYEE
+              ? employeeMenuItems
+              : adminMenuItems
+          }
         />
       ),
       width: '50px',
@@ -253,12 +360,20 @@ const OrganizationData = () => {
     }
   };
 
+  const onDeletePartnerByOrganizationId = (row: Partner) => {
+    if (id) deletePartner({ partnerId: row.id, id });
+  };
+
   const onDeletePartner = (row: Partner) => {
-    deletePartner({ partnerId: row.id });
+    deletePartnerByProfile({ partnerId: row.id });
+  };
+
+  const onDeleteInvestorByOrganizationId = (row: Investor) => {
+    if (id) deleteInvestor({ investorId: row.id, id });
   };
 
   const onDeleteInvestor = (row: Investor) => {
-    deleteInvestor({ investorId: row.id });
+    deleteInvestorByProfile({ investorId: row.id });
   };
 
   const onUploadNewList = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -280,7 +395,11 @@ const OrganizationData = () => {
       const data = new FormData();
       data.append('partners', file);
       data.append('numberOfPartners', (rows.length - 2).toString());
-      uploadPartners({ partnerId, data });
+      if (id) {
+        uploadPartners({ partnerId, data, id });
+      } else {
+        uploadPartnersByProfile({ partnerId, data });
+      }
       setSelectedPartner(null);
     } catch (error) {
       useErrorToast(t('invalid'));
@@ -298,7 +417,11 @@ const OrganizationData = () => {
       const data = new FormData();
       data.append('investors', file);
       data.append('numberOfInvestors', (rows.length - 2).toString());
-      uploadInvestors({ investorId, data });
+      if (id) {
+        uploadInvestors({ investorId, data, id });
+      } else {
+        uploadInvestorsByProfile({ investorId, data });
+      }
       setSelectedInvestor(null);
     } catch (error) {
       useErrorToast(t('invalid'));
@@ -330,6 +453,14 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('partners.title')}>
         <>
+          <input
+            className="w-0 h-0"
+            id="uploadPartners"
+            name="uploadPartners"
+            type="file"
+            accept={FILE_TYPES_ACCEPT.EXCEL}
+            onChange={onUploadNewList}
+          />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
@@ -351,7 +482,12 @@ const OrganizationData = () => {
                 : PartnerTableHeaders
             }
             data={organizationReport?.partners || []}
-            loading={uploadPartnersPending || deletePartnerPending}
+            loading={
+              uploadPartnersPending ||
+              deletePartnerPending ||
+              uploadPartnersByProfilePending ||
+              deletePartnerByProfilePending
+            }
             defaultSortFieldId={'year'}
             defaultSortAsc={false}
           />
@@ -359,6 +495,14 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('investors.title')}>
         <>
+          <input
+            className="w-0 h-0"
+            id="uploadInvestors"
+            name="uploadInvestors"
+            type="file"
+            accept={FILE_TYPES_ACCEPT.EXCEL}
+            onChange={onUploadNewList}
+          />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
@@ -380,20 +524,17 @@ const OrganizationData = () => {
                 : InvestorsTableHeaders
             }
             data={organizationReport?.investors || []}
-            loading={uploadInvestorsPending || deleteInvestorPending}
+            loading={
+              uploadInvestorsPending ||
+              deleteInvestorPending ||
+              uploadInvestorsByProfilePending ||
+              deleteInvestorByProfilePending
+            }
             defaultSortFieldId={'year'}
             defaultSortAsc={false}
           />
         </>
       </CardPanel>
-      <input
-        className="w-0 h-0"
-        id="upload"
-        name="upload"
-        type="file"
-        accept={FILE_TYPES_ACCEPT.EXCEL}
-        onChange={onUploadNewList}
-      />
       {isActivitySummaryModalOpen && selectedReport && (
         <ReportSummaryModal
           onClose={setIsActivitySummaryModalOpen.bind(null, false)}

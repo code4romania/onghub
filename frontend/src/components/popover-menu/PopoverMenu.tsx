@@ -8,6 +8,7 @@ interface MenuItem {
   icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
   onClick: (row: any) => void;
   type?: PopoverMenuRowType;
+  htmlFor?: string;
 }
 
 interface MenuProps {
@@ -91,7 +92,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                       )}
                       {item.type === PopoverMenuRowType.UPLOAD && (
                         <label
-                          htmlFor="upload"
+                          htmlFor={item.htmlFor || 'upload'}
                           className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
                           onClick={() => {
                             item.onClick(row);

@@ -12,5 +12,5 @@ export class GetOrganizationWithPracticeProgramsFilterDto extends OmitType(
 
   @IsNumber()
   @IsOptional()
-  cityId?: number;
+  locationId?: number;
 }

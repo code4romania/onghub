@@ -126,7 +126,7 @@ const ExpenseReportModal = ({
                   <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
                   {t('modal.anaf')}
                 </a>
-                <form className="overflow-scroll">
+                <form className="sm:overflow-auto overflow-scroll">
                   <table className="min-w-full divide-y divide-gray-300 mt-8">
                     <thead className="bg-gray-100">
                       <tr>
