@@ -163,6 +163,7 @@ const OrganizationActivity = () => {
 
         {role !== UserRole.EMPLOYEE && (
           <button
+            aria-label={readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
             type="button"
             className={classNames(
               readonly ? 'edit-button' : 'save-button',
@@ -353,6 +354,7 @@ const OrganizationActivity = () => {
                           ?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'organization-activity__name',
                     }}
                     readonly={readonly}
                   />

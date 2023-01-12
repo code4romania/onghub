@@ -17,6 +17,7 @@ import { Loading } from '../loading/Loading';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface LineChartProps {
+  id: string;
   title: string;
   data: {
     labels: string[];
@@ -27,7 +28,7 @@ interface LineChartProps {
   isLoading: boolean;
 }
 
-const LineChart = ({ data, title, activeFiler, onUpdateChart, isLoading }: LineChartProps) => {
+const LineChart = ({ id, data, title, activeFiler, onUpdateChart, isLoading }: LineChartProps) => {
   const { t } = useTranslation(['dashboard']);
 
   const onFilterChange = (item: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,8 +51,8 @@ const LineChart = ({ data, title, activeFiler, onUpdateChart, isLoading }: LineC
               </span>
               <div>
                 <select
-                  id="location"
-                  name="location"
+                  id={`${id}__filter`}
+                  name={id}
                   defaultValue={activeFiler || ChartOption.MONTHLY}
                   className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 sm:text-sm lg:text-base text-xs focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                   onChange={onFilterChange}

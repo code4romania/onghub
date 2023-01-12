@@ -78,6 +78,7 @@ const Account = () => {
         </div>
         {role === UserRole.EMPLOYEE && (
           <button
+            aria-label={t('close.account')}
             type="button"
             className="red-button"
             onClick={() => {
@@ -96,6 +97,7 @@ const Account = () => {
           <div className="flex gap-4">
             {!readonly && (
               <button
+                aria-label={t('common:back')}
                 type="button"
                 className={'edit-button'}
                 onClick={() => {
@@ -103,11 +105,12 @@ const Account = () => {
                   setReadonly(true);
                 }}
               >
-                {'Inapoi'}
+                {t('common:back')}
               </button>
             )}
 
             <button
+              aria-label={readonly ? t('change_password') : t('save', { ns: 'common' })}
               type="button"
               className={classNames(
                 readonly ? 'edit-button' : 'save-button',
@@ -157,6 +160,7 @@ const Account = () => {
                       error: errors[AccountConfig.oldPassword.key]?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'account__old-password',
                     }}
                     readonly={readonly}
                   />
@@ -178,6 +182,7 @@ const Account = () => {
                       error: errors[AccountConfig.newPassword.key]?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'account__new-password',
                     }}
                     readonly={readonly}
                   />
@@ -201,6 +206,7 @@ const Account = () => {
                       error: errors[AccountConfig.matchPassword.key]?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      id: 'account__match-password',
                     }}
                     readonly={readonly}
                   />

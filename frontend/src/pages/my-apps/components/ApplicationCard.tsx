@@ -46,6 +46,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
           </div>
         )}
       <img
+        alt="Application logo"
         src={application.logo || logo}
         className="sm:h-full max-h-32 w-full object-contain"
       ></img>
@@ -66,6 +67,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
       </div>
       <div className="flex gap-4 justify-center w-full">
         <button
+          aria-label={t('more')}
           className="edit-button w-full flex justify-center sm:text-sm lg:text-base text-xs"
           onClick={onMore}
         >
@@ -75,6 +77,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
           application.type === ApplicationTypeEnum.INDEPENDENT) &&
           application.status !== ApplicationStatus.DISABLED && (
             <button
+              aria-label={t('open')}
               className="save-button w-full flex justify-center sm:text-sm lg:text-base text-xs"
               onClick={onOpen}
             >

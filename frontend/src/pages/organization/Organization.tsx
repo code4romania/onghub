@@ -83,6 +83,7 @@ const Organization = () => {
         >
           {ORGANIZATION_EXTENDED_TABS.map((tab) => (
             <a
+              aria-label={tab.name}
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(

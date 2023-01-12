@@ -8,9 +8,10 @@ interface DateRangePickerProps {
   label: string;
   value?: Date[];
   onChange?: (range: any[]) => void;
+  id?: string;
 }
 
-const DateRangePicker = ({ label, value, onChange }: DateRangePickerProps) => {
+const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) => {
   const [dateRange, setDateRange] = useState<Date[]>([]);
   const [startDate, endDate] = dateRange;
 
@@ -28,7 +29,10 @@ const DateRangePicker = ({ label, value, onChange }: DateRangePickerProps) => {
 
   return (
     <div className="relative w-full">
-      <label className="block font-medium text-gray-700 sm:text-sm lg:text-base text-xs">
+      <label
+        htmlFor={id}
+        className="block font-medium text-gray-700 sm:text-sm lg:text-base text-xs"
+      >
         {label}
       </label>
       <div className="mt-1 relative rounded-md">
@@ -48,6 +52,7 @@ const DateRangePicker = ({ label, value, onChange }: DateRangePickerProps) => {
           }}
           isClearable={false}
           placeholderText="Selectaza Interval"
+          id={id}
         />
       </div>
     </div>

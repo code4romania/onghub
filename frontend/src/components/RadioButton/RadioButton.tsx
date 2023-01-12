@@ -14,7 +14,7 @@ const RadioButton = (props: { config: RadioButtonConfig; checked: boolean }) => 
         className="focus:ring-green h-4 w-4 text-green border-gray-300"
       />
       <label
-        htmlFor={props.config.name + props.config.value}
+        htmlFor={`${props.config.id}-${props.config.value}`}
         className="ml-2 block lg:text-base text-xs font-medium text-gray-800"
       >
         {props.config.label}

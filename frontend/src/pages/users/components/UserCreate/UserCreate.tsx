@@ -108,6 +108,7 @@ const UserCreate = () => {
                           error: errors[UserCreateConfig.name?.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'user-create__name',
                         }}
                       />
                     );
@@ -131,6 +132,7 @@ const UserCreate = () => {
                         error: errors[UserCreateConfig.email?.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'user-create__email',
                       }}
                     />
                   );
@@ -150,6 +152,7 @@ const UserCreate = () => {
                         error: errors[UserCreateConfig.phone?.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'user-create__phone',
                       }}
                     />
                   );

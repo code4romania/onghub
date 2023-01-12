@@ -46,6 +46,7 @@ const RequestsLineChart = () => {
 
   return (
     <LineChart
+      id="requests-chart"
       data={{ datasets, labels }}
       title={t('statistics.request_chart')}
       activeFiler={activeFilter}

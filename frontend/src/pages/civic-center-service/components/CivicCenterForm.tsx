@@ -125,6 +125,7 @@ const CivicCenterForm = ({
                         error: errors.name?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'civic-center-service-form__name',
                       }}
                     />
                   );
@@ -169,6 +170,7 @@ const CivicCenterForm = ({
                           CivicCenterFormConfig.startDate.key
                         ]?.message?.toString() || civicCenterProgramPeriodError
                       }
+                      id="civic-center-service-form__date-start__input"
                     />
                   );
                 }}
@@ -190,6 +192,7 @@ const CivicCenterForm = ({
                             CivicCenterFormConfig.endDate.key
                           ]?.message?.toString() || civicCenterProgramPeriodError
                         }
+                        id="civic-center-service-form__date-end__input"
                       />
                     );
                   }}
@@ -209,6 +212,7 @@ const CivicCenterForm = ({
                         error: errors.isPeriodNotDetermined?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'civic-center-service-form__is-period-not-determined',
                       }}
                     />
                   );
@@ -228,6 +232,7 @@ const CivicCenterForm = ({
                         error: errors.shortDescription?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'civic-center-service-form__short-description',
                       }}
                     />
                   );
@@ -247,6 +252,7 @@ const CivicCenterForm = ({
                         error: errors.longDescription?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'civic-center-service-form__long-description',
                       }}
                     />
                   );
@@ -332,6 +338,7 @@ const CivicCenterForm = ({
                             ]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'civic-center-service-form__online',
                           }}
                         />
                       );
@@ -351,6 +358,7 @@ const CivicCenterForm = ({
                             error: errors.onlineAccessDescription?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'civic-center-service-form__online-description',
                           }}
                         />
                       );
@@ -398,7 +406,7 @@ const CivicCenterForm = ({
                             ]?.message,
                             defaultValue: value,
                             onChange: onChange,
-                            id: 'create-civic-center-service__email',
+                            id: 'civic-center-service-form__email',
                           }}
                         />
                       );
@@ -420,7 +428,7 @@ const CivicCenterForm = ({
                             ]?.message,
                             defaultValue: value,
                             onChange: onChange,
-                            id: 'create-organization-general__org-phone',
+                            id: 'civic-center-service-form__org-phone',
                           }}
                         />
                       );
@@ -442,6 +450,7 @@ const CivicCenterForm = ({
                             ]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'civic-center-service-form__email-phone-description',
                           }}
                         />
                       );
@@ -489,6 +498,7 @@ const CivicCenterForm = ({
                             ]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'civic-center-service-form__physical-address',
                           }}
                         />
                       );

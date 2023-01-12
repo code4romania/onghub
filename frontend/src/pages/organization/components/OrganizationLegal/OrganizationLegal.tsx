@@ -274,6 +274,7 @@ const OrganizationLegal = () => {
         </span>
         {role !== UserRole.EMPLOYEE && (
           <button
+            aria-label={isEditMode ? t('save', { ns: 'common' }) : t('edit', { ns: 'common' })}
             type="button"
             className={classNames(
               isEditMode ? 'save-button' : 'edit-button',
@@ -335,6 +336,7 @@ const OrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                aria-label={t('add')}
                 type="button"
                 className="add-button max-w-[12rem]"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
@@ -352,6 +354,7 @@ const OrganizationLegal = () => {
             />
             {isEditMode && (
               <button
+                aria-label={t('add')}
                 type="button"
                 className="add-button max-w-[12rem]"
                 onClick={setIsOtherModalOpen.bind(null, true)}
@@ -387,6 +390,7 @@ const OrganizationLegal = () => {
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
+                  aria-label={t('file_name')}
                   href={fileToURL(organizationStatute) || organizationLegal?.organizationStatute}
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"

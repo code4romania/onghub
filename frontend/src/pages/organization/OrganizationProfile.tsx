@@ -89,6 +89,7 @@ const OrganizationProfile = () => {
         </span>
         {role !== UserRole.EMPLOYEE && (
           <button
+            aria-label={t('restrict.confirm')}
             type="button"
             className="delete-button mr-1 max-h-10 sm:max-w-auto max-w-fit items-center"
             onClick={() => setOrganizationDeleteModal(true)}
@@ -107,6 +108,7 @@ const OrganizationProfile = () => {
         >
           {ORGANIZATION_TABS.map((tab) => (
             <a
+              aria-label={tab.name}
               key={tab.name}
               onClick={() => onTabClick(tab)}
               className={classNames(

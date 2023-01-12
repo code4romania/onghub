@@ -11,6 +11,7 @@ import {
 } from '../../../services/application/Application.queries';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import ApplicationForm from './ApplicationForm';
+import { useTranslation } from 'react-i18next';
 
 const EditApplication = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ const EditApplication = () => {
 
   // Fetch application
   const { data: application, isLoading: isApplicationLoading } = useApplicationQuery(id as string);
+  const { t } = useTranslation();
 
   // Edit Mutation
   const {
@@ -91,12 +93,13 @@ const EditApplication = () => {
           </span>
 
           <button
+            aria-label={t('common:save')}
             type="button"
             className="save-button sm:text-sm lg:text-base text-xs"
             onClick={handleSubmit(onSubmit)}
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-            Salveaza modificari
+            {t('common:save')}
           </button>
         </div>
 

@@ -115,6 +115,7 @@ const UserEdit = () => {
                           error: errors[UserCreateConfig.name?.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'user-edit__name',
                         }}
                       />
                     );
@@ -139,6 +140,7 @@ const UserEdit = () => {
                         error: errors[UserCreateConfig.email?.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'user-edit__email',
                       }}
                     />
                   );
@@ -158,6 +160,7 @@ const UserEdit = () => {
                         error: errors[UserCreateConfig.phone?.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'user-edit__phone',
                       }}
                     />
                   );

@@ -150,6 +150,7 @@ const OrganizationGeneral = () => {
 
         {role !== UserRole.EMPLOYEE && (
           <button
+            aria-label={readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
             type="button"
             className={classNames(
               readonly ? 'edit-button' : 'save-button',
@@ -183,6 +184,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.name.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__name',
                       }}
                       readonly={readonly}
                     />
@@ -203,6 +205,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.alias.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__alias',
                       }}
                       readonly={readonly}
                     />
@@ -229,6 +232,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.email.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__email',
                       }}
                       readonly={readonly}
                     />
@@ -249,6 +253,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.phone.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__phone',
                       }}
                       readonly={readonly}
                     />
@@ -288,6 +293,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.cui.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__cui',
                       }}
                       readonly={readonly}
                       disabled={disabled}
@@ -309,6 +315,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__raf-no',
                       }}
                       readonly={readonly}
                       disabled={disabled}
@@ -329,6 +336,7 @@ const OrganizationGeneral = () => {
                           ...OrganizationGeneralConfig.county.config,
                           collection: counties,
                           displayedAttribute: 'name',
+                          id: 'organization-general__county',
                         }}
                         error={errors[OrganizationGeneralConfig.county.key]?.message}
                         selected={value}
@@ -353,6 +361,7 @@ const OrganizationGeneral = () => {
                           ...OrganizationGeneralConfig.city.config,
                           collection: cities || [],
                           displayedAttribute: 'name',
+                          id: 'organization-general__city',
                         }}
                         error={errors[OrganizationGeneralConfig.city.key]?.message}
                         selected={value}
@@ -377,6 +386,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__short-description',
                       }}
                       readonly={readonly}
                     />
@@ -397,6 +407,7 @@ const OrganizationGeneral = () => {
                         error: errors[OrganizationGeneralConfig.description.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
+                        id: 'organization-general__description',
                       }}
                       readonly={readonly}
                     />
@@ -425,8 +436,9 @@ const OrganizationGeneral = () => {
                       </svg>
                     ) : (
                       <img
+                        alt="Organization logo"
                         src={fileToURL(file) || (organizationGeneral?.logo as string)}
-                        className="h-20 w-80"
+                        className="h-20 w-80 object-cover"
                       />
                     )}
                   </span>
@@ -506,6 +518,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.website.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__website',
                         }}
                         readonly={readonly}
                       />
@@ -526,6 +539,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.facebook.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__facebook',
                         }}
                         readonly={readonly}
                       />
@@ -546,6 +560,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.instagram.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__instagram',
                         }}
                         readonly={readonly}
                       />
@@ -566,6 +581,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.twitter.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__twitter',
                         }}
                         readonly={readonly}
                       />
@@ -586,6 +602,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.linkedin.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__linkedin',
                         }}
                         readonly={readonly}
                       />
@@ -606,6 +623,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.tiktok.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__tiktok',
                         }}
                         readonly={readonly}
                       />
@@ -640,6 +658,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.donationWebsite.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__donation-website',
                         }}
                         readonly={readonly}
                       />
@@ -660,6 +679,7 @@ const OrganizationGeneral = () => {
                           error: errors[OrganizationGeneralConfig.redirectLink.key]?.message,
                           defaultValue: value,
                           onChange: onChange,
+                          id: 'organization-general__redirect-link',
                         }}
                         readonly={readonly}
                       />
@@ -681,6 +701,7 @@ const OrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationSMS.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'organization-general__donation-sms',
                           }}
                           readonly={readonly}
                         />
@@ -701,6 +722,7 @@ const OrganizationGeneral = () => {
                             error: errors[OrganizationGeneralConfig.donationKeyword.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'organization-general__donation-keyword',
                           }}
                           readonly={readonly}
                         />

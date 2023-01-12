@@ -100,6 +100,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.numberOfVolunteers.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__no-volunteers',
                           }}
                         />
                       );
@@ -119,6 +120,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.numberOfContractors.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__no-contractors',
                           }}
                         />
                       );
@@ -138,6 +140,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                             error: errors[ReportSummaryConfig.report.key]?.message,
                             defaultValue: value,
                             onChange: onChange,
+                            id: 'report-summary-modal__report',
                           }}
                         />
                       );
@@ -146,6 +149,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                 </form>
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
+                    aria-label={t('modal.save', { ns: 'organization' })}
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 sm:text-sm lg:text-base text-xs font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto"
                     onClick={handleSubmit(onSave)}
@@ -153,6 +157,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                     {t('modal.save', { ns: 'organization' })}
                   </button>
                   <button
+                    aria-label={t('modal.cancel', { ns: 'organization' })}
                     type="button"
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
                     onClick={() => onClose()}

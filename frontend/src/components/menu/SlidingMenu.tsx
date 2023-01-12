@@ -5,6 +5,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'react-i18next';
 
 export default function SlidingMenu({
   isOpen,
@@ -17,6 +18,7 @@ export default function SlidingMenu({
   const location = useLocation();
   const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (location && role) {
@@ -72,6 +74,7 @@ export default function SlidingMenu({
                   >
                     <div className="absolute top-0 -right-8 flex pt-4">
                       <button
+                        aria-label={t('common:close')}
                         type="button"
                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                         onClick={() => setSlidingMenuOpen(false)}
@@ -93,6 +96,7 @@ export default function SlidingMenu({
                         {role &&
                           getNavigationRoutes(role).map((item) => (
                             <a
+                              aria-label={item.name}
                               key={item.name}
                               className={classNames(
                                 item.id === currentMenuItemId

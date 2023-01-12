@@ -148,6 +148,7 @@ const UserInvites = () => {
               label={t('list.date')}
               value={range.length > 0 ? range : undefined}
               onChange={onDateChange}
+              id="user-invites-date__input"
             />
           </div>
         </div>

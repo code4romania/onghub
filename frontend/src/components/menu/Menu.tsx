@@ -62,6 +62,7 @@ const Menu = () => {
         {role &&
           getNavigationRoutes(role).map((item) => (
             <a
+              aria-label={item.name}
               key={item.name}
               className={classNames(
                 item.id === currentMenuItemId ? 'bg-menu-green/[0.15] text-green' : '',
@@ -83,6 +84,7 @@ const Menu = () => {
           ))}
         <div className="pt-60 space-y-4">
           <a
+            aria-label="menu"
             key={'menu'}
             onClick={() => setIsNarrow((res) => !res)}
             className={classNames(

@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header/Header';
 import { useAuthContext } from '../../contexts/AuthContext';
-import restrictedImg from './../../assets/images/Wavy_Tech-08_Single-04 modified 1.svg';
+import restrictedImg from './../../assets/images/restricted.webp';
 
 const RestrictedAccount = () => {
   const { setAuthState, restrictedReason } = useAuthContext();
@@ -26,13 +26,21 @@ const RestrictedAccount = () => {
             <span className="text-green font-semibold">{process.env.REACT_APP_CONTACT_EMAIL}</span>
           </p>
           <div className="flex items-start flex-col sm:flex-row">
-            <a className="mb-2" href={`mailto:${process.env.REACT_APP_CONTACT_EMAIL}`}>
-              <button className="save-button sm:text-sm lg:text-base text-xs">
+            <a
+              aria-label={t('send_mail')}
+              className="mb-2"
+              href={`mailto:${process.env.REACT_APP_CONTACT_EMAIL}`}
+            >
+              <button
+                aria-label={t('send_mail')}
+                className="save-button sm:text-sm lg:text-base text-xs"
+              >
                 {t('send_mail')}
               </button>
             </a>
 
             <button
+              aria-label={t('back')}
               onClick={onGoBackToSite}
               className="edit-button mb-2 sm:ml-6 sm:text-sm lg:text-base text-xs"
             >

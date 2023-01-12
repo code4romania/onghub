@@ -49,7 +49,7 @@ const ServerSelect = ({
     <div>
       {label && (
         <label
-          htmlFor="email"
+          htmlFor={`${id}__input`}
           className="block sm:text-sm lg:text-base text-xs font-medium text-gray-700"
         >
           {label}

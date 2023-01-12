@@ -46,6 +46,7 @@ const OrganizationsLineChart = () => {
 
   return (
     <LineChart
+      id="organizations-chart"
       data={{ datasets, labels }}
       title={t('statistics.organization_chart')}
       activeFiler={activeFilter}

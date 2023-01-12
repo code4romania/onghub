@@ -212,6 +212,7 @@ const Organizations = () => {
               label={t('filter.registration')}
               value={createdOnRange.length > 0 ? createdOnRange : undefined}
               onChange={onDateChange}
+              id="organizations-registration-date__input"
             />
           </div>
           <div className="sm:basis-1/4 w-full">

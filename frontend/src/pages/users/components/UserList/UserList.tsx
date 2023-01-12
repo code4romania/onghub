@@ -269,6 +269,7 @@ const UserList = (props: { organizationId?: number }) => {
               label={t('list.date')}
               value={range.length > 0 ? range : undefined}
               onChange={onDateChange}
+              id="user-lists-date__input"
             />
           </div>
           <div className="sm:basis-1/4 w-full">
@@ -290,6 +291,7 @@ const UserList = (props: { organizationId?: number }) => {
             {t('title')}
           </p>
           <button
+            aria-label={t('list.download')}
             type="button"
             className="edit-button sm:text-sm lg:text-base text-xs"
             onClick={onExport}

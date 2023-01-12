@@ -105,6 +105,7 @@ const ApplicationDetails = () => {
       <div className="flex flex-col rounded-lg bg-white shadow md:w-96 lg:p-8 p-5 divide-y divide-gray-200 h-full">
         <div className="flex flex-col gap-4 min-h-full">
           <img
+            alt="Application logo"
             src={application?.logo || logo}
             className="sm:h-full h-32 w-full sm:py-10 py-5 object-contain"
           />
@@ -152,6 +153,11 @@ const ApplicationDetails = () => {
                     {application?.ongStatus === null && role === UserRole.ADMIN && (
                       <div className="flex pt-4 gap-4 items-center justify-center">
                         <button
+                          aria-label={
+                            application.type === ApplicationTypeEnum.SIMPLE
+                              ? t('details.add')
+                              : t('details.request')
+                          }
                           className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                           onClick={requestApplication}
                         >
@@ -167,6 +173,7 @@ const ApplicationDetails = () => {
                       role === UserRole.ADMIN && (
                         <div className="flex pt-4 gap-4 items-center justify-center">
                           <button
+                            aria-label={t('details.delete')}
                             className="edit-button px-8 flex gap-4"
                             onClick={() => setConfirmationModalOpen(true)}
                           >
@@ -179,6 +186,7 @@ const ApplicationDetails = () => {
                     {application?.ongStatus === OngApplicationStatus.PENDING && (
                       <div className="flex flex-col pt-4 gap-4 items-center justify-center">
                         <button
+                          aria-label={t('details.request')}
                           className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                           disabled
                         >
@@ -223,6 +231,7 @@ const ApplicationDetails = () => {
                       <>
                         {!application?.pullingType && (
                           <button
+                            aria-label={t('details.open')}
                             className="save-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                             onClick={onOpen}
                           >
@@ -232,12 +241,16 @@ const ApplicationDetails = () => {
                         {application?.pullingType === ApplicationPullingType.PRACTICE_PROGRAM && (
                           <div className="w-full flex flex-col lg:flex-row">
                             <button
+                              aria-label={t('details.practice_program.redirect_to_site')}
                               className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                               onClick={onOpen}
                             >
                               {t('details.practice_program.redirect_to_site')}
                             </button>
                             <button
+                              aria-label={t(
+                                'details.practice_program.redirect_to_practice_programs',
+                              )}
                               className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
                               onClick={onRedirectToPracticePrograms}
                             >
@@ -248,12 +261,14 @@ const ApplicationDetails = () => {
                         {application?.pullingType === ApplicationPullingType.CIVIC_SERVICE && (
                           <div className="w-full flex flex-col lg:flex-row">
                             <button
+                              aria-label={t('details.services.redirect_to_site')}
                               className="edit-button px-8 flex gap-4 sm:text-sm lg:text-base text-xs"
                               onClick={onOpen}
                             >
                               {t('details.services.redirect_to_site')}
                             </button>
                             <button
+                              aria-label={t('details.services.redirect_to_services')}
                               className="save-button px-8 mt-2 lg:mt-0 lg:ml-4 flex gap-4 sm:text-sm lg:text-base text-xs"
                               onClick={onRedirectToServices}
                             >
@@ -271,7 +286,11 @@ const ApplicationDetails = () => {
                     title={t('details.pending')}
                     description={t('details.configure')}
                     actions={
-                      <button className="edit-button px-8 flex gap-4" onClick={abandonRequest}>
+                      <button
+                        aria-label={t('details.cancel')}
+                        className="edit-button px-8 flex gap-4"
+                        onClick={abandonRequest}
+                      >
                         <XIcon className="h-5 w-5" />
                         {t('details.cancel')}
                       </button>
@@ -315,6 +334,13 @@ const ApplicationDetails = () => {
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               title={t('details.another_description')}
+              srcDoc={`<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}</style><a href=${
+                application?.videoLink
+              }><img src=https://img.youtube.com/vi/${
+                application?.videoLink?.split('/')[application?.videoLink?.split('/').length - 1]
+              }/hqdefault.jpg alt='${t(
+                'details.another_description',
+              )}'><span style="display: flex; flex-direction:column; align-items:center"><button style="background:transparent; border:none; width: 70px; cursor: pointer" class="ytp-large-play-button ytp-button ytp-large-play-button-red-bg" aria-label="Redă"><svg version="1.1" viewBox="0 0 68 48"><path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#f00"></path><path d="M 45,24 27,14 27,34" fill="#fff"></path></svg></button></span></a>`}
             />
           </div>
         </div>

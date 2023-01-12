@@ -183,6 +183,7 @@ const RequestList = () => {
               label={t('created_on')}
               onChange={onDateChange}
               value={range.length > 0 ? range : undefined}
+              id="requests-date-created__input"
             />
           </div>
         </div>

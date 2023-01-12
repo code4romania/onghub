@@ -63,6 +63,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
               <Dialog.Panel className="relative bg-white rounded-lg p-6 sm:p-10 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-xl sm:w-full">
                 <div className="absolute top-0 right-0 pt-4 pr-4">
                   <button
+                    aria-label={t('modal.close', { ns: 'organization' })}
                     type="button"
                     className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={onClose}
@@ -99,6 +100,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
                   {isEdit && (
                     <>
                       <button
+                        aria-label={t('save', { ns: 'common' })}
                         type="button"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 sm:text-sm lg:text-base text-xs font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto"
                         onClick={handleSubmit(onSave)}
@@ -106,6 +108,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
                         {t('save', { ns: 'common' })}
                       </button>
                       <button
+                        aria-label={t('modal.cancel', { ns: 'organization' })}
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
                         onClick={onClose}
@@ -116,6 +119,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
                   )}
                   {!isEdit && (
                     <button
+                      aria-label={t('modal.add')}
                       id={`${id}__button-add`}
                       type="button"
                       className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 sm:text-sm lg:text-base text-xs font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto"
