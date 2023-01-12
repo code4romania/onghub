@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 import './Header.css';
 import logo from './../../assets/images/logo.svg';
-import profileImg from './../../assets/images/profile.svg';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { Menu, Transition } from '@headlessui/react';
-import { CogIcon, LogoutIcon, MenuIcon } from '@heroicons/react/outline';
+import { CogIcon, LogoutIcon, MenuIcon, ChevronDownIcon } from '@heroicons/react/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
@@ -59,7 +58,8 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
                     <span className="font-titilliumBold text-gray-900 sm:text-sm lg:text-base text-xs tracking-wide text-right">
                       {profile?.name || ''}
                     </span>
-                    <img className="w-10 h-10" src={profileImg} alt="Profile photo" />
+                    {/* <img className="w-10 h-10" src={profileImg} alt="Profile photo" /> */}
+                    <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-900" />
                   </Menu.Button>
                 </div>
 
