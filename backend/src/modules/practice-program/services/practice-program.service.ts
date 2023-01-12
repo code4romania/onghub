@@ -12,6 +12,10 @@ import { DATE_CONSTANTS } from 'src/common/constants/date.constants';
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 import { flattenPullingTypeEntity } from 'src/common/helpers/flatten-pulling-type.helper';
 import { Pagination } from 'src/common/interfaces/pagination';
+import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
+import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
+import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { Skill } from 'src/shared/entities';
 import { NomenclaturesService } from 'src/shared/services';
@@ -31,6 +35,7 @@ import { PracticeProgramRepository } from '../repositories/practice-program.repo
 export class PracticeProgramService {
   private readonly logger = new Logger(PracticeProgramService.name);
   constructor(
+    private readonly ongApplicationService: OngApplicationService,
     private readonly practiceProgramRepository: PracticeProgramRepository,
     private readonly nomenclatureService: NomenclaturesService,
     private readonly fileManagerService: S3FileManagerService,
@@ -423,7 +428,13 @@ export class PracticeProgramService {
     PracticeProgram & { organizationId: number; organizationName: string }
   > {
     const practiceProgram = await this.practiceProgramRepository.get({
-      where: { id, active: true },
+      where: {
+        id,
+        active: true,
+        organization: {
+          status: OrganizationStatus.ACTIVE,
+        },
+      },
       relations: [
         'location',
         'skills',
@@ -467,6 +478,23 @@ export class PracticeProgramService {
   public async findPracticeShortPracticeProgramsByOrganization(
     organizationId: number,
   ): Promise<PracticeProgram[]> {
+    // check if this organization has access to practice programs
+    const applicationWithPracticePrograms =
+      await this.ongApplicationService.findOngApplicationWithOptions({
+        where: {
+          organizationId,
+          application: {
+            status: ApplicationStatus.ACTIVE,
+            pullingType: ApplicationPullingType.PRACTICE_PROGRAM,
+          },
+          status: OngApplicationStatus.ACTIVE,
+        },
+      });
+
+    if (!applicationWithPracticePrograms) {
+      throw new NotFoundException(PRACTICE_PROGRAMS_ERRORS.NOT_FOUND);
+    }
+
     return this.practiceProgramRepository.getMany({
       select: {
         id: true,

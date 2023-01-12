@@ -24,11 +24,16 @@ import { City, Domain } from 'src/shared/entities';
 import { flattenPullingTypeEntity } from 'src/common/helpers/flatten-pulling-type.helper';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import { CivicCenterServiceFlat } from '../interfaces/CivicCenterServiceFlat';
+import { OngApplicationService } from 'src/modules/application/services/ong-application.service';
+import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
+import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
+import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
 
 @Injectable()
 export class CivicCenterServiceService {
   private readonly logger = new Logger(CivicCenterServiceService.name);
   constructor(
+    private readonly ongApplicationService: OngApplicationService,
     private readonly civicCenterServiceRepository: CivicCenterServiceRepository,
     private readonly nomenclatureService: NomenclaturesService,
     private readonly fileManagerService: S3FileManagerService,
@@ -198,7 +203,13 @@ export class CivicCenterServiceService {
     CivicCenterService & { organizationId: number; organizationName: string }
   > {
     const service = await this.civicCenterServiceRepository.get({
-      where: { id, active: true },
+      where: {
+        id,
+        active: true,
+        organization: {
+          status: OrganizationStatus.ACTIVE,
+        },
+      },
       relations: [
         'location',
         'domains',
@@ -233,6 +244,23 @@ export class CivicCenterServiceService {
   public async findPracticeShortServicesByOrganization(
     organizationId: number,
   ): Promise<CivicCenterService[]> {
+    // check if this organization has access to practice programs
+    const applicationWithServices =
+      await this.ongApplicationService.findOngApplicationWithOptions({
+        where: {
+          organizationId,
+          application: {
+            status: ApplicationStatus.ACTIVE,
+            pullingType: ApplicationPullingType.CIVIC_SERVICE,
+          },
+          status: OngApplicationStatus.ACTIVE,
+        },
+      });
+
+    if (!applicationWithServices) {
+      throw new NotFoundException(CIVIC_CENTER_SERVICE_ERRORS.NOT_FOUND);
+    }
+
     return this.civicCenterServiceRepository.getMany({
       select: {
         id: true,
