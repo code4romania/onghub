@@ -85,7 +85,7 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: 'apps',
+      href: 'applications/my-apps',
       label: 'statistics.view_active_apps',
     },
   }),
