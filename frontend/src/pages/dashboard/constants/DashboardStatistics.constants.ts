@@ -76,7 +76,7 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
       label: 'statistics.view_data',
     },
   }),
-  numberOfInstalledApps: (value: number) => ({
+  numberOfInstalledApps: (value: number, isAdmin: boolean) => ({
     icon: ViewGridAddIcon,
     info: [
       {
@@ -85,7 +85,7 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: 'applications/my-apps',
+      href: isAdmin ? 'applications/my-apps' : 'applications',
       label: 'statistics.view_active_apps',
     },
   }),

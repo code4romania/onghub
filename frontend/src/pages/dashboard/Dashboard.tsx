@@ -44,6 +44,7 @@ const Dashboard = () => {
                 <ExetendedStatisticsCard
                   stat={AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
                     statistics.numberOfInstalledApps,
+                    role === UserRole.ADMIN,
                   )}
                 />
                 <ExetendedStatisticsCard
