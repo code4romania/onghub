@@ -360,11 +360,11 @@ export class PracticeProgramService {
           paginationOptions,
         );
 
-      // 5. flatten the request
+      // 4. flatten the request
       const flattenPrograms =
         flattenPullingTypeEntity<PracticeProgram>(practicePrograms);
 
-      // 6. map the logo to organization
+      // 5. map the logo to organization
       const items =
         await this.fileManagerService.mapLogoToEntity<PracticeProgramFlat>(
           flattenPrograms.items,

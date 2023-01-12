@@ -132,7 +132,7 @@ export abstract class BaseDAO<T> {
         // calculate range based on 2 columns, if rangecolumn comes as an array
         if (typeof config.rangeColumn === 'object') {
           // build interval conditions
-          const intervalIntersection = this.checkTwoIntervalIntersection(
+          const intervalIntersection = this.checkOneIntervalComprisesAnother(
             config.rangeColumn[0],
             config.rangeColumn[1],
             start,
@@ -172,7 +172,6 @@ export abstract class BaseDAO<T> {
             format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
           );
         }
-
         // validate 2 range columns
         if (typeof config.rangeColumn === 'object') {
           // get all results which have the second range column (endDate) value smaller than the the start value
@@ -314,6 +313,34 @@ export abstract class BaseDAO<T> {
         {
           date: format(startDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
         },
+      ),
+    };
+  };
+
+  private checkOneIntervalComprisesAnother = (
+    startDateColumn: string,
+    endDateColumn: string,
+    from: Date | string,
+    to: Date | string,
+  ) => {
+    // format start date to start of day
+    const startDate = typeof from === 'string' ? new Date(from) : from;
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+
+    // format end date to end of day
+    const endDate = typeof to === 'string' ? new Date(to) : to;
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
+    return {
+      [startDateColumn]: MoreThanOrEqual(
+        format(startDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+      ),
+      [endDateColumn]: LessThanOrEqual(
+        format(endDate, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
       ),
     };
   };
