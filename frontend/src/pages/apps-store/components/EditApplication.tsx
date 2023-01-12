@@ -12,6 +12,7 @@ import {
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import ApplicationForm from './ApplicationForm';
 import { useTranslation } from 'react-i18next';
+import { PullingTypeOptions } from './AddApplicationConfig';
 
 const EditApplication = () => {
   const navigate = useNavigate();
@@ -47,6 +48,9 @@ const EditApplication = () => {
       reset({
         ...application,
         steps: application.steps?.map((step) => ({ item: step })),
+        pullingType: application.pullingType
+          ? (PullingTypeOptions.find((item) => item.value === application.pullingType) as any)
+          : undefined,
       });
       setLogo(application.logo);
     }

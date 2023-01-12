@@ -1,4 +1,5 @@
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
+import { ApplicationPullingType } from '../../../pages/apps-store/enums/application-pulling-type.enum';
 import {
   OngApplicationStatus,
   UserOngApplicationStatus,
@@ -29,6 +30,7 @@ export interface ApplicationWithOngStatus {
   status: ApplicationStatus;
   ongStatus: OngApplicationStatus;
   type: ApplicationTypeEnum;
+  pullingType?: ApplicationPullingType;
   website: string;
   createdOn: Date;
 }

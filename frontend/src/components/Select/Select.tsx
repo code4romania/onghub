@@ -21,7 +21,7 @@ const Select = (props: {
 }) => {
   return (
     <div className="relative w-full">
-      <Listbox disabled={props.disabled} value={props.selected} onChange={props.onChange}>
+      <Listbox disabled={props.disabled} defaultValue={props.selected} onChange={props.onChange}>
         {({ open }) => (
           <>
             <Listbox.Label className="block font-medium text-gray-700 pb-1 sm:text-sm lg:text-base text-xs">
