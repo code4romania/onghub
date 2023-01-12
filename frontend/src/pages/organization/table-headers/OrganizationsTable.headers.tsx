@@ -27,23 +27,23 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     name: translations.ong,
     sortable: true,
     minWidth: '5rem',
-    grow: 2,
+    grow: 1.5,
     cell: (row: IOrganizationView) => <NameWithLogo name={row.name} logo={row.logo} />,
   },
   {
     id: 'userCount',
     name: translations.users,
     sortable: true,
-    minWidth: '5rem',
-    grow: 1,
+    minWidth: '7rem',
+    grow: 0.5,
     selector: (row: IOrganizationView) => row.userCount,
   },
   {
     id: 'createdOn',
     name: translations.register,
     sortable: true,
-    grow: 1,
-    minWidth: '7rem',
+    grow: 0.7,
+    minWidth: '5rem',
     selector: (row: IOrganizationView) => formatDate(row.createdOn as string),
   },
   {
@@ -51,8 +51,8 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     sortable: true,
     sortField: 'status',
     name: translations.access,
-    grow: 1,
-    minWidth: '10rem',
+    grow: 0.8,
+    minWidth: '0.9rem',
     cell: (row: IOrganizationView) => (
       <StatusBadge
         status={row.status === OrganizationStatus.ACTIVE ? BadgeStatus.SUCCESS : BadgeStatus.ERROR}
@@ -66,16 +66,16 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'updatedOn',
     name: translations.updated_on,
     sortable: true,
-    grow: 1,
-    minWidth: '7rem',
+    grow: 0.7,
+    minWidth: '5rem',
     selector: (row: IOrganizationView) => formatDate(row?.updatedOn as string),
   },
   {
     id: 'completionStatus',
     sortable: true,
     name: translations.status,
-    grow: 1,
-    minWidth: '7rem',
+    grow: 0.7,
+    minWidth: '5rem',
     cell: (row: IOrganizationView) => (
       <StatusBadge
         status={

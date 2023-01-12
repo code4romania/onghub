@@ -96,8 +96,8 @@
 
 /* Overrride default overflow for datatables to allow popovers */
 .rdt_TableWrapper div {
-  overflow-x: initial !important;
-  overflow-y: initial !important;
+  //overflow-x: initial !important;
+  //overflow-y: initial !important;
 }
 
 .rdt_TableWrapper > div:first-of-type {
