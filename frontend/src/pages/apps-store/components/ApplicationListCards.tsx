@@ -27,7 +27,7 @@ const ApplicationListCards = ({ showAllApps }: ApplicationListCardsProps) => {
   }
 
   return (
-    <div className="flex gap-4 flex-wrap">
+    <div className="grid-list">
       {applications.map((app: ApplicationWithOngStatus) => (
         <ApplicationCard key={app.id} application={app} />
       ))}
