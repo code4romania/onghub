@@ -209,7 +209,12 @@ export class ApplicationService {
       );
     }
 
-    const applications = await applicationsQuery.execute();
+    let applications = await applicationsQuery.execute();
+
+    // remove status if userId not provided -> query for create user default should be null
+    if (!userId) {
+      applications = applications.map((app) => ({ ...app, status: null }));
+    }
 
     return this.fileManagerService.mapLogoToEntity<ApplicationAccess>(
       applications,
