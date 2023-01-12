@@ -102,7 +102,7 @@ const CreateOrganization = () => {
     <div className="w-screen h-screen max-w-full ">
       <Header />
       <div className="flex p-6">
-        <div className="content w-full pl-6 flex flex-col gap-4">
+        <div className="content w-full flex flex-col gap-4">
           <ProgressSteps disabled={success} />
           {!success && !error && (
             <Outlet

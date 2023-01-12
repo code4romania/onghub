@@ -184,6 +184,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadPartners',
       },
       {
         name: t('delete'),
@@ -205,6 +206,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadPartners',
       },
       {
         name: t('delete'),
@@ -255,6 +257,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadInvestors',
       },
       {
         name: t('delete'),
@@ -276,6 +279,7 @@ const OrganizationData = () => {
         icon: UploadIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
+        htmlFor: 'uploadInvestors',
       },
       {
         name: t('delete'),
@@ -449,6 +453,14 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('partners.title')}>
         <>
+          <input
+            className="w-0 h-0"
+            id="uploadPartners"
+            name="uploadPartners"
+            type="file"
+            accept={FILE_TYPES_ACCEPT.EXCEL}
+            onChange={onUploadNewList}
+          />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
@@ -482,6 +494,14 @@ const OrganizationData = () => {
       </CardPanel>
       <CardPanel title={t('investors.title')}>
         <>
+          <input
+            className="w-0 h-0"
+            id="uploadInvestors"
+            name="uploadInvestors"
+            type="file"
+            accept={FILE_TYPES_ACCEPT.EXCEL}
+            onChange={onUploadNewList}
+          />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
               {t('data_update', { ns: 'organization' })}
@@ -513,14 +533,6 @@ const OrganizationData = () => {
           />
         </>
       </CardPanel>
-      <input
-        className="w-0 h-0"
-        id="upload"
-        name="upload"
-        type="file"
-        accept={FILE_TYPES_ACCEPT.EXCEL}
-        onChange={onUploadNewList}
-      />
       {isActivitySummaryModalOpen && selectedReport && (
         <ReportSummaryModal
           onClose={setIsActivitySummaryModalOpen.bind(null, false)}

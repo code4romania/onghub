@@ -16,7 +16,7 @@ const Layout = () => {
         <div className="menu hidden xl:flex">
           <Menu />
         </div>
-        <div className="content w-full flex">
+        <div className="content w-full">
           <Outlet />
         </div>
       </div>
