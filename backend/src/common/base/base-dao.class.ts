@@ -151,7 +151,7 @@ export abstract class BaseDAO<T> {
         if (typeof config.rangeColumn === 'string') {
           // get all results which have the range column value smaller than the the start value
           andWherQuery[config.rangeColumn] = MoreThanOrEqual(
-            format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+            format(start, DATE_CONSTANTS.YYYY_MM_DD),
           );
         }
 
@@ -159,7 +159,7 @@ export abstract class BaseDAO<T> {
         if (typeof config.rangeColumn === 'object') {
           // get all results which have the first range column (startDate) value smaller than the the start value
           andWherQuery[config.rangeColumn[0]] = MoreThanOrEqual(
-            format(start, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+            format(start, DATE_CONSTANTS.YYYY_MM_DD),
           );
         }
       }
@@ -169,14 +169,14 @@ export abstract class BaseDAO<T> {
         if (typeof config.rangeColumn === 'string') {
           // get all results which have the range column value bigger than the the start value
           andWherQuery[config.rangeColumn] = LessThanOrEqual(
-            format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+            format(end, DATE_CONSTANTS.YYYY_MM_DD),
           );
         }
         // validate 2 range columns
         if (typeof config.rangeColumn === 'object') {
           // get all results which have the second range column (endDate) value smaller than the the start value
           andWherQuery[config.rangeColumn[1]] = LessThanOrEqual(
-            format(end, DATE_CONSTANTS.YYYY_MM_DD_HH_SS),
+            format(end, DATE_CONSTANTS.YYYY_MM_DD),
           );
         }
       }
