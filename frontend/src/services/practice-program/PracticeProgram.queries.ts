@@ -16,6 +16,7 @@ export const useGetPracticeProgramQuery = (practiceProgramId: string) => {
     () => getPracticeProgramById(practiceProgramId),
     {
       enabled: !!practiceProgramId,
+      cacheTime: 0,
     },
   );
 };
