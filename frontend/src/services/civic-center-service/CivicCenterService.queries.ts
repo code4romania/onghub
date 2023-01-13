@@ -31,6 +31,7 @@ export const useGetCivicCenterServiceQuery = (civicCenterServiceId: string) => {
     {
       enabled: !!civicCenterServiceId,
       retry: 0,
+      cacheTime: 0,
     },
   );
 };
