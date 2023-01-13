@@ -19,7 +19,7 @@ const Textarea = (props: {
       )}
 
       <div className="mt-1 relative rounded-md">
-        {props.readonly && <span className="break-words">{props.config.defaultValue}</span>}
+        {props.readonly && <span className="break-word">{props.config.defaultValue}</span>}
         {!props.readonly && (
           <textarea
             disabled={props.disabled}

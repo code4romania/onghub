@@ -59,7 +59,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         </p>
         <p
           title={application.shortDescription}
-          className="break-words Application__Card__Description sm:text-sm lg:text-base text-xs mb-3"
+          className="break-word Application__Card__Description sm:text-sm lg:text-base text-xs mb-3"
         >
           {' '}
           {application.shortDescription}
