@@ -1,46 +1,38 @@
 import { BanIcon, RefreshIcon } from '@heroicons/react/outline';
 import { TrashIcon } from '@heroicons/react/solid';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
-import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-menu/PopoverMenu';
-import Select from '../../../../components/Select/Select';
 import {
   useRemovOngApplication,
   useRestoreApplicationMutation,
   useRestrictApplicationMutation,
 } from '../../../../services/application/Application.queries';
 import { ApplicationWithOngStatus } from '../../../../services/application/interfaces/Application.interface';
-import { useOrganizationApplicationsQuery } from '../../../../services/organization/Organization.queries';
-import {
-  ApplicationTypeCollection,
-  ApplicationTypeEnum,
-} from '../../../apps-store/constants/ApplicationType.enum';
+import { ApplicationTypeEnum } from '../../../apps-store/constants/ApplicationType.enum';
 import { OngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
 import { OrganizationApplicationsTableHeaders } from './table-headers/OrganizationApplicationsTable.headers';
 
-const OrganizationApplicationsTable = ({ organizationId }: { organizationId: string }) => {
-  const [searchWord, setSearchWord] = useState<string | null>(null);
-  const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
+interface OrganizationApplicationsTableProps {
+  organizationId: string;
+  applications?: ApplicationWithOngStatus[];
+  isApplicationsLoading: boolean;
+  reloadApplications: () => void;
+}
+
+const OrganizationApplicationsTable = ({
+  organizationId,
+  applications,
+  isApplicationsLoading,
+  reloadApplications,
+}: OrganizationApplicationsTableProps) => {
   const [removalCandidate, setRemovaCandidate] = useState<ApplicationWithOngStatus | null>(null);
 
   const { t } = useTranslation(['applications', 'common']);
-
-  // table data
-  const {
-    data: applications,
-    isLoading: isApplicationsLoading,
-    error: applicationsError,
-    refetch: reloadApplications,
-  } = useOrganizationApplicationsQuery(
-    organizationId,
-    searchWord as string,
-    type?.type as ApplicationTypeEnum,
-  );
 
   // actions
   const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
@@ -49,12 +41,6 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
     useRestrictApplicationMutation();
 
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
-
-  useEffect(() => {
-    if (applicationsError) {
-      useErrorToast(t('error.get_applications'));
-    }
-  }, [applicationsError]);
 
   const buildApplicationActionColumn = (): TableColumn<ApplicationWithOngStatus> => {
     const restrictedApplicationMenu = [
@@ -145,40 +131,8 @@ const OrganizationApplicationsTable = ({ organizationId }: { organizationId: str
       );
   };
 
-  const onSearch = (searchWord: string) => {
-    setSearchWord(searchWord);
-  };
-
-  const onTypeChange = (selected: { type: ApplicationTypeEnum; label: string }) => {
-    setType(selected);
-  };
-
-  const onResetFilters = () => {
-    setSearchWord(null);
-    setType(null);
-  };
-
   return (
     <>
-      <DataTableFilters
-        onSearch={onSearch}
-        searchValue={searchWord}
-        onResetFilters={onResetFilters}
-      >
-        <div className="flex gap-x-6">
-          <div className="sm:basis-1/4 w-full">
-            <Select
-              config={{
-                label: t('app_type'),
-                collection: ApplicationTypeCollection,
-                displayedAttribute: 'label',
-              }}
-              selected={type}
-              onChange={onTypeChange}
-            />
-          </div>
-        </div>
-      </DataTableFilters>
       <div className="w-full bg-white shadow rounded-lg">
         <div className="py-5 lg:px-10 px-5 flex items-center justify-between border-b border-gray-200">
           <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">

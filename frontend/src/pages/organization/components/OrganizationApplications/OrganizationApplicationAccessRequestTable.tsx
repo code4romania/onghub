@@ -14,7 +14,15 @@ import {
 } from '../../../../services/request/Request.queries';
 import { OrganizationApplicationRequestsTableHeaders } from './table-headers/OrganizationApplicationAccessRequestTable.headers';
 
-const OrganizationApplicationRequestsTable = ({ organizationId }: { organizationId: string }) => {
+interface OrganizationApplicationRequestsTableProps {
+  organizationId: string;
+  reloadApplications: () => void;
+}
+
+const OrganizationApplicationRequestsTable = ({
+  organizationId,
+  reloadApplications,
+}: OrganizationApplicationRequestsTableProps) => {
   const [rejectionCandidate, setRejectionCandidate] = useState<number | null>(null);
   const { t } = useTranslation(['applications', 'common']);
 
@@ -65,9 +73,14 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
     };
   };
 
+  const reloadData = () => {
+    reloadRequests();
+    reloadApplications();
+  };
+
   const onApprove = (row: OrganizationApplicationRequest) => {
     approve(row.id.toString(), {
-      onSuccess: () => reloadRequests(),
+      onSuccess: reloadData,
       onError: () => useErrorToast(t('error.approve_request')),
     });
   };
@@ -79,7 +92,7 @@ const OrganizationApplicationRequestsTable = ({ organizationId }: { organization
   const onConfirmReject = () => {
     if (rejectionCandidate !== null) {
       reject(rejectionCandidate.toString(), {
-        onSuccess: () => reloadRequests(),
+        onSuccess: reloadData,
         onError: () => useErrorToast(t('error.reject_request')),
         onSettled: () => setRejectionCandidate(null),
       });
