@@ -276,7 +276,7 @@ export class CivicCenterServiceService {
         shortDescription: true,
       },
       relations: ['location'],
-      where: { organizationId },
+      where: { organizationId, active: true },
     });
   }
 
