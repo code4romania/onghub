@@ -20,22 +20,6 @@ export class SharedController {
     return 'v0.0.2';
   }
 
-  @Public()
-  @Get('public/partners')
-  partners() {
-    return this.fileManagerService.generatePresignedURL(
-      'static/Lista_parteneri_2021.xlsx',
-    );
-  }
-
-  @Public()
-  @Get('public/investors')
-  investors() {
-    return this.fileManagerService.generatePresignedURL(
-      'static/Lista_finantatori_2021.xlsx',
-    );
-  }
-
   @ApiQuery({ name: 'path', type: String })
   @Public()
   @Get('file')

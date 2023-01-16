@@ -1,11 +1,11 @@
 import API from '../API';
 
-export const getPartnersTemplate = (): Promise<any> => {
-  return API.get(`/public/partners`).then((res) => res.data);
+export const getPartnersTemplate = (): string => {
+  return process.env.REACT_APP_PARTNERS_LIST_TEMPLATE || '';
 };
 
-export const getInvestorsTemplate = (): Promise<any> => {
-  return API.get(`/public/investors`).then((res) => res.data);
+export const getInvestorsTemplate = (): string => {
+  return process.env.REACT_APP_INVESTORS_LIST_TEMPLATE || '';
 };
 
 export const getPublicFileUrl = (path: string): Promise<string> => {

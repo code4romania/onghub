@@ -41,9 +41,6 @@ import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
 
 const OrganizationData = () => {
   const { id } = useParams();
-  // static links for partners and investors tables
-  const [investorsLink, setInvestorsLink] = useState<string>('');
-  const [partnersLink, setPartnersLink] = useState<string>('');
 
   const [isActivitySummaryModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
@@ -108,10 +105,6 @@ const OrganizationData = () => {
   } = useDeletePartnerByProfileMutation();
 
   useEffect(() => {
-    initTemplateData();
-  }, []);
-
-  useEffect(() => {
     if (
       uploadPartnersError ||
       uploadInvestorsError ||
@@ -133,11 +126,6 @@ const OrganizationData = () => {
     deleteInvestorByProfileError,
     deletePartnerByProfileError,
   ]);
-
-  const initTemplateData = async () => {
-    setInvestorsLink(await getInvestorsTemplate());
-    setPartnersLink(await getPartnersTemplate());
-  };
 
   const buildReportActionColumn = (): TableColumn<Report> => {
     const menuItems = [
@@ -466,7 +454,7 @@ const OrganizationData = () => {
               {t('data_update', { ns: 'organization' })}
               <a
                 aria-label={t('partners.download')}
-                href={partnersLink}
+                href={getPartnersTemplate()}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download
               >
@@ -508,7 +496,7 @@ const OrganizationData = () => {
               {t('data_update', { ns: 'organization' })}
               <a
                 aria-label={t('investors.download')}
-                href={investorsLink}
+                href={getInvestorsTemplate()}
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
                 download
               >
