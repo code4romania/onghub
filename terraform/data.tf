@@ -70,3 +70,21 @@ data "aws_iam_policy_document" "amplify_login_lambda_policy" {
     resources = ["*"]
   }
 }
+
+data "aws_iam_policy_document" "bucket_acccess" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:DeleteObject",
+      "s3:GetObjectAcl",
+      "s3:PutObjectAcl",
+      "s3:PutObject"
+    ]
+
+    resources = [
+      aws_s3_bucket.files.arn,
+      "${aws_s3_bucket.files.arn}/*"
+    ]
+  }
+}
