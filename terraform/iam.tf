@@ -49,3 +49,9 @@ resource "aws_iam_role_policy_attachment" "attach_amplify_login_lambda_policy_to
   role       = aws_iam_role.amplify_login_lambda.name
   policy_arn = aws_iam_policy.amplify_backend.arn
 }
+
+resource "aws_iam_user_policy" "files_access_policy" {
+  name   = "s3-files-access-policy"
+  user   = aws_iam_user.iam_user.name
+  policy = data.aws_iam_policy_document.bucket_acccess.json
+}

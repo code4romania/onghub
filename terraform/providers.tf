@@ -10,8 +10,6 @@ terraform {
 provider "aws" {
   region = var.region
 
-  profile = "onghub"
-
   default_tags {
     tags = {
       app = "onghub"

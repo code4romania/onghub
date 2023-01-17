@@ -15,6 +15,7 @@ resource "aws_apprunner_service" "backend" {
     image_repository {
       image_configuration {
         runtime_environment_variables = {
+          ONGHUB_URL     = "https://${local.frontend_domain}"
           ENCRYPTION_KEY = random_password.encryption_key.result
           NODE_ENV       = var.env
           PORT           = "80"
@@ -29,11 +30,12 @@ resource "aws_apprunner_service" "backend" {
           DATABASE_USER     = aws_db_instance.db_instance.username
           DATABASE_PASSWORD = aws_db_instance.db_instance.password
 
-          MAIL_HOST = "email-smtp.eu-central-1.amazonaws.com"
-          MAIL_PORT = 587
-          MAIL_USER = aws_iam_access_key.iam_user_key.id
-          MAIL_PASS = aws_iam_access_key.iam_user_key.ses_smtp_password_v4
-          MAIL_FROM = "no-reply@${local.mail_domain}"
+          MAIL_HOST    = "email-smtp.eu-central-1.amazonaws.com"
+          MAIL_PORT    = 587
+          MAIL_USER    = aws_iam_access_key.iam_user_key.id
+          MAIL_PASS    = aws_iam_access_key.iam_user_key.ses_smtp_password_v4
+          MAIL_FROM    = "no-reply@${local.mail_domain}"
+          MAIL_CONTACT = "no-reply@${local.mail_domain}"
 
           AWS_ACCESS_KEY_ID         = aws_iam_access_key.iam_user_key.id
           AWS_SECRET_ACCESS_KEY     = aws_iam_access_key.iam_user_key.secret
