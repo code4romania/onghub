@@ -144,7 +144,7 @@ export class NotificationsService {
           title,
           subtitle: subtitle(),
           cta: {
-            link: link(process.env.ONGHUB_LINK),
+            link: link(process.env.ONGHUB_URL),
             label,
           },
         },
