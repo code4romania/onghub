@@ -279,10 +279,10 @@ export class OrganizationRequestService {
       });
     }
 
-    // 2. Update organization status from PENDING to ACTIVE
-    await this.organizationService.activate(organizationId);
     // 3. Create the ADMIN user
     await this.userService.createAdmin({ email, phone, name, organizationId });
+    // 2. Update organization status from PENDING to ACTIVE
+    await this.organizationService.activate(organizationId);
     // 4. Update the request status
     await this.update(requestId, RequestStatus.APPROVED);
     // 5. Send email with approval
