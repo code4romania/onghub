@@ -12,8 +12,8 @@ data "aws_iam_policy_document" "ses_email_send" {
     resources = [data.aws_ses_domain_identity.main.arn]
 
     principals {
+      identifiers = ["*"]
       type        = "AWS"
-      identifiers = [aws_apprunner_service.backend.arn]
     }
   }
 }

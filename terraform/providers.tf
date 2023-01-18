@@ -5,6 +5,14 @@ terraform {
       version = "~> 4.35"
     }
   }
+
+  cloud {
+    organization = "code4romania"
+
+    workspaces {
+      name = "onghub"
+    }
+  }
 }
 
 provider "aws" {
