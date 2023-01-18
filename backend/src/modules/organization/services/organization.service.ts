@@ -58,6 +58,7 @@ import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
+import { isBefore } from 'date-fns';
 
 @Injectable()
 export class OrganizationService {
@@ -165,13 +166,19 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
+    // BR: ANAF data is available after 30 June each year (aprox).
+    // If the current date is gt 30 June we query the last year, otherwise 2 years ago
     const lastYear = new Date().getFullYear() - 1;
+    const _30June = new Date(new Date().getFullYear(), 5, 30);
+    const yearToGetAnafData = isBefore(new Date(), _30June)
+      ? lastYear - 1
+      : lastYear;
 
     // get anaf data
     const financialInformation =
       await this.organizationFinancialService.getFinancialInformation(
         createOrganizationDto.general.cui,
-        lastYear,
+        yearToGetAnafData,
       );
 
     // create the parent entry with default values
@@ -198,13 +205,13 @@ export class OrganizationService {
       },
       organizationFinancial:
         this.organizationFinancialService.generateFinancialReportsData(
-          lastYear,
+          yearToGetAnafData,
           financialInformation,
         ),
       organizationReport: {
-        reports: [{ year: lastYear }],
-        partners: [{ year: lastYear }],
-        investors: [{ year: lastYear }],
+        reports: [{ year: yearToGetAnafData }],
+        partners: [{ year: yearToGetAnafData }],
+        investors: [{ year: yearToGetAnafData }],
       },
     });
 
