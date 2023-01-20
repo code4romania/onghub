@@ -6,11 +6,12 @@ data "archive_file" "amplify_login_create_auth_challenge" {
 }
 
 resource "aws_lambda_function" "amplify_login_create_auth_challenge" {
-  function_name = "amplify_login_create_auth_challenge"
-  filename      = data.archive_file.amplify_login_create_auth_challenge.output_path
-  role          = aws_iam_role.amplify_login_lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  function_name    = "amplify_login_create_auth_challenge"
+  filename         = data.archive_file.amplify_login_create_auth_challenge.output_path
+  role             = aws_iam_role.amplify_login_lambda.arn
+  handler          = "index.handler"
+  runtime          = "nodejs16.x"
+  source_code_hash = data.archive_file.amplify_login_create_auth_challenge.output_base64sha256
 }
 
 resource "aws_lambda_permission" "amplify_login_create_auth_challenge_permission" {
@@ -29,11 +30,12 @@ data "archive_file" "amplify_login_define_auth_challenge" {
 }
 
 resource "aws_lambda_function" "amplify_login_define_auth_challenge" {
-  function_name = "amplify_login_define_auth_challenge"
-  filename      = data.archive_file.amplify_login_define_auth_challenge.output_path
-  role          = aws_iam_role.amplify_login_lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  function_name    = "amplify_login_define_auth_challenge"
+  filename         = data.archive_file.amplify_login_define_auth_challenge.output_path
+  role             = aws_iam_role.amplify_login_lambda.arn
+  handler          = "index.handler"
+  runtime          = "nodejs16.x"
+  source_code_hash = data.archive_file.amplify_login_define_auth_challenge.output_base64sha256
 }
 
 resource "aws_lambda_permission" "amplify_login_define_auth_challenge_permission" {
@@ -52,11 +54,12 @@ data "archive_file" "amplify_login_verify_auth_challenge_response" {
 }
 
 resource "aws_lambda_function" "amplify_login_verify_auth_challenge_response" {
-  function_name = "amplify_login_verify_auth_challenge_response"
-  filename      = data.archive_file.amplify_login_verify_auth_challenge_response.output_path
-  role          = aws_iam_role.amplify_login_lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  function_name    = "amplify_login_verify_auth_challenge_response"
+  filename         = data.archive_file.amplify_login_verify_auth_challenge_response.output_path
+  role             = aws_iam_role.amplify_login_lambda.arn
+  handler          = "index.handler"
+  runtime          = "nodejs16.x"
+  source_code_hash = data.archive_file.amplify_login_verify_auth_challenge_response.output_base64sha256
 }
 
 resource "aws_lambda_permission" "amplify_login_verify_auth_challenge_response" {
@@ -75,11 +78,12 @@ data "archive_file" "amplify_login_custom_message" {
 }
 
 resource "aws_lambda_function" "amplify_login_custom_message" {
-  function_name = "amplify_login_custom_message"
-  filename      = data.archive_file.amplify_login_custom_message.output_path
-  role          = aws_iam_role.amplify_login_lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs16.x"
+  function_name    = "amplify_login_custom_message"
+  filename         = data.archive_file.amplify_login_custom_message.output_path
+  role             = aws_iam_role.amplify_login_lambda.arn
+  handler          = "index.handler"
+  runtime          = "nodejs16.x"
+  source_code_hash = data.archive_file.amplify_login_custom_message.output_base64sha256
 }
 
 resource "aws_lambda_permission" "amplify_login_custom_message" {
