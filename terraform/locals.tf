@@ -10,6 +10,11 @@ locals {
     tag  = "develop"
   }
 
+  centrucivic = {
+    namespace       = "centrucivic-${var.env}"
+    frontend_domain = var.env == "production" ? "centrucivic.onghub.ro" : "centrucivic-${var.env}.onghub.ro"
+  }
+
   practice4good = {
     namespace       = "practice4good-${var.env}"
     frontend_domain = var.env == "production" ? "practice4good.onghub.ro" : "practice4good-${var.env}.onghub.ro"
