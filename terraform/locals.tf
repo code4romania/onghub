@@ -10,6 +10,11 @@ locals {
     tag  = "develop"
   }
 
+  practice4good = {
+    namespace       = "practice4good-${var.env}"
+    frontend_domain = var.env == "production" ? "practice4good.onghub.ro" : "practice4good-${var.env}.onghub.ro"
+  }
+
   vpc = {
     cidr_block = "10.0.0.0/16"
     public_subnets = [
