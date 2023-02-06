@@ -1,5 +1,5 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -10,8 +10,10 @@ import { User } from '../../user/entities/user.entity';
 import { Role } from '../../user/enums/role.enum';
 import { ContactMailDto } from '../dto/contact-mail.dto';
 import { HasAccessDTO } from '../dto/has-access.dto';
+import { IUserWithOrganization } from '../interfaces/user-with-organization.interface';
 import { PublicKeysManager } from '../public-keys-manager.service';
 import { PublicKeys } from '../public-keys.entity';
+import { UserOrganizationService } from '../services/user-organization.service';
 
 @Controller('api')
 @ApiBearerAuth()
@@ -20,6 +22,7 @@ export class PublicAPIController {
     private readonly keysManager: PublicKeysManager,
     private readonly mailService: MailService,
     private readonly userApplicationService: UserApplicationService,
+    private readonly userOrganizationService: UserOrganizationService,
   ) {}
 
   @Public()
@@ -48,5 +51,18 @@ export class PublicAPIController {
   @Post('/generate-keys')
   async generateKeys(@ExtractUser() user: User): Promise<PublicKeys> {
     return this.keysManager.generateKeys(undefined, user.email);
+  }
+
+  @Roles(Role.ADMIN, Role.EMPLOYEE)
+  @ApiParam({
+    name: 'userId',
+    type: String,
+    description: 'Cognito User id - UUID',
+  })
+  @Get('/ong-user/:userId')
+  async getUserWithOrganization(
+    @Param('userId') cognitoId: string,
+  ): Promise<IUserWithOrganization> {
+    return this.userOrganizationService.getUserWithOrganization(cognitoId);
   }
 }
