@@ -45,6 +45,7 @@ export class UserOrganizationService {
           name: user.name,
           email: user.email,
           phone: user.phone,
+          cognitoId: user.cognitoId,
         },
         organization: {
           name: organizationGeneral.name,

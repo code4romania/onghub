@@ -3,6 +3,7 @@ export interface IUserWithOrganization {
     name: string;
     email: string;
     phone: string;
+    cognitoId: string;
   };
   organization: {
     name: string;
