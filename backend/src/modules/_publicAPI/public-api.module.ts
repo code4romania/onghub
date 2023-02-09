@@ -11,6 +11,7 @@ import { PublicKeysManager } from './public-keys-manager.service';
 import { PublicKeys } from './public-keys.entity';
 import { CivicCenterPublicService } from './services/civic-center-public.service';
 import { PracticeProgramPublicService } from './services/practice-program-public.service';
+import { UserOrganizationService } from './services/user-organization.service';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PracticeProgramPublicService } from './services/practice-program-public
     PublicKeysManager,
     CivicCenterPublicService,
     PracticeProgramPublicService,
+    UserOrganizationService,
   ],
   exports: [],
 })
