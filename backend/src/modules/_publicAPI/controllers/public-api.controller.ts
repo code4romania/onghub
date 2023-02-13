@@ -59,10 +59,10 @@ export class PublicAPIController {
     type: String,
     description: 'Cognito User id - UUID',
   })
-  @Get('/ong-user/:userId')
+  @Get('/ong-user')
   async getUserWithOrganization(
-    @Param('userId') cognitoId: string,
+    @ExtractUser() user: User,
   ): Promise<IUserWithOrganization> {
-    return this.userOrganizationService.getUserWithOrganization(cognitoId);
+    return this.userOrganizationService.getUserWithOrganization(user.cognitoId);
   }
 }
