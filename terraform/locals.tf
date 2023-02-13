@@ -20,6 +20,12 @@ locals {
     frontend_domain = var.env == "production" ? "practice4good.onghub.ro" : "practice4good-${var.env}.onghub.ro"
   }
 
+  teo = {
+    namespace       = "teo-${var.env}"
+    frontend_domain = "teo-development.onghub.ro"
+    # frontend_domain = var.env == "production" ? "teo.onghub.ro" : "teo-${var.env}.onghub.ro"
+  }
+
   vpc = {
     cidr_block = "10.0.0.0/16"
     public_subnets = [
