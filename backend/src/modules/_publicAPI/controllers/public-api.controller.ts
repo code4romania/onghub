@@ -54,11 +54,6 @@ export class PublicAPIController {
   }
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
-  @ApiParam({
-    name: 'userId',
-    type: String,
-    description: 'Cognito User id - UUID',
-  })
   @Get('/ong-user')
   async getUserWithOrganization(
     @ExtractUser() user: User,
