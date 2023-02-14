@@ -35,7 +35,7 @@ resource "aws_cognito_user_pool" "pool" {
     case_sensitive = false
   }
 
-  mfa_configuration          = "ON"
+  mfa_configuration          = var.env == "production" ? "ON" : "OFF"
   sms_authentication_message = "Your verification code is {####}."
 
   verification_message_template {
@@ -46,7 +46,7 @@ resource "aws_cognito_user_pool" "pool" {
   }
 
   software_token_mfa_configuration {
-    enabled = false
+    enabled = true
   }
 
   admin_create_user_config {
