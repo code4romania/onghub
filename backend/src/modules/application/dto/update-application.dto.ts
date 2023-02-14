@@ -9,4 +9,7 @@ export class UpdateApplicationDto extends PartialType(
   @IsEnum(ApplicationStatus)
   @IsOptional()
   status?: ApplicationStatus;
+
+  @IsOptional()
+  cognitoClientId?: string;
 }
