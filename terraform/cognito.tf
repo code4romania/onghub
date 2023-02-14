@@ -46,7 +46,7 @@ resource "aws_cognito_user_pool" "pool" {
   }
 
   software_token_mfa_configuration {
-    enabled = true
+    enabled = false
   }
 
   admin_create_user_config {
