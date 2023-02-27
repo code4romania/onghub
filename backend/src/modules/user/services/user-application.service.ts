@@ -15,6 +15,7 @@ import { OrganizationStatus } from 'src/modules/organization/enums/organization-
 import { OrganizationService } from 'src/modules/organization/services';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { User } from '../entities/user.entity';
+import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserService } from './user.service';
 
@@ -95,22 +96,25 @@ export class UserApplicationService {
       throw new ForbiddenException(ONG_APPLICATION_ERRORS.RELATION_RESTRICTED);
     }
 
-    // 4.2. Find the relation between the USER and the Application (the relation of the NGO)
-    const userOngApplication = await this.userOngApplicationService.findOne({
-      where: {
-        userId: user.id,
-        ongApplicationId: ongApplication.id,
-      },
-    });
+    // 4.2. If the user is an employee check the relation between user and application
+    if (user.role === Role.EMPLOYEE) {
+      // 4.2.1 Find the relation between the USER and the Application (the relation of the NGO)
+      const userOngApplication = await this.userOngApplicationService.findOne({
+        where: {
+          userId: user.id,
+          ongApplicationId: ongApplication.id,
+        },
+      });
 
-    // 4.2.1. The relation may not exist or is restricted, access denied
-    if (
-      !userOngApplication ||
-      userOngApplication.status !== UserOngApplicationStatus.ACTIVE
-    ) {
-      throw new ForbiddenException(
-        USER_ONG_APPLICATION_ERRORS.MISSING_PERMISSION,
-      );
+      // 4.2.2. The relation may not exist or is restricted, access denied
+      if (
+        !userOngApplication ||
+        userOngApplication.status !== UserOngApplicationStatus.ACTIVE
+      ) {
+        throw new ForbiddenException(
+          USER_ONG_APPLICATION_ERRORS.MISSING_PERMISSION,
+        );
+      }
     }
 
     return true;
