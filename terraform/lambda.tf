@@ -93,3 +93,58 @@ resource "aws_lambda_permission" "amplify_login_custom_message" {
   principal     = "cognito-idp.amazonaws.com"
   source_arn    = aws_cognito_user_pool.pool.arn
 }
+
+# login_pre_authentication_check
+data "archive_file" "login_pre_authentication_check" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda/login_pre_authentication_check"
+  output_path = "${path.module}/lambda/login_pre_authentication_check.zip"
+
+  depends_on = [
+    null_resource.login_pre_authentication_check
+  ]
+}
+
+# Provisioner to install dependencies in lambda package before upload it.
+resource "null_resource" "login_pre_authentication_check" {
+
+  triggers = {
+    updated_at = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+    npm install
+    EOF
+
+    working_dir = "${path.module}/lambda/login_pre_authentication_check"
+  }
+}
+
+resource "aws_lambda_function" "login_pre_authentication_check" {
+  function_name    = "login_pre_authentication_check"
+  filename         = data.archive_file.login_pre_authentication_check.output_path
+  role             = aws_iam_role.amplify_login_lambda.arn
+  handler          = "index.handler"
+  runtime          = "nodejs16.x"
+  source_code_hash = data.archive_file.login_pre_authentication_check.output_base64sha256
+
+    environment {
+      variables = {
+        onghub_cognito_client_id: aws_cognito_user_pool_client.onghub_client.id
+        onghub_api_url: "https://${aws_apprunner_service.backend.service_url}"
+        onghub_api_check_access_endpoint: "hasAccess",
+        onghub_hmac_api_key: "123", // TODO: add in terraform cloud 
+        onghub_hmac_secret_key: "123", // TODO: add in terraform cloud 
+      }
+    }
+}
+
+# # To give an external source (like an EventBridge Rule, SNS, or S3) permission to access the Lambda function, use the aws_lambda_permission resource.
+# resource "aws_lambda_permission" "login_pre_authentication_check_permission" {
+#   statement_id  = "createAuthChallenge"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.login_pre_authentication_check.function_name
+#   principal     = "cognito-idp.amazonaws.com"
+#   source_arn    = aws_cognito_user_pool.pool.arn
+# }
