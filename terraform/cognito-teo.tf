@@ -2,6 +2,11 @@ resource "aws_cognito_user_pool_client" "teo_client" {
   name         = "${local.teo.namespace}-client"
   user_pool_id = aws_cognito_user_pool.pool.id
 
+  access_token_validity = 1
+  token_validity_units {
+    access_token = "days"
+  }
+
   callback_urls = [
     "https://${local.teo.frontend_domain}",
     # "https://${aws_amplify_app.amplify_app.default_domain}",
