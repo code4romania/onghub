@@ -90,7 +90,7 @@ resource "aws_cognito_user_pool" "pool" {
     define_auth_challenge          = aws_lambda_function.amplify_login_define_auth_challenge.arn
     verify_auth_challenge_response = aws_lambda_function.amplify_login_verify_auth_challenge_response.arn
     custom_message                 = aws_lambda_function.amplify_login_custom_message.arn
-    pre_authentication             = aws_lambda_function.login_pre_authentication_check
+    pre_authentication             = aws_lambda_function.login_pre_authentication_check.arn
   }
 }
 
