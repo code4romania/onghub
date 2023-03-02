@@ -129,15 +129,15 @@ resource "aws_lambda_function" "login_pre_authentication_check" {
   runtime          = "nodejs16.x"
   source_code_hash = data.archive_file.login_pre_authentication_check.output_base64sha256
 
-    environment {
-      variables = {
-        onghub_cognito_client_id: aws_cognito_user_pool_client.onghub_client.id
-        onghub_api_url: "https://${aws_apprunner_service.backend.service_url}"
-        onghub_api_check_access_endpoint: "hasAccess",
-        onghub_hmac_api_key: "123", // TODO: add in terraform cloud 
-        onghub_hmac_secret_key: "123", // TODO: add in terraform cloud 
-      }
+  environment {
+    variables = {
+      onghub_cognito_client_id : aws_cognito_user_pool_client.onghub_client.id
+      onghub_api_url : "https://${aws_apprunner_service.backend.service_url}"
+      onghub_api_check_access_endpoint : "hasAccess",
+      onghub_hmac_api_key : var.onghub_hmac_api_key
+      onghub_hmac_secret_key : var.onghub_hmac_secret_key
     }
+  }
 }
 
 # # To give an external source (like an EventBridge Rule, SNS, or S3) permission to access the Lambda function, use the aws_lambda_permission resource.

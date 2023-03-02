@@ -17,3 +17,10 @@ variable "region" {
 variable "github_access_token" {
   type = string
 }
+
+variable "onghub_hmac_api_key" {
+  type = string
+}
+variable "onghub_hmac_secret_key" {
+  type = string
+}
