@@ -21,6 +21,15 @@ variable "github_access_token" {
 variable "onghub_hmac_api_key" {
   type = string
 }
+
 variable "onghub_hmac_secret_key" {
+  type = string
+}
+
+variable "onghub_cognito_client_id" {
+  type = string
+}
+
+variable "onghub_api_url" {
   type = string
 }
