@@ -131,7 +131,7 @@ resource "aws_lambda_function" "login_pre_authentication_check" {
 
   environment {
     variables = {
-      onghub_cognito_client_id : var.onghub_cognito_client_idonghub_client.id
+      onghub_cognito_client_id : var.onghub_cognito_client_id
       onghub_api_url : var.onghub_api_url
       onghub_api_check_access_endpoint : "hasAccess",
       onghub_hmac_api_key : var.onghub_hmac_api_key
