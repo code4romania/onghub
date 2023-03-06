@@ -99,26 +99,6 @@ data "archive_file" "login_pre_authentication_check" {
   type        = "zip"
   source_dir  = "${path.module}/lambda/login_pre_authentication_check"
   output_path = "${path.module}/lambda/login_pre_authentication_check.zip"
-
-  depends_on = [
-    null_resource.login_pre_authentication_check
-  ]
-}
-
-# Provisioner to install dependencies in lambda package before upload it.
-resource "null_resource" "login_pre_authentication_check" {
-
-  triggers = {
-    updated_at = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command = <<EOF
-    npm install
-    EOF
-
-    working_dir = "${path.module}/lambda/login_pre_authentication_check"
-  }
 }
 
 resource "aws_lambda_function" "login_pre_authentication_check" {
