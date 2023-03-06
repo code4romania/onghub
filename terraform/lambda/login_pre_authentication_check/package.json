@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "simple-hmac-auth": "4.0.0"
+  }
+}

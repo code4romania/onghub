@@ -50,17 +50,17 @@ class AmplifyBackendService {
     getToken() {
         return this.amplifyBackend
             .getToken({
-            AppId: this.appId,
-            SessionId: this.sessionId,
-        })
+                AppId: this.appId,
+                SessionId: this.sessionId,
+            })
             .promise();
     }
     deleteToken() {
         return this.amplifyBackend
             .deleteToken({
-            AppId: this.appId,
-            SessionId: this.sessionId,
-        })
+                AppId: this.appId,
+                SessionId: this.sessionId,
+            })
             .promise();
     }
 }
