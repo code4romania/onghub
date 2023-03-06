@@ -120,11 +120,10 @@ resource "aws_lambda_function" "login_pre_authentication_check" {
   }
 }
 
-# # To give an external source (like an EventBridge Rule, SNS, or S3) permission to access the Lambda function, use the aws_lambda_permission resource.
-# resource "aws_lambda_permission" "login_pre_authentication_check_permission" {
-#   statement_id  = "createAuthChallenge"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.login_pre_authentication_check.function_name
-#   principal     = "cognito-idp.amazonaws.com"
-#   source_arn    = aws_cognito_user_pool.pool.arn
-# }
+resource "aws_lambda_permission" "login_pre_authentication_check_permission" {
+  statement_id  = "createAuthChallenge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.login_pre_authentication_check.function_name
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = aws_cognito_user_pool.pool.arn
+}
