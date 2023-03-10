@@ -16,7 +16,7 @@ resource "aws_apprunner_service" "backend" {
       image_configuration {
         runtime_environment_variables = {
           ONGHUB_URL     = "https://${local.frontend_domain}"
-          ENCRYPTION_KEY = random_password.encryption_key.result
+          ENCRYPTION_KEY = var.onghub_hmac_encryption_key
           NODE_ENV       = var.env
           PORT           = "80"
 
