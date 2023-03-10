@@ -17,6 +17,9 @@ variable "region" {
 variable "github_access_token" {
   type = string
 }
+variable "onghub_hmac_encryption_key" {
+  type = string
+}
 
 variable "onghub_hmac_api_key" {
   type = string
