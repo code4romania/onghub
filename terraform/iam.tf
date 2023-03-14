@@ -28,7 +28,7 @@ resource "aws_iam_policy" "lambda_logging" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logging" {
-  role       = aws_iam_role.amplify_login_lambda
+  role       = aws_iam_role.amplify_login_lambda.name
   policy_arn = aws_iam_policy.lambda_logging.arn
 }
 
