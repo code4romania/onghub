@@ -34,6 +34,7 @@ export class PublicAPIController {
     private readonly userOrganizationService: UserOrganizationService,
   ) {}
 
+  @Public()
   @UseInterceptors(HMACVerificationInterceptor)
   @HttpCode(200)
   @Post('/hasAccess')
