@@ -1,3 +1,7 @@
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+
 data "aws_ses_domain_identity" "main" {
   domain = local.mail_domain
 }
@@ -55,6 +59,19 @@ data "aws_iam_policy_document" "lambda_role_policy" {
     }
   }
 }
+
+data "aws_iam_policy_document" "lambda_logging_policy" {
+
+  statement {
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"]
+  }
+}
+
 data "aws_iam_policy_document" "amplify_login_lambda_policy" {
   statement {
     actions = [
