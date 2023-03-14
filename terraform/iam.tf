@@ -22,6 +22,16 @@ resource "aws_iam_role" "amplify_login_lambda" {
   assume_role_policy = data.aws_iam_policy_document.lambda_role_policy.json
 }
 
+resource "aws_iam_policy" "lambda_logging" {
+  name   = "${local.namespace}-lambda-logging"
+  policy = data.aws_iam_policy_document.lambda_logging_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_logging" {
+  role       = aws_iam_role.amplify_login_lambda.name
+  policy_arn = aws_iam_policy.lambda_logging.arn
+}
+
 resource "aws_iam_policy" "amplify_backend" {
   name   = "amplify-backend"
   policy = data.aws_iam_policy_document.amplify_login_lambda_policy.json
