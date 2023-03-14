@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
@@ -10,6 +18,7 @@ import { User } from '../../user/entities/user.entity';
 import { Role } from '../../user/enums/role.enum';
 import { ContactMailDto } from '../dto/contact-mail.dto';
 import { HasAccessDTO } from '../dto/has-access.dto';
+import { HMACVerificationInterceptor } from '../interceptors/hmac.interceptor';
 import { IUserWithOrganization } from '../interfaces/user-with-organization.interface';
 import { PublicKeysManager } from '../public-keys-manager.service';
 import { PublicKeys } from '../public-keys.entity';
@@ -25,7 +34,7 @@ export class PublicAPIController {
     private readonly userOrganizationService: UserOrganizationService,
   ) {}
 
-  @Public()
+  @UseInterceptors(HMACVerificationInterceptor)
   @HttpCode(200)
   @Post('/hasAccess')
   async check(

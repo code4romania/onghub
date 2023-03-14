@@ -39,7 +39,9 @@ exports.handler = async (event) => {
             return event;
         } catch (error) {
             console.log(`Received error:`, error);
-            throw error;
+            if (!error.code) error.code = 'UNK';
+            if (!error.message) error.message = 'Unexpected error, please contact the administrator!'
+            throw new Error(`[${error.code}] ${error.message}`);
         }
     }
 
