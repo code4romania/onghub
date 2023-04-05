@@ -44,6 +44,14 @@ export class S3FileManagerService {
     });
   }
 
+  public async getFileURL(fileName: string): Promise<string> {
+    return `https://${this.configService.get(
+      'AWS_S3_BUCKET_NAME',
+    )}.s3.${this.configService.get(
+      'COGNITO_REGION',
+    )}.amazonaws.com/${fileName}`;
+  }
+
   // TODO: look over this function again, find a better way to validate the files
   public validateFiles(
     files: Express.Multer.File[],

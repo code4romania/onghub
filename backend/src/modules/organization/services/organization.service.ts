@@ -358,13 +358,13 @@ export class OrganizationService {
 
     // check for logo and add public url
     if (organization.organizationGeneral.logo) {
-      const logo = await this.fileManagerService.generatePresignedURL(
+      const logo = await this.fileManagerService.getFileURL(
         organization.organizationGeneral.logo,
       );
       organization.organizationGeneral.logo = logo;
     }
 
-    // check for organization statute and add public url
+    // Public: The URL can be replaced as above OR move all public in the "public" folder of each organization for better structure
     if (organization.organizationLegal.organizationStatute) {
       const organizationStatute =
         await this.fileManagerService.generatePresignedURL(
