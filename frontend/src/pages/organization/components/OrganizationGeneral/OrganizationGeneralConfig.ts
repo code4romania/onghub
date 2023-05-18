@@ -130,6 +130,12 @@ const translations = {
     label: i18n.t('general:config.keyword.label'),
     helper: i18n.t('general:config.keyword.helper'),
   },
+  address: {
+    max: i18n.t('general:config.address.max'),
+    label: i18n.t('general:config.address.label'),
+    helper: i18n.t('general:config.address.helper'),
+    placeholder: i18n.t('general:config.address.placeholder'),
+  },
 };
 
 export const OrganizationGeneralConfig: Record<string, any> = {
@@ -673,6 +679,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       label: translations.keyword.label,
       helperText: translations.keyword.helper,
       placeholder: '',
+    },
+  },
+  address: {
+    key: 'address',
+    rules: {
+      maxLength: {
+        value: 100,
+        message: translations.address.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.address.label,
+      helperText: translations.address.helper,
+      placeholder: translations.address.placeholder,
     },
   },
 };
