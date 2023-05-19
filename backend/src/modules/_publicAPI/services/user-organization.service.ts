@@ -10,6 +10,8 @@ import { USER_ERRORS } from 'src/modules/user/constants/user-error.constants';
 import { UserService } from 'src/modules/user/services/user.service';
 import { UserWithOrganizationExceptionMessages } from '../exceptions/exceptions';
 import { IUserWithOrganization } from '../interfaces/user-with-organization.interface';
+import { OrganizationActivity } from 'src/modules/organization/entities';
+import { Area } from 'src/modules/organization/enums/organization-area.enum';
 
 @Injectable()
 export class UserOrganizationService {
@@ -36,8 +38,12 @@ export class UserOrganizationService {
       }
 
       // check if there is an organization id - this methods also handles organization not found
-      const { organizationGeneral } =
+      const { organizationGeneral, organizationActivity } =
         await this.organizationService.findWithRelations(user.organizationId);
+
+      // parse organization activityArea to string
+      const activityArea =
+        this.parseOrganizationActivityArea(organizationActivity);
 
       // build response
       return {
@@ -51,7 +57,8 @@ export class UserOrganizationService {
           name: organizationGeneral.name,
           email: organizationGeneral.email,
           phone: organizationGeneral.phone,
-          address: 'address placeholder', // TODO: once we have the address to the organization, change this
+          address: organizationGeneral?.address,
+          activityArea: activityArea,
           logo: organizationGeneral.logo,
           description: organizationGeneral.shortDescription,
         },
@@ -75,5 +82,40 @@ export class UserOrganizationService {
         throw new BadRequestException(exception);
       }
     }
+  }
+
+  // TODO: add internationalizations for these strings
+  private parseOrganizationActivityArea(
+    oraganizationActivity: OrganizationActivity,
+  ): string {
+    let activityAreas = [];
+    switch (oraganizationActivity.area) {
+      case Area.LOCAL: {
+        // parse cities
+        activityAreas = oraganizationActivity.cities.map(
+          (city) => `${city.name} (jud ${city.county.name})`,
+        );
+        break;
+      }
+      case Area.REGIONAL: {
+        activityAreas = oraganizationActivity.regions.map(
+          (region) => `regiunea ${region.name}`,
+        );
+        break;
+      }
+      case Area.INTERNATIONAL: {
+        activityAreas = ['International'];
+        break;
+      }
+      case Area.NATIONAL: {
+        activityAreas = ['National'];
+        break;
+      }
+      default: {
+        activityAreas = [];
+      }
+    }
+
+    return activityAreas.join(', ');
   }
 }

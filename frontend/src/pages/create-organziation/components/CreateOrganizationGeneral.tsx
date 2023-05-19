@@ -205,6 +205,27 @@ const CreateOrganizationGeneral = () => {
                 }}
               />
               <Controller
+                key={OrganizationGeneralConfig.address.key}
+                name={OrganizationGeneralConfig.address.key}
+                rules={OrganizationGeneralConfig.address.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.address.config,
+                        name: OrganizationGeneralConfig.address.key,
+                        error: errors[OrganizationGeneralConfig.address.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__org-address',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
                 key={OrganizationGeneralConfig.yearCreated.key}
                 name={OrganizationGeneralConfig.yearCreated.key}
                 rules={OrganizationGeneralConfig.yearCreated.rules}

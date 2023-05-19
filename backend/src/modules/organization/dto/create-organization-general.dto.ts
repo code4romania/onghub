@@ -53,6 +53,15 @@ export class CreateOrganizationGeneralDto {
   @ToRoPhoneNumber()
   phone: string;
 
+  /* 
+  Organization name 
+  */
+  @IsString()
+  @MaxLength(100)
+  @IsOptional()
+  @Trim()
+  address?: string;
+
   /* Organization year created */
   @IsNumber()
   @Type(() => Number)
@@ -94,7 +103,7 @@ export class CreateOrganizationGeneralDto {
   */
   @IsString()
   @Matches(REGEX.LINK)
-  website?: string;
+  website: string;
 
   /* 
   Organization facebook 
