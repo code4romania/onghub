@@ -4,10 +4,10 @@
     "year": "An",
     "status": "Status",
     "updated_on": "Ultima actualizare",
-    "created_on": "Data adaugarii",
-    "save": "Salveaza modificari",
+    "created_on": "Data adăugării",
+    "save": "Salvează modificari",
     "back": "Inapoi",
-    "edit": "Editeaza",
+    "edit": "Editează",
     "logo": {
       "update": "Logo-ul nu s-a putut actualiza",
       "load": "Logo-ul nu s-a putut incarca"
@@ -55,7 +55,7 @@
     "no": "Nu"
   },
   "menu": {
-    "informations": "Informatii",
+    "informations": "Informații",
     "collapse": "Restrange meniul"
   },
   "pagination": {
@@ -66,7 +66,7 @@
     "table": "Nu exista date in tabel"
   },
   "account": {
-    "password": "Parola a fost schimbata cu success.",
+    "password": "Parola a fost schimbată cu success.",
     "my_account": "Contul meu",
     "account_description": "Lore ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "settings": "Setari cont",
@@ -146,14 +146,14 @@
         "legal": "Informatii legale"
       },
       "errors": {
-        "REQ_001": "Exista deja un utilizator cu acest email sau cu acest numar de telefon.",
-        "REQ_007": "Exista deja o organizatie cu acest CUI",
-        "REQ_008": "Exista deja o organizatie cu acest numar RAF",
-        "REQ_009": "Exista deja o organizatie cu aceasta denumire",
-        "REQ_010": "Exista deja o organizatie cu acest alias",
-        "REQ_011": "Exista deja o organizatie cu acest email",
-        "REQ_012": "Exista deja o organizatie cu acest numar de telefon",
-        "REQ_002": "Exista deja o cerere cu acest email sau cu acest numar de telefon.",
+        "REQ_001": "Există deja un utilizator cu acest email sau cu acest numar de telefon.",
+        "REQ_007": "Există deja o organizație cu acest CUI",
+        "REQ_008": "Există deja o organizație cu acest număr RAF",
+        "REQ_009": "Există deja o organizație cu aceasta denumire",
+        "REQ_010": "Există deja o organizație cu acest alias",
+        "REQ_011": "Există deja o organizație cu acest email",
+        "REQ_012": "Există deja o organizație cu acest numar de telefon",
+        "REQ_002": "Există deja o cerere cu acest email sau cu acest numar de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
     },
@@ -163,54 +163,54 @@
     },
     "create_config": {
       "name": {
-        "required": "Numele si prenumele sunt obligatorii",
-        "max": "Numele si prenumele nu pot avea mai mult de 100 de caractere",
-        "min": "Numele si prenumele nu pot avea mai putin de 5 caractere",
-        "invalid": "Numele si prenumele au un format invalid",
-        "label": "Nume si prenume*"
+        "required": "Numele și prenumele sunt obligatorii",
+        "max": "Numele și prenumele nu pot avea mai mult de 100 de caractere",
+        "min": "Numele și prenumele nu pot avea mai puțin de 5 caractere",
+        "invalid": "Datele introduse în câmpul Nume și prenume au un format invalid",
+        "label": "Nume și prenume*"
       },
       "phone": {
-        "required": "Numarul de telefon este obligatoriu",
-        "min": "Numarul de telefon nu poate sa aiba mai putin de 10 caractere",
-        "max": "Numarul de telefon nu poate sa aiba mai mult de 15 caractere",
+        "required": "Numărul de telefon este obligatoriu",
+        "min": "Numărul de telefon nu poate avea mai puțin de 10 caractere",
+        "max": "Numarul de telefon nu poate avea mai mult de 15 caractere",
         "invalid": "Numarul de telefon are un format invalid",
         "label": "Telefon*"
       },
       "email": {
         "required": "Email-ul este obligatoriu",
-        "max": "Email-ul nu poate sa aiba mai mult de 50 de caractere",
-        "invalid": "Email-ul are un format invalid",
-        "label": "E-mail"
+        "max": "Email-ul nu poate avea mai mult de 50 de caractere",
+        "invalid": "Email-ul introdus are un format invalid",
+        "label": "E-mail*"
       }
     },
     "restrict": {
-      "title": "Esti sigur ca doresti sa stergi organizatia din ONG Hub?",
+      "title": "Ești sigur că dorești să ștergi organizația din NGO Hub?",
       "description": "Lorem ipsum. Eliminarea organizației din ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal, iar datele se vor pierde. Dacă dorești să elimini definitiv organizația, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul.",
-      "confirm": "Sterge organizatia",
-      "request_success": "Cerere trimisa cu succes",
-      "request_error": "Eroare la trimiterea cererii de stergere a organizatiei"
+      "confirm": "Șterge organizația",
+      "request_success": "Cerere trimisă cu succes",
+      "request_error": "Eroare la trimiterea cererii de ștergere a organizatiei"
     }
   },
   "general": {
     "title": "Date generale",
     "logo": {
-      "name": "Logo organizatie",
-      "upload": "Incarca logo",
-      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+      "name": "Logo organizație",
+      "upload": "Încarcă logo",
+      "description": "Încarcă logo-ul organizației tale, la o calitate cât mai bună. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png, eps."
     },
     "contact": {
-      "name": "Persoana de contact in relatia cu ONGHub",
-      "description": "Lorem ipsum. Încarcă logo-ul organizației tale, la o calitate cât mai bună."
+      "name": "Persoana de contact în relația cu NGO Hub",
+      "description": "Completează cu datele persoanei care va păstra legătura dintre organizație și NGO Hub. Aceste informații nu vor fi afișate public."
     },
-    "social": "Comunicare si social media",
+    "social": "Comunicare și social media",
     "fundraising": "Strangere de fonduri",
     "config": {
       "name": {
-        "required": "Numele organizatiei este obligatoriu",
-        "max": "Numele organizatiei poate sa aiba maxim 100 de caractere.",
-        "min": "Numele organizatiei poate sa aiba minim 3 caractere.",
-        "invalid": "Numele organizatiei are un format invalid.",
-        "label": "Denumirea organizatiei*",
+        "required": "Numele organizației este obligatoriu",
+        "max": "Numele organizației poate sa aiba maxim 100 de caractere.",
+        "min": "Numele organizației poate sa aiba minim 3 caractere.",
+        "invalid": "Numele organizației are un format invalid.",
+        "label": "Denumirea organizației*",
         "helper": "Denumirea oficiala conform cu Registrul ONG"
       },
       "alias": {
