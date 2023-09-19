@@ -79,7 +79,7 @@ const ApplicationRequests = () => {
         onClick: onView,
       },
       {
-        name: t('requests.aprove'),
+        name: t('requests.approve'),
         icon: ShieldCheckIcon,
         onClick: onOpenApprove,
         type: PopoverMenuRowType.SUCCESS,
