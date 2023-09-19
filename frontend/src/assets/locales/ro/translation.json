@@ -15,7 +15,7 @@
     "delete_data": "Elimină date",
     "view": "Vizualizează",
     "delete": "Șterge",
-    "error": "Eroare!",
+    "error": "Eroare",
     "wrong": "Ceva nu a funcționat cum trebuie",
     "information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "next": "Mai departe",
@@ -30,7 +30,7 @@
     "restricted": "Restricționat",
     "active": "Activ",
     "inactive": "Inactiv",
-    "no_data": "Nu există date de afișat!",
+    "no_data": "Nu există date de afișat",
     "show_more": "Vezi tot",
     "show_less": "Arată mai puțin",
     "upload": {
@@ -63,7 +63,7 @@
     "range_separator_text": "din"
   },
   "empty": {
-    "table": "Nu există date in tabel"
+    "table": "Nu există date în tabel"
   },
   "account": {
     "password": "Parola a fost schimbată cu success.",
@@ -81,8 +81,8 @@
       "title": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Confirmă închiderea contului?",
       "description": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
-    "inactive": "Ups! Contul tau este inactiv.",
-    "no_access": "Lorem ipsum. Nu mai ai access in ONGHub. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
+    "inactive": "Ups! Contul tău este inactiv.",
+    "no_access": "Lorem ipsum. Nu mai ai access în ONGHub. Pentru mai multe detalii, contacteaza echipa noastra gratuit prin email la",
     "back": "Înapoi la website",
     "config": {
       "old": {
@@ -102,12 +102,12 @@
   "organization": {
     "error": "Organizația nu s-a putut încărca %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "my_organization": "Organizația mea",
-    "description": "Administreaza de aici profilul tău de organizatie pentru a putea accesa aplicațiile disponibile.",
+    "description": "Administreaza de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin email la",
     "inactive": "Ups! Organizația ta este inactivă.",
     "back": "Înapoi la website",
     "send_mail": "Trimite E-Mail",
-    "restricted": "Organizatie restricționată",
+    "restricted": "Organizație restricționată",
     "type": {
       "association": "Asociație",
       "foundation": "Fundație",
@@ -121,11 +121,11 @@
       "financial": "Informații financiare",
       "open_data": "Open data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", 
       "my_applications": "Applicațiile mele",
-      "practice_programs": "Programe de practica",
+      "practice_programs": "Programe de practică",
       "services": "Servicii"
     },
     "save_error": "Organizația nu s-a putut salva",
-    "data_update": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Te rugăm să actualizezi datele din această sectiune la un interval stabilit de timp.",
+    "data_update": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "modal": {
       "cancel": "Anulează modificările",
       "close": "Închide",
@@ -218,7 +218,7 @@
         "max": "Aliasul organizației poate avea maxim 100 de caractere.",
         "min": "Aliasul organizației poate avea minim 3 caractere.",
         "invalid": "Aliasul organizației are un format invalid",
-        "label": "Alias organizatie*"
+        "label": "Alias organizație*"
       },
       "type": {
         "label": "Tip organizație*",
@@ -237,7 +237,7 @@
         "min": "Numărul de telefon poate avea minim 10 caractere",
         "max": "Numărul de telefon poate avea maxim 15 caractere",
         "invalid": "Numărul de telefon are un format invalid",
-        "label": "Telefonul de contact al organizatie*",
+        "label": "Telefonul de contact al organizație*",
         "helper": "Exemplu: numarul telefonului de la sediu"
       },
       "year": {
@@ -254,8 +254,8 @@
       },
       "raf": {
         "required": "Numărul RAF este obligatoriu",
-        "max": "Numărul RAF poate sa aibă maxim 20 de caractere",
-        "min": "Numărul RAF poate sa aibă minim 8 caractere",
+        "max": "Numărul RAF poate avea maxim 20 de caractere",
+        "min": "Numărul RAF poate avea minim 8 caractere",
         "invalid": "Numărul RAF are un format invalid",
         "label": "Număr de înregistrare în Registrul Asociatiilor și Fundatiilor (RAF)*"
       },
@@ -269,9 +269,9 @@
       },
       "short": {
         "required": "Descrierea scurta este obligatorie",
-        "max": "Descrierea scurtă poate sa aibă maxim 250 de caractere",
-        "min": "Descrierea scrută poate sa aibă minim 150 de caractere",
-        "label": "Descrierea scurtă a organizatie*",
+        "max": "Descrierea scurtă poate avea maxim 250 de caractere",
+        "min": "Descrierea scrută poate avea minim 150 de caractere",
+        "label": "Descrierea scurtă a organizație*",
         "helper": "Prezintă organizația în 150 - 250 de caractere. Această descriere va fi preluată împreună cu celelalte informații generale în ecosistemul NGO Hub."
       },
       "long": {
@@ -322,10 +322,10 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
-        "max": "Descrierea scurta poate sa aibă maxim 100 de caractere",
-        "label": "Adresa organizatie",
+        "max": "Descrierea scurta poate avea maxim 100 de caractere",
+        "label": "Adresa organizație",
         "helper": "Adresa la care isi desfasoara activitatea organizația",
-        "placeholder": "Adresa organizatie"
+        "placeholder": "Adresa organizație"
       }
     }
   },
@@ -480,7 +480,7 @@
       }
     },
     "errors": {
-      "ORG_027": "Eroare la ștergerea documentului!"
+      "ORG_027": "Eroare la ștergerea documentului"
     }
   },
   "financial": {
@@ -535,13 +535,13 @@
   },
   "open_data": {
     "load_error": "Datele nu s-au putut încărca",
-    "download": "Descarca lista",
-    "upload": "Incarca lista noua",
+    "download": "Descarcă lista",
+    "upload": "Încarcă lista noua",
     "delete": "Elimină lista",
-    "no_file": "Niciun fisier incarcat",
-    "download_error": "Nu s-a putut descarca fisierul",
-    "no_data": "Fisierul pe care l-ai incarcat nu contine date!",
-    "invalid": "Formatul fisierului este invalid",
+    "no_file": "Niciun fișier încărcat",
+    "download_error": "Nu s-a putut descărca fisierul",
+    "no_data": "Fișierul pe care l-ai încărcat nu conține date",
+    "invalid": "Formatul fișierului este invalid",
     "report": {
       "title": "Sumar",
       "volunteers": "Voluntari",
@@ -553,59 +553,59 @@
     "partners": {
       "title": "Parteneri",
       "list": "Lista parteneri",
-      "count": "Numar parteneri",
+      "count": "Număr parteneri",
       "download": "Descarca model de tabel parteneri"
     },
     "investors": {
       "title": "Finantatori",
       "list": "Lista finantatori",
-      "count": "Numar finantatori",
+      "count": "Număr finantatori",
       "download": "Descarca model de tabel finantatori"
     },
     "modal": {
       "summary": "Sumar activitate"
     },
     "config": {
-      "volunt_negative": "Numărul de voluntari nu poate fi un numar negativ.",
-      "volunt_maxim": "Numărul de voluntari nu poate sa aibă mai mult de 6 cifre.",
-      "contr_negative": "Numărul de contractori nu poate fi un numar negativ.",
-      "contr_maxim": "Numărul de contractori nu poate sa aibă mai mult de 6 cifre.",
+      "volunt_negative": "Numărul de voluntari nu poate fi un număr negativ.",
+      "volunt_maxim": "Numărul de voluntari nu poate avea mai mult de 6 cifre.",
+      "contr_negative": "Numărul de contractori nu poate fi un număr negativ.",
+      "contr_maxim": "Numărul de contractori nu poate avea mai mult de 6 cifre.",
       "link_invalid": "Formatul link-ului este invalid.",
       "link": "Link raport activitate",
-      "volunteers": "Numar voluntari",
-      "contractors": "Numar contractori",
-      "volunteer_helper": "Lorem ipsum",
-      "contractor_helper": "Lorem ipsum",
-      "report_helper": "Lorem ipsum"
+      "volunteers": "Număr voluntari",
+      "contractors": "Număr contractori",
+      "volunteer_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"",
+      "contractor_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"",
+      "report_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%""
     }
   },
   "applications": {
-    "active_apps": "Aplicații in folosinta",
+    "active_apps": "Aplicații în folosinta",
     "pending_app_requests": "Solicitări aplicații",
     "app_type": "Tip aplicație",
     "error": {
       "get_applications": "Eroare la încărcarea aplicațiilor",
       "get_requests": "Eroare la încărcarea cererilor",
-      "restrict_application": "Eroare la restrictionarea accesului",
+      "restrict_application": "Eroare la restricționarea accesului",
       "restore_application": "Eroare la redarea accesului",
       "remove_application": "Eroare la ștergerea applicației",
       "approve_request": "Eroare la aprobarea cererii",
       "reject_request": "Eroare la respingerea cererii"
     },
     "options": {
-      "restore_access": "Reda accesul",
+      "restore_access": "Redă accesul",
       "restrict_access": "Restrictionează accesul",
       "remove_application": "Elimină aplicația",
       "approve_request": "Aprobă",
       "reject_request": "Respinge"
     },
     "remove_app_modal": {
-      "title": "Confirmă ștergerea aplicatiei",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+      "title": "Confirmă ștergerea aplicației",
+      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%""
     },
     "reject_request_modal": {
       "title": "Confirmă respingerea cererii",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%""
     }
   },
   "user": {
@@ -809,8 +809,8 @@
       },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
-        "max": "Descrierea extinsă poate sa aibă maxim 700 de caractere",
-        "min": "Descrierea extinsă poate sa aibă minim 200 de caractere",
+        "max": "Descrierea extinsă poate avea maxim 700 de caractere",
+        "min": "Descrierea extinsă poate avea minim 200 de caractere",
         "label": "Descriere extinsa aplicație*",
         "helper": "Maximum 700 de caractere"
       },
@@ -864,7 +864,7 @@
       "aprove": "Aprobă",
       "reject": "Respinge",
       "status_update": "Status actualizat",
-      "requests": "Solicitari",
+      "requests": "Solicitări",
       "date_added": "Data adăugării"
     },
     "form": {
@@ -888,50 +888,50 @@
     "details": {
       "website": "Vezi website",
       "how_to": "Cum poți folosi aplicația pentru organizația ta",
-      "request": "Solicita aplicația",
+      "request": "Solicită aplicația",
       "description": "Descriere",
       "video": "Video prezentare",
       "request_error": "Solicitarea nu a putut fi trimisă",
       "request_successful": "Solicitare trimisă cu succes",
-      "add": "Adauga aplicație",
+      "add": "Adaugă aplicație",
       "remove_success": "Aplicație eliminată cu succes",
       "restricted": "Accesul la aplicație a fost restrictionat",
-      "auto": "Aplicatia este adaugata automat la crearea contului ONG Hub și nu poate fi dezactivata.",
+      "auto": "Aplicația este adăugata automat la crearea contului ONG Hub și nu poate fi dezactivata.",
       "delete": "Elimină aplicație",
-      "contact": "Te vom contacta in 24-48 de ore.",
-      "active": "Aplicatia este activa pentru organizația ta.",
-      "define_active": "Lorem ipsum. Ce inseamna faptul ca aplicația este activa. Conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "contact": "Te vom contacta în 24-48 de ore.",
+      "active": "Aplicația este activă pentru organizația ta.",
+      "define_active": "Lorem ipsum. Ce inseamna faptul ca aplicația este activă. Conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact mentionat în profilul tău de organizație. Iti multumim.",
       "open": "Deschide aplicația",
       "pending": "Solicitarea ta asteapta aprobare.",
-      "configure": "Aplicatia aceasta trebuie instalata și configurata conform cu nevoile ONG-ului tau. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare in cel mai scurt timp, pe emailul persoanei de contact mentionat in profilul tau de organizatie. Iti multumim!",
+      "configure": "Aplicația aceasta trebuie instalată și configurata conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact mentionat în profilul tău de organizație. Iti multumim.",
       "cancel": "Anuleaza solicitare",
-      "restore": "Contacteaza-ne pentru restituirea accesului!",
+      "restore": "Contacteaza-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
-      "close_title": "Esti sigur ca doresti eliminarea aplicatiei?",
+      "close_title": "Esti sigur ca doresti eliminarea aplicației?",
       "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
       "another_description": "Descriere aplicație",
-      "pending_removal": "Aplicatia a fost marcata pentru a fi stearsa",
+      "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
         "title": "Accesul la aplicație este indisponibil momentan",
-        "description": "Vom reveni cu noutati in curand."
+        "description": "Vom reveni cu noutati în curând."
       },
       "practice_program": {
-        "redirect_to_site": "Vezi profilul tau pe Practice4Good",
-        "redirect_to_practice_programs": "Gestioneaza programe"
+        "redirect_to_site": "Vezi profilul tău pe Practice4Good",
+        "redirect_to_practice_programs": "Gestionează programe"
       },
       "services": {
-        "redirect_to_site": "Vezi profilul tau pe Centrul Civic",
-        "redirect_to_services": "Gestioneaza servicii"
+        "redirect_to_site": "Vezi profilul tău pe Centrul Civic",
+        "redirect_to_services": "Gestionează servicii"
       }
     },
     "list_header": {
       "name": "ONG",
       "user_count": "Utilizatori Individuali",
-      "created_on": "Data adaugare",
+      "created_on": "Data adaugare %%%%%%%%%%%%%%%%%%%%%%%%",
       "access": "Access"
     },
     "list": {
-      "load_error": "Eroare la încărcarea organizatiilor",
+      "load_error": "Eroare la încărcarea organizațiilor",
       "title": "Lista ONG-uri",
       "activate": "Activează aplicație",
       "restrict": "Dezactivează aplicație",
@@ -939,49 +939,49 @@
     }
   },
   "header": {
-    "enter": "Intra in cont",
+    "enter": "Intra în cont",
     "my_account": "Contul meu",
-    "log_out": "Log out"
+    "log_out": "Deconectare"
   },
   "my_apps": {
-    "title": "Aplicatiile mele",
-    "subtitle": "Lorem oppossum.",
+    "title": "Aplicațiile mele",
+    "subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "open": "Deschide",
     "more": "Mai mult"
   },
   "requests": {
-    "title": "Solicitari acces",
-    "subtitle": "Lorem oppossum.",
-    "load_error": "Eroare la încărcarea solicitarilor",
+    "title": "Solicitări acces",
+    "subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "load_error": "Eroare la încărcarea solicitărilor",
     "status_erorr": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
-    "solved": "Solicitare solutionata",
-    "description": "Lorem ipsum",
+    "solved": "Solicitare soluționată",
+    "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "reject": "Respinge",
-    "approve": "Aproba",
+    "approve": "Aprobă",
     "view_form": "Vizualizează formular",
-    "requests": "Solicitari",
+    "requests": "Solicitări",
     "created_on": "Data adăugării",
-    "data_pending": "Datele de mai jos corespund unei solicitari in curs de aprobare.",
+    "data_pending": "Datele de mai jos corespund unei solicitări în curs de aprobare.",
     "modals": {
       "approve": {
-        "title": "Aproba și trimite confirmarea",
+        "title": "Aprobă și trimite confirmarea",
         "description": "In urma aprobarii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare și un link pe care il poate accesa pentru a finaliza procesul și a avea acces în platforma.Esti sigur ca aprobi?",
         "confirm": "Da, aprob solicitarea"
       },
       "reject": {
         "title": "Respinge și trimite email",
-        "description": "In urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare. Esti sigur ca respingi?",
+        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la inregistrare. Esti sigur ca respingi?",
         "confirm": "Respinge solicitarea"
       }
     },
     "constants": {
       "approved": "Aprobat",
       "rejected": "Respins",
-      "pending": "In procesare"
+      "pending": "În procesare"
     },
     "header": {
-      "org_name": "Organizatie",
+      "org_name": "Organizație",
       "name": "Nume",
       "email": "Email",
       "phone": "Telefon",
@@ -993,23 +993,23 @@
   "routes": {
     "dashboard": "Tablou de bord",
     "organization": "Organizația mea",
-    "apps": "Aplicatiile mele",
+    "apps": "Aplicațiile mele",
     "users": "Utilizatori",
-    "store": "Toate aplicatiile",
+    "store": "Toate aplicațiile",
     "organizations": "ONG-uri",
-    "requests": "Solicitari Acces",
-    "practice_programs": "Programe de Practica"
+    "requests": "Solicitări Acces",
+    "practice_programs": "Programe de Practică"
   },
   "dashboard": {
     "title": "Dashboard",
     "about": "Despre ONGHub",
     "statistics": {
-      "mean_number_of_users": "Numar mediu de utiliatori per organizatie",
-      "number_of_active_organizations": "Organizatii active in ONG Hub",
+      "mean_number_of_users": "Număr mediu de utiliatori per organizație",
+      "number_of_active_organizations": "Organizatii active în ONG Hub",
       "number_of_apps": "Aplicatii disponibile",
-      "number_of_pending_requests": "Cereri inscriere organizatii in asteptare",
-      "number_of_updated_organizations": "Numar de organizatii cu datele actualizate",
-      "number_of_users": "Numar total de utilizatori individuali",
+      "number_of_pending_requests": "Cereri inscriere organizatii în asteptare",
+      "number_of_updated_organizations": "Număr de organizatii cu datele actualizate",
+      "number_of_users": "Număr total de utilizatori individuali",
       "next_update": "Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
       "active_apps": "Aplicații active",
       "view_active_apps": "Vezi aplicatii active",
@@ -1023,10 +1023,10 @@
       "inactive_organizations": "Inactive",
       "accepted_requests": "Acceptate",
       "rejected_requests": "Refuzate",
-      "organization_chart": "Organizatii in ONG Hub",
-      "request_chart": "Cereri inscriere in ONG Hub",
-      "organization_statistics_error": "Eroare la încărcarea statisticilor despre organizatie",
-      "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri in organizatie",
+      "organization_chart": "Organizatii în ONG Hub",
+      "request_chart": "Cereri inscriere în ONG Hub",
+      "organization_statistics_error": "Eroare la încărcarea statisticilor despre organizație",
+      "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri în organizație",
       "user_list": "Lista utilizatori",
       "filter": {
         "yearly": "Din totdeauna",
@@ -1041,13 +1041,13 @@
     "wrapper": {
       "title": "Serviciile mele",
       "description": "Lorem ipsum",
-      "add_button": "Adauga Serviciu"
+      "add_button": "Adaugă Serviciu"
     },
     "list": {
       "error": "Eroare la încărcarea listei de servicii"
     },
     "add": {
-      "title": "Adauga Serviciu",
+      "title": "Adaugă Serviciu",
       "card_title": "Descriere Serviciu"
     },
     "edit": {
@@ -1065,14 +1065,14 @@
           "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "physical": {
-          "title": "Access prin prezentare la locatie",
+          "title": "Access prin prezentare la locație",
           "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         }
       },
       "name": {
         "required": "Denumirea serviciului este obligatoriu",
-        "min": "Denumirea nu poate sa aibă mai puțin de 3 caractere",
-        "max": "Denumirea nu poate sa aibă mai mult de 50 caractere",
+        "min": "Denumirea nu poate avea mai puțin de 3 caractere",
+        "max": "Denumirea nu poate avea mai mult de 50 caractere",
         "pattern": "Denumirea nu are formatul valid.",
         "label": "Denumirea serviciului*",
         "helper": "",
@@ -1085,16 +1085,16 @@
         "placeholder": "Bucuresti"
       },
       "start_date": {
-        "required": "Data inceput este oblicatorie",
-        "label": "Data inceput serviciu*",
+        "required": "Data început este oblicatorie",
+        "label": "Data început serviciu*",
         "helper": "",
         "placeholder": "31.12.2999"
       },
       "end_date": {
-        "label": "Data sfarsit serviciu*",
+        "label": "Data sfârșit serviciu*",
         "helper": "",
         "placeholder": "31.12.2999",
-        "start_date_after_end_date": "Data sfarsit nu poate fi mai mica decat data de inceput"
+        "start_date_after_end_date": "Data sfârșit nu poate fi mai mica decat data de început"
       },
       "is_period_not_determined": {
         "label": "Perioada nedeterminata",
@@ -1102,20 +1102,20 @@
       },
       "short_description": {
         "required": "Descrierea este obligatorie",
-        "min": "Descrierea nu poate sa aibă mai puțin de 3 caractere",
-        "max": "Descrierea nu poate sa aibă mai mult de 250 caractere",
+        "min": "Descrierea nu poate avea mai puțin de 3 caractere",
+        "max": "Descrierea nu poate avea mai mult de 250 caractere",
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurta serviciu*",
-        "helper": "Descrie serviciul oferit in 3-250 caractere",
+        "helper": "Descrie serviciul oferit în 3-250 caractere",
         "placeholder": "Lorem ipsum"
       },
       "long_description": {
         "required": "Descrierea este obligatorie",
-        "min": "Descrierea nu poate sa aibă mai puțin de 3 caractere",
-        "max": "Descrierea nu poate sa aibă mai mult de 3000 caractere",
+        "min": "Descrierea nu poate avea mai puțin de 3 caractere",
+        "max": "Descrierea nu poate avea mai mult de 3000 caractere",
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere extinsa serviciu*",
-        "helper": "Adauga o descriere cat mai cuprinzatoare a serviciului oferit",
+        "helper": "Adaugă o descriere cat mai cuprinzatoare a serviciului oferit",
         "placeholder": "Lorem ipsum"
       },
       "domains": {
@@ -1136,11 +1136,11 @@
           "required": "Link-ul este obligatoriu",
           "pattern": "Formatul link-ului este invalid.",
           "label": "Link catre pagina de access (buton)*",
-          "helper": "Adauga linkul prin care oricine poate accesa acest serviciu.",
+          "helper": "Adaugă linkul prin care oricine poate accesa acest serviciu.",
           "placeholder": ""
         },
         "description": {
-          "max": "Descrierea nu poate sa aibă mai mult de 1000 caractere",
+          "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access online",
           "placeholder": "Lorem ipsum"
@@ -1152,21 +1152,21 @@
         },
         "phone": {
           "required": "Numărul de telefon este obligatoriu",
-          "min": "Numărul de telefon nu poate sa aibă mai puțin de 10 caractere",
-          "max": "Numărul de telefon nu poate sa aibă mai mult de 15 caractere",
+          "min": "Numărul de telefon nu poate avea mai puțin de 10 caractere",
+          "max": "Numărul de telefon nu poate avea mai mult de 15 caractere",
           "pattern": "Numărul de telefon are un format invalid",
           "helper": "Numărul de telefon la care solicitantul poate solicita serviciul",
           "label": "Telefon*"
         },
         "email": {
           "required": "Email-ul este obligatoriu",
-          "max": "Email-ul nu poate sa aibă mai mult de 50 de caractere",
+          "max": "Email-ul nu poate avea mai mult de 50 de caractere",
           "pattern": "Email-ul are un format invalid",
           "helper": "Adresa de e-mail la care solicitantul poate solicita serviciul",
           "label": "E-mail*"
         },
         "description": {
-          "max": "Descrierea nu poate sa aibă mai mult de 1000 caractere",
+          "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access prin email",
           "placeholder": "Lorem ipsum"
@@ -1174,20 +1174,20 @@
       },
       "physical": {
         "toggle": {
-          "label": "Serviciul poate fi accesat prin prezentare la locatie"
+          "label": "Serviciul poate fi accesat prin prezentare la locație"
         },
         "address": {
           "required": "Adresa este obligatorie",
-          "max": "Adresa nu poate sa aibă mai mult de 300 caractere",
+          "max": "Adresa nu poate avea mai mult de 300 caractere",
           "pattern": "Adresa nu are formatul valid.",
           "label": "Adresa serviciu*",
           "helper": "Introduceti locatia exacta de unde o persoana poate accesa serviciul"
         },
         "description": {
-          "max": "Descrierea formatata nu poate sa aibă mai mult de 1000 caractere",
+          "max": "Descrierea formatata nu poate avea mai mult de 1000 caractere",
           "label": "Descriere access fizic",
           "placeholder": "Lorem ipsum",
-          "helper": "Mentioneaza orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"
+          "helper": "Mentionează orele de progeam sau daca este necesar ca solicitantul sa aduca ceva, maxim 250 caractere"
         }
       },
       "access": {
@@ -1195,8 +1195,8 @@
       }
     },
     "feedback": {
-      "success_create": "Serviciul a fost creat!",
-      "success_update": "Serviciul a fost modificat cu success!",
+      "success_create": "Serviciul a fost creat",
+      "success_update": "Serviciul a fost modificat cu success",
       "success_delete": "Serviciul a fost sters",
       "error_create": "Eroare la crearea serviciului",
       "error_update": "Eroare la modificarea serviciului",
@@ -1231,54 +1231,54 @@
   },
   "practice_program": {
     "add": {
-      "title": "Adauga program de practica",
+      "title": "Adaugă program de practică",
       "card_title": "Descriere Program"
     },
     "edit": {
-      "title": "Modifica program de practica",
+      "title": "Modifica program de practică",
       "card_title": "Descriere Program"
     },
     "form": {
       "title": {
         "required": "Titlul programului este obligatoriu",
-        "min": "Titlul nu poate sa aibă mai puțin de 3 caractere",
-        "max": "Titlul nu poate sa aibă mai mult de 50 caractere",
+        "min": "Titlul nu poate avea mai puțin de 3 caractere",
+        "max": "Titlul nu poate avea mai mult de 50 caractere",
         "pattern": "Titlul nu are formatul valid.",
-        "label": "Titlu program de practica*",
+        "label": "Titlu program de practică*",
         "helper": "",
-        "placeholder": "Program de Practica"
+        "placeholder": "Program de Practică"
       },
       "location": {
-        "required": "Orasul este obligatoriu",
-        "label": "Oras*",
-        "helper": "",
-        "placeholder": "Bucuresti"
+        "required": "Orașul este obligatoriu",
+        "label": "Oraș*",
+        "helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+        "placeholder": "București"
       },
       "deadline": {
         "label": "Deadline aplicare",
-        "helper": "",
+        "helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
         "placeholder": "31.12.2999"
       },
       "description": {
         "required": "Descrierea este obligatorie",
-        "min": "Descrierea nu poate sa aibă mai puțin de 3 caractere",
-        "max": "Descrierea nu poate sa aibă mai mult de 3000 caractere",
+        "min": "Descrierea nu poate avea mai puțin de 3 caractere",
+        "max": "Descrierea nu poate avea mai mult de 3000 caractere",
         "pattern": "Descrierea nu are formatul valid.",
-        "label": "Descrierea program de practica*",
+        "label": "Descrierea program de practică*",
         "helper": "",
         "placeholder": "Lorem ipsum"
       },
       "start_date": {
-        "required": "Data inceput este oblicatorie",
-        "label": "Data inceput program de practica*",
+        "required": "Data început este oblicatorie",
+        "label": "Data început program de practică*",
         "helper": "",
         "placeholder": "31.12.2999"
       },
       "end_date": {
-        "label": "Data sfarsit program de practica*",
+        "label": "Data sfârșit program de practică*",
         "helper": "",
         "placeholder": "31.12.2999",
-        "start_date_after_end_date": "Data sfarsit nu poate fi mai mica decat data de inceput"
+        "start_date_after_end_date": "Data sfârșit nu poate fi mai mica decat data de început"
       },
       "is_period_not_determined": {
         "label": "Perioada nedeterminata",
@@ -1287,14 +1287,14 @@
       "min_working_hours": {
         "required": "Campul este obligatoriu",
         "min": "Campul nu poate fi mai mic decat 0",
-        "label": "Numar ore (minim)",
+        "label": "Număr ore (minim)",
         "helper": "",
         "placeholder": "0"
       },
       "max_working_hours": {
         "required": "Campul este obligatoriu",
         "min": "Campul nu poate fi mai mic decat 0",
-        "label": "Numar ore (maxim)",
+        "label": "Număr ore (maxim)",
         "helper": "",
         "placeholder": "0",
         "min_larger_than_max": "Numărul maxim de ore lucrate nu poate fi mai mic decat numarul minim de ore lucrate"
@@ -1302,7 +1302,7 @@
       "link": {
         "pattern": "Formatul link-ului este invalid.",
         "label": "Link catre pagina de aplicare (button)",
-        "helper": "Adauga link-ul prin care oricine poate aplica la programul de practica",
+        "helper": "Adaugă link-ul prin care oricine poate aplica la programul de practică",
         "placeholder": "www.google.com"
       },
       "domains": {
@@ -1312,40 +1312,40 @@
       },
       "skills": {
         "label": "Participantul va invata (cuvinte cheie)",
-        "helper": "Adauga abilitati pe care participantii la program vor avea ocazia sa le dezvolte in timpul programului",
-        "placeholder": "Selecteaza/Adauga..."
+        "helper": "Adaugă abilitati pe care participantii la program vor avea ocazia sa le dezvolte în timpul programului",
+        "placeholder": "Selecteaza/Adaugă..."
       },
       "faculties": {
         "label": "Facultati",
-        "helper": "Completeaza doar daca programul de practica este dedicat numai studentilor unor anumite facultati",
+        "helper": "Completeaza doar daca programul de practică este dedicat numai studentilor unor anumite facultati",
         "placeholder": "Selecteaza..."
       }
     },
     "list": {
-      "title": "Programele mele de practica"
+      "title": "Programele mele de practică"
     },
     "details": {
       "deadline": "Deadline aplicare",
       "deadline_unlimited": "nelimitat",
       "period": "Perioada program",
       "period_starting_with": "Incepand cu",
-      "working_hours": "Numar de ore",
+      "working_hours": "Număr de ore",
       "faculties": "Dedicat studentilor la",
       "domains": "Domenii",
-      "skills": "Vei invata",
-      "list_error": "Eroare la încărcarea datelor!",
+      "skills": "Vei învăța",
+      "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+        "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
       }
     },
     "feedback": {
-      "success_create": "Programul de practica a fost creat!",
-      "success_update": "Programul de practica a fost modificat cu success!",
-      "success_delete": "Programul de practica a fost sters",
-      "error_create": "Eroare la crearea programului de practica",
-      "error_update": "Eroare la modificarea programului de practica",
-      "error_delete": "Eroare la ștergerea programului de practica"
+      "success_create": "Programul de practică a fost creat",
+      "success_update": "Programul de practică a fost modificat cu success",
+      "success_delete": "Programul de practică a fost sters",
+      "error_create": "Eroare la crearea programului de practică",
+      "error_update": "Eroare la modificarea programului de practică",
+      "error_delete": "Eroare la ștergerea programului de practică"
     }
   },
   "feedback": {
@@ -1360,18 +1360,18 @@
     "action": {
       "load_error": "Eroare la încărcarea feedback-urilor",
       "remove_error": "Eroare la ștergerea feedback-ului",
-      "remove_success": "Feedback sters cu succes"
+      "remove_success": "Feedback șters cu succes"
     },
     "remove_modal": {
       "title": "Șterge feedback",
-      "description": "Esti sigur ca doresti ștergerea feedback-ului?"
+      "description": "Confirmă ștergerea feedback-ului?"
     },
     "view_modal": {
       "details": "Detalii feedback",
       "author_name": "Nume autor feedback",
-      "interaction_when": "Cand ati interactionat cu serviciul?",
-      "interaction_how": "Cum a fost interactiunea ta cu acest serviciu?",
-      "date_added": "Data acordarii feedback-ului"
+      "interaction_when": "Când ai interacționat cu serviciul?",
+      "interaction_how": "Cum a fost interacțiunea ta cu acest serviciu?",
+      "date_added": "Data acordării feedback-ului"
     }
   }
 }
