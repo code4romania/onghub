@@ -79,7 +79,7 @@
     "close": {
       "account": "Închide contul",
       "title": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Confirmă închiderea contului?",
-      "description": "Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
+      "description": "Închiderea contului NGO Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
     "no_access": "Lorem ipsum. Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează echipa noastră gratuit prin email la",
@@ -896,7 +896,7 @@
       "add": "Adaugă aplicație",
       "remove_success": "Aplicație eliminată cu succes",
       "restricted": "Accesul la aplicație a fost restricționat",
-      "auto": "Aplicația este adăugata automat la crearea contului ONG Hub și nu poate fi dezactivata.",
+      "auto": "Aplicația este adăugata automat la crearea contului NGO Hub și nu poate fi dezactivata.",
       "delete": "Elimină aplicație",
       "contact": "Te vom contacta în 24-48 de ore.",
       "active": "Aplicația este activă pentru organizația ta.",
@@ -907,7 +907,7 @@
       "cancel": "Anulează solicitare",
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
-      "close_title": "Ești sigur ca dorești eliminarea aplicației?",
+      "close_title": "Confirmă eliminarea aplicației",
       "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
@@ -939,7 +939,7 @@
     }
   },
   "header": {
-    "enter": "Intra în cont",
+    "enter": "Intră în cont",
     "my_account": "Contul meu",
     "log_out": "Deconectare"
   },
@@ -966,12 +966,12 @@
     "modals": {
       "approve": {
         "title": "Aprobă și trimite confirmarea",
-        "description": "In urma aprobării, ONG-ul va primi un e-mail de confirmare pe adresa oferita la înregistrare și un link pe care il poate accesa pentru a finaliza procesul și a avea acces în platforma. Ești sigur ca aprobi?",
+        "description": "În urma aprobării, ONG-ul va primi un e-mail de confirmare pe adresa oferită la înregistrare și un link pe care îl poate accesa pentru a finaliza procesul și a avea acces în platformă. Confirmă aprobarea?",
         "confirm": "Da, aprob solicitarea"
       },
       "reject": {
         "title": "Respinge și trimite email",
-        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la înregistrare. Ești sigur ca respingi?",
+        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la înregistrare. Confirmă respingerea?",
         "confirm": "Respinge solicitarea"
       }
     },
@@ -1005,12 +1005,12 @@
     "about": "Despre ONGHub",
     "statistics": {
       "mean_number_of_users": "Număr mediu de utilizatori per organizație",
-      "number_of_active_organizations": "Organizații active în ONG Hub",
+      "number_of_active_organizations": "Organizații active în NGO Hub",
       "number_of_apps": "Aplicații disponibile",
       "number_of_pending_requests": "Cereri înscriere organizații în așteptare",
       "number_of_updated_organizations": "Număr de organizații cu datele actualizate",
       "number_of_users": "Număr total de utilizatori individuali",
-      "next_update": "Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
+      "next_update": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
       "active_apps": "Aplicații active",
       "view_active_apps": "Vezi aplicații active",
       "active_users": "Utilizatori în organizație",
@@ -1023,8 +1023,8 @@
       "inactive_organizations": "Inactive",
       "accepted_requests": "Acceptate",
       "rejected_requests": "Refuzate",
-      "organization_chart": "Organizații în ONG Hub",
-      "request_chart": "Cereri înscriere în ONG Hub",
+      "organization_chart": "Organizații în NGO Hub",
+      "request_chart": "Cereri înscriere în NGO Hub",
       "organization_statistics_error": "Eroare la încărcarea statisticilor despre organizație",
       "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri în organizație",
       "user_list": "Lista utilizatori",
@@ -1034,7 +1034,7 @@
         "daily": "Zilnic"
       }
     },
-    "activity_title": "Organizație activă în ONG Hub din",
+    "activity_title": "Organizație activă în NGO Hub din",
     "last_updated_on": "Ultima actualizare de date"
   },
   "civic_center_service": {
