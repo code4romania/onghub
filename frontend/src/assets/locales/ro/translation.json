@@ -1105,7 +1105,7 @@
         "min": "Descrierea nu poate avea mai puțin de 3 caractere",
         "max": "Descrierea nu poate avea mai mult de 250 caractere",
         "pattern": "Descrierea nu are formatul valid.",
-        "label": "Descriere scurta serviciu*",
+        "label": "Descriere scurtă serviciu*",
         "helper": "Descrie serviciul oferit în 3-250 caractere",
         "placeholder": "Lorem ipsum"
       },
