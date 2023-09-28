@@ -68,9 +68,9 @@
   "account": {
     "password": "Parola a fost schimbată cu success.",
     "my_account": "Contul meu",
-    "account_description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "account_description": "6dvDg4w%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "settings": "Setări cont",
-    "settings_description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "settings_description": "0X1IEP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "change_password": "Schimbă parola",
     "name": "Nume",
     "email": "E-mail cont",
@@ -78,7 +78,7 @@
     "wrong_password": "Parolele nu se potrivesc",
     "close": {
       "account": "Închide contul",
-      "title": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Confirmă închiderea contului?",
+      "title": "I953uUMJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Confirmă închiderea contului?",
       "description": "Închiderea contului NGO Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
@@ -100,7 +100,7 @@
     "restricted": "Cont restricționat"
   },
   "organization": {
-    "error": "Organizația nu s-a putut încărca %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "error": "Organizația nu s-a putut încărca 5Ivu4FUC%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "my_organization": "Organizația mea",
     "description": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin email la",
@@ -119,13 +119,13 @@
       "activity": "Activitatea organizației",
       "legal": "Informații legale",
       "financial": "Informații financiare",
-      "open_data": "Open data %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "open_data": "Open data b17jJk%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "my_applications": "Aplicațiile mele",
       "practice_programs": "Programe de practică",
       "services": "Servicii"
     },
     "save_error": "Organizația nu s-a putut salva",
-    "data_update": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
+    "data_update": "Z8bR4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "modal": {
       "cancel": "Anulează modificările",
       "close": "Închide",
@@ -308,7 +308,7 @@
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",
-      "redirect": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Link către contul de Redirecționează",
+      "redirect": "V5es0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Link către contul de Redirecționează",
       "sms": {
         "length": "SMS-ul pentru donații trebuie să aibă 4 caractere",
         "invalid": "SMS-ul pentru donații are un format invalid",
@@ -486,7 +486,7 @@
   "financial": {
     "save_error": "Eroare la salvarea datelor financiare",
     "title": "Date Financiare",
-    "report_row": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "report_row": "eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
       "income": "Total Venituri",
       "expense": "Total Cheltuieli",
@@ -513,7 +513,7 @@
     "income": {
       "membership": "Venituri din cotizații",
       "donations": "Venituri din donații",
-      "percent": "Venituri 2%",
+      "percent": "Venituri 2IjjAV%",
       "sponsorship": "Venituri din sponsorizări",
       "economic": "Venituri din activitatea economica",
       "other": "Alte venituri",
@@ -574,9 +574,9 @@
       "link": "Link raport activitate",
       "volunteers": "Număr voluntari",
       "contractors": "Număr contractori",
-      "volunteer_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-      "contractor_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-      "report_helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "volunteer_helper": "Qu6I6w5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "contractor_helper": "T77DdsJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "report_helper": "ZUsGYe%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     }
   },
   "applications": {
@@ -601,11 +601,11 @@
     },
     "remove_app_modal": {
       "title": "Confirmă ștergerea aplicației",
-      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "76b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     },
     "reject_request_modal": {
       "title": "Confirmă respingerea cererii",
-      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "ji3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     }
   },
   "user": {
@@ -733,7 +733,7 @@
   },
   "appstore": {
     "title": "Aplicații",
-    "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "description": "Q0b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "add": "Adaugă aplicație",
     "all": "Toate aplicațiile",
     "tabs": {
@@ -752,12 +752,12 @@
       "status": "Status",
       "remove": "Elimină definitiv",
       "confirmation": "Confirmă ștergerea aplicației?",
-      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "RKyX4sK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     },
     "create": {
       "error": "Eroare la crearea aplicației",
       "success": "Aplicație creată cu succes",
-      "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "description": "R92iB2x%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "edit": "Editare pagină aplicație",
       "generate": "Generare pagină aplicație",
       "general": "Date generale",
@@ -765,7 +765,7 @@
       "upload": "Încarcă logo",
       "logo_descr": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
       "steps": "Pași pentru adăugarea aplicației",
-      "steps_descr": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "steps_descr": "ySH%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "step_add": "Adaugă mai mulți pași",
       "step_delete": "Șterge pas"
     },
@@ -869,12 +869,12 @@
     },
     "form": {
       "title": "Date generale",
-      "subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "subtitle": "twoB4bt%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "logo": "Logo aplicație",
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
       "steps_title": "Pași pentru adăugarea aplicației",
-      "steps_subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "steps_subtitle": "m5J%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "add_step": "Adaugă pas",
       "delete_step": "Șterge pas"
     }
@@ -927,7 +927,7 @@
     "list_header": {
       "name": "ONG",
       "user_count": "Utilizatori Individuali",
-      "created_on": "Dată adăugare %%%%%%%%%%%%%%%%%%%%%%%%",
+      "created_on": "Dată adăugare yU8Dp%%%%%%%%%%%%%%%%%%%%%%%%",
       "access": "Access"
     },
     "list": {
@@ -945,18 +945,18 @@
   },
   "my_apps": {
     "title": "Aplicațiile mele",
-    "subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "subtitle": "28d%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "open": "Deschide",
     "more": "Mai mult"
   },
   "requests": {
     "title": "Solicitări acces",
-    "subtitle": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "subtitle": "A37vF0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "load_error": "Eroare la încărcarea solicitărilor",
     "status_error": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
     "solved": "Solicitare soluționată",
-    "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "description": "zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "reject": "Respinge",
     "approve": "Aprobă",
     "view_form": "Vizualizează formular",
@@ -1010,7 +1010,7 @@
       "number_of_pending_requests": "Cereri înscriere organizații în așteptare",
       "number_of_updated_organizations": "Număr de organizații cu datele actualizate",
       "number_of_users": "Număr total de utilizatori individuali",
-      "next_update": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
+      "next_update": "s1fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
       "active_apps": "Aplicații active",
       "view_active_apps": "Vezi aplicații active",
       "active_users": "Utilizatori în organizație",
@@ -1251,12 +1251,12 @@
       "location": {
         "required": "Orașul este obligatoriu",
         "label": "Oraș*",
-        "helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+        "helper": "52qczn7n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
         "placeholder": "București"
       },
       "deadline": {
         "label": "Deadline aplicare",
-        "helper": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+        "helper": "s3I%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
         "placeholder": "31.12.2999"
       },
       "description": {
@@ -1336,7 +1336,7 @@
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
       }
     },
     "feedback": {
