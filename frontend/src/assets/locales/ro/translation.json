@@ -82,7 +82,7 @@
       "description": "Închiderea contului NGO Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
-    "no_access": "Lorem ipsum. Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează echipa noastră gratuit prin email la",
+    "no_access": "Lorem ipsum. Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează echipa noastră gratuit prin e-mail la",
     "back": "Înapoi la website",
     "config": {
       "old": {
@@ -103,7 +103,7 @@
     "error": "Organizația nu s-a putut încărca 5Ivu4FUC%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "my_organization": "Organizația mea",
     "description": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
-    "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin email la",
+    "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin e-mail la",
     "inactive": "Ups! Organizația ta este inactivă.",
     "back": "Înapoi la website",
     "send_mail": "Trimite E-Mail",
@@ -133,7 +133,7 @@
     },
     "create": {
       "congratulations": "Felicitări",
-      "success": "Ai completat cu succes formularul de aplicare pentru NGO Hub. Confirmarea aplicării și o copie a formularului completat au fost trimise pe adresa de email indicată. Vom verifica aplicația și te vom contacta în cel mai scurt timp pentru a finaliza procesul de implementare al NGO Hub pentru organizația ta.",
+      "success": "Ai completat cu succes formularul de aplicare pentru NGO Hub. Confirmarea aplicării și o copie a formularului completat au fost trimise pe adresa de e-mail indicată. Vom verifica aplicația și te vom contacta în cel mai scurt timp pentru a finaliza procesul de implementare al NGO Hub pentru organizația ta.",
       "again": "Încearcă din nou",
       "steps": {
         "first": "Pasul 1",
@@ -146,14 +146,14 @@
         "legal": "Informații legale"
       },
       "errors": {
-        "REQ_001": "Există deja un utilizator cu acest email sau cu acest număr de telefon.",
+        "REQ_001": "Există deja un utilizator cu acest e-mail sau cu acest număr de telefon.",
         "REQ_007": "Există deja o organizație cu acest CUI",
         "REQ_008": "Există deja o organizație cu acest RAF",
         "REQ_009": "Există deja o organizație cu această denumire",
         "REQ_010": "Există deja o organizație cu acest alias",
-        "REQ_011": "Există deja o organizație cu acest email",
+        "REQ_011": "Există deja o organizație cu acest e-mail",
         "REQ_012": "Există deja o organizație cu acest număr de telefon",
-        "REQ_002": "Există deja o cerere cu acest email sau cu acest număr de telefon.",
+        "REQ_002": "Există deja o cerere cu acest e-mail sau cu acest număr de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
     },
@@ -177,9 +177,9 @@
         "label": "Telefon*"
       },
       "email": {
-        "required": "Email-ul este obligatoriu",
-        "max": "Email-ul nu poate avea mai mult de 50 de caractere",
-        "invalid": "Email-ul are un format invalid",
+        "required": "E-mail-ul este obligatoriu",
+        "max": "E-mail-ul nu poate avea mai mult de 50 de caractere",
+        "invalid": "E-mail-ul are un format invalid",
         "label": "E-mail"
       }
     },
@@ -227,7 +227,7 @@
       },
       "email": {
         "required": "Email-ul este obligatoriu",
-        "max": "Email-ul poate avea maxim 50 de caractere",
+        "max": "Email-ul poate avea maxim 250 de caractere",
         "invalid": "Email-ul are un format invalid.",
         "label": "E-mail-ul de contact al organizație*",
         "helper": "Exemplu: contact@organizatie.ro"
@@ -613,7 +613,7 @@
     "subtitle": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "add": "Adaugă Utilizator",
     "not_found": "Utilizatorul nu există în baza de date",
-    "failure_email": "Există deja un utilizator cu acest email",
+    "failure_email": "Există deja un utilizator cu acest e-mail",
     "failure_phone": "Există deja un utilizator cu acest număr de telefon",
     "tabs": {
       "users": "Utilizatori",
@@ -970,7 +970,7 @@
         "confirm": "Da, aprob solicitarea"
       },
       "reject": {
-        "title": "Respinge și trimite email",
+        "title": "Respinge și trimite e-mail",
         "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la înregistrare. Confirmă respingerea?",
         "confirm": "Respinge solicitarea"
       }
@@ -1061,7 +1061,7 @@
           "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "email_or_phone": {
-          "title": "Access prin email sau telefon",
+          "title": "Access prin e-mail sau telefon",
           "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "physical": {
@@ -1168,7 +1168,7 @@
         "description": {
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
-          "label": "Descriere access prin email",
+          "label": "Descriere access prin e-mail",
           "placeholder": "Lorem ipsum"
         }
       },
