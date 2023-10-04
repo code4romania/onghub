@@ -119,7 +119,7 @@
       "activity": "Activitatea organizației",
       "legal": "Informații legale",
       "financial": "Informații financiare",
-      "open_data": "Open data b17jJk%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "open_data": "ONG-ul în numere",
       "my_applications": "Aplicațiile mele",
       "practice_programs": "Programe de practică",
       "services": "Servicii"
@@ -361,7 +361,7 @@
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
         "label": "Dacă organizația ta face parte dintr-o organizație internațională, menționeaz-o mai jos*",
-        "helper": "Denumirea oficiala conform cu registrul ONG."
+        "helper": "Notează denumirea oficială conform cu registrul ONG."
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
@@ -569,7 +569,7 @@
       "link": "Link raport activitate",
       "volunteers": "Număr voluntari",
       "contractors": "Număr contractori",
-      "volunteer_helper": "Qu6I6w5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "volunteer_helper": "Numărul total al voluntarilor organizației în anul respectiv",
       "contractor_helper": "T77DdsJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "report_helper": "ZUsGYe%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     }
@@ -728,7 +728,7 @@
   },
   "appstore": {
     "title": "Aplicații",
-    "description": "Descoperă toate aplicațiile disponibile pentru profilul organizației tale. Află mai multe detalii despre fiecare și adauggă-le pe cele pe care vrei să le folosești.",
+    "description": "Descoperă toate aplicațiile disponibile pentru profilul organizației tale. Află mai multe detalii despre fiecare și adaugă-le pe cele pe care vrei să le folosești.",
     "add": "Adaugă aplicație",
     "all": "Toate aplicațiile",
     "tabs": {
