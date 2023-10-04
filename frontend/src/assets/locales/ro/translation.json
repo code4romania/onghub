@@ -34,10 +34,10 @@
     "show_more": "Vezi tot",
     "show_less": "Arată mai puțin",
     "upload": {
-      "file": "Numai fișiere de tip PDF, DOC, DOCX, XLSX sunt permise pentru statutul organizației",
+      "file": "Numai fișiere de tip PDF sunt permise pentru statutul organizației.",
       "image": "Numai fișiere de tip PNG, JPG, JPEG sunt permise pentru logo",
       "image_size": "Dimensiunea maximă pentru logo este de 6 MB",
-      "document_size": "Dimensiunea maximă pentru statutul organizației este de 6 MB",
+      "document_size": "Dimensiunea maximă pentru statutul organizației este de 25 MB",
       "logo": "Eroare la încărcarea logo-ului",
       "statute": "Eroare la încărcarea statutului organizației"
     },
@@ -223,7 +223,6 @@
       "type": {
         "label": "Tip organizație*",
         "required": "Tipul organizației este obligatoriu",
-        "helper": "Lorem ipsum. Help text."
       },
       "email": {
         "required": "Email-ul este obligatoriu",
@@ -304,7 +303,7 @@
       "website": {
         "required": "Website-ul este obligatoriu",
         "invalid": "Website-ul are un format invalid",
-        "label": "Website*"
+        "label": "Website"
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",
@@ -347,14 +346,12 @@
       "regions_helper": "Alege din listă variantele care se aplică",
       "federations": {
         "part_of": "Organizația ta face parte din una sau mai multe federații?",
-        "helper": "De exemplu, lorem ipsum. Help text.",
         "yes": "Da",
         "no": "Nu",
         "label": "Menționează-le mai jos*"
       },
       "coalitions": {
         "part_of": "Organizația ta face parte din una sau mai multe coaliții?*",
-        "helper": "De exemplu, lorem ipsum. Help text.",
         "label": "Menționează-le mai jos*"
       },
       "international": {
@@ -368,7 +365,6 @@
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
-        "has_any_helper": "De exemplu, lorem ipsum. Help text.",
         "label": "Localități în care organizația are filiale sau sucursale*",
         "helper": "Începe să scrii numele localității în câmpul de mai sus. Poți introduce oricâte localități sunt relevante pentru activitatea organizației."
       },
@@ -378,7 +374,6 @@
       },
       "grants": {
         "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
-        "helper": "De exemplu, lorem ipsum. Help text."
       },
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
@@ -513,7 +508,7 @@
     "income": {
       "membership": "Venituri din cotizații",
       "donations": "Venituri din donații",
-      "percent": "Venituri 2IjjAV%",
+      "percent": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
       "sponsorship": "Venituri din sponsorizări",
       "economic": "Venituri din activitatea economica",
       "other": "Alte venituri",
@@ -610,7 +605,7 @@
   },
   "user": {
     "title": "Utilizatori",
-    "subtitle": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "subtitle": "Administrează de aici conturile de utilizatori. Poți adăuga utilizatori noi și edita sau restricționa utilizatării deja existenți.",
     "add": "Adaugă Utilizator",
     "not_found": "Utilizatorul nu există în baza de date",
     "failure_email": "Există deja un utilizator cu acest e-mail",
@@ -709,7 +704,7 @@
     "restrict": "Restricționează temporar",
     "title": "ONG-uri",
     "list": "Lista ONG-uri",
-    "administer": "Administrează aici accesul pentru organizațiile din sistem.",
+    "administer": "Administrează aici organizațiile înscrise în NGO Hub.",
     "restrict_error": "Eroare la restricționarea organizației",
     "activate_error": "Eroare la activarea organizației",
     "activate": "Activează",
@@ -733,7 +728,7 @@
   },
   "appstore": {
     "title": "Aplicații",
-    "description": "Q0b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "description": "Descoperă toate aplicațiile disponibile pentru profilul organizației tale. Află mai multe detalii despre fiecare și adauggă-le pe cele pe care vrei să le folosești.",
     "add": "Adaugă aplicație",
     "all": "Toate aplicațiile",
     "tabs": {
@@ -802,20 +797,20 @@
       },
       "short": {
         "required": "Descrierea scurtă este obligatorie",
-        "max": "Descrierea scurtă poate avea maxim 120 de caractere",
+        "max": "Descrierea scurtă poate avea maxim 200 de caractere",
         "min": "Descrierea scurtă poate avea minim 50 de caractere",
         "label": "Descriere scurtă",
-        "helper": "Maximum 250 de caractere"
+        "helper": "Descrie aplicația în maxim 200 de caractere"
       },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
         "max": "Descrierea extinsă poate avea maxim 700 de caractere",
         "min": "Descrierea extinsă poate avea minim 200 de caractere",
-        "label": "Descriere extinsa aplicație*",
-        "helper": "Maximum 700 de caractere"
+        "label": "Descriere extinsă aplicație*",
+        "helper": "Include o descriere mai amplă, de maximum 700 de caractere"
       },
       "website": {
-        "label": "Link către website prezentare aplicație*",
+        "label": "Link către website prezentare aplicație",
         "required": "Link-ul către website este obligatoriu"
       },
       "login_link": {
@@ -869,7 +864,6 @@
     },
     "form": {
       "title": "Date generale",
-      "subtitle": "twoB4bt%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "logo": "Logo aplicație",
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
@@ -945,13 +939,13 @@
   },
   "my_apps": {
     "title": "Aplicațiile mele",
-    "subtitle": "28d%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "subtitle": "Aici poți vizualiza și accesa toate aplicațiile activate în contul NGO Hub al organizației tale.",
     "open": "Deschide",
     "more": "Mai mult"
   },
   "requests": {
     "title": "Solicitări acces",
-    "subtitle": "A37vF0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "subtitle": "Administrează aici solicitările de acces ale organizațiilor în NGO HUb",
     "load_error": "Eroare la încărcarea solicitărilor",
     "status_error": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
@@ -971,7 +965,7 @@
       },
       "reject": {
         "title": "Respinge și trimite e-mail",
-        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferita la înregistrare. Confirmă respingerea?",
+        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferită la înregistrare. Confirmă respingerea?",
         "confirm": "Respinge solicitarea"
       }
     },
@@ -1010,9 +1004,9 @@
       "number_of_pending_requests": "Cereri înscriere organizații în așteptare",
       "number_of_updated_organizations": "Număr de organizații cu datele actualizate",
       "number_of_users": "Număr total de utilizatori individuali",
-      "next_update": "s1fi%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Următoarea actualizare de date va fi necesară la 30 Iunie 2023.",
-      "active_apps": "Aplicații active",
-      "view_active_apps": "Vezi aplicații active",
+      "next_update": "Următoarea actualizare de date va fi necesară la 30 Iunie 2024.",
+      "active_apps": "Aplicațiile active",
+      "view_active_apps": "Vezi aplicațiile active",
       "active_users": "Utilizatori în organizație",
       "handle_users": "Gestionează utilizatori",
       "view_data": "Vizualizează datele",
@@ -1027,7 +1021,7 @@
       "request_chart": "Cereri înscriere în NGO Hub",
       "organization_statistics_error": "Eroare la încărcarea statisticilor despre organizație",
       "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri în organizație",
-      "user_list": "Lista utilizatori",
+      "user_list": "Listă utilizatori",
       "filter": {
         "yearly": "Din totdeauna",
         "monthly": "Lunar",
