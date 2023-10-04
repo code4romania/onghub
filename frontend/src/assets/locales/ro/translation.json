@@ -222,7 +222,7 @@
       },
       "type": {
         "label": "Tip organizație*",
-        "required": "Tipul organizației este obligatoriu",
+        "required": "Tipul organizației este obligatoriu"
       },
       "email": {
         "required": "Email-ul este obligatoriu",
@@ -373,7 +373,7 @@
         "helper": "Acreditarea furnizorilor de servicii sociale se realizează conform Legii 197/2012."
       },
       "grants": {
-        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*"
       },
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
