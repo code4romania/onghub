@@ -359,7 +359,7 @@
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
-        "part_of_helper": "De exemplu, lorem ipsum. Help text. %%%%%%%%%%%%%%%%%",
+        "part_of_helper": "De exemplu, lorem ipsum. Help text.",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
