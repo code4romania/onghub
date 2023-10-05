@@ -887,7 +887,7 @@
     },
     "details": {
       "website": "Vezi website",
-      "how_to": "Cum poți folosi aplicația pentru organizația ta",
+      "how_to": "Cum poți activa aplicația pentru organizația ta",
       "request": "Solicită aplicația",
       "description": "Descriere",
       "video": "Video prezentare",
@@ -927,7 +927,7 @@
     "list_header": {
       "name": "ONG",
       "user_count": "Utilizatori Individuali",
-      "created_on": "Dată adăugare yU8Dp%%%%%%%%%%%%%%%%%%%%%%%%",
+      "created_on": "Dată adăugare",
       "access": "Access"
     },
     "list": {
