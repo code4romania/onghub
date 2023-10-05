@@ -68,9 +68,9 @@
   "account": {
     "password": "Parola a fost schimbată cu success.",
     "my_account": "Contul meu",
-    "account_description": "6dvDg4w%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează adinistratorii platformei.",
     "settings": "Setări cont",
-    "settings_description": "0X1IEP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "settings_description": "Datele asociate contului tău din NGO Hub. ",
     "change_password": "Schimbă parola",
     "name": "Nume",
     "email": "E-mail cont",
@@ -78,11 +78,11 @@
     "wrong_password": "Parolele nu se potrivesc",
     "close": {
       "account": "Închide contul",
-      "title": "I953uUMJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Confirmă închiderea contului?",
-      "description": "Închiderea contului NGO Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Lorem ipsum. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
+      "title": "Confirmă închiderea contului",
+      "description": "După închiderea contului NGO Hub nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
-    "no_access": "Lorem ipsum. Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează echipa noastră gratuit prin e-mail la",
+    "no_access": "Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează administratorul platformei",
     "back": "Înapoi la website",
     "config": {
       "old": {
@@ -100,7 +100,7 @@
     "restricted": "Cont restricționat"
   },
   "organization": {
-    "error": "Organizația nu s-a putut încărca 5Ivu4FUC%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "error": "Datele despre organizație nu s-au putut încărca",
     "my_organization": "Organizația mea",
     "description": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin e-mail la",
@@ -119,13 +119,13 @@
       "activity": "Activitatea organizației",
       "legal": "Informații legale",
       "financial": "Informații financiare",
-      "open_data": "Open data b17jJk%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "open_data": "ONG-ul în numere",
       "my_applications": "Aplicațiile mele",
       "practice_programs": "Programe de practică",
       "services": "Servicii"
     },
     "save_error": "Organizația nu s-a putut salva",
-    "data_update": "Z8bR4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
+    "data_update": "Z8bR4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Unde apare asta? Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "modal": {
       "cancel": "Anulează modificările",
       "close": "Închide",
@@ -307,7 +307,7 @@
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",
-      "redirect": "V5es0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Link către contul de Redirecționează",
+      "redirect": "V5es0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Link către contul de Redirecționează - are sens?",
       "sms": {
         "length": "SMS-ul pentru donații trebuie să aibă 4 caractere",
         "invalid": "SMS-ul pentru donații are un format invalid",
@@ -361,7 +361,7 @@
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
         "label": "Dacă organizația ta face parte dintr-o organizație internațională, menționeaz-o mai jos*",
-        "helper": "Denumirea oficiala conform cu registrul ONG."
+        "helper": "Notează denumirea oficială conform cu registrul ONG."
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
@@ -569,7 +569,7 @@
       "link": "Link raport activitate",
       "volunteers": "Număr voluntari",
       "contractors": "Număr contractori",
-      "volunteer_helper": "Qu6I6w5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "volunteer_helper": "Numărul total al voluntarilor organizației în anul respectiv",
       "contractor_helper": "T77DdsJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
       "report_helper": "ZUsGYe%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
     }
@@ -704,7 +704,7 @@
     "restrict": "Restricționează temporar",
     "title": "ONG-uri",
     "list": "Lista ONG-uri",
-    "administer": "Administrează aici organizațiile înscrise în NGO Hub.",
+    "administer": " organizațiile înscrise în NGO Hub.",
     "restrict_error": "Eroare la restricționarea organizației",
     "activate_error": "Eroare la activarea organizației",
     "activate": "Activează",
@@ -728,7 +728,7 @@
   },
   "appstore": {
     "title": "Aplicații",
-    "description": "Descoperă toate aplicațiile disponibile pentru profilul organizației tale. Află mai multe detalii despre fiecare și adauggă-le pe cele pe care vrei să le folosești.",
+    "description": "Descoperă toate aplicațiile disponibile pentru profilul organizației tale. Află mai multe detalii despre fiecare și adaugă-le pe cele pe care vrei să le folosești.",
     "add": "Adaugă aplicație",
     "all": "Toate aplicațiile",
     "tabs": {
@@ -760,7 +760,7 @@
       "upload": "Încarcă logo",
       "logo_descr": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
       "steps": "Pași pentru adăugarea aplicației",
-      "steps_descr": "ySH%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "steps_descr": "ySH%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% - unde apare asta?",
       "step_add": "Adaugă mai mulți pași",
       "step_delete": "Șterge pas"
     },
@@ -868,7 +868,7 @@
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
       "steps_title": "Pași pentru adăugarea aplicației",
-      "steps_subtitle": "m5J%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "steps_subtitle": "Adaugă și detaliază pașii necesari pentru obținerea accesului în aplicație",
       "add_step": "Adaugă pas",
       "delete_step": "Șterge pas"
     }
@@ -902,7 +902,7 @@
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
       "close_title": "Confirmă eliminarea aplicației",
-      "close_description": "Closing the NGO Hub account means that you will no longer have access to the applications provided through this portal. If you want to close the account permanently, press the button below and our team will contact you to complete the process.",
+      "close_description": "ce se întâmplă cu datele %%%%%%%%%%%%%%%%%%%%",
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
@@ -1245,13 +1245,13 @@
       "location": {
         "required": "Orașul este obligatoriu",
         "label": "Oraș*",
-        "helper": "52qczn7n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-        "placeholder": "București"
+        "helper": "Începe să scrii numele localității în câmpul de mai sus, apoi selectează-l pe cel dorit din listă",
+        "placeholder": "Miercurea Ciuc"
       },
       "deadline": {
         "label": "Deadline aplicare",
-        "helper": "s3I%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-        "placeholder": "31.12.2999"
+        "helper": "Alege data din calendar",
+        "placeholder": "31.12.2025"
       },
       "description": {
         "required": "Descrierea este obligatorie",
@@ -1263,16 +1263,16 @@
         "placeholder": "Lorem ipsum"
       },
       "start_date": {
-        "required": "Data început este obligatorie",
+        "required": "Data de început este obligatorie",
         "label": "Data început program de practică*",
         "helper": "",
         "placeholder": "31.12.2999"
       },
       "end_date": {
-        "label": "Data sfârșit program de practică*",
+        "label": "Dată sfârșit program de practică*",
         "helper": "",
         "placeholder": "31.12.2999",
-        "start_date_after_end_date": "Data sfârșit nu poate fi mai mica decat data de început"
+        "start_date_after_end_date": "Data de sfârșit nu poate fi anterioară datei de început."
       },
       "is_period_not_determined": {
         "label": "Perioada nedeterminata",
@@ -1306,7 +1306,7 @@
       },
       "skills": {
         "label": "Participantul va învăța (cuvinte cheie)",
-        "helper": "Adaugă abilități pe care participanții la program vor avea ocazia sa le dezvolte în timpul programului",
+        "helper": "Adaugă abilități pe care participanții la program vor avea ocazia să le dezvolte în timpul programului",
         "placeholder": "Selectează/Adaugă..."
       },
       "faculties": {
@@ -1330,7 +1330,7 @@
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%%"
       }
     },
     "feedback": {
