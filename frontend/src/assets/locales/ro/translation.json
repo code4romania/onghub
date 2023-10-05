@@ -55,7 +55,7 @@
     "no": "Nu"
   },
   "menu": {
-    "informations": "Informații",
+    "information": "Informații",
     "collapse": "Restrânge meniul"
   },
   "pagination": {
@@ -68,7 +68,7 @@
   "account": {
     "password": "Parola a fost schimbată cu success.",
     "my_account": "Contul meu",
-    "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează adinistratorii platformei.",
+    "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează administratorii platformei.",
     "settings": "Setări cont",
     "settings_description": "Datele asociate contului tău din NGO Hub. ",
     "change_password": "Schimbă parola",
@@ -605,7 +605,7 @@
   },
   "user": {
     "title": "Utilizatori",
-    "subtitle": "Administrează de aici conturile de utilizatori. Poți adăuga utilizatori noi și edita sau restricționa utilizatării deja existenți.",
+    "subtitle": "Administrează de aici conturile de utilizatori. Poți adăuga utilizatori noi și edita sau restricționa utilizatorii deja existenți.",
     "add": "Adaugă Utilizator",
     "not_found": "Utilizatorul nu există în baza de date",
     "failure_email": "Există deja un utilizator cu acest e-mail",
