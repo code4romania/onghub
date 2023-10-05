@@ -222,7 +222,8 @@
       },
       "type": {
         "label": "Tip organizație*",
-        "required": "Tipul organizației este obligatoriu"
+        "required": "Tipul organizației este obligatoriu",
+        "helper": ""
       },
       "email": {
         "required": "Email-ul este obligatoriu",
@@ -348,11 +349,13 @@
         "part_of": "Organizația ta face parte din una sau mai multe federații?",
         "yes": "Da",
         "no": "Nu",
-        "label": "Menționează-le mai jos*"
+        "label": "Menționează-le mai jos*",
+        "helper": ""
       },
       "coalitions": {
         "part_of": "Organizația ta face parte din una sau mai multe coaliții?*",
-        "label": "Menționează-le mai jos*"
+        "label": "Menționează-le mai jos*",
+        "helper": ""
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
@@ -365,6 +368,7 @@
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
+        "has_any_helper": "",
         "label": "Localități în care organizația are filiale sau sucursale*",
         "helper": "Începe să scrii numele localității în câmpul de mai sus. Poți introduce oricâte localități sunt relevante pentru activitatea organizației."
       },
@@ -373,7 +377,8 @@
         "helper": "Acreditarea furnizorilor de servicii sociale se realizează conform Legii 197/2012."
       },
       "grants": {
-        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*"
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "helper": ""
       },
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
@@ -864,6 +869,7 @@
     },
     "form": {
       "title": "Date generale",
+      "subtitle": "",
       "logo": "Logo aplicație",
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
