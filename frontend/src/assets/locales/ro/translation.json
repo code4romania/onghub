@@ -757,7 +757,7 @@
     "create": {
       "error": "Eroare la crearea aplicației",
       "success": "Aplicație creată cu succes",
-      "description": "R92iB2x%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "description": "Adaugă în câmpurile de mai jos datele generale ale unei noi aplicații",
       "edit": "Editare pagină aplicație",
       "generate": "Generare pagină aplicație",
       "general": "Date generale",
@@ -1336,7 +1336,7 @@
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
       }
     },
     "feedback": {
