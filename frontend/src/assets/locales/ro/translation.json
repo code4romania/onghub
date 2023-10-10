@@ -752,7 +752,7 @@
       "status": "Status",
       "remove": "Elimină definitiv",
       "confirmation": "Confirmă ștergerea aplicației?",
-      "description": "RKyX4sK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recoperată."
     },
     "create": {
       "error": "Eroare la crearea aplicației",
@@ -908,7 +908,7 @@
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
       "close_title": "Confirmă eliminarea aplicației",
-      "close_description": "ce se întâmplă cu datele %%%%%%%%%%%%%%%%%%%%",
+      "close_description": "Confirmând eliminarea aplicației nu vei mai putea accesa aplicația din contul NGO HUb al organizației tale. Aplicația va rămâne disponibilă în tab-ul Aplicațiile mele de unde o vei putea solicita dacă vei vrea să o folosești din nou.",
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
