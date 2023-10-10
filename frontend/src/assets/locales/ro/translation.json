@@ -257,7 +257,7 @@
         "max": "Numărul RAF poate avea maxim 20 de caractere",
         "min": "Numărul RAF poate avea minim 8 caractere",
         "invalid": "Numărul RAF are un format invalid",
-        "label": "Număr de înregistrare în Registrul Asociațiilor și Fundațiilor (RAF)*"
+        "label": "Număr de înregistrare în RAF*"
       },
       "city": {
         "required": "Orașul este obligatoriu",
