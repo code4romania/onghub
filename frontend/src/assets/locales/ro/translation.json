@@ -543,7 +543,7 @@
     "no_data": "Fișierul pe care l-ai încărcat nu conține date",
     "invalid": "Formatul fișierului este invalid",
     "report": {
-      "title": "Sumar",
+      "title": "Sumar de activitate",
       "volunteers": "Voluntari",
       "contractors": "Contractori",
       "activity": "Raport activitate",
@@ -563,7 +563,7 @@
       "download": "Descarca model de tabel finanțatori"
     },
     "modal": {
-      "summary": "Sumar activitate"
+      "summary": "Sumar de activitate"
     },
     "config": {
       "volunt_negative": "Numărul de voluntari nu poate fi un număr negativ.",
@@ -575,7 +575,7 @@
       "volunteers": "Număr voluntari",
       "contractors": "Număr contractori",
       "volunteer_helper": "Numărul total al voluntarilor organizației în anul respectiv",
-      "contractor_helper": "T77DdsJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "contractor_helper": "Numărul persoanelor care nu sunt angajate ale organizației dar contribuie la realizarea activităților pe baza contractelor de colaborare, drepturi de autor sau a prestărilor de servicii",
       "report_helper": "Adaugă link-ul către raportul de activitate al organizației pe anul anterior."
     }
   },
