@@ -55,11 +55,11 @@
     "no": "Nu"
   },
   "menu": {
-    "informations": "Informații",
+    "information": "Informații",
     "collapse": "Restrânge meniul"
   },
   "pagination": {
-    "rows_per_page": "Rânduri pe pagina",
+    "rows_per_page": "Rânduri pe pagină",
     "range_separator_text": "din"
   },
   "empty": {
@@ -68,7 +68,7 @@
   "account": {
     "password": "Parola a fost schimbată cu success.",
     "my_account": "Contul meu",
-    "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează adinistratorii platformei.",
+    "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează administratorii platformei.",
     "settings": "Setări cont",
     "settings_description": "Datele asociate contului tău din NGO Hub. ",
     "change_password": "Schimbă parola",
@@ -222,7 +222,8 @@
       },
       "type": {
         "label": "Tip organizație*",
-        "required": "Tipul organizației este obligatoriu"
+        "required": "Tipul organizației este obligatoriu",
+        "helper": ""
       },
       "email": {
         "required": "Email-ul este obligatoriu",
@@ -256,7 +257,7 @@
         "max": "Numărul RAF poate avea maxim 20 de caractere",
         "min": "Numărul RAF poate avea minim 8 caractere",
         "invalid": "Numărul RAF are un format invalid",
-        "label": "Număr de înregistrare în Registrul Asociațiilor și Fundațiilor (RAF)*"
+        "label": "Număr de înregistrare în RAF*"
       },
       "city": {
         "required": "Orașul este obligatoriu",
@@ -307,7 +308,7 @@
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",
-      "redirect": "V5es0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Link către contul de Redirecționează - are sens?",
+      "redirect": "Link către pagina organizației de pe Redirecționează.ro",
       "sms": {
         "length": "SMS-ul pentru donații trebuie să aibă 4 caractere",
         "invalid": "SMS-ul pentru donații are un format invalid",
@@ -348,11 +349,13 @@
         "part_of": "Organizația ta face parte din una sau mai multe federații?",
         "yes": "Da",
         "no": "Nu",
-        "label": "Menționează-le mai jos*"
+        "label": "Menționează-le mai jos*",
+        "helper": ""
       },
       "coalitions": {
         "part_of": "Organizația ta face parte din una sau mai multe coaliții?*",
-        "label": "Menționează-le mai jos*"
+        "label": "Menționează-le mai jos*",
+        "helper": ""
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
@@ -365,6 +368,7 @@
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
+        "has_any_helper": "",
         "label": "Localități în care organizația are filiale sau sucursale*",
         "helper": "Începe să scrii numele localității în câmpul de mai sus. Poți introduce oricâte localități sunt relevante pentru activitatea organizației."
       },
@@ -373,7 +377,8 @@
         "helper": "Acreditarea furnizorilor de servicii sociale se realizează conform Legii 197/2012."
       },
       "grants": {
-        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*"
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "helper": ""
       },
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
@@ -538,7 +543,7 @@
     "no_data": "Fișierul pe care l-ai încărcat nu conține date",
     "invalid": "Formatul fișierului este invalid",
     "report": {
-      "title": "Sumar",
+      "title": "Sumar de activitate",
       "volunteers": "Voluntari",
       "contractors": "Contractori",
       "activity": "Raport activitate",
@@ -558,7 +563,7 @@
       "download": "Descarca model de tabel finanțatori"
     },
     "modal": {
-      "summary": "Sumar activitate"
+      "summary": "Sumar de activitate"
     },
     "config": {
       "volunt_negative": "Numărul de voluntari nu poate fi un număr negativ.",
@@ -570,8 +575,8 @@
       "volunteers": "Număr voluntari",
       "contractors": "Număr contractori",
       "volunteer_helper": "Numărul total al voluntarilor organizației în anul respectiv",
-      "contractor_helper": "T77DdsJ%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-      "report_helper": "ZUsGYe%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "contractor_helper": "Numărul persoanelor care nu sunt angajate ale organizației dar contribuie la realizarea activităților pe baza contractelor de colaborare, drepturi de autor sau a prestărilor de servicii",
+      "report_helper": "Adaugă link-ul către raportul de activitate al organizației pe anul anterior."
     }
   },
   "applications": {
@@ -605,7 +610,7 @@
   },
   "user": {
     "title": "Utilizatori",
-    "subtitle": "Administrează de aici conturile de utilizatori. Poți adăuga utilizatori noi și edita sau restricționa utilizatării deja existenți.",
+    "subtitle": "Administrează de aici conturile de utilizatori. Poți adăuga utilizatori noi și edita sau restricționa utilizatorii deja existenți.",
     "add": "Adaugă Utilizator",
     "not_found": "Utilizatorul nu există în baza de date",
     "failure_email": "Există deja un utilizator cu acest e-mail",
@@ -747,12 +752,12 @@
       "status": "Status",
       "remove": "Elimină definitiv",
       "confirmation": "Confirmă ștergerea aplicației?",
-      "description": "RKyX4sK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recoperată."
     },
     "create": {
       "error": "Eroare la crearea aplicației",
       "success": "Aplicație creată cu succes",
-      "description": "R92iB2x%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+      "description": "Adaugă în câmpurile de mai jos datele generale ale unei noi aplicații",
       "edit": "Editare pagină aplicație",
       "generate": "Generare pagină aplicație",
       "general": "Date generale",
@@ -864,6 +869,7 @@
     },
     "form": {
       "title": "Date generale",
+      "subtitle": "",
       "logo": "Logo aplicație",
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
@@ -881,7 +887,7 @@
     },
     "details": {
       "website": "Vezi website",
-      "how_to": "Cum poți folosi aplicația pentru organizația ta",
+      "how_to": "Cum poți activa aplicația pentru organizația ta",
       "request": "Solicită aplicația",
       "description": "Descriere",
       "video": "Video prezentare",
@@ -902,7 +908,7 @@
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
       "close_title": "Confirmă eliminarea aplicației",
-      "close_description": "ce se întâmplă cu datele %%%%%%%%%%%%%%%%%%%%",
+      "close_description": "Confirmând eliminarea aplicației nu vei mai putea accesa aplicația din contul NGO HUb al organizației tale. Aplicația va rămâne disponibilă în tab-ul Aplicațiile mele de unde o vei putea solicita dacă vei vrea să o folosești din nou.",
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
@@ -921,7 +927,7 @@
     "list_header": {
       "name": "ONG",
       "user_count": "Utilizatori Individuali",
-      "created_on": "Dată adăugare yU8Dp%%%%%%%%%%%%%%%%%%%%%%%%",
+      "created_on": "Dată adăugare",
       "access": "Access"
     },
     "list": {
@@ -1330,7 +1336,7 @@
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
       }
     },
     "feedback": {
