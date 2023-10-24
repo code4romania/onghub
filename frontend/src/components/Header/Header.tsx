@@ -12,10 +12,10 @@ import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   openSlidingMenu?: any;
-  hideLogIn?: boolean;
+  hideLogInButton?: boolean;
 }
 
-const Header = ({ openSlidingMenu, hideLogIn }: HeaderProps) => {
+const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
   const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
@@ -46,7 +46,7 @@ const Header = ({ openSlidingMenu, hideLogIn }: HeaderProps) => {
               />
             </div>
           </div>
-          {!isAuthenticated && !isRestricted && !hideLogIn && (
+          {!isAuthenticated && !isRestricted && !hideLogInButton && (
             <button
               aria-label={t('enter')}
               className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
