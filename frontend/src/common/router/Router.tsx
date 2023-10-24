@@ -287,17 +287,21 @@ const Router = () => {
           {role === UserRole.ADMIN && (
             <>
               <Route
-                path="applications"
+                path="all-apps"
                 element={
                   <RoleGuard roles={[UserRole.ADMIN]}>
-                    <Outlet />
+                    <AllApps />
                   </RoleGuard>
                 }
-              >
-                <Route index element={<Navigate to={'all'} replace={true}></Navigate>} />
-                <Route path="all" element={<AllApps />} />
-                <Route path="my-apps" element={<MyApps />} />
-              </Route>
+              />
+              <Route
+                path="my-apps"
+                element={
+                  <RoleGuard roles={[UserRole.ADMIN]}>
+                    <MyApps />
+                  </RoleGuard>
+                }
+              />
 
               <Route
                 path={'application/:id'}
