@@ -10,7 +10,12 @@ import { useUser } from '../../store/selectors';
 import { Auth } from 'aws-amplify';
 import { useTranslation } from 'react-i18next';
 
-const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
+interface HeaderProps {
+  openSlidingMenu?: any;
+  hideLogIn?: boolean;
+}
+
+const Header = ({ openSlidingMenu, hideLogIn }: HeaderProps) => {
   const { logout, isAuthenticated, isRestricted } = useAuthContext();
   const navigate = useNavigate();
   const { profile } = useUser();
@@ -41,7 +46,7 @@ const Header = ({ openSlidingMenu }: { openSlidingMenu?: any }) => {
               />
             </div>
           </div>
-          {!isAuthenticated && !isRestricted && (
+          {!isAuthenticated && !isRestricted && !hideLogIn && (
             <button
               aria-label={t('enter')}
               className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"

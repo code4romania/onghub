@@ -100,7 +100,7 @@ const CreateOrganization = () => {
 
   return (
     <div className="w-screen h-screen max-w-full ">
-      <Header />
+      <Header hideLogIn />
       <div className="flex p-6">
         <div className="content w-full flex flex-col gap-4">
           <ProgressSteps disabled={success} />
