@@ -56,10 +56,15 @@ const steps_seed: IProgressStep[] = [
   },
 ];
 
-export default function ProgressSteps({ disabled }: { disabled: boolean }) {
-  const navigate = useNavigate();
+export default function ProgressSteps() {
   const location = useLocation();
   const [steps, setSteps] = useState(steps_seed);
+
+  const navigate = useNavigate();
+
+  const handlePreviousStepClick = (href: string) => {
+    navigate(href);
+  };
 
   useEffect(() => {
     if (location) {
@@ -78,21 +83,6 @@ export default function ProgressSteps({ disabled }: { disabled: boolean }) {
     }
   }, [location]);
 
-  const progress = (step: IProgressStep, stepIndex: number) => {
-    if (!disabled) {
-      steps.forEach((step, index) => {
-        if (index < stepIndex) {
-          step.status = PROGRESS_STEP_TYPE.COMPLETE;
-        } else if (index === stepIndex) {
-          step.status = PROGRESS_STEP_TYPE.CURRENT;
-        } else {
-          step.status = PROGRESS_STEP_TYPE.UPCOMING;
-        }
-      });
-      navigate(step.href);
-    }
-  };
-
   return (
     <nav aria-label="Progress">
       <ol
@@ -105,6 +95,7 @@ export default function ProgressSteps({ disabled }: { disabled: boolean }) {
               <a
                 aria-label={`Step ${step.name}`}
                 className="group pl-4 py-2 flex flex-col border-l-4 border-indigo-600 hover:border-indigo-800 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
+                onClick={handlePreviousStepClick.bind(null, step.href)}
               >
                 <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase group-hover:text-indigo-800">
                   {step.id}
