@@ -1,7 +1,7 @@
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { InternalErrors } from '../../common/errors/internal-errors';
 import { mapSelectToValue } from '../../common/helpers/format.helper';
 import Header from '../../components/Header/Header';
@@ -9,8 +9,10 @@ import { Loading } from '../../components/loading/Loading';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestMutation } from '../../services/request/Request.queries';
 import ProgressSteps from './components/ProgressSteps';
-import { CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
+import { CREATE_FLOW_URL, CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
+
+const STEPS = ['new', 'general', 'activity', 'legal'];
 
 const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
@@ -18,6 +20,7 @@ const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
   const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   const {
     mutateAsync: mutateRequest,
@@ -31,8 +34,12 @@ const CreateOrganization = () => {
 
   useEffect(() => {
     const localStorageData = JSON.parse(localStorage.getItem(CREATE_LOCAL_STORAGE_KEY) || '{}');
-    if (localStorageData) {
+    const userCompletedSteps = Object.keys(localStorageData).length;
+    if (userCompletedSteps > 0) {
       setOrganization(localStorageData);
+      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[userCompletedSteps]}`);
+    } else {
+      navigate(`/${CREATE_FLOW_URL.BASE}`);
     }
   }, []);
 
@@ -103,7 +110,7 @@ const CreateOrganization = () => {
       <Header />
       <div className="flex p-6">
         <div className="content w-full flex flex-col gap-4">
-          <ProgressSteps disabled={success} />
+          <ProgressSteps />
           {!success && !error && (
             <Outlet
               context={[
