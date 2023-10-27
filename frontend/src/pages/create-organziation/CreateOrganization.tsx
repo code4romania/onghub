@@ -9,10 +9,14 @@ import { Loading } from '../../components/loading/Loading';
 import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestMutation } from '../../services/request/Request.queries';
 import ProgressSteps from './components/ProgressSteps';
-import { CREATE_FLOW_URL, CREATE_LOCAL_STORAGE_KEY } from './constants/CreateOrganization.constant';
+import {
+  CREATE_FLOW_URL,
+  CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY,
+  CREATE_LOCAL_STORAGE_KEY,
+} from './constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 
-const STEPS = ['new', 'general', 'activity', 'legal'];
+const STEPS = ['account', 'general', 'activity', 'legal'];
 
 const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
@@ -20,6 +24,7 @@ const CreateOrganization = () => {
   const [organization, setOrganization] = useState<ICreateOrganizationPayload | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
   const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
   const navigate = useNavigate();
 
   const {
@@ -33,21 +38,13 @@ const CreateOrganization = () => {
   useCountiesQuery();
 
   useEffect(() => {
-    const localStorageData = JSON.parse(localStorage.getItem(CREATE_LOCAL_STORAGE_KEY) || '{}');
-    const userCompletedSteps = Object.keys(localStorageData).length;
-    if (userCompletedSteps > 0) {
-      setOrganization(localStorageData);
-      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[userCompletedSteps]}`);
-    } else {
-      navigate(`/${CREATE_FLOW_URL.BASE}`);
-    }
-  }, []);
+    const { activeStepIndex } = JSON.parse(
+      localStorage.getItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY) || '{"activeStepIndex": 0}',
+    );
+    setActiveStepIndex(activeStepIndex);
 
-  useEffect(() => {
-    if (organization) {
-      localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify(organization));
-    }
-  }, [organization]);
+    navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[activeStepIndex]}`);
+  }, []);
 
   useEffect(() => {
     if (organization?.legal) {
@@ -71,7 +68,8 @@ const CreateOrganization = () => {
       organization.admin &&
       organization.general &&
       organization.activity &&
-      organization.legal
+      organization.legal &&
+      activeStepIndex === 4
     ) {
       // parse and map activity id's correctly
       let { activity } = organization;
@@ -89,6 +87,7 @@ const CreateOrganization = () => {
         {
           onSuccess: () => {
             localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
+            localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
             setSuccess(true);
           },
         },
@@ -120,6 +119,8 @@ const CreateOrganization = () => {
                 setLogo,
                 organizationStatute,
                 setOrganizationStatute,
+                activeStepIndex,
+                setActiveStepIndex,
               ]}
             />
           )}

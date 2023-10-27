@@ -304,7 +304,7 @@
       "website": {
         "required": "Website-ul este obligatoriu",
         "invalid": "Website-ul are un format invalid",
-        "label": "Website"
+        "label": "Website*"
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",

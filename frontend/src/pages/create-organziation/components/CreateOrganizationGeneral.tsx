@@ -15,7 +15,12 @@ import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.quer
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { useNomenclature } from '../../../store/selectors';
 import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
-import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import {
+  CREATE_FLOW_URL,
+  CREATE_LOCAL_STORAGE_KEY,
+} from '../constants/CreateOrganization.constant';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -24,7 +29,10 @@ const CreateOrganizationGeneral = () => {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { cities, counties } = useNomenclature();
 
-  const [organization, setOrganization, logo, setLogo] = useOutletContext<any>();
+  const [organization, setOrganization, logo, setLogo, , , activeStepIndex, setActiveStepIndex] =
+    useOutletContext<any>();
+
+  useInitStep(setOrganization);
 
   const { t } = useTranslation(['general', 'common']);
 
@@ -38,14 +46,35 @@ const CreateOrganizationGeneral = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValidating },
     reset,
     setValue,
+    getValues,
+    watch,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+  console.log(activeStepIndex);
 
+  //Store form data in local storage
+  const watchAllFields = watch();
+  useEffect(() => {
+    if (activeStepIndex > 1) {
+      return;
+    }
+    const general = getValues();
+    //Prevent filling localStorage with undefined data and prevent filling it with erros
+    const hasAdminValues = !!Object.values(general).filter((item) => item !== undefined).length;
+    const hasFieldErrors = !!Object.keys(errors).length;
+
+    //Using isValidating because RHF triggers 2 renders and update local storage with invalid data
+    if (hasAdminValues && !isValidating && !hasFieldErrors) {
+      localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, general }));
+    }
+  }, [watchAllFields]);
+
+  //Init for fields
   useEffect(() => {
     if (organization && organization.general) {
       reset(organization.general);
@@ -92,8 +121,13 @@ const CreateOrganizationGeneral = () => {
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
 
       setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
-
+      localStorage.setItem(
+        CREATE_LOCAL_STORAGE_KEY,
+        JSON.stringify({ ...organization, general: organizationGeneral }),
+      );
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
+
+      updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {

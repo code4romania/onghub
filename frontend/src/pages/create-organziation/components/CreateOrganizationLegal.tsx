@@ -25,6 +25,9 @@ import { OrganizationLegalConfig } from '../../organization/components/Organizat
 import { DirectorsTableHeaders } from '../../organization/components/OrganizationLegal/table-headers/DirectorsTable.headers';
 import { OthersTableHeaders } from '../../organization/components/OrganizationLegal/table-headers/OthersTable.headers';
 import { Contact } from '../../organization/interfaces/Contact.interface';
+import { CREATE_LOCAL_STORAGE_KEY } from '../constants/CreateOrganization.constant';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
@@ -41,8 +44,18 @@ const CreateOrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
 
-  const [organization, setOrganization, , , organizationStatute, setOrganizationStatute] =
-    useOutletContext<any>();
+  const [
+    organization,
+    setOrganization,
+    ,
+    ,
+    organizationStatute,
+    setOrganizationStatute,
+    activeStepIndex,
+    setActiveStepIndex,
+  ] = useOutletContext<any>();
+
+  useInitStep(setOrganization);
 
   const { t } = useTranslation(['legal', 'common']);
 
@@ -52,12 +65,38 @@ const CreateOrganizationLegal = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValidating },
+    getValues,
+    watch,
     reset,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  //Store form data in local storage
+  const watchAllFields = watch();
+  useEffect(() => {
+    const legal = getValues();
+    //Prevent filling localStorage with undefined data and prevent filling it with erros
+    const hasAdminValues = !!Object.values(legal).filter((item) => item !== undefined).length;
+    const hasFieldErrors = !!Object.keys(errors).length;
+
+    const legalReprezentative = {
+      id: legal.legalReprezentative_id,
+      fullName: legal.legalReprezentative_fullName,
+      phone: legal.legalReprezentative_phone,
+      email: legal.legalReprezentative_email,
+    };
+
+    //Using isValidating because RHF triggers 2 renders and update local storage with invalid data
+    if (hasAdminValues && !isValidating && !hasFieldErrors) {
+      localStorage.setItem(
+        CREATE_LOCAL_STORAGE_KEY,
+        JSON.stringify({ ...organization, legal: { legalReprezentative, others, directors } }),
+      );
+    }
+  }, [watchAllFields, others, directors]);
 
   useEffect(() => {
     if (organization && organization.legal) {
@@ -67,8 +106,9 @@ const CreateOrganizationLegal = () => {
         'legalReprezentative',
       );
       reset({ ...legalReprezentative });
-      setOthers(organization.legal.others);
-      setDirectors(organization.legal.directors);
+      // OR added in order for others and directors to be not undefined
+      setOthers(organization.legal.others || []);
+      setDirectors(organization.legal.directors || []);
     }
   }, [organization]);
 
@@ -120,6 +160,7 @@ const CreateOrganizationLegal = () => {
   };
 
   const onAddDirector = (contact: Partial<Contact>) => {
+    console.log(directors);
     setDirectors([...directors, contact]);
     setIsDirectorModalOpen(false);
   };
@@ -227,6 +268,7 @@ const CreateOrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
+    updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
     setOrganization((org: any) => ({
       ...org,
       legal: { legalReprezentative, directors, directorsDeleted, others, organizationStatute },

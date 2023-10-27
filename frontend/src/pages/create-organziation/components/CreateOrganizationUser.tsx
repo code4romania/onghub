@@ -8,13 +8,21 @@ import InputField from '../../../components/InputField/InputField';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { CreateOrganizationUserConfig } from '../configs/CreateOrganizationUserConfig';
-import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import {
+  CREATE_FLOW_URL,
+  CREATE_LOCAL_STORAGE_KEY,
+} from '../constants/CreateOrganization.constant';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
-  const [organization, setOrganization] = useOutletContext<any>();
+  const [organization, setOrganization, , , , , activeStepIndex, setActiveStepIndex] =
+    useOutletContext<any>();
+
+  useInitStep(setOrganization);
 
   const navigate = useNavigate();
 
@@ -24,15 +32,36 @@ const CreateOrganizationUser = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValidating },
+    watch,
+    getValues,
     reset,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
+  //Store form data in local storage
+  const watchAllFields = watch();
+  useEffect(() => {
+    if (activeStepIndex > 0) {
+      return;
+    }
+    const admin = getValues();
+    console.log(admin);
+    //Prevent filling localStorage with undefined data and prevent filling it with erros
+    const hasAdminValues = !!Object.values(admin).filter((item) => item !== undefined).length;
+    const hasFieldErrors = !!Object.keys(errors).length;
+
+    //Using isValidating because RHF triggers 2 renders and update local storage with invalid data
+    if (hasAdminValues && !isValidating && !hasFieldErrors) {
+      localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
+    }
+  }, [watchAllFields]);
+
   const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
+  //Init for fields
   useEffect(() => {
     if (organization && organization.admin) {
       reset({ ...organization.admin });
@@ -48,7 +77,9 @@ const CreateOrganizationUser = () => {
       };
 
       setOrganization((org: any) => ({ ...org, admin }));
+      localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
+      updateActiveStepIndexInLocalStorage(activeStepIndex, 1, setActiveStepIndex);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
