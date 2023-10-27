@@ -21,7 +21,7 @@ export const PHONE_REGEX =
 export const CUI_REGEX = /^(RO|)?[\d]*$/;
 export const NAME_REGEX = /^(?!.*[ ]{2})[a-zA-Z-\săîâșțĂÎÂȘȚ]*$/;
 export const ALPHANUMERIC_REGEX = /^(?!.*[ ]{2})[a-zA-Z\d-\s.#@%&()+/ăîâșțĂÎÂȘȚ,'"]*$/;
-export const RAF_NUMBER_REGEX = /^[a-zA-Z\d/]*$/;
+export const RAF_NUMBER_REGEX = /^[a-zA-Z\d/.]*$/;
 
 export const NUMERIC_REGEX = /^\d*$/;
 export const SMS_REGEX = /\d{4}|^$/;
