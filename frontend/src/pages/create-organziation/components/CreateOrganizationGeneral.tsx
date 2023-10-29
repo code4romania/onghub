@@ -21,6 +21,7 @@ import {
 } from '../constants/CreateOrganization.constant';
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
+import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -46,7 +47,7 @@ const CreateOrganizationGeneral = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValidating },
+    formState: { isValid, isSubmitted, errors, isValidating },
     reset,
     setValue,
     getValues,
@@ -720,6 +721,7 @@ const CreateOrganizationGeneral = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
+        {!isValid && isSubmitted && <GenericFormErrorMessage />}
         {validationErrors.length > 0 && (
           <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
         )}

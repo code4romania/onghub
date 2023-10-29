@@ -28,6 +28,7 @@ import { Contact } from '../../organization/interfaces/Contact.interface';
 import { CREATE_LOCAL_STORAGE_KEY } from '../constants/CreateOrganization.constant';
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
+import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
@@ -65,7 +66,7 @@ const CreateOrganizationLegal = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValidating },
+    formState: { isValid, isSubmitted, errors, isValidating },
     getValues,
     watch,
     reset,
@@ -461,6 +462,7 @@ const CreateOrganizationLegal = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
+        {((!isValid && isSubmitted) || directors.length < 3) && <GenericFormErrorMessage />}
       </div>
     </div>
   );
