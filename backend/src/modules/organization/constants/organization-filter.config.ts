@@ -7,6 +7,7 @@ export const ORGANIZATION_FILTERS_CONFIG = {
     createdOn: true,
     updatedOn: true,
     name: true,
+    alias: true,
     userCount: true,
     completionStatus: true,
     logo: true,

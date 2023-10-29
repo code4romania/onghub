@@ -56,7 +56,7 @@ const FeedbackViewModal = ({
                     <div className="grid grid-cols-2">
                       <Dialog.Title
                         as="h3"
-                        className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900"
+                        className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900 break-word"
                       >
                         {t('view_modal.details')}
                       </Dialog.Title>
@@ -69,7 +69,7 @@ const FeedbackViewModal = ({
                       </button>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('header.service_name')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
@@ -77,7 +77,7 @@ const FeedbackViewModal = ({
                       </p>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('view_modal.author_name')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
@@ -85,7 +85,7 @@ const FeedbackViewModal = ({
                       </p>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('header.rating')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
@@ -93,7 +93,7 @@ const FeedbackViewModal = ({
                       </p>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('view_modal.interaction_when')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
@@ -101,7 +101,7 @@ const FeedbackViewModal = ({
                       </p>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs ">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('view_modal.interaction_how')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
@@ -109,7 +109,7 @@ const FeedbackViewModal = ({
                       </p>
                     </div>
                     <div className="mt-6">
-                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+                      <p className="text-gray-400 lg:pt-6 pt-3 sm:text-sm lg:text-base text-xs break-word">
                         {t('view_modal.date_added')}
                       </p>
                       <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">

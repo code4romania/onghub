@@ -52,12 +52,12 @@ const ConfirmationModal = ({
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title
                       as="h3"
-                      className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900"
+                      className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900 break-word"
                     >
                       {title}
                     </Dialog.Title>
                     <div className="mt-6">
-                      <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal">
+                      <p className="sm:text-sm lg:text-base text-xs text-gray-900 font-normal break-word">
                         {description}
                       </p>
                     </div>

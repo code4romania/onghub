@@ -84,7 +84,9 @@ const ContentWrapper = ({
           )}
         </div>
       </div>
-      {subtitle && <p className="text-gray-400 sm:text-sm lg:text-base text-xs">{subtitle}</p>}
+      {subtitle && (
+        <p className="text-gray-400 sm:text-sm lg:text-base text-xs break-word">{subtitle}</p>
+      )}
       <div>{children}</div>
     </section>
   );

@@ -322,7 +322,7 @@ const CreateOrganizationLegal = () => {
                 aria-label={t('add')}
                 id="create-organization-legal__button__add-director"
                 type="button"
-                className="add-button max-w-[12rem]"
+                className="add-button max-w-[12rem] w-fit"
                 onClick={setIsDirectorModalOpen.bind(null, true)}
               >
                 <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -341,7 +341,7 @@ const CreateOrganizationLegal = () => {
                 aria-label={t('add')}
                 id="create-organization-legal__button__add-other"
                 type="button"
-                className="add-button max-w-[12rem]"
+                className="add-button max-w-[12rem] w-fit"
                 onClick={setIsOtherModalOpen.bind(null, true)}
               >
                 <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -357,8 +357,9 @@ const CreateOrganizationLegal = () => {
                 <>
                   <label
                     htmlFor="create-organization-legal__statute-upload"
-                    className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="w-fit min-w-32 flex items-center cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm leading-5 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
+                    <PlusIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                     {t('statute_upload')}
                   </label>
                   <input

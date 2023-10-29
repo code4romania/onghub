@@ -22,6 +22,7 @@ export interface IOrganizationFull extends IOrganization {
 
 export interface IOrganizationView extends IOrganization {
   name: string;
+  alias: string;
   userCount: number;
   completionStatus: CompletionStatus;
   logo: string;

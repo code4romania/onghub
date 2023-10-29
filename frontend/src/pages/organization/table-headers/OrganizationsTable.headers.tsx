@@ -9,7 +9,7 @@ import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
 import { IOrganizationView } from '../interfaces/Organization.interface';
 
 const translations = {
-  ong: i18n.t('organizations:header.ong'),
+  ong: i18n.t('organizations:header.ong_alias'),
   users: i18n.t('organizations:header.users'),
   register: i18n.t('organizations:header.register'),
   access: i18n.t('organizations:header.access'),
@@ -28,7 +28,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     sortable: true,
     minWidth: '5rem',
     grow: 1.5,
-    cell: (row: IOrganizationView) => <NameWithLogo name={row.name} logo={row.logo} />,
+    cell: (row: IOrganizationView) => <NameWithLogo name={row.alias} logo={row.logo} />,
   },
   {
     id: 'userCount',
