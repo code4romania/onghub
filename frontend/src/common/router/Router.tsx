@@ -66,13 +66,15 @@ const Router = () => {
           element={!isAuthenticated ? <Login /> : <Navigate to={'/'} replace={true}></Navigate>}
         />
 
-        <Route path="new" element={<CreateOrganization />}>
-          <Route index element={<Navigate to={'/new/account'} replace={true}></Navigate>} />
-          <Route path="account" element={<CreateOrganizationUser />} />
-          <Route path="general" element={<CreateOrganizationGeneral />} />
-          <Route path="activity" element={<CreateOrganizationActivity />} />
-          <Route path="legal" element={<CreateOrganizationLegal />} />
-        </Route>
+        {!isAuthenticated && (
+          <Route path="new" element={<CreateOrganization />}>
+            <Route index element={<Navigate to={'/new/account'} replace={true}></Navigate>} />
+            <Route path="account" element={<CreateOrganizationUser />} />
+            <Route path="general" element={<CreateOrganizationGeneral />} />
+            <Route path="activity" element={<CreateOrganizationActivity />} />
+            <Route path="legal" element={<CreateOrganizationLegal />} />
+          </Route>
+        )}
         {/* End of Public URLS */}
 
         {/* Logged in users but Restricted */}
