@@ -35,7 +35,7 @@ export const PartnerTableHeaders: TableColumn<Partner>[] = [
     id: 'numberOfPartners',
     name: translations.count,
     selector: (row: Partner) => row.numberOfPartners || 'N/A',
-    grow: 1.5,
+    grow: 2,
     minWidth: '10rem',
     sortable: true,
   },
