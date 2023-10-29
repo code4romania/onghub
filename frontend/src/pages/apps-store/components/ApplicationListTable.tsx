@@ -176,7 +176,7 @@ const ApplicationListTable = () => {
   };
 
   const onTypeChange = (selected: { type: ApplicationTypeEnum; label: string }) => {
-    setType(selected);
+    selected.type === ApplicationTypeEnum.ALL ? setType(null) : setType(selected);
   };
 
   const onActivateApplication = (row: Application) => {
