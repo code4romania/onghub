@@ -26,21 +26,24 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
     id: 'year',
     name: translations.year,
     selector: (row: Report) => row.year,
-    grow: 1,
+    grow: 0,
+    minWidth: '6rem',
     sortable: true,
   },
   {
     id: 'numberOfVolunteers',
     name: translations.volunteers,
     selector: (row: Report) => row.numberOfVolunteers ?? 'N/A',
-    grow: 1,
+    grow: 0.2,
+    minWidth: '8rem',
     sortable: true,
   },
   {
     id: 'numberOfContractors',
     name: translations.contractors,
     selector: (row: Report) => row.numberOfContractors ?? 'N/A',
-    grow: 1,
+    grow: 0.2,
+    minWidth: '8rem',
     sortable: true,
   },
   {
@@ -61,7 +64,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       ) : (
         translations.not_available
       ),
-    grow: 2,
+    grow: 1,
     sortable: true,
   },
   {
@@ -80,7 +83,8 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
       />
     ),
     sortable: true,
-    grow: 1.5,
+    grow: 0,
+    minWidth: '10rem',
     allowOverflow: true,
   },
   {
@@ -88,7 +92,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
     name: translations.update,
     selector: (row: Report) => formatDate(row?.updatedOn as string),
     sortable: true,
-    minWidth: '10rem',
-    grow: 1,
+    minWidth: '8rem',
+    grow: 0.5,
   },
 ];

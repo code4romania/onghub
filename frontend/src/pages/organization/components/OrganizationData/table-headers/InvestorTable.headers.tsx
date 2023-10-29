@@ -35,7 +35,7 @@ export const InvestorsTableHeaders: TableColumn<Investor>[] = [
     id: 'numberOfInvestors',
     name: translations.count,
     selector: (row: Investor) => row.numberOfInvestors || 'N/A',
-    grow: 1.5,
+    grow: 2,
     minWidth: '10rem',
     sortable: true,
   },
