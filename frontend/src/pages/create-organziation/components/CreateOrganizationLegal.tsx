@@ -13,21 +13,21 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { fileToURL, flatten } from '../../../common/helpers/format.helper';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 import { Person } from '../../../common/interfaces/person.interface';
-import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import ContactForm from '../../../components/Contact/Contact';
+import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import SectionHeader from '../../../components/section-header/SectionHeader';
+import { OrganizationLegalConfig } from '../../organization/components/OrganizationLegal/OrganizationLegalConfig';
 import DirectorModal from '../../organization/components/OrganizationLegal/components/DirectorModal';
 import OtherModal from '../../organization/components/OrganizationLegal/components/OtherModal';
-import { OrganizationLegalConfig } from '../../organization/components/OrganizationLegal/OrganizationLegalConfig';
 import { DirectorsTableHeaders } from '../../organization/components/OrganizationLegal/table-headers/DirectorsTable.headers';
 import { OthersTableHeaders } from '../../organization/components/OrganizationLegal/table-headers/OthersTable.headers';
 import { Contact } from '../../organization/interfaces/Contact.interface';
 import { CREATE_LOCAL_STORAGE_KEY } from '../constants/CreateOrganization.constant';
-import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
-import { useInitStep } from '../../../common/hooks/useInitStep';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
@@ -160,7 +160,6 @@ const CreateOrganizationLegal = () => {
   };
 
   const onAddDirector = (contact: Partial<Contact>) => {
-    console.log(directors);
     setDirectors([...directors, contact]);
     setIsDirectorModalOpen(false);
   };
