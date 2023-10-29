@@ -76,12 +76,12 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave, id }: OtherModalPro
                   <div className="mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title
                       as="h3"
-                      className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900"
+                      className="sm:text-lg lg:text-xl text-md leading-6 font-bold text-gray-900 break-word"
                     >
                       {isEdit ? t('modal.edit_relevant') : t('modal.add_relevant')}
                     </Dialog.Title>
                     <div className="mt-4">
-                      <p className="sm:text-sm lg:text-base text-xs text-gray-500">
+                      <p className="sm:text-sm lg:text-base text-xs text-gray-500 break-word">
                         {t('information', { ns: 'common' })}
                       </p>
                     </div>
