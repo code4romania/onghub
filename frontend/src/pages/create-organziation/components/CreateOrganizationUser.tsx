@@ -182,7 +182,7 @@ const CreateOrganizationUser = () => {
             {t('next', { ns: 'common' })}
           </button>
         </div>
-        {!isValid && !isSubmitted && <GenericFormErrorMessage />}
+        {!isValid && isSubmitted && <GenericFormErrorMessage />}
         {validationErrors.length > 0 && (
           <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
         )}
