@@ -26,13 +26,21 @@ import {
   OrganizationActivityConfig,
   OrganizationAreaEnum,
 } from '../../organization/components/OrganizationActivity/OrganizationActivityConfig';
-import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
+import {
+  CREATE_FLOW_URL,
+  CREATE_LOCAL_STORAGE_KEY,
+} from '../constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from '../interfaces/CreateOrganization.interface';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();
 
-  const [organization, setOrganization] = useOutletContext<any>();
+  const [organization, setOrganization, , , , , activeStepIndex, setActiveStepIndex] =
+    useOutletContext<any>();
+
+  useInitStep(setOrganization);
 
   const navigate = useNavigate();
 
@@ -42,14 +50,32 @@ const CreateOrganizationActivity = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValidating },
     reset,
     watch,
     resetField,
+    getValues,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+
+  //Store form data in local storage
+  const watchAllFields = watch();
+  useEffect(() => {
+    if (activeStepIndex > 2) {
+      return;
+    }
+    const activity = getValues();
+    //Prevent filling localStorage with undefined data and prevent filling it with erros
+    const hasAdminValues = !!Object.values(activity).filter((item) => item !== undefined).length;
+    const hasFieldErrors = !!Object.keys(errors).length;
+
+    //Using isValidating because RHF triggers 2 renders and update local storage with invalid data
+    if (hasAdminValues && !isValidating && !hasFieldErrors) {
+      localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, activity }));
+    }
+  }, [watchAllFields]);
 
   //queries
   useDomainsQuery();
@@ -70,8 +96,14 @@ const CreateOrganizationActivity = () => {
       ...org,
       activity: parseOrganizationActivityDataToPayload(data),
     }));
+    localStorage.setItem(
+      CREATE_LOCAL_STORAGE_KEY,
+      JSON.stringify({ ...organization, activity: parseOrganizationActivityDataToPayload(data) }),
+    );
 
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
+
+    updateActiveStepIndexInLocalStorage(activeStepIndex, 3, setActiveStepIndex);
   };
 
   // load initial values
