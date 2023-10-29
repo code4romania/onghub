@@ -422,7 +422,7 @@ const OrganizationData = () => {
       <CardPanel title={t('report.title')}>
         <>
           <div className="py-5">
-            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 break-word">
               {t('data_update', { ns: 'organization' })}
             </p>
           </div>
@@ -450,12 +450,12 @@ const OrganizationData = () => {
             onChange={onUploadNewList}
           />
           <div className="py-5">
-            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex break-word">
               {t('data_update', { ns: 'organization' })}
               <a
                 aria-label={t('partners.download')}
                 href={getPartnersTemplate()}
-                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
+                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer break-keep"
                 download
               >
                 <DownloadIcon className="w-5 h-5" />
@@ -492,12 +492,12 @@ const OrganizationData = () => {
             onChange={onUploadNewList}
           />
           <div className="py-5">
-            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex">
+            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex break-word">
               {t('data_update', { ns: 'organization' })}
               <a
                 aria-label={t('investors.download')}
                 href={getInvestorsTemplate()}
-                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer"
+                className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer break-keep"
                 download
               >
                 <DownloadIcon className="w-5 h-5" />
