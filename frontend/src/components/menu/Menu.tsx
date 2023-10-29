@@ -39,7 +39,7 @@ const Menu = () => {
   useEffect(() => {
     if (location && role) {
       const exists = getNavigationRoutes(role).find(
-        (navigationItem) => navigationItem.href == location.pathname.split('/')[1],
+        (navigationItem) => navigationItem.href.split('/')[0] == location.pathname.split('/')[1],
       );
       setCurrentMenuItemId(exists ? exists.id : -1);
     }
@@ -47,7 +47,11 @@ const Menu = () => {
 
   const handleMenuItemClick = (item: any) => {
     setCurrentMenuItemId(item.id);
-    navigate(`${item.href}`);
+    if (item.href === location.pathname.slice(1)) {
+      navigate(0);
+    } else {
+      navigate(`${item.href}`);
+    }
   };
 
   return (

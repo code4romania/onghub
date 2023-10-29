@@ -23,7 +23,7 @@ export default function SlidingMenu({
   useEffect(() => {
     if (location && role) {
       const exists = getNavigationRoutes(role).find(
-        (navigationItem) => navigationItem.href == location.pathname.split('/')[1],
+        (navigationItem) => navigationItem.href.split('/')[0] == location.pathname.split('/')[1],
       );
       setCurrentMenuItemId(exists ? exists.id : -1);
     }
@@ -32,7 +32,11 @@ export default function SlidingMenu({
   const handleMenuItemClick = (item: any) => {
     setSlidingMenuOpen(false);
     setCurrentMenuItemId(item.id);
-    navigate(`${item.href}`);
+    if (item.href === location.pathname.slice(1)) {
+      navigate(0);
+    } else {
+      navigate(`${item.href}`);
+    }
   };
 
   return (
