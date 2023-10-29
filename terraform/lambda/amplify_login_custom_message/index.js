@@ -11,13 +11,8 @@ exports.handler = async (event, context, callback) => {
   if (event.request.clientMetadata) {
     ({ appId, appName, appLink, region, environment } = event.request.clientMetadata);
   }
-  let sanitizedAppName = appName ? appName.replace(/[^a-zA-Z0-9]/g, '') : '';
-  if (sanitizedAppName.length < 3) {
-    sanitizedAppName = 'amplify';
-  }
-  const inviteLink = region !== undefined && environment !== undefined
-    ? `https://${region}.admin.amplifyapp.com/admin/login?appId=${appId}&backendEnvironmentName=${environment}`
-    : appLink;
+
+  const inviteLink = process.env.onghub_frontend_url;
 
   if (event.triggerSource === 'CustomMessage_AdminCreateUser') {
     event.response = {

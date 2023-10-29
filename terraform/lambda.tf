@@ -84,6 +84,12 @@ resource "aws_lambda_function" "amplify_login_custom_message" {
   handler          = "index.handler"
   runtime          = "nodejs16.x"
   source_code_hash = data.archive_file.amplify_login_custom_message.output_base64sha256
+
+  environment {
+    variables = {
+      onghub_frontend_url: local.frontend_domain
+    }
+  }
 }
 
 resource "aws_lambda_permission" "amplify_login_custom_message" {
@@ -92,6 +98,7 @@ resource "aws_lambda_permission" "amplify_login_custom_message" {
   function_name = aws_lambda_function.amplify_login_custom_message.function_name
   principal     = "cognito-idp.amazonaws.com"
   source_arn    = aws_cognito_user_pool.pool.arn
+
 }
 
 # login_pre_authentication_check

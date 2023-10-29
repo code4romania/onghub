@@ -125,8 +125,8 @@ const USER_INVITE_CONTENT = (username, tempPassword, inviteLink) => `
             <p style="font-size: 1rem; line-height: 1.5rem; color: #000000 !important">
                 Bună,<br /><br />
                 Contul tău de ONG Hub a fost creat cu success. Pentru a te loga în
-                aplicație te rugăm să folosești credențialele temporare de mai jos:<br /><br />Username
-                <strong>${username}</strong><br />Parola temporară
+                aplicație te rugăm să accesezi ONGHub apasand butonul de mai jos si sa folosești urmatoarele credențialele temporare:<br /><br />Username:
+                <strong>${username}</strong><br />Parola temporară:
                 <strong>${tempPassword}</strong>
             </p>
             <p style="font-size: 1rem; line-height: 1.5rem; color: #000000 !important">
@@ -152,7 +152,7 @@ const USER_INVITE_CONTENT = (username, tempPassword, inviteLink) => `
               border-width: 0;
               cursor: pointer;
             " type="button">
-                    Activează-ți contul
+                    Acceseaza ONGHub
                 </button>
             </a>
         </div>
