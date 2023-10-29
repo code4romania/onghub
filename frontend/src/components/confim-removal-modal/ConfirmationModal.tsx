@@ -63,7 +63,15 @@ const ConfirmationModal = ({
                     </div>
                   </div>
                 </div>
-                <div className="mt-5 sm:mt-6 gap-4 flex sm:flex-row flex-row-reverse">
+                <div className="mt-5 sm:mt-6 gap-4 flex justify-end">
+                  <button
+                    aria-label={closeBtnLabel}
+                    type="button"
+                    className="w-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={onClose}
+                  >
+                    {closeBtnLabel}
+                  </button>
                   <button
                     aria-label={confirmBtnLabel}
                     type="button"
@@ -74,14 +82,6 @@ const ConfirmationModal = ({
                     onClick={onConfirm}
                   >
                     {confirmBtnLabel}
-                  </button>
-                  <button
-                    aria-label={closeBtnLabel}
-                    type="button"
-                    className="w-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={onClose}
-                  >
-                    {closeBtnLabel}
                   </button>
                 </div>
               </Dialog.Panel>
