@@ -60,7 +60,7 @@ const UserCreate = () => {
       {
         onSuccess: () => {
           useSuccessToast(t('create.success'));
-          navigate('/users/list');
+          navigate('/users/invites');
         },
         onError: (error) => {
           const createError: any = error;
