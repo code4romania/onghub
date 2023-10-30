@@ -12,6 +12,7 @@ import { AuthContext } from '../../../../../contexts/AuthContext';
 import { UserRole } from '../../../../users/enums/UserRole.enum';
 import { formatCurrency } from '../../../../../common/helpers/format.helper';
 import { useTranslation } from 'react-i18next';
+import { ANAF_HELPER_LINK } from '../../../../../common/constants/constants';
 
 const IncomeReportModal = ({
   onClose,
@@ -118,7 +119,7 @@ const IncomeReportModal = ({
                 </div>
                 <a
                   aria-label={t('modal.anaf')}
-                  href={`https://webservicesp.anaf.ro/bilant?an=${year}&cui=${organizationGeneral?.cui}`}
+                  href={`${ANAF_HELPER_LINK}`}
                   target="_blank"
                   className="mt-4 sm:text-sm lg:text-base text-xs leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
                   rel="noreferrer"
@@ -152,10 +153,11 @@ const IncomeReportModal = ({
                           rules={IncomeReportConfig[name].rules}
                           control={control}
                           render={({ field: { onChange, value } }) => {
-                            const { label, ...config } = IncomeReportConfig[name].config;
+                            const { label, info, ...config } = IncomeReportConfig[name].config;
                             return (
                               <ReportTableRow
                                 label={label}
+                                info={info}
                                 config={{
                                   ...config,
                                   name: IncomeReportConfig[name].key,

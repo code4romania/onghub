@@ -33,6 +33,7 @@ import {
 import { ICreateOrganizationPayload } from '../interfaces/CreateOrganization.interface';
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
+import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();
@@ -50,7 +51,7 @@ const CreateOrganizationActivity = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValidating },
+    formState: { isValid, isSubmitted, errors, isValidating },
     reset,
     watch,
     resetField,
@@ -141,290 +142,295 @@ const CreateOrganizationActivity = () => {
   return (
     <div className="w-full bg-white shadow rounded-lg">
       <div className="w-full" />
-      <div className="p-5 sm:p-10 flex flex-col gap-4 divide-y divide-gray-200">
-        <div className="flex flex-col gap-4 ">
-          <div>
-            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-              {t('domains')}
-            </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+      <section className="p-5 sm:p-10">
+        <div className="flex flex-col gap-4 divide-y divide-gray-200">
+          <div className="flex flex-col gap-4 ">
+            <div>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('domains')}
+              </span>
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            </div>
+            <Controller
+              key={OrganizationActivityConfig.domains.key}
+              name={OrganizationActivityConfig.domains.key}
+              rules={OrganizationActivityConfig.domains.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <ChipSelection
+                    id="create-organization-activity__domains"
+                    {...OrganizationActivityConfig.domains.config}
+                    values={[...domains]}
+                    defaultItems={value}
+                    error={errors[OrganizationActivityConfig.domains.key]?.message?.toString()}
+                    onItemsChange={onChange}
+                    readonly={readonly}
+                  ></ChipSelection>
+                );
+              }}
+            />
+            <RadioGroup
+              control={control}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.area.key]}
+              config={OrganizationActivityConfig.area}
+              id="create-organization-activity__area"
+            />
+            {area == OrganizationAreaEnum.LOCAL && (
+              <Controller
+                key={OrganizationActivityConfig.cities.key}
+                name={OrganizationActivityConfig.cities.key}
+                rules={OrganizationActivityConfig.cities.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <ServerSelect
+                      id="create-organization-activity__cities"
+                      value={value}
+                      label={OrganizationActivityConfig.cities.label}
+                      isMulti={true}
+                      isClearable={false}
+                      placeholder={''}
+                      helperText={OrganizationActivityConfig.cities.helperText}
+                      error={errors[OrganizationActivityConfig.cities.key]?.message?.toString()}
+                      onChange={onChange}
+                      loadOptions={loadOptionsCitiesSerch}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
+            {area == OrganizationAreaEnum.REGIONAL && (
+              <Controller
+                key={OrganizationActivityConfig.regions.key}
+                name={OrganizationActivityConfig.regions.key}
+                rules={OrganizationActivityConfig.regions.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <MultiSelect
+                      id="create-organziation-activity__regions"
+                      value={value}
+                      label={OrganizationActivityConfig.regions.config.label}
+                      isClearable={false}
+                      helperText={OrganizationActivityConfig.regions.config.helperText}
+                      error={errors[OrganizationActivityConfig.regions.key]?.message?.toString()}
+                      onChange={onChange}
+                      options={[...regions.map(mapNameToSelect)]}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
-          <Controller
-            key={OrganizationActivityConfig.domains.key}
-            name={OrganizationActivityConfig.domains.key}
-            rules={OrganizationActivityConfig.domains.rules}
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <ChipSelection
-                  id="create-organization-activity__domains"
-                  {...OrganizationActivityConfig.domains.config}
-                  values={[...domains]}
-                  defaultItems={value}
-                  error={errors[OrganizationActivityConfig.domains.key]?.message?.toString()}
-                  onItemsChange={onChange}
-                  readonly={readonly}
-                ></ChipSelection>
-              );
-            }}
-          />
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.area.key]}
-            config={OrganizationActivityConfig.area}
-            id="create-organization-activity__area"
-          />
-          {area == OrganizationAreaEnum.LOCAL && (
-            <Controller
-              key={OrganizationActivityConfig.cities.key}
-              name={OrganizationActivityConfig.cities.key}
-              rules={OrganizationActivityConfig.cities.rules}
+          <div className="flex flex-col gap-4 pt-4">
+            <div>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('fed_coal')}
+              </span>
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            </div>
+            <RadioGroup
               control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <ServerSelect
-                    id="create-organization-activity__cities"
-                    value={value}
-                    label={OrganizationActivityConfig.cities.label}
-                    isMulti={true}
-                    isClearable={false}
-                    placeholder={''}
-                    helperText={OrganizationActivityConfig.cities.helperText}
-                    error={errors[OrganizationActivityConfig.cities.key]?.message?.toString()}
-                    onChange={onChange}
-                    loadOptions={loadOptionsCitiesSerch}
-                    readonly={readonly}
-                  />
-                );
-              }}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
+              config={OrganizationActivityConfig.isPartOfFederation}
+              id="create-organization-activity__part-federation"
             />
-          )}
-          {area == OrganizationAreaEnum.REGIONAL && (
-            <Controller
-              key={OrganizationActivityConfig.regions.key}
-              name={OrganizationActivityConfig.regions.key}
-              rules={OrganizationActivityConfig.regions.rules}
+            {(isPartOfFederation === 'true' || isPartOfFederation === true) && (
+              <Controller
+                key={OrganizationActivityConfig.federations.key}
+                name={OrganizationActivityConfig.federations.key}
+                rules={OrganizationActivityConfig.federations.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <MultiSelect
+                      id="create-organization-activity__federations"
+                      value={value}
+                      label={OrganizationActivityConfig.federations.config.label}
+                      isClearable={false}
+                      helperText={OrganizationActivityConfig.federations.config.helperText}
+                      error={errors[
+                        OrganizationActivityConfig.federations.key
+                      ]?.message?.toString()}
+                      onChange={onChange}
+                      options={[...federations.map(mapGroupsToSelect)]}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
+            <RadioGroup
               control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <MultiSelect
-                    id="create-organziation-activity__regions"
-                    value={value}
-                    label={OrganizationActivityConfig.regions.config.label}
-                    isClearable={false}
-                    helperText={OrganizationActivityConfig.regions.config.helperText}
-                    error={errors[OrganizationActivityConfig.regions.key]?.message?.toString()}
-                    onChange={onChange}
-                    options={[...regions.map(mapNameToSelect)]}
-                    readonly={readonly}
-                  />
-                );
-              }}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.isPartOfCoalition.key]}
+              config={OrganizationActivityConfig.isPartOfCoalition}
+              id="create-organization-activity__part-coalition"
             />
-          )}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-              {t('fed_coal')}
-            </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
-          </div>
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.isPartOfFederation.key]}
-            config={OrganizationActivityConfig.isPartOfFederation}
-            id="create-organization-activity__part-federation"
-          />
-          {(isPartOfFederation === 'true' || isPartOfFederation === true) && (
-            <Controller
-              key={OrganizationActivityConfig.federations.key}
-              name={OrganizationActivityConfig.federations.key}
-              rules={OrganizationActivityConfig.federations.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <MultiSelect
-                    id="create-organization-activity__federations"
-                    value={value}
-                    label={OrganizationActivityConfig.federations.config.label}
-                    isClearable={false}
-                    helperText={OrganizationActivityConfig.federations.config.helperText}
-                    error={errors[OrganizationActivityConfig.federations.key]?.message?.toString()}
-                    onChange={onChange}
-                    options={[...federations.map(mapGroupsToSelect)]}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-          )}
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.isPartOfCoalition.key]}
-            config={OrganizationActivityConfig.isPartOfCoalition}
-            id="create-organization-activity__part-coalition"
-          />
-          {(isPartOfCoalition == 'true' || isPartOfCoalition === true) && (
-            <Controller
-              key={OrganizationActivityConfig.coalitions.key}
-              name={OrganizationActivityConfig.coalitions.key}
-              rules={OrganizationActivityConfig.coalitions.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <MultiSelect
-                    id="create-organization-activity__coalitions"
-                    value={value}
-                    label={OrganizationActivityConfig.coalitions.config.label}
-                    isClearable={false}
-                    helperText={OrganizationActivityConfig.coalitions.config.helperText}
-                    error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
-                    onChange={onChange}
-                    options={[...coalitions.map(mapGroupsToSelect)]}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-          )}
+            {(isPartOfCoalition == 'true' || isPartOfCoalition === true) && (
+              <Controller
+                key={OrganizationActivityConfig.coalitions.key}
+                name={OrganizationActivityConfig.coalitions.key}
+                rules={OrganizationActivityConfig.coalitions.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <MultiSelect
+                      id="create-organization-activity__coalitions"
+                      value={value}
+                      label={OrganizationActivityConfig.coalitions.config.label}
+                      isClearable={false}
+                      helperText={OrganizationActivityConfig.coalitions.config.helperText}
+                      error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
+                      onChange={onChange}
+                      options={[...coalitions.map(mapGroupsToSelect)]}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
 
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.isPartOfInternationalOrganization.key]}
-            config={OrganizationActivityConfig.isPartOfInternationalOrganization}
-            id="create-organization-activity__part-international"
-          />
+            <RadioGroup
+              control={control}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.isPartOfInternationalOrganization.key]}
+              config={OrganizationActivityConfig.isPartOfInternationalOrganization}
+              id="create-organization-activity__part-international"
+            />
 
-          {(isPartOfInternationalOrganization == 'true' ||
-            isPartOfInternationalOrganization === true) && (
-            <Controller
-              key={OrganizationActivityConfig.internationalOrganizationName.key}
-              name={OrganizationActivityConfig.internationalOrganizationName.key}
-              rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationActivityConfig.internationalOrganizationName.config,
-                      name: OrganizationActivityConfig.internationalOrganizationName.key,
-                      error:
-                        errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                          ?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                      id: 'create-organization-activity__international-name',
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-          )}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-              {t('branches')}
-            </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {(isPartOfInternationalOrganization == 'true' ||
+              isPartOfInternationalOrganization === true) && (
+              <Controller
+                key={OrganizationActivityConfig.internationalOrganizationName.key}
+                name={OrganizationActivityConfig.internationalOrganizationName.key}
+                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationActivityConfig.internationalOrganizationName.config,
+                        name: OrganizationActivityConfig.internationalOrganizationName.key,
+                        error:
+                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                            ?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-activity__international-name',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.hasBranches.key]}
-            config={OrganizationActivityConfig.hasBranches}
-            id="create-organization-activity__has-branches"
-          />
-          {(hasBranches === 'true' || hasBranches === true) && (
-            <Controller
-              key={OrganizationActivityConfig.branches.key}
-              name={OrganizationActivityConfig.branches.key}
-              rules={OrganizationActivityConfig.branches.rules}
+          <div className="flex flex-col gap-4 pt-4">
+            <div>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('branches')}
+              </span>
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            </div>
+            <RadioGroup
               control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <ServerSelect
-                    id="create-organization-activity__branches"
-                    value={value}
-                    label={OrganizationActivityConfig.branches.label}
-                    isMulti={true}
-                    isClearable={false}
-                    placeholder={''}
-                    helperText={OrganizationActivityConfig.branches.helperText}
-                    error={errors[OrganizationActivityConfig.branches.key]?.message?.toString()}
-                    onChange={onChange}
-                    loadOptions={loadOptionsCitiesSerch}
-                    readonly={readonly}
-                  />
-                );
-              }}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.hasBranches.key]}
+              config={OrganizationActivityConfig.hasBranches}
+              id="create-organization-activity__has-branches"
             />
-          )}
-        </div>
-        <div className="flex flex-col gap-4 pt-4">
-          <div>
-            <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
-              {t('other')}
-            </span>
-            <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-              {t('information', { ns: 'common' })}
-            </p>
+            {(hasBranches === 'true' || hasBranches === true) && (
+              <Controller
+                key={OrganizationActivityConfig.branches.key}
+                name={OrganizationActivityConfig.branches.key}
+                rules={OrganizationActivityConfig.branches.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <ServerSelect
+                      id="create-organization-activity__branches"
+                      value={value}
+                      label={OrganizationActivityConfig.branches.label}
+                      isMulti={true}
+                      isClearable={false}
+                      placeholder={''}
+                      helperText={OrganizationActivityConfig.branches.helperText}
+                      error={errors[OrganizationActivityConfig.branches.key]?.message?.toString()}
+                      onChange={onChange}
+                      loadOptions={loadOptionsCitiesSerch}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.isSocialServiceViable.key]}
-            config={OrganizationActivityConfig.isSocialServiceViable}
-            id="create-organization-activity__social-viable"
-          />
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.offersGrants.key]}
-            config={OrganizationActivityConfig.offersGrants}
-            id="create-organization-activity__offers-grants"
-          />
-          <RadioGroup
-            control={control}
-            readonly={readonly}
-            errors={errors[OrganizationActivityConfig.isPublicIntrestOrganization.key]}
-            config={OrganizationActivityConfig.isPublicIntrestOrganization}
-            id="create-organization-activity__public-interest"
-          />
+          <div className="flex flex-col gap-4 pt-4">
+            <div>
+              <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
+                {t('other')}
+              </span>
+              <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
+                {t('information', { ns: 'common' })}
+              </p>
+            </div>
+            <RadioGroup
+              control={control}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.isSocialServiceViable.key]}
+              config={OrganizationActivityConfig.isSocialServiceViable}
+              id="create-organization-activity__social-viable"
+            />
+            <RadioGroup
+              control={control}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.offersGrants.key]}
+              config={OrganizationActivityConfig.offersGrants}
+              id="create-organization-activity__offers-grants"
+            />
+            <RadioGroup
+              control={control}
+              readonly={readonly}
+              errors={errors[OrganizationActivityConfig.isPublicIntrestOrganization.key]}
+              config={OrganizationActivityConfig.isPublicIntrestOrganization}
+              id="create-organization-activity__public-interest"
+            />
+          </div>
+          <div className="pt-5 sm:pt-6 sm:flex sm:flex-row-reverse">
+            <button
+              aria-label={t('next', { ns: 'common' })}
+              id="create-organization-activity__button-next"
+              type="button"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
+              onClick={handleSubmit(handleSave)}
+            >
+              {t('next', { ns: 'common' })}
+            </button>
+            <button
+              aria-label={t('back', { ns: 'common' })}
+              id="create-organization-activity__button-back"
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
+              onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}
+            >
+              {t('back', { ns: 'common' })}
+            </button>
+          </div>
         </div>
-        <div className="pt-5 sm:pt-6 sm:flex sm:flex-row-reverse">
-          <button
-            aria-label={t('next', { ns: 'common' })}
-            id="create-organization-activity__button-next"
-            type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 sm:text-sm lg:text-base text-xs font-medium text-black hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto"
-            onClick={handleSubmit(handleSave)}
-          >
-            {t('next', { ns: 'common' })}
-          </button>
-          <button
-            aria-label={t('back', { ns: 'common' })}
-            id="create-organization-activity__button-back"
-            type="button"
-            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
-            onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`)}
-          >
-            {t('back', { ns: 'common' })}
-          </button>
-        </div>
-      </div>
+        {!isValid && isSubmitted && <GenericFormErrorMessage />}
+      </section>
     </div>
   );
 };
