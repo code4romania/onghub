@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
 const InputField = (props: {
@@ -8,6 +8,8 @@ const InputField = (props: {
   readonly?: boolean;
   disabled?: boolean;
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="relative w-full">
       {props.config.label && props.config.type !== 'checkbox' && (
@@ -25,7 +27,7 @@ const InputField = (props: {
         {!props.readonly && (
           <>
             <input
-              type={props.config.type}
+              type={props.config.type === 'password' && showPassword ? 'text' : props.config.type}
               name={props.config.name}
               onChange={props.config.onChange}
               onBlur={props.config.onBlur}
@@ -37,6 +39,7 @@ const InputField = (props: {
                 props.config.type === 'checkbox'
                   ? ''
                   : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100 min-w-[6.5rem]',
+                props.config.type === 'password' ? 'pr-10' : '',
               )}
               placeholder={props.config.placeholder}
               defaultValue={props.config.defaultValue}
@@ -47,6 +50,18 @@ const InputField = (props: {
               }
               id={`${props.config.id}__input`}
             />
+            {props.config.type === 'password' && (
+              <div
+                className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
+                ) : (
+                  <EyeOffIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
+                )}
+              </div>
+            )}
             {props.config.type === 'checkbox' && (
               <label
                 htmlFor={`${props.config.id}__input`}
