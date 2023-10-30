@@ -106,7 +106,7 @@
 }
 
 .rdt_TableWrapper > div:first-of-type {
-  overflow: scroll;
+  overflow: auto;
   @apply min-[1650px]:overflow-x-hidden;
   /* added for action menu to be visible without scrolling */
   padding-bottom: 7rem !important;
