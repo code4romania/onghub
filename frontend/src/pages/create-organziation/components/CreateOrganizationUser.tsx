@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
@@ -14,6 +14,7 @@ import {
   CREATE_FLOW_URL,
   CREATE_LOCAL_STORAGE_KEY,
 } from '../constants/CreateOrganization.constant';
+import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
@@ -32,7 +33,7 @@ const CreateOrganizationUser = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValidating },
+    formState: { isValid, isSubmitted, errors, isValidating },
     watch,
     getValues,
     reset,
@@ -180,6 +181,7 @@ const CreateOrganizationUser = () => {
             {t('next', { ns: 'common' })}
           </button>
         </div>
+        {!isValid && isSubmitted && <GenericFormErrorMessage />}
         {validationErrors.length > 0 && (
           <ErrorsBanner errors={validationErrors} onClose={() => setValidationErrors([])} />
         )}

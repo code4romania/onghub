@@ -28,6 +28,7 @@ import { DirectorsTableHeaders } from '../../organization/components/Organizatio
 import { OthersTableHeaders } from '../../organization/components/OrganizationLegal/table-headers/OthersTable.headers';
 import { Contact } from '../../organization/interfaces/Contact.interface';
 import { CREATE_LOCAL_STORAGE_KEY } from '../constants/CreateOrganization.constant';
+import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
@@ -65,7 +66,7 @@ const CreateOrganizationLegal = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors, isValidating },
+    formState: { isValid, isSubmitted, errors, isValidating },
     getValues,
     watch,
     reset,
@@ -461,6 +462,7 @@ const CreateOrganizationLegal = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
+        {((!isValid && isSubmitted) || directors.length < 3) && <GenericFormErrorMessage />}
       </div>
     </div>
   );
