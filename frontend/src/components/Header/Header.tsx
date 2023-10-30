@@ -85,7 +85,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                             aria-label={t('my_account')}
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                              'group flex items-center px-4 py-2 sm:text-sm text-xs',
+                              'group flex items-center px-4 py-2 sm:text-sm text-xs cursor-pointer',
                             )}
                             onClick={() => navigate('/account')}
                           >
@@ -103,7 +103,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                             aria-label={t('log_out')}
                             className={classNames(
                               active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                              'group flex items-center px-4 py-2 sm:text-sm text-xs',
+                              'group flex items-center px-4 py-2 sm:text-sm text-xs cursor-pointer',
                             )}
                             onClick={logout}
                           >
