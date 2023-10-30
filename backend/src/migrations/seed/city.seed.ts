@@ -44840,11 +44840,6 @@ export const CITIES = [
     name: 'Pipea',
   },
   {
-    id: 8975,
-    countyId: 11,
-    name: 'Pipera',
-  },
-  {
     id: 8976,
     countyId: 42,
     name: 'Pipirig',
