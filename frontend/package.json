@@ -39,6 +39,7 @@
     "react-select": "^5.4.0",
     "react-show-more-text": "^1.6.2",
     "react-toastify": "^9.0.7",
+    "react-tooltip": "^5.21.6",
     "read-excel-file": "^5.4.4",
     "styled-components": "^5.3.5",
     "typescript": "^4.7.4",

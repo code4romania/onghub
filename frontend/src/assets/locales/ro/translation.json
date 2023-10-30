@@ -511,26 +511,47 @@
       "maxim": "Nu pot fi introduse valori mai mari de 9 cifre."
     },
     "income": {
-      "membership": "Venituri din cotizații",
-      "donations": "Venituri din donații",
-      "percent": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
-      "sponsorship": "Venituri din sponsorizări",
-      "economic": "Venituri din activitatea economica",
-      "other": "Alte venituri",
-      "financial": "Venituri financiare"
+      "membership": { "label": "Venituri din cotizatii", "info": "Venituri din cotizatii info" },
+      "donations": { "label": "Venituri din donatii", "info": "Venituri din donatii info" },
+      "percent": {
+        "label": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
+        "info": "Venituri din redirecționarea a 3.5% din impozitul pe venit% info"
+      },
+      "sponsorship": {
+        "label": "Venituri din sponsorizări",
+        "info": "Venituri din sponsorizări info"
+      },
+      "economic": {
+        "label": "Venituri din activitatea economica",
+        "info": "Venituri din activitatea economica info"
+      },
+      "other": { "label": "Alte venituri", "info": "Alte venituri info" },
+      "financial": { "label": "Venituri financiare", "info": "Venituri financiare info" }
     },
     "expense": {
-      "net": "Salarii nete (resurse umane)",
-      "cas": "Contribuții CAS (resurse umane)",
-      "economic": "Cheltuieli directe din activitatea economica",
-      "administrative": "Cheltuieli administrative",
-      "transport": "Transport și cazare",
-      "catering": "Catering",
-      "production": "Producție",
-      "software": "Servicii software",
-      "advertising": "Reclame și publicitate",
-      "taxes": "Alte taxe",
-      "expense": "Alte cheltuieli"
+      "net": {
+        "label": "Salarii nete (resurse umane)",
+        "info": "Salarii nete (resurse umane) info"
+      },
+      "cas": {
+        "label": "Contribuții CAS (resurse umane)",
+        "info": "Contribuții CAS (resurse umane) info"
+      },
+      "economic": {
+        "label": "Cheltuieli directe din activitatea economica",
+        "info": "Cheltuieli directe din activitatea economica info"
+      },
+      "administrative": {
+        "label": "Cheltuieli administrative",
+        "info": "Cheltuieli administrative info"
+      },
+      "transport": { "label": "Transport și cazare", "info": "Transport și cazare info" },
+      "catering": { "label": "Catering", "info": "Catering info" },
+      "production": { "label": "Producție", "info": "Producție info" },
+      "software": { "label": "Servicii software", "info": "Servicii software info" },
+      "advertising": { "label": "Reclame și publicitate", "info": "Reclame și publicitate info" },
+      "taxes": { "label": "Alte taxe", "info": "Alte taxe info" },
+      "expense": { "label": "Alte cheltuieli", "info": "Alte cheltuieli info" }
     }
   },
   "open_data": {

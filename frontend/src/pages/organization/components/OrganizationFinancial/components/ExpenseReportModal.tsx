@@ -152,10 +152,11 @@ const ExpenseReportModal = ({
                           rules={ExpenseReportConfig[name].rules}
                           control={control}
                           render={({ field: { onChange, value } }) => {
-                            const { label, ...config } = ExpenseReportConfig[name].config;
+                            const { label, info, ...config } = ExpenseReportConfig[name].config;
                             return (
                               <ReportTableRow
                                 label={label}
+                                info={info}
                                 config={{
                                   ...config,
                                   name: ExpenseReportConfig[name].key,
