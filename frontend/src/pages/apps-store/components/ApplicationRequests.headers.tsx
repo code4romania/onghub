@@ -14,21 +14,27 @@ export const ApplicationRequestsTableHeaders: TableColumn<IApplicationRequest>[]
   {
     id: 'name',
     name: translations.name,
-    grow: 3,
-    minWidth: '10rem',
+    grow: 1,
     selector: (row: IApplicationRequest) => row.application?.name || '',
   },
   {
     id: 'ong',
     name: translations.ong,
-    grow: 2,
-    minWidth: '15rem',
+    grow: 1,
+    cell: (row: IApplicationRequest) => (
+      <a
+        className="text-blue-500 hover:text-blue-800 font-titilliumSemiBold"
+        href={`/organizations/${row.organization?.id}`}
+      >
+        {row.organization?.organizationGeneral?.name}
+      </a>
+    ),
     selector: (row: IApplicationRequest) => row.organization?.organizationGeneral?.name || '',
   },
   {
     id: 'created_on',
     name: translations.created_on,
-    minWidth: '10rem',
+    grow: 0.5,
     selector: (row: IApplicationRequest) => formatDate(row.createdOn as string),
   },
 ];
