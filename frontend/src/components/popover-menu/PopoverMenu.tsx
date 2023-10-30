@@ -75,21 +75,30 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
                 <div className="relative grid gap-4 bg-white py-4 px-5">
                   {menuItems.map((item) => (
                     <div key={item.name}>
-                      {item.type === PopoverMenuRowType.DOWNLOAD && (
-                        <label
-                          className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
-                          onClick={() => {
-                            item.onClick(row);
-                            close();
-                          }}
-                        >
-                          <item.icon
-                            className="text-gray-900 flex-shrink-0 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                          <div className="text-gray-900 text-xm font-normal">{item.name}</div>
-                        </label>
-                      )}
+                      {item.type === PopoverMenuRowType.DOWNLOAD &&
+                        (row.path ? ( //Show disabled option if path not provided
+                          <label
+                            className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150 cursor-pointer"
+                            onClick={() => {
+                              item.onClick(row);
+                              close();
+                            }}
+                          >
+                            <item.icon
+                              className="text-gray-900 flex-shrink-0 h-5 w-5"
+                              aria-hidden="true"
+                            />
+                            <div className="text-gray-900 text-xm font-normal">{item.name}</div>
+                          </label>
+                        ) : (
+                          <div className="-m-2.5 p-2.5 flex gap-2.5 items-start rounded-lgtransition ease-in-out duration-150 cursor-not-allowed">
+                            <item.icon
+                              className="text-gray-300 flex-shrink-0 h-5 w-5"
+                              aria-hidden="true"
+                            />
+                            <div className="text-gray-300 text-xm font-normal">{item.name}</div>
+                          </div>
+                        ))}
                       {item.type === PopoverMenuRowType.UPLOAD && (
                         <label
                           htmlFor={item.htmlFor || 'upload'}
