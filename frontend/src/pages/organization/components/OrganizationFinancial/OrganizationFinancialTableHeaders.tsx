@@ -37,14 +37,15 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: translations.year,
     selector: (row: IOrganizationFinancial) => row.year,
     sortable: true,
-    grow: 0.5,
+    grow: 0,
   },
   {
     id: 'numberOfEmployees',
     name: translations.employees,
     selector: (row: IOrganizationFinancial) => row.numberOfEmployees,
     sortable: true,
-    grow: 0.6,
+    minWidth: '8rem',
+    grow: 0,
   },
   {
     id: 'total',
@@ -52,7 +53,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
     minWidth: '7rem',
-    grow: 0.5,
+    grow: 0,
   },
   {
     id: 'updatedOn',
@@ -78,7 +79,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
       />
     ),
     sortable: true,
-    grow: 1.5,
+    grow: 0,
     minWidth: '10rem',
     allowOverflow: true,
   },

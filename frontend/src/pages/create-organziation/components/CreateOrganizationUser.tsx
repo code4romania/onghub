@@ -49,7 +49,6 @@ const CreateOrganizationUser = () => {
       return;
     }
     const admin = getValues();
-    console.log(admin);
     //Prevent filling localStorage with undefined data and prevent filling it with erros
     const hasAdminValues = !!Object.values(admin).filter((item) => item !== undefined).length;
     const hasFieldErrors = !!Object.keys(errors).length;

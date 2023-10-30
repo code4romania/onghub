@@ -5,12 +5,14 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { InternalErrors } from '../../../common/errors/internal-errors';
 import { fileToURL, setUrlPrefix } from '../../../common/helpers/format.helper';
-import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
+import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
+import { useInitStep } from '../../../common/hooks/useInitStep';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
-import SectionHeader from '../../../components/section-header/SectionHeader';
 import Select from '../../../components/Select/Select';
 import Textarea from '../../../components/Textarea/Textarea';
+import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
+import SectionHeader from '../../../components/section-header/SectionHeader';
 import { useCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { useNomenclature } from '../../../store/selectors';
@@ -19,8 +21,6 @@ import {
   CREATE_FLOW_URL,
   CREATE_LOCAL_STORAGE_KEY,
 } from '../constants/CreateOrganization.constant';
-import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
-import { useInitStep } from '../../../common/hooks/useInitStep';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 
 const CreateOrganizationGeneral = () => {
@@ -56,7 +56,6 @@ const CreateOrganizationGeneral = () => {
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-  console.log(activeStepIndex);
 
   //Store form data in local storage
   const watchAllFields = watch();
