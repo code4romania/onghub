@@ -7,6 +7,7 @@ import { Report } from '../../../interfaces/Report.interface';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 
 import i18n from '../../../../../common/config/i18n';
+import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   year: i18n.t('common:year'),
@@ -24,7 +25,7 @@ const translations = {
 export const ReportsTableHeaders: TableColumn<Report>[] = [
   {
     id: 'year',
-    name: translations.year,
+    name: <DataTableNameHeader text={translations.year} />,
     selector: (row: Report) => row.year,
     grow: 0,
     minWidth: '6rem',
@@ -32,7 +33,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   },
   {
     id: 'numberOfVolunteers',
-    name: translations.volunteers,
+    name: <DataTableNameHeader text={translations.volunteers} />,
     selector: (row: Report) => row.numberOfVolunteers ?? 'N/A',
     grow: 0.2,
     minWidth: '8rem',
@@ -40,7 +41,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   },
   {
     id: 'numberOfContractors',
-    name: translations.contractors,
+    name: <DataTableNameHeader text={translations.contractors} />,
     selector: (row: Report) => row.numberOfContractors ?? 'N/A',
     grow: 0.2,
     minWidth: '8rem',
@@ -48,7 +49,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   },
   {
     id: 'report',
-    name: translations.activity,
+    name: <DataTableNameHeader text={translations.activity} />,
     cell: (row: Report) =>
       row.report ? (
         <a
@@ -69,7 +70,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   },
   {
     id: 'status',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     cell: (row: Report) => (
       <StatusBadge
         status={
@@ -89,7 +90,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
   },
   {
     id: 'updatedOn',
-    name: translations.update,
+    name: <DataTableNameHeader text={translations.update} />,
     selector: (row: Report) => formatDate(row?.updatedOn as string),
     sortable: true,
     minWidth: '8rem',

@@ -1,14 +1,10 @@
 import React from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { formatDate } from '../../../common/helpers/format.helper';
-import StatusBadge from '../../../components/status-badge/StatusBadge';
-import {
-  RequestStatusBadgeMapper,
-  REQUEST_STATUS_NAME,
-} from '../constants/RequestStatus.constants';
 import { IOrganizationRequest } from '../interfaces/Request.interface';
 import i18n from '../../../common/config/i18n';
 import NameWithLogo from '../../../components/name-with-logo/NameWithLogo';
+import DataTableNameHeader from '../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   organization_name: i18n.t('requests:header.org_name'),
@@ -23,7 +19,7 @@ const translations = {
 export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   {
     id: 'organizationName',
-    name: translations.organization_name,
+    name: <DataTableNameHeader text={translations.organization_name} />,
     sortable: true,
     selector: (row: IOrganizationRequest) => row.organizationName,
     grow: 2.5,
@@ -34,7 +30,7 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   },
   {
     id: 'name',
-    name: translations.name,
+    name: <DataTableNameHeader text={translations.name} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.name,
     grow: 1.5,
@@ -42,7 +38,7 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   },
   {
     id: 'email',
-    name: translations.email,
+    name: <DataTableNameHeader text={translations.email} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.email,
     grow: 2,
@@ -50,7 +46,7 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   },
   {
     id: 'phone',
-    name: translations.phone,
+    name: <DataTableNameHeader text={translations.phone} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.phone,
     minWidth: '7rem',
@@ -58,7 +54,7 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
   },
   {
     id: 'createdOn',
-    name: translations.created_on,
+    name: <DataTableNameHeader text={translations.created_on} />,
     sortable: true,
     selector: (row: IOrganizationRequest) => formatDate(row?.createdOn as string),
     minWidth: '7rem',

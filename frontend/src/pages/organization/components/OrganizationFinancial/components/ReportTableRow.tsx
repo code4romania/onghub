@@ -2,7 +2,6 @@ import React from 'react';
 import InputField from '../../../../../components/InputField/InputField';
 import { InputFieldConfig } from '../../../../../components/InputField/InputFieldConfig.interface';
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
-import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 interface ReportTableRowProps {

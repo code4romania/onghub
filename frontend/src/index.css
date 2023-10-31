@@ -122,7 +122,7 @@
 }
 
 .rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div,
-a {
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > a {
   @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-sm font-normal text-gray-700;
 }
 

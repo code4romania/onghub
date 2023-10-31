@@ -5,6 +5,7 @@ import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge
 import { CompletionStatus } from '../../../enums/CompletionStatus.enum';
 import { Partner } from '../../../interfaces/Partner.interface';
 import i18n from '../../../../../common/config/i18n';
+import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   list: i18n.t('open_data:partners.list'),
@@ -20,20 +21,20 @@ const translations = {
 export const PartnerTableHeaders: TableColumn<Partner>[] = [
   {
     id: 'name',
-    name: translations.list,
+    name: <DataTableNameHeader text={translations.list} />,
     selector: (row: Partner) => `${translations.title} ${row.year}`,
     grow: 4,
   },
   {
     id: 'year',
-    name: translations.year,
+    name: <DataTableNameHeader text={translations.year} />,
     selector: (row: Partner) => row.year,
     grow: 1,
     sortable: true,
   },
   {
     id: 'numberOfPartners',
-    name: translations.count,
+    name: <DataTableNameHeader text={translations.count} />,
     selector: (row: Partner) => row.numberOfPartners || 'N/A',
     grow: 2,
     minWidth: '10rem',
@@ -41,7 +42,7 @@ export const PartnerTableHeaders: TableColumn<Partner>[] = [
   },
   {
     id: 'status',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     cell: (row: Partner) => (
       <StatusBadge
         status={
@@ -61,7 +62,7 @@ export const PartnerTableHeaders: TableColumn<Partner>[] = [
   },
   {
     id: 'updatedOn',
-    name: translations.update,
+    name: <DataTableNameHeader text={translations.update} />,
     selector: (row: Partner) => formatDate(row?.updatedOn as string),
     sortable: true,
     minWidth: '10rem',

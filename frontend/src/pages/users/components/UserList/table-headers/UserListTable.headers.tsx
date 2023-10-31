@@ -5,6 +5,7 @@ import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge
 import { IUser } from '../../../interfaces/User.interface';
 import { UserStatus } from '../../../enums/UserStatus.enum';
 import i18n from '../../../../../common/config/i18n';
+import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   name: i18n.t('user:list_header.name'),
@@ -19,7 +20,7 @@ const translations = {
 export const UserListTableHeaders: TableColumn<IUser>[] = [
   {
     id: 'name',
-    name: translations.name,
+    name: <DataTableNameHeader text={translations.name} />,
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -27,7 +28,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
   },
   {
     id: 'email',
-    name: translations.email,
+    name: <DataTableNameHeader text={translations.email} />,
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -35,7 +36,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
   },
   {
     id: 'phone',
-    name: translations.phone,
+    name: <DataTableNameHeader text={translations.phone} />,
     sortable: true,
     minWidth: '10rem',
     selector: (row: IUser) => row.phone,
@@ -44,7 +45,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     id: 'status',
     sortable: true,
     sortField: 'status',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     minWidth: '10rem',
     cell: (row: IUser) => (
       <StatusBadge
@@ -55,7 +56,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
   },
   {
     id: 'createdOn',
-    name: translations.created,
+    name: <DataTableNameHeader text={translations.created} />,
     sortable: true,
     selector: (row: IUser) => formatDate(row?.createdOn as string),
   },

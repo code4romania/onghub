@@ -9,6 +9,7 @@ import {
   OngApplicationStatusBadgeMapper,
   ONG_APPLICATION_STATUS,
 } from '../../../../apps-store/constants/ApplicationStatus.constant';
+import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   name: i18n.t('appstore:header.name'),
@@ -21,7 +22,7 @@ const translations = {
 export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOngStatus>[] = [
   {
     id: 'name',
-    name: translations.name,
+    name: <DataTableNameHeader text={translations.name} />,
     sortable: true,
     grow: 6,
     minWidth: '15rem',
@@ -34,7 +35,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
     sortable: false,
     grow: 1,
     minWidth: '10rem',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     cell: (row: ApplicationWithOngStatus) => (
       <StatusBadge
         status={OngApplicationStatusBadgeMapper(row.ongStatus)}
@@ -45,7 +46,7 @@ export const OrganizationApplicationsTableHeaders: TableColumn<ApplicationWithOn
   {
     id: 'createdOn',
     sortable: true,
-    name: translations.createdOn,
+    name: <DataTableNameHeader text={translations.createdOn} />,
     grow: 1,
     minWidth: '10rem',
     selector: (row: ApplicationWithOngStatus) => formatDate(row.createdOn),
