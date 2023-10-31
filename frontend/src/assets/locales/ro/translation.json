@@ -807,7 +807,9 @@
     "header": {
       "name": "Aplicație",
       "type": "Tip aplicație",
-      "status": "Status"
+      "status": "Status",
+      "ong_number": "Numar ONGuri",
+      "users": "Utilizatori"
     },
     "config": {
       "name": {
