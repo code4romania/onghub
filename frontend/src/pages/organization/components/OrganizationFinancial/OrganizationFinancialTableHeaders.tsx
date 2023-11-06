@@ -6,6 +6,7 @@ import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/St
 import { FinancialType } from '../../enums/FinancialType.enum';
 import { CompletionStatus } from '../../enums/CompletionStatus.enum';
 import i18n from '../../../../common/config/i18n';
+import DataTableNameHeader from '../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   report: i18n.t('financial:header.report'),
@@ -23,7 +24,7 @@ const translations = {
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
   {
     id: 'reportName',
-    name: translations.report,
+    name: <DataTableNameHeader text={translations.report} />,
     cell: (row: IOrganizationFinancial) => (
       <span>
         {row.type === FinancialType.INCOME ? translations.income : translations.expense}
@@ -34,14 +35,14 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'year',
-    name: translations.year,
+    name: <DataTableNameHeader text={translations.year} />,
     selector: (row: IOrganizationFinancial) => row.year,
     sortable: true,
     grow: 0,
   },
   {
     id: 'numberOfEmployees',
-    name: translations.employees,
+    name: <DataTableNameHeader text={translations.employees} />,
     selector: (row: IOrganizationFinancial) => row.numberOfEmployees,
     sortable: true,
     minWidth: '8rem',
@@ -49,7 +50,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'total',
-    name: translations.sum,
+    name: <DataTableNameHeader text={translations.sum} />,
     selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
     sortable: true,
     minWidth: '7rem',
@@ -57,7 +58,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'updatedOn',
-    name: translations.updated,
+    name: <DataTableNameHeader text={translations.updated} />,
     selector: (row: IOrganizationFinancial) => formatDate(row?.updatedOn as string),
     sortable: true,
     minWidth: '10rem',
@@ -65,7 +66,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   },
   {
     id: 'status',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     cell: (row: IOrganizationFinancial) => (
       <StatusBadge
         status={

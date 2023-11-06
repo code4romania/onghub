@@ -7,6 +7,7 @@ import StatusBadge, { BadgeStatus } from '../../../components/status-badge/Statu
 import { CompletionStatus } from '../enums/CompletionStatus.enum';
 import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
 import { IOrganizationView } from '../interfaces/Organization.interface';
+import DataTableNameHeader from '../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   ong: i18n.t('organizations:header.ong_alias'),
@@ -24,7 +25,7 @@ const translations = {
 export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   {
     id: 'name',
-    name: translations.ong,
+    name: <DataTableNameHeader text={translations.ong} />,
     sortable: true,
     minWidth: '5rem',
     grow: 1.5,
@@ -32,7 +33,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   },
   {
     id: 'userCount',
-    name: translations.users,
+    name: <DataTableNameHeader text={translations.users} />,
     sortable: true,
     minWidth: '7rem',
     grow: 0.5,
@@ -40,7 +41,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   },
   {
     id: 'createdOn',
-    name: translations.register,
+    name: <DataTableNameHeader text={translations.register} />,
     sortable: true,
     grow: 0.7,
     minWidth: '5rem',
@@ -50,7 +51,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     id: 'status',
     sortable: true,
     sortField: 'status',
-    name: translations.access,
+    name: <DataTableNameHeader text={translations.access} />,
     grow: 0.8,
     minWidth: '0.9rem',
     cell: (row: IOrganizationView) => (
@@ -64,7 +65,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   },
   {
     id: 'updatedOn',
-    name: translations.updated_on,
+    name: <DataTableNameHeader text={translations.updated_on} />,
     sortable: true,
     grow: 0.7,
     minWidth: '5rem',
@@ -73,7 +74,7 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   {
     id: 'completionStatus',
     sortable: true,
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     grow: 0.7,
     minWidth: '5rem',
     cell: (row: IOrganizationView) => (

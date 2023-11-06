@@ -4,6 +4,7 @@ import i18n from '../../../../../common/config/i18n';
 import { formatDate } from '../../../../../common/helpers/format.helper';
 import NameWithLogo from '../../../../../components/name-with-logo/NameWithLogo';
 import { OrganizationApplicationRequest } from '../../../../../services/application/interfaces/Application.interface';
+import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   name: i18n.t('appstore:header.name'),
@@ -14,7 +15,7 @@ export const OrganizationApplicationRequestsTableHeaders: TableColumn<Organizati
   [
     {
       id: 'name',
-      name: translations.name,
+      name: <DataTableNameHeader text={translations.name} />,
       sortable: true,
       grow: 6,
       minWidth: '15rem',
@@ -26,7 +27,7 @@ export const OrganizationApplicationRequestsTableHeaders: TableColumn<Organizati
     {
       id: 'createdOn',
       sortable: true,
-      name: translations.createdOn,
+      name: <DataTableNameHeader text={translations.createdOn} />,
       grow: 1,
       minWidth: '10rem',
       selector: (row: OrganizationApplicationRequest) => formatDate(row.createdOn),

@@ -9,6 +9,7 @@ import {
   OngApplicationStatusBadgeMapper,
   ONG_APPLICATION_STATUS,
 } from '../../../apps-store/constants/ApplicationStatus.constant';
+import DataTableNameHeader from '../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   name: i18n.t('app:list_header.name'),
@@ -22,7 +23,7 @@ const translations = {
 export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization>[] = [
   {
     id: 'name',
-    name: translations.name,
+    name: <DataTableNameHeader text={translations.name} />,
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -30,7 +31,7 @@ export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization
   },
   {
     id: 'userCount',
-    name: translations.userCount,
+    name: <DataTableNameHeader text={translations.userCount} />,
     sortable: true,
     grow: 1,
     minWidth: '10rem',
@@ -38,7 +39,7 @@ export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization
   },
   {
     id: 'createdOn',
-    name: translations.createdOn,
+    name: <DataTableNameHeader text={translations.createdOn} />,
     sortable: true,
     grow: 1,
     minWidth: '10rem',
@@ -50,7 +51,7 @@ export const ApplicationNGOListTableHeaders: TableColumn<ApplicationOrganization
     sortField: 'status',
     grow: 1,
     minWidth: '10rem',
-    name: translations.access,
+    name: <DataTableNameHeader text={translations.access} />,
     cell: (row: ApplicationOrganization) => (
       <StatusBadge
         status={OngApplicationStatusBadgeMapper(row.status)}

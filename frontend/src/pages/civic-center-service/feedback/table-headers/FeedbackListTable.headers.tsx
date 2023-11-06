@@ -3,6 +3,7 @@ import { TableColumn } from 'react-data-table-component';
 import { formatDate } from '../../../../common/helpers/format.helper';
 import { IFeedback } from '../../interfaces/Feedback.interface';
 import i18n from '../../../../common/config/i18n';
+import DataTableNameHeader from '../../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   serviceName: i18n.t('feedback:header.service_name'),
@@ -15,7 +16,7 @@ const translations = {
 export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   {
     id: 'civicCenterService.name',
-    name: translations.serviceName,
+    name: <DataTableNameHeader text={translations.serviceName} />,
     sortable: true,
     grow: 4,
     minWidth: '15rem',
@@ -23,7 +24,7 @@ export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   },
   {
     id: 'rating',
-    name: translations.rating,
+    name: <DataTableNameHeader text={translations.rating} />,
     sortable: true,
     grow: 1,
     minWidth: '10rem',
@@ -31,7 +32,7 @@ export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   },
   {
     id: 'interactionDate',
-    name: translations.interactionDate,
+    name: <DataTableNameHeader text={translations.interactionDate} />,
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -39,7 +40,7 @@ export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   },
   {
     id: 'fullName',
-    name: translations.feedbackAuthor,
+    name: <DataTableNameHeader text={translations.feedbackAuthor} />,
     sortable: true,
     grow: 2,
     minWidth: '15rem',
@@ -47,7 +48,7 @@ export const FeedbackListTableHeaders: TableColumn<IFeedback>[] = [
   },
   {
     id: 'createdOn',
-    name: translations.createdOn,
+    name: <DataTableNameHeader text={translations.createdOn} />,
     sortable: true,
     grow: 1,
     minWidth: '10rem',

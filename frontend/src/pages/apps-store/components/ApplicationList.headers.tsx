@@ -9,17 +9,20 @@ import {
 } from '../constants/ApplicationStatus.constant';
 import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 import i18n from '../../../common/config/i18n';
+import DataTableNameHeader from '../../../components/data-table-name-header/DataTableNameHeader';
 
 const translations = {
   name: i18n.t('appstore:header.name'),
   type: i18n.t('appstore:header.type'),
   status: i18n.t('appstore:header.status'),
+  ong_number: i18n.t('appstore:header.ong_number'),
+  users: i18n.t('appstore:header.users'),
 };
 
 export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'name',
-    name: translations.name,
+    name: <DataTableNameHeader text={translations.name} />,
     sortable: true,
     sortField: 'name',
     grow: 3,
@@ -29,7 +32,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'organizationCount',
     sortable: true,
-    name: 'Numar ONGuri',
+    name: <DataTableNameHeader text={translations.ong_number} />,
     grow: 1,
     minWidth: '10rem',
     selector: (row: Application) =>
@@ -38,7 +41,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'userCount',
     sortable: true,
-    name: 'Utilizatori',
+    name: <DataTableNameHeader text={translations.users} />,
     grow: 1,
     selector: (row: Application) =>
       row.type === ApplicationTypeEnum.INDEPENDENT ? '-' : row.userCount,
@@ -46,7 +49,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
   {
     id: 'type',
     sortable: false,
-    name: translations.type,
+    name: <DataTableNameHeader text={translations.type} />,
     grow: 2,
     minWidth: '15rem',
     selector: (row: Application) => ApplicationTypeNaming[row.type],
@@ -55,7 +58,7 @@ export const ApplicationtListTableHeaders: TableColumn<Application>[] = [
     id: 'status',
     sortable: true,
     sortField: 'status',
-    name: translations.status,
+    name: <DataTableNameHeader text={translations.status} />,
     minWidth: '7rem',
     cell: (row: Application) => (
       <StatusBadge
