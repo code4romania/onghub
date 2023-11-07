@@ -111,6 +111,7 @@ const Menu = () => {
             </span>
           </a>
         </div>
+        <div className="flex items-center justify-start text-white">v0.1.1</div>
       </nav>
     </div>
   );
