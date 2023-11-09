@@ -830,10 +830,10 @@
       },
       "description": {
         "required": "Descrierea este obligatorie",
-        "max": "Descrierea poate sa aiba maxim 700 de caractere",
+        "max": "Descrierea poate sa aiba maxim 7000 de caractere",
         "min": "Descrierea poate sa aiba minim 200 de caractere",
         "label": "Descriere extinsa aplicatie*",
-        "helper": "Maximum 700 de caractere"
+        "helper": "Maximum 7000 de caractere"
       },
       "website": {
         "label": "Link catre website prezentare aplicatie*",
