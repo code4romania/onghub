@@ -119,6 +119,10 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while recreating financial information for changed CUI',
     errorCode: 'ORG_028',
   },
+  UPDATE_ANAF_FINANCIAL: {
+    message: 'Error while recreating financial information.',
+    errorCode: 'ORG_029',
+  },
 };
 
 export const PARTNER_ERRORS = {

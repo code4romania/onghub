@@ -31,6 +31,7 @@ import {
   patchOrganizationByProfile,
   restrictOrganization,
   restrictOrganizationRequest,
+  retryAnafReports,
   uploadInvestors,
   uploadInvestorsByProfile,
   uploadPartners,
@@ -364,6 +365,17 @@ export const useDeleteOrganizationStatuteMutation = () => {
           organizationStatute: undefined,
         });
       },
+    },
+  );
+};
+
+export const useRetryAnafFinancialMutation = () => {
+  const { setOrganizationFinancial } = useStore();
+  return useMutation(
+    ({ organizationId, cui }: { organizationId: number; cui: string }) =>
+      retryAnafReports(organizationId, cui),
+    {
+      onSuccess: (data: IOrganizationFinancial[]) => setOrganizationFinancial(data),
     },
   );
 };
