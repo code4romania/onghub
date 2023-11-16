@@ -31,7 +31,7 @@ export class CreateApplicationDto {
   shortDescription: string;
 
   @IsString()
-  @Length(200, 1000)
+  @Length(200, 7000)
   description: string;
 
   @IsString()

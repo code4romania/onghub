@@ -8,7 +8,6 @@ export class EmailConfigService {
   constructor(private readonly configService: ConfigService) {}
 
   createMailerOptions(): MailerOptions {
-    console.log(this.configService.get('MAIL_PASS'));
     return {
       transport: {
         host: this.configService.get('MAIL_HOST'),
