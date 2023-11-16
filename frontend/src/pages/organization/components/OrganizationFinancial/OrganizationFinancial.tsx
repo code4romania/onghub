@@ -18,17 +18,22 @@ import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.i
 import ExpenseReportModal from './components/ExpenseReportModal';
 import IncomeReportModal from './components/IncomeReportModal';
 import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableHeaders';
+import { OrganizationStatus } from '../../enums/OrganizationStatus.enum';
+import LoadingContent from '../../../../components/data-table/LoadingContent';
+import { useRetryAnafFinancialMutation } from '../../../../services/organization/Organization.queries';
 
 const OrganizationFinancial = () => {
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
   const [isReadonly, setIsReadonly] = useState<boolean>(false);
-  const { organizationFinancial, organization } = useSelectedOrganization();
+  const { organizationFinancial, organization, organizationGeneral } = useSelectedOrganization();
   const { isLoading, updateOrganization } = useOutletContext<OrganizationContext>();
 
   const { role } = useContext(AuthContext);
   const { t } = useTranslation(['financial', 'organization', 'common']);
+
+  const { mutate: retryAnaf, isLoading: isLoadinAnaf } = useRetryAnafFinancialMutation();
 
   const buildActionColumn = (): TableColumn<IOrganizationFinancial> => {
     const employeeMenuItems = [
@@ -75,6 +80,22 @@ const OrganizationFinancial = () => {
     }
   };
 
+  const onUpdateAnaf = () => {
+    if (organization && organizationGeneral?.cui) {
+      retryAnaf({ organizationId: organization?.id, cui: organizationGeneral?.cui }, {
+        onSuccess: (data) => {
+          if (data[0].synched_anaf === false) {
+            useErrorToast(t('retry_anaf_error'));
+          }
+        },
+        onError: () => {
+          useErrorToast(t('retry_anaf_error'));
+        }
+      });
+    }
+  }
+
+
   const onView = (row: IOrganizationFinancial) => {
     setSelectedReport(row);
     setIsReadonly(true);
@@ -114,6 +135,21 @@ const OrganizationFinancial = () => {
             {t('data_update', { ns: 'organization' })}
           </p>
         </div>
+        {organization?.status === OrganizationStatus.PENDING && organizationFinancial[0].synched_anaf === false && role == UserRole.SUPER_ADMIN && (
+          <div className='flex my-2 gap-4 items-center flex-column'>
+            <p className='flex'>
+              <span className='text-yellow-900 sm:text-sm lg:text-base text-xs font-normal'>{t('retry_anaf_warning')}&nbsp;</span>
+            </p>
+            <button
+              aria-label={t('retry_anaf_button')}
+              className="edit-button flex gap-4 justify-center disabled:bg-gray-50"
+              onClick={onUpdateAnaf}
+              disabled={false}
+            >
+              {t('retry_anaf_button')}
+            </button>
+            {isLoadinAnaf && <LoadingContent />}
+          </div>)}
         <DataTableComponent
           columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
           data={organizationFinancial}

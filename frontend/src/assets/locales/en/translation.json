@@ -488,6 +488,9 @@
     "save_error": "Eroare la salvarea datelor financiare",
     "title": "Date Financiare",
     "report_row": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque perspiciatis vitae nulla, quia maxime cumque praesentium facere aut corrupti in saepe incidunt voluptatum aliquam accusantium est totam sint hic similique!",
+    "retry_anaf_warning": "Datele din ANAF nu au putut fi preluate.",
+    "retry_anaf_button": "Reincarca",
+    "retry_anaf_error": "Eroare la preluarea datelor din ANAF. Reincercati in scurt timp.",
     "modal": {
       "income": "Total Venituri",
       "expense": "Total Cheltuieli",

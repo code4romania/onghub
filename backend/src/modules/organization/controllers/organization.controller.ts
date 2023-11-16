@@ -44,6 +44,7 @@ import { OrganizationFlat } from '../interfaces/OrganizationFlat.interface';
 import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWithPracticePrograms.interface';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
+import { OrganizationFinancialService } from '../services/organization-financial.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -52,6 +53,7 @@ import { OrganizationService } from '../services/organization.service';
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
+    private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationRequestService: OrganizationRequestService,
   ) {}
 
@@ -324,5 +326,32 @@ export class OrganizationController {
     @Body() { forYear }: { forYear: number },
   ) {
     return this.organizationService.createNewReportingEntries(id, forYear);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @ApiBody({
+    required: false,
+    schema: {
+      type: 'object',
+      required: [],
+      properties: {
+        forYear: {
+          type: 'number',
+          format: 'int32',
+          minimum: 2020,
+        },
+      },
+    },
+  })
+  @Post(':id/report-entries-retry')
+  generateReportsAgain(
+    @Param('id') id: number,
+    @Body() { cui }: { cui: string },
+  ) {
+    return this.organizationFinancialService.handleRegenerateFinancial({
+      organizationId: id,
+      cui,
+    });
   }
 }

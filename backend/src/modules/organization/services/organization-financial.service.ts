@@ -24,6 +24,16 @@ export class OrganizationFinancialService {
 
   @OnEvent(ORGANIZATION_EVENTS.CUI_CHANGED)
   async handleCuiChanged({ organizationId, newCUI }: CUIChangedEvent) {
+    return this.handleRegenerateFinancial({ organizationId, cui: newCUI });
+  }
+
+  public async handleRegenerateFinancial({
+    organizationId,
+    cui,
+  }: {
+    organizationId: number;
+    cui: string;
+  }) {
     try {
       // 1. Delete the financial data for the given organization ID
       await this.organizationFinancialRepository.remove({
@@ -32,16 +42,17 @@ export class OrganizationFinancialService {
       // 2. Get the financial data from ANAF for the new CUI
       const lastYear = new Date().getFullYear() - 1;
       const financialFromAnaf = await this.getFinancialInformation(
-        newCUI,
+        cui,
         lastYear,
       );
+
       // 3. Generate reports data
       const newFinancialReport = this.generateFinancialReportsData(
         lastYear,
         financialFromAnaf,
       );
       // 4. Save the new reports
-      await Promise.all(
+      const saved = await Promise.all(
         newFinancialReport.map((orgFinancial) =>
           this.organizationFinancialRepository.save({
             ...orgFinancial,
@@ -49,10 +60,12 @@ export class OrganizationFinancialService {
           }),
         ),
       );
+
+      return saved;
     } catch (error) {
       this.logger.error({
         error: { error },
-        ...ORGANIZATION_ERRORS.UPDATE_CUI,
+        ...ORGANIZATION_ERRORS.UPDATE_ANAF_FINANCIAL,
       });
     }
   }
@@ -95,12 +108,14 @@ export class OrganizationFinancialService {
         type: FinancialType.EXPENSE,
         year,
         total: financialInformation?.totalExpense ?? 0,
+        synched_anaf: financialInformation ? true : false,
         numberOfEmployees: financialInformation?.numberOfEmployees ?? 0,
       },
       {
         type: FinancialType.INCOME,
         year,
         total: financialInformation?.totalIncome ?? 0,
+        synched_anaf: financialInformation ? true : false,
         numberOfEmployees: financialInformation?.numberOfEmployees ?? 0,
       },
     ];

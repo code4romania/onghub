@@ -9,6 +9,7 @@ export interface IOrganizationFinancial extends BaseEntity {
   numberOfEmployees: number;
   year: number;
   total: number;
+  synched_anaf: boolean;
   data: Partial<Income> | Partial<Expense> | null;
   status: CompletionStatus;
 }
