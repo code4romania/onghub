@@ -48,6 +48,13 @@ export class OrganizationFinancial extends BaseEntity {
   })
   status: CompletionStatus;
 
+  @Column({
+    type: 'boolean',
+    name: 'synched_anaf',
+    default: false,
+  })
+  synched_anaf: boolean;
+
   @Column({ type: 'jsonb', name: 'data', nullable: true })
   data?: Income | Expense;
 }

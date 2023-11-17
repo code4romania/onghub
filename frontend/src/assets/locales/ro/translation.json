@@ -837,10 +837,10 @@
       },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
-        "max": "Descrierea extinsă poate avea maxim 700 de caractere",
+        "max": "Descrierea extinsă poate avea maxim 7000 de caractere",
         "min": "Descrierea extinsă poate avea minim 200 de caractere",
         "label": "Descriere extinsă aplicație*",
-        "helper": "Include o descriere mai amplă, de maximum 700 de caractere"
+        "helper": "Include o descriere mai amplă, de maximum 7000 de caractere"
       },
       "website": {
         "label": "Link către website prezentare aplicație",

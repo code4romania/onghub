@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ANAF_URL } from 'src/common/constants/anaf.constants';
-import { lastValueFrom, of } from 'rxjs';
+import { firstValueFrom, lastValueFrom, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 export interface FinancialInformation {
@@ -22,7 +22,7 @@ export class AnafService {
 
     companyCUI = companyCUI.replace('RO', '');
 
-    const company = this.httpService
+    const company = await this.httpService
       .get(ANAF_URL + `?an=${year}&cui=${companyCUI}`)
       .pipe(
         map((res) => res.data.i),
@@ -30,8 +30,9 @@ export class AnafService {
           this.logger.error('ANAF error', err);
           return of(null);
         }),
-      );
+      )
+      .toPromise();
 
-    return lastValueFrom(company);
+    return company;
   }
 }
