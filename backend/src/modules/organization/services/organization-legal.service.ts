@@ -54,6 +54,11 @@ export class OrganizationLegalService {
 
     // Update organization statute file if necessary
     if (organizationStatute) {
+      const a = this.fileManagerService.validateFiles(
+        organizationStatute,
+        FILE_TYPE.FILE,
+      );
+
       if (orgLegal.organizationStatute) {
         await this.fileManagerService.deleteFiles([
           orgLegal.organizationStatute,

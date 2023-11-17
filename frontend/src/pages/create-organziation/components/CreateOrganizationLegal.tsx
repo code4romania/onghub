@@ -32,6 +32,7 @@ import GenericFormErrorMessage from '../../../components/generic-form-error-mess
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
+  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] = useState<boolean>(false);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -170,6 +171,12 @@ const CreateOrganizationLegal = () => {
     setIsDirectorModalOpen(true);
   };
 
+  const onDeleteStatute = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setDeleteOrganizationStatuteModalOpen(true);
+  }
+
   const onUpdateDirector = (contact: Partial<Contact>) => {
     const filteredDirectors = directors.filter(
       (director: Partial<Contact>) =>
@@ -250,9 +257,9 @@ const CreateOrganizationLegal = () => {
     }
   };
 
-  const onRemoveOrganizationStatute = (e: any) => {
-    e.preventDefault();
+  const onRemoveOrganizationStatute = () => {
     setOrganizationStatute(null);
+    setDeleteOrganizationStatuteModalOpen(false);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -384,7 +391,7 @@ const CreateOrganizationLegal = () => {
                   {isEditMode && (
                     <XIcon
                       className="ml-2 w-4 h-4 text-gray-600"
-                      onClick={onRemoveOrganizationStatute}
+                      onClick={onDeleteStatute}
                     />
                   )}
                 </a>
@@ -439,6 +446,18 @@ const CreateOrganizationLegal = () => {
                 setSelectedOther(null);
               }}
               onConfirm={onDeleteOther}
+            />
+          )}
+          {isDeleteOrganizationStatuteModalOpen && (
+            <ConfirmationModal
+              title={t('delete_statute_modal.title')}
+              description={t('delete_statute_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
+              onClose={() => {
+                setDeleteOrganizationStatuteModalOpen(false);
+              }}
+              onConfirm={onRemoveOrganizationStatute}
             />
           )}
         </div>
