@@ -62,7 +62,7 @@ export class AdminUserController {
   ): Promise<Pagination<User>> {
     return this.userService.findAll(
       filters,
-      organizationId ? organizationId : user.organizationId,
+      user.organizationId || organizationId,
     );
   }
 
@@ -91,7 +91,7 @@ export class AdminUserController {
   ): Promise<any> {
     const data = await this.userService.getUsersForDownload(
       filters,
-      organizationId || user.organizationId,
+      user.organizationId || organizationId,
     );
     res.end(this.fileManager.jsonToExcelBuffer(data, 'Utilizatori'));
   }
@@ -102,7 +102,7 @@ export class AdminUserController {
     @Param('id') userId: number,
     @ExtractUser() user: User,
   ): Promise<User> {
-    return this.userService.getById(userId);
+    return this.userService.getById(userId, user.organizationId);
   }
 
   @ApiParam({ name: 'id', type: Number })

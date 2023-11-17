@@ -50,7 +50,7 @@ const UserEdit = () => {
 
   useEffect(() => {
     if (error) {
-      useErrorToast(`${t('edit.load_error')} ${id}`);
+      useErrorToast(`${t('edit.load_error')}`);
     }
 
     if (applicationsError) {
