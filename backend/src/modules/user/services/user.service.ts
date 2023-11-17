@@ -361,7 +361,7 @@ export class UserService {
         createUserDto.organizationId,
       );
       // 3. Create user in Cognito
-      const cognitoId = await this.cognitoService.createUser(createUserDto);
+      const cognitoId = await this.createCognitoUser(createUserDto);
       // 4. Create user in database
       const user = await this.userRepository.save({
         ...createUserDto,
@@ -380,6 +380,8 @@ export class UserService {
         case USER_ERRORS.ALREADY_EXISTS_EMAIL.errorCode:
         // 4. USR_013: User already exists with this phone
         case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
+        // 5. USR_015: Cognito could not deliver the confirmation code. Email is invalid
+        case USER_ERRORS.INVALID_EMAIL_COGNITO_CODE_DELIVERY.errorCode:
           throw new BadRequestException(err);
         // 5. USR_001: Something unexpected happened
         default: {
@@ -389,6 +391,33 @@ export class UserService {
         }
       }
     }
+  }
+
+  /**
+   * Handle possible errors from Cognito while creating a user https://github.com/code4romania/onghub/issues/358
+   * We encounter the problem where the user can insert an invalid email that passes our regex validation and Cognito's
+   * Basically a user john.doe±test1@gmail.com goes as valid, but the Code could not be delivered. So we will handle this
+   * **/
+  private async createCognitoUser(
+    createUserDto: CreateUserDto,
+  ): Promise<string> {
+    let cognitoId;
+    try {
+      cognitoId = await this.cognitoService.createUser(createUserDto);
+    } catch (err) {
+      switch (err?.name) {
+        case 'UsernameExistsException':
+          throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_EMAIL);
+        case 'CodeDeliveryFailureException':
+          throw new BadRequestException(
+            USER_ERRORS.INVALID_EMAIL_COGNITO_CODE_DELIVERY,
+          );
+        default:
+          throw err;
+      }
+    }
+
+    return cognitoId;
   }
 
   private async assignApplications(
