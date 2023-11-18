@@ -18,6 +18,7 @@ interface DataTableProps {
   paginationDefaultPage?: number;
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (rowsPerPage: number) => void;
+  onRowClicked?: (row: any) => void;
   onSort?: (selectedColumn: TableColumn<any>, sortDirection: SortOrder, sortedRows: any[]) => void;
   defaultSortFieldId?: string | number;
   defaultSortAsc?: boolean;
@@ -36,6 +37,7 @@ const DataTableComponent = ({
   onSort,
   onChangePage,
   onChangeRowsPerPage,
+  onRowClicked,
   defaultSortFieldId,
   defaultSortAsc,
 }: DataTableProps) => {
@@ -49,6 +51,13 @@ const DataTableComponent = ({
       )}
     >
       <DataTable
+        conditionalRowStyles={[
+          {
+            when: () => !!onRowClicked,
+            style: { cursor: 'pointer' },
+            classNames: ['hover:bg-gray-50'],
+          },
+        ]}
         noHeader
         columns={columns}
         data={data || []}
@@ -73,6 +82,7 @@ const DataTableComponent = ({
         progressComponent={<LoadingContent />}
         defaultSortFieldId={defaultSortFieldId}
         defaultSortAsc={defaultSortAsc}
+        onRowClicked={onRowClicked}
       />
     </div>
   );

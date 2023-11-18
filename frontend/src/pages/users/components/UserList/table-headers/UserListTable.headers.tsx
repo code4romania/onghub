@@ -22,7 +22,8 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     id: 'name',
     name: <DataTableNameHeader text={translations.name} />,
     sortable: true,
-    grow: 2,
+    grow: 1,
+    wrap: false,
     minWidth: '15rem',
     selector: (row: IUser) => row.name,
   },
@@ -30,16 +31,38 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     id: 'email',
     name: <DataTableNameHeader text={translations.email} />,
     sortable: true,
-    grow: 2,
-    minWidth: '15rem',
+    grow: 1,
+    minWidth: '20rem',
     selector: (row: IUser) => row.email,
   },
   {
     id: 'phone',
     name: <DataTableNameHeader text={translations.phone} />,
     sortable: true,
-    minWidth: '10rem',
+    minWidth: '9rem',
     selector: (row: IUser) => row.phone,
+  },
+  {
+    id: 'availableApps',
+    name: <DataTableNameHeader text="Access Aplicatii" />,
+    sortable: true,
+    minWidth: '15rem',
+    cell: (row: IUser) => (
+      <div>
+        {`(${row.availableApps.length})`}{' '}
+        {row?.availableApps?.map((app, i) => (
+          <a
+            key={i}
+            className="!text-blue-500 !hover:text-blue-800 font-titilliumSemiBold"
+            href={`/application/${app.id}/details`}
+          >
+            {app?.name}
+            {i < row.availableApps.length - 1 ? ', ' : ''}
+          </a>
+        ))}
+      </div>
+    ),
+    selector: (row: IUser) => row.availableAppsList || '',
   },
   {
     id: 'status',
@@ -56,6 +79,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
   },
   {
     id: 'createdOn',
+    minWidth: '10rem',
     name: <DataTableNameHeader text={translations.created} />,
     sortable: true,
     selector: (row: IUser) => formatDate(row?.createdOn as string),
