@@ -55,7 +55,7 @@ const CivicCenterServiceActions = ({ service, refetch }: CivicCenterServiceActio
   };
 
   const onViewCivicCenterService = () => {
-    openInNewTab(`${process.env.REACT_APP_CIVIC_CENTER_WEBSITE}services/${service.id}`);
+    openInNewTab(`${process.env.REACT_APP_CIVIC_CENTER_WEBSITE}/services/${service.id}`);
   };
 
   const onEdit = () => {

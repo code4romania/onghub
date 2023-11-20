@@ -48,6 +48,9 @@ resource "aws_apprunner_service" "backend" {
           THROTTLE_LIMIT = "600"
           THROTTLE_TTL   = "60"
           CACHE_TTL      = "600"
+
+          REACT_APP_CIVIC_CENTER_WEBSITE = local.centrucivic.frontend_domain
+          REACT_APP_P4G_WEBSITE          = local.practice4good.frontend_domain
         }
 
         port = "80"

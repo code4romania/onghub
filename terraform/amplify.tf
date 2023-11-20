@@ -36,6 +36,9 @@ resource "aws_amplify_branch" "branch" {
     REACT_APP_FRONTEND_URL         = "https://${local.frontend_domain}"
     REACT_APP_USER_POOL_CLIENT_ID  = aws_cognito_user_pool_client.onghub_client.id
     REACT_APP_USER_POOL_ID         = aws_cognito_user_pool.pool.id
+
+    REACT_APP_CIVIC_CENTER_WEBSITE = local.centrucivic.frontend_domain
+    REACT_APP_P4G_WEBSITE          = local.practice4good.frontend_domain
   }
 }
 

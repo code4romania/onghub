@@ -2,7 +2,7 @@ import { ShieldCheckIcon, TrashIcon } from '@heroicons/react/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
@@ -24,6 +24,7 @@ import { OngApplicationStatusOptions } from '../constants/filter.constants';
 import { ApplicationNGOListTableHeaders } from './headers/application-ngo-list.headers';
 
 const ApplicationNGOList = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
@@ -205,6 +206,10 @@ const ApplicationNGOList = () => {
       );
   };
 
+  const onViewOrganization = (row: ApplicationOrganization) => {
+    navigate(`/organizations/${row.organizationId}`);
+  };
+
   return (
     <>
       <DataTableFilters
@@ -245,6 +250,7 @@ const ApplicationNGOList = () => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
+          onRowClicked={onViewOrganization}
         />
       </div>
       {removalCandidate && (
