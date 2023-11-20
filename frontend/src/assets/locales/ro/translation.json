@@ -686,7 +686,9 @@
     },
     "filters": {
       "active": "Activ",
-      "restricted": "Restricționat"
+      "restricted": "Restricționat",
+      "any": "Indiferent",
+      "all": "Toate"
     },
     "list_header": {
       "name": "Nume",

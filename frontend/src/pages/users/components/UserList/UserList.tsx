@@ -297,11 +297,11 @@ const UserList = (props: { organizationId?: number }) => {
             <Select
               config={{
                 label: t('list.access_to_app'),
-                collection: appsNameList?.sort((a, b) => (a.name < b.name ? -1 : 1)) || [],
+                collection: [{ id: null, name: t('filters.all') }, ...appsNameList?.sort((a, b) => (a.name < b.name ? -1 : 1)) || []],
                 displayedAttribute: 'name',
               }}
               selected={appsFilter[0]}
-              onChange={(selection: ApplicationListItem) => setAppsFilters([selection])}
+              onChange={(selection: ApplicationListItem) => selection.id ? setAppsFilters([selection]) : setAppsFilters([])}
             />
           </div>
         </div>

@@ -687,7 +687,8 @@
     "filters": {
       "active": "Activ",
       "restricted": "Restrictionat",
-      "any": "Indiferent"
+      "any": "Indiferent",
+      "all": "Toate"
     },
     "list_header": {
       "name": "Nume",
