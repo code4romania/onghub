@@ -16,7 +16,7 @@ import {
   useRestrictUserMutation,
   useUsersQuery,
 } from '../../../../services/user/User.queries';
-import { useUser } from '../../../../store/selectors';
+import { useOngApplications, useUser } from '../../../../store/selectors';
 import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
 import { IUser } from '../../interfaces/User.interface';
@@ -27,6 +27,11 @@ import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../../contexts/AuthContext';
 import { UserRole } from '../../enums/UserRole.enum';
 import { getUsersForDownload } from '../../../../services/user/User.service';
+import {
+  useApplicationListNamesQuery,
+  useOngApplicationsQuery,
+} from '../../../../services/application/Application.queries';
+import { ApplicationListItem } from '../../../../services/application/interfaces/Application.interface';
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
@@ -37,6 +42,7 @@ const UserList = (props: { organizationId?: number }) => {
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: UserStatus; label: string } | null>();
+  const [appsFilter, setAppsFilters] = useState<ApplicationListItem[]>([]);
   const [range, setRange] = useState<Date[]>([]);
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
   const { role } = useAuthContext();
@@ -56,10 +62,13 @@ const UserList = (props: { organizationId?: number }) => {
     status?.status,
     range,
     organizationId as number,
+    appsFilter as ApplicationListItem[],
   );
   const restrictUserAccessMutation = useRestrictUserMutation();
   const restoreUserAccessMutation = useRestoreUserMutation();
   const removeUserMutation = useRemoveUserMutation();
+
+  const { data: appsNameList } = useApplicationListNamesQuery();
 
   useEffect(() => {
     if (users?.meta) {
@@ -227,6 +236,7 @@ const UserList = (props: { organizationId?: number }) => {
     setStatus(null);
     setRange([]);
     setSearchWord(null);
+    setAppsFilters([]);
   };
 
   const onCancelUserRemoval = () => {
@@ -281,6 +291,17 @@ const UserList = (props: { organizationId?: number }) => {
               }}
               selected={status}
               onChange={onStatusChange}
+            />
+          </div>
+          <div className="sm:basis-1/4 w-full">
+            <Select
+              config={{
+                label: t('list.access_to_app'),
+                collection: appsNameList?.sort((a, b) => (a.name < b.name ? -1 : 1)) || [],
+                displayedAttribute: 'name',
+              }}
+              selected={appsFilter[0]}
+              onChange={(selection: ApplicationListItem) => setAppsFilters([selection])}
             />
           </div>
         </div>

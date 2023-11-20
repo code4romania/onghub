@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class UserApplicationsView1700316222351 implements MigrationInterface {
-  name = 'UserApplicationsView1700316222351';
+export class UserApplicationsView1700483035028 implements MigrationInterface {
+  name = 'UserApplicationsView1700483035028';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE VIEW "UserApplicationsView" AS 
@@ -15,7 +15,7 @@ export class UserApplicationsView1700316222351 implements MigrationInterface {
             u.organization_id as "organizationId",
             u.created_on as "createdOn",
             u.updated_on as "updatedOn",
-            STRING_AGG(DISTINCT a.name, ',') as "availableAppsList",
+            ARRAY_AGG(DISTINCT a.id) as "availableAppsIDs",
             json_agg(json_build_object('id', a.id, 'name', a.name, 'type', a.type)) as "availableApps"
         FROM
             "user" u
@@ -35,7 +35,7 @@ export class UserApplicationsView1700316222351 implements MigrationInterface {
         'public',
         'VIEW',
         'UserApplicationsView',
-        'SELECT\n            u.id,\n            u.name,\n            u.email,\n            u.phone,\n            u.status,\n            u.role,\n            u.organization_id as "organizationId",\n            u.created_on as "createdOn",\n            u.updated_on as "updatedOn",\n            STRING_AGG(DISTINCT a.name, \',\') AS user_apps,\n            json_agg(json_build_object(\'id\', a.id, \'name\', a.name, \'type\', a.type)) as "availableApps"\n        FROM\n            "user" u\n        LEFT JOIN user_ong_application uoa ON u.id = uoa.user_id AND uoa.status = \'active\'\n        LEFT JOIN ong_application oa ON uoa.ong_application_id = oa.id AND oa.status = \'active\'\n        LEFT JOIN application a ON (oa.application_id = a.id OR a.type = \'independent\') AND a.status = \'active\'\n        WHERE\n            "u"."role" = \'employee\' AND\n            "u"."status" IN(\'active\', \'restricted\') AND\n            "u"."deleted_on" IS NULL\n        GROUP BY\n            u.id',
+        'SELECT\n            u.id,\n            u.name,\n            u.email,\n            u.phone,\n            u.status,\n            u.role,\n            u.organization_id as "organizationId",\n            u.created_on as "createdOn",\n            u.updated_on as "updatedOn",\n            ARRAY_AGG(DISTINCT a.id) as "availableAppsIDs",\n            json_agg(json_build_object(\'id\', a.id, \'name\', a.name, \'type\', a.type)) as "availableApps"\n        FROM\n            "user" u\n        LEFT JOIN user_ong_application uoa ON u.id = uoa.user_id AND uoa.status = \'active\'\n        LEFT JOIN ong_application oa ON uoa.ong_application_id = oa.id AND oa.status = \'active\'\n        LEFT JOIN application a ON (oa.application_id = a.id OR a.type = \'independent\') AND a.status = \'active\'\n        WHERE\n            "u"."role" = \'employee\' AND\n            "u"."status" IN(\'active\', \'restricted\') AND\n            "u"."deleted_on" IS NULL\n        GROUP BY\n            u.id',
       ],
     );
   }

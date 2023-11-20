@@ -667,7 +667,8 @@
       "date": "Data adăugării",
       "confirmation": "Confirmă ștergerea utilizatorului",
       "description": "După ștergerea utilizatorului, acesta nu va mai avea acces în NGO Hug și toate informațiile despre acel cont vor fi eliminate.",
-      "download": "Descarcă tabelul"
+      "download": "Descarcă tabelul",
+      "access_to_app": "Acces la aplicatii"
     },
     "invites": {
       "title": "Lista cu invitații",

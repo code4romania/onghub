@@ -19,6 +19,7 @@ import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interf
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IInvite } from '../../pages/users/interfaces/Invite.interface';
+import { ApplicationListItem } from '../application/interfaces/Application.interface';
 
 export const useProfileQuery = (queryOptions?: any) => {
   const { setProfile, setOrganization } = useStore();
@@ -42,11 +43,34 @@ export const useUsersQuery = (
   status?: UserStatus,
   interval?: Date[],
   organizationId?: number,
+  availableAppsIDs?: ApplicationListItem[],
 ) => {
   const { setUsers } = useStore();
   return useQuery(
-    ['users', limit, page, orderBy, orderDirection, search, status, interval, organizationId],
-    () => getUsers(limit, page, orderBy, orderDirection, search, status, interval, organizationId),
+    [
+      'users',
+      limit,
+      page,
+      orderBy,
+      orderDirection,
+      search,
+      status,
+      interval,
+      organizationId,
+      availableAppsIDs,
+    ],
+    () =>
+      getUsers(
+        limit,
+        page,
+        orderBy,
+        orderDirection,
+        search,
+        status,
+        interval,
+        organizationId,
+        availableAppsIDs?.map((app) => app.id),
+      ),
     {
       onSuccess: (data: PaginatedEntity<IUser>) => {
         setUsers({

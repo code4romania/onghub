@@ -9,6 +9,7 @@ import { CreateApplicationDto } from './interfaces/Application.dto';
 import {
   Application,
   ApplicationAccess,
+  ApplicationListItem,
   ApplicationOrganization,
   ApplicationStatus,
   ApplicationWithOngStatus,
@@ -81,6 +82,10 @@ export const getApplicationsForEditUser = async (userId: string): Promise<Applic
 
 export const getApplicationById = (applicationId: string): Promise<Application> => {
   return API.get(`/application/${applicationId}`).then((res) => res.data);
+};
+
+export const getApplicationsListNames = (): Promise<ApplicationListItem[]> => {
+  return API.get(`/application/list`).then((res) => res.data);
 };
 
 export const getApplicationOrganizations = (

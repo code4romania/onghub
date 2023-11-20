@@ -20,6 +20,11 @@ export interface Application {
   userCount: number;
 }
 
+export interface ApplicationListItem {
+  id: number;
+  name: string;
+}
+
 // For Cards List
 export interface ApplicationWithOngStatus {
   id: number;

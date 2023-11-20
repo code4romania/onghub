@@ -13,6 +13,7 @@ import {
   getApplications,
   getApplicationsForCreateUser,
   getApplicationsForEditUser,
+  getApplicationsListNames,
   getOngApplications,
   removeApplication,
   removeOngApplication,
@@ -77,6 +78,10 @@ export const useApplicationQuery = (applicationId: string) => {
       setSelectedApplication(data);
     },
   });
+};
+
+export const useApplicationListNamesQuery = () => {
+  return useQuery(['application-list-names'], () => getApplicationsListNames());
 };
 
 // As an SuperAdmin get NGO LIST for an organization

@@ -27,7 +27,7 @@ import { Role } from '../enums/role.enum';
             u.organization_id as "organizationId",
             u.created_on as "createdOn",
             u.updated_on as "updatedOn",
-            STRING_AGG(DISTINCT a.name, ',') as "availableAppsList",
+            ARRAY_AGG(DISTINCT a.id) as "availableAppsIDs",
             json_agg(json_build_object('id', a.id, 'name', a.name, 'type', a.type)) as "availableApps"
         FROM
             "user" u
@@ -65,7 +65,7 @@ export class UserApplicationsView {
   availableApps: Pick<ApplicationAccess, 'id' | 'name' | 'type'>; // e.g. [{"id" : 2, "name" : "Beats Data", "type" : "independent"}, ...]
 
   @ViewColumn()
-  availableAppsList: string; // e.g. Beats Data, TEO, Vic, etc. (for filtering purpose)
+  availableAppsIDs: number[]; // e.g. 26, 28, 39 (for filtering purpose, to avoid searching in JSONs)
 
   @ViewColumn()
   createdOn: Date;

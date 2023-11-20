@@ -8,7 +8,14 @@ import {
 } from '@nestjs/common';
 import { ORGANIZATION_ERRORS } from 'src/modules/organization/constants/errors.constants';
 import { OrganizationService } from 'src/modules/organization/services';
-import { FindManyOptions, FindOneOptions, Not, UpdateResult } from 'typeorm';
+import {
+  ArrayContains,
+  ArrayOverlap,
+  FindManyOptions,
+  FindOneOptions,
+  Not,
+  UpdateResult,
+} from 'typeorm';
 import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -177,7 +184,13 @@ export class UserService {
     options: UserFilterDto,
     organizationId?: number,
   ): Promise<Pagination<UserApplicationsView>> {
-    const paginationOptions: any = { ...options };
+    const paginationOptions: any = {
+      ...options,
+      availableAppsIDs:
+        options.availableAppsIDs?.length > 0
+          ? ArrayContains(options.availableAppsIDs)
+          : null,
+    };
 
     // For Admin user we will sort by organizationId
     return this.userApplicationsView.getManyPaginated(
