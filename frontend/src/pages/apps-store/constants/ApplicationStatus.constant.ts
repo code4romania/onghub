@@ -6,6 +6,7 @@ import { OngApplicationStatus } from '../../requests/interfaces/OngApplication.i
 const translations = {
   active: i18n.t('appstore:status.active'),
   disabled: i18n.t('appstore:status.disabled'),
+  any: i18n.t('appstore:status.any'),
   restricted: i18n.t('appstore:status.restricted'),
   pending: i18n.t('appstore:status.pending'),
   pending_removal: i18n.t('appstore:status.pending_removal'),
@@ -58,6 +59,10 @@ export const ONG_APPLICATION_STATUS: Record<OngApplicationStatus, string> = {
 };
 
 export const ApplicationStatusCollection = [
+  {
+    status: null,
+    label: translations.any,
+  },
   {
     status: ApplicationStatus.ACTIVE,
     label: translations.active,

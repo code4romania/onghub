@@ -27,6 +27,7 @@
       "completed": "Completat",
       "not_completed": "Necompletat"
     },
+    "any": "Indiferent",
     "restricted": "Restricționat",
     "active": "Activ",
     "inactive": "Inactiv",
@@ -160,7 +161,8 @@
     },
     "filters": {
       "incomplete": "Incomplet",
-      "updated": "Actualizat"
+      "updated": "Actualizat",
+      "any": "Indiferent"
     },
     "create_config": {
       "name": {
@@ -798,6 +800,7 @@
       "standalone": "Necesită login cu configurare"
     },
     "status": {
+      "any": "Indiferent",
       "active": "Activ",
       "disabled": "Inactiv",
       "restricted": "Restricționat",

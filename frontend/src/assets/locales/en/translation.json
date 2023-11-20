@@ -27,6 +27,7 @@
       "completed": "Completat",
       "not_completed": "Necompletat"
     },
+    "any": "Indiferent",
     "restricted": "Restrictionat",
     "active": "Activ",
     "inactive": "Inactiv",
@@ -160,7 +161,8 @@
     },
     "filters": {
       "incomplete": "Incomplet",
-      "updated": "Actualizat"
+      "updated": "Actualizat",
+      "any": "Indiferent"
     },
     "create_config": {
       "name": {
@@ -683,7 +685,8 @@
     },
     "filters": {
       "active": "Activ",
-      "restricted": "Restrictionat"
+      "restricted": "Restrictionat",
+      "any": "Indiferent"
     },
     "list_header": {
       "name": "Nume",
@@ -798,6 +801,7 @@
       "standalone": "Necesita login cu configurare"
     },
     "status": {
+      "any": "Indiferent",
       "active": "Activ",
       "disabled": "Inactiv",
       "restricted": "Restrictionat",
