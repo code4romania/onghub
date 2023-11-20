@@ -68,7 +68,7 @@ const Users = () => {
                 selectedTab?.href === tab.href
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
+                'text-gray-700 rounded-md sm:text-lg lg:text-lg text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
               )}
             >
               {tab.name}

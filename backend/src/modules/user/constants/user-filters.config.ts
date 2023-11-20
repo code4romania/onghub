@@ -8,6 +8,8 @@ export const USER_FILTERS_CONFIG = {
     createdOn: true,
     phone: true,
     status: true,
+    availableApps: true,
+    availableAppsList: true,
   },
   searchableColumns: ['name', 'email'],
   defaultSortBy: 'name',

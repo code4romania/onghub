@@ -21,17 +21,23 @@ import { CognitoUserService } from './cognito.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
-import { Access } from 'src/modules/application/interfaces/application-access.interface';
+import {
+  Access,
+  ApplicationAccess,
+} from 'src/modules/application/interfaces/application-access.interface';
 import { INVITE_FILTERS_CONFIG } from '../constants/invites-filters.config';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { format } from 'date-fns';
 import { DownloadFiltersDto } from '../dto/download-users.filter';
+import { UserApplicationsViewRepository } from '../repositories/user-applications-view.repository';
+import { UserApplicationsView } from '../entities/user-applications-view.entity';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly userApplicationsView: UserApplicationsViewRepository,
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
@@ -165,6 +171,21 @@ export class UserService {
         }
       }
     }
+  }
+
+  public async findAllWithApplications(
+    options: UserFilterDto,
+    organizationId?: number,
+  ): Promise<Pagination<UserApplicationsView>> {
+    const paginationOptions: any = { ...options };
+
+    // For Admin user we will sort by organizationId
+    return this.userApplicationsView.getManyPaginated(
+      USER_FILTERS_CONFIG,
+      organizationId
+        ? { ...paginationOptions, organizationId }
+        : paginationOptions,
+    );
   }
 
   public async findAll(

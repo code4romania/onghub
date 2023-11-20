@@ -12,11 +12,11 @@ const Layout = () => {
     <div className="w-screen h-screen max-w-full">
       <Header openSlidingMenu={setSlidingMenuOpen} />
       <SlidingMenu isOpen={isSlidingMenuOpen} setSlidingMenuOpen={setSlidingMenuOpen} />
-      <div className="flex flex-row sm:p-6 p-4 gap-6">
-        <div className="menu hidden xl:flex">
+      <div className="flex flex-row sm:p-6 p-4 gap-6 xl:gap-4">
+        <div className="menu hidden xl:flex xl:flex-shrink-0 xl:w-64">
           <Menu />
         </div>
-        <div className="content w-full">
+        <div className="content xl:w-[calc(100%-17rem)] w-full">
           <Outlet />
         </div>
       </div>

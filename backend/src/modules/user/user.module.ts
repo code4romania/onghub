@@ -10,19 +10,21 @@ import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
 import { UserApplicationService } from './services/user-application.service';
-import { MulterModule } from '@nestjs/platform-express';
 import { SharedModule } from 'src/shared/shared.module';
+import { UserApplicationsView } from './entities/user-applications-view.entity';
+import { UserApplicationsViewRepository } from './repositories/user-applications-view.repository';
 
 @Module({
   imports: [
     SharedModule,
-    TypeOrmModule.forFeature([User, UserHistory]),
+    TypeOrmModule.forFeature([User, UserHistory, UserApplicationsView]),
     forwardRef(() => OrganizationModule),
     ApplicationModule,
   ],
   controllers: [ProfileController, AdminUserController],
   providers: [
     UserRepository,
+    UserApplicationsViewRepository,
     UserService,
     CognitoUserService,
     UserApplicationService,

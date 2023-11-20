@@ -9,4 +9,7 @@ export interface IUser extends BaseEntity {
   role: string;
   status: UserStatus;
   organization: BaseEntity;
+
+  availableAppsList?: string;
+  availableApps: { id: number; name: string; type: string }[];
 }

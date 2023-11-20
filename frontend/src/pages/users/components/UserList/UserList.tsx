@@ -312,6 +312,7 @@ const UserList = (props: { organizationId?: number }) => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
+          onRowClicked={onEdit}
         />
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal

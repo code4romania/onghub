@@ -30,6 +30,7 @@ import { UserService } from './services/user.service';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
 import { DownloadFiltersDto } from './dto/download-users.filter';
 import { FileManagerService } from 'src/shared/services/file-manager.service';
+import { UserApplicationsView } from './entities/user-applications-view.entity';
 
 @Roles(Role.ADMIN, Role.SUPER_ADMIN)
 @Controller('user')
@@ -59,8 +60,8 @@ export class AdminUserController {
     @ExtractUser() user: User,
     @Query() filters: UserFilterDto,
     @Query('organization_id') organizationId?: number,
-  ): Promise<Pagination<User>> {
-    return this.userService.findAll(
+  ): Promise<Pagination<UserApplicationsView>> {
+    return this.userService.findAllWithApplications(
       filters,
       user.organizationId || organizationId,
     );

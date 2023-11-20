@@ -22,7 +22,6 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     name: <DataTableNameHeader text={translations.organization_name} />,
     sortable: true,
     selector: (row: IOrganizationRequest) => row.organizationName,
-    grow: 2.5,
     minWidth: '15rem',
     cell: (row: IOrganizationRequest) => (
       <NameWithLogo name={row.organizationName} logo={row.logo} />
@@ -33,23 +32,23 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     name: <DataTableNameHeader text={translations.name} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.name,
-    grow: 1.5,
-    minWidth: '7rem',
+    minWidth: '15rem',
+    grow: 1,
   },
   {
     id: 'email',
     name: <DataTableNameHeader text={translations.email} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.email,
-    grow: 2,
-    minWidth: '10rem',
+    grow: 1,
+    minWidth: '20rem',
   },
   {
     id: 'phone',
     name: <DataTableNameHeader text={translations.phone} />,
     sortable: false,
     selector: (row: IOrganizationRequest) => row.phone,
-    minWidth: '7rem',
+    minWidth: '9rem',
     grow: 1,
   },
   {
@@ -57,7 +56,7 @@ export const RequestListTableHeaders: TableColumn<IOrganizationRequest>[] = [
     name: <DataTableNameHeader text={translations.created_on} />,
     sortable: true,
     selector: (row: IOrganizationRequest) => formatDate(row?.createdOn as string),
-    minWidth: '7rem',
+    minWidth: '10rem',
     grow: 1,
   },
 ];

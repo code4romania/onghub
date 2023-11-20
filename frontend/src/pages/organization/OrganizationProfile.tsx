@@ -98,7 +98,7 @@ const OrganizationProfile = () => {
           </button>
         )}
       </div>
-      <p className="text-gray-400 sm:pt-6 pt-3 sm:text-sm lg:text-base text-xs">
+      <p className="text-gray-400 sm:pb-6 sm:pt-2 pt-2 pb-3 sm:text-sm lg:text-base text-xs">
         {t('description')}
       </p>
       <div className="pb-6 flex">
@@ -115,7 +115,7 @@ const OrganizationProfile = () => {
                 selectedTab?.href === tab.href
                   ? 'bg-green-tab text-gray-800 font-titilliumBold'
                   : 'font-titilliumSemiBold',
-                'text-gray-700 rounded-md sm:text-lg lg:text-xl text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
+                'text-gray-700 rounded-md sm:text-lg lg:text-lg text-md px-8 py-2 hover:bg-green-tab lg:whitespace-nowrap',
               )}
             >
               {tab.name}

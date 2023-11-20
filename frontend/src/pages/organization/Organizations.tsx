@@ -258,6 +258,7 @@ const Organizations = () => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
+          onRowClicked={onViewOrganization}
         />
       </div>
     </ContentWrapper>
