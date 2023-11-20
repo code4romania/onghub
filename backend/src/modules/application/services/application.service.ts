@@ -99,6 +99,17 @@ export class ApplicationService {
     }
   }
 
+  public async getAllAppsNames(): Promise<Pick<Application, 'id' | 'name'>[]> {
+    const applications = await this.applicationRepository.getMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    return applications;
+  }
+
   /**
    * Get all aplications with statistics for super-admin
    * @param options

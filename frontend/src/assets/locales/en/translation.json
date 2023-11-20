@@ -665,7 +665,8 @@
       "date": "Data adaugarii",
       "confirmation": "Esti sigur ca doresti stergerea utilizatorului?",
       "description": "Lorem ipsum.Închiderea contului ONG Hub înseamnă că nu vei mai avea acces în aplicațiile puse la dispozitie prin intemediul acestui portal. Lorem ipsum",
-      "download": "Descarca Tabel"
+      "download": "Descarca Tabel",
+      "access_to_app": "Acces la aplicatii"
     },
     "invites": {
       "title": "Lista cu invitatii",

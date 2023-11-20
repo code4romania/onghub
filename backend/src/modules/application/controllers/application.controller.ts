@@ -62,6 +62,12 @@ export class ApplicationController {
     return this.appService.findAll(filters);
   }
 
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @Get('/list')
+  getAllAppsNames(): Promise<Pick<Application, 'id' | 'name'>[]> {
+    return this.appService.getAllAppsNames();
+  }
+
   @Roles(Role.SUPER_ADMIN)
   @UseInterceptors(FileFieldsInterceptor([{ name: 'logo', maxCount: 1 }]))
   @ApiConsumes('multipart/form-data')

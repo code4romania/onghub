@@ -45,7 +45,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
   {
     id: 'availableApps',
     name: <DataTableNameHeader text="Access Aplicatii" />,
-    sortable: true,
+    sortable: false,
     minWidth: '15rem',
     cell: (row: IUser) => (
       <div>
