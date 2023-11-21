@@ -132,7 +132,7 @@ const OrganizationFinancial = () => {
       <>
         <div className="py-5">
           <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900">
-            {t('data_update', { ns: 'organization' })}
+            {t('data_update', { ns: 'financial' })}
           </p>
         </div>
         {organization?.status === OrganizationStatus.PENDING && organizationFinancial[0].synched_anaf === false && role == UserRole.SUPER_ADMIN && (

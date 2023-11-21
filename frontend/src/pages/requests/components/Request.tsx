@@ -120,7 +120,7 @@ const Request = () => {
     <>
       <ContentWrapper
         title={request?.organization.organizationGeneral.name || ''}
-        subtitle={t('description')}
+        subtitle={t('description_request')}
         backButton={{
           btnLabel: t('back', { ns: 'common' }),
           onBtnClick: () => navigate('/requests'),
