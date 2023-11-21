@@ -961,6 +961,19 @@
       "activate": "Activează aplicație",
       "restrict": "Dezactivează aplicație",
       "remove": "Elimină definitiv"
+    },
+    "edit": {
+      "title": "Editeaza aplicatie",
+      "subtitle": "Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+      "page_title": "Editare pagina aplicatie",
+      "success": "Aplicatie modificata cu succes!",
+      "error": "Eroare la editarea aplicatiei"
+    },
+    "type": {
+      "all": "Toate",
+      "independent": "Website independent",
+      "simple": "Necesita login simplu",
+      "standalone": "Necesita login cu configurare"
     }
   },
   "header": {
