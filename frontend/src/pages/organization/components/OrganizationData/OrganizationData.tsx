@@ -229,7 +229,7 @@ const OrganizationData = () => {
         name: t('download'),
         icon: DownloadIcon,
         onClick: onDownloadFile,
-        isDownload: true,
+        type: PopoverMenuRowType.DOWNLOAD,
       },
     ];
 
