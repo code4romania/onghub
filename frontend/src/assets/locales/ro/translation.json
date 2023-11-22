@@ -27,6 +27,7 @@
       "completed": "Completat",
       "not_completed": "Necompletat"
     },
+    "any": "Toate",
     "restricted": "Restricționat",
     "active": "Activ",
     "inactive": "Inactiv",
@@ -162,7 +163,8 @@
     },
     "filters": {
       "incomplete": "Incomplet",
-      "updated": "Actualizat"
+      "updated": "Actualizat",
+      "any": "Toate"
     },
     "create_config": {
       "name": {
@@ -711,7 +713,9 @@
     },
     "filters": {
       "active": "Activ",
-      "restricted": "Restricționat"
+      "restricted": "Restricționat",
+      "any": "Toate",
+      "all": "Toate"
     },
     "list_header": {
       "name": "Nume",
@@ -826,6 +830,7 @@
       "standalone": "Necesită login cu configurare"
     },
     "status": {
+      "any": "Toate",
       "active": "Activ",
       "disabled": "Inactiv",
       "restricted": "Restricționat",

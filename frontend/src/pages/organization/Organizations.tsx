@@ -99,7 +99,11 @@ const Organizations = () => {
   };
 
   const onUsersRangeChange = (selected: { status: string; label: string }) => {
-    setUserRange(selected);
+    if (!selected.status) {
+      setUserRange(null);
+    } else {
+      setUserRange(selected);
+    }
   };
 
   const onResetFilters = () => {
