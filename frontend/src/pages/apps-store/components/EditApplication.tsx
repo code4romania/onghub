@@ -58,7 +58,7 @@ const EditApplication = () => {
 
   useEffect(() => {
     if (updateApplicationError) {
-      useErrorToast('Eroare la editarea aplicatiei');
+      useErrorToast(t('app:edit.error'));
     }
   }, [updateApplicationError]);
 
@@ -73,7 +73,7 @@ const EditApplication = () => {
       },
       {
         onSuccess: () => {
-          useSuccessToast('Aplicatie modificata cu succes!');
+          useSuccessToast(t('app:edit.success'));
           navigate(-1);
         },
       },
@@ -86,14 +86,14 @@ const EditApplication = () => {
 
   return (
     <ContentWrapper
-      title="Editeaza aplicatie"
-      subtitle="Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile."
+      title={t('app:edit.title')}
+      subtitle={t('app:edit.subtitle')}
       backButton={{ btnLabel: 'Inapoi', onBtnClick: () => navigate(`/application/${id}/details`) }}
     >
       <div className="w-full bg-white shadow rounded-lg mt-4">
         <div className="py-5 lg:px-10 px-5 flex justify-between">
           <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
-            {'Editare pagina aplicatie'}
+            {t('app:edit:page_title')}
           </span>
 
           <button

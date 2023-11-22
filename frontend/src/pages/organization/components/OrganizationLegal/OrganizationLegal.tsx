@@ -284,8 +284,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                    handleSubmit(handleSave)();
-                  }
+                  handleSubmit(handleSave)();
+                }
             }
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -300,7 +300,7 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
-              subTitle={t('information', { ns: 'common' })}
+              subTitle={t('representative_information')}
             />
             <form className="space-y-8">
               <ContactForm
@@ -317,7 +317,7 @@ const OrganizationLegal = () => {
             </form>
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('director')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('director')} subTitle={t('director_information')} />
             {isEditMode && directors.length < 3 && (
               <div className="rounded-md bg-red-50 p-4">
                 <div className="flex">
@@ -347,7 +347,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('other')} subTitle={t('other_information')} />
             <DataTableComponent
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
@@ -365,7 +365,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('statute')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode &&

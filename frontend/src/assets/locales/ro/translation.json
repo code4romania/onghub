@@ -104,6 +104,8 @@
     "error": "Datele despre organizație nu s-au putut încărca",
     "my_organization": "Organizația mea",
     "description": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "description_admin": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+    "description_request": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
     "no_access": "Organizația ta a fost restricționată. Pentru mai multe detalii, contactează echipa noastră gratuit prin e-mail la",
     "inactive": "Ups! Organizația ta este inactivă.",
     "back": "Înapoi la website",
@@ -126,7 +128,7 @@
       "services": "Servicii"
     },
     "save_error": "Organizația nu s-a putut salva",
-    "data_update": "Z8bR4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Unde apare asta? Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
+    "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "modal": {
       "cancel": "Anulează modificările",
       "close": "Închide",
@@ -194,6 +196,7 @@
   },
   "general": {
     "title": "Date generale",
+    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "logo": {
       "name": "Logo organizație",
       "upload": "Încarcă logo",
@@ -204,7 +207,9 @@
       "description": "Completează cu datele persoanei care va păstra legătura dintre organizație și NGO Hub. Aceste informații nu vor fi afișate public."
     },
     "social": "Comunicare și social media",
+    "social_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "fundraising": "Strângere de fonduri",
+    "fundraising_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "config": {
       "name": {
         "required": "Numele organizației este obligatoriu",
@@ -333,9 +338,13 @@
   "activity": {
     "title": "Activitatea organizației",
     "domains": "Domenii și acoperire geografica",
+    "domains_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "fed_coal": "Federații și coaliții",
+    "fed_coal_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "branches": "Filiale și sucursale",
+    "branches_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "other": "Alte informații",
+    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "config": {
       "field": "Câmpul este obligatoriu.",
       "domains": "Domenii de activitate*",
@@ -389,22 +398,29 @@
   },
   "legal": {
     "title": "Informații Legale",
+    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "statute_error": "Nu s-a putut încărca statutul organizației",
     "representative": "Reprezentantul legal al organizației",
+    "representative_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "director": "Consiliul Director al organizației",
+    "director_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "dir_minimum": "Este obligatoriu să adaugi cel puțin 3 membri al Consiliului Director pentru a continua.",
     "add": "Adaugă un membru",
     "other": "Alte persoane relevante în organizație",
+    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "statute": "Statutul organizației",
+    "statute_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
     "modal": {
       "add": "Adaugă",
       "edit_director": "Editare membru Consiliu Director",
+      "edit_director_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
       "add_director": "Adăugare membru Consiliu Director",
       "edit_relevant": "Editare altă persoană relevantă în organizație",
-      "add_relevant": "Adăugare altă persoană relevantă în organizație"
+      "add_relevant": "Adăugare altă persoană relevantă în organizație",
+      "edit_relevant_information": "Aceste informații vor fi publice, atenție la ce împărtășești."
     },
     "delete_director_modal": {
       "title": "Confirmă ștergerea membrului Consiliului Director",
@@ -486,6 +502,7 @@
   },
   "financial": {
     "save_error": "Eroare la salvarea datelor financiare",
+    "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "title": "Date Financiare",
     "report_row": "eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
@@ -499,7 +516,9 @@
       "unallocated": "nealocați",
       "excess": "surplus",
       "income_report": "Raportare Venituri",
-      "expense_report": "Raportare Cheltuieli"
+      "income_report_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+      "expense_report": "Raportare Cheltuieli",
+      "expense_report_information": "Aceste informații vor fi publice, atenție la ce împărtășești."
     },
     "header": {
       "report": "Raportare",
@@ -566,6 +585,7 @@
     "invalid": "Formatul fișierului este invalid",
     "report": {
       "title": "Sumar de activitate",
+      "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
       "volunteers": "Voluntari",
       "contractors": "Contractori",
       "activity": "Raport activitate",
@@ -574,18 +594,21 @@
     },
     "partners": {
       "title": "Parteneri",
+      "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
       "list": "Lista parteneri",
       "count": "Număr parteneri",
       "download": "Descarca model de tabel parteneri"
     },
     "investors": {
       "title": "Finanțatori",
+      "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
       "list": "Lista finanțatori",
       "count": "Număr finanțatori",
       "download": "Descarca model de tabel finanțatori"
     },
     "modal": {
-      "summary": "Sumar de activitate"
+      "summary": "Sumar de activitate",
+      "summary_information": "Aceste informații vor fi publice, atenție la ce împărtășești."
     },
     "config": {
       "volunt_negative": "Numărul de voluntari nu poate fi un număr negativ.",
@@ -961,6 +984,19 @@
       "activate": "Activează aplicație",
       "restrict": "Dezactivează aplicație",
       "remove": "Elimină definitiv"
+    },
+    "edit": {
+      "title": "Editeaza aplicatie",
+      "subtitle": "Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+      "page_title": "Editare pagina aplicatie",
+      "success": "Aplicatie modificata cu succes!",
+      "error": "Eroare la editarea aplicatiei"
+    },
+    "type": {
+      "all": "Toate",
+      "independent": "Website independent",
+      "simple": "Necesita login simplu",
+      "standalone": "Necesita login cu configurare"
     }
   },
   "header": {

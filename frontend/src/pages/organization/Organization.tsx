@@ -70,7 +70,7 @@ const Organization = () => {
   return (
     <ContentWrapper
       title={organizationGeneral?.name || ''}
-      subtitle={t('description')}
+      subtitle={t('description_admin')}
       backButton={{
         btnLabel: t('back', { ns: 'common' }),
         onBtnClick: onBackButtonPress,

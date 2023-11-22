@@ -186,7 +186,7 @@ const OrganizationActivity = () => {
             </span>
             {!readonly && (
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('domains_information')}
               </p>
             )}
           </div>
@@ -268,7 +268,7 @@ const OrganizationActivity = () => {
             </span>
             {!readonly && (
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('fed_coal_information')}
               </p>
             )}
           </div>
@@ -338,30 +338,30 @@ const OrganizationActivity = () => {
 
           {(isPartOfInternationalOrganization == 'true' ||
             isPartOfInternationalOrganization === true) && (
-            <Controller
-              key={OrganizationActivityConfig.internationalOrganizationName.key}
-              name={OrganizationActivityConfig.internationalOrganizationName.key}
-              rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationActivityConfig.internationalOrganizationName.config,
-                      name: OrganizationActivityConfig.internationalOrganizationName.key,
-                      error:
-                        errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                          ?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                      id: 'organization-activity__name',
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-          )}
+              <Controller
+                key={OrganizationActivityConfig.internationalOrganizationName.key}
+                name={OrganizationActivityConfig.internationalOrganizationName.key}
+                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationActivityConfig.internationalOrganizationName.config,
+                        name: OrganizationActivityConfig.internationalOrganizationName.key,
+                        error:
+                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                            ?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'organization-activity__name',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div className="pb-5">
@@ -370,7 +370,7 @@ const OrganizationActivity = () => {
             </span>
             {!readonly && (
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('branches_information')}
               </p>
             )}
           </div>
@@ -412,7 +412,7 @@ const OrganizationActivity = () => {
             </span>
             {!readonly && (
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('other_information')}
               </p>
             )}
           </div>
