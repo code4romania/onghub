@@ -32,6 +32,7 @@ import GenericFormErrorMessage from '../../../components/generic-form-error-mess
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
+  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] = useState<boolean>(false);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -170,6 +171,12 @@ const CreateOrganizationLegal = () => {
     setIsDirectorModalOpen(true);
   };
 
+  const onDeleteStatute = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setDeleteOrganizationStatuteModalOpen(true);
+  }
+
   const onUpdateDirector = (contact: Partial<Contact>) => {
     const filteredDirectors = directors.filter(
       (director: Partial<Contact>) =>
@@ -250,9 +257,9 @@ const CreateOrganizationLegal = () => {
     }
   };
 
-  const onRemoveOrganizationStatute = (e: any) => {
-    e.preventDefault();
+  const onRemoveOrganizationStatute = () => {
     setOrganizationStatute(null);
+    setDeleteOrganizationStatuteModalOpen(false);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -282,7 +289,7 @@ const CreateOrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
-              subTitle={t('information', { ns: 'common' })}
+              subTitle={t('representative_information')}
             />
             <form className="space-y-8">
               <ContactForm
@@ -300,7 +307,7 @@ const CreateOrganizationLegal = () => {
             </form>
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('director')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('director')} subTitle={t('director_information')} />
             {isEditMode && directors.length < 3 && (
               <div className="rounded-md bg-red-50 p-4">
                 <div className="flex">
@@ -331,7 +338,7 @@ const CreateOrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('other')} subTitle={t('other_information')} />
             <DataTableComponent
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
@@ -350,7 +357,7 @@ const CreateOrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('statute')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode && organizationStatute === null && (
@@ -384,7 +391,7 @@ const CreateOrganizationLegal = () => {
                   {isEditMode && (
                     <XIcon
                       className="ml-2 w-4 h-4 text-gray-600"
-                      onClick={onRemoveOrganizationStatute}
+                      onClick={onDeleteStatute}
                     />
                   )}
                 </a>
@@ -439,6 +446,18 @@ const CreateOrganizationLegal = () => {
                 setSelectedOther(null);
               }}
               onConfirm={onDeleteOther}
+            />
+          )}
+          {isDeleteOrganizationStatuteModalOpen && (
+            <ConfirmationModal
+              title={t('delete_statute_modal.title')}
+              description={t('delete_statute_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
+              onClose={() => {
+                setDeleteOrganizationStatuteModalOpen(false);
+              }}
+              onConfirm={onRemoveOrganizationStatute}
             />
           )}
         </div>

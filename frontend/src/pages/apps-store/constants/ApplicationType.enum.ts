@@ -4,6 +4,11 @@ const translations = {
   independent: i18n.t('appstore:type.independent'),
   simple: i18n.t('appstore:type.simple'),
   standalone: i18n.t('appstore:type.standalone'),
+
+  filter_independent: i18n.t('app:type.independent'),
+  filter_simple: i18n.t('app:type.simple'),
+  filter_standalone: i18n.t('app:type.standalone'),
+  filter_all: i18n.t('app:type.all'),
 };
 
 export enum ApplicationTypeEnum {
@@ -14,10 +19,10 @@ export enum ApplicationTypeEnum {
 }
 
 export const ApplicationTypeNaming = {
-  [ApplicationTypeEnum.ALL]: 'Toate',
-  [ApplicationTypeEnum.INDEPENDENT]: 'Website independent',
-  [ApplicationTypeEnum.SIMPLE]: 'Necesita login simplu',
-  [ApplicationTypeEnum.STANDALONE]: 'Necesita login cu configurare',
+  [ApplicationTypeEnum.ALL]: translations.filter_all,
+  [ApplicationTypeEnum.INDEPENDENT]: translations.filter_independent,
+  [ApplicationTypeEnum.SIMPLE]: translations.filter_simple,
+  [ApplicationTypeEnum.STANDALONE]: translations.filter_standalone,
 };
 
 export const ApplicationTypeCollection = [

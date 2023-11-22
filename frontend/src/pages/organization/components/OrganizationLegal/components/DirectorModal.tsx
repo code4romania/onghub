@@ -82,7 +82,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="sm:text-sm lg:text-base text-xs text-gray-500">
-                        {t('information', { ns: 'common' })}
+                        {t('modal.edit_director_information')}
                       </p>
                     </div>
                   </div>

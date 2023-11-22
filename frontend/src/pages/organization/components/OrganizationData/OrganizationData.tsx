@@ -213,8 +213,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-              ? employeeMenuItems
-              : adminMenuItems
+                ? employeeMenuItems
+                : adminMenuItems
           }
         />
       ),
@@ -286,8 +286,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-              ? employeeMenuItems
-              : adminMenuItems
+                ? employeeMenuItems
+                : adminMenuItems
           }
         />
       ),
@@ -423,7 +423,7 @@ const OrganizationData = () => {
         <>
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 break-word">
-              {t('data_update', { ns: 'organization' })}
+              {t('report.data_update')}
             </p>
           </div>
           <DataTableComponent
@@ -451,7 +451,7 @@ const OrganizationData = () => {
           />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex break-word">
-              {t('data_update', { ns: 'organization' })}
+              {t('partners.data_update')}
               <a
                 aria-label={t('partners.download')}
                 href={getPartnersTemplate()}
@@ -493,7 +493,7 @@ const OrganizationData = () => {
           />
           <div className="py-5">
             <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 flex break-word">
-              {t('data_update', { ns: 'organization' })}
+              {t('investors.data_update')}
               <a
                 aria-label={t('investors.download')}
                 href={getInvestorsTemplate()}

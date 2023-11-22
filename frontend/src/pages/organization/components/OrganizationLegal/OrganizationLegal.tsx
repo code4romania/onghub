@@ -42,6 +42,7 @@ const OrganizationLegal = () => {
   const [others, setOthers] = useState<Partial<Person>[]>([]);
   const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
+  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] = useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
@@ -165,6 +166,12 @@ const OrganizationLegal = () => {
     setIsOtherModalOpen(true);
   };
 
+  const onDeleteStatute = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setDeleteOrganizationStatuteModalOpen(true);
+  }
+
   const onOpenDeleteOtherModal = (row: Person) => {
     setSelectedOther(row);
     setIsDeleteOtherModalOpen(true);
@@ -224,6 +231,7 @@ const OrganizationLegal = () => {
           const err = createError.response.data;
           if (err.code) {
             useErrorToast(FILE_ERRORS[err.code]);
+            setOrganizationStatute(null);
           } else {
             useErrorToast(t('save_error', { ns: 'organization' }));
           }
@@ -243,10 +251,7 @@ const OrganizationLegal = () => {
     }
   };
 
-  const onRemoveOrganizationStatute = (event: any) => {
-    event.stopPropagation();
-    event.preventDefault();
-
+  const onRemoveOrganizationStatute = () => {
     // 1. check if we have a path in s3 and remove it
     if (organizationLegal?.organizationStatute) {
       deleteOrganizationStatute(
@@ -257,12 +262,14 @@ const OrganizationLegal = () => {
           },
           onSettled: () => {
             setOrganizationStatute(null);
+            setDeleteOrganizationStatuteModalOpen(false);
           },
         },
       );
     } else {
       // 2. the file is only in memory so we clear state
       setOrganizationStatute(null);
+      setDeleteOrganizationStatuteModalOpen(false);
     }
   };
 
@@ -284,8 +291,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                    handleSubmit(handleSave)();
-                  }
+                  handleSubmit(handleSave)();
+                }
             }
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -300,7 +307,7 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full">
             <SectionHeader
               title={t('representative')}
-              subTitle={t('information', { ns: 'common' })}
+              subTitle={t('representative_information')}
             />
             <form className="space-y-8">
               <ContactForm
@@ -317,7 +324,7 @@ const OrganizationLegal = () => {
             </form>
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('director')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('director')} subTitle={t('director_information')} />
             {isEditMode && directors.length < 3 && (
               <div className="rounded-md bg-red-50 p-4">
                 <div className="flex">
@@ -347,7 +354,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('other')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('other')} subTitle={t('other_information')} />
             <DataTableComponent
               columns={[...OthersTableHeaders, buildOtherActionColumn()]}
               data={others}
@@ -365,7 +372,7 @@ const OrganizationLegal = () => {
             )}
           </section>
           <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('statute')} subTitle={t('information', { ns: 'common' })} />
+            <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode &&
@@ -400,7 +407,7 @@ const OrganizationLegal = () => {
                   {isEditMode && !isRemovingOrganizationStatute && (
                     <XIcon
                       className="ml-2 w-4 h-4 text-gray-600"
-                      onClick={onRemoveOrganizationStatute}
+                      onClick={onDeleteStatute}
                     />
                   )}
                   {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
@@ -454,6 +461,18 @@ const OrganizationLegal = () => {
                 setSelectedOther(null);
               }}
               onConfirm={onDeleteOther}
+            />
+          )}
+          {isDeleteOrganizationStatuteModalOpen && (
+            <ConfirmationModal
+              title={t('delete_statute_modal.title')}
+              description={t('delete_statute_modal.description')}
+              closeBtnLabel={t('back', { ns: 'common' })}
+              confirmBtnLabel={t('delete', { ns: 'common' })}
+              onClose={() => {
+                setDeleteOrganizationStatuteModalOpen(false);
+              }}
+              onConfirm={onRemoveOrganizationStatute}
             />
           )}
         </div>

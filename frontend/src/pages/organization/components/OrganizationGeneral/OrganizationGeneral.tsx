@@ -167,7 +167,7 @@ const OrganizationGeneral = () => {
       <div className="w-full border-t border-gray-300" />
       <div className="p-5 lg:p-10 flex">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader title={t('title')} subTitle={t('information', { ns: 'common' })} />
+          <SectionHeader title={t('title')} subTitle={t('title_information')} />
           <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller
@@ -520,7 +520,7 @@ const OrganizationGeneral = () => {
                 </span>
                 {!readonly && (
                   <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                    {t('information', { ns: 'common' })}
+                    {t('social_information')}
                   </p>
                 )}
               </div>
@@ -660,7 +660,7 @@ const OrganizationGeneral = () => {
                 </span>
                 {!readonly && (
                   <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                    {t('information', { ns: 'common' })}
+                    {t('fundraising_information')}
                   </p>
                 )}
               </div>

@@ -104,7 +104,7 @@ const IncomeReportModal = ({
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="sm:text-sm lg:text-base text-xs text-gray-500">
-                        {t('information', { ns: 'common' })}
+                        {t('modal.income_report_information')}
                       </p>
                     </div>
                   </div>
@@ -182,11 +182,11 @@ const IncomeReportModal = ({
                             <span className="font-medium text-red-600">
                               {total > totalDefalcat
                                 ? `(${formatCurrency(total - totalDefalcat)} RON ${t(
-                                    'modal.unallocated',
-                                  )})`
+                                  'modal.unallocated',
+                                )})`
                                 : `(${formatCurrency(totalDefalcat - total)} RON ${t(
-                                    'modal.excess',
-                                  )})`}
+                                  'modal.excess',
+                                )})`}
                             </span>
                           )}
                         </td>

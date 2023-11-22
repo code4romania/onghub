@@ -150,7 +150,7 @@ const CreateOrganizationActivity = () => {
                 {t('domains')}
               </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('domains_information', { ns: 'activity' })}
               </p>
             </div>
             <Controller
@@ -234,7 +234,7 @@ const CreateOrganizationActivity = () => {
                 {t('fed_coal')}
               </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('fed_coal_information', { ns: 'activity' })}
               </p>
             </div>
             <RadioGroup
@@ -310,30 +310,30 @@ const CreateOrganizationActivity = () => {
 
             {(isPartOfInternationalOrganization == 'true' ||
               isPartOfInternationalOrganization === true) && (
-              <Controller
-                key={OrganizationActivityConfig.internationalOrganizationName.key}
-                name={OrganizationActivityConfig.internationalOrganizationName.key}
-                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationActivityConfig.internationalOrganizationName.config,
-                        name: OrganizationActivityConfig.internationalOrganizationName.key,
-                        error:
-                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                            ?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-activity__international-name',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-            )}
+                <Controller
+                  key={OrganizationActivityConfig.internationalOrganizationName.key}
+                  name={OrganizationActivityConfig.internationalOrganizationName.key}
+                  rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <InputField
+                        config={{
+                          ...OrganizationActivityConfig.internationalOrganizationName.config,
+                          name: OrganizationActivityConfig.internationalOrganizationName.key,
+                          error:
+                            errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                              ?.message,
+                          defaultValue: value,
+                          onChange: onChange,
+                          id: 'create-organization-activity__international-name',
+                        }}
+                        readonly={readonly}
+                      />
+                    );
+                  }}
+                />
+              )}
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <div>
@@ -341,7 +341,7 @@ const CreateOrganizationActivity = () => {
                 {t('branches')}
               </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('branches_information', { ns: 'activity' })}
               </p>
             </div>
             <RadioGroup
@@ -383,7 +383,7 @@ const CreateOrganizationActivity = () => {
                 {t('other')}
               </span>
               <p className="mt-1 mb-4 text-sm text-gray-500 font-normal" id="email-description">
-                {t('information', { ns: 'common' })}
+                {t('other_information', { ns: 'activity' })}
               </p>
             </div>
             <RadioGroup
