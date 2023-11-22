@@ -343,16 +343,19 @@ export class UserService {
     organizationId: number,
   ): Promise<any> {
     const paginationOptions: any = {
-      role: Role.EMPLOYEE,
-      limit: 0,
-      page: 0,
       ...options,
+      availableAppsIDs:
+        options.availableAppsIDs?.length > 0
+          ? ArrayContains(options.availableAppsIDs)
+          : null,
     };
 
     // For Admin user we will sort by organizationId
-    const users = await this.userRepository.getManyPaginated(
+    const users = await this.userApplicationsView.getManyPaginated(
       USER_FILTERS_CONFIG,
-      { ...paginationOptions, organizationId },
+      organizationId
+        ? { ...paginationOptions, organizationId }
+        : paginationOptions,
     );
 
     const userData = users.items.map((user) => {
@@ -361,6 +364,7 @@ export class UserService {
         Email: user.email,
         Telefon: user.phone,
         Status: user.status,
+        'Access aplicatii': user.availableApps.map((i) => i.name).join(', '),
         'Data adaugarii': format(user.createdOn, 'yyyy-MM-dd'),
       };
     });

@@ -62,7 +62,7 @@ export class UserApplicationsView {
   role: Role;
 
   @ViewColumn()
-  availableApps: Pick<ApplicationAccess, 'id' | 'name' | 'type'>; // e.g. [{"id" : 2, "name" : "Beats Data", "type" : "independent"}, ...]
+  availableApps: Pick<ApplicationAccess, 'id' | 'name' | 'type'>[]; // e.g. [{"id" : 2, "name" : "Beats Data", "type" : "independent"}, ...]
 
   @ViewColumn()
   availableAppsIDs: number[]; // e.g. 26, 28, 39 (for filtering purpose, to avoid searching in JSONs)
