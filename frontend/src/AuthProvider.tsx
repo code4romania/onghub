@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const logout: any = async () => {
-    await Auth.signOut();
+    await Auth.signOut({ global: true });
     setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
     setRole(null);
   };
