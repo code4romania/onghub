@@ -430,6 +430,10 @@
       "title": "Confirmă ștergerea persoanei",
       "description": "Ștergerea unei persoane relevante în organizației determină înlăturarea tuturor informațiile despre această persoană."
     },
+    "delete_statute_modal": {
+      "title": "Esti sigur ca doresti stergerea Statutului Organizatiei?",
+      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis."
+    },
     "header": {
       "name": "Nume și prenume",
       "role": "Rol",
