@@ -16,6 +16,7 @@ import { ApplicationWithOngStatus } from '../../../../services/application/inter
 import { ApplicationTypeEnum } from '../../../apps-store/constants/ApplicationType.enum';
 import { OngApplicationStatus } from '../../../requests/interfaces/OngApplication.interface';
 import { OrganizationApplicationsTableHeaders } from './table-headers/OrganizationApplicationsTable.headers';
+import { useNavigate } from 'react-router-dom';
 
 interface OrganizationApplicationsTableProps {
   organizationId: string;
@@ -33,6 +34,7 @@ const OrganizationApplicationsTable = ({
   const [removalCandidate, setRemovaCandidate] = useState<ApplicationWithOngStatus | null>(null);
 
   const { t } = useTranslation(['applications', 'common']);
+  const navigate = useNavigate();
 
   // actions
   const { mutateAsync: restore, isLoading: isRestoringAppccess } = useRestoreApplicationMutation();
@@ -41,6 +43,10 @@ const OrganizationApplicationsTable = ({
     useRestrictApplicationMutation();
 
   const { mutateAsync: remove, isLoading: isRemovingApplication } = useRemovOngApplication();
+
+  const onView = (data: ApplicationWithOngStatus) => {
+    navigate(`/application/${data.id}`);
+  };
 
   const buildApplicationActionColumn = (): TableColumn<ApplicationWithOngStatus> => {
     const restrictedApplicationMenu = [
@@ -154,6 +160,7 @@ const OrganizationApplicationsTable = ({
             isRestrictingAccess ||
             isRemovingApplication
           }
+          onRowClicked={onView}
         />
         {removalCandidate && (
           <ConfirmationModal

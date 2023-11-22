@@ -30,9 +30,14 @@ const AuthProvider = ({ children }: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const logout: any = async () => {
-    await Auth.signOut({ global: true });
-    setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
-    setRole(null);
+    try {
+      await Auth.signOut({ global: true });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
+      setRole(null);
+    }
   };
 
   useEffect(() => {

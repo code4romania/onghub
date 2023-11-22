@@ -209,6 +209,7 @@ const ApplicationRequests = () => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
+          onRowClicked={onView}
         />
       </div>
       {isApproveModalOpen && selectedRow && (

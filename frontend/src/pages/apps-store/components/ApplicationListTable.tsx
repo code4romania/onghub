@@ -281,6 +281,7 @@ const ApplicationListTable = () => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
+          onRowClicked={onView}
         />
       </div>
       {applicationToBeRemoved && (
