@@ -16,7 +16,7 @@ export class UserApplicationsView1700483035028 implements MigrationInterface {
             u.created_on as "createdOn",
             u.updated_on as "updatedOn",
             ARRAY_AGG(DISTINCT a.id) as "availableAppsIDs",
-            json_agg(json_build_object('id', a.id, 'name', a.name, 'type', a.type)) as "availableApps"
+            json_agg(DISTINCT jsonb_build_object('id', a.id, 'name', a.name, 'type', a.type)) as "availableApps"
         FROM
             "user" u
         LEFT JOIN user_ong_application uoa ON u.id = uoa.user_id AND uoa.status = 'active'
