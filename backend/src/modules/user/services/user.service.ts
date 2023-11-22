@@ -344,6 +344,7 @@ export class UserService {
   ): Promise<any> {
     const paginationOptions: any = {
       ...options,
+      limit: 0,
       availableAppsIDs:
         options.availableAppsIDs?.length > 0
           ? ArrayContains(options.availableAppsIDs)
