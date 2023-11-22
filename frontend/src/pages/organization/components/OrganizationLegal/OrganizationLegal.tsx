@@ -225,6 +225,7 @@ const OrganizationLegal = () => {
       {
         onSuccess: () => {
           setOrganizationStatute(null);
+          setEditMode(false);
         },
         onError: (error: any) => {
           const createError: any = error;
@@ -239,7 +240,7 @@ const OrganizationLegal = () => {
       },
     );
 
-    setEditMode(false);
+
   };
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {

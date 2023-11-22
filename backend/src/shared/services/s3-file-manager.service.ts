@@ -12,7 +12,8 @@ import { v4 as uuid } from 'uuid';
 import { FILE_ERRORS } from '../constants/file-errors.constants';
 import {
   FILE_URL_EXPIRATION_TIME,
-  MAX_UPLOAD_SIZE,
+  MAX_UPLOAD_SIZE_FILE,
+  MAX_UPLOAD_SIZE_IMAGE,
   VALID_FILE_TYPES,
   VALID_IMAGE_TYPES,
 } from '../constants/file.constants';
@@ -74,7 +75,13 @@ export class S3FileManagerService {
     }
 
     if (
-      !files.every((file) => Buffer.byteLength(file.buffer) <= MAX_UPLOAD_SIZE)
+      !files.every(
+        (file) =>
+          Buffer.byteLength(file.buffer) <=
+          (fileType === FILE_TYPE.IMAGE
+            ? MAX_UPLOAD_SIZE_IMAGE
+            : MAX_UPLOAD_SIZE_FILE),
+      )
     ) {
       throw new PayloadTooLargeException(
         fileType === FILE_TYPE.IMAGE

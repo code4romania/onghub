@@ -82,7 +82,7 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave, id }: OtherModalPro
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="sm:text-sm lg:text-base text-xs text-gray-500 break-word">
-                        {t('edit_relevant_information')}
+                        {t('modal.edit_relevant_information')}
                       </p>
                     </div>
                   </div>
