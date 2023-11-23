@@ -78,10 +78,6 @@ export const OrganizationLegalConfig: Record<string, any> = {
   legal_reprezentative_phone: {
     key: 'legalReprezentative_phone',
     rules: {
-      required: {
-        value: true,
-        message: translations.phone.required,
-      },
       maxLength: {
         value: 15,
         message: translations.phone.maxim,

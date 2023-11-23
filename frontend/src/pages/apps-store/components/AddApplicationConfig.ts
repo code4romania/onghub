@@ -215,10 +215,6 @@ export const AddAppConfig: Record<string, any> = {
   videoLink: {
     key: 'videoLink',
     rules: {
-      required: {
-        value: true,
-        message: translations.video_link.required,
-      },
       pattern: {
         value: URL_REGEX,
         message: translations.url,

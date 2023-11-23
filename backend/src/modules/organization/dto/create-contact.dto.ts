@@ -5,6 +5,7 @@ import {
   Length,
   MaxLength,
   Matches,
+  IsOptional,
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
@@ -17,8 +18,8 @@ export class CreateContactDto {
   @Matches(REGEX.NAME)
   fullName: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @IsPhoneValid()
   @ToRoPhoneNumber()
   phone: string;
