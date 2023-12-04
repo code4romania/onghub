@@ -506,10 +506,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   website: {
     key: 'website',
     rules: {
-      required: {
-        value: true,
-        message: translations.website.required,
-      },
       pattern: {
         value: URL_REGEX,
         message: translations.website.invalid,
@@ -526,10 +522,6 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   facebook: {
     key: 'facebook',
     rules: {
-      required: {
-        value: true,
-        message: translations.facebook,
-      },
       pattern: {
         value: URL_REGEX,
         message: translations.url,
@@ -537,7 +529,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     },
     config: {
       type: 'text',
-      label: 'Facebook*',
+      label: 'Facebook',
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,

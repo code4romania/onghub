@@ -35,7 +35,7 @@ export class CreateApplicationDto {
   description: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(REGEX.LINK)
   videoLink: string;
 

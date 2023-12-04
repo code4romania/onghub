@@ -102,6 +102,7 @@ export class CreateOrganizationGeneralDto {
   @example http://www.google.com
   */
   @IsString()
+  @IsOptional()
   @Matches(REGEX.LINK)
   website: string;
 
@@ -110,6 +111,7 @@ export class CreateOrganizationGeneralDto {
   @example http://www.google.com
   */
   @IsString()
+  @IsOptional()
   @Matches(REGEX.LINK)
   facebook?: string;
 

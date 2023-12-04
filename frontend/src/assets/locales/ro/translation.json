@@ -312,7 +312,7 @@
       "website": {
         "required": "Website-ul este obligatoriu",
         "invalid": "Website-ul are un format invalid",
-        "label": "Website*"
+        "label": "Website"
       },
       "facebook": "Pagina de Facebook este obligatorie",
       "donation": "Pagina de donații",
@@ -880,7 +880,7 @@
         "required": "Link-ul către pagina de login este obligatoriu"
       },
       "video_link": {
-        "label": "Link video prezentare*",
+        "label": "Link video prezentare",
         "helper": "URL-ul trebuie să fie de forma embed de pe YT. (exemplu: https://www.youtube.com/embed/r23xQuM7jVo)",
         "required": "Link-ul către prezentarea video este obligatoriu"
       },

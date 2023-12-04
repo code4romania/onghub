@@ -10,7 +10,7 @@ export class Contact extends BaseEntity {
   @Column({ type: 'text', name: 'email' })
   email: string;
 
-  @Column({ type: 'text', name: 'phone' })
+  @Column({ type: 'text', name: 'phone', nullable: true })
   phone: string;
 
   @ManyToMany(

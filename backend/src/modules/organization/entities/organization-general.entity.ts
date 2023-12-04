@@ -45,7 +45,7 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'logo', nullable: true })
   logo: string;
 
-  @Column({ type: 'text', name: 'website' })
+  @Column({ type: 'text', name: 'website', nullable: true })
   website: string;
 
   @Column({ type: 'text', name: 'facebook', nullable: true })
