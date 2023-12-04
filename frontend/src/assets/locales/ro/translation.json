@@ -72,7 +72,7 @@
     "my_account": "Contul meu",
     "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează administratorii platformei.",
     "settings": "Setări cont",
-    "settings_description": "Datele asociate contului tău din NGO Hub. ",
+    "settings_description": "Datele asociate contului tău din NGO Hub.",
     "change_password": "Schimbă parola",
     "name": "Nume",
     "email": "E-mail cont",
@@ -198,7 +198,7 @@
   },
   "general": {
     "title": "Date generale",
-    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "logo": {
       "name": "Logo organizație",
       "upload": "Încarcă logo",
@@ -209,9 +209,9 @@
       "description": "Completează cu datele persoanei care va păstra legătura dintre organizație și NGO Hub. Aceste informații nu vor fi afișate public."
     },
     "social": "Comunicare și social media",
-    "social_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "social_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "fundraising": "Strângere de fonduri",
-    "fundraising_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "fundraising_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "config": {
       "name": {
         "required": "Numele organizației este obligatoriu",
@@ -340,13 +340,13 @@
   "activity": {
     "title": "Activitatea organizației",
     "domains": "Domenii și acoperire geografica",
-    "domains_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "domains_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "fed_coal": "Federații și coaliții",
-    "fed_coal_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "fed_coal_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "branches": "Filiale și sucursale",
-    "branches_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "branches_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "other": "Alte informații",
-    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "config": {
       "field": "Câmpul este obligatoriu.",
       "domains": "Domenii de activitate*",
@@ -400,18 +400,18 @@
   },
   "legal": {
     "title": "Informații Legale",
-    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute_error": "Nu s-a putut încărca statutul organizației",
     "representative": "Reprezentantul legal al organizației",
-    "representative_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "representative_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "director": "Consiliul Director al organizației",
-    "director_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "director_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "dir_minimum": "Este obligatoriu să adaugi cel puțin 3 membri al Consiliului Director pentru a continua.",
     "add": "Adaugă un membru",
     "other": "Alte persoane relevante în organizație",
-    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute": "Statutul organizației",
-    "statute_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "statute_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
@@ -433,8 +433,8 @@
       "description": "Ștergerea unei persoane relevante în organizației determină înlăturarea tuturor informațiile despre această persoană."
     },
     "delete_statute_modal": {
-      "title": "Esti sigur ca doresti stergerea Statutului Organizatiei?",
-      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis."
+      "title": "Ești sigur ca dorești ștergerea Statutului Organizației?",
+      "description": "TODO#1: Lorem ipsum."
     },
     "header": {
       "name": "Nume și prenume",
@@ -510,7 +510,7 @@
     "save_error": "Eroare la salvarea datelor financiare",
     "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "title": "Date Financiare",
-    "report_row": "eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "report_row": "TODO#2: eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
       "income": "Total Venituri",
       "expense": "Total Cheltuieli",
@@ -537,8 +537,14 @@
       "maxim": "Nu pot fi introduse valori mai mari de 9 cifre."
     },
     "income": {
-      "membership": { "label": "Venituri din cotizatii", "info": "Venituri din cotizatii info" },
-      "donations": { "label": "Venituri din donatii", "info": "Venituri din donatii info" },
+      "membership": {
+        "label": "Venituri din cotizații",
+        "info": "Venituri din cotizații info"
+      },
+      "donations": {
+        "label": "Venituri din donații",
+        "info": "Venituri din donații info"
+      },
       "percent": {
         "label": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
         "info": "Venituri din redirecționarea a 3.5% din impozitul pe venit% info"
@@ -551,8 +557,14 @@
         "label": "Venituri din activitatea economica",
         "info": "Venituri din activitatea economica info"
       },
-      "other": { "label": "Alte venituri", "info": "Alte venituri info" },
-      "financial": { "label": "Venituri financiare", "info": "Venituri financiare info" }
+      "other": {
+        "label": "Alte venituri",
+        "info": "Alte venituri info"
+      },
+      "financial": {
+        "label": "Venituri financiare",
+        "info": "Venituri financiare info"
+      }
     },
     "expense": {
       "net": {
@@ -571,13 +583,34 @@
         "label": "Cheltuieli administrative",
         "info": "Cheltuieli administrative info"
       },
-      "transport": { "label": "Transport și cazare", "info": "Transport și cazare info" },
-      "catering": { "label": "Catering", "info": "Catering info" },
-      "production": { "label": "Producție", "info": "Producție info" },
-      "software": { "label": "Servicii software", "info": "Servicii software info" },
-      "advertising": { "label": "Reclame și publicitate", "info": "Reclame și publicitate info" },
-      "taxes": { "label": "Alte taxe", "info": "Alte taxe info" },
-      "expense": { "label": "Alte cheltuieli", "info": "Alte cheltuieli info" }
+      "transport": {
+        "label": "Transport și cazare",
+        "info": "Transport și cazare info"
+      },
+      "catering": {
+        "label": "Catering",
+        "info": "Catering info"
+      },
+      "production": {
+        "label": "Producție",
+        "info": "Producție info"
+      },
+      "software": {
+        "label": "Servicii software",
+        "info": "Servicii software info"
+      },
+      "advertising": {
+        "label": "Reclame și publicitate",
+        "info": "Reclame și publicitate info"
+      },
+      "taxes": {
+        "label": "Alte taxe",
+        "info": "Alte taxe info"
+      },
+      "expense": {
+        "label": "Alte cheltuieli",
+        "info": "Alte cheltuieli info"
+      }
     }
   },
   "open_data": {
@@ -695,7 +728,7 @@
       "confirmation": "Confirmă ștergerea utilizatorului",
       "description": "După ștergerea utilizatorului, acesta nu va mai avea acces în NGO Hug și toate informațiile despre acel cont vor fi eliminate.",
       "download": "Descarcă tabelul",
-      "access_to_app": "Acces la aplicatii"
+      "access_to_app": "Acces la aplicații"
     },
     "invites": {
       "title": "Lista cu invitații",
@@ -806,7 +839,7 @@
       "status": "Status",
       "remove": "Elimină definitiv",
       "confirmation": "Confirmă ștergerea aplicației?",
-      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recoperată."
+      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recuperată."
     },
     "create": {
       "error": "Eroare la crearea aplicației",
@@ -841,7 +874,7 @@
       "name": "Aplicație",
       "type": "Tip aplicație",
       "status": "Status",
-      "ong_number": "Numar ONGuri",
+      "ong_number": "Număr ONGuri",
       "users": "Utilizatori"
     },
     "config": {
@@ -995,11 +1028,11 @@
       "remove": "Elimină definitiv"
     },
     "edit": {
-      "title": "Editeaza aplicatie",
-      "subtitle": "Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
-      "page_title": "Editare pagina aplicatie",
-      "success": "Aplicatie modificata cu succes!",
-      "error": "Eroare la editarea aplicatiei"
+      "title": "Editează aplicație",
+      "subtitle": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+      "page_title": "Editare pagină aplicație",
+      "success": "Aplicație modificata cu succes!",
+      "error": "Eroare la editarea aplicației"
     },
     "type": {
       "all": "Toate",
@@ -1026,7 +1059,7 @@
     "status_error": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
     "solved": "Solicitare soluționată",
-    "description": "zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "description": "TODO#18: zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "reject": "Respinge",
     "approve": "Aprobă",
     "view_form": "Vizualizează formular",
@@ -1099,7 +1132,7 @@
       "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri în organizație",
       "user_list": "Listă utilizatori",
       "filter": {
-        "yearly": "Din totdeauna",
+        "yearly": "Dintotdeauna",
         "monthly": "Lunar",
         "daily": "Zilnic"
       }
@@ -1110,7 +1143,7 @@
   "civic_center_service": {
     "wrapper": {
       "title": "Serviciile mele",
-      "description": "Lorem ipsum",
+      "description": "TODO#17: Lorem ipsum",
       "add_button": "Adaugă Serviciu"
     },
     "list": {
@@ -1121,22 +1154,22 @@
       "card_title": "Descriere Serviciu"
     },
     "edit": {
-      "title": "Modifica Serviciu",
+      "title": "Modifică Serviciu",
       "card_title": "Descriere Serviciu"
     },
     "form": {
       "section": {
         "online": {
           "title": "Access online",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "TODO#14: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "email_or_phone": {
           "title": "Access prin e-mail sau telefon",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "TODO#15: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "physical": {
           "title": "Access prin prezentare la locație",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "TODO#16: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         }
       },
       "name": {
@@ -1164,10 +1197,10 @@
         "label": "Data sfârșit serviciu*",
         "helper": "",
         "placeholder": "31.12.2999",
-        "start_date_after_end_date": "Data sfârșit nu poate fi mai mica decat data de început"
+        "start_date_after_end_date": "Data de sfârșit nu poate fi mai mică decât data de început"
       },
       "is_period_not_determined": {
-        "label": "Perioada nedeterminata",
+        "label": "Perioadă nedeterminată",
         "helper": ""
       },
       "short_description": {
@@ -1177,7 +1210,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurtă serviciu*",
         "helper": "Descrie serviciul oferit în 3-250 caractere",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "TODO#13: Lorem ipsum"
       },
       "long_description": {
         "required": "Descrierea este obligatorie",
@@ -1186,7 +1219,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere extinsa serviciu*",
         "helper": "Adaugă o descriere cat mai cuprinzătoare a serviciului oferit",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "TODO#12: Lorem ipsum"
       },
       "domains": {
         "required": "Domeniul este obligatoriu",
@@ -1213,7 +1246,7 @@
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access online",
-          "placeholder": "Lorem ipsum"
+          "placeholder": "TODO#11: Lorem ipsum"
         }
       },
       "email_or_phone": {
@@ -1239,7 +1272,7 @@
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access prin e-mail",
-          "placeholder": "Lorem ipsum"
+          "placeholder": "TODO#10: Lorem ipsum"
         }
       },
       "physical": {
@@ -1256,7 +1289,7 @@
         "description": {
           "max": "Descrierea formatata nu poate avea mai mult de 1000 caractere",
           "label": "Descriere access fizic",
-          "placeholder": "Lorem ipsum",
+          "placeholder": "TODO#9: Lorem ipsum",
           "helper": "Menționează orele de program sau dacă este necesar ca solicitantul sa aducă ceva, maxim 250 caractere"
         }
       },
@@ -1282,20 +1315,20 @@
       "access": {
         "online": {
           "title": "Online",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": "TODO#5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
         },
         "email_or_phone": {
           "title": "Prin e-mail sau telefon",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": "TODO#6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
         },
         "physical": {
           "title": "Prin prezentare la adresa",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": "TODO#7: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
         }
       },
       "delete_modal": {
         "title": "Șterge Serviciu",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+        "description": "TODO#8: Lorem Ipsum is simply dummy text of the printing and typesetting industry"
       }
     }
   },
@@ -1373,7 +1406,7 @@
         "pattern": "Formatul link-ului este invalid.",
         "label": "Link către pagina de aplicare (button)",
         "helper": "Adaugă link-ul prin care oricine poate aplica la programul de practică",
-        "placeholder": "www.google.com"
+        "placeholder": "www.example.com"
       },
       "domains": {
         "required": "Domeniul este obligatoriu",
@@ -1406,7 +1439,7 @@
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
         "title": "Șterge Program Practica",
-        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
+        "description": "TODO#4: ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
       }
     },
     "feedback": {
