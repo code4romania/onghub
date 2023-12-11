@@ -41,7 +41,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
             <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
               <img
                 src={logo}
-                alt="Code 4 Romania - ONG Hub"
+                alt="Code 4 Romania - NGO Hub"
                 className="h-full w-full sm:max-h-full max-h-10"
               />
             </div>

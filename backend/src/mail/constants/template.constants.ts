@@ -18,7 +18,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       title:
         'Felicitari! Esti cu un pas mai aproape de a avea acces in ONGHub.',
       subtitle: () =>
-        `Solicitarea de a crea un cont in ONG Hub pentru organizatia ta a fost trimisa cu succes. Echipa ONG Hub va verifica informatiile primite si imediat ce este aprobata vei primi o notificare cu detalii despre accesarea ecosistemului de solutii ONG Hub. Daca ai intrebari, ne poti contacta la ${process.env.MAIL_CONTACT}`,
+        `Solicitarea de a crea un cont in NGO Hub pentru organizatia ta a fost trimisa cu succes. Echipa NGO Hub va verifica informatiile primite si imediat ce este aprobata vei primi o notificare cu detalii despre accesarea ecosistemului de solutii NGO Hub. Daca ai intrebari, ne poti contacta la ${process.env.MAIL_CONTACT}`,
     },
   },
   ORGANIZATION_CREATE_SUPERADMIN: {
@@ -27,7 +27,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     context: {
       title: 'Creare Organizatie - Solicitare noua',
       subtitle: () =>
-        'O noua solicitare de creare de profil in ONG Hub a fost creata in sistem.',
+        'O noua solicitare de creare de profil in NGO Hub a fost creata in sistem.',
       cta: {
         link: (requestId) =>
           `${process.env.ONGHUB_URL}/requests/${requestId}/general`,
@@ -41,7 +41,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     context: {
       title: 'Creare Organizatie - Solicitare aprobata',
       subtitle: () =>
-        `Profilul tau ONG Hub a fost creat cu succes. Incepand de acum vei putea intra in cont si vei avea acces la toate aplicatiile disponibile pro-bono in ecosistemul dedicat societatii civile. Daca ai nevoie de ajutor, ne gasesti la ${process.env.MAIL_CONTACT}.`,
+        `Profilul tau NGO Hub a fost creat cu succes. Incepand de acum vei putea intra in cont si vei avea acces la toate aplicatiile disponibile pro-bono in ecosistemul dedicat societatii civile. Daca ai nevoie de ajutor, ne gasesti la ${process.env.MAIL_CONTACT}.`,
       cta: {
         link: () => `${process.env.ONGHUB_URL}/`,
         label: 'Organizatia ta',
@@ -54,7 +54,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     context: {
       title: 'Creare Organizatie - Solicitare respinsa',
       subtitle: () =>
-        `Solicitarea ta de a crea un profil in ONG Hub a fost respinsa. Pentru mai multe detalii te rugam sa ne scrii la adresa ${process.env.MAIL_CONTACT}.`,
+        `Solicitarea ta de a crea un profil in NGO Hub a fost respinsa. Pentru mai multe detalii te rugam sa ne scrii la adresa ${process.env.MAIL_CONTACT}.`,
     },
   },
   ORGANIZATION_RESTRICT_ADMIN: {
