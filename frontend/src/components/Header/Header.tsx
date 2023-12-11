@@ -24,7 +24,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
 
   return (
     <header className="bg-white">
-      <nav className="sm:px-10  py-4 px-4" aria-label="Top">
+      <nav className="sm:px-10 py-4 px-4" aria-label="Top">
         <div className="w-full flex gap-4 justify-between items-center">
           <div className="flex gap-4">
             {isAuthenticated && !isRestricted && (
@@ -42,7 +42,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
               <img
                 src={logo}
                 alt="Code 4 Romania - NGO Hub"
-                className="h-full w-full sm:max-h-full max-h-10"
+                className="h-full w-full sm:max-h-16 max-h-10"
               />
             </div>
           </div>
