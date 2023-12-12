@@ -13,21 +13,21 @@ export interface IMailOptions {
 export const MAIL_OPTIONS: Record<string, IMailOptions> = {
   ORGANIZATION_CREATE_ADMIN: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Creare Organizatie',
+    subject: 'NGO Hub - Solicitare creare cont organizație',
     context: {
       title:
-        'Felicitari! Esti cu un pas mai aproape de a avea acces in ONGHub.',
+        'Ești doar la un pas de a primi accesul în NGO Hub.',
       subtitle: () =>
-        `Solicitarea de a crea un cont in NGO Hub pentru organizatia ta a fost trimisa cu succes. Echipa NGO Hub va verifica informatiile primite si imediat ce este aprobata vei primi o notificare cu detalii despre accesarea ecosistemului de solutii NGO Hub. Daca ai intrebari, ne poti contacta la ${process.env.MAIL_CONTACT}`,
+        `Solicitarea de a crea un cont pentru organizația ta în NGO Hub a fost trimisă cu succes. Echipa NGO Hub va verifica informațiile primite și imediat ce este aprobată vei primi o notificare cu detalii despre accesarea ecosistemului de soluții NGO Hub. Dacă ai întrebări, ne poți contacta la ${process.env.MAIL_CONTACT}`,
     },
   },
   ORGANIZATION_CREATE_SUPERADMIN: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Creare Organizatie',
+    subject: 'Solicitare creare cont organizație',
     context: {
-      title: 'Creare Organizatie - Solicitare noua',
+      title: 'O nouă organizație a solicitat acces în NGO Hub',
       subtitle: () =>
-        'O noua solicitare de creare de profil in NGO Hub a fost creata in sistem.',
+        'O nouă solicitare de creare de profil în NGO Hub a fost creată în sistem.',
       cta: {
         link: (requestId) =>
           `${process.env.ONGHUB_URL}/requests/${requestId}/general`,
@@ -37,11 +37,11 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
   },
   ORGANIZATION_REQUEST_APPROVAL: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Creare Organizatie',
+    subject: 'NGO Hub - Contul organizației a fost activat',
     context: {
-      title: 'Creare Organizatie - Solicitare aprobata',
+      title: 'Felicitări! Contul organizației tale a fost activat',
       subtitle: () =>
-        `Profilul tau NGO Hub a fost creat cu succes. Incepand de acum vei putea intra in cont si vei avea acces la toate aplicatiile disponibile pro-bono in ecosistemul dedicat societatii civile. Daca ai nevoie de ajutor, ne gasesti la ${process.env.MAIL_CONTACT}.`,
+        `Profilul organizației a fost creat cu succes în NGO Hub. De acum poți intra în cont și poți accesa toate aplicațiile disponibile pro-bono în ecosistemul dedicat societății civile. Dacă ai nevoie de ajutor, ne găsești la ${process.env.MAIL_CONTACT}.`,
       cta: {
         link: () => `${process.env.ONGHUB_URL}/`,
         label: 'Organizatia ta',
@@ -50,38 +50,38 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
   },
   ORGANIZATION_REQUEST_REJECTION: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Creare Orgnizatie',
+    subject: 'NGO Hub - Solicitare respinsă',
     context: {
-      title: 'Creare Organizatie - Solicitare respinsa',
+      title: 'Solicitare respinsă',
       subtitle: () =>
-        `Solicitarea ta de a crea un profil in NGO Hub a fost respinsa. Pentru mai multe detalii te rugam sa ne scrii la adresa ${process.env.MAIL_CONTACT}.`,
+        `Ne pare rău, însă cererea ta de create a contului în NGO Hub a fost respinsă. Pentru mai multe detalii te rugăm să ne scrii la adresa ${process.env.MAIL_CONTACT}.`,
     },
   },
   ORGANIZATION_RESTRICT_ADMIN: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Inchidere Organizatie',
+    subject: 'NGO Hub - Închidere cont organizație',
     context: {
-      title: 'Inchidere Organizatie',
+      title: 'Închidere cont NGO Hub',
       subtitle: (organizationName) =>
-        `Contul organizatiei ${organizationName} a fost inchis de catre super-admin. Pentru mai multe informatii trimite un mail catre ${process.env.MAIL_CONTACT}`,
+        `Contul din NGO Hub al organizației ${organizationName} a fost închis de către super-admin. Pentru mai multe detalii te rugăm să ne scrii la adresa ${process.env.MAIL_CONTACT}`,
     },
   },
   ORGANIZATION_RESTRICT_SUPERADMIN: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Inchidere Organizatie',
+    subject: 'Solicitare închidere cont organizație',
     context: {
-      title: 'Inchidere Organizatie - Solicitare noua',
+      title: 'O organizație a solicitat închiderea contului NGO Hub',
       subtitle: (organizationName) =>
-        `Administratorul organizatiei ${organizationName} doreste stergerea organizatiei sale.`,
+        `Administratorul organizației ${organizationName} dorește ștergerea organizației sale.`,
     },
   },
   ORGANIZATION_APPLICATION_REQUEST_DELETE: {
     template: ORGANIZATION_REQUEST,
-    subject: 'Stergere aplicatie din organizatie',
+    subject: 'Solicitare ștergere aplicație din contul organizației',
     context: {
-      title: 'Stergere aplicatie din organizatie - Solicitare noua',
+      title: 'O organizație a solicitat ștergerea unei aplicații',
       subtitle: (organizationName, applicationName) =>
-        `Administratorul organizatiei ${organizationName} doreste stergerea aplicatiei ${applicationName} din organizatia sa.`,
+        `Administratorul organizației ${organizationName} dorește ștergerea aplicației ${applicationName} din organizația sa.`,
       cta: {
         link: (organizationId) =>
           `${process.env.ONGHUB_URL}/organizations/${organizationId}/applications`,

@@ -91,7 +91,7 @@ padding: 1.5rem 5rem;
       </tr>
   </table>
   <p style="text-align: center; color: #6b7280; font-size: 0.75rem">
-      © 2020 Code4Romania. All rights reserved.
+      © 2023 Code4Romania. All rights reserved.
   </p>
 </div>
 </div>
