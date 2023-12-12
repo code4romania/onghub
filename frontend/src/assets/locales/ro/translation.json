@@ -47,7 +47,7 @@
       "reset": "Resetează filtre",
       "show": "Filtre"
     },
-    "unavailable": "Indisponibil",
+    "unavailable": "În curând",
     "to_be_removed": "De eliminat",
     "decimal": "Valori cu decimale nu sunt permise.",
     "unknown_error": "A apărut o eroare necunoscută",
@@ -976,7 +976,7 @@
       "list": "Listă ONG-uri"
     },
     "details": {
-      "website": "Vezi website",
+      "website": "Vezi website de prezentare",
       "how_to": "Cum poți activa aplicația pentru organizația ta",
       "request": "Solicită aplicația",
       "description": "Descriere",
@@ -1002,8 +1002,8 @@
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
-        "title": "Accesul la aplicație este indisponibil momentan",
-        "description": "Vom reveni cu noutăți în curând."
+        "title": "Aplicație în curs de dezvoltare",
+        "description": "Momentan, accesul la această soluție nu este disponibil, aplicația este în curs de dezvoltare. Vom reveni cu noutăți în curând."
       },
       "practice_program": {
         "redirect_to_site": "Vezi profilul tău pe Practice4Good",
