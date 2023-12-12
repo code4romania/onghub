@@ -403,9 +403,9 @@
     "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute_error": "Nu s-a putut încărca statutul organizației",
     "representative": "Reprezentantul legal al organizației",
-    "representative_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "representative_information": "Numele reprezentantului legal va fi public, atenție la ce împărtășești. Datele de contact ale reprezentantului legal nu vor fi afișate public.",
     "director": "Consiliul Director al organizației",
-    "director_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "director_information": "Numele membrilor consiliului director fi publice, atenție la ce împărtășești. Datele de contact ale membrilor consiliului director nu vor fi afișate public.",
     "dir_minimum": "Este obligatoriu să adaugi cel puțin 3 membri al Consiliului Director pentru a continua.",
     "add": "Adaugă un membru",
     "other": "Alte persoane relevante în organizație",
@@ -434,7 +434,7 @@
     },
     "delete_statute_modal": {
       "title": "Ești sigur ca dorești ștergerea Statutului Organizației?",
-      "description": "TODO#1: Lorem ipsum."
+      "description": "În cazul ștergerii statutului, un nou statut trebuie încărcat în maxim 30 de zile pentru a menține activ contul organizației în NGO Hub."
     },
     "header": {
       "name": "Nume și prenume",
@@ -1074,7 +1074,7 @@
       },
       "reject": {
         "title": "Respinge și trimite e-mail",
-        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferită la înregistrare. Confirmă respingerea?",
+        "description": "În urma respingerii, ONG-ul va primi un e-mail pe adresa oferită la înregistrare. Confirmă respingerea?",
         "confirm": "Respinge solicitarea"
       }
     },
