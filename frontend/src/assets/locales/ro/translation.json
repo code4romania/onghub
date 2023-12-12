@@ -54,7 +54,7 @@
     "generic_error": "Eroare la procesarea datelor, cod: #{{code}}",
     "yes": "Da",
     "no": "Nu",
-    "generic_invalid_form_error": "Oops! Nu ai completat toate datele necesare. Verifica valorile introduse."
+    "generic_invalid_form_error": "Oops! Nu ai completat toate datele necesare. Verifică valorile introduse."
   },
   "menu": {
     "information": "Informații",
@@ -237,7 +237,7 @@
         "required": "Email-ul este obligatoriu",
         "max": "Email-ul poate avea maxim 250 de caractere",
         "invalid": "Email-ul are un format invalid.",
-        "label": "E-mail-ul de contact al organizație*",
+        "label": "E-mail-ul de contact al organizației*",
         "helper": "Exemplu: contact@organizatie.ro"
       },
       "phone": {
@@ -245,7 +245,7 @@
         "min": "Numărul de telefon poate avea minim 10 caractere",
         "max": "Numărul de telefon poate avea maxim 15 caractere",
         "invalid": "Numărul de telefon are un format invalid",
-        "label": "Telefonul de contact al organizație*",
+        "label": "Telefonul de contact al organizației*",
         "helper": "Exemplu: numărul telefonului de la sediu"
       },
       "year": {
@@ -330,16 +330,16 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
-        "max": "Descrierea scurta poate avea maxim 100 de caractere",
-        "label": "Adresa organizație",
-        "helper": "Adresa la care isi desfășoară activitatea organizația",
-        "placeholder": "Adresa organizație"
+        "max": "Descrierea scurtă poate avea maxim 100 de caractere",
+        "label": "Adresa organizației",
+        "helper": "Adresa la care își desfășoară activitatea organizația",
+        "placeholder": "Adresa organizației"
       }
     }
   },
   "activity": {
     "title": "Activitatea organizației",
-    "domains": "Domenii și acoperire geografica",
+    "domains": "Domenii și acoperire geografică",
     "domains_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "fed_coal": "Federații și coaliții",
     "fed_coal_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
@@ -350,7 +350,7 @@
     "config": {
       "field": "Câmpul este obligatoriu.",
       "domains": "Domenii de activitate*",
-      "domains_helper": "Minim 1 domeniu de activitate.",
+      "domains_helper": "Alege toate domeniile relevante pentru activitatea organizației tale (minim 1 domeniu de activitate).",
       "area": "Organizația îți desfășoară activitatea pe plan:",
       "area_helper": "Alege varianta care se potrivește",
       "cities": "Localități în care organizația derulează activități",
@@ -362,21 +362,21 @@
         "yes": "Da",
         "no": "Nu",
         "label": "Menționează-le mai jos*",
-        "helper": ""
+        "helper": "Începe să scrii numele federației în câmpul de mai sus. Poți introduce oricâte federații din care face parte organizația."
       },
       "coalitions": {
         "part_of": "Organizația ta face parte din una sau mai multe coaliții?*",
         "label": "Menționează-le mai jos*",
-        "helper": ""
+        "helper": "Începe să scrii numele coaliției în câmpul de mai sus. Poți introduce oricâte coaliții din care face parte organizația."
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
-        "part_of_helper": "De exemplu, lorem ipsum. Help text.",
+        "part_of_helper": "",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
         "label": "Dacă organizația ta face parte dintr-o organizație internațională, menționeaz-o mai jos*",
-        "helper": "Notează denumirea oficială conform cu registrul ONG."
+        "helper": "Notează denumirea oficială."
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
