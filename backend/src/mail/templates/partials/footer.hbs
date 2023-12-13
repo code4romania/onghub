@@ -1,34 +1,83 @@
-<style>
-  .footer-container { background-color: #000000; color: #ffffff; display: flex;
-  flex-direction: column; align-items: center; padding: 1.5rem 5rem; }
-  .disclaimer { color: #6B7280; } .flex-row { display: flex; flex-direction:
-  row; } .icon { margin: 0 1rem; } .cg-1 { column-gap: 1rem; } .rg-2 { row-gap:
-  1.5rem; } .w-full { width: 100%; } .items-center { align-items: center; }
-  .justify-center { justify-content: center; } #divider { width: 100%; height:
-  1px; background: #FFFFFF; } #social { display: flex; flex-direction: row; }
-</style>
-<div class='footer-container rg-2'>
-  <div class='flex-row cg-1 w-full items-center justify-center'>
-    <p class='p2'>Soluție proiectată, dezvoltată și administrată pro-bono de</p>
-    <img class='logo' src={{asset_url 'code4romania_logo.png'}} />
-  </div>
+<div
+  style='background-color: #000000; color: #ffffff !important; padding: 1.5rem 1.5rem;'
+>
+  <table
+    style='width: 80%; border: none; margin-left: auto; margin-right: auto; padding-bottom: 1rem'
+  >
+    <tr>
+      <td>
+        <p style='color: #ffffff !important; font-size: 0.75rem'>
+          Soluție proiectată, dezvoltată și administrată pro-bono de
+        </p>
+      </td>
+      <td>
+        <img class='logo' src={{asset_url 'code4romania_logo.png'}} />
+      </td>
+    </tr>
+  </table>
 
-  <div id='divider'></div>
+  <div style='width: 100%; height: 1px; background: #ffffff'></div>
 
-  <p class='p2 text-center w-full'>Dacă vrei să iei legătura cu noi o poți face
-    pe e-mail la adresa:
-    {{contactEmail}}
+  <p
+    style='
+  text-align: center;
+  width: 100%;
+  color: #ffffff !important;
+  font-size: 0.75rem;
+  margin-top: 1.5rem
+'
+  >
+    Dacă vrei să iei legătura cu noi o poți face pe e-mail la adresa:
+    <a
+      style='color: #ffffff !important; font-size: 0.75rem;'
+      href='mailto:{{contactEmail}}'
+    >{{contactEmail}}</a>
   </p>
 
-  <div id='social'>
-    <a href='https://www.facebook.com/code4romania/' target='_blank'>
-      <img class='icon' src={{asset_url 'facebook_logo.png'}} /></a>
-    <a href='https://www.instagram.com/code4romania' target='_blank'>
-      <img class='icon' src={{asset_url 'instagram_logo.png'}} /></a>
-    <a href='/' target='_blank'>
-      <img class='icon' src={{asset_url 'youtube_logo.png'}} /></a>
-    <a href='https://github.com/code4romania/' target='_blank'>
-      <img class='icon' src={{asset_url 'github_logo.png'}} /></a>
-  </div>
-  <p class='p2 disclaimer text-center'>© 2023 Code4Romania. All rights reserved.</p>
+  <table
+    style='width: 50%; border: none; margin-left: auto; margin-right: auto; padding-top: 1rem'
+  >
+    <tr>
+      <td style='width: 30px; height: 30px'>
+        <a
+          style='text-decoration: none; color: #1a15ea'
+          href='https://www.facebook.com/code4romania/'
+          target='_blank'
+        >
+          <img class='icon' src={{asset_url 'facebook_logo.png'}} />
+        </a>
+      </td>
+      <td style='width: 30px; height: 30px'>
+        <a
+          style='text-decoration: none; color: #1a15ea'
+          href='https://www.instagram.com/code4romania'
+          target='_blank'
+        >
+          <img class='icon' src={{asset_url 'instagram_logo.png'}} />
+        </a>
+      </td>
+      <td style='width: 30px; height: 30px'>
+        <a
+          style='text-decoration: none; color: #1a15ea'
+          href='/'
+          target='_blank'
+        >
+          <img class='icon' src={{asset_url 'youtube_logo.png'}} />
+        </a>
+      </td>
+      <td style='width: 30px; height: 30px'>
+        <a
+          style='text-decoration: none; color: #1a15ea'
+          href='https://github.com/code4romania/'
+          target='_blank'
+        >
+          <img class='icon' src={{asset_url 'github_logo.png'}} />
+        </a>
+      </td>
+    </tr>
+  </table>
+  <p style='text-align: center; color: #6b7280; font-size: 0.75rem'>
+    © 2020 Code4Romania. All rights reserved.
+  </p>
 </div>
+`
