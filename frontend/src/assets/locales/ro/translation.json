@@ -84,7 +84,7 @@
       "description": "După închiderea contului NGO Hub nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
-    "no_access": "Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează administratorul platformei",
+    "no_access": "Nu mai ai access în NGO Hub. Pentru mai multe detalii, contactează administratorul platformei",
     "back": "Înapoi la website",
     "config": {
       "old": {
@@ -510,7 +510,6 @@
     "save_error": "Eroare la salvarea datelor financiare",
     "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "title": "Date Financiare",
-    "report_row": "TODO#2: eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
       "income": "Total Venituri",
       "expense": "Total Cheltuieli",
@@ -888,6 +887,7 @@
       },
       "type": {
         "label": "Tipul aplicației*",
+        "helper": "",
         "required": "Tipul aplicației este obligatoriu"
       },
       "short": {
@@ -990,7 +990,7 @@
       "delete": "Elimină aplicație",
       "contact": "Te vom contacta în 24-48 de ore.",
       "active": "Aplicația este activă pentru organizația ta.",
-      "define_active": "Lorem ipsum. Ce înseamnă faptul ca aplicația este activă. Conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
+      "define_active": "Faptul că aplicația este activă în contul organizației tale înseamnă că ai acces la ea și poți să o folosești.",
       "open": "Deschide aplicația",
       "pending": "Solicitarea ta așteaptă aprobare.",
       "configure": "Aplicația aceasta trebuie instalată și configurata conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
@@ -1105,7 +1105,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "about": "Despre ONGHub",
+    "about": "Despre NGO Hub",
     "statistics": {
       "mean_number_of_users": "Număr mediu de utilizatori per organizație",
       "number_of_active_organizations": "Organizații active în NGO Hub",
@@ -1143,7 +1143,7 @@
   "civic_center_service": {
     "wrapper": {
       "title": "Serviciile mele",
-      "description": "TODO#17: Lorem ipsum",
+      "description": "Aici poți vizualiza și edita toate serviciile oferite de organizația ta.",
       "add_button": "Adaugă Serviciu"
     },
     "list": {
@@ -1161,15 +1161,15 @@
       "section": {
         "online": {
           "title": "Access online",
-          "description": "TODO#14: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat online"
         },
         "email_or_phone": {
           "title": "Access prin e-mail sau telefon",
-          "description": "TODO#15: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat prin e-mail sau telefon"
         },
         "physical": {
           "title": "Access prin prezentare la locație",
-          "description": "TODO#16: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat prin prezentare la locație"
         }
       },
       "name": {
@@ -1210,7 +1210,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurtă serviciu*",
         "helper": "Descrie serviciul oferit în 3-250 caractere",
-        "placeholder": "TODO#13: Lorem ipsum"
+        "placeholder": "Descriere scurtă serviciu, în maxim 250 de caractere."
       },
       "long_description": {
         "required": "Descrierea este obligatorie",
@@ -1219,7 +1219,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere extinsa serviciu*",
         "helper": "Adaugă o descriere cat mai cuprinzătoare a serviciului oferit",
-        "placeholder": "TODO#12: Lorem ipsum"
+        "placeholder": "Descrierea extinsă a serviciului, în maxim 3000 de caractere."
       },
       "domains": {
         "required": "Domeniul este obligatoriu",
@@ -1240,13 +1240,13 @@
           "pattern": "Formatul link-ului este invalid.",
           "label": "Link către pagina de access (buton)*",
           "helper": "Adaugă linkul prin care oricine poate accesa acest serviciu.",
-          "placeholder": ""
+          "placeholder": "https://example.com"
         },
         "description": {
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access online",
-          "placeholder": "TODO#11: Lorem ipsum"
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin online"
         }
       },
       "email_or_phone": {
@@ -1272,7 +1272,7 @@
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access prin e-mail",
-          "placeholder": "TODO#10: Lorem ipsum"
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin e-mail sau telefon"
         }
       },
       "physical": {
@@ -1287,9 +1287,9 @@
           "helper": "Introduceți locația exacta de unde o persoana poate accesa serviciul"
         },
         "description": {
-          "max": "Descrierea formatata nu poate avea mai mult de 1000 caractere",
+          "max": "Descrierea formatată nu poate avea mai mult de 1000 caractere",
           "label": "Descriere access fizic",
-          "placeholder": "TODO#9: Lorem ipsum",
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin prezentare la locație",
           "helper": "Menționează orele de program sau dacă este necesar ca solicitantul sa aducă ceva, maxim 250 caractere"
         }
       },
@@ -1315,20 +1315,20 @@
       "access": {
         "online": {
           "title": "Online",
-          "description": "TODO#5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         },
         "email_or_phone": {
           "title": "Prin e-mail sau telefon",
-          "description": "TODO#6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         },
         "physical": {
           "title": "Prin prezentare la adresa",
-          "description": "TODO#7: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         }
       },
       "delete_modal": {
         "title": "Șterge Serviciu",
-        "description": "TODO#8: Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+        "description": "Ești sigur că vrei să ștergi serviciul?"
       }
     }
   },
@@ -1367,13 +1367,13 @@
         "min": "Descrierea nu poate avea mai puțin de 3 caractere",
         "max": "Descrierea nu poate avea mai mult de 3000 caractere",
         "pattern": "Descrierea nu are formatul valid.",
-        "label": "Descrierea program de practică*",
+        "label": "Descrierea programului de practică*",
         "helper": "",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "Descrierea programului de practică în maxim 3000 de caractere"
       },
       "start_date": {
         "required": "Data de început este obligatorie",
-        "label": "Data început program de practică*",
+        "label": "Dată început program de practică*",
         "helper": "",
         "placeholder": "31.12.2999"
       },
@@ -1438,8 +1438,8 @@
       "skills": "Vei învăța",
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
-        "title": "Șterge Program Practica",
-        "description": "TODO#4: ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
+        "title": "Șterge Program Practică",
+        "description": "Ești sigur că vrei să ștergi programul de practică?"
       }
     },
     "feedback": {

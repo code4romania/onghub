@@ -510,7 +510,6 @@
     "save_error": "Error saving financial data",
     "data_update": "Please update the data in this section at a set interval.",
     "title": "Financial Dates",
-    "report_row": "TODO#2:eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
       "income": "Total Income",
       "expense": "Total Expenditure",
