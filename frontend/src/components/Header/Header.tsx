@@ -39,21 +39,25 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
               </div>
             )}
             <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
-              <img
-                src={logo}
-                alt="NGO Hub"
-                className="h-full w-full sm:max-h-12 max-h-10"
-              />
+              <img src={logo} alt="NGO Hub" className="h-full w-full sm:max-h-12 max-h-10" />
             </div>
           </div>
           {!isAuthenticated && !isRestricted && !hideLogInButton && (
-            <button
-              aria-label={t('enter')}
-              className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
-              onClick={(e) => Auth.federatedSignIn()}
-            >
-              {t('enter')}
-            </button>
+            <div className="flex gap-8 sm:gap-16 items-center">
+              <a
+                className="font-titilliumBold sm:text-base text-sm"
+                href={process.env.REACT_APP_HOME_URL}
+              >
+                {t('home')}
+              </a>
+              <button
+                aria-label={t('enter')}
+                className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
+                onClick={(e) => Auth.federatedSignIn()}
+              >
+                {t('enter')}
+              </button>
+            </div>
           )}
           {isAuthenticated && !isRestricted && (
             <div className="flex space-x-4 items-center">

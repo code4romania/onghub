@@ -1043,7 +1043,8 @@
   "header": {
     "enter": "Log in",
     "my_account": "My account",
-    "log_out": "Disconnect"
+    "log_out": "Disconnect",
+    "home": "Home"
   },
   "my_apps": {
     "title": "My applications",
@@ -1101,6 +1102,15 @@
     "organizations": "NGOs",
     "requests": "Access Requests",
     "practice_programs": "Internship Programs"
+  },
+  "login": {
+    "title": "Register NGO",
+    "description": "Complete the form below, and we will contact you to validate the data and provide you with access to the platform.",
+    "about": {
+      "title": "About application form",
+      "description": "To access NGO Hub, an organization representative must fill out the following form, providing information about the organization and its members. This initial registration step involves only entering legal data, including uploading the organization's statute.",
+      "start_form": "Start form"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
