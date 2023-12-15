@@ -62,14 +62,7 @@ const Login = () => {
           <div className="w-full max-w-4xl bg-white shadow rounded-lg px-4 sm:px-10 py-4 sm:py-[58px] flex sm:grid gap-6 sm:gap-12 sm:grid-cols-2 flex-col-reverse">
             <div className="flex flex-col gap-5">
               <div className="font-titilliumBold text-2xl md:text-[2rem]">{t('about.title')}</div>
-              <div className="font-titillium">
-                {t('about.description')}
-                <ul className="list-disc pl-2 font-titillium">
-                  {t('about.bullet_1') && <li className="list-inside">{t('about.bullet_1')}</li>}
-                  {t('about.bullet_2') && <li className="list-inside">{t('about.bullet_2')}</li>}
-                  {t('about.bullet_3') && <li className="list-inside">{t('about.bullet_3')}</li>}
-                </ul>
-              </div>
+              <div className="font-titillium">{t('about.description')}</div>
 
               <button
                 aria-label={t('about.start_form')}

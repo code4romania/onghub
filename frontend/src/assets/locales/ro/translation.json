@@ -1109,10 +1109,7 @@
     "description": "Completează formularul de mai jos, iar noi te vom contacta pentru a valida datele și a-ți oferi accesul în platformă.",
     "about": {
       "title": "Despre procesul de aplicare",
-      "description": "Pentru a obține acces în ONGHub, un reprezentant al organizației trebuie să completeze formularul următor, oferind date despre organizație și membri. Se vor cere:",
-      "bullet_1": "date financiare ale organizatiei",
-      "bullet_2": "date legale (inclusiv statutul organizatiei)",
-      "bullet_3": "situatia anuala (numar voluntari, parteneri, sponsori etc)",
+      "description": "Pentru a obține acces în NGO Hub, un reprezentant al organizației trebuie să completeze formularul următor, oferind date despre organizație și membri. Acest prim pas de înregistrare presupune doar introducerea datelor legale, inclusiv încărcarea statutul organizației.",
       "start_form": "Începe formularul"
     }
   },

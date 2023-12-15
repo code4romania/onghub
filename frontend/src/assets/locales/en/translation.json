@@ -1108,10 +1108,7 @@
     "description": "Complete the form below, and we will contact you to validate the data and provide you with access to the platform.",
     "about": {
       "title": "About application form",
-      "description": "To gain access to ONGHub, a representative of the organization must complete the following form, providing information about the organization and its members. The following details will be requested:",
-      "bullet_1": "financial data of the organisation",
-      "bullet_2": "legal data (including organization's status)",
-      "bullet_3": "annual situation (number of volunteers, partners, sponsors etc.)",
+      "description": "To access NGO Hub, an organization representative must fill out the following form, providing information about the organization and its members. This initial registration step involves only entering legal data, including uploading the organization's statute.",
       "start_form": "Start form"
     }
   },
