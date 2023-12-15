@@ -1044,7 +1044,8 @@
   "header": {
     "enter": "Intră în cont",
     "my_account": "Contul meu",
-    "log_out": "Deconectare"
+    "log_out": "Deconectare",
+    "home": "Acasă"
   },
   "my_apps": {
     "title": "Aplicațiile mele",
@@ -1102,6 +1103,18 @@
     "organizations": "ONG-uri",
     "requests": "Solicitări Acces",
     "practice_programs": "Programe de Practică"
+  },
+  "login": {
+    "title": "Înregistrează ONG",
+    "description": "Completează formularul de mai jos, iar noi te vom contacta pentru a valida datele și a-ți oferi accesul în platformă.",
+    "about": {
+      "title": "Despre procesul de aplicare",
+      "description": "Pentru a obține acces în ONGHub, un reprezentant al organizației trebuie să completeze formularul următor, oferind date despre organizație și membri. Se vor cere:",
+      "bullet_1": "date financiare ale organizatiei",
+      "bullet_2": "date legale (inclusiv statutul organizatiei)",
+      "bullet_3": "situatia anuala (numar voluntari, parteneri, sponsori etc)",
+      "start_form": "Începe formularul"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
