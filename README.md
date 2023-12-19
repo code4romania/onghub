@@ -1,4 +1,4 @@
-# ONG Hub
+# NGO Hub
 
 [![GitHub contributors][ico-contributors]][link-contributors]
 [![GitHub last commit][ico-last-commit]][link-last-commit]

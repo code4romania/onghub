@@ -1,8 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
+
+const colors = require('tailwindcss/colors');
+
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     colors: {
+      current: 'currentColor',
+      transparent: 'transparent',
       black: '#020202',
       white: '#FFFFFF',
       orange: {
@@ -80,21 +86,57 @@ module.exports = {
         800: '#065F46',
         900: '#064E3B',
       },
+      'green-tab': '#D5F2E9',
       'menu-green': '#43ff64',
       background: '#E5E5E5',
+      'default-gray': colors.gray,
+      indigo: {
+        500: '#5243EA',
+        600: '#4F46E5',
+      },
+    },
+    borderWidth: {
+      DEFAULT: '1px',
+      0: '0',
+      2: '2px',
+      3: '3px',
+      4: '4px',
+      6: '6px',
+      8: '8px',
     },
     extend: {
       backgroundImage: {
         logo: 'url(./assets/images/logo.svg)',
+        clock: 'url(./assets/images/clock.svg)',
+        loginBackground: 'url(./assets/images/login_background.svg)',
       },
       fontFamily: {
         roboto: 'Roboto',
+        titilliumBold: 'TitilliumWeb-Bold',
         titillium: 'TitilliumWeb',
+        titilliumSemiBold: 'TitilliumWeb-SemiBold',
       },
       transitionProperty: {
         width: 'width',
       },
+      flex: {
+        2: '2 2 0%',
+        3: '3 3 0%',
+      },
+      spacing: {
+        128: '32rem',
+        136: '34rem',
+      },
+      gridTemplateColumns: {
+        'graphs-desktop': 'repeat(auto-fill, minmax(54rem, 1fr))',
+        'graphs-tablet': 'repeat(auto-fill, minmax(40rem, 1fr))',
+        'graphs-mobile': 'repeat(auto-fill, minmax(15rem, 1fr))',
+        cards: 'repeat(auto-fill, minmax(19rem, 1fr))',
+      },
+      screens: {
+        '3xl': '2100px',
+      },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],
 };

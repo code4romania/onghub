@@ -5,16 +5,35 @@
 @font-face {
   font-family: 'Roboto';
   src: url('./assets/fonts/Roboto-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TitilliumWeb-Bold';
+  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TitilliumWeb-SemiBold';
+  src: url('./assets/fonts/TitilliumWeb-SemiBold.ttf');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'TitilliumWeb';
-  src: url('./assets/fonts/TitilliumWeb-Bold.ttf');
+  src: url('./assets/fonts/TitilliumWeb-Regular.ttf');
+  font-display: swap;
 }
 
 @layer base {
   html {
     font-family: 'Roboto';
+    font-display: swap;
+  }
+
+  body {
+    @apply bg-gray-50;
   }
 }
 
@@ -22,4 +41,164 @@
   .main-menu-item {
     @apply h-10 text-gray-50 hover:bg-menu-green/[0.15]  hover:text-green flex items-center px-0 py-2 font-medium rounded-md;
   }
+
+  .save-button {
+    @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400;
+  }
+
+  .add-button {
+    @apply inline-flex items-center px-4 py-2 border border-solid border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+  .edit-button {
+    @apply inline-flex items-center px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-yellow-50 focus:outline-none focus:bg-white focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+  .back-button {
+    @apply inline-flex items-center mr-4 px-4 py-2 shadow-sm border text-sm font-medium rounded-md text-white bg-gray-900  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+  .form-item-label {
+    @apply font-normal sm:text-sm lg:text-base text-xs text-gray-700;
+  }
+
+  .form-item-helper-text {
+    @apply text-sm font-normal;
+  }
+
+  .red-button {
+    @apply inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 sm:text-sm lg:text-base text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-auto;
+  }
+
+  .delete-button {
+    @apply w-full inline-flex justify-center rounded-md border border-red-600 shadow-sm px-4 py-2 bg-white text-sm font-medium text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto;
+  }
+
+  .show-more-text {
+    @apply text-blue-500 cursor-pointer underline;
+  }
+
+  .break-word {
+    word-break: break-word;
+  }
+
+  .grid-list {
+    @apply grid grid-cols-cards gap-4;
+  }
+}
+
+@layer utilities {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.rdt_TableWrapper {
+  @apply pb-2 !important;
+}
+
+/* Overrride default overflow for datatables to allow popovers */
+.rdt_TableWrapper div {
+  //overflow-x: initial !important;
+  //overflow-y: initial !important;
+}
+
+.rdt_TableWrapper > div:first-of-type {
+  overflow: auto;
+  @apply min-[1650px]:overflow-x-hidden;
+  /* added for action menu to be visible without scrolling */
+  padding-bottom: 7rem !important;
+}
+
+/* data table overrides */
+.rdt_TableHeadRow > .rdt_TableCol {
+  @apply bg-gray-50 text-sm font-titilliumBold text-gray-900 border-gray-300;
+}
+
+.rdt_TableHeadRow > .rdt_TableCol > div {
+  @apply py-3.5 pl-2 pr-3;
+}
+
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > div,
+.rdt_TableBody > .rdt_TableRow > .rdt_TableCell > a {
+  @apply whitespace-pre-wrap sm:py-6 py-3 px-2 text-sm font-normal text-gray-700;
+}
+
+.rdt_TableBody > div:last-of-type {
+  border-bottom-style: solid !important;
+  border-bottom-width: 1px !important;
+  border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.rdt_TableCol_Sortable svg {
+  @apply ml-1;
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.rdt_Pagination {
+  border-top: none !important;
+}
+
+.rdt_Pagination > div > svg {
+  display: none;
+}
+
+.rdt_Pagination > div > div > svg {
+  display: none;
+}
+
+.Toastify__toast {
+  @apply font-roboto !important;
+  @apply sm:text-sm lg:text-base text-xs;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-green-500 !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-red-500 !important;
+}
+
+.Application__Card__Description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 100%;
+}
+
+.ribbon {
+  transform: rotate(-45deg);
+  position: absolute;
+  background-color: #374159;
+  padding: 0.5rem 4.5rem;
+  color: white;
+  overflow: hidden;
+}
+
+.ribbon p {
+  margin: 0;
+}
+
+.richtext_html ul {
+  list-style: disc !important;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.richtext_html ol {
+  list-style: auto !important;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }

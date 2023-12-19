@@ -11,8 +11,8 @@ export class RateLimiterConfigService implements ThrottlerOptionsFactory {
 
   createThrottlerOptions(): ThrottlerModuleOptions {
     return {
-      limit: +this.configService.get('THROTTLE_TTL'),
-      ttl: +this.configService.get('THROTTLE_LIMIT'),
+      limit: +this.configService.get('THROTTLE_LIMIT'),
+      ttl: +this.configService.get('THROTTLE_TTL'),
     };
   }
 }

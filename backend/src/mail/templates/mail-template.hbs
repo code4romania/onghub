@@ -1,0 +1,78 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    @font-face {
+      font-family: 'Titillium Web';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/titilliumweb/v15/NaPecZTIAOhVxoMyOr9n_E7fdMPmDaZRbrw.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    body {
+      font-family: 'Titillium Web', sans-serif;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    button {
+      padding: 10px 17px;
+      color: #000000;
+      background-color: #FFF649;
+      width: 8rem;
+      height: 2.5rem;
+      border-radius: 6px;
+      border-width: 0;
+      cursor: pointer;
+      min-width: fit-content;
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #1A15EA;
+    }
+
+    .p1 {
+      font-size: 1rem;
+    }
+
+    .p2 {
+      font-size: 0.75rem;
+    }
+
+    .container {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    #content {
+      padding: 1rem 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    {{> header}}
+    <div id="content">
+      <h1>{{title}}</h1>
+      <p class="p1">{{subtitle}}</p>
+      {{#if cta}}
+      <a href={{cta.link}} target="_blank">
+        <button type="button">{{cta.label}}</button>
+      </a>
+      {{/if}}
+    </div>
+    {{> footer}}
+  </div>
+</body>

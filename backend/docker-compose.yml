@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+
   db:
     image: postgres
     restart: always
@@ -9,9 +18,13 @@ services:
     environment:
       POSTGRES_PASSWORD: pass123
       POSTGRES_DB: onghub
-  # mailcatcher:
-  #   restart: on-failure:10
-  #   image: dockage/mailcatcher:0.7.1
-  #   ports:
-  #     - '1080:1080'
-  #     - '1025:1025'
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+  mailcatcher:
+    restart: on-failure:10
+    image: dockage/mailcatcher:0.7.1
+    ports:
+      - '1080:1080'
+      - '1025:1025'

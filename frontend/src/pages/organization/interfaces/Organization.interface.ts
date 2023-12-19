@@ -1,0 +1,29 @@
+import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
+import { CompletionStatus } from '../enums/CompletionStatus.enum';
+import { OrganizationStatus } from '../enums/OrganizationStatus.enum';
+import { IOrganizationActivity } from './OrganizationActivity.interface';
+import { IOrganizationFinancial } from './OrganizationFinancial.interface';
+import { IOrganizationGeneral } from './OrganizationGeneral.interface';
+import { IOrganizationLegal } from './OrganizationLegal.interface';
+import { IOrganizationReport } from './OrganizationReport.interface';
+
+export interface IOrganization extends BaseEntity {
+  status: OrganizationStatus;
+  syncedOn: Date;
+}
+
+export interface IOrganizationFull extends IOrganization {
+  organizationGeneral: IOrganizationGeneral;
+  organizationActivity: IOrganizationActivity;
+  organizationFinancial: IOrganizationFinancial[];
+  organizationLegal: IOrganizationLegal;
+  organizationReport: IOrganizationReport;
+}
+
+export interface IOrganizationView extends IOrganization {
+  name: string;
+  alias: string;
+  userCount: number;
+  completionStatus: CompletionStatus;
+  logo: string;
+}

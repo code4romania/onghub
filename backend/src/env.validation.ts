@@ -5,6 +5,8 @@ import {
   validateSync,
   IsString,
   IsOptional,
+  Length,
+  IsNumberString,
 } from 'class-validator';
 
 export enum Environment {
@@ -44,6 +46,52 @@ class EnvironmentVariables {
 
   @IsNumber()
   THROTTLE_LIMIT: number;
+
+  @IsString()
+  REDIS_HOST: string;
+
+  @IsNumber()
+  REDIS_PORT: number;
+
+  @IsNumber()
+  CACHE_TTL: number;
+
+  @IsString()
+  COGNITO_USER_POOL_ID: string;
+  @IsString()
+  COGNITO_CLIENT_ID: string;
+  @IsString()
+  COGNITO_REGION: string;
+
+  @IsString()
+  AWS_ACCESS_KEY_ID: string;
+  @IsString()
+  AWS_SECRET_ACCESS_KEY: string;
+  @IsString()
+  AWS_S3_BUCKET_NAME: string;
+
+  @IsString()
+  MAIL_HOST;
+  @IsNumberString()
+  MAIL_PORT;
+  @IsString()
+  MAIL_USER;
+  @IsString()
+  MAIL_PASS;
+  @IsString()
+  MAIL_FROM: string;
+  @IsString()
+  MAIL_CONTACT: string;
+
+  @IsString()
+  AWS_S3_BUCKET_NAME_PUBLIC: string;
+
+  @IsString()
+  @Length(32)
+  ENCRYPTION_KEY: string;
+
+  @IsString()
+  ONGHUB_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {
