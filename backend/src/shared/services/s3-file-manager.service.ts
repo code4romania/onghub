@@ -105,7 +105,7 @@ export class S3FileManagerService {
     const params: FileUploadParams[] = files.map((file) => ({
       Body: file.buffer,
       Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
-      Key: `${path}/${uuid()}-${fileName || file.originalname}`,
+      Key: `${path}/${uuid()}`,
     }));
 
     // Prepare upload
