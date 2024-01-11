@@ -684,11 +684,11 @@
     },
     "remove_app_modal": {
       "title": "Confirmă ștergerea aplicației",
-      "description": "76b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Ștergerea aplicației va duce la eliminarea tuturor informațiilor despre aceasta. După ștergere, aplicația nu va mai fi disponibilă pentru utilizatori."
     },
     "reject_request_modal": {
       "title": "Confirmă respingerea cererii",
-      "description": "ji3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Respinge cererea de acces la aplicație. După respingere, ONG-ul va putea să trimită o nouă cerere de acces."
     }
   },
   "user": {

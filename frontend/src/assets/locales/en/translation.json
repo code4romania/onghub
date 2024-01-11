@@ -684,11 +684,11 @@
     },
     "remove_app_modal": {
       "title": "Confirm application deletion",
-      "description": "76b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "After deleting the application, it will no longer be available to the organisation and all information about that application will be deleted."
     },
     "reject_request_modal": {
       "title": "Confirm the rejection of the application",
-      "description": "ji3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Reject the application access request. After rejection, the NGO will be able to send a new access request."
     }
   },
   "user": {
@@ -1448,7 +1448,7 @@
       "list_error": "Error loading data",
       "delete_modal": {
         "title": "Delete Practice Program",
-        "description": "TODO#4: ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% what happens to the data"
+        "description": "Confirm deletion of the internship programme?"
       }
     },
     "feedback": {
