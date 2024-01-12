@@ -167,7 +167,12 @@
         "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
         "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
         "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
-        "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus"
+        "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
+        "form": {
+          "agreement": {
+            "required": "Te rugăm să asdkashkah caseta de mai sus înainte de a continua."
+          }
+        }
       },
       "errors": {
         "REQ_001": "Există deja un utilizator cu acest e-mail sau cu acest număr de telefon.",
