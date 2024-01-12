@@ -104,7 +104,7 @@ const CreateOrganizationActivity = () => {
 
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
 
-    updateActiveStepIndexInLocalStorage(activeStepIndex, 3, setActiveStepIndex);
+    updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
   };
 
   // load initial values
@@ -310,30 +310,30 @@ const CreateOrganizationActivity = () => {
 
             {(isPartOfInternationalOrganization == 'true' ||
               isPartOfInternationalOrganization === true) && (
-                <Controller
-                  key={OrganizationActivityConfig.internationalOrganizationName.key}
-                  name={OrganizationActivityConfig.internationalOrganizationName.key}
-                  rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-                  control={control}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <InputField
-                        config={{
-                          ...OrganizationActivityConfig.internationalOrganizationName.config,
-                          name: OrganizationActivityConfig.internationalOrganizationName.key,
-                          error:
-                            errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                              ?.message,
-                          defaultValue: value,
-                          onChange: onChange,
-                          id: 'create-organization-activity__international-name',
-                        }}
-                        readonly={readonly}
-                      />
-                    );
-                  }}
-                />
-              )}
+              <Controller
+                key={OrganizationActivityConfig.internationalOrganizationName.key}
+                name={OrganizationActivityConfig.internationalOrganizationName.key}
+                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationActivityConfig.internationalOrganizationName.config,
+                        name: OrganizationActivityConfig.internationalOrganizationName.key,
+                        error:
+                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                            ?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-activity__international-name',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <div>

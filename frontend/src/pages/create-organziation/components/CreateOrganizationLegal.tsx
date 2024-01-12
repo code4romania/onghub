@@ -32,7 +32,8 @@ import GenericFormErrorMessage from '../../../components/generic-form-error-mess
 
 const CreateOrganizationLegal = () => {
   const [isEditMode] = useState(true);
-  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] = useState<boolean>(false);
+  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] =
+    useState<boolean>(false);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -175,7 +176,7 @@ const CreateOrganizationLegal = () => {
     event.stopPropagation();
     event.preventDefault();
     setDeleteOrganizationStatuteModalOpen(true);
-  }
+  };
 
   const onUpdateDirector = (contact: Partial<Contact>) => {
     const filteredDirectors = directors.filter(
@@ -275,7 +276,7 @@ const CreateOrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
+    updateActiveStepIndexInLocalStorage(activeStepIndex, 5, setActiveStepIndex);
     setOrganization((org: any) => ({
       ...org,
       legal: { legalReprezentative, directors, directorsDeleted, others, organizationStatute },
@@ -287,10 +288,7 @@ const CreateOrganizationLegal = () => {
       <div className="p-5 sm:p-10">
         <div className="flex flex-col sm:gap-16 gap-4 w-full divide-y divide-gray-200 divide xl:w-1/2">
           <section className="flex flex-col gap-6 w-full">
-            <SectionHeader
-              title={t('representative')}
-              subTitle={t('representative_information')}
-            />
+            <SectionHeader title={t('representative')} subTitle={t('representative_information')} />
             <form className="space-y-8">
               <ContactForm
                 className="flex-row gap-x-6 sm:flex-nowrap flex-wrap"
@@ -389,10 +387,7 @@ const CreateOrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
                   {isEditMode && (
-                    <XIcon
-                      className="ml-2 w-4 h-4 text-gray-600"
-                      onClick={onDeleteStatute}
-                    />
+                    <XIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
                 </a>
               )}

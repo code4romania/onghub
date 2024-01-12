@@ -79,7 +79,7 @@ const CreateOrganizationUser = () => {
       setOrganization((org: any) => ({ ...org, admin }));
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
-      updateActiveStepIndexInLocalStorage(activeStepIndex, 1, setActiveStepIndex);
+      updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
