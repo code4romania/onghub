@@ -141,12 +141,14 @@
       "again": "Try again",
       "steps": {
         "first": "Step 1",
-        "account": "Date cont",
+        "agreement": "Date cont",
         "second": "Step 2",
-        "general": "General dates",
+        "account": "Date cont",
         "third": "Step 3",
-        "activity": "Activity",
+        "general": "General dates",
         "fourth": "Step 4",
+        "activity": "Activity",
+        "fifth": "Step 5",
         "legal": "Legal information"
       },
       "user_agreement": {
