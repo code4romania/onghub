@@ -3,6 +3,11 @@ import { Hub } from 'aws-amplify';
 import Header from '../../components/Header/Header';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import {
+  CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY,
+  CREATE_LOCAL_STORAGE_KEY,
+  ORGANIZATION_AGREEMENT_KEY,
+} from '../create-organziation/constants/CreateOrganization.constant';
 
 const Login = () => {
   const { t } = useTranslation(['login']);
@@ -46,6 +51,14 @@ const Login = () => {
     });
   }, []);
 
+  const onLogin = () => {
+    // make sure you are not stuck in case something happens on create organization
+    localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
+    localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
+    localStorage.removeItem(ORGANIZATION_AGREEMENT_KEY);
+    navigate('/new/account');
+  };
+
   return (
     <>
       <div className="flex flex-col items-center bg-loginBackground bg-cover w-screen min-h-screen h-fit gap-6">
@@ -67,9 +80,7 @@ const Login = () => {
               <button
                 aria-label={t('about.start_form')}
                 className="bg-yellow-600 hover:bg-yellow-700 sm:text-base px-6 py-3 text-sm shadow rounded-md text-black font-titilliumSemiBold w-fit"
-                onClick={(event) => {
-                  navigate('/new/account');
-                }}
+                onClick={onLogin}
               >
                 {t('about.start_form')}
               </button>
