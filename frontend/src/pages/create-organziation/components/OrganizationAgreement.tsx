@@ -17,7 +17,12 @@ const OrganizationAgreement = () => {
 
   const [, , , , , , activeStepIndex, setActiveStepIndex] = useOutletContext<any>();
 
-  const { control, watch, reset, handleSubmit } = useForm({
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitted },
+  } = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
   });
@@ -26,8 +31,6 @@ const OrganizationAgreement = () => {
     const initialCheck = localStorage.getItem(ORGANIZATION_AGREEMENT_KEY);
     reset({ agreement: initialCheck === 'true' });
   }, []);
-
-  const agreement = watch('agreement');
 
   const handleSave = async () => {
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`);
@@ -81,6 +84,12 @@ const OrganizationAgreement = () => {
               key="agreement"
               name="agreement"
               control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: t('create.user_agreement.form.agreement.required'),
+                },
+              }}
               render={({ field: { onChange, value } }) => {
                 return (
                   <input
@@ -104,15 +113,22 @@ const OrganizationAgreement = () => {
 
             {t('create.user_agreement.terms_and_agreement_paragraph')}
           </form>
+          {!isValid && isSubmitted && (
+            <p
+              className="mt-[-0.5rem] sm:text-sm text-xs text-red-600 whitespace-pre-wrap"
+              id={`agreement-error`}
+            >
+              <>{errors?.agreement?.message || ''}</>
+            </p>
+          )}
         </div>
         <div className="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
           <button
-            disabled={!agreement}
             aria-label={t('next', { ns: 'common' })}
             id="create-organization-account__button-next"
             type="button"
             className={classNames(
-              agreement ? 'bg-yellow-600 focus:ring-yellow-500 hover:bg-yellow-700' : 'bg-gray-200',
+              'bg-yellow-600 focus:ring-yellow-500 hover:bg-yellow-700',
               'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2  sm:text-sm lg:text-base text-xs font-medium text-black  focus:outline-none focus:ring-2 focus:ring-offset-2  sm:ml-3 sm:w-auto',
             )}
             onClick={handleSubmit(handleSave)}
