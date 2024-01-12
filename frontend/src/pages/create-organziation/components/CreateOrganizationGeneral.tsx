@@ -127,7 +127,7 @@ const CreateOrganizationGeneral = () => {
       );
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`);
 
-      updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
+      updateActiveStepIndexInLocalStorage(activeStepIndex, 3, setActiveStepIndex);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {

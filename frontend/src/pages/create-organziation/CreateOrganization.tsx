@@ -13,10 +13,11 @@ import {
   CREATE_FLOW_URL,
   CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY,
   CREATE_LOCAL_STORAGE_KEY,
+  ORGANIZATION_AGREEMENT_KEY,
 } from './constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 
-const STEPS = ['account', 'general', 'activity', 'legal'];
+const STEPS = ['agreement', 'account', 'general', 'activity', 'legal'];
 
 const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
@@ -41,9 +42,18 @@ const CreateOrganization = () => {
     const { activeStepIndex } = JSON.parse(
       localStorage.getItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY) || '{"activeStepIndex": 0}',
     );
-    setActiveStepIndex(activeStepIndex);
 
-    navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[activeStepIndex]}`);
+    const agreement = localStorage.getItem(ORGANIZATION_AGREEMENT_KEY);
+
+    if (agreement === 'false') {
+      setActiveStepIndex(0);
+
+      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[0]}`);
+    } else {
+      setActiveStepIndex(activeStepIndex);
+
+      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[activeStepIndex]}`);
+    }
   }, []);
 
   useEffect(() => {
@@ -88,6 +98,7 @@ const CreateOrganization = () => {
           onSuccess: () => {
             localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
             localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
+            localStorage.removeItem(ORGANIZATION_AGREEMENT_KEY);
             setSuccess(true);
           },
         },
