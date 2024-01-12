@@ -79,7 +79,7 @@ const CreateOrganization = () => {
       organization.general &&
       organization.activity &&
       organization.legal &&
-      activeStepIndex === 4
+      activeStepIndex === 5
     ) {
       // parse and map activity id's correctly
       let { activity } = organization;
