@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
+  ISelectData,
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
@@ -48,6 +49,9 @@ const CreateOrganizationActivity = () => {
   const [isAddFederationModalOpen, setIsAddFederationModalOpen] = useState<boolean>(false);
   const [isAddCoalitionModalOpen, setIsAddCoalitionModalOpen] = useState<boolean>(false);
 
+  const [newCoalitions, setNewCoalitions] = useState<ISelectData[]>([]);
+  const [newFederations, setNewFederations] = useState<ISelectData[]>([]);
+
   const navigate = useNavigate();
 
   const { t } = useTranslation(['activity', 'common']);
@@ -61,6 +65,7 @@ const CreateOrganizationActivity = () => {
     watch,
     resetField,
     getValues,
+    setValue,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -126,6 +131,17 @@ const CreateOrganizationActivity = () => {
         hasBranches: organization.activity.hasBranches?.toString(),
         isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization?.toString(),
       });
+
+      // init data if the user comes back to this page
+      if (organization.activity.federations?.length > 0) {
+        const fedValues = organization.activity.federations.filter((val: ISelectData) => val.isNew);
+        setNewFederations(fedValues);
+      }
+
+      if (organization.activity.coalitions?.length > 0) {
+        const colValues = organization.activity.coalitions.filter((val: ISelectData) => val.isNew);
+        setNewCoalitions(colValues);
+      }
     }
   }, [organization]);
 
@@ -142,6 +158,34 @@ const CreateOrganizationActivity = () => {
 
   const loadOptionsCitiesSerch = async (searchWord: string) => {
     return getCities(searchWord).then((res) => res.map(mapCitiesToSelect));
+  };
+
+  const onAddNewFederation = ({ name }: { name: string }): void => {
+    // generate new value
+    const newValue = { value: name, label: name, isNew: true };
+    // add the values to the additional federation array
+    setNewFederations([...newFederations, newValue]);
+    // close modal
+    setIsAddFederationModalOpen(false);
+    // handle form
+    const form = getValues();
+    const formValues = form.federations || [];
+    resetField('federations');
+    setValue('federations', [...formValues, newValue]);
+  };
+
+  const onAddNewCoalition = ({ name }: { name: string }): void => {
+    // generate new value
+    const newValue = { value: name, label: name, isNew: true };
+    // add the values to the additional coalitions array
+    setNewCoalitions([...newCoalitions, newValue]);
+    // close modal
+    setIsAddCoalitionModalOpen(false);
+    // handle form
+    const form = getValues();
+    const formValues = form.coalitions || [];
+    resetField('coalitions');
+    setValue('coalitions', [...formValues, newValue]);
   };
 
   return (
@@ -257,7 +301,7 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <div className="flex w-full items-end gap-2">
+                    <div className="flex w-full items-center gap-2">
                       <MultiSelect
                         id="create-organization-activity__federations"
                         value={value}
@@ -268,7 +312,7 @@ const CreateOrganizationActivity = () => {
                           OrganizationActivityConfig.federations.key
                         ]?.message?.toString()}
                         onChange={onChange}
-                        options={[...federations.map(mapGroupsToSelect)]}
+                        options={[...federations.map(mapGroupsToSelect), ...newFederations]}
                         readonly={readonly}
                       />
                       <button
@@ -297,7 +341,7 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <div className="flex w-full items-end gap-2">
+                    <div className="flex w-full items-center gap-2">
                       <MultiSelect
                         id="create-organization-activity__coalitions"
                         value={value}
@@ -308,7 +352,7 @@ const CreateOrganizationActivity = () => {
                           OrganizationActivityConfig.coalitions.key
                         ]?.message?.toString()}
                         onChange={onChange}
-                        options={[...coalitions.map(mapGroupsToSelect)]}
+                        options={[...coalitions.map(mapGroupsToSelect), ...newCoalitions]}
                         readonly={readonly}
                       />
                       <button
@@ -459,7 +503,7 @@ const CreateOrganizationActivity = () => {
           title={t('config.add_federation_modal.title')}
           description={t('config.add_federation_modal.description')}
           onClose={setIsAddFederationModalOpen.bind(null, false)}
-          onSubmit={console.log}
+          onSubmit={onAddNewFederation}
         />
       )}
       {isAddCoalitionModalOpen && (
@@ -467,7 +511,7 @@ const CreateOrganizationActivity = () => {
           title={t('config.add_coalition_modal.title')}
           description={t('config.add_coalition_modal.description')}
           onClose={setIsAddCoalitionModalOpen.bind(null, false)}
-          onSubmit={console.log}
+          onSubmit={onAddNewCoalition}
         />
       )}
     </div>

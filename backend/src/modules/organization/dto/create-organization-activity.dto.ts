@@ -78,4 +78,12 @@ export class CreateOrganizationActivityDto {
   @ArrayNotEmpty()
   @IsOptional()
   cities?: number[];
+
+  @IsArray()
+  @IsOptional()
+  newFederations?: string[];
+
+  @IsArray()
+  @IsOptional()
+  newCoalitions?: string[];
 }

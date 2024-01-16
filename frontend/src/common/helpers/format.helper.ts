@@ -57,6 +57,7 @@ export const flatten = (x: any, result: any, prefix?: any) => {
 export interface ISelectData {
   value: any;
   label: string;
+  isNew?: boolean;
 }
 
 export const mapToId = (item: any) => item.id;
@@ -79,10 +80,17 @@ export const mapCitiesToSelect = (item: any): ISelectData => ({
 });
 
 // Federations and Coalitions
-export const mapGroupsToSelect = (item: any): ISelectData => ({
-  value: item.id,
-  label: item.abbreviation,
-});
+export const mapGroupsToSelect = (item: any): ISelectData =>
+  item.isNew
+    ? {
+        value: item.id,
+        label: item.abbreviation,
+        isNew: item.isNew,
+      }
+    : {
+        value: item.id,
+        label: item.abbreviation,
+      };
 
 export const str2bool = (value: string) => {
   if (value && typeof value === 'string') {

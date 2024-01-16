@@ -64,6 +64,8 @@ export interface ICreateOrganizationActivity {
   domains: number[];
   regions: number[];
   cities: number[];
+  newFederations?: string[];
+  newCoalitions?: string[];
 }
 
 export interface ICreateOrganizationLegal {
