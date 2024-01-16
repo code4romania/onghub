@@ -53,6 +53,7 @@ import OrganizationPracticePrograms from '../../pages/organization/components/Or
 import OrganizationServices from '../../pages/organization/components/OrganizationServices/OrganizationServices';
 import ApplicationListTable from '../../pages/apps-store/components/ApplicationListTable';
 import AllApps from '../../pages/my-apps/AllApps';
+import OrganizationAgreement from '../../pages/create-organziation/components/OrganizationAgreement';
 
 const Router = () => {
   const { isAuthenticated, isRestricted, role } = useAuthContext();
@@ -68,7 +69,8 @@ const Router = () => {
 
         {!isAuthenticated && (
           <Route path="new" element={<CreateOrganization />}>
-            <Route index element={<Navigate to={'/new/account'} replace={true}></Navigate>} />
+            <Route index element={<Navigate to={'/new/agreement'} replace={true}></Navigate>} />
+            <Route path="agreement" element={<OrganizationAgreement />} />
             <Route path="account" element={<CreateOrganizationUser />} />
             <Route path="general" element={<CreateOrganizationGeneral />} />
             <Route path="activity" element={<CreateOrganizationActivity />} />

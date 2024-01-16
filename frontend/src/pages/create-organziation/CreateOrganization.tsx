@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,10 +14,11 @@ import {
   CREATE_FLOW_URL,
   CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY,
   CREATE_LOCAL_STORAGE_KEY,
+  ORGANIZATION_AGREEMENT_KEY,
 } from './constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
 
-const STEPS = ['account', 'general', 'activity', 'legal'];
+const STEPS = ['agreement', 'account', 'general', 'activity', 'legal'];
 
 const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
@@ -41,9 +43,18 @@ const CreateOrganization = () => {
     const { activeStepIndex } = JSON.parse(
       localStorage.getItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY) || '{"activeStepIndex": 0}',
     );
-    setActiveStepIndex(activeStepIndex);
 
-    navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[activeStepIndex]}`);
+    const agreement = localStorage.getItem(ORGANIZATION_AGREEMENT_KEY);
+
+    if (agreement === 'false') {
+      setActiveStepIndex(0);
+
+      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[0]}`);
+    } else {
+      setActiveStepIndex(activeStepIndex);
+
+      navigate(`/${CREATE_FLOW_URL.BASE}/${STEPS[activeStepIndex]}`);
+    }
   }, []);
 
   useEffect(() => {
@@ -69,17 +80,37 @@ const CreateOrganization = () => {
       organization.general &&
       organization.activity &&
       organization.legal &&
-      activeStepIndex === 4
+      activeStepIndex === 5
     ) {
       // parse and map activity id's correctly
       let { activity } = organization;
+
+      // map existing coalitions
+      const coalitions = activity.coalitions
+        ? [...activity.coalitions.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+        : [];
+      const federations = activity.federations
+        ? [...activity.federations.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+        : [];
+
+      // map new federations and coalitions
+      const newFederations = activity.federations
+        ? [...activity.federations.filter((val: any) => val.isNew).map((val: any) => val.value)]
+        : [];
+
+      const newCoalitions = activity.coalitions
+        ? [...activity.coalitions.filter((val: any) => val.isNew).map((val: any) => val.value)]
+        : [];
+
       activity = {
         ...activity,
         branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
         cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
         regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
-        coalitions: activity.coalitions ? [...activity.coalitions.map(mapSelectToValue)] : [],
-        federations: activity.federations ? [...activity.federations.map(mapSelectToValue)] : [],
+        coalitions,
+        federations,
+        newFederations,
+        newCoalitions,
       };
 
       await mutateRequest(
@@ -88,6 +119,7 @@ const CreateOrganization = () => {
           onSuccess: () => {
             localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
             localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
+            localStorage.removeItem(ORGANIZATION_AGREEMENT_KEY);
             setSuccess(true);
           },
         },

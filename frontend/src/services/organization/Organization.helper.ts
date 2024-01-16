@@ -48,6 +48,7 @@ export const parseOrganizationActivityDataToPayload = (data: any): ICreateOrgani
     payload = {
       ...payload,
       coalitions: data.coalitions || [],
+      newCoalitions: data.newCoalitions || [],
     };
   }
 
@@ -55,6 +56,7 @@ export const parseOrganizationActivityDataToPayload = (data: any): ICreateOrgani
     payload = {
       ...payload,
       federations: data.federations || [],
+      newFederations: data.newFederations || [],
     };
   }
 

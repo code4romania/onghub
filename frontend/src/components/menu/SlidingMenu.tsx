@@ -6,6 +6,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { XIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'react-i18next';
+import { NGOHUB_INFORMATION_URL } from '../../common/constants/constants';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 
 export default function SlidingMenu({
   isOpen,
@@ -120,7 +122,27 @@ export default function SlidingMenu({
                                 {item.name}
                               </span>
                             </a>
+
                           ))}
+                        <a
+                          aria-label="menu"
+                          key={'menu'}
+                          href={`${NGOHUB_INFORMATION_URL}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={classNames(
+                            'px-4 space-x-5 main-menu-item',
+                          )}
+                        >
+                          <InformationCircleIcon className="w-5 h-5" />
+                          <span
+                            className={classNames(
+                              'transition-all duration-50 whitespace-nowrap',
+                            )}
+                          >
+                            {t('menu:information')}
+                          </span>
+                        </a>
                       </nav>
                     </div>
                   </div>

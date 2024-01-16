@@ -3,6 +3,7 @@
 }
 
 .reactselect__value-container {
+  height: 2.4rem;
 }
 
 .reactselect__multi-value {
@@ -11,6 +12,8 @@
   border-radius: 100px !important;
   display: flex;
   align-items: center;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .reactselect__multi-value__label {

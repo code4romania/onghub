@@ -79,7 +79,7 @@ const CreateOrganizationUser = () => {
       setOrganization((org: any) => ({ ...org, admin }));
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
-      updateActiveStepIndexInLocalStorage(activeStepIndex, 1, setActiveStepIndex);
+      updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
     } catch (err: any) {
       const response = err.response?.data?.message;
       if (Array.isArray(response)) {
@@ -176,6 +176,15 @@ const CreateOrganizationUser = () => {
             onClick={handleSubmit(handleSave)}
           >
             {t('next', { ns: 'common' })}
+          </button>
+          <button
+            aria-label={t('back', { ns: 'common' })}
+            id="create-organization-general__button-back"
+            type="button"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white sm:text-sm lg:text-base text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto"
+            onClick={() => navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.AGREEMENT}`)}
+          >
+            {t('back', { ns: 'common' })}
           </button>
         </div>
         {!isValid && isSubmitted && <GenericFormErrorMessage />}

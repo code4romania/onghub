@@ -21,7 +21,6 @@ export class CreateOrganizationActivityDto {
   isPartOfFederation: boolean;
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
   federations?: number[];
 
@@ -30,7 +29,6 @@ export class CreateOrganizationActivityDto {
   isPartOfCoalition: boolean;
 
   @IsArray()
-  @ArrayNotEmpty()
   @IsOptional()
   coalitions?: number[];
 
@@ -78,4 +76,12 @@ export class CreateOrganizationActivityDto {
   @ArrayNotEmpty()
   @IsOptional()
   cities?: number[];
+
+  @IsArray()
+  @IsOptional()
+  newFederations?: string[];
+
+  @IsArray()
+  @IsOptional()
+  newCoalitions?: string[];
 }

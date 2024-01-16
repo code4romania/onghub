@@ -110,8 +110,24 @@ export class NomenclaturesService {
     return this.federationsRepository.find(conditions);
   }
 
+  public addFederations(items: string[]) {
+    const newFederations = items.map((val) => ({
+      abbreviation: val,
+      name: val,
+    }));
+    return this.federationsRepository.create(newFederations);
+  }
+
   public getCoalitions(conditions: FindManyOptions<Coalition>) {
     return this.coalitionsRepository.find(conditions);
+  }
+
+  public addCoalitions(items: string[]) {
+    const newCoalitions = items.map((val) => ({
+      abbreviation: val,
+      name: val,
+    }));
+    return this.coalitionsRepository.create(newCoalitions);
   }
 
   public getFaculties(conditions: FindManyOptions<Faculty>) {
