@@ -22,7 +22,7 @@ export const FEDERATIONS = [
   {
     id: 5,
     name: 'Federația Coaliția pentru Educație',
-    abbreviation: '',
+    abbreviation: 'Federația Coaliția pentru Educație',
   },
   {
     id: 6,
@@ -32,7 +32,7 @@ export const FEDERATIONS = [
   {
     id: 7,
     name: 'Federația Coaliția Natura 2000 România',
-    abbreviation: '',
+    abbreviation: 'Federația Coaliția Natura 2000 România',
   },
   {
     id: 8,
@@ -42,7 +42,7 @@ export const FEDERATIONS = [
   {
     id: 9,
     name: 'Federația Consiliul Tineretului din România',
-    abbreviation: '',
+    abbreviation: 'Federația Consiliul Tineretului din România',
   },
   {
     id: 10,

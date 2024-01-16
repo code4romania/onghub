@@ -2,7 +2,7 @@ export const COALITIONS = [
   {
     id: 1,
     name: 'Coaliția pentru Drepturile Migranților și Refugiaților',
-    abbreviation: '',
+    abbreviation: 'Coaliția pentru Drepturile Migranților și Refugiaților',
   },
   {
     id: 2,
@@ -12,16 +12,16 @@ export const COALITIONS = [
   {
     id: 3,
     name: 'Coaliția Anti Discriminare',
-    abbreviation: '',
+    abbreviation: 'Coaliția Anti Discriminare',
   },
   {
     id: 4,
     name: 'Coaliția pentru Egalitate de Gen',
-    abbreviation: '',
+    abbreviation: 'Coaliția pentru Egalitate de Gen',
   },
   {
     id: 5,
     name: 'Coaliția România Sustenabilă',
-    abbreviation: '',
+    abbreviation: 'Coaliția România Sustenabilă',
   }
 ];
