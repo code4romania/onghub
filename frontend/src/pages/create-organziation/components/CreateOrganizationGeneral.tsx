@@ -144,9 +144,12 @@ const CreateOrganizationGeneral = () => {
       <div className="w-full " />
       <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader title={t('title')} subTitle={t('title_information', { ns: 'general' })} />
-          <form className="space-y-8 xl:w-1/3 divide-y divide-gray-200 divide-">
+          <form className="space-y-12 xl:w-1/3 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
+              <SectionHeader
+                title={t('title')}
+                subTitle={t('title_information', { ns: 'general' })}
+              />
               <Controller
                 key={OrganizationGeneralConfig.name.key}
                 name={OrganizationGeneralConfig.name.key}
@@ -168,96 +171,12 @@ const CreateOrganizationGeneral = () => {
                   );
                 }}
               />
-              <Controller
-                key={OrganizationGeneralConfig.alias.key}
-                name={OrganizationGeneralConfig.alias.key}
-                rules={OrganizationGeneralConfig.alias.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.alias.config,
-                        name: OrganizationGeneralConfig.alias.key,
-                        error: errors[OrganizationGeneralConfig.alias.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-alias',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
               <RadioGroup
                 control={control}
                 readonly={readonly}
                 errors={errors[OrganizationGeneralConfig.type.key]}
                 config={OrganizationGeneralConfig.type}
                 id="create-organization-general__type"
-              />
-              <Controller
-                key={OrganizationGeneralConfig.email.key}
-                name={OrganizationGeneralConfig.email.key}
-                rules={OrganizationGeneralConfig.email.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.email.config,
-                        name: OrganizationGeneralConfig.email.key,
-                        error: errors[OrganizationGeneralConfig.email.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-email',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-              <Controller
-                key={OrganizationGeneralConfig.phone.key}
-                name={OrganizationGeneralConfig.phone.key}
-                rules={OrganizationGeneralConfig.phone.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.phone.config,
-                        name: OrganizationGeneralConfig.phone.key,
-                        error: errors[OrganizationGeneralConfig.phone.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-phone',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-              <Controller
-                key={OrganizationGeneralConfig.address.key}
-                name={OrganizationGeneralConfig.address.key}
-                rules={OrganizationGeneralConfig.address.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.address.config,
-                        name: OrganizationGeneralConfig.address.key,
-                        error: errors[OrganizationGeneralConfig.address.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-address',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
               />
               <Controller
                 key={OrganizationGeneralConfig.yearCreated.key}
@@ -321,6 +240,27 @@ const CreateOrganizationGeneral = () => {
                   );
                 }}
               />
+              <Controller
+                key={OrganizationGeneralConfig.address.key}
+                name={OrganizationGeneralConfig.address.key}
+                rules={OrganizationGeneralConfig.address.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.address.config,
+                        name: OrganizationGeneralConfig.address.key,
+                        error: errors[OrganizationGeneralConfig.address.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__org-address',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
               <div className="flex gap-4">
                 <Controller
                   key={OrganizationGeneralConfig.county.key}
@@ -370,42 +310,29 @@ const CreateOrganizationGeneral = () => {
                   }}
                 />
               </div>
-              <Controller
-                key={OrganizationGeneralConfig.shortDescription.key}
-                name={OrganizationGeneralConfig.shortDescription.key}
-                rules={OrganizationGeneralConfig.shortDescription.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <Textarea
-                      config={{
-                        ...OrganizationGeneralConfig.shortDescription.config,
-                        name: OrganizationGeneralConfig.shortDescription.key,
-                        error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__short-description',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <br />
+              <SectionHeader
+                title="Date de prezentare"
+                subTitle="Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
               />
               <Controller
-                key={OrganizationGeneralConfig.description.key}
-                name={OrganizationGeneralConfig.description.key}
-                rules={OrganizationGeneralConfig.description.rules}
+                key={OrganizationGeneralConfig.alias.key}
+                name={OrganizationGeneralConfig.alias.key}
+                rules={OrganizationGeneralConfig.alias.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <Textarea
+                    <InputField
                       config={{
-                        ...OrganizationGeneralConfig.description.config,
-                        name: OrganizationGeneralConfig.description.key,
-                        error: errors[OrganizationGeneralConfig.description.key]?.message,
+                        ...OrganizationGeneralConfig.alias.config,
+                        name: OrganizationGeneralConfig.alias.key,
+                        error: errors[OrganizationGeneralConfig.alias.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
-                        id: 'create-organization-general__description',
+                        id: 'create-organization-general__org-alias',
                       }}
                       readonly={readonly}
                     />
@@ -465,7 +392,100 @@ const CreateOrganizationGeneral = () => {
                 )}
               </div>
               {/* End Logo */}
+              <Controller
+                key={OrganizationGeneralConfig.shortDescription.key}
+                name={OrganizationGeneralConfig.shortDescription.key}
+                rules={OrganizationGeneralConfig.shortDescription.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Textarea
+                      config={{
+                        ...OrganizationGeneralConfig.shortDescription.config,
+                        name: OrganizationGeneralConfig.shortDescription.key,
+                        error: errors[OrganizationGeneralConfig.shortDescription.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__short-description',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.description.key}
+                name={OrganizationGeneralConfig.description.key}
+                rules={OrganizationGeneralConfig.description.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Textarea
+                      config={{
+                        ...OrganizationGeneralConfig.description.config,
+                        name: OrganizationGeneralConfig.description.key,
+                        error: errors[OrganizationGeneralConfig.description.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__description',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
             </div>
+
+            <div className="flex flex-col gap-4">
+              <br />
+              <SectionHeader title="Informatii de contact" subTitle={''} />
+
+              <Controller
+                key={OrganizationGeneralConfig.email.key}
+                name={OrganizationGeneralConfig.email.key}
+                rules={OrganizationGeneralConfig.email.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.email.config,
+                        name: OrganizationGeneralConfig.email.key,
+                        error: errors[OrganizationGeneralConfig.email.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__org-email',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                key={OrganizationGeneralConfig.phone.key}
+                name={OrganizationGeneralConfig.phone.key}
+                rules={OrganizationGeneralConfig.phone.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.phone.config,
+                        name: OrganizationGeneralConfig.phone.key,
+                        error: errors[OrganizationGeneralConfig.phone.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-general__org-phone',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            </div>
+
+            {/* TODO: add address the same as */}
+
             <div className="pt-8">
               <span className="sm:text-lg lg:text-xl text-md font-bold text-gray-900">
                 {t('social')}

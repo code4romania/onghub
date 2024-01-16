@@ -222,8 +222,8 @@
     }
   },
   "general": {
-    "title": "Date generale",
-    "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "title": "Date oficiale",
+    "title_information": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte. ",
     "logo": {
       "name": "Logo organizație",
       "upload": "Încarcă logo",
@@ -243,7 +243,7 @@
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Numele organizației are un format invalid.",
-        "label": "Denumirea organizației*",
+        "label": "Denumirea oficială a organizației*",
         "helper": "Numele organizației așa cum apare în documentele legale."
       },
       "alias": {
