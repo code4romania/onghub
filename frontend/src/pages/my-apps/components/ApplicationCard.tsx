@@ -73,7 +73,13 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
         >
           <p className="text-center">{t('more')}</p>
         </button>
-        {(application.ongStatus === OngApplicationStatus.ACTIVE ||
+        {/* 
+        
+          Commented the open button till further notice. Left as a comment due to complex rule for displaying 
+          
+          */}
+
+        {/* {(application.ongStatus === OngApplicationStatus.ACTIVE ||
           application.type === ApplicationTypeEnum.INDEPENDENT) &&
           application.status !== ApplicationStatus.DISABLED && (
             <button
@@ -83,7 +89,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
             >
               <p className="text-center">{t('open')}</p>
             </button>
-          )}
+          )} */}
       </div>
     </div>
   );
