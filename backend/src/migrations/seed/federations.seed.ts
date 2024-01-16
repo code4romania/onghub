@@ -1,152 +1,53 @@
 export const FEDERATIONS = [
   {
     id: 1,
-    name: 'Federational',
-    abbreviation: 'FDTL',
+    name: 'Federația Fundațiilor Comunitare din România',
+    abbreviation: 'FFCR',
   },
   {
     id: 2,
-    name: 'Federo',
-    abbreviation: 'FDR',
+    name: 'Federația Organizațiilor Neguvernamentale pentru Copii',
+    abbreviation: 'FONPC',
   },
   {
     id: 3,
-    name: 'Activosa',
-    abbreviation: 'ATV',
+    name: 'Federația Organizațiilor Neguvernamentale pentru Servicii Sociale',
+    abbreviation: 'FONSS',
   },
   {
     id: 4,
-    name: 'Block Federation',
-    abbreviation: 'BLFD',
+    name: 'Federația ONG pentru Dezvoltare',
+    abbreviation: 'FOND',
   },
   {
     id: 5,
-    name: 'League Fusion',
-    abbreviation: 'LGFS',
+    name: 'Federația Coaliția pentru Educație',
+    abbreviation: '',
   },
   {
     id: 6,
-    name: 'Amigo Networks',
-    abbreviation: 'AGNT',
+    name: 'Federația Asociațiilor Studenților în Medicină din România',
+    abbreviation: 'FASMR',
   },
   {
     id: 7,
-    name: 'United Federation',
-    abbreviation: 'UTFD',
+    name: 'Federația Coaliția Natura 2000 România',
+    abbreviation: '',
   },
   {
     id: 8,
-    name: 'Alliance Exchange',
-    abbreviation: 'ALEX',
+    name: 'Federația Asociațiilor Studenților Farmaciști din România',
+    abbreviation: 'FASFR',
   },
   {
     id: 9,
-    name: 'Freeflow',
-    abbreviation: 'FFL',
+    name: 'Federația Consiliul Tineretului din România',
+    abbreviation: '',
   },
   {
     id: 10,
-    name: 'Diaspora',
-    abbreviation: 'DSP',
-  },
-  {
-    id: 11,
-    name: 'Agrifederation',
-    abbreviation: 'AGFD',
-  },
-  {
-    id: 12,
-    name: 'Conclave',
-    abbreviation: 'CCL',
-  },
-  {
-    id: 13,
-    name: 'Connectr',
-    abbreviation: 'CNN',
-  },
-  {
-    id: 14,
-    name: 'Veridical',
-    abbreviation: 'VRDL',
-  },
-  {
-    id: 15,
-    name: 'Ufomate',
-    abbreviation: 'UFO',
-  },
-  {
-    id: 16,
-    name: 'Viscount',
-    abbreviation: 'VSC',
-  },
-  {
-    id: 17,
-    name: 'Bistro',
-    abbreviation: 'BST',
-  },
-  {
-    id: 18,
-    name: 'Transunion',
-    abbreviation: 'TRS',
-  },
-  {
-    id: 19,
-    name: 'Trump Federation',
-    abbreviation: 'TMFD',
-  },
-  {
-    id: 20,
-    name: 'Utopia Alliance',
-    abbreviation: 'UPLL',
-  },
-  {
-    id: 21,
-    name: 'Commize',
-    abbreviation: 'CMZ',
-  },
-  {
-    id: 22,
-    name: 'Confectus',
-    abbreviation: 'CFC',
-  },
-  {
-    id: 23,
-    name: 'Astralis',
-    abbreviation: 'AST',
-  },
-  {
-    id: 24,
-    name: 'Zorgon',
-    abbreviation: 'ZRG',
-  },
-  {
-    id: 25,
-    name: 'Amicus',
-    abbreviation: 'AMC',
-  },
-  {
-    id: 26,
-    name: 'Bibliometria',
-    abbreviation: 'BBLM',
-  },
-  {
-    id: 27,
-    name: 'Crescendo',
-    abbreviation: 'CRSC',
-  },
-  {
-    id: 28,
-    name: 'Alla Federation',
-    abbreviation: 'ALFD',
-  },
-  {
-    id: 29,
-    name: 'Interserv',
-    abbreviation: 'INRS',
-  },
-  {
-    id: 30,
-    name: 'Federation Force',
-    abbreviation: 'FDFR',
+    name: 'Federația Asociațiilor Studenților la Psihologie și Științele Educației din România',
+    abbreviation: 'Cognosis',
   },
 ];
+
