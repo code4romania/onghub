@@ -420,6 +420,30 @@
       "public": {
         "label": "Is the organisation recognised as being of public utility?*",
         "helper": "According to Ordinance 26/2000, an association or foundation can be recognized by the Romanian Government as being of public utility. This status is obtained following an application by the organisation."
+      },
+      "add_federation_modal": {
+        "title": "Adaugă federație",
+        "description": "Dacă nu ai găsit federația în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
+      },
+      "add_coalition_modal": {
+        "title": "Adaugă coaliție",
+        "description": "Dacă nu ai găsit coaliția în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
       }
     }
   },

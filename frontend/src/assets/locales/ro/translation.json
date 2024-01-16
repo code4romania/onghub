@@ -420,6 +420,30 @@
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
         "helper": "Conform Ordonanței 26/2000, o asociație sau o fundație poate fi recunoscută de Guvernul României ca fiind de utilitate publică. Acest statut se obține în urma unei cereri formulate de către organizație."
+      },
+      "add_federation_modal": {
+        "title": "Adaugă federație",
+        "description": "Dacă nu ai găsit federația în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
+      },
+      "add_coalition_modal": {
+        "title": "Adaugă coaliție",
+        "description": "Dacă nu ai găsit coaliția în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
       }
     }
   },

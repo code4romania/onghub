@@ -48,8 +48,17 @@ export const mapOrganizationActivityToFormData = (
   activity: ICreateOrganizationActivity,
   organizationActivityKey: string,
 ): FormData => {
-  const { domains, federations, coalitions, branches, cities, regions, ...organizationActivity } =
-    activity;
+  const {
+    domains,
+    federations,
+    coalitions,
+    branches,
+    cities,
+    regions,
+    newCoalitions,
+    newFederations,
+    ...organizationActivity
+  } = activity;
 
   // map all arays first
   branches?.forEach((branch: number) => {
@@ -74,6 +83,14 @@ export const mapOrganizationActivityToFormData = (
 
   domains?.forEach((domain: number) => {
     payload.append(`${organizationActivityKey}[domains][]`, domain.toString());
+  });
+
+  newCoalitions?.forEach((coalition: string) => {
+    payload.append(`${organizationActivityKey}[newCoalitions][]`, coalition);
+  });
+
+  newFederations?.forEach((federation: string) => {
+    payload.append(`${organizationActivityKey}[newFederations][]`, federation);
   });
 
   return mapEntityToFormData(payload, organizationActivityKey, organizationActivity);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -83,13 +84,33 @@ const CreateOrganization = () => {
     ) {
       // parse and map activity id's correctly
       let { activity } = organization;
+
+      // map existing coalitions
+      const coalitions = activity.coalitions
+        ? [...activity.coalitions.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+        : [];
+      const federations = activity.federations
+        ? [...activity.federations.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+        : [];
+
+      // map new federations and coalitions
+      const newFederations = activity.federations
+        ? [...activity.federations.filter((val: any) => val.isNew).map((val: any) => val.value)]
+        : [];
+
+      const newCoalitions = activity.coalitions
+        ? [...activity.coalitions.filter((val: any) => val.isNew).map((val: any) => val.value)]
+        : [];
+
       activity = {
         ...activity,
         branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
         cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
         regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
-        coalitions: activity.coalitions ? [...activity.coalitions.map(mapSelectToValue)] : [],
-        federations: activity.federations ? [...activity.federations.map(mapSelectToValue)] : [],
+        coalitions,
+        federations,
+        newFederations,
+        newCoalitions,
       };
 
       await mutateRequest(

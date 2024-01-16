@@ -37,7 +37,7 @@ const MultiSelect = ({
   }, [value]);
 
   return (
-    <div>
+    <div className="w-full">
       {label && (
         <label
           htmlFor={id}
