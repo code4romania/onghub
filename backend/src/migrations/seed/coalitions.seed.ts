@@ -7,7 +7,7 @@ export const COALITIONS = [
   {
     id: 2,
     name: 'Coaliţia Organizaţiilor Pacienţilor cu Afecţiuni Cronice din România',
-    abbreviation: 'EXCR',
+    abbreviation: 'Coaliţia Organizaţiilor Pacienţilor cu Afecţiuni Cronice din România',
   },
   {
     id: 3,
