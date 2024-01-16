@@ -37,6 +37,7 @@ import { useInitStep } from '../../../common/hooks/useInitStep';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 import { PlusIcon } from '@heroicons/react/solid';
 import AddCoFedModal from '../../../components/add-fed-co-modal/AddFedCoModal';
+import { classNames } from '../../../common/helpers/tailwind.helper';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();
@@ -301,7 +302,14 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <div className="flex w-full items-center gap-2">
+                    <div
+                      className={classNames(
+                        'flex w-full gap-2',
+                        errors[OrganizationActivityConfig.federations.key]?.message
+                          ? 'items-center'
+                          : 'items-end',
+                      )}
+                    >
                       <MultiSelect
                         id="create-organization-activity__federations"
                         value={value}
@@ -341,7 +349,14 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <div className="flex w-full items-center gap-2">
+                    <div
+                      className={classNames(
+                        'flex w-full gap-2',
+                        errors[OrganizationActivityConfig.coalitions.key]?.message
+                          ? 'items-center'
+                          : 'items-end',
+                      )}
+                    >
                       <MultiSelect
                         id="create-organization-activity__coalitions"
                         value={value}

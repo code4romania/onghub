@@ -347,7 +347,14 @@ const OrganizationActivity = () => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <div className="flex w-full items-center gap-2">
+                  <div
+                    className={classNames(
+                      'flex w-full gap-2',
+                      errors[OrganizationActivityConfig.federations.key]?.message
+                        ? 'items-center'
+                        : 'items-end',
+                    )}
+                  >
                     <MultiSelect
                       value={value}
                       label={OrganizationActivityConfig.federations.config.label}
@@ -387,7 +394,14 @@ const OrganizationActivity = () => {
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <div className="flex w-full items-center gap-2">
+                  <div
+                    className={classNames(
+                      'flex w-full gap-2',
+                      errors[OrganizationActivityConfig.coalitions.key]?.message
+                        ? 'items-center'
+                        : 'items-end',
+                    )}
+                  >
                     <MultiSelect
                       value={value}
                       label={OrganizationActivityConfig.coalitions.config.label}
@@ -400,7 +414,7 @@ const OrganizationActivity = () => {
                     />
                     {!readonly && (
                       <button
-                        className="add-button"
+                        className="add-button h-10"
                         onClick={setIsAddCoalitionModalOpen.bind(null, true)}
                       >
                         <PlusIcon className="w-5 h-5 fill-gray-500 " />
