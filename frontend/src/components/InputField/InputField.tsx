@@ -6,12 +6,14 @@ import { InputFieldConfig } from './InputFieldConfig.interface';
 const InputField = (props: {
   config: Partial<InputFieldConfig>;
   readonly?: boolean;
+  link?: boolean;
+  hidden?: boolean;
   disabled?: boolean;
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="relative w-full">
+    <div className={classNames('relative w-full', props.hidden ? 'hidden' : '')}>
       {props.config.label && props.config.type !== 'checkbox' && (
         <label
           htmlFor={`${props.config.id}__input`}
@@ -23,7 +25,19 @@ const InputField = (props: {
 
       <div className="mt-1 relative rounded-md">
         {!props.readonly && props.config.addOn && props.config.addOn()}
-        {props.readonly && <span className="break-word">{props.config.defaultValue || '-'}</span>}
+        {props.readonly && props.link && (
+          <a
+            className="text-blue-500"
+            href={`http://${props.config.defaultValue}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {props.config.defaultValue || '-'}
+          </a>
+        )}
+        {props.readonly && !props.link && (
+          <span className="break-word">{props.config.defaultValue || '-'}</span>
+        )}
         {!props.readonly && (
           <>
             <input
@@ -35,7 +49,7 @@ const InputField = (props: {
                 props.config.error
                   ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 pr-10'
                   : 'focus:ring-indigo-500 focus:border-indigo-500',
-                props.config.addOn ? 'pl-10' : 'pl-4',
+                props.config.addOn ? 'pl-14' : 'pl-4',
                 props.config.type === 'checkbox'
                   ? ''
                   : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100 min-w-[6.5rem]',
