@@ -39,7 +39,7 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'description', nullable: true })
   description: string;
 
-  @Column({ type: 'text', name: 'address', nullable: true })
+  @Column({ type: 'text', name: 'address', nullable: false, default: '' })
   address: string;
 
   @Column({ type: 'text', name: 'logo', nullable: true })
@@ -100,4 +100,23 @@ export class OrganizationGeneral extends BaseEntity {
   @ManyToOne((type) => County)
   @JoinColumn({ name: 'county_id' })
   county: County;
+
+  @Column({ type: 'text', name: 'organization_address', nullable: true })
+  organizationAddress: string;
+
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'organization_city_id' })
+  organizationCityId: number;
+
+  @ManyToOne((type) => City)
+  @JoinColumn({ name: 'organization_city_id' })
+  organizationCity: City;
+
+  @Exclude()
+  @Column({ type: 'integer', nullable: true, name: 'organization_county_id' })
+  organizationCountyId: number;
+
+  @ManyToOne((type) => County)
+  @JoinColumn({ name: 'organization_county_id' })
+  organizationCounty: County;
 }

@@ -28,6 +28,7 @@ const translations = {
     min: i18n.t('general:config.alias.min'),
     invalid: i18n.t('general:config.alias.invalid'),
     label: i18n.t('general:config.alias.label'),
+    helper: i18n.t('general:config.alias.helper'),
   },
   type: {
     label: i18n.t('general:config.type.label'),
@@ -131,10 +132,28 @@ const translations = {
     helper: i18n.t('general:config.keyword.helper'),
   },
   address: {
+    required: i18n.t('general:config.address.required'),
     max: i18n.t('general:config.address.max'),
     label: i18n.t('general:config.address.label'),
     helper: i18n.t('general:config.address.helper'),
     placeholder: i18n.t('general:config.address.placeholder'),
+  },
+  hasSameAddress: {
+    label: i18n.t('general:config.has_same_address.label'),
+  },
+  organizationAddress: {
+    max: i18n.t('general:config.organization_address.max'),
+    label: i18n.t('general:config.organization_address.label'),
+    helper: i18n.t('general:config.organization_address.helper'),
+    placeholder: i18n.t('general:config.organization_address.placeholder'),
+  },
+  organizationCity: {
+    required: i18n.t('general:config.organization_city.required'),
+    label: i18n.t('general:config.organization_city.label'),
+  },
+  organizationCounty: {
+    required: i18n.t('general:config.organization_county.required'),
+    label: i18n.t('general:config.organization_county.label'),
   },
 };
 
@@ -189,7 +208,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: translations.alias.label,
-      helperText: '',
+      helperText: translations.alias.helper,
       placeholder: '',
     },
   },
@@ -680,12 +699,57 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 100,
         message: translations.address.max,
       },
+      required: {
+        value: true,
+        message: translations.address.required,
+      },
     },
     config: {
       type: 'text',
       label: translations.address.label,
       helperText: translations.address.helper,
       placeholder: translations.address.placeholder,
+    },
+  },
+  hasSameAddress: {
+    key: 'hasSameAddress',
+    rules: {},
+    config: {
+      type: 'checkbox',
+      label: translations.hasSameAddress.label,
+    },
+  },
+  organizationAddress: {
+    key: 'organizationAddress',
+    rules: {
+      maxLength: {
+        value: 100,
+        message: translations.organizationAddress.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.organizationAddress.label,
+      helperText: translations.organizationAddress.helper,
+      placeholder: translations.organizationAddress.placeholder,
+    },
+  },
+  organizationCity: {
+    key: 'organizationCity',
+    rules: {},
+    config: {
+      type: 'text',
+      label: translations.organizationCity.label,
+      displayedAttribute: 'year',
+    },
+  },
+  organizationCounty: {
+    key: 'organizationCounty',
+    rules: {},
+    config: {
+      type: 'text',
+      label: translations.organizationCounty.label,
+      displayedAttribute: 'year',
     },
   },
 };

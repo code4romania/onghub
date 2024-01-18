@@ -223,7 +223,6 @@
   },
   "general": {
     "title": "General dates",
-    "title_information": "This information will be public, be careful what you share.",
     "logo": {
       "name": "Organisation logo",
       "upload": "Upload logo",
@@ -233,10 +232,28 @@
       "name": "Contact person in relation with NGO Hub",
       "description": "Fill in the details of the person who will liaise between the organisation and the NGO Hub. This information will not be publicly displayed."
     },
-    "social": "Communication and social media",
-    "social_information": "This information will be public, be careful what you share.",
-    "fundraising": "Fundraising",
-    "fundraising_information": "This information will be public, be careful what you share.",
+    "sections": {
+      "official_data": {
+        "title": "Date oficiale",
+        "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
+      },
+      "presentational_data": {
+        "title": "Date de prezentare",
+        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
+      },
+      "contact_information": {
+        "title": "Informații de contact",
+        "subtitle": ""
+      },
+      "communication_and_social_media": {
+        "title": "Comunicare și social media",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      },
+      "fundraising": {
+        "title": "Strângere de fonduri",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      }
+    },
     "config": {
       "name": {
         "required": "The name of the organisation is required",
@@ -251,7 +268,8 @@
         "max": "The organisation's alias can be up to 100 characters long.",
         "min": "The organisation's alias can be at least 3 characters long.",
         "invalid": "The organisation's alias has an invalid format",
-        "label": "Alias organisation*"
+        "label": "Alias organisation*",
+        "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
       },
       "type": {
         "label": "Organisation type*",
@@ -359,6 +377,21 @@
         "label": "Organisation address",
         "helper": "Address where the organisation operates",
         "placeholder": "Organisation address"
+      },
+      "has_same_address": {
+        "label": "Adresa organizației este aceeași cu cea a sediului social"
+      },
+      "organization_address": {
+        "max": "Adresa poate avea maxim 100 de caractere",
+        "label": "Adresa",
+        "helper": "Adresa la care organizația își desfășoară activitatea, adresa de corespondență.",
+        "placeholder": "Adresa sediului social"
+      },
+      "organization_city": {
+        "label": "Oraș*"
+      },
+      "organization_county": {
+        "label": "Județ*"
       }
     }
   },
@@ -959,6 +992,10 @@
       "login_link": {
         "label": "Automatic login link*",
         "required": "Link to login page is required"
+      },
+      "open_link": {
+        "label": "Link buton Deschide*",
+        "required": "Link-ul către aplicație este obligatoriu"
       },
       "video_link": {
         "label": "Link video presentation",

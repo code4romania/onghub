@@ -45,9 +45,8 @@ export class CreateApplicationDto {
   website: string;
 
   @IsString()
-  @IsOptional()
   @Matches(REGEX.LINK)
-  loginLink?: string;
+  loginLink: string;
 
   @IsOptional()
   @IsString()

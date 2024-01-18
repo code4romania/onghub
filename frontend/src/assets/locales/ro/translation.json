@@ -223,7 +223,6 @@
   },
   "general": {
     "title": "Date generale",
-    "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "logo": {
       "name": "Logo organizație",
       "upload": "Încarcă logo",
@@ -233,25 +232,44 @@
       "name": "Persoana de contact în relația cu NGO Hub",
       "description": "Completează cu datele persoanei care va păstra legătura dintre organizație și NGO Hub. Aceste informații nu vor fi afișate public."
     },
-    "social": "Comunicare și social media",
-    "social_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
-    "fundraising": "Strângere de fonduri",
-    "fundraising_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "sections": {
+      "official_data": {
+        "title": "Date oficiale",
+        "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
+      },
+      "presentational_data": {
+        "title": "Date de prezentare",
+        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
+      },
+      "contact_information": {
+        "title": "Informații de contact",
+        "subtitle": ""
+      },
+      "communication_and_social_media": {
+        "title": "Comunicare și social media",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      },
+      "fundraising": {
+        "title": "Strângere de fonduri",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      }
+    },
     "config": {
       "name": {
         "required": "Numele organizației este obligatoriu",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Numele organizației are un format invalid.",
-        "label": "Denumirea organizației*",
+        "label": "Denumirea oficială a organizației*",
         "helper": "Numele organizației așa cum apare în documentele legale."
       },
       "alias": {
-        "required": "Aliasul organizației este obligatoriu",
-        "max": "Aliasul organizației poate avea maxim 100 de caractere.",
-        "min": "Aliasul organizației poate avea minim 3 caractere.",
-        "invalid": "Aliasul organizației are un format invalid",
-        "label": "Alias organizație*"
+        "required": "Denumiea organizației este obligatoriu",
+        "max": "Denumiea organizației poate avea maxim 100 de caractere.",
+        "min": "Denumiea organizației poate avea minim 3 caractere.",
+        "invalid": "Denumiea organizației are un format invalid",
+        "label": "Denumiea organizației*",
+        "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
       },
       "type": {
         "label": "Tip organizație*",
@@ -304,7 +322,7 @@
         "required": "Descrierea scurta este obligatorie",
         "max": "Descrierea scurtă poate avea maxim 250 de caractere",
         "min": "Descrierea scrută poate avea minim 150 de caractere",
-        "label": "Descrierea scurtă a organizație*",
+        "label": "Descrierea scurtă a organizației*",
         "helper": "Prezintă organizația în 150 - 250 de caractere. Această descriere va fi preluată împreună cu celelalte informații generale în ecosistemul NGO Hub."
       },
       "long": {
@@ -355,10 +373,26 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
-        "max": "Descrierea scurtă poate avea maxim 100 de caractere",
-        "label": "Adresa organizației",
-        "helper": "Adresa la care își desfășoară activitatea organizația",
-        "placeholder": "Adresa organizației"
+        "required": "Adresa este obligatorie",
+        "max": "Adresa poate avea maxim 100 de caractere",
+        "label": "Adresa sediului social",
+        "helper": "Adresa sediului menționată în documentele legale ale organizației.",
+        "placeholder": "Adresa sediului social"
+      },
+      "has_same_address": {
+        "label": "Adresa organizației este aceeași cu cea a sediului social"
+      },
+      "organization_address": {
+        "max": "Adresa poate avea maxim 100 de caractere",
+        "label": "Adresa",
+        "helper": "Adresa la care organizația își desfășoară activitatea, adresa de corespondență.",
+        "placeholder": "Adresa"
+      },
+      "organization_city": {
+        "label": "Oraș"
+      },
+      "organization_county": {
+        "label": "Județ"
       }
     }
   },
@@ -960,6 +994,10 @@
       "login_link": {
         "label": "Link login automat*",
         "required": "Link-ul către pagina de login este obligatoriu"
+      },
+      "open_link": {
+        "label": "Link buton Deschide*",
+        "required": "Link-ul către aplicație este obligatoriu"
       },
       "video_link": {
         "label": "Link video prezentare",

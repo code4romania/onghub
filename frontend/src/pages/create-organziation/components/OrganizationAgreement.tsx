@@ -97,7 +97,6 @@ const OrganizationAgreement = () => {
                     type="checkbox"
                     name="agreement"
                     onChange={(event) => {
-                      console.log('event', event);
                       localStorage.setItem(
                         ORGANIZATION_AGREEMENT_KEY,
                         event.target.checked.toString(),

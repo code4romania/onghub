@@ -147,29 +147,32 @@ const ApplicationForm = ({
                 );
               }}
             />
-            {/* Website-urile independente nu au LINK de login. */}
-            {type !== ApplicationTypeEnum.INDEPENDENT && (
-              <Controller
-                key={AddAppConfig.loginLink.key}
-                name={AddAppConfig.loginLink.key}
-                rules={AddAppConfig.loginLink.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...AddAppConfig.loginLink.config,
-                        name: AddAppConfig.loginLink.key,
-                        error: errors.loginLink?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'application-form__login-link',
-                      }}
-                    />
-                  );
-                }}
-              />
-            )}
+            <Controller
+              key={AddAppConfig.loginLink.key}
+              name={AddAppConfig.loginLink.key}
+              rules={
+                type !== ApplicationTypeEnum.INDEPENDENT
+                  ? AddAppConfig.loginLink.rules
+                  : AddAppConfig.openLink.rules
+              }
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <InputField
+                    config={{
+                      ...(type === ApplicationTypeEnum.INDEPENDENT
+                        ? { ...AddAppConfig.openLink.config }
+                        : { ...AddAppConfig.loginLink.config }),
+                      name: AddAppConfig.loginLink.key,
+                      error: errors.loginLink?.message,
+                      defaultValue: value,
+                      onChange: onChange,
+                      id: 'application-form__login-link',
+                    }}
+                  />
+                );
+              }}
+            />
             <Controller
               key={AddAppConfig.videoLink.key}
               name={AddAppConfig.videoLink.key}

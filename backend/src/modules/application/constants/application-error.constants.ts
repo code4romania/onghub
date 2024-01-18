@@ -1,10 +1,4 @@
 export const APPLICATION_ERRORS = {
-  CREATE: {
-    LOGIN: {
-      message: 'Missing Login link',
-      errorCode: 'APP_001',
-    },
-  },
   GET: {
     message: 'Application Not Found',
     errorCode: 'APP_002',
