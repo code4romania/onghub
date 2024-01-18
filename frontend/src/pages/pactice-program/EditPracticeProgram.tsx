@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { setUrlPrefix, mapCitiesToSelect, mapNameToSelect, mapToId } from '../../common/helpers/format.helper';
+import { mapCitiesToSelect, mapNameToSelect, mapToId } from '../../common/helpers/format.helper';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { PracticeProgramPayload } from '../../services/practice-program/interfaces/practice-program-payload.interface';
@@ -79,7 +79,7 @@ const EditPracticeProgram = () => {
           data: {
             ...data,
             organizationId: organizationId,
-            link: setUrlPrefix(data.link || ''),
+            link: data.link || '',
           },
         },
         {

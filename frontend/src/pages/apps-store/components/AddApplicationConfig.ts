@@ -39,6 +39,10 @@ const translations = {
     label: i18n.t('appstore:config.login_link.label'),
     required: i18n.t('appstore:config.login_link.required'),
   },
+  open_link: {
+    label: i18n.t('appstore:config.open_link.label'),
+    required: i18n.t('appstore:config.open_link.required'),
+  },
   video_link: {
     label: i18n.t('appstore:config.video_link.label'),
     helper: i18n.t('appstore:config.video_link.helper'),
@@ -207,6 +211,25 @@ export const AddAppConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: translations.login_link.label,
+      helperText: '',
+      placeholder: '',
+      addOn: InputFieldHttpAddon,
+    },
+  },
+  openLink: {
+    rules: {
+      pattern: {
+        value: URL_REGEX,
+        message: translations.url,
+      },
+      required: {
+        value: true,
+        message: translations.open_link.required,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.open_link.label,
       helperText: '',
       placeholder: '',
       addOn: InputFieldHttpAddon,

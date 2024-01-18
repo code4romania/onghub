@@ -993,6 +993,10 @@
         "label": "Automatic login link*",
         "required": "Link to login page is required"
       },
+      "open_link": {
+        "label": "Link buton Deschide*",
+        "required": "Link-ul către aplicație este obligatoriu"
+      },
       "video_link": {
         "label": "Link video presentation",
         "helper": "The URL must be in the form of an embed from YT. (e.g.: https://www.youtube.com/embed/r23xQuM7jVo)",
