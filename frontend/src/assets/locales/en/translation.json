@@ -388,11 +388,9 @@
         "placeholder": "Adresa sediului social"
       },
       "organization_city": {
-        "required": "Orașul este obligatoriu",
         "label": "Oraș*"
       },
       "organization_county": {
-        "required": "Județul este obligatoriu",
         "label": "Județ*"
       }
     }

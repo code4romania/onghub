@@ -9,6 +9,7 @@ const InputField = (props: {
   link?: boolean;
   hidden?: boolean;
   disabled?: boolean;
+  alwaysShowHelper?: boolean;
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -28,9 +29,10 @@ const InputField = (props: {
         {props.readonly && props.link && (
           <a
             className="text-blue-500"
-            href={`http://${props.config.defaultValue}`}
+            href={`https://${props.config.defaultValue?.replace('https://', '')}`}
             target="_blank"
             rel="noreferrer"
+            style={{ pointerEvents: props.config.defaultValue ? 'auto' : 'none' }}
           >
             {props.config.defaultValue || '-'}
           </a>
@@ -92,7 +94,7 @@ const InputField = (props: {
           </div>
         )}
       </div>
-      {!props.config.error && !props.readonly && (
+      {!props.config.error && (!props.readonly || props.alwaysShowHelper) && (
         <p className="mt-1 sm:text-sm text-xs text-gray-500 font-normal" id="email-description">
           {props.config.helperText}
         </p>

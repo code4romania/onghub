@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PencilIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,7 +11,7 @@ import {
   UNKNOWN_ERROR,
 } from '../../../../common/constants/error.constants';
 import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
-import { fileToURL, flatten, setUrlPrefix } from '../../../../common/helpers/format.helper';
+import { fileToURL, flatten } from '../../../../common/helpers/format.helper';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ContactForm from '../../../../components/Contact/Contact';
 import ErrorsBanner from '../../../../components/errors-banner/ErrorsBanner';
@@ -24,21 +26,22 @@ import { useNomenclature, useSelectedOrganization } from '../../../../store/sele
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
+import FormInput from '../../../../components/form-input/FormInput';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
   const [county, setCounty] = useState<any>();
-  const [city, setCity] = useState<any>();
+  const [organizationCounty, setOrganizationCounty] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
-  const { cities, counties } = useNomenclature();
+  const { counties } = useNomenclature();
   const { disabled, updateOrganization } = useOutletContext<OrganizationContext>();
   const { role } = useAuthContext();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   const { organizationGeneral, organization } = useSelectedOrganization();
-
-  // queries
-  useCitiesQuery(county?.id);
+  // nomenclature cities
+  const { data: cities } = useCitiesQuery(county?.id);
+  const { data: organizationCities } = useCitiesQuery(organizationCounty?.id);
 
   // React Hook Form
   const {
@@ -46,7 +49,9 @@ const OrganizationGeneral = () => {
     control,
     formState: { errors },
     reset,
+    getValues,
     setValue,
+    watch,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -55,14 +60,55 @@ const OrganizationGeneral = () => {
   // React i18n
   const { t } = useTranslation(['general', 'organization', 'common']);
 
+  const watchHasSameAddress = watch('hasSameAddress');
+  const watchOrganizationAddress = watch('organizationAddress');
+  const watchOrganizationCity = watch('organizationCity');
+  const watchOrganizationCounty = watch('organizationCounty');
+  const watchAddress = watch('address');
+  const watchCity = watch('city');
+  const watchCounty = watch('county');
+
   useEffect(() => {
     if (organizationGeneral) {
       const contact = flatten(organizationGeneral.contact, {}, 'contact');
       reset({ ...organizationGeneral, ...contact });
       setCounty(organizationGeneral.county);
-      setCity(organizationGeneral.city);
+      setOrganizationCounty(organizationGeneral.organizationCounty);
     }
   }, [organizationGeneral]);
+
+  // In case we check hasSameAddress we update the form with the data from the social address
+  useEffect(() => {
+    if (watchHasSameAddress) {
+      const { city, county, address } = getValues();
+      setValue('organizationAddress', address);
+      setValue('organizationCounty', county);
+      setValue('organizationCity', city);
+      setOrganizationCounty(county);
+    }
+  }, [watchHasSameAddress]);
+
+  // in case one of these is updated we reset the check
+  useEffect(() => {
+    const { city, county, address, hasSameAddress } = getValues();
+
+    if (
+      city?.id !== watchOrganizationCity?.id ||
+      county?.id !== watchOrganizationCounty?.id ||
+      address !== watchOrganizationAddress
+    ) {
+      setValue('hasSameAddress', false);
+    } else if (!hasSameAddress) {
+      setValue('hasSameAddress', true);
+    }
+  }, [
+    watchOrganizationAddress,
+    watchOrganizationCity,
+    watchOrganizationCounty,
+    watchAddress,
+    watchCounty,
+    watchCity,
+  ]);
 
   useEffect(() => {
     if (county && !readonly) {
@@ -70,9 +116,14 @@ const OrganizationGeneral = () => {
     }
   }, [cities]);
 
-  const startEdit = () => {
-    setReadonly(false);
-  };
+  useEffect(() => {
+    if (organizationCounty && !readonly) {
+      const { organizationCity, organizationCounty: orgCounty } = getValues();
+      if (organizationCity?.countyId !== orgCounty.id) {
+        setValue('organizationCity', null);
+      }
+    }
+  }, [organizationCities]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -91,19 +142,13 @@ const OrganizationGeneral = () => {
       logo,
       cityId,
       countyId,
+      organizationCountyId,
+      organizationCityId,
       ...organizationGeneralData
     } = data;
 
     const payload = {
       ...organizationGeneralData,
-      website: setUrlPrefix(organizationGeneralData.website),
-      facebook: setUrlPrefix(organizationGeneralData.facebook),
-      instagram: setUrlPrefix(organizationGeneralData.instagram),
-      twitter: setUrlPrefix(organizationGeneralData.twitter),
-      linkedin: setUrlPrefix(organizationGeneralData.linkedin),
-      tiktok: setUrlPrefix(organizationGeneralData.tiktok),
-      donationWebsite: setUrlPrefix(organizationGeneralData.donationWebsite),
-      redirectLink: setUrlPrefix(organizationGeneralData.redirectLink),
       contact: {
         fullName: contact_fullName,
         phone: contact_phone,
@@ -156,7 +201,7 @@ const OrganizationGeneral = () => {
               readonly ? 'edit-button' : 'save-button',
               'sm:text-sm lg:text-base text-xs',
             )}
-            onClick={readonly ? startEdit : handleSubmit(handleSave)}
+            onClick={readonly ? setReadonly.bind(null, false) : handleSubmit(handleSave)}
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {readonly ? t('edit', { ns: 'common' }) : t('save', { ns: 'common' })}
@@ -189,6 +234,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                         id: 'organization-general__name',
                       }}
+                      alwaysShowHelper
                       readonly={readonly}
                     />
                   );
@@ -272,16 +318,25 @@ const OrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.address.config,
-                        name: OrganizationGeneralConfig.address.key,
-                        error: errors[OrganizationGeneralConfig.address.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-address',
-                      }}
-                      readonly={readonly}
+                    <FormInput
+                      type={OrganizationGeneralConfig.address.config.type}
+                      readOnly={readonly}
+                      value={value}
+                      errorMessage={
+                        errors[OrganizationGeneralConfig.address.key]?.message as string
+                      }
+                      label={OrganizationGeneralConfig.address.config.label}
+                      helper={
+                        <p
+                          className="mt-1 sm:text-sm text-xs text-gray-500 font-normal"
+                          id="email-description"
+                        >
+                          {OrganizationGeneralConfig.address.config.helperText}
+                        </p>
+                      }
+                      placeholder={OrganizationGeneralConfig.address.config.placeholder}
+                      onChange={onChange}
+                      id="create-organization-general__org-address"
                     />
                   );
                 }}
@@ -306,6 +361,7 @@ const OrganizationGeneral = () => {
                         onChange={(e: any) => {
                           onChange(e);
                           setCounty(e);
+                          setValue('city', null, { shouldValidate: true });
                         }}
                         readonly={readonly}
                       />
@@ -358,6 +414,7 @@ const OrganizationGeneral = () => {
                         onChange: onChange,
                         id: 'organization-general__alias',
                       }}
+                      alwaysShowHelper
                       readonly={readonly}
                     />
                   );
@@ -533,16 +590,25 @@ const OrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.organizationAddress.config,
-                        name: OrganizationGeneralConfig.organizationAddress.key,
-                        error: errors[OrganizationGeneralConfig.organizationAddress.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__org-organization-address',
-                      }}
-                      readonly={readonly}
+                    <FormInput
+                      type={OrganizationGeneralConfig.organizationAddress.config.type}
+                      readOnly={readonly}
+                      value={value}
+                      errorMessage={
+                        errors[OrganizationGeneralConfig.organizationAddress.key]?.message as string
+                      }
+                      label={OrganizationGeneralConfig.organizationAddress.config.label}
+                      helper={
+                        <p
+                          className="mt-1 sm:text-sm text-xs text-gray-500 font-normal"
+                          id="email-description"
+                        >
+                          {OrganizationGeneralConfig.organizationAddress.config.helperText}
+                        </p>
+                      }
+                      placeholder={OrganizationGeneralConfig.organizationAddress.config.placeholder}
+                      onChange={onChange}
+                      id="create-organization-general__org-organization-address"
                     />
                   );
                 }}
@@ -566,7 +632,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setCounty(e);
+                          setOrganizationCounty(e);
                         }}
                         readonly={readonly}
                       />
@@ -584,7 +650,7 @@ const OrganizationGeneral = () => {
                         config={{
                           id: 'create-organization-general__organization-city',
                           ...OrganizationGeneralConfig.organizationCity.config,
-                          collection: cities || [],
+                          collection: organizationCities || [],
                           displayedAttribute: 'name',
                         }}
                         error={errors[OrganizationGeneralConfig.organizationCity.key]?.message}
@@ -779,6 +845,7 @@ const OrganizationGeneral = () => {
                           onChange: onChange,
                           id: 'organization-general__donation-website',
                         }}
+                        link={readonly}
                         readonly={readonly}
                       />
                     );
@@ -800,6 +867,8 @@ const OrganizationGeneral = () => {
                           onChange: onChange,
                           id: 'organization-general__redirect-link',
                         }}
+                        link={readonly}
+                        alwaysShowHelper
                         readonly={readonly}
                       />
                     );
@@ -822,6 +891,7 @@ const OrganizationGeneral = () => {
                             onChange: onChange,
                             id: 'organization-general__donation-sms',
                           }}
+                          alwaysShowHelper
                           readonly={readonly}
                         />
                       );
@@ -843,6 +913,7 @@ const OrganizationGeneral = () => {
                             onChange: onChange,
                             id: 'organization-general__donation-keyword',
                           }}
+                          alwaysShowHelper
                           readonly={readonly}
                         />
                       );

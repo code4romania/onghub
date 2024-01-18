@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
 import { InternalErrors } from '../../../common/errors/internal-errors';
-import { fileToURL, setUrlPrefix } from '../../../common/helpers/format.helper';
+import { fileToURL } from '../../../common/helpers/format.helper';
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
 import InputField from '../../../components/InputField/InputField';
@@ -27,6 +27,8 @@ const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
   const [city, setCity] = useState<any>();
+  const [organizationCounty, setOrganizationCounty] = useState<any>();
+  const [organizationCity, setOrganizationCity] = useState<any>();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { cities, counties } = useNomenclature();
 
@@ -59,6 +61,14 @@ const CreateOrganizationGeneral = () => {
 
   //Store form data in local storage
   const watchAllFields = watch();
+  const watchHasSameAddress = watch('hasSameAddress');
+  const watchOrganizationAddress = watch('organizationAddress');
+  const watchOrganizationCity = watch('organizationCity');
+  const watchOrganizationCounty = watch('organizationCounty');
+  const watchAddress = watch('address');
+  const watchCity = watch('city');
+  const watchCounty = watch('county');
+
   useEffect(() => {
     if (activeStepIndex > 1) {
       return;
@@ -74,18 +84,53 @@ const CreateOrganizationGeneral = () => {
     }
   }, [watchAllFields]);
 
+  // In case we check hasSameAddress we update the form with the data from the social address
+  useEffect(() => {
+    if (watchHasSameAddress) {
+      const { city, county, address } = getValues();
+      setValue('organizationAddress', address);
+      setValue('organizationCity', city);
+      setValue('organizationCounty', county);
+    }
+  }, [watchHasSameAddress]);
+
+  // in case one of these is updated we reset the check
+  useEffect(() => {
+    const { city, county, address } = getValues();
+    if (
+      city?.id !== watchOrganizationCity?.id ||
+      county?.id !== watchOrganizationCounty?.id ||
+      address !== watchOrganizationAddress
+    ) {
+      setValue('hasSameAddress', false);
+    }
+  }, [
+    watchOrganizationAddress,
+    watchOrganizationCity,
+    watchOrganizationCounty,
+    watchAddress,
+    watchCounty,
+    watchCity,
+  ]);
+
   //Init for fields
   useEffect(() => {
     if (organization && organization.general) {
       reset(organization.general);
       setCounty(organization.general.county);
       setCity(organization.general.city);
+      setOrganizationCounty(organization.general.organizationCounty);
+      setOrganizationCity(organization.general.organizationCity);
     }
   }, [organization]);
 
   useEffect(() => {
     if (county && !readonly && !city) {
       setValue('city', null);
+    }
+
+    if (organizationCity && !readonly && !organizationCity) {
+      setValue('organizationCity', null);
     }
   }, [cities]);
 
@@ -108,14 +153,6 @@ const CreateOrganizationGeneral = () => {
     try {
       const organizationGeneral = {
         ...data,
-        website: setUrlPrefix(data.website),
-        facebook: setUrlPrefix(data.facebook),
-        instagram: setUrlPrefix(data.instagram),
-        twitter: setUrlPrefix(data.twitter),
-        linkedin: setUrlPrefix(data.linkedin),
-        tiktok: setUrlPrefix(data.tiktok),
-        donationWebsite: setUrlPrefix(data.donationWebsite),
-        redirectLink: setUrlPrefix(data.redirectLink),
       };
 
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
@@ -541,7 +578,9 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setCounty(e);
+                          setOrganizationCounty(e);
+                          setValue('organizationCity', null);
+                          setOrganizationCity(null);
                         }}
                         readonly={readonly}
                       />

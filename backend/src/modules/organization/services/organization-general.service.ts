@@ -82,11 +82,15 @@ export class OrganizationGeneralService {
       await this.organizationGeneralRepository.save({
         id: organization.organizationGeneralId,
         ...updateOrganizationGeneralDto,
+        organizationCityId:
+          updateOrganizationGeneralDto.organizationCityId || null,
+        organizationCountyId:
+          updateOrganizationGeneralDto.organizationCountyId || null,
       });
 
       let organizationGeneral = await this.organizationGeneralRepository.get({
         where: { id: organization.organizationGeneralId },
-        relations: ['city', 'county'],
+        relations: ['city', 'county', 'organizationCounty', 'organizationCity'],
       });
 
       // Effect 1: Update financial data if CUI has changed

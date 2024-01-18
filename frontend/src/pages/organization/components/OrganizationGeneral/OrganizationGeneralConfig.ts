@@ -132,6 +132,7 @@ const translations = {
     helper: i18n.t('general:config.keyword.helper'),
   },
   address: {
+    required: i18n.t('general:config.address.required'),
     max: i18n.t('general:config.address.max'),
     label: i18n.t('general:config.address.label'),
     helper: i18n.t('general:config.address.helper'),
@@ -698,6 +699,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 100,
         message: translations.address.max,
       },
+      required: {
+        value: true,
+        message: translations.address.required,
+      },
     },
     config: {
       type: 'text',
@@ -731,12 +736,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   organizationCity: {
     key: 'organizationCity',
-    rules: {
-      required: {
-        value: true,
-        message: translations.organizationCity.required,
-      },
-    },
+    rules: {},
     config: {
       type: 'text',
       label: translations.organizationCity.label,
@@ -745,12 +745,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   },
   organizationCounty: {
     key: 'organizationCounty',
-    rules: {
-      required: {
-        value: true,
-        message: translations.organizationCounty.required,
-      },
-    },
+    rules: {},
     config: {
       type: 'text',
       label: translations.organizationCounty.label,

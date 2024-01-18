@@ -367,6 +367,8 @@ export class OrganizationService {
         'organizationGeneral',
         'organizationGeneral.city',
         'organizationGeneral.county',
+        'organizationGeneral.organizationCity',
+        'organizationGeneral.organizationCounty',
         'organizationActivity',
         'organizationActivity.federations',
         'organizationActivity.coalitions',

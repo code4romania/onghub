@@ -96,7 +96,7 @@ const CreateOrganizationUser = () => {
       <div className="w-full " />
       <div className="p-5 sm:p-10 flex flex-col">
         <div className="flex flex-col gap-4 w-full">
-          <SectionHeader title={t('create_org.title')} subTitle={t('general:title_information')} />
+          <SectionHeader title={t('create_org.title')} subTitle={''} />
           <form className="space-y-8 xl:w-1/2 divide-y divide-gray-200 divide-">
             <div className="flex flex-col gap-4">
               <Controller

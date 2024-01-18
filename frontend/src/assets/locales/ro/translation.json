@@ -373,6 +373,7 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
+        "required": "Adresa este obligatorie",
         "max": "Adresa poate avea maxim 100 de caractere",
         "label": "Adresa sediului social",
         "helper": "Adresa sediului menționată în documentele legale ale organizației.",
@@ -388,12 +389,10 @@
         "placeholder": "Adresa"
       },
       "organization_city": {
-        "required": "Orașul este obligatoriu",
-        "label": "Oraș*"
+        "label": "Oraș"
       },
       "organization_county": {
-        "required": "Județul este obligatoriu",
-        "label": "Județ*"
+        "label": "Județ"
       }
     }
   },
