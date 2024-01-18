@@ -14,9 +14,6 @@ export class AddSocialAddress1705510581013 implements MigrationInterface {
       `ALTER TABLE "organization_general" ADD "organization_county_id" integer`,
     );
     await queryRunner.query(
-      `ALTER TABLE "organization_general" ALTER COLUMN "address" SET NOT NULL`,
-    );
-    await queryRunner.query(
       `ALTER TABLE "organization_general" ALTER COLUMN "address" SET DEFAULT ''`,
     );
     await queryRunner.query(
@@ -36,9 +33,6 @@ export class AddSocialAddress1705510581013 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE "organization_general" ALTER COLUMN "address" DROP DEFAULT`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "organization_general" ALTER COLUMN "address" DROP NOT NULL`,
     );
     await queryRunner.query(
       `ALTER TABLE "organization_general" DROP COLUMN "organization_county_id"`,
