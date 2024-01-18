@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY } from '../../pages/create-organziation/constants/CreateOrganization.constant';
 
 export const triggerDownload = (url: string) => {
@@ -20,4 +21,16 @@ export const updateActiveStepIndexInLocalStorage = (
       JSON.stringify({ activeStepIndex: value }),
     );
   setActiveStepIndex(value);
+};
+
+export const alphabeticallySort = (a: any, b: any) => {
+  {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  }
 };

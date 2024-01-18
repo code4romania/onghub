@@ -18,6 +18,7 @@ import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
 import { Skill } from '../../common/interfaces/skill.interface';
 import { Faculty } from '../../common/interfaces/faculty.interface';
+import { alphabeticallySort } from '../../common/helpers/utils.helper';
 
 export const useCitiesQuery = (countyId: number) => {
   const { setCities } = useStore();
@@ -60,7 +61,7 @@ export const useFederationsQuery = () => {
   const { setFederations } = useStore();
   return useQuery('federations', () => getFederations(), {
     onSuccess: (data: Federation[]) => {
-      setFederations(data);
+      setFederations(data.sort(alphabeticallySort));
     },
   });
 };
@@ -69,7 +70,7 @@ export const useCoalitionsQuery = () => {
   const { setCoalitions } = useStore();
   return useQuery('coalitions', () => getCoalitions(), {
     onSuccess: (data: Coalition[]) => {
-      setCoalitions(data);
+      setCoalitions(data.sort(alphabeticallySort));
     },
   });
 };
