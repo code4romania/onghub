@@ -84,12 +84,12 @@ export const mapGroupsToSelect = (item: any): ISelectData =>
   item.isNew
     ? {
         value: item.id,
-        label: item.abbreviation,
+        label: item.name,
         isNew: item.isNew,
       }
     : {
         value: item.id,
-        label: item.abbreviation,
+        label: item.name,
       };
 
 export const str2bool = (value: string) => {
