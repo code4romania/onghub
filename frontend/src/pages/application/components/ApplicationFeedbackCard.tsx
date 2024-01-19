@@ -23,7 +23,7 @@ const ApplicationFeedbackCard = ({
       </div>
       <div className="w-full border-t border-gray-300" />
       <div className="lg:p-8 p-5 flex flex-col gap-4">
-        <p className="break-all sm:text-sm lg:text-base text-xs">{description}</p>
+        <p className="break-word sm:text-sm lg:text-base text-xs">{description}</p>
         <div>{actions}</div>
       </div>
     </div>

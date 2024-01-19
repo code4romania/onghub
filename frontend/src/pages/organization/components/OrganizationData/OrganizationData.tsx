@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useOutletContext, useParams } from 'react-router-dom';
 import readXlsxFile from 'read-excel-file';
 import { FILE_TYPES_ACCEPT } from '../../../../common/constants/file.constants';
-import { setUrlPrefix } from '../../../../common/helpers/format.helper';
 import { triggerDownload } from '../../../../common/helpers/utils.helper';
 import { useErrorToast } from '../../../../common/hooks/useToast';
 import CardPanel from '../../../../components/card-panel/CardPanel';
@@ -213,8 +212,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-                ? employeeMenuItems
-                : adminMenuItems
+              ? employeeMenuItems
+              : adminMenuItems
           }
         />
       ),
@@ -286,8 +285,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-                ? employeeMenuItems
-                : adminMenuItems
+              ? employeeMenuItems
+              : adminMenuItems
           }
         />
       ),
@@ -313,7 +312,7 @@ const OrganizationData = () => {
             reportId: data.id,
             numberOfContractors: data.numberOfContractors ?? undefined,
             numberOfVolunteers: data.numberOfVolunteers ?? undefined,
-            report: setUrlPrefix(data.report) || undefined,
+            report: data.report || undefined,
           },
         },
       },

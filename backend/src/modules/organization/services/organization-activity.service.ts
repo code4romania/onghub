@@ -79,33 +79,67 @@ export class OrganizationActivityService {
     }
 
     if (updateOrganizationActivityDto.isPartOfFederation === true) {
-      if (!updateOrganizationActivityDto.federations) {
+      if (
+        !updateOrganizationActivityDto.federations &&
+        !updateOrganizationActivityDto.newFederations
+      ) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.FEDERATION,
         });
       }
 
-      const updatedFederations = await this.nomenclaturesService.getFederations(
-        {
+      let newFederations = [];
+      // add new federations in the database
+      if (updateOrganizationActivityDto.newFederations?.length > 0) {
+        newFederations = await this.nomenclaturesService.addFederations(
+          updateOrganizationActivityDto.newFederations,
+        );
+      }
+
+      let updatedFederations = [];
+      if (updateOrganizationActivityDto.federations?.length > 0) {
+        updatedFederations = await this.nomenclaturesService.getFederations({
           where: { id: In(federations) },
-        },
-      );
-      updateOrganizationData['federations'] = updatedFederations;
+        });
+      }
+
+      updateOrganizationData['federations'] = [
+        ...updatedFederations,
+        ...newFederations,
+      ];
     } else if (updateOrganizationActivityDto.isPartOfFederation === false) {
       updateOrganizationData['federations'] = [];
     }
 
     if (updateOrganizationActivityDto.isPartOfCoalition === true) {
-      if (!updateOrganizationActivityDto.coalitions) {
+      if (
+        !updateOrganizationActivityDto.coalitions &&
+        !updateOrganizationActivityDto.newCoalitions
+      ) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.COALITION,
         });
       }
 
-      const updateCoalitions = await this.nomenclaturesService.getCoalitions({
-        where: { id: In(coalitions) },
-      });
-      updateOrganizationData['coalitions'] = updateCoalitions;
+      let newCoalitions = [];
+      // add new federations in the database
+      if (updateOrganizationActivityDto.newCoalitions?.length > 0) {
+        newCoalitions = await this.nomenclaturesService.addCoalitions(
+          updateOrganizationActivityDto.newCoalitions,
+        );
+      }
+
+      let updateCoalitions = [];
+      if (updateOrganizationActivityDto.coalitions?.length > 0) {
+        updateCoalitions = await this.nomenclaturesService.getCoalitions({
+          where: { id: In(coalitions) },
+        });
+      }
+
+      updateOrganizationData['coalitions'] = [
+        ...updateCoalitions,
+        ...newCoalitions,
+      ];
     } else if (updateOrganizationActivityDto.isPartOfCoalition === false) {
       updateOrganizationData['coalitions'] = [];
     }

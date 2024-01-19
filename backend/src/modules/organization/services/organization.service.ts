@@ -125,28 +125,60 @@ export class OrganizationService {
 
     let federations = [];
     if (createOrganizationDto.activity.isPartOfFederation) {
-      if (!createOrganizationDto.activity.federations) {
+      if (
+        !createOrganizationDto.activity.federations &&
+        !createOrganizationDto.activity.newFederations
+      ) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.FEDERATION,
         });
       }
 
-      federations = await this.nomenclaturesService.getFederations({
-        where: { id: In(createOrganizationDto.activity.federations) },
-      });
+      let newFederations = [];
+      // add new federations in the database
+      if (createOrganizationDto.activity.newFederations?.length > 0) {
+        newFederations = await this.nomenclaturesService.addFederations(
+          createOrganizationDto.activity.newFederations,
+        );
+      }
+
+      if (createOrganizationDto.activity.federations?.length > 0) {
+        federations = await this.nomenclaturesService.getFederations({
+          where: { id: In(createOrganizationDto.activity.federations) },
+        });
+      }
+
+      federations = [...federations, ...newFederations];
     }
 
     let coalitions = [];
     if (createOrganizationDto.activity.isPartOfCoalition) {
-      if (!createOrganizationDto.activity.coalitions) {
+      // add new coalitions in the database
+
+      if (
+        !createOrganizationDto.activity.coalitions &&
+        !createOrganizationDto.activity.newCoalitions
+      ) {
         throw new BadRequestException({
           ...ORGANIZATION_ERRORS.CREATE_ACTIVITY.COALITION,
         });
       }
 
-      coalitions = await this.nomenclaturesService.getCoalitions({
-        where: { id: In(createOrganizationDto.activity.coalitions) },
-      });
+      let newCoalitions = [];
+      // add new federations in the database
+      if (createOrganizationDto.activity.newCoalitions?.length > 0) {
+        newCoalitions = await this.nomenclaturesService.addCoalitions(
+          createOrganizationDto.activity.newCoalitions,
+        );
+      }
+
+      if (createOrganizationDto.activity.coalitions?.length > 0) {
+        coalitions = await this.nomenclaturesService.getCoalitions({
+          where: { id: In(createOrganizationDto.activity.coalitions) },
+        });
+      }
+
+      coalitions = [...coalitions, ...newCoalitions];
     }
 
     let branches = [];
@@ -335,6 +367,8 @@ export class OrganizationService {
         'organizationGeneral',
         'organizationGeneral.city',
         'organizationGeneral.county',
+        'organizationGeneral.organizationCity',
+        'organizationGeneral.organizationCounty',
         'organizationActivity',
         'organizationActivity.federations',
         'organizationActivity.coalitions',

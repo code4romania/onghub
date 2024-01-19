@@ -46,6 +46,10 @@ export interface ICreateOrganizationGeneral {
   county: County;
   cityId?: number;
   countyId?: number;
+  organizationCity?: City;
+  organizationCounty?: County;
+  organizationCityId?: number;
+  organizationCountyId?: number;
 }
 
 export interface ICreateOrganizationActivity {
@@ -64,6 +68,8 @@ export interface ICreateOrganizationActivity {
   domains: number[];
   regions: number[];
   cities: number[];
+  newFederations?: string[];
+  newCoalitions?: string[];
 }
 
 export interface ICreateOrganizationLegal {

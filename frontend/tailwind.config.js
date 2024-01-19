@@ -107,6 +107,8 @@ module.exports = {
     extend: {
       backgroundImage: {
         logo: 'url(./assets/images/logo.svg)',
+        clock: 'url(./assets/images/clock.svg)',
+        loginBackground: 'url(./assets/images/login_background.svg)',
       },
       fontFamily: {
         roboto: 'Roboto',

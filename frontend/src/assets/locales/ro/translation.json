@@ -47,14 +47,14 @@
       "reset": "Resetează filtre",
       "show": "Filtre"
     },
-    "unavailable": "Indisponibil",
+    "unavailable": "În curând",
     "to_be_removed": "De eliminat",
     "decimal": "Valori cu decimale nu sunt permise.",
     "unknown_error": "A apărut o eroare necunoscută",
     "generic_error": "Eroare la procesarea datelor, cod: #{{code}}",
     "yes": "Da",
     "no": "Nu",
-    "generic_invalid_form_error": "Oops! Nu ai completat toate datele necesare. Verifica valorile introduse."
+    "generic_invalid_form_error": "Oops! Nu ai completat toate datele necesare. Verifică valorile introduse."
   },
   "menu": {
     "information": "Informații",
@@ -72,7 +72,7 @@
     "my_account": "Contul meu",
     "account_description": "Administrează profilul tău din NGO Hub. Pentru a schimba datele contului contactează administratorii platformei.",
     "settings": "Setări cont",
-    "settings_description": "Datele asociate contului tău din NGO Hub. ",
+    "settings_description": "Datele asociate contului tău din NGO Hub.",
     "change_password": "Schimbă parola",
     "name": "Nume",
     "email": "E-mail cont",
@@ -84,7 +84,7 @@
       "description": "După închiderea contului NGO Hub nu vei mai avea acces în aplicațiile puse la dispoziție prin intermediul acestui portal. Dacă dorești să închizi contul definitiv, apasă butonul de mai jos iar echipa noastră te va contacta pentru a finaliza procesul."
     },
     "inactive": "Ups! Contul tău este inactiv.",
-    "no_access": "Nu mai ai access în ONGHub. Pentru mai multe detalii, contactează administratorul platformei",
+    "no_access": "Nu mai ai access în NGO Hub. Pentru mai multe detalii, contactează administratorul platformei",
     "back": "Înapoi la website",
     "config": {
       "old": {
@@ -141,13 +141,38 @@
       "again": "Încearcă din nou",
       "steps": {
         "first": "Pasul 1",
-        "account": "Date cont",
+        "agreement": "Acordul de instalare",
         "second": "Pasul 2",
-        "general": "Date generale",
+        "account": "Date cont",
         "third": "Pasul 3",
-        "activity": "Activitate",
+        "general": "Date generale",
         "fourth": "Pasul 4",
+        "activity": "Activitate",
+        "fifth": "Pasul 5",
         "legal": "Informații legale"
+      },
+      "user_agreement": {
+        "title": "Acordul de instalare",
+        "list_item_1": "Organizația nu realizează activități și nu susține cauze de natură politică sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
+        "list_item_2": "Niciunul dintre membrii conducerii organizației nu sunt implicați politic;",
+        "list_item_3": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal, care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
+        "list_item_4": {
+          "part_1": "Organizația a luat la cunoștință și respectă ",
+          "code_of_conduct": "codul de conduită",
+          "peas_policy": "Politica PEAS",
+          "part_2": "al Code for Romania și "
+        },
+        "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
+        "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
+        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
+        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
+        "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
+        "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
+        "form": {
+          "agreement": {
+            "required": "Pentru a merge mai departe, vă rugăm să citiți cu atenție acordul și să confirmați că sunteți de acord."
+          }
+        }
       },
       "errors": {
         "REQ_001": "Există deja un utilizator cu acest e-mail sau cu acest număr de telefon.",
@@ -198,7 +223,6 @@
   },
   "general": {
     "title": "Date generale",
-    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
     "logo": {
       "name": "Logo organizație",
       "upload": "Încarcă logo",
@@ -208,25 +232,44 @@
       "name": "Persoana de contact în relația cu NGO Hub",
       "description": "Completează cu datele persoanei care va păstra legătura dintre organizație și NGO Hub. Aceste informații nu vor fi afișate public."
     },
-    "social": "Comunicare și social media",
-    "social_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
-    "fundraising": "Strângere de fonduri",
-    "fundraising_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "sections": {
+      "official_data": {
+        "title": "Date oficiale",
+        "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
+      },
+      "presentational_data": {
+        "title": "Date de prezentare",
+        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
+      },
+      "contact_information": {
+        "title": "Informații de contact",
+        "subtitle": ""
+      },
+      "communication_and_social_media": {
+        "title": "Comunicare și social media",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      },
+      "fundraising": {
+        "title": "Strângere de fonduri",
+        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+      }
+    },
     "config": {
       "name": {
         "required": "Numele organizației este obligatoriu",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Numele organizației are un format invalid.",
-        "label": "Denumirea organizației*",
+        "label": "Denumirea oficială a organizației*",
         "helper": "Numele organizației așa cum apare în documentele legale."
       },
       "alias": {
-        "required": "Aliasul organizației este obligatoriu",
-        "max": "Aliasul organizației poate avea maxim 100 de caractere.",
-        "min": "Aliasul organizației poate avea minim 3 caractere.",
-        "invalid": "Aliasul organizației are un format invalid",
-        "label": "Alias organizație*"
+        "required": "Denumiea organizației este obligatoriu",
+        "max": "Denumiea organizației poate avea maxim 100 de caractere.",
+        "min": "Denumiea organizației poate avea minim 3 caractere.",
+        "invalid": "Denumiea organizației are un format invalid",
+        "label": "Denumiea organizației*",
+        "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
       },
       "type": {
         "label": "Tip organizație*",
@@ -237,7 +280,7 @@
         "required": "Email-ul este obligatoriu",
         "max": "Email-ul poate avea maxim 250 de caractere",
         "invalid": "Email-ul are un format invalid.",
-        "label": "E-mail-ul de contact al organizație*",
+        "label": "E-mail-ul de contact al organizației*",
         "helper": "Exemplu: contact@organizatie.ro"
       },
       "phone": {
@@ -245,7 +288,7 @@
         "min": "Numărul de telefon poate avea minim 10 caractere",
         "max": "Numărul de telefon poate avea maxim 15 caractere",
         "invalid": "Numărul de telefon are un format invalid",
-        "label": "Telefonul de contact al organizație*",
+        "label": "Telefonul de contact al organizației*",
         "helper": "Exemplu: numărul telefonului de la sediu"
       },
       "year": {
@@ -279,7 +322,7 @@
         "required": "Descrierea scurta este obligatorie",
         "max": "Descrierea scurtă poate avea maxim 250 de caractere",
         "min": "Descrierea scrută poate avea minim 150 de caractere",
-        "label": "Descrierea scurtă a organizație*",
+        "label": "Descrierea scurtă a organizației*",
         "helper": "Prezintă organizația în 150 - 250 de caractere. Această descriere va fi preluată împreună cu celelalte informații generale în ecosistemul NGO Hub."
       },
       "long": {
@@ -330,27 +373,43 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
-        "max": "Descrierea scurta poate avea maxim 100 de caractere",
-        "label": "Adresa organizație",
-        "helper": "Adresa la care isi desfășoară activitatea organizația",
-        "placeholder": "Adresa organizație"
+        "required": "Adresa este obligatorie",
+        "max": "Adresa poate avea maxim 100 de caractere",
+        "label": "Adresa sediului social",
+        "helper": "Adresa sediului menționată în documentele legale ale organizației.",
+        "placeholder": "Adresa sediului social"
+      },
+      "has_same_address": {
+        "label": "Adresa organizației este aceeași cu cea a sediului social"
+      },
+      "organization_address": {
+        "max": "Adresa poate avea maxim 100 de caractere",
+        "label": "Adresa",
+        "helper": "Adresa la care organizația își desfășoară activitatea, adresa de corespondență.",
+        "placeholder": "Adresa"
+      },
+      "organization_city": {
+        "label": "Oraș"
+      },
+      "organization_county": {
+        "label": "Județ"
       }
     }
   },
   "activity": {
     "title": "Activitatea organizației",
-    "domains": "Domenii și acoperire geografica",
-    "domains_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "domains": "Domenii și acoperire geografică",
+    "domains_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "fed_coal": "Federații și coaliții",
-    "fed_coal_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "fed_coal_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "branches": "Filiale și sucursale",
-    "branches_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "branches_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "other": "Alte informații",
-    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "config": {
       "field": "Câmpul este obligatoriu.",
       "domains": "Domenii de activitate*",
-      "domains_helper": "Minim 1 domeniu de activitate.",
+      "domains_helper": "Alege toate domeniile relevante pentru activitatea organizației tale (minim 1 domeniu de activitate).",
       "area": "Organizația îți desfășoară activitatea pe plan:",
       "area_helper": "Alege varianta care se potrivește",
       "cities": "Localități în care organizația derulează activități",
@@ -362,21 +421,21 @@
         "yes": "Da",
         "no": "Nu",
         "label": "Menționează-le mai jos*",
-        "helper": ""
+        "helper": "Începe să scrii numele federației în câmpul de mai sus. Poți introduce oricâte federații din care face parte organizația."
       },
       "coalitions": {
         "part_of": "Organizația ta face parte din una sau mai multe coaliții?*",
         "label": "Menționează-le mai jos*",
-        "helper": ""
+        "helper": "Începe să scrii numele coaliției în câmpul de mai sus. Poți introduce oricâte coaliții din care face parte organizația."
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
-        "part_of_helper": "De exemplu, lorem ipsum. Help text.",
+        "part_of_helper": "",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
         "label": "Dacă organizația ta face parte dintr-o organizație internațională, menționeaz-o mai jos*",
-        "helper": "Notează denumirea oficială conform cu registrul ONG."
+        "helper": "Notează denumirea oficială."
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
@@ -395,23 +454,47 @@
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
         "helper": "Conform Ordonanței 26/2000, o asociație sau o fundație poate fi recunoscută de Guvernul României ca fiind de utilitate publică. Acest statut se obține în urma unei cereri formulate de către organizație."
+      },
+      "add_federation_modal": {
+        "title": "Adaugă federație",
+        "description": "Dacă nu ai găsit federația în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
+      },
+      "add_coalition_modal": {
+        "title": "Adaugă coaliție",
+        "description": "Dacă nu ai găsit coaliția în lista, adaugă numele de mai jos.",
+        "form": {
+          "name": {
+            "label": "Denumire*",
+            "placeholder": "Denumire",
+            "required": "Denumirea este obligatorie.",
+            "submit": "Adaugă valoare"
+          }
+        }
       }
     }
   },
   "legal": {
     "title": "Informații Legale",
-    "title_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute_error": "Nu s-a putut încărca statutul organizației",
     "representative": "Reprezentantul legal al organizației",
-    "representative_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "representative_information": "Numele reprezentantului legal va fi public, atenție la ce împărtășești. Datele de contact ale reprezentantului legal nu vor fi afișate public.",
     "director": "Consiliul Director al organizației",
-    "director_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "director_information": "Numele membrilor consiliului director fi publice, atenție la ce împărtășești. Datele de contact ale membrilor consiliului director nu vor fi afișate public.",
     "dir_minimum": "Este obligatoriu să adaugi cel puțin 3 membri al Consiliului Director pentru a continua.",
     "add": "Adaugă un membru",
     "other": "Alte persoane relevante în organizație",
-    "other_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute": "Statutul organizației",
-    "statute_information": "Aceste informatii vor fi publice, atentie la ce impartasesti.",
+    "statute_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
@@ -433,8 +516,8 @@
       "description": "Ștergerea unei persoane relevante în organizației determină înlăturarea tuturor informațiile despre această persoană."
     },
     "delete_statute_modal": {
-      "title": "Esti sigur ca doresti stergerea Statutului Organizatiei?",
-      "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maiores distinctio placeat ad optio in sapiente omnis aperiam expedita dolores? Ipsum cumque corporis error enim numquam, magnam cum explicabo voluptas officiis."
+      "title": "Ești sigur ca dorești ștergerea Statutului Organizației?",
+      "description": "În cazul ștergerii statutului, un nou statut trebuie încărcat în maxim 30 de zile pentru a menține activ contul organizației în NGO Hub."
     },
     "header": {
       "name": "Nume și prenume",
@@ -510,7 +593,6 @@
     "save_error": "Eroare la salvarea datelor financiare",
     "data_update": "Te rugăm să actualizezi datele din această secțiune la un interval stabilit de timp.",
     "title": "Date Financiare",
-    "report_row": "eMfRK%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "modal": {
       "income": "Total Venituri",
       "expense": "Total Cheltuieli",
@@ -537,8 +619,14 @@
       "maxim": "Nu pot fi introduse valori mai mari de 9 cifre."
     },
     "income": {
-      "membership": { "label": "Venituri din cotizatii", "info": "Venituri din cotizatii info" },
-      "donations": { "label": "Venituri din donatii", "info": "Venituri din donatii info" },
+      "membership": {
+        "label": "Venituri din cotizații",
+        "info": "Venituri din cotizații info"
+      },
+      "donations": {
+        "label": "Venituri din donații",
+        "info": "Venituri din donații info"
+      },
       "percent": {
         "label": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
         "info": "Venituri din redirecționarea a 3.5% din impozitul pe venit% info"
@@ -551,8 +639,14 @@
         "label": "Venituri din activitatea economica",
         "info": "Venituri din activitatea economica info"
       },
-      "other": { "label": "Alte venituri", "info": "Alte venituri info" },
-      "financial": { "label": "Venituri financiare", "info": "Venituri financiare info" }
+      "other": {
+        "label": "Alte venituri",
+        "info": "Alte venituri info"
+      },
+      "financial": {
+        "label": "Venituri financiare",
+        "info": "Venituri financiare info"
+      }
     },
     "expense": {
       "net": {
@@ -571,13 +665,34 @@
         "label": "Cheltuieli administrative",
         "info": "Cheltuieli administrative info"
       },
-      "transport": { "label": "Transport și cazare", "info": "Transport și cazare info" },
-      "catering": { "label": "Catering", "info": "Catering info" },
-      "production": { "label": "Producție", "info": "Producție info" },
-      "software": { "label": "Servicii software", "info": "Servicii software info" },
-      "advertising": { "label": "Reclame și publicitate", "info": "Reclame și publicitate info" },
-      "taxes": { "label": "Alte taxe", "info": "Alte taxe info" },
-      "expense": { "label": "Alte cheltuieli", "info": "Alte cheltuieli info" }
+      "transport": {
+        "label": "Transport și cazare",
+        "info": "Transport și cazare info"
+      },
+      "catering": {
+        "label": "Catering",
+        "info": "Catering info"
+      },
+      "production": {
+        "label": "Producție",
+        "info": "Producție info"
+      },
+      "software": {
+        "label": "Servicii software",
+        "info": "Servicii software info"
+      },
+      "advertising": {
+        "label": "Reclame și publicitate",
+        "info": "Reclame și publicitate info"
+      },
+      "taxes": {
+        "label": "Alte taxe",
+        "info": "Alte taxe info"
+      },
+      "expense": {
+        "label": "Alte cheltuieli",
+        "info": "Alte cheltuieli info"
+      }
     }
   },
   "open_data": {
@@ -652,11 +767,11 @@
     },
     "remove_app_modal": {
       "title": "Confirmă ștergerea aplicației",
-      "description": "76b%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Ștergerea aplicației va duce la eliminarea tuturor informațiilor despre aceasta. După ștergere, aplicația nu va mai fi disponibilă pentru utilizatori."
     },
     "reject_request_modal": {
       "title": "Confirmă respingerea cererii",
-      "description": "ji3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+      "description": "Respinge cererea de acces la aplicație. După respingere, ONG-ul va putea să trimită o nouă cerere de acces."
     }
   },
   "user": {
@@ -695,7 +810,7 @@
       "confirmation": "Confirmă ștergerea utilizatorului",
       "description": "După ștergerea utilizatorului, acesta nu va mai avea acces în NGO Hug și toate informațiile despre acel cont vor fi eliminate.",
       "download": "Descarcă tabelul",
-      "access_to_app": "Acces la aplicatii"
+      "access_to_app": "Acces la aplicații"
     },
     "invites": {
       "title": "Lista cu invitații",
@@ -763,7 +878,7 @@
     "restrict": "Restricționează temporar",
     "title": "ONG-uri",
     "list": "Lista ONG-uri",
-    "administer": " organizațiile înscrise în NGO Hub.",
+    "administer": "Organizațiile înscrise în NGO Hub.",
     "restrict_error": "Eroare la restricționarea organizației",
     "activate_error": "Eroare la activarea organizației",
     "activate": "Activează",
@@ -806,7 +921,7 @@
       "status": "Status",
       "remove": "Elimină definitiv",
       "confirmation": "Confirmă ștergerea aplicației?",
-      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recoperată."
+      "description": "Toate informațiile asociate aplicației vor fi șterse și aplicația nu va putea fi recuperată."
     },
     "create": {
       "error": "Eroare la crearea aplicației",
@@ -841,7 +956,7 @@
       "name": "Aplicație",
       "type": "Tip aplicație",
       "status": "Status",
-      "ong_number": "Numar ONGuri",
+      "ong_number": "Număr ONGuri",
       "users": "Utilizatori"
     },
     "config": {
@@ -855,6 +970,7 @@
       },
       "type": {
         "label": "Tipul aplicației*",
+        "helper": "",
         "required": "Tipul aplicației este obligatoriu"
       },
       "short": {
@@ -878,6 +994,10 @@
       "login_link": {
         "label": "Link login automat*",
         "required": "Link-ul către pagina de login este obligatoriu"
+      },
+      "open_link": {
+        "label": "Link buton Deschide*",
+        "required": "Link-ul către aplicație este obligatoriu"
       },
       "video_link": {
         "label": "Link video prezentare",
@@ -943,7 +1063,7 @@
       "list": "Listă ONG-uri"
     },
     "details": {
-      "website": "Vezi website",
+      "website": "Vezi website de prezentare",
       "how_to": "Cum poți activa aplicația pentru organizația ta",
       "request": "Solicită aplicația",
       "description": "Descriere",
@@ -957,7 +1077,7 @@
       "delete": "Elimină aplicație",
       "contact": "Te vom contacta în 24-48 de ore.",
       "active": "Aplicația este activă pentru organizația ta.",
-      "define_active": "Lorem ipsum. Ce înseamnă faptul ca aplicația este activă. Conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
+      "define_active": "Faptul că aplicația este activă în contul organizației tale înseamnă că ai acces la ea și poți să o folosești.",
       "open": "Deschide aplicația",
       "pending": "Solicitarea ta așteaptă aprobare.",
       "configure": "Aplicația aceasta trebuie instalată și configurata conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
@@ -969,8 +1089,8 @@
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {
-        "title": "Accesul la aplicație este indisponibil momentan",
-        "description": "Vom reveni cu noutăți în curând."
+        "title": "Aplicație în curs de dezvoltare",
+        "description": "Momentan, accesul la această soluție nu este disponibil, aplicația este în curs de dezvoltare. Vom reveni cu noutăți în curând."
       },
       "practice_program": {
         "redirect_to_site": "Vezi profilul tău pe Practice4Good",
@@ -995,11 +1115,11 @@
       "remove": "Elimină definitiv"
     },
     "edit": {
-      "title": "Editeaza aplicatie",
-      "subtitle": "Lorem ipsum. Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
-      "page_title": "Editare pagina aplicatie",
-      "success": "Aplicatie modificata cu succes!",
-      "error": "Eroare la editarea aplicatiei"
+      "title": "Editează aplicație",
+      "subtitle": "Administrează de aici profilul tău de organizație pentru a putea accesa aplicațiile disponibile.",
+      "page_title": "Editare pagină aplicație",
+      "success": "Aplicație modificata cu succes!",
+      "error": "Eroare la editarea aplicației"
     },
     "type": {
       "all": "Toate",
@@ -1011,7 +1131,8 @@
   "header": {
     "enter": "Intră în cont",
     "my_account": "Contul meu",
-    "log_out": "Deconectare"
+    "log_out": "Deconectare",
+    "home": "Acasă"
   },
   "my_apps": {
     "title": "Aplicațiile mele",
@@ -1026,7 +1147,7 @@
     "status_error": "Eroare la schimbarea statusului",
     "status_update": "Status actualizat",
     "solved": "Solicitare soluționată",
-    "description": "zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+    "description": "TODO#18: zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
     "reject": "Respinge",
     "approve": "Aprobă",
     "view_form": "Vizualizează formular",
@@ -1041,7 +1162,7 @@
       },
       "reject": {
         "title": "Respinge și trimite e-mail",
-        "description": "În urma respingerii, ONG-ul va primi un e-mail de confirmare pe adresa oferită la înregistrare. Confirmă respingerea?",
+        "description": "În urma respingerii, ONG-ul va primi un e-mail pe adresa oferită la înregistrare. Confirmă respingerea?",
         "confirm": "Respinge solicitarea"
       }
     },
@@ -1070,9 +1191,18 @@
     "requests": "Solicitări Acces",
     "practice_programs": "Programe de Practică"
   },
+  "login": {
+    "title": "Înregistrează ONG",
+    "description": "Completează formularul de mai jos, iar noi te vom contacta pentru a valida datele și a-ți oferi accesul în platformă.",
+    "about": {
+      "title": "Despre procesul de aplicare",
+      "description": "Pentru a obține acces în NGO Hub, un reprezentant al organizației trebuie să completeze formularul următor, oferind date despre organizație și membri. Acest prim pas de înregistrare presupune doar introducerea datelor legale, inclusiv încărcarea statutul organizației.",
+      "start_form": "Începe formularul"
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
-    "about": "Despre ONGHub",
+    "about": "Despre NGO Hub",
     "statistics": {
       "mean_number_of_users": "Număr mediu de utilizatori per organizație",
       "number_of_active_organizations": "Organizații active în NGO Hub",
@@ -1099,7 +1229,7 @@
       "requests_statistics_error": "Eroare la încărcarea statisticilor despre cereri în organizație",
       "user_list": "Listă utilizatori",
       "filter": {
-        "yearly": "Din totdeauna",
+        "yearly": "Dintotdeauna",
         "monthly": "Lunar",
         "daily": "Zilnic"
       }
@@ -1110,7 +1240,7 @@
   "civic_center_service": {
     "wrapper": {
       "title": "Serviciile mele",
-      "description": "Lorem ipsum",
+      "description": "Aici poți vizualiza și edita toate serviciile oferite de organizația ta.",
       "add_button": "Adaugă Serviciu"
     },
     "list": {
@@ -1121,22 +1251,22 @@
       "card_title": "Descriere Serviciu"
     },
     "edit": {
-      "title": "Modifica Serviciu",
+      "title": "Modifică Serviciu",
       "card_title": "Descriere Serviciu"
     },
     "form": {
       "section": {
         "online": {
           "title": "Access online",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat online"
         },
         "email_or_phone": {
           "title": "Access prin e-mail sau telefon",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat prin e-mail sau telefon"
         },
         "physical": {
           "title": "Access prin prezentare la locație",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+          "description": "Acest serviciu poate fi accesat prin prezentare la locație"
         }
       },
       "name": {
@@ -1164,10 +1294,10 @@
         "label": "Data sfârșit serviciu*",
         "helper": "",
         "placeholder": "31.12.2999",
-        "start_date_after_end_date": "Data sfârșit nu poate fi mai mica decat data de început"
+        "start_date_after_end_date": "Data de sfârșit nu poate fi mai mică decât data de început"
       },
       "is_period_not_determined": {
-        "label": "Perioada nedeterminata",
+        "label": "Perioadă nedeterminată",
         "helper": ""
       },
       "short_description": {
@@ -1177,7 +1307,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere scurtă serviciu*",
         "helper": "Descrie serviciul oferit în 3-250 caractere",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "Descriere scurtă serviciu, în maxim 250 de caractere."
       },
       "long_description": {
         "required": "Descrierea este obligatorie",
@@ -1186,7 +1316,7 @@
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descriere extinsa serviciu*",
         "helper": "Adaugă o descriere cat mai cuprinzătoare a serviciului oferit",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "Descrierea extinsă a serviciului, în maxim 3000 de caractere."
       },
       "domains": {
         "required": "Domeniul este obligatoriu",
@@ -1207,13 +1337,13 @@
           "pattern": "Formatul link-ului este invalid.",
           "label": "Link către pagina de access (buton)*",
           "helper": "Adaugă linkul prin care oricine poate accesa acest serviciu.",
-          "placeholder": ""
+          "placeholder": "https://example.com"
         },
         "description": {
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access online",
-          "placeholder": "Lorem ipsum"
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin online"
         }
       },
       "email_or_phone": {
@@ -1239,7 +1369,7 @@
           "max": "Descrierea nu poate avea mai mult de 1000 caractere",
           "pattern": "Descrierea nu are formatul valid.",
           "label": "Descriere access prin e-mail",
-          "placeholder": "Lorem ipsum"
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin e-mail sau telefon"
         }
       },
       "physical": {
@@ -1254,9 +1384,9 @@
           "helper": "Introduceți locația exacta de unde o persoana poate accesa serviciul"
         },
         "description": {
-          "max": "Descrierea formatata nu poate avea mai mult de 1000 caractere",
+          "max": "Descrierea formatată nu poate avea mai mult de 1000 caractere",
           "label": "Descriere access fizic",
-          "placeholder": "Lorem ipsum",
+          "placeholder": "Descriere de maxim 1000 de caractere a modului de acces prin prezentare la locație",
           "helper": "Menționează orele de program sau dacă este necesar ca solicitantul sa aducă ceva, maxim 250 caractere"
         }
       },
@@ -1282,20 +1412,20 @@
       "access": {
         "online": {
           "title": "Online",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         },
         "email_or_phone": {
           "title": "Prin e-mail sau telefon",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         },
         "physical": {
           "title": "Prin prezentare la adresa",
-          "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+          "description": ""
         }
       },
       "delete_modal": {
         "title": "Șterge Serviciu",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+        "description": "Ești sigur că vrei să ștergi serviciul?"
       }
     }
   },
@@ -1334,13 +1464,13 @@
         "min": "Descrierea nu poate avea mai puțin de 3 caractere",
         "max": "Descrierea nu poate avea mai mult de 3000 caractere",
         "pattern": "Descrierea nu are formatul valid.",
-        "label": "Descrierea program de practică*",
+        "label": "Descrierea programului de practică*",
         "helper": "",
-        "placeholder": "Lorem ipsum"
+        "placeholder": "Descrierea programului de practică în maxim 3000 de caractere"
       },
       "start_date": {
         "required": "Data de început este obligatorie",
-        "label": "Data început program de practică*",
+        "label": "Dată început program de practică*",
         "helper": "",
         "placeholder": "31.12.2999"
       },
@@ -1373,7 +1503,7 @@
         "pattern": "Formatul link-ului este invalid.",
         "label": "Link către pagina de aplicare (button)",
         "helper": "Adaugă link-ul prin care oricine poate aplica la programul de practică",
-        "placeholder": "www.google.com"
+        "placeholder": "www.example.com"
       },
       "domains": {
         "required": "Domeniul este obligatoriu",
@@ -1405,8 +1535,8 @@
       "skills": "Vei învăța",
       "list_error": "Eroare la încărcarea datelor",
       "delete_modal": {
-        "title": "Șterge Program Practica",
-        "description": "ZC0%%%%%%%%%%%%%%%%%%%%%%%%%%% ce se întâmplă cu datele"
+        "title": "Șterge Program Practică",
+        "description": "Ești sigur că vrei să ștergi programul de practică?"
       }
     },
     "feedback": {

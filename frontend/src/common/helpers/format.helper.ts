@@ -57,6 +57,7 @@ export const flatten = (x: any, result: any, prefix?: any) => {
 export interface ISelectData {
   value: any;
   label: string;
+  isNew?: boolean;
 }
 
 export const mapToId = (item: any) => item.id;
@@ -79,10 +80,17 @@ export const mapCitiesToSelect = (item: any): ISelectData => ({
 });
 
 // Federations and Coalitions
-export const mapGroupsToSelect = (item: any): ISelectData => ({
-  value: item.id,
-  label: item.abbreviation,
-});
+export const mapGroupsToSelect = (item: any): ISelectData =>
+  item.isNew
+    ? {
+        value: item.id,
+        label: item.name,
+        isNew: item.isNew,
+      }
+    : {
+        value: item.id,
+        label: item.name,
+      };
 
 export const str2bool = (value: string) => {
   if (value && typeof value === 'string') {
@@ -126,12 +134,4 @@ export const cleanupPayload = (payload: any) => {
   return Object.keys(payload)
     .filter((k) => payload[k] !== null && payload[k] !== undefined)
     .reduce((a, k) => ({ ...a, [k]: payload[k] }), {});
-};
-
-export const setUrlPrefix = (address: string | null) => {
-  if (!address || address.startsWith('http://') || address.startsWith('https://')) {
-    return address || '';
-  } else {
-    return 'https://' + address;
-  }
 };

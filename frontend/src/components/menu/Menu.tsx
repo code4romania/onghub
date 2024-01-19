@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ArrowCircleLeftIcon, ArrowCircleRightIcon } from '@heroicons/react/outline';
+import { ArrowCircleLeftIcon, ArrowCircleRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -11,6 +11,7 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import { useTranslation } from 'react-i18next';
+import { NGOHUB_INFORMATION_URL } from '../../common/constants/constants';
 
 export const getNavigationRoutes = (role: UserRole) => {
   let routes = EMPLOYEE_ROUTES;
@@ -28,10 +29,9 @@ export const getNavigationRoutes = (role: UserRole) => {
   return routes;
 };
 
-const Menu = () => {
+const Menu = (props: { isNarrow: boolean, setIsNarrow: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isNarrow, setIsNarrow] = useState(false);
   const { role } = useContext(AuthContext);
   const [currentMenuItemId, setCurrentMenuItemId] = useState(0 as number);
   const { t } = useTranslation('menu');
@@ -57,7 +57,8 @@ const Menu = () => {
   return (
     <nav
       className={classNames(
-        'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none h-fit sticky top-5 w-full',
+        props.isNarrow ? 'w-[5.5rem]' : 'w-[17rem]',
+        'transition-width duration-300 ease-out p-6 pt-10 space-y-4 bg-gray-900 rounded-xl font-titilliumBold cursor-pointer select-none h-fit sticky top-5',
       )}
       aria-label="Sidebar"
     >
@@ -68,7 +69,7 @@ const Menu = () => {
             key={item.name}
             className={classNames(
               item.id === currentMenuItemId ? 'bg-menu-green/[0.15] text-green' : '',
-              isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
+              props.isNarrow ? 'justify-center px-0 space-x-0' : 'px-4 space-x-5 ',
               'main-menu-item',
             )}
             onClick={() => handleMenuItemClick(item)}
@@ -76,7 +77,7 @@ const Menu = () => {
             <item.icon className="w-5 h-5" />
             <span
               className={classNames(
-                isNarrow ? '-translate-x-2 hidden' : '',
+                props.isNarrow ? '-translate-x-2 hidden' : '',
                 'transition-transform duration-50 whitespace-nowrap',
               )}
             >
@@ -88,20 +89,43 @@ const Menu = () => {
         <a
           aria-label="menu"
           key={'menu'}
-          onClick={() => setIsNarrow((res) => !res)}
+          href={`${NGOHUB_INFORMATION_URL}`}
+          target="_blank"
+          rel="noreferrer"
           className={classNames(
-            isNarrow ? 'justify-center px-0' : 'px-4 space-x-5 ',
+            props.isNarrow ? 'justify-center px-0' : 'px-4 space-x-5 ',
             'main-menu-item',
           )}
         >
-          {isNarrow ? (
+          <InformationCircleIcon className="w-5 h-5" />
+          <span
+            className={classNames(
+              props.isNarrow ? '-translate-x-16 w-0 hidden' : '',
+              'transition-all duration-50 whitespace-nowrap',
+            )}
+          >
+            {t('menu:information')}
+          </span>
+        </a>
+      </div>
+      <div className="space-y-4">
+        <a
+          aria-label="menu"
+          key={'menu'}
+          onClick={() => props.setIsNarrow(!props.isNarrow)}
+          className={classNames(
+            props.isNarrow ? 'justify-center px-0' : 'px-4 space-x-5 ',
+            'main-menu-item',
+          )}
+        >
+          {props.isNarrow ? (
             <ArrowCircleRightIcon className="w-5 h-5" />
           ) : (
             <ArrowCircleLeftIcon className="w-5 h-5" />
           )}
           <span
             className={classNames(
-              isNarrow ? '-translate-x-16 w-0 hidden' : '',
+              props.isNarrow ? '-translate-x-16 w-0 hidden' : '',
               'transition-all duration-50 whitespace-nowrap',
             )}
           >

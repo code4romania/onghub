@@ -195,4 +195,20 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @IsOptional()
   logo?: string;
+
+  @IsString()
+  @MaxLength(100)
+  @IsOptional()
+  @Trim()
+  organizationAddress?: string;
+
+  @IsNumber()
+  @ToNumber()
+  @IsOptional()
+  organizationCountyId?: number;
+
+  @IsNumber()
+  @ToNumber()
+  @IsOptional()
+  organizationCityId?: number;
 }

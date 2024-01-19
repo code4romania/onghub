@@ -56,15 +56,7 @@ export class ApplicationService {
     logo: Express.Multer.File[],
   ): Promise<Application> {
     try {
-      // 1. Apart from independent apps the login link is mandatory
-      if (
-        createApplicationDto.type !== ApplicationTypeEnum.INDEPENDENT &&
-        !createApplicationDto.loginLink
-      ) {
-        throw new BadRequestException({ ...APPLICATION_ERRORS.CREATE.LOGIN });
-      }
-
-      // 2. upload logo
+      // 1. upload logo
       if (logo && logo.length > 0) {
         const uploadedFile = await this.fileManagerService.uploadFiles(
           `${APPLICATIONS_FILES_DIR}`,

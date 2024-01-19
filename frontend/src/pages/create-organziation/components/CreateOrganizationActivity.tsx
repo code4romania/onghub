@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
+  ISelectData,
   mapCitiesToSelect,
   mapGroupsToSelect,
   mapNameToSelect,
@@ -34,6 +35,9 @@ import { ICreateOrganizationPayload } from '../interfaces/CreateOrganization.int
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
+import { PlusIcon } from '@heroicons/react/solid';
+import AddCoFedModal from '../../../components/add-fed-co-modal/AddFedCoModal';
+import { classNames } from '../../../common/helpers/tailwind.helper';
 
 const CreateOrganizationActivity = () => {
   const { domains, regions, federations, coalitions } = useNomenclature();
@@ -42,6 +46,12 @@ const CreateOrganizationActivity = () => {
     useOutletContext<any>();
 
   useInitStep(setOrganization);
+
+  const [isAddFederationModalOpen, setIsAddFederationModalOpen] = useState<boolean>(false);
+  const [isAddCoalitionModalOpen, setIsAddCoalitionModalOpen] = useState<boolean>(false);
+
+  const [newCoalitions, setNewCoalitions] = useState<ISelectData[]>([]);
+  const [newFederations, setNewFederations] = useState<ISelectData[]>([]);
 
   const navigate = useNavigate();
 
@@ -56,6 +66,7 @@ const CreateOrganizationActivity = () => {
     watch,
     resetField,
     getValues,
+    setValue,
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -104,7 +115,7 @@ const CreateOrganizationActivity = () => {
 
     navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
 
-    updateActiveStepIndexInLocalStorage(activeStepIndex, 3, setActiveStepIndex);
+    updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
   };
 
   // load initial values
@@ -121,6 +132,17 @@ const CreateOrganizationActivity = () => {
         hasBranches: organization.activity.hasBranches?.toString(),
         isPublicIntrestOrganization: organization.activity.isPublicIntrestOrganization?.toString(),
       });
+
+      // init data if the user comes back to this page
+      if (organization.activity.federations?.length > 0) {
+        const fedValues = organization.activity.federations.filter((val: ISelectData) => val.isNew);
+        setNewFederations(fedValues);
+      }
+
+      if (organization.activity.coalitions?.length > 0) {
+        const colValues = organization.activity.coalitions.filter((val: ISelectData) => val.isNew);
+        setNewCoalitions(colValues);
+      }
     }
   }, [organization]);
 
@@ -137,6 +159,34 @@ const CreateOrganizationActivity = () => {
 
   const loadOptionsCitiesSerch = async (searchWord: string) => {
     return getCities(searchWord).then((res) => res.map(mapCitiesToSelect));
+  };
+
+  const onAddNewFederation = ({ name }: { name: string }): void => {
+    // generate new value
+    const newValue = { value: name, label: name, isNew: true };
+    // add the values to the additional federation array
+    setNewFederations([...newFederations, newValue]);
+    // close modal
+    setIsAddFederationModalOpen(false);
+    // handle form
+    const form = getValues();
+    const formValues = form.federations || [];
+    resetField('federations');
+    setValue('federations', [...formValues, newValue]);
+  };
+
+  const onAddNewCoalition = ({ name }: { name: string }): void => {
+    // generate new value
+    const newValue = { value: name, label: name, isNew: true };
+    // add the values to the additional coalitions array
+    setNewCoalitions([...newCoalitions, newValue]);
+    // close modal
+    setIsAddCoalitionModalOpen(false);
+    // handle form
+    const form = getValues();
+    const formValues = form.coalitions || [];
+    resetField('coalitions');
+    setValue('coalitions', [...formValues, newValue]);
   };
 
   return (
@@ -252,19 +302,34 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <MultiSelect
-                      id="create-organization-activity__federations"
-                      value={value}
-                      label={OrganizationActivityConfig.federations.config.label}
-                      isClearable={false}
-                      helperText={OrganizationActivityConfig.federations.config.helperText}
-                      error={errors[
-                        OrganizationActivityConfig.federations.key
-                      ]?.message?.toString()}
-                      onChange={onChange}
-                      options={[...federations.map(mapGroupsToSelect)]}
-                      readonly={readonly}
-                    />
+                    <div
+                      className={classNames(
+                        'flex w-full gap-2',
+                        errors[OrganizationActivityConfig.federations.key]?.message
+                          ? 'items-center'
+                          : 'items-end',
+                      )}
+                    >
+                      <MultiSelect
+                        id="create-organization-activity__federations"
+                        value={value}
+                        label={OrganizationActivityConfig.federations.config.label}
+                        isClearable={false}
+                        helperText={OrganizationActivityConfig.federations.config.helperText}
+                        error={errors[
+                          OrganizationActivityConfig.federations.key
+                        ]?.message?.toString()}
+                        onChange={onChange}
+                        options={[...federations.map(mapGroupsToSelect), ...newFederations]}
+                        readonly={readonly}
+                      />
+                      <button
+                        className="add-button"
+                        onClick={setIsAddFederationModalOpen.bind(null, true)}
+                      >
+                        <PlusIcon className="w-5 h-5 fill-gray-500 " />
+                      </button>
+                    </div>
                   );
                 }}
               />
@@ -284,17 +349,34 @@ const CreateOrganizationActivity = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <MultiSelect
-                      id="create-organization-activity__coalitions"
-                      value={value}
-                      label={OrganizationActivityConfig.coalitions.config.label}
-                      isClearable={false}
-                      helperText={OrganizationActivityConfig.coalitions.config.helperText}
-                      error={errors[OrganizationActivityConfig.coalitions.key]?.message?.toString()}
-                      onChange={onChange}
-                      options={[...coalitions.map(mapGroupsToSelect)]}
-                      readonly={readonly}
-                    />
+                    <div
+                      className={classNames(
+                        'flex w-full gap-2',
+                        errors[OrganizationActivityConfig.coalitions.key]?.message
+                          ? 'items-center'
+                          : 'items-end',
+                      )}
+                    >
+                      <MultiSelect
+                        id="create-organization-activity__coalitions"
+                        value={value}
+                        label={OrganizationActivityConfig.coalitions.config.label}
+                        isClearable={false}
+                        helperText={OrganizationActivityConfig.coalitions.config.helperText}
+                        error={errors[
+                          OrganizationActivityConfig.coalitions.key
+                        ]?.message?.toString()}
+                        onChange={onChange}
+                        options={[...coalitions.map(mapGroupsToSelect), ...newCoalitions]}
+                        readonly={readonly}
+                      />
+                      <button
+                        className="add-button"
+                        onClick={setIsAddCoalitionModalOpen.bind(null, true)}
+                      >
+                        <PlusIcon className="w-5 h-5 fill-gray-500 " />
+                      </button>
+                    </div>
                   );
                 }}
               />
@@ -310,30 +392,30 @@ const CreateOrganizationActivity = () => {
 
             {(isPartOfInternationalOrganization == 'true' ||
               isPartOfInternationalOrganization === true) && (
-                <Controller
-                  key={OrganizationActivityConfig.internationalOrganizationName.key}
-                  name={OrganizationActivityConfig.internationalOrganizationName.key}
-                  rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-                  control={control}
-                  render={({ field: { onChange, value } }) => {
-                    return (
-                      <InputField
-                        config={{
-                          ...OrganizationActivityConfig.internationalOrganizationName.config,
-                          name: OrganizationActivityConfig.internationalOrganizationName.key,
-                          error:
-                            errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                              ?.message,
-                          defaultValue: value,
-                          onChange: onChange,
-                          id: 'create-organization-activity__international-name',
-                        }}
-                        readonly={readonly}
-                      />
-                    );
-                  }}
-                />
-              )}
+              <Controller
+                key={OrganizationActivityConfig.internationalOrganizationName.key}
+                name={OrganizationActivityConfig.internationalOrganizationName.key}
+                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationActivityConfig.internationalOrganizationName.config,
+                        name: OrganizationActivityConfig.internationalOrganizationName.key,
+                        error:
+                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                            ?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'create-organization-activity__international-name',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <div>
@@ -431,6 +513,22 @@ const CreateOrganizationActivity = () => {
         </div>
         {!isValid && isSubmitted && <GenericFormErrorMessage />}
       </section>
+      {isAddFederationModalOpen && (
+        <AddCoFedModal
+          title={t('config.add_federation_modal.title')}
+          description={t('config.add_federation_modal.description')}
+          onClose={setIsAddFederationModalOpen.bind(null, false)}
+          onSubmit={onAddNewFederation}
+        />
+      )}
+      {isAddCoalitionModalOpen && (
+        <AddCoFedModal
+          title={t('config.add_coalition_modal.title')}
+          description={t('config.add_coalition_modal.description')}
+          onClose={setIsAddCoalitionModalOpen.bind(null, false)}
+          onSubmit={onAddNewCoalition}
+        />
+      )}
     </div>
   );
 };
