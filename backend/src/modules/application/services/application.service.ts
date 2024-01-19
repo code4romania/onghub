@@ -326,6 +326,7 @@ export class ApplicationService {
         id,
         ...updateApplicationDto,
         steps: updateApplicationDto.steps || null,
+        videoLink: updateApplicationDto.videoLink || null,
       };
 
       // 2. handle logo
