@@ -43,6 +43,8 @@ const ApplicationDetails = () => {
       const link = (application.videoLink as string).replace('https://', '').replace('http://', '');
       console.log(`https://${link}`);
       setYoutubeLink(`https://${link}`);
+    } else {
+      setYoutubeLink('');
     }
   }, [application]);
 

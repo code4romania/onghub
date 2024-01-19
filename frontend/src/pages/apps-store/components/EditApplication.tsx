@@ -65,6 +65,7 @@ const EditApplication = () => {
   const onSubmit = async (data: Partial<CreateApplicationDto>) => {
     // don't set the logo path
     const { logo, ...payload } = data;
+
     await updateApplication(
       {
         applicationId: id as string,
