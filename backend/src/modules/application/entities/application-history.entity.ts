@@ -71,7 +71,7 @@ export class ApplicationHistory
   @Column({ type: 'text', name: 'login_link', nullable: true })
   loginLink: string;
 
-  @Column({ type: 'text', name: 'video_link' })
+  @Column({ type: 'text', name: 'video_link', nullable: true })
   videoLink: string;
 
   @Column({ type: 'text', name: 'logo', nullable: true })
