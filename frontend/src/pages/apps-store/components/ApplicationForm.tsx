@@ -187,6 +187,7 @@ const ApplicationForm = ({
                       error: errors.videoLink?.message,
                       defaultValue: value,
                       onChange: onChange,
+                      onBlur: onChange,
                       id: 'application-form__video-link',
                     }}
                   />
