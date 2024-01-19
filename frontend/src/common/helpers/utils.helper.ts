@@ -25,10 +25,10 @@ export const updateActiveStepIndexInLocalStorage = (
 
 export const alphabeticallySort = (a: any, b: any) => {
   {
-    if (a.name < b.name) {
+    if (a.abbreviation < b.abbreviation) {
       return -1;
     }
-    if (a.name > b.name) {
+    if (a.abbreviation > b.abbreviation) {
       return 1;
     }
     return 0;
