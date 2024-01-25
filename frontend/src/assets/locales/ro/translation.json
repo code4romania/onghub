@@ -154,17 +154,16 @@
       "user_agreement": {
         "title": "Acordul de instalare",
         "list_item_1": "Organizația nu realizează activități și nu susține cauze de natură politică sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_2": "Niciunul dintre membrii conducerii organizației nu sunt implicați politic;",
-        "list_item_3": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal, care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_4": {
+        "list_item_2": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal, care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
+        "list_item_3": {
           "part_1": "Organizația a luat la cunoștință și respectă ",
           "code_of_conduct": "codul de conduită",
           "peas_policy": "Politica PEAS",
           "part_2": "al Code for Romania și "
         },
-        "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
-        "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
-        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
+        "list_item_4": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
+        "list_item_5": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
+        "list_item_6": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
         "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
         "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
         "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
@@ -235,23 +234,23 @@
     "sections": {
       "official_data": {
         "title": "Date oficiale",
-        "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
+        "subtitle": "Asigură-te că datele completate mai jos sunt corecte. Aceste informații vor fi folosite pentru aplicațiile care necesită generare de documente oficiale, ca de exemplu platforma REDIRECȚIONEAZĂ unde sunt generate Declarațiile 230 completate cu datele organizației, sau VIC, soluția de management a voluntarilor în care se pot genera contracte de voluntariat."
       },
       "presentational_data": {
         "title": "Date de prezentare",
-        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
+        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general. Datele de mai jos vor fi publicate în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației (Ex: redirectioneaza.ro, unde se afișează denumirea organizației, mail de contact și website)."
       },
       "contact_information": {
         "title": "Informații de contact",
-        "subtitle": ""
+        "subtitle": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației (Ex: redirectioneaza.ro, unde se afișează denumirea organizației, mail de contact și website)."
       },
       "communication_and_social_media": {
         "title": "Comunicare și social media",
-        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+        "subtitle": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației (Ex: redirectioneaza.ro, unde se afișează denumirea organizației, mail de contact și website)."
       },
       "fundraising": {
         "title": "Strângere de fonduri",
-        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+        "subtitle": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației."
       }
     },
     "config": {
@@ -399,13 +398,13 @@
   "activity": {
     "title": "Activitatea organizației",
     "domains": "Domenii și acoperire geografică",
-    "domains_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "domains_information": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației. Datele agregate vor fi folosite pentru o mapare a sectorului ONG din România, disponibilă pe platforma DATE ONG.",
     "fed_coal": "Federații și coaliții",
-    "fed_coal_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "fed_coal_information": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației.",
     "branches": "Filiale și sucursale",
-    "branches_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "branches_information": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației. (Ex: În VIC, managerul de voluntari, vei putea configura sucursale și filiale locale care au activități de voluntariat.)",
     "other": "Alte informații",
-    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "other_information": "Aceste informații vor fi publice în diferitele soluții incluse în NGO Hub, pe paginile de prezentare ale organizației.",
     "config": {
       "field": "Câmpul este obligatoriu.",
       "domains": "Domenii de activitate*",
@@ -486,15 +485,15 @@
     "title_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
     "statute_error": "Nu s-a putut încărca statutul organizației",
     "representative": "Reprezentantul legal al organizației",
-    "representative_information": "Numele reprezentantului legal va fi public, atenție la ce împărtășești. Datele de contact ale reprezentantului legal nu vor fi afișate public.",
+    "representative_information": "Numele reprezentantului legal va fi publicat acolo unde este necesar, de exemplu în contractele generate automat în soluții precum VIC, coordonatorul de voluntari. Datele de contact ale reprezentantului legal nu vor fi afișate public.",
     "director": "Consiliul Director al organizației",
-    "director_information": "Numele membrilor consiliului director fi publice, atenție la ce împărtășești. Datele de contact ale membrilor consiliului director nu vor fi afișate public.",
+    "director_information": "Numele persoanelor din Consiliul Director ar putea fi utilizate în aplicațiile în care verificarea Consiliului este necesară. Un exemplu este VotONG, soluția de desemnare a reprezentanților societății civile în diferite instituții unde vei putea fie candida ca ONG sau cu un reprezentant sau vota pentru numirea altora. Datele de contact ale membrilor consiliului director nu vor fi afișate public.",
     "dir_minimum": "Este obligatoriu să adaugi cel puțin 3 membri al Consiliului Director pentru a continua.",
     "add": "Adaugă un membru",
     "other": "Alte persoane relevante în organizație",
-    "other_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "other_information": "Numele persoanelor adăugate sunt pentru a ușura comunicarea cu diferite persoane din organizația ta. De exemplu, aici poți adăuga managerul de comunicare sau persoana de fundraising dedicată din ONG-ul tău, sau coordonatori de sucursale din alte orașe. Datele de contact ale persoanelor relevante nu vor fi afișate public.",
     "statute": "Statutul organizației",
-    "statute_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+    "statute_information": "Încarcă statutul organizației. Acesta nu va fi afișat public. Fișiere acceptate: pdf, maxim 25 MB.",
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
