@@ -77,8 +77,6 @@ const CreateOrganizationLegal = () => {
     reValidateMode: 'onChange',
   });
 
-  console.log('isSubmitted', isSubmitted);
-
   //Store form data in local storage
   const watchAllFields = watch();
   useEffect(() => {
