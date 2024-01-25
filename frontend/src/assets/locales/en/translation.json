@@ -584,6 +584,9 @@
         "label": "Role*"
       }
     },
+    "organization_statute": {
+      "required": "Documentul este obligatoriu"
+    },
     "errors": {
       "ORG_027": "Document deletion error"
     }
