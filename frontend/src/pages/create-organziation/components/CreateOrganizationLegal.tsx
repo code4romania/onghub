@@ -488,7 +488,9 @@ const CreateOrganizationLegal = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
-        {((!isValid && isSubmitted) || directors.length < 3) && <GenericFormErrorMessage />}
+        {((!isValid && isSubmitted) || directors.length < 3 || !organizationStatute) && (
+          <GenericFormErrorMessage />
+        )}
       </div>
     </div>
   );
