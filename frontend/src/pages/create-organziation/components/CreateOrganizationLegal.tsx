@@ -269,6 +269,10 @@ const CreateOrganizationLegal = () => {
       return;
     }
 
+    if (!organizationStatute) {
+      return;
+    }
+
     const legalReprezentative = {
       id: data.legalReprezentative_id,
       fullName: data.legalReprezentative_fullName,
@@ -359,7 +363,7 @@ const CreateOrganizationLegal = () => {
             <div className="flex flex-col gap-y-4">
               <h3>{t('document')}</h3>
               {isEditMode && organizationStatute === null && (
-                <>
+                <div className="flex flex-col gap-y-1">
                   <label
                     htmlFor="create-organization-legal__statute-upload"
                     className="w-fit min-w-32 flex items-center cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm leading-5 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -375,7 +379,15 @@ const CreateOrganizationLegal = () => {
                     accept={FILE_TYPES_ACCEPT.STATUTE}
                     onChange={onChangeFile}
                   />
-                </>
+                  {!organizationStatute && isSubmitted && (
+                    <p
+                      className="mt-1 sm:text-sm text-xs text-red-600 whitespace-pre-wrap"
+                      id={`organization-statute__input-error`}
+                    >
+                      {`${t('organization_statute.required')}`}
+                    </p>
+                  )}
+                </div>
               )}
               {organizationStatute && (
                 <a
@@ -476,7 +488,9 @@ const CreateOrganizationLegal = () => {
             {t('back', { ns: 'common' })}
           </button>
         </div>
-        {((!isValid && isSubmitted) || directors.length < 3) && <GenericFormErrorMessage />}
+        {((!isValid && isSubmitted) || directors.length < 3 || !organizationStatute) && (
+          <GenericFormErrorMessage />
+        )}
       </div>
     </div>
   );

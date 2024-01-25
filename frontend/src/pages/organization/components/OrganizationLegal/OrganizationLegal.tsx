@@ -42,7 +42,8 @@ const OrganizationLegal = () => {
   const [others, setOthers] = useState<Partial<Person>[]>([]);
   const [isOtherModalOpen, setIsOtherModalOpen] = useState<boolean>(false);
   const [isDeleteOtheModalOpen, setIsDeleteOtherModalOpen] = useState<boolean>(false);
-  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] = useState<boolean>(false);
+  const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] =
+    useState<boolean>(false);
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
@@ -58,7 +59,7 @@ const OrganizationLegal = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     reset,
   } = useForm({
     mode: 'onChange',
@@ -170,7 +171,7 @@ const OrganizationLegal = () => {
     event.stopPropagation();
     event.preventDefault();
     setDeleteOrganizationStatuteModalOpen(true);
-  }
+  };
 
   const onOpenDeleteOtherModal = (row: Person) => {
     setSelectedOther(row);
@@ -208,6 +209,10 @@ const OrganizationLegal = () => {
       return;
     }
 
+    if (!organizationStatute) {
+      return;
+    }
+
     const legalReprezentative = {
       id: data.legalReprezentative_id,
       fullName: data.legalReprezentative_fullName,
@@ -239,8 +244,6 @@ const OrganizationLegal = () => {
         },
       },
     );
-
-
   };
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -292,8 +295,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                  handleSubmit(handleSave)();
-                }
+                    handleSubmit(handleSave)();
+                  }
             }
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -306,10 +309,7 @@ const OrganizationLegal = () => {
       <div className="p-5 sm:p-10">
         <div className="flex flex-col sm:gap-16 gap-4 w-full divide-y divide-gray-200 divide">
           <section className="flex flex-col gap-6 w-full">
-            <SectionHeader
-              title={t('representative')}
-              subTitle={t('representative_information')}
-            />
+            <SectionHeader title={t('representative')} subTitle={t('representative_information')} />
             <form className="space-y-8">
               <ContactForm
                 className="lg:flex-row flex-col gap-x-6 gap-y-3"
@@ -379,7 +379,7 @@ const OrganizationLegal = () => {
               {isEditMode &&
                 !organizationLegal?.organizationStatute &&
                 organizationStatute === null && (
-                  <>
+                  <div className="flex flex-col gap-y-1">
                     <label
                       htmlFor="uploadStatute"
                       className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -394,7 +394,15 @@ const OrganizationLegal = () => {
                       accept={FILE_TYPES_ACCEPT.STATUTE}
                       onChange={onChangeFile}
                     />
-                  </>
+                    {!organizationStatute && isSubmitted && (
+                      <p
+                        className="mt-1 sm:text-sm text-xs text-red-600 whitespace-pre-wrap"
+                        id={`organization-statute__input-error`}
+                      >
+                        {`${t('organization_statute.required')}`}
+                      </p>
+                    )}
+                  </div>
                 )}
               {(organizationLegal?.organizationStatute || organizationStatute) && (
                 <a
@@ -406,10 +414,7 @@ const OrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
                   {isEditMode && !isRemovingOrganizationStatute && (
-                    <XIcon
-                      className="ml-2 w-4 h-4 text-gray-600"
-                      onClick={onDeleteStatute}
-                    />
+                    <XIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
                   {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
                 </a>

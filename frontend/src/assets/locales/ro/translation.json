@@ -585,6 +585,9 @@
         "label": "Rol*"
       }
     },
+    "organization_statute": {
+      "required": "Documentul este obligatoriu"
+    },
     "errors": {
       "ORG_027": "Eroare la ștergerea documentului"
     }
