@@ -141,7 +141,7 @@
       "again": "Try again",
       "steps": {
         "first": "Step 1",
-        "agreement": "Install agreement",
+        "agreement": "User Agreement",
         "second": "Step 2",
         "account": "Date cont",
         "third": "Step 3",
@@ -152,25 +152,24 @@
         "legal": "Legal information"
       },
       "user_agreement": {
-        "title": "Acordul de instalare",
-        "list_item_1": "Organizația nu realizează activități și nu susține cauze de natură politică sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_2": "Niciunul dintre membrii conducerii organizației nu sunt implicați politic;",
-        "list_item_3": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal, care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_4": {
-          "part_1": "Organizația a luat la cunoștință și respectă ",
-          "code_of_conduct": "codul de conduită",
+        "title": "User Agreement",
+        "list_item_1": "The organization does not carry out activities and does not support causes of a political nature or that discriminate based on considerations related to ethnicity, race, sex, sexual orientation, religion, physical or mental capabilities or belonging to one or more social or economic categories;",
+        "list_item_2": "The requested assistance is not intended for the development or implementation of one or more projects that could have a political or personal benefit, that violates Romanian or international legislation or that discriminates on grounds related to ethnicity, race, sex, sexual orientation, religion, physical abilities or psychological or belonging to one or more social or economic categories;",
+        "list_item_3": {
+          "part_1": "The organization has taken note and respects ",
+          "code_of_conduct": "the code of conduct",
           "peas_policy": "Politica PEAS",
-          "part_2": "al Code for Romania și "
+          "part_2": "of Code for Romania and "
         },
-        "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
-        "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
-        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
-        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
-        "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
-        "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
+        "list_item_4": "The organization will mention the Code for Romania Association's contribution in its activity where appropriate;",
+        "list_item_5": "The Code for Romania Association has the right to publicly mention the assistance provided to the organization;",
+        "list_item_6": "The Code for Romania association reserves the right to restrict access to the NGO Hub of organizations that do not comply with the above conditions;",
+        "paragraph": "Continuing the registration process represents the organization representative's declaration that the organization they represent meets the above eligibility criteria and agrees to the terms.",
+        "support_paragraph": "If you have any questions, you can contact us at: ",
+        "terms_and_agreement_paragraph": "I have read all criteria mentioned above and I agree",
         "form": {
           "agreement": {
-            "required": "Pentru a merge mai departe, vă rugăm să citiți cu atenție acordul și să confirmați că sunteți de acord."
+            "required": "To proceed, please read the agreement carefully and confirm that you agree."
           }
         }
       },
