@@ -1,1577 +1,1577 @@
 {
-  "common": {
-    "close": "Close",
-    "year": "Year",
-    "status": "Status",
-    "updated_on": "Latest update",
-    "created_on": "Date added",
-    "save": "Save changes",
-    "back": "Back to",
-    "edit": "Edit",
-    "logo": {
-      "update": "Logo could not be updated",
-      "load": "Logo could not be uploaded"
-    },
-    "delete_data": "Delete data",
-    "view": "View",
-    "delete": "Delete",
-    "error": "Error",
-    "wrong": "Something went wrong",
-    "information": "This information will be public, be careful what you share.",
-    "next": "Read more",
-    "send": "Send",
-    "invalid_url": "The URL has an invalid format",
-    "processing": "It is processing...",
-    "loading": "Loading...",
-    "completion_status": {
-      "completed": "Completed",
-      "not_completed": "Not completed"
-    },
-    "any": "All",
-    "restricted": "Restricted",
-    "active": "Active",
-    "inactive": "Inactive",
-    "no_data": "No data to display",
-    "show_more": "See all",
-    "show_less": "Show less",
-    "upload": {
-      "file": "Only PDF files are allowed for the organisation's status.",
-      "image": "Only PNG, JPG, JPEG files are allowed for the logo",
-      "image_size": "The maximum size for the logo is 6 MB",
-      "document_size": "The maximum size for the organisation's charter is 25 MB",
-      "logo": "Error loading logo",
-      "statute": "Error when uploading organisation status"
-    },
-    "filters": {
-      "hide": "Hide filters",
-      "reset": "Reset filters",
-      "show": "Filter"
-    },
-    "unavailable": "Unavailable",
-    "to_be_removed": "To be deleted",
-    "decimal": "Values with decimal places are not allowed.",
-    "unknown_error": "An unknown error has occurred",
-    "generic_error": "Data processing error, code: #{{code}}",
-    "yes": "From",
-    "no": "No",
-    "generic_invalid_form_error": "Oops! You did not fill in all the required information. Check the values you entered."
-  },
-  "menu": {
-    "information": "Information",
-    "collapse": "Narrow the menu"
-  },
-  "pagination": {
-    "rows_per_page": "Rows per page",
-    "range_separator_text": "from"
-  },
-  "empty": {
-    "table": "No data in the table"
-  },
-  "account": {
-    "password": "The password was successfully changed.",
-    "my_account": "My account",
-    "account_description": "Manage your NGO Hub profile. To change your account details contact the platform administrators.",
-    "settings": "Account settings",
-    "settings_description": "Data associated with your NGO Hub account.",
-    "change_password": "Change password",
-    "name": "Name",
-    "email": "E-mail account",
-    "send_mail": "Send E-Mail",
-    "wrong_password": "The words don't match",
-    "close": {
-      "account": "Close account",
-      "title": "Confirm account closure",
-      "description": "After closing your NGO Hub account you will no longer have access to the applications made available through this portal. If you wish to close your account permanently, click the button below and our team will contact you to complete the process."
-    },
-    "inactive": "Oops! Your account is inactive.",
-    "no_access": "You no longer have access to ONGHub. For more details, contact the platform administrator",
-    "back": "Back to website",
-    "config": {
-      "old": {
-        "required": "The current password is mandatory.",
-        "invalid": "The current password does not have the valid format.",
-        "label": "Current password*"
-      },
-      "new": {
-        "required": "New password is required",
-        "invalid": "New password is invalid",
-        "label": "New password*"
-      },
-      "match": "Confirm new password*"
-    },
-    "restricted": "Restricted account"
-  },
-  "organization": {
-    "error": "Organisation data could not be uploaded",
-    "my_organization": "My organisation",
-    "description": "Manage your organisation profile from here to access available applications.",
-    "description_admin": "Manage your organisation profile from here to access available applications.",
-    "description_request": "Manage your organisation profile from here to access available applications.",
-    "no_access": "Your organization has been restricted. For more details, contact our team free of charge by email at",
-    "inactive": "Oops! Your organization is inactive.",
-    "back": "Back to website",
-    "send_mail": "Send E-Mail",
-    "restricted": "Restricted organisation",
-    "type": {
-      "association": "Association",
-      "foundation": "Foundation",
-      "federation": "Federation"
-    },
-    "tabs": {
-      "overview": "Overview",
-      "general": "General dates",
-      "activity": "Activity of the organisation",
-      "legal": "Legal information",
-      "financial": "Financial information",
-      "open_data": "NGO in numbers",
-      "my_applications": "My applications",
-      "practice_programs": "Internship programmes",
-      "services": "Services"
-    },
-    "save_error": "The organization could not save itself",
-    "data_update": "Please update the data in this section at a set interval.",
-    "modal": {
-      "cancel": "Cancel changes",
-      "close": "Close",
-      "save": "Save"
-    },
-    "create": {
-      "congratulations": "Congratulations",
-      "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the email address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
-      "again": "Try again",
-      "steps": {
-        "first": "Step 1",
-        "agreement": "User Agreement",
-        "second": "Step 2",
-        "account": "Date cont",
-        "third": "Step 3",
-        "general": "General dates",
-        "fourth": "Step 4",
-        "activity": "Activity",
-        "fifth": "Step 5",
-        "legal": "Legal information"
-      },
-      "user_agreement": {
-        "title": "User Agreement",
-        "list_item_1": "The organization does not carry out activities and does not support causes of a political nature or that discriminate based on considerations related to ethnicity, race, sex, sexual orientation, religion, physical or mental capabilities or belonging to one or more social or economic categories;",
-        "list_item_2": "The requested assistance is not intended for the development or implementation of one or more projects that could have a political or personal benefit, that violates Romanian or international legislation or that discriminates on grounds related to ethnicity, race, sex, sexual orientation, religion, physical abilities or psychological or belonging to one or more social or economic categories;",
-        "list_item_3": {
-          "part_1": "The organization has taken note and respects ",
-          "code_of_conduct": "the code of conduct",
-          "peas_policy": "Politica PEAS",
-          "part_2": "of Code for Romania and "
+    "common": {
+        "close": "Close",
+        "year": "Year",
+        "status": "Status",
+        "updated_on": "Latest update",
+        "created_on": "Date added",
+        "save": "Save changes",
+        "back": "Back to",
+        "edit": "Edit",
+        "logo": {
+            "update": "Logo could not be updated",
+            "load": "Logo could not be uploaded"
         },
-        "list_item_4": "The organization will mention the Code for Romania Association's contribution in its activity where appropriate;",
-        "list_item_5": "The Code for Romania Association has the right to publicly mention the assistance provided to the organization;",
-        "list_item_6": "The Code for Romania association reserves the right to restrict access to the NGO Hub of organizations that do not comply with the above conditions;",
-        "paragraph": "Continuing the registration process represents the organization representative's declaration that the organization they represent meets the above eligibility criteria and agrees to the terms.",
-        "support_paragraph": "If you have any questions, you can contact us at: ",
-        "terms_and_agreement_paragraph": "I have read all criteria mentioned above and I agree",
-        "form": {
-          "agreement": {
-            "required": "To proceed, please read the agreement carefully and confirm that you agree."
-          }
-        }
-      },
-      "errors": {
-        "REQ_001": "There is already a user with this email or phone number.",
-        "REQ_007": "There is already an organisation with this CUI",
-        "REQ_008": "There is already an organisation with this RAF",
-        "REQ_009": "There is already an organisation with this name",
-        "REQ_010": "There is already an organisation with this alias",
-        "REQ_011": "There is already an organisation with this email",
-        "REQ_012": "There is already an organisation with this phone number",
-        "REQ_002": "There is already an application with this email or phone number.",
-        "ORG_026": "Error updating general data"
-      }
-    },
-    "filters": {
-      "incomplete": "Incomplete",
-      "updated": "Updated",
-      "any": "All"
-    },
-    "create_config": {
-      "name": {
-        "required": "Full name is required",
-        "max": "First and last names cannot be longer than 100 characters",
-        "min": "First and last names may not be less than 5 characters long",
-        "invalid": "The data entered in the field Name and surname are in invalid format",
-        "label": "Full name*"
-      },
-      "phone": {
-        "required": "Phone number is required",
-        "min": "The phone number cannot be less than 10 characters long",
-        "max": "The phone number cannot have more than 15 characters",
-        "invalid": "The phone number has an invalid format",
-        "label": "Phone*"
-      },
-      "email": {
-        "required": "E-mail is required",
-        "max": "The email cannot be longer than 50 characters",
-        "invalid": "The email has an invalid format",
-        "label": "E-mail"
-      }
-    },
-    "restrict": {
-      "title": "Confirm the deletion of your organisation's account from the NGO Hub?",
-      "description": "Removing your organisation from the NGO Hub means that you will no longer have access to the applications made available through this portal and your data will be lost. If you want to permanently remove your organisation, click the button below and our team will contact you to complete the process.",
-      "confirm": "Delete organisation",
-      "request_success": "Application successfully submitted",
-      "request_error": "Error when sending the request to delete the organisation"
-    }
-  },
-  "general": {
-    "title": "General dates",
-    "logo": {
-      "name": "Organisation logo",
-      "upload": "Upload logo",
-      "description": "Upload your organisation's logo at the highest quality. Recommended size - small side minimum 1000 px. Supported files: jpeg, png."
-    },
-    "contact": {
-      "name": "Contact person in relation with NGO Hub",
-      "description": "Fill in the details of the person who will liaise between the organisation and the NGO Hub. This information will not be publicly displayed."
-    },
-    "sections": {
-      "official_data": {
-        "title": "Date oficiale",
-        "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
-      },
-      "presentational_data": {
-        "title": "Date de prezentare",
-        "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
-      },
-      "contact_information": {
-        "title": "Informații de contact",
-        "subtitle": ""
-      },
-      "communication_and_social_media": {
-        "title": "Comunicare și social media",
-        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
-      },
-      "fundraising": {
-        "title": "Strângere de fonduri",
-        "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
-      }
-    },
-    "config": {
-      "name": {
-        "required": "The name of the organisation is required",
-        "max": "The name of the organisation can be up to 100 characters long.",
-        "min": "The name of the organisation can be at least 3 characters long.",
-        "invalid": "The name of the organisation has an invalid format.",
-        "label": "Name of organisation*",
-        "helper": "The name of the organisation as it appears in the legal documents."
-      },
-      "alias": {
-        "required": "The organisation's alias is required",
-        "max": "The organisation's alias can be up to 100 characters long.",
-        "min": "The organisation's alias can be at least 3 characters long.",
-        "invalid": "The organisation's alias has an invalid format",
-        "label": "Alias organisation*",
-        "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
-      },
-      "type": {
-        "label": "Organisation type*",
-        "required": "Type of organisation is mandatory",
-        "helper": ""
-      },
-      "email": {
-        "required": "Email is required",
-        "max": "The email can have a maximum of 250 characters",
-        "invalid": "The email has an invalid format.",
-        "label": "Organisation's contact email*",
-        "helper": "Example: contact@organizatie.ro"
-      },
-      "phone": {
-        "required": "Phone number is required",
-        "min": "The phone number can have a minimum of 10 characters",
-        "max": "The phone number can have a maximum of 15 characters",
-        "invalid": "The phone number has an invalid format",
-        "label": "Contact phone of the organisation*",
-        "helper": "Example: telephone number of the head office"
-      },
-      "year": {
-        "required": "Year of establishment is mandatory.",
-        "max": "Year of establishment can have a maximum of 4 characters",
-        "label": "Year of establishment*"
-      },
-      "cui": {
-        "required": "CUI is mandatory",
-        "max": "The CUI can have a maximum of 12 characters",
-        "min": "The CUI can have a minimum of 2 characters",
-        "invalid": "The CUI has an invalid format",
-        "label": "CUI/CIF*"
-      },
-      "raf": {
-        "required": "RAF number is mandatory",
-        "max": "The RAF number can have a maximum of 20 characters",
-        "min": "The RAF number can have a minimum of 8 characters",
-        "invalid": "The RAF number has an invalid format",
-        "label": "RAF registration number*"
-      },
-      "city": {
-        "required": "The city is mandatory",
-        "label": "City*"
-      },
-      "county": {
-        "required": "County is mandatory",
-        "label": "County*"
-      },
-      "short": {
-        "required": "Short description is required",
-        "max": "The short description can be a maximum of 250 characters",
-        "min": "The description of the review can be at least 150 characters long",
-        "label": "Short description of the organisation*",
-        "helper": "Present your organisation in 150 - 250 characters. This description will be uploaded together with the other general information in the NGO Hub ecosystem."
-      },
-      "long": {
-        "required": "Presentation is mandatory",
-        "max": "The maximum length of the presentation is 2000 characters",
-        "min": "The presentation can be a minimum of 500 characters",
-        "label": "Detailed presentation of the organisation*",
-        "helper": "Add a more detailed presentation of the organisation of maximum 2000 characters. This presentation will be displayed on the organisation's presentation pages in the NGO Hub ecosystem."
-      },
-      "contact": {
-        "required": "Full name is required",
-        "max": "First and last names cannot be longer than 100 characters",
-        "min": "First and last names may not be less than 5 characters long",
-        "invalid": "The data entered in the field Name and surname are in invalid format",
-        "label": "Full name*"
-      },
-      "contact_email": {
-        "required": "Contact email is required",
-        "max": "The contact email can have a maximum of 50 characters",
-        "invalid": "The contact email has an invalid format",
-        "label": "Email*"
-      },
-      "contact_phone": {
-        "required": "Phone number is required",
-        "max": "The phone number can have a maximum of 15 characters",
-        "min": "The phone number can have a minimum of 10 characters",
-        "invalid": "The phone number has an invalid format",
-        "label": "Phone*"
-      },
-      "website": {
-        "required": "The website is mandatory",
-        "invalid": "The website has an invalid format",
-        "label": "Website"
-      },
-      "facebook": "Facebook page is mandatory",
-      "donation": "Donations page",
-      "redirect": "Link to the organisation's page on Redirecționează.ro",
-      "sms": {
-        "length": "SMS for donations must be 4 characters long",
-        "invalid": "SMS for donations has an invalid format",
-        "label": "Donate by SMS",
-        "helper": "Fill in, if you have an SMS donation mechanism, the number to which the SMS is sent."
-      },
-      "keyword": {
-        "max": "The SMS keyword can have a maximum of 10 characters",
-        "invalid": "The SMS keyword has an invalid format",
-        "label": "SMS keyword",
-        "helper": "Fill in the text to donate via SMS."
-      },
-      "address": {
-        "max": "The short description can have a maximum of 100 characters",
-        "label": "Organisation address",
-        "helper": "Address where the organisation operates",
-        "placeholder": "Organisation address"
-      },
-      "has_same_address": {
-        "label": "Adresa organizației este aceeași cu cea a sediului social"
-      },
-      "organization_address": {
-        "max": "Adresa poate avea maxim 100 de caractere",
-        "label": "Adresa",
-        "helper": "Adresa la care organizația își desfășoară activitatea, adresa de corespondență.",
-        "placeholder": "Adresa sediului social"
-      },
-      "organization_city": {
-        "label": "Oraș*"
-      },
-      "organization_county": {
-        "label": "Județ*"
-      }
-    }
-  },
-  "activity": {
-    "title": "Activity of the organisation",
-    "domains": "Areas and geographical coverage",
-    "domains_information": "This information will be public, be careful what you share.",
-    "fed_coal": "Federations and coalitions",
-    "fed_coal_information": "This information will be public, be careful what you share.",
-    "branches": "Subsidiaries and branches",
-    "branches_information": "This information will be public, be careful what you share.",
-    "other": "Other information",
-    "other_information": "This information will be public, be careful what you share.",
-    "config": {
-      "field": "The field is mandatory.",
-      "domains": "Fields of activity*",
-      "domains_helper": "Minimum 1 field of activity.",
-      "area": "Your organisation is working on your plan:",
-      "area_helper": "Choose the one that fits",
-      "cities": "Localities where the organisation operates",
-      "cities_helper": "Start typing the name of the town in the field above. You can enter as many localities as are relevant to your organisation's work.",
-      "regions": "Regions where the organisation operates",
-      "regions_helper": "Choose from the list the variants that apply",
-      "federations": {
-        "part_of": "Does your organisation belong to one or more federations?",
+        "delete_data": "Delete data",
+        "view": "View",
+        "delete": "Delete",
+        "error": "Error",
+        "wrong": "Something went wrong",
+        "information": "This information will be public, be careful what you share.",
+        "next": "Read more",
+        "send": "Send",
+        "invalid_url": "The URL has an invalid format",
+        "processing": "It is processing...",
+        "loading": "Loading...",
+        "completion_status": {
+            "completed": "Completed",
+            "not_completed": "Not completed"
+        },
+        "any": "All",
+        "restricted": "Restricted",
+        "active": "Active",
+        "inactive": "Inactive",
+        "no_data": "No data to display",
+        "show_more": "See all",
+        "show_less": "Show less",
+        "upload": {
+            "file": "Only PDF files are allowed for the organisation's status.",
+            "image": "Only PNG, JPG, JPEG files are allowed for the logo",
+            "image_size": "The maximum size for the logo is 6 MB",
+            "document_size": "The maximum size for the organisation's charter is 25 MB",
+            "logo": "Error loading logo",
+            "statute": "Error when uploading organisation status"
+        },
+        "filters": {
+            "hide": "Hide filters",
+            "reset": "Reset filters",
+            "show": "Filter"
+        },
+        "unavailable": "Unavailable",
+        "to_be_removed": "To be deleted",
+        "decimal": "Values with decimal places are not allowed.",
+        "unknown_error": "An unknown error has occurred",
+        "generic_error": "Data processing error, code: #{{code}}",
         "yes": "From",
         "no": "No",
-        "label": "Mention them below*",
-        "helper": ""
-      },
-      "coalitions": {
-        "part_of": "Is your organisation part of one or more coalitions?*",
-        "label": "Mention them below*",
-        "helper": ""
-      },
-      "international": {
-        "part_of": "Is your organisation part of an international organisation?*",
-        "part_of_helper": "For example, lorem ipsum. Help text.",
-        "max": "The name of the organisation can be up to 100 characters long.",
-        "min": "The name of the organisation can be at least 3 characters long.",
-        "invalid": "The format is invalid.",
-        "label": "If your organisation is part of an international organisation, please mention it below*",
-        "helper": "Note the official name according to the NGO register."
-      },
-      "branches": {
-        "has_any": "Does the organisation have subsidiaries or branches?*",
-        "has_any_helper": "",
-        "label": "Localities where the organisation has subsidiaries or branches*",
-        "helper": "Start typing the name of the town in the field above. You can enter as many localities as are relevant to your organisation's work."
-      },
-      "social": {
-        "label": "Is the organisation accredited as a social service provider?*",
-        "helper": "Accreditation of social service providers is carried out according to Law 197/2012."
-      },
-      "grants": {
-        "label": "Do you offer or administer grants to other NGOs?*",
-        "helper": ""
-      },
-      "public": {
-        "label": "Is the organisation recognised as being of public utility?*",
-        "helper": "According to Ordinance 26/2000, an association or foundation can be recognized by the Romanian Government as being of public utility. This status is obtained following an application by the organisation."
-      },
-      "add_federation_modal": {
-        "title": "Adaugă federație",
-        "description": "Dacă nu ai găsit federația în lista, adaugă numele de mai jos.",
-        "form": {
-          "name": {
-            "label": "Denumire*",
-            "placeholder": "Denumire",
-            "required": "Denumirea este obligatorie.",
-            "submit": "Adaugă valoare"
-          }
+        "generic_invalid_form_error": "Oops! You did not fill in all the required information. Check the values you entered."
+    },
+    "menu": {
+        "information": "Information",
+        "collapse": "Narrow the menu"
+    },
+    "pagination": {
+        "rows_per_page": "Rows per page",
+        "range_separator_text": "from"
+    },
+    "empty": {
+        "table": "No data in the table"
+    },
+    "account": {
+        "password": "The password was successfully changed.",
+        "my_account": "My account",
+        "account_description": "Manage your NGO Hub profile. To change your account details contact the platform administrators.",
+        "settings": "Account settings",
+        "settings_description": "Data associated with your NGO Hub account.",
+        "change_password": "Change password",
+        "name": "Name",
+        "email": "E-mail account",
+        "send_mail": "Send E-Mail",
+        "wrong_password": "The words don't match",
+        "close": {
+            "account": "Close account",
+            "title": "Confirm account closure",
+            "description": "After closing your NGO Hub account you will no longer have access to the applications made available through this portal. If you wish to close your account permanently, click the button below and our team will contact you to complete the process."
+        },
+        "inactive": "Oops! Your account is inactive.",
+        "no_access": "You no longer have access to ONGHub. For more details, contact the platform administrator",
+        "back": "Back to website",
+        "config": {
+            "old": {
+                "required": "The current password is mandatory.",
+                "invalid": "The current password does not have the valid format.",
+                "label": "Current password*"
+            },
+            "new": {
+                "required": "New password is required",
+                "invalid": "New password is invalid",
+                "label": "New password*"
+            },
+            "match": "Confirm new password*"
+        },
+        "restricted": "Restricted account"
+    },
+    "organization": {
+        "error": "Organisation data could not be uploaded",
+        "my_organization": "My organisation",
+        "description": "Manage your organisation profile from here to access available applications.",
+        "description_admin": "Manage your organisation profile from here to access available applications.",
+        "description_request": "Manage your organisation profile from here to access available applications.",
+        "no_access": "Your organization has been restricted. For more details, contact our team free of charge by email at",
+        "inactive": "Oops! Your organization is inactive.",
+        "back": "Back to website",
+        "send_mail": "Send E-Mail",
+        "restricted": "Restricted organisation",
+        "type": {
+            "association": "Association",
+            "foundation": "Foundation",
+            "federation": "Federation"
+        },
+        "tabs": {
+            "overview": "Overview",
+            "general": "General dates",
+            "activity": "Activity of the organisation",
+            "legal": "Legal information",
+            "financial": "Financial information",
+            "open_data": "NGO in numbers",
+            "my_applications": "My applications",
+            "practice_programs": "Internship programmes",
+            "services": "Services"
+        },
+        "save_error": "The organization could not save itself",
+        "data_update": "Please update the data in this section at a set interval.",
+        "modal": {
+            "cancel": "Cancel changes",
+            "close": "Close",
+            "save": "Save"
+        },
+        "create": {
+            "congratulations": "Congratulations",
+            "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the email address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
+            "again": "Try again",
+            "steps": {
+                "first": "Step 1",
+                "agreement": "User Agreement",
+                "second": "Step 2",
+                "account": "Date cont",
+                "third": "Step 3",
+                "general": "General dates",
+                "fourth": "Step 4",
+                "activity": "Activity",
+                "fifth": "Step 5",
+                "legal": "Legal information"
+            },
+            "user_agreement": {
+                "title": "User Agreement",
+                "list_item_1": "The organization does not carry out activities and does not support causes of a political nature or that discriminate based on considerations related to ethnicity, race, sex, sexual orientation, religion, physical or mental capabilities or belonging to one or more social or economic categories;",
+                "list_item_2": "The requested assistance is not intended for the development or implementation of one or more projects that could have a political or personal benefit, that violates Romanian or international legislation or that discriminates on grounds related to ethnicity, race, sex, sexual orientation, religion, physical abilities or psychological or belonging to one or more social or economic categories;",
+                "list_item_3": {
+                    "part_1": "The organization has taken note and respects ",
+                    "code_of_conduct": "the code of conduct",
+                    "peas_policy": "Politica PEAS",
+                    "part_2": "of Code for Romania and "
+                },
+                "list_item_4": "The organization will mention the Code for Romania Association's contribution in its activity where appropriate;",
+                "list_item_5": "The Code for Romania Association has the right to publicly mention the assistance provided to the organization;",
+                "list_item_6": "The Code for Romania association reserves the right to restrict access to the NGO Hub of organizations that do not comply with the above conditions;",
+                "paragraph": "Continuing the registration process represents the organization representative's declaration that the organization they represent meets the above eligibility criteria and agrees to the terms.",
+                "support_paragraph": "If you have any questions, you can contact us at: ",
+                "terms_and_agreement_paragraph": "I have read all criteria mentioned above and I agree",
+                "form": {
+                    "agreement": {
+                        "required": "To proceed, please read the agreement carefully and confirm that you agree."
+                    }
+                }
+            },
+            "errors": {
+                "REQ_001": "There is already a user with this email or phone number.",
+                "REQ_007": "There is already an organisation with this CUI",
+                "REQ_008": "There is already an organisation with this RAF",
+                "REQ_009": "There is already an organisation with this name",
+                "REQ_010": "There is already an organisation with this alias",
+                "REQ_011": "There is already an organisation with this email",
+                "REQ_012": "There is already an organisation with this phone number",
+                "REQ_002": "There is already an application with this email or phone number.",
+                "ORG_026": "Error updating general data"
+            }
+        },
+        "filters": {
+            "incomplete": "Incomplete",
+            "updated": "Updated",
+            "any": "All"
+        },
+        "create_config": {
+            "name": {
+                "required": "Full name is required",
+                "max": "First and last names cannot be longer than 100 characters",
+                "min": "First and last names may not be less than 5 characters long",
+                "invalid": "The data entered in the field Name and surname are in invalid format",
+                "label": "Full name*"
+            },
+            "phone": {
+                "required": "Phone number is required",
+                "min": "The phone number cannot be less than 10 characters long",
+                "max": "The phone number cannot have more than 15 characters",
+                "invalid": "The phone number has an invalid format",
+                "label": "Phone*"
+            },
+            "email": {
+                "required": "E-mail is required",
+                "max": "The email cannot be longer than 50 characters",
+                "invalid": "The email has an invalid format",
+                "label": "E-mail"
+            }
+        },
+        "restrict": {
+            "title": "Confirm the deletion of your organisation's account from the NGO Hub?",
+            "description": "Removing your organisation from the NGO Hub means that you will no longer have access to the applications made available through this portal and your data will be lost. If you want to permanently remove your organisation, click the button below and our team will contact you to complete the process.",
+            "confirm": "Delete organisation",
+            "request_success": "Application successfully submitted",
+            "request_error": "Error when sending the request to delete the organisation"
         }
-      },
-      "add_coalition_modal": {
-        "title": "Adaugă coaliție",
-        "description": "Dacă nu ai găsit coaliția în lista, adaugă numele de mai jos.",
-        "form": {
-          "name": {
-            "label": "Denumire*",
-            "placeholder": "Denumire",
-            "required": "Denumirea este obligatorie.",
-            "submit": "Adaugă valoare"
-          }
+    },
+    "general": {
+        "title": "General dates",
+        "logo": {
+            "name": "Organisation logo",
+            "upload": "Upload logo",
+            "description": "Upload your organisation's logo at the highest quality. Recommended size - small side minimum 1000 px. Supported files: jpeg, png."
+        },
+        "contact": {
+            "name": "Contact person in relation with NGO Hub",
+            "description": "Fill in the details of the person who will liaise between the organisation and the NGO Hub. This information will not be publicly displayed."
+        },
+        "sections": {
+            "official_data": {
+                "title": "Date oficiale",
+                "subtitle": "Aceste informații sunt publice și vor fi folosite pentru aplicațiile care necesită generare de documente oficiale. Asigură-te că datele completate sunt corecte."
+            },
+            "presentational_data": {
+                "title": "Date de prezentare",
+                "subtitle": "Aceste informații vor fi publice și vor fi folosite în comunicarea cu publicul general."
+            },
+            "contact_information": {
+                "title": "Informații de contact",
+                "subtitle": "This information will be public in different solutions included in NGO Hub, on the presentation pages of the organization (e.g., redirectioneaza.ro, where the name, contact email, and website of the organization are displayed)."
+            },
+            "communication_and_social_media": {
+                "title": "Comunicare și social media",
+                "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+            },
+            "fundraising": {
+                "title": "Strângere de fonduri",
+                "subtitle": "Aceste informații vor fi publice, atenție la ce împărtășești."
+            }
+        },
+        "config": {
+            "name": {
+                "required": "The name of the organisation is required",
+                "max": "The name of the organisation can be up to 100 characters long.",
+                "min": "The name of the organisation can be at least 3 characters long.",
+                "invalid": "The name of the organisation has an invalid format.",
+                "label": "Name of organisation*",
+                "helper": "The name of the organisation as it appears in the legal documents."
+            },
+            "alias": {
+                "required": "The organisation's alias is required",
+                "max": "The organisation's alias can be up to 100 characters long.",
+                "min": "The organisation's alias can be at least 3 characters long.",
+                "invalid": "The organisation's alias has an invalid format",
+                "label": "Alias organisation*",
+                "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
+            },
+            "type": {
+                "label": "Organisation type*",
+                "required": "Type of organisation is mandatory",
+                "helper": ""
+            },
+            "email": {
+                "required": "Email is required",
+                "max": "The email can have a maximum of 250 characters",
+                "invalid": "The email has an invalid format.",
+                "label": "Organisation's contact email*",
+                "helper": "Example: contact@organizatie.ro"
+            },
+            "phone": {
+                "required": "Phone number is required",
+                "min": "The phone number can have a minimum of 10 characters",
+                "max": "The phone number can have a maximum of 15 characters",
+                "invalid": "The phone number has an invalid format",
+                "label": "Contact phone of the organisation*",
+                "helper": "Example: telephone number of the head office"
+            },
+            "year": {
+                "required": "Year of establishment is mandatory.",
+                "max": "Year of establishment can have a maximum of 4 characters",
+                "label": "Year of establishment*"
+            },
+            "cui": {
+                "required": "CUI is mandatory",
+                "max": "The CUI can have a maximum of 12 characters",
+                "min": "The CUI can have a minimum of 2 characters",
+                "invalid": "The CUI has an invalid format",
+                "label": "CUI/CIF*"
+            },
+            "raf": {
+                "required": "RAF number is mandatory",
+                "max": "The RAF number can have a maximum of 20 characters",
+                "min": "The RAF number can have a minimum of 8 characters",
+                "invalid": "The RAF number has an invalid format",
+                "label": "RAF registration number*"
+            },
+            "city": {
+                "required": "The city is mandatory",
+                "label": "City*"
+            },
+            "county": {
+                "required": "County is mandatory",
+                "label": "County*"
+            },
+            "short": {
+                "required": "Short description is required",
+                "max": "The short description can be a maximum of 250 characters",
+                "min": "The description of the review can be at least 150 characters long",
+                "label": "Short description of the organisation*",
+                "helper": "Present your organisation in 150 - 250 characters. This description will be uploaded together with the other general information in the NGO Hub ecosystem."
+            },
+            "long": {
+                "required": "Presentation is mandatory",
+                "max": "The maximum length of the presentation is 2000 characters",
+                "min": "The presentation can be a minimum of 500 characters",
+                "label": "Detailed presentation of the organisation*",
+                "helper": "Add a more detailed presentation of the organisation of maximum 2000 characters. This presentation will be displayed on the organisation's presentation pages in the NGO Hub ecosystem."
+            },
+            "contact": {
+                "required": "Full name is required",
+                "max": "First and last names cannot be longer than 100 characters",
+                "min": "First and last names may not be less than 5 characters long",
+                "invalid": "The data entered in the field Name and surname are in invalid format",
+                "label": "Full name*"
+            },
+            "contact_email": {
+                "required": "Contact email is required",
+                "max": "The contact email can have a maximum of 50 characters",
+                "invalid": "The contact email has an invalid format",
+                "label": "Email*"
+            },
+            "contact_phone": {
+                "required": "Phone number is required",
+                "max": "The phone number can have a maximum of 15 characters",
+                "min": "The phone number can have a minimum of 10 characters",
+                "invalid": "The phone number has an invalid format",
+                "label": "Phone*"
+            },
+            "website": {
+                "required": "The website is mandatory",
+                "invalid": "The website has an invalid format",
+                "label": "Website"
+            },
+            "facebook": "Facebook page is mandatory",
+            "donation": "Donations page",
+            "redirect": "Link to the organisation's page on Redirecționează.ro",
+            "sms": {
+                "length": "SMS for donations must be 4 characters long",
+                "invalid": "SMS for donations has an invalid format",
+                "label": "Donate by SMS",
+                "helper": "Fill in, if you have an SMS donation mechanism, the number to which the SMS is sent."
+            },
+            "keyword": {
+                "max": "The SMS keyword can have a maximum of 10 characters",
+                "invalid": "The SMS keyword has an invalid format",
+                "label": "SMS keyword",
+                "helper": "Fill in the text to donate via SMS."
+            },
+            "address": {
+                "max": "The short description can have a maximum of 100 characters",
+                "label": "Organisation address",
+                "helper": "Address where the organisation operates",
+                "placeholder": "Organisation address"
+            },
+            "has_same_address": {
+                "label": "Adresa organizației este aceeași cu cea a sediului social"
+            },
+            "organization_address": {
+                "max": "Adresa poate avea maxim 100 de caractere",
+                "label": "Adresa",
+                "helper": "Adresa la care organizația își desfășoară activitatea, adresa de corespondență.",
+                "placeholder": "Adresa sediului social"
+            },
+            "organization_city": {
+                "label": "Oraș*"
+            },
+            "organization_county": {
+                "label": "Județ*"
+            }
         }
-      }
-    }
-  },
-  "legal": {
-    "title": "Legal Information",
-    "title_information": "This information will be public, be careful what you share.",
-    "statute_error": "Could not upload organisation status",
-    "representative": "Legal representative of the organisation",
-    "representative_information": "This information will be public, be careful what you share.",
-    "director": "Board of the organisation",
-    "director_information": "This information will be public, be careful what you share.",
-    "dir_minimum": "It is mandatory to add at least 3 members of the Board of Directors to continue.",
-    "add": "Add a member",
-    "other": "Other relevant people in the organisation",
-    "other_information": "This information will be public, be careful what you share.",
-    "statute": "The status of the organisation",
-    "statute_information": "This information will be public, be careful what you share.",
-    "document": "Document",
-    "file_name": "Statute_Organisation",
-    "statute_upload": "Upload file",
-    "modal": {
-      "add": "Add",
-      "edit_director": "Editing of the Board member",
-      "edit_director_information": "This information will be public, be careful what you share.",
-      "add_director": "Addition to the Board of Directors",
-      "edit_relevant": "Edit other relevant person in the organisation",
-      "add_relevant": "Adding another relevant person in the organisation",
-      "edit_relevant_information": "This information will be public, be careful what you share."
     },
-    "delete_director_modal": {
-      "title": "Confirms the deletion of the member of the Governing Board",
-      "description": "Deleting a member of the Governing Board removes all information about that person. You will need to add a new Board member to move forward."
+    "activity": {
+        "title": "Activity of the organisation",
+        "domains": "Areas and geographical coverage",
+        "domains_information": "This information will be public, be careful what you share.",
+        "fed_coal": "Federations and coalitions",
+        "fed_coal_information": "This information will be public, be careful what you share.",
+        "branches": "Subsidiaries and branches",
+        "branches_information": "This information will be public, be careful what you share.",
+        "other": "Other information",
+        "other_information": "This information will be public, be careful what you share.",
+        "config": {
+            "field": "The field is mandatory.",
+            "domains": "Fields of activity*",
+            "domains_helper": "Minimum 1 field of activity.",
+            "area": "Your organisation is working on your plan:",
+            "area_helper": "Choose the one that fits",
+            "cities": "Localities where the organisation operates",
+            "cities_helper": "Start typing the name of the town in the field above. You can enter as many localities as are relevant to your organisation's work.",
+            "regions": "Regions where the organisation operates",
+            "regions_helper": "Choose from the list the variants that apply",
+            "federations": {
+                "part_of": "Does your organisation belong to one or more federations?",
+                "yes": "From",
+                "no": "No",
+                "label": "Mention them below*",
+                "helper": "Start writing the name of the federation in the above field. You can add all the federations your organization is part of."
+            },
+            "coalitions": {
+                "part_of": "Is your organisation part of one or more coalitions?*",
+                "label": "Mention them below*",
+                "helper": "Start writing the name of the coalition in the above field. You can add all the coalitions your organization is part of."
+            },
+            "international": {
+                "part_of": "Is your organisation part of an international organisation?*",
+                "part_of_helper": "For example, lorem ipsum. Help text.",
+                "max": "The name of the organisation can be up to 100 characters long.",
+                "min": "The name of the organisation can be at least 3 characters long.",
+                "invalid": "The format is invalid.",
+                "label": "If your organisation is part of an international organisation, please mention it below*",
+                "helper": "Note the official name according to the NGO register."
+            },
+            "branches": {
+                "has_any": "Does the organisation have subsidiaries or branches?*",
+                "has_any_helper": "",
+                "label": "Localities where the organisation has subsidiaries or branches*",
+                "helper": "Start typing the name of the town in the field above. You can enter as many localities as are relevant to your organisation's work."
+            },
+            "social": {
+                "label": "Is the organisation accredited as a social service provider?*",
+                "helper": "Accreditation of social service providers is carried out according to Law 197/2012."
+            },
+            "grants": {
+                "label": "Do you offer or administer grants to other NGOs?*",
+                "helper": ""
+            },
+            "public": {
+                "label": "Is the organisation recognised as being of public utility?*",
+                "helper": "According to Ordinance 26/2000, an association or foundation can be recognized by the Romanian Government as being of public utility. This status is obtained following an application by the organisation."
+            },
+            "add_federation_modal": {
+                "title": "Adaugă federație",
+                "description": "Dacă nu ai găsit federația în lista, adaugă numele de mai jos.",
+                "form": {
+                    "name": {
+                        "label": "Denumire*",
+                        "placeholder": "Denumire",
+                        "required": "Denumirea este obligatorie.",
+                        "submit": "Adaugă valoare"
+                    }
+                }
+            },
+            "add_coalition_modal": {
+                "title": "Adaugă coaliție",
+                "description": "Dacă nu ai găsit coaliția în lista, adaugă numele de mai jos.",
+                "form": {
+                    "name": {
+                        "label": "Denumire*",
+                        "placeholder": "Denumire",
+                        "required": "Denumirea este obligatorie.",
+                        "submit": "Adaugă valoare"
+                    }
+                }
+            }
+        }
     },
-    "delete_other_modal": {
-      "title": "Confirm deletion of person",
-      "description": "Deleting a relevant person in the organisation removes all information about that person."
+    "legal": {
+        "title": "Legal Information",
+        "title_information": "This information will be public, be careful what you share.",
+        "statute_error": "Could not upload organisation status",
+        "representative": "Legal representative of the organisation",
+        "representative_information": "This information will be public, be careful what you share.",
+        "director": "Board of the organisation",
+        "director_information": "This information will be public, be careful what you share.",
+        "dir_minimum": "It is mandatory to add at least 3 members of the Board of Directors to continue.",
+        "add": "Add a member",
+        "other": "Other relevant people in the organisation",
+        "other_information": "This information will be public, be careful what you share.",
+        "statute": "The status of the organisation",
+        "statute_information": "This information will be public, be careful what you share.",
+        "document": "Document",
+        "file_name": "Statute_Organisation",
+        "statute_upload": "Upload file",
+        "modal": {
+            "add": "Add",
+            "edit_director": "Editing of the Board member",
+            "edit_director_information": "This information will be public, be careful what you share.",
+            "add_director": "Addition to the Board of Directors",
+            "edit_relevant": "Edit other relevant person in the organisation",
+            "add_relevant": "Adding another relevant person in the organisation",
+            "edit_relevant_information": "This information will be public, be careful what you share."
+        },
+        "delete_director_modal": {
+            "title": "Confirms the deletion of the member of the Governing Board",
+            "description": "Deleting a member of the Governing Board removes all information about that person. You will need to add a new Board member to move forward."
+        },
+        "delete_other_modal": {
+            "title": "Confirm deletion of person",
+            "description": "Deleting a relevant person in the organisation removes all information about that person."
+        },
+        "delete_statute_modal": {
+            "title": "Are you sure you want to delete the Organisation's Constitution?",
+            "description": "TODO#1: Lorem ipsum."
+        },
+        "header": {
+            "name": "Full name",
+            "role": "Role",
+            "email": "Email",
+            "phone": "Phone"
+        },
+        "legal_config": {
+            "name": {
+                "required": "The name of the legal representative is required.",
+                "maxim": "The name of the legal representative may not be longer than 100 characters.",
+                "minim": "The name of the legal representative may not be less than 5 characters.",
+                "invalid": "The name of the legal representative has an invalid format.",
+                "label": "Full name*"
+            },
+            "email": {
+                "required": "Email of the legal representative is required.",
+                "maxim": "The email of the legal representative cannot be longer than 50 characters.",
+                "invalid": "The email has an invalid format.",
+                "label": "Email*"
+            },
+            "phone": {
+                "required": "The telephone number of the legal representative is mandatory.",
+                "maxim": "The telephone number of the legal representative may not have more than 15 characters.",
+                "minim": "The telephone number of the legal representative may not be less than 10 characters.",
+                "invalid": "The phone number has an invalid format.",
+                "label": "Phone"
+            }
+        },
+        "director_config": {
+            "name": {
+                "required": "The name of the member of the Governing Board is mandatory",
+                "maxim": "The name of the member of the Governing Board may not be longer than 100 characters",
+                "minim": "The name of the member of the Governing Board may not be less than 5 characters long.",
+                "invalid": "The name of the Governing Board member does not have a valid format.",
+                "label": "Full name*"
+            },
+            "email": {
+                "required": "The email of the member of the Board of Directors is mandatory.",
+                "maxim": "The Governing Board member's email may not be longer than 50 characters.",
+                "invalid": "The Governing Board member's email has an invalid format.",
+                "label": "Email*"
+            },
+            "phone": {
+                "required": "The director's phone is invalid.",
+                "maxim": "The telephone number of the member of the Board of Directors may not have more than 15 characters.",
+                "minim": "The telephone number of the member of the Governing Board may not be less than 10 characters.",
+                "invalid": "The phone number has an invalid format.",
+                "label": "Phone"
+            }
+        },
+        "other_config": {
+            "name": {
+                "required": "Name is required.",
+                "maxim": "The name cannot be longer than 100 characters.",
+                "minim": "The name cannot be less than 5 characters long.",
+                "invalid": "The name has an invalid format.",
+                "label": "Full name*"
+            },
+            "role": {
+                "required": "The role is mandatory.",
+                "maxim": "The role cannot be longer than 50 characters.",
+                "minim": "The role cannot have less than 3 characters.",
+                "invalid": "The role has an invalid format.",
+                "label": "Role*"
+            }
+        },
+        "organization_statute": {
+            "required": "Documentul este obligatoriu"
+        },
+        "errors": {
+            "ORG_027": "Document deletion error"
+        }
     },
-    "delete_statute_modal": {
-      "title": "Are you sure you want to delete the Organisation's Constitution?",
-      "description": "TODO#1: Lorem ipsum."
+    "financial": {
+        "save_error": "Error saving financial data",
+        "data_update": "Please update the data in this section at a set interval.",
+        "title": "Financial Dates",
+        "modal": {
+            "income": "Total Income",
+            "expense": "Total Expenditure",
+            "anaf": "*the amount automatically taken from ANAF reporting",
+            "category_income": "Category Income",
+            "category_expense": "Expenditure categories",
+            "sum": "Sum",
+            "defalcat": "Total Breakdown",
+            "unallocated": "unallocated",
+            "excess": "surplus",
+            "income_report": "Revenue Reporting",
+            "income_report_information": "This information will be public, be careful what you share.",
+            "expense_report": "Reporting Expenses",
+            "expense_report_information": "This information will be public, be careful what you share."
+        },
+        "header": {
+            "report": "Report",
+            "income": "Revenue reporting",
+            "expense": "Expenditure reporting",
+            "employees": "Employees"
+        },
+        "common_config": {
+            "minim": "Negative values cannot be entered.",
+            "maxim": "Values greater than 9 digits cannot be entered."
+        },
+        "income": {
+            "membership": {
+                "label": "Income from contributions",
+                "info": "Income from membership fees info"
+            },
+            "donations": {
+                "label": "Income from donations",
+                "info": "Income from donations info"
+            },
+            "percent": {
+                "label": "Revenue from the redirection of 3.5% of income tax%",
+                "info": "Revenue from the redirection of 3.5% of income tax% info"
+            },
+            "sponsorship": {
+                "label": "Sponsorship income",
+                "info": "Sponsorship income info"
+            },
+            "economic": {
+                "label": "Income from economic activity",
+                "info": "Income from economic activity info"
+            },
+            "other": {
+                "label": "Other income",
+                "info": "Other income info"
+            },
+            "financial": {
+                "label": "Financial income",
+                "info": "Financial income info"
+            }
+        },
+        "expense": {
+            "net": {
+                "label": "Net salaries (human resources)",
+                "info": "Net salaries (human resources) info"
+            },
+            "cas": {
+                "label": "CAS contributions (human resources)",
+                "info": "CAS contributions (human resources) info"
+            },
+            "economic": {
+                "label": "Direct expenditure from economic activity",
+                "info": "Direct expenditure from economic activity info"
+            },
+            "administrative": {
+                "label": "Administrative expenditure",
+                "info": "Administrative expenditure info"
+            },
+            "transport": {
+                "label": "Transport and accommodation",
+                "info": "Transport and accommodation info"
+            },
+            "catering": {
+                "label": "Catering",
+                "info": "Catering info"
+            },
+            "production": {
+                "label": "Production",
+                "info": "Production info"
+            },
+            "software": {
+                "label": "Software services",
+                "info": "Software services info"
+            },
+            "advertising": {
+                "label": "Advertising and publicity",
+                "info": "Advertising and publicity info"
+            },
+            "taxes": {
+                "label": "Other taxes",
+                "info": "Other tax info"
+            },
+            "expense": {
+                "label": "Other expenses",
+                "info": "Other expenses info"
+            }
+        }
     },
-    "header": {
-      "name": "Full name",
-      "role": "Role",
-      "email": "Email",
-      "phone": "Phone"
+    "open_data": {
+        "load_error": "Data could not be uploaded",
+        "download": "Download the list",
+        "upload": "Load new list",
+        "delete": "Remove list",
+        "no_file": "No file uploaded",
+        "download_error": "Could not download the file",
+        "no_data": "The file you uploaded contains no data",
+        "invalid": "File format is invalid",
+        "report": {
+            "title": "Summary of activity",
+            "data_update": "Please update the data in this section at a set interval.",
+            "volunteers": "Volunteers",
+            "contractors": "Contractors",
+            "activity": "Activity report",
+            "not_available": "Not available",
+            "report": "Report"
+        },
+        "partners": {
+            "title": "Partners",
+            "data_update": "Please update the data in this section at a set interval.",
+            "list": "Partners list",
+            "count": "Number of partners",
+            "download": "Download model partner table"
+        },
+        "investors": {
+            "title": "Funders",
+            "data_update": "Please update the data in this section at a set interval.",
+            "list": "List of donors",
+            "count": "Number of donors",
+            "download": "Download model donors table"
+        },
+        "modal": {
+            "summary": "Summary of activity",
+            "summary_information": "This information will be public, be careful what you share."
+        },
+        "config": {
+            "volunt_negative": "The number of volunteers cannot be a negative number.",
+            "volunt_maxim": "The number of volunteers cannot be more than 6 digits.",
+            "contr_negative": "The number of contractors cannot be a negative number.",
+            "contr_maxim": "The number of contractors cannot be more than 6 digits.",
+            "link_invalid": "The link format is invalid.",
+            "link": "Link activity report",
+            "volunteers": "Number of volunteers",
+            "contractors": "Number of contractors",
+            "volunteer_helper": "Total number of volunteers of the organisation in that year",
+            "contractor_helper": "Number of people who are not employed by the organisation but contribute to the activities on the basis of collaboration contracts, royalties or the provision of services",
+            "report_helper": "Add link to the organisation's activity report for the previous year."
+        }
     },
-    "legal_config": {
-      "name": {
-        "required": "The name of the legal representative is required.",
-        "maxim": "The name of the legal representative may not be longer than 100 characters.",
-        "minim": "The name of the legal representative may not be less than 5 characters.",
-        "invalid": "The name of the legal representative has an invalid format.",
-        "label": "Full name*"
-      },
-      "email": {
-        "required": "Email of the legal representative is required.",
-        "maxim": "The email of the legal representative cannot be longer than 50 characters.",
-        "invalid": "The email has an invalid format.",
-        "label": "Email*"
-      },
-      "phone": {
-        "required": "The telephone number of the legal representative is mandatory.",
-        "maxim": "The telephone number of the legal representative may not have more than 15 characters.",
-        "minim": "The telephone number of the legal representative may not be less than 10 characters.",
-        "invalid": "The phone number has an invalid format.",
-        "label": "Phone"
-      }
-    },
-    "director_config": {
-      "name": {
-        "required": "The name of the member of the Governing Board is mandatory",
-        "maxim": "The name of the member of the Governing Board may not be longer than 100 characters",
-        "minim": "The name of the member of the Governing Board may not be less than 5 characters long.",
-        "invalid": "The name of the Governing Board member does not have a valid format.",
-        "label": "Full name*"
-      },
-      "email": {
-        "required": "The email of the member of the Board of Directors is mandatory.",
-        "maxim": "The Governing Board member's email may not be longer than 50 characters.",
-        "invalid": "The Governing Board member's email has an invalid format.",
-        "label": "Email*"
-      },
-      "phone": {
-        "required": "The director's phone is invalid.",
-        "maxim": "The telephone number of the member of the Board of Directors may not have more than 15 characters.",
-        "minim": "The telephone number of the member of the Governing Board may not be less than 10 characters.",
-        "invalid": "The phone number has an invalid format.",
-        "label": "Phone"
-      }
-    },
-    "other_config": {
-      "name": {
-        "required": "Name is required.",
-        "maxim": "The name cannot be longer than 100 characters.",
-        "minim": "The name cannot be less than 5 characters long.",
-        "invalid": "The name has an invalid format.",
-        "label": "Full name*"
-      },
-      "role": {
-        "required": "The role is mandatory.",
-        "maxim": "The role cannot be longer than 50 characters.",
-        "minim": "The role cannot have less than 3 characters.",
-        "invalid": "The role has an invalid format.",
-        "label": "Role*"
-      }
-    },
-    "organization_statute": {
-      "required": "Documentul este obligatoriu"
-    },
-    "errors": {
-      "ORG_027": "Document deletion error"
-    }
-  },
-  "financial": {
-    "save_error": "Error saving financial data",
-    "data_update": "Please update the data in this section at a set interval.",
-    "title": "Financial Dates",
-    "modal": {
-      "income": "Total Income",
-      "expense": "Total Expenditure",
-      "anaf": "*the amount automatically taken from ANAF reporting",
-      "category_income": "Category Income",
-      "category_expense": "Expenditure categories",
-      "sum": "Sum",
-      "defalcat": "Total Breakdown",
-      "unallocated": "unallocated",
-      "excess": "surplus",
-      "income_report": "Revenue Reporting",
-      "income_report_information": "This information will be public, be careful what you share.",
-      "expense_report": "Reporting Expenses",
-      "expense_report_information": "This information will be public, be careful what you share."
-    },
-    "header": {
-      "report": "Report",
-      "income": "Revenue reporting",
-      "expense": "Expenditure reporting",
-      "employees": "Employees"
-    },
-    "common_config": {
-      "minim": "Negative values cannot be entered.",
-      "maxim": "Values greater than 9 digits cannot be entered."
-    },
-    "income": {
-      "membership": {
-        "label": "Income from contributions",
-        "info": "Income from membership fees info"
-      },
-      "donations": {
-        "label": "Income from donations",
-        "info": "Income from donations info"
-      },
-      "percent": {
-        "label": "Revenue from the redirection of 3.5% of income tax%",
-        "info": "Revenue from the redirection of 3.5% of income tax% info"
-      },
-      "sponsorship": {
-        "label": "Sponsorship income",
-        "info": "Sponsorship income info"
-      },
-      "economic": {
-        "label": "Income from economic activity",
-        "info": "Income from economic activity info"
-      },
-      "other": {
-        "label": "Other income",
-        "info": "Other income info"
-      },
-      "financial": {
-        "label": "Financial income",
-        "info": "Financial income info"
-      }
-    },
-    "expense": {
-      "net": {
-        "label": "Net salaries (human resources)",
-        "info": "Net salaries (human resources) info"
-      },
-      "cas": {
-        "label": "CAS contributions (human resources)",
-        "info": "CAS contributions (human resources) info"
-      },
-      "economic": {
-        "label": "Direct expenditure from economic activity",
-        "info": "Direct expenditure from economic activity info"
-      },
-      "administrative": {
-        "label": "Administrative expenditure",
-        "info": "Administrative expenditure info"
-      },
-      "transport": {
-        "label": "Transport and accommodation",
-        "info": "Transport and accommodation info"
-      },
-      "catering": {
-        "label": "Catering",
-        "info": "Catering info"
-      },
-      "production": {
-        "label": "Production",
-        "info": "Production info"
-      },
-      "software": {
-        "label": "Software services",
-        "info": "Software services info"
-      },
-      "advertising": {
-        "label": "Advertising and publicity",
-        "info": "Advertising and publicity info"
-      },
-      "taxes": {
-        "label": "Other taxes",
-        "info": "Other tax info"
-      },
-      "expense": {
-        "label": "Other expenses",
-        "info": "Other expenses info"
-      }
-    }
-  },
-  "open_data": {
-    "load_error": "Data could not be uploaded",
-    "download": "Download the list",
-    "upload": "Load new list",
-    "delete": "Remove list",
-    "no_file": "No file uploaded",
-    "download_error": "Could not download the file",
-    "no_data": "The file you uploaded contains no data",
-    "invalid": "File format is invalid",
-    "report": {
-      "title": "Summary of activity",
-      "data_update": "Please update the data in this section at a set interval.",
-      "volunteers": "Volunteers",
-      "contractors": "Contractors",
-      "activity": "Activity report",
-      "not_available": "Not available",
-      "report": "Report"
-    },
-    "partners": {
-      "title": "Partners",
-      "data_update": "Please update the data in this section at a set interval.",
-      "list": "Partners list",
-      "count": "Number of partners",
-      "download": "Download model partner table"
-    },
-    "investors": {
-      "title": "Funders",
-      "data_update": "Please update the data in this section at a set interval.",
-      "list": "List of donors",
-      "count": "Number of donors",
-      "download": "Download model donors table"
-    },
-    "modal": {
-      "summary": "Summary of activity",
-      "summary_information": "This information will be public, be careful what you share."
-    },
-    "config": {
-      "volunt_negative": "The number of volunteers cannot be a negative number.",
-      "volunt_maxim": "The number of volunteers cannot be more than 6 digits.",
-      "contr_negative": "The number of contractors cannot be a negative number.",
-      "contr_maxim": "The number of contractors cannot be more than 6 digits.",
-      "link_invalid": "The link format is invalid.",
-      "link": "Link activity report",
-      "volunteers": "Number of volunteers",
-      "contractors": "Number of contractors",
-      "volunteer_helper": "Total number of volunteers of the organisation in that year",
-      "contractor_helper": "Number of people who are not employed by the organisation but contribute to the activities on the basis of collaboration contracts, royalties or the provision of services",
-      "report_helper": "Add link to the organisation's activity report for the previous year."
-    }
-  },
-  "applications": {
-    "active_apps": "Applications in use",
-    "pending_app_requests": "Application requests",
-    "app_type": "Application type",
-    "error": {
-      "get_applications": "Error loading applications",
-      "get_requests": "Error uploading applications",
-      "restrict_application": "Access restriction error",
-      "restore_application": "Access rendering error",
-      "remove_application": "Error deleting the application",
-      "approve_request": "Error when approving the application",
-      "reject_request": "Error in rejecting the application"
-    },
-    "options": {
-      "restore_access": "Play access",
-      "restrict_access": "Restricts access",
-      "remove_application": "Remove application",
-      "approve_request": "Approve",
-      "reject_request": "Rejects"
-    },
-    "remove_app_modal": {
-      "title": "Confirm application deletion",
-      "description": "After deleting the application, it will no longer be available to the organisation and all information about that application will be deleted."
-    },
-    "reject_request_modal": {
-      "title": "Confirm the rejection of the application",
-      "description": "Reject the application access request. After rejection, the NGO will be able to send a new access request."
-    }
-  },
-  "user": {
-    "title": "Users",
-    "subtitle": "Manage user accounts from here. You can add new users and edit or restrict existing users.",
-    "add": "Add User",
-    "not_found": "User does not exist in the database",
-    "failure_email": "There is already a user with this email",
-    "failure_phone": "There is already a user with this phone number",
-    "tabs": {
-      "users": "Users",
-      "invites": "Invitations sent"
-    },
-    "create": {
-      "success": "Successfully created user",
-      "failure": "User could not be created",
-      "invite": "Send invitation"
-    },
-    "edit": {
-      "load_error": "Could not upload user id",
-      "success": "User successfully updated",
-      "failure": "User could not be updated"
-    },
-    "list": {
-      "load_error": "User upload error",
-      "restrict_error": "Access restriction error",
-      "restore_error": "Error when returning access",
-      "remove_error": "User deletion error",
-      "restrict": "Temporarily restricts",
-      "give_access": "Play access",
-      "permanent": "Permanently removes",
-      "restore_success": "User access restored",
-      "remove_success": "User with id successfully deleted",
-      "restrict_success": "Restricted user access",
-      "date": "Date added",
-      "confirmation": "Confirm user deletion",
-      "description": "After deleting the user, they will no longer have access to NGO Hug and all information about that account will be deleted.",
-      "download": "Download table",
-      "access_to_app": "Access to applications"
-    },
-    "invites": {
-      "title": "Invitation list",
-      "load_error": "Error loading invitations",
-      "resend_error": "Error resending the invitation",
-      "remove_error": "User deletion error",
-      "resend_success": "Invitation successfully re-sent",
-      "resend": "Forward",
-      "remove_success": "User successfully deleted",
-      "confirmation": "Confirm user deletion",
-      "description": "After deleting the user, they will no longer have access to NGO Hug and all information about that account will be deleted."
-    },
-    "create_org": {
-      "title": "Contact person in relation with NGO Hub"
-    },
-    "filters": {
-      "active": "Activ",
-      "restricted": "Restricted",
-      "any": "All",
-      "all": "All"
-    },
-    "list_header": {
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "status": "General access",
-      "created": "Date added"
-    },
-    "invites_header": {
-      "name": "Name",
-      "email": "E-mail",
-      "phone": "Phone",
-      "added_on": "Date added"
-    },
-    "status": {
-      "active": "Activ",
-      "restricted": "Restricted"
-    },
-    "config": {
-      "name": {
-        "required": "Name is required",
-        "max": "The name can have a maximum of 100 characters",
-        "min": "The name can have a minimum of 5 characters",
-        "invalid": "The name has an invalid format",
-        "label": "Full name*"
-      },
-      "email": {
-        "required": "Email is required",
-        "max": "The email can have a maximum of 50 characters",
-        "invalid": "The email has an invalid format",
-        "label": "Email*"
-      },
-      "phone": {
-        "required": "Phone number is required",
-        "max": "The phone number can have a maximum of 15 characters",
-        "min": "The phone number can have a minimum of 10 characters",
-        "invalid": "The phone number has an invalid format",
-        "label": "Phone*"
-      }
-    }
-  },
-  "organizations": {
-    "load_error": "Error when uploading organisations",
-    "view": "View NGO",
-    "restrict": "Temporarily restricts",
-    "title": "NGOs",
-    "list": "List of NGOs",
-    "administer": " organisations registered in the NGO Hub.",
-    "restrict_error": "Organisation restriction error",
-    "activate_error": "Organisation activation error",
-    "activate": "Activate",
-    "restrict_success": "Successfully restricted organisation",
-    "activate_success": "Successfully activated organisation",
-    "filter": {
-      "registration": "Registration period",
-      "users": "Number of users",
-      "status": "Data update status"
-    },
-    "header": {
-      "ong_alias": "NGO",
-      "users": "Users",
-      "register": "Registration",
-      "access": "Access",
-      "updated": "Last data update",
-      "status": "Update status",
-      "active": "Activ",
-      "restricted": "Restricted"
-    }
-  },
-  "appstore": {
-    "title": "Applications",
-    "description": "Discover all the applications available for your organisation's profile. Find out more about each one and add the ones you want to use.",
-    "add": "Add application",
-    "all": "All applications",
-    "tabs": {
-      "overview": "Applications overview",
-      "requests": "Applications access requests"
-    },
-    "list": {
-      "load_error": "Error loading applications",
-      "access_error": "Access modification error",
-      "remove_error": "Error deleting the application",
-      "remove_success": "Application successfully removed",
-      "view": "View application",
-      "activate": "Activate the app",
-      "restrict": "Temporarily disable",
-      "type": "Application type",
-      "status": "Status",
-      "remove": "Permanently removes",
-      "confirmation": "Confirm app deletion?",
-      "description": "All information associated with the application will be deleted and the application will not be recoverable."
-    },
-    "create": {
-      "error": "Error creating the application",
-      "success": "Successfully created application",
-      "description": "Add in the fields below the general data of a new application",
-      "edit": "Edit application page",
-      "generate": "Generate application page",
-      "general": "General dates",
-      "logo": "Application logo",
-      "upload": "Upload logo",
-      "logo_descr": "Upload the application logo. Recommended size - small side minimum 1000 px. Supported files: jpeg, png.",
-      "steps": "Steps for adding the app",
-      "steps_descr": "ySH%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% - where does this appear?",
-      "step_add": "Add more steps",
-      "step_delete": "Delete step"
-    },
-    "type": {
-      "independent": "Independent website",
-      "data": "Collect data from the NGO Hub",
-      "simple": "Requires simple login",
-      "standalone": "Requires login with configuration"
-    },
-    "status": {
-      "any": "All",
-      "active": "Activ",
-      "disabled": "Inactive",
-      "restricted": "Restricted",
-      "pending": "Waiting",
-      "pending_removal": "Deleted"
-    },
-    "header": {
-      "name": "Application",
-      "type": "Application type",
-      "status": "Status",
-      "ong_number": "Number of NGOs",
-      "users": "Users"
-    },
-    "config": {
-      "name": {
-        "required": "Application name is required",
-        "max": "The application name cannot be longer than 100 characters",
-        "min": "The application name cannot have less than 3 characters",
-        "invalid": "The application name has an invalid format",
-        "label": "Application name*",
-        "helper": "Choose a name of up to 100 characters"
-      },
-      "type": {
-        "label": "Application type*",
-        "required": "Application type is mandatory"
-      },
-      "short": {
-        "required": "Short description is mandatory",
-        "max": "The short description can be a maximum of 200 characters",
-        "min": "The short description can be a minimum of 50 characters",
-        "label": "Short description",
-        "helper": "Describe the application in no more than 200 characters"
-      },
-      "description": {
-        "required": "Extended description is required",
-        "max": "The extended description can be up to 7000 characters long",
-        "min": "The extended description can be a minimum of 200 characters",
-        "label": "Extended application description*",
-        "helper": "Include a longer description of up to 7000 characters"
-      },
-      "website": {
-        "label": "Link to the application presentation website",
-        "required": "Link to the website is required"
-      },
-      "login_link": {
-        "label": "Automatic login link*",
-        "required": "Link to login page is required"
-      },
-      "open_link": {
-        "label": "Link buton Deschide*",
-        "required": "Link-ul către aplicație este obligatoriu"
-      },
-      "video_link": {
-        "label": "Link video presentation",
-        "helper": "The URL must be in the form of an embed from YT. (e.g.: https://www.youtube.com/embed/r23xQuM7jVo)",
-        "required": "Link to the video presentation is required"
-      },
-      "pulling_type": {
-        "label": "Data type for pulling app",
+    "applications": {
+        "active_apps": "Applications in use",
+        "pending_app_requests": "Application requests",
+        "app_type": "Application type",
+        "error": {
+            "get_applications": "Error loading applications",
+            "get_requests": "Error uploading applications",
+            "restrict_application": "Access restriction error",
+            "restore_application": "Access rendering error",
+            "remove_application": "Error deleting the application",
+            "approve_request": "Error when approving the application",
+            "reject_request": "Error in rejecting the application"
+        },
         "options": {
-          "practice_program": "Internship programmes",
-          "civic_service": "Services"
+            "restore_access": "Play access",
+            "restrict_access": "Restricts access",
+            "remove_application": "Remove application",
+            "approve_request": "Approve",
+            "reject_request": "Rejects"
+        },
+        "remove_app_modal": {
+            "title": "Confirm application deletion",
+            "description": "After deleting the application, it will no longer be available to the organisation and all information about that application will be deleted."
+        },
+        "reject_request_modal": {
+            "title": "Confirm the rejection of the application",
+            "description": "Reject the application access request. After rejection, the NGO will be able to send a new access request."
         }
-      },
-      "step": {
-        "min": "The step must be at least 2 characters long",
-        "max": "The step must have a maximum of 100 characters",
-        "label": "Not"
-      }
     },
-    "request_modal": {
-      "approve": {
-        "title": "Approve",
-        "description": "Confirm approval of the application",
-        "confirm": "Yes, I approve the request"
-      },
-      "reject": {
-        "title": "Rejects",
-        "description": "Confirms the rejection of the application",
-        "confirm": "Rejects the application"
-      }
+    "user": {
+        "title": "Users",
+        "subtitle": "Manage user accounts from here. You can add new users and edit or restrict existing users.",
+        "add": "Add User",
+        "not_found": "User does not exist in the database",
+        "failure_email": "There is already a user with this email",
+        "failure_phone": "There is already a user with this phone number",
+        "tabs": {
+            "users": "Users",
+            "invites": "Invitations sent"
+        },
+        "create": {
+            "success": "Successfully created user",
+            "failure": "User could not be created",
+            "invite": "Send invitation"
+        },
+        "edit": {
+            "load_error": "Could not upload user id",
+            "success": "User successfully updated",
+            "failure": "User could not be updated"
+        },
+        "list": {
+            "load_error": "User upload error",
+            "restrict_error": "Access restriction error",
+            "restore_error": "Error when returning access",
+            "remove_error": "User deletion error",
+            "restrict": "Temporarily restricts",
+            "give_access": "Play access",
+            "permanent": "Permanently removes",
+            "restore_success": "User access restored",
+            "remove_success": "User with id successfully deleted",
+            "restrict_success": "Restricted user access",
+            "date": "Date added",
+            "confirmation": "Confirm user deletion",
+            "description": "After deleting the user, they will no longer have access to NGO Hug and all information about that account will be deleted.",
+            "download": "Download table",
+            "access_to_app": "Access to applications"
+        },
+        "invites": {
+            "title": "Invitation list",
+            "load_error": "Error loading invitations",
+            "resend_error": "Error resending the invitation",
+            "remove_error": "User deletion error",
+            "resend_success": "Invitation successfully re-sent",
+            "resend": "Forward",
+            "remove_success": "User successfully deleted",
+            "confirmation": "Confirm user deletion",
+            "description": "After deleting the user, they will no longer have access to NGO Hug and all information about that account will be deleted."
+        },
+        "create_org": {
+            "title": "Contact person in relation with NGO Hub"
+        },
+        "filters": {
+            "active": "Activ",
+            "restricted": "Restricted",
+            "any": "All",
+            "all": "All"
+        },
+        "list_header": {
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "status": "General access",
+            "created": "Date added"
+        },
+        "invites_header": {
+            "name": "Name",
+            "email": "E-mail",
+            "phone": "Phone",
+            "added_on": "Date added"
+        },
+        "status": {
+            "active": "Activ",
+            "restricted": "Restricted"
+        },
+        "config": {
+            "name": {
+                "required": "Name is required",
+                "max": "The name can have a maximum of 100 characters",
+                "min": "The name can have a minimum of 5 characters",
+                "invalid": "The name has an invalid format",
+                "label": "Full name*"
+            },
+            "email": {
+                "required": "Email is required",
+                "max": "The email can have a maximum of 50 characters",
+                "invalid": "The email has an invalid format",
+                "label": "Email*"
+            },
+            "phone": {
+                "required": "Phone number is required",
+                "max": "The phone number can have a maximum of 15 characters",
+                "min": "The phone number can have a minimum of 10 characters",
+                "invalid": "The phone number has an invalid format",
+                "label": "Phone*"
+            }
+        }
     },
-    "request_header": {
-      "name": "Application",
-      "ong": "Organisation",
-      "created_on": "Date of request"
+    "organizations": {
+        "load_error": "Error when uploading organisations",
+        "view": "View NGO",
+        "restrict": "Temporarily restricts",
+        "title": "NGOs",
+        "list": "List of NGOs",
+        "administer": " organisations registered in the NGO Hub.",
+        "restrict_error": "Organisation restriction error",
+        "activate_error": "Organisation activation error",
+        "activate": "Activate",
+        "restrict_success": "Successfully restricted organisation",
+        "activate_success": "Successfully activated organisation",
+        "filter": {
+            "registration": "Registration period",
+            "users": "Number of users",
+            "status": "Data update status"
+        },
+        "header": {
+            "ong_alias": "NGO",
+            "users": "Users",
+            "register": "Registration",
+            "access": "Access",
+            "updated": "Last data update",
+            "status": "Update status",
+            "active": "Activ",
+            "restricted": "Restricted"
+        }
+    },
+    "appstore": {
+        "title": "Applications",
+        "description": "Discover all the applications available for your organisation's profile. Find out more about each one and add the ones you want to use.",
+        "add": "Add application",
+        "all": "All applications",
+        "tabs": {
+            "overview": "Applications overview",
+            "requests": "Applications access requests"
+        },
+        "list": {
+            "load_error": "Error loading applications",
+            "access_error": "Access modification error",
+            "remove_error": "Error deleting the application",
+            "remove_success": "Application successfully removed",
+            "view": "View application",
+            "activate": "Activate the app",
+            "restrict": "Temporarily disable",
+            "type": "Application type",
+            "status": "Status",
+            "remove": "Permanently removes",
+            "confirmation": "Confirm app deletion?",
+            "description": "All information associated with the application will be deleted and the application will not be recoverable."
+        },
+        "create": {
+            "error": "Error creating the application",
+            "success": "Successfully created application",
+            "description": "Add in the fields below the general data of a new application",
+            "edit": "Edit application page",
+            "generate": "Generate application page",
+            "general": "General dates",
+            "logo": "Application logo",
+            "upload": "Upload logo",
+            "logo_descr": "Upload the application logo. Recommended size - small side minimum 1000 px. Supported files: jpeg, png.",
+            "steps": "Steps for adding the app",
+            "steps_descr": "ySH%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% - where does this appear?",
+            "step_add": "Add more steps",
+            "step_delete": "Delete step"
+        },
+        "type": {
+            "independent": "Independent website",
+            "data": "Collect data from the NGO Hub",
+            "simple": "Requires simple login",
+            "standalone": "Requires login with configuration"
+        },
+        "status": {
+            "any": "All",
+            "active": "Activ",
+            "disabled": "Inactive",
+            "restricted": "Restricted",
+            "pending": "Waiting",
+            "pending_removal": "Deleted"
+        },
+        "header": {
+            "name": "Application",
+            "type": "Application type",
+            "status": "Status",
+            "ong_number": "Number of NGOs",
+            "users": "Users"
+        },
+        "config": {
+            "name": {
+                "required": "Application name is required",
+                "max": "The application name cannot be longer than 100 characters",
+                "min": "The application name cannot have less than 3 characters",
+                "invalid": "The application name has an invalid format",
+                "label": "Application name*",
+                "helper": "Choose a name of up to 100 characters"
+            },
+            "type": {
+                "label": "Application type*",
+                "required": "Application type is mandatory"
+            },
+            "short": {
+                "required": "Short description is mandatory",
+                "max": "The short description can be a maximum of 200 characters",
+                "min": "The short description can be a minimum of 50 characters",
+                "label": "Short description",
+                "helper": "Describe the application in no more than 200 characters"
+            },
+            "description": {
+                "required": "Extended description is required",
+                "max": "The extended description can be up to 7000 characters long",
+                "min": "The extended description can be a minimum of 200 characters",
+                "label": "Extended application description*",
+                "helper": "Include a longer description of up to 7000 characters"
+            },
+            "website": {
+                "label": "Link to the application presentation website",
+                "required": "Link to the website is required"
+            },
+            "login_link": {
+                "label": "Automatic login link*",
+                "required": "Link to login page is required"
+            },
+            "open_link": {
+                "label": "Link buton Deschide*",
+                "required": "Link-ul către aplicație este obligatoriu"
+            },
+            "video_link": {
+                "label": "Link video presentation",
+                "helper": "The URL must be in the form of an embed from YT. (e.g.: https://www.youtube.com/embed/r23xQuM7jVo)",
+                "required": "Link to the video presentation is required"
+            },
+            "pulling_type": {
+                "label": "Data type for pulling app",
+                "options": {
+                    "practice_program": "Internship programmes",
+                    "civic_service": "Services"
+                }
+            },
+            "step": {
+                "min": "The step must be at least 2 characters long",
+                "max": "The step must have a maximum of 100 characters",
+                "label": "Not"
+            }
+        },
+        "request_modal": {
+            "approve": {
+                "title": "Approve",
+                "description": "Confirm approval of the application",
+                "confirm": "Yes, I approve the request"
+            },
+            "reject": {
+                "title": "Rejects",
+                "description": "Confirms the rejection of the application",
+                "confirm": "Rejects the application"
+            }
+        },
+        "request_header": {
+            "name": "Application",
+            "ong": "Organisation",
+            "created_on": "Date of request"
+        },
+        "requests": {
+            "load_error": "Error loading requests.",
+            "status_error": "Status change error",
+            "view": "View application",
+            "approve": "Approve",
+            "reject": "Rejects",
+            "status_update": "Updated status",
+            "requests": "Requests",
+            "date_added": "Date added"
+        },
+        "form": {
+            "title": "General dates",
+            "subtitle": "",
+            "logo": "Application logo",
+            "upload_logo": "Upload logo",
+            "upload_description": "Upload the application logo. Recommended size - small side minimum 1000 px. Supported files: jpeg, png.",
+            "steps_title": "Steps for adding the app",
+            "steps_subtitle": "Adds and details the steps required to gain access to the application",
+            "add_step": "Add step",
+            "delete_step": "Delete step"
+        }
+    },
+    "app": {
+        "title": "Application",
+        "tabs": {
+            "description": "Description",
+            "list": "List of NGOs"
+        },
+        "details": {
+            "website": "See website",
+            "how_to": "How to activate the app for your organisation",
+            "request": "Request application",
+            "description": "Description",
+            "video": "Video presentation",
+            "request_error": "Request could not be sent",
+            "request_successful": "Request successfully sent",
+            "add": "Add app",
+            "remove_success": "Application successfully removed",
+            "restricted": "Access to the application has been restricted",
+            "auto": "The application is automatically added when you create your NGO Hub account and cannot be disabled.",
+            "delete": "Remove application",
+            "contact": "We will contact you within 24-48 hours.",
+            "active": "The app is active for your organisation.",
+            "define_active": "Lorem ipsum. What does it mean that the application is active. According to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
+            "open": "Open the app",
+            "pending": "Your request is awaiting approval.",
+            "configure": "This application must be installed and configured according to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
+            "cancel": "Cancel request",
+            "restore": "Contact us for a refund.",
+            "close_button": "Remove application",
+            "close_title": "Confirm app removal",
+            "close_description": "By confirming the removal of the app you will no longer be able to access the app from your organisation's NGO HUb account. The app will remain available in the My Apps tab where you can request it if you want to use it again.",
+            "another_description": "Application description",
+            "pending_removal": "The application has been flagged for deletion",
+            "disabled": {
+                "title": "Access to the application is currently unavailable",
+                "description": "We will be back with updates soon."
+            },
+            "practice_program": {
+                "redirect_to_site": "View your profile on Practice4Good",
+                "redirect_to_practice_programs": "Manage programs"
+            },
+            "services": {
+                "redirect_to_site": "View your Civic Centre profile",
+                "redirect_to_services": "Manage services"
+            }
+        },
+        "list_header": {
+            "name": "NGO",
+            "user_count": "Individual Users",
+            "created_on": "Date added",
+            "access": "Access"
+        },
+        "list": {
+            "load_error": "Error when uploading organisations",
+            "title": "List of NGOs",
+            "activate": "Activate app",
+            "restrict": "Disable app",
+            "remove": "Permanently removes"
+        },
+        "edit": {
+            "title": "Edit app",
+            "subtitle": "Manage your organisation profile from here to access available applications.",
+            "page_title": "Edit application page",
+            "success": "Successfully modified application!",
+            "error": "Error editing the application"
+        },
+        "type": {
+            "all": "All",
+            "independent": "Independent website",
+            "simple": "Simple login required",
+            "standalone": "Requires login with configuration"
+        }
+    },
+    "header": {
+        "enter": "Log in",
+        "my_account": "My account",
+        "log_out": "Disconnect",
+        "home": "Home"
+    },
+    "my_apps": {
+        "title": "My applications",
+        "subtitle": "Here you can view and access all applications activated in your organisation's NGO Hub account.",
+        "open": "Open",
+        "more": "Read More"
     },
     "requests": {
-      "load_error": "Error loading requests.",
-      "status_error": "Status change error",
-      "view": "View application",
-      "approve": "Approve",
-      "reject": "Rejects",
-      "status_update": "Updated status",
-      "requests": "Requests",
-      "date_added": "Date added"
-    },
-    "form": {
-      "title": "General dates",
-      "subtitle": "",
-      "logo": "Application logo",
-      "upload_logo": "Upload logo",
-      "upload_description": "Upload the application logo. Recommended size - small side minimum 1000 px. Supported files: jpeg, png.",
-      "steps_title": "Steps for adding the app",
-      "steps_subtitle": "Adds and details the steps required to gain access to the application",
-      "add_step": "Add step",
-      "delete_step": "Delete step"
-    }
-  },
-  "app": {
-    "title": "Application",
-    "tabs": {
-      "description": "Description",
-      "list": "List of NGOs"
-    },
-    "details": {
-      "website": "See website",
-      "how_to": "How to activate the app for your organisation",
-      "request": "Request application",
-      "description": "Description",
-      "video": "Video presentation",
-      "request_error": "Request could not be sent",
-      "request_successful": "Request successfully sent",
-      "add": "Add app",
-      "remove_success": "Application successfully removed",
-      "restricted": "Access to the application has been restricted",
-      "auto": "The application is automatically added when you create your NGO Hub account and cannot be disabled.",
-      "delete": "Remove application",
-      "contact": "We will contact you within 24-48 hours.",
-      "active": "The app is active for your organisation.",
-      "define_active": "Lorem ipsum. What does it mean that the application is active. According to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
-      "open": "Open the app",
-      "pending": "Your request is awaiting approval.",
-      "configure": "This application must be installed and configured according to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
-      "cancel": "Cancel request",
-      "restore": "Contact us for a refund.",
-      "close_button": "Remove application",
-      "close_title": "Confirm app removal",
-      "close_description": "By confirming the removal of the app you will no longer be able to access the app from your organisation's NGO HUb account. The app will remain available in the My Apps tab where you can request it if you want to use it again.",
-      "another_description": "Application description",
-      "pending_removal": "The application has been flagged for deletion",
-      "disabled": {
-        "title": "Access to the application is currently unavailable",
-        "description": "We will be back with updates soon."
-      },
-      "practice_program": {
-        "redirect_to_site": "View your profile on Practice4Good",
-        "redirect_to_practice_programs": "Manage programs"
-      },
-      "services": {
-        "redirect_to_site": "View your Civic Centre profile",
-        "redirect_to_services": "Manage services"
-      }
-    },
-    "list_header": {
-      "name": "NGO",
-      "user_count": "Individual Users",
-      "created_on": "Date added",
-      "access": "Access"
-    },
-    "list": {
-      "load_error": "Error when uploading organisations",
-      "title": "List of NGOs",
-      "activate": "Activate app",
-      "restrict": "Disable app",
-      "remove": "Permanently removes"
-    },
-    "edit": {
-      "title": "Edit app",
-      "subtitle": "Manage your organisation profile from here to access available applications.",
-      "page_title": "Edit application page",
-      "success": "Successfully modified application!",
-      "error": "Error editing the application"
-    },
-    "type": {
-      "all": "All",
-      "independent": "Independent website",
-      "simple": "Simple login required",
-      "standalone": "Requires login with configuration"
-    }
-  },
-  "header": {
-    "enter": "Log in",
-    "my_account": "My account",
-    "log_out": "Disconnect",
-    "home": "Home"
-  },
-  "my_apps": {
-    "title": "My applications",
-    "subtitle": "Here you can view and access all applications activated in your organisation's NGO Hub account.",
-    "open": "Open",
-    "more": "Read More"
-  },
-  "requests": {
-    "title": "Access requests",
-    "subtitle": "Manage here the access requests of organisations in NGO HUb",
-    "load_error": "Error loading requests",
-    "status_error": "Status change error",
-    "status_update": "Updated status",
-    "solved": "Request solved",
-    "description": "TODO#18: zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
-    "reject": "Rejects",
-    "approve": "Approve",
-    "view_form": "View form",
-    "requests": "Requests",
-    "created_on": "Date added",
-    "data_pending": "The data below corresponds to a pending application.",
-    "modals": {
-      "approve": {
-        "title": "Approve and send confirmation",
-        "description": "Following approval, the NGO will receive a confirmation email to the address provided at registration and a link to complete the process and gain access to the platform. Confirm approval?",
-        "confirm": "Yes, I approve the request"
-      },
-      "reject": {
-        "title": "Reject and send email",
-        "description": "Following rejection, the NGO will receive a confirmation e-mail to the address provided upon registration. Confirm rejection?",
-        "confirm": "Rejects the application"
-      }
-    },
-    "constants": {
-      "approved": "Approved",
-      "rejected": "Rejected",
-      "pending": "In process"
-    },
-    "header": {
-      "org_name": "Organisation",
-      "name": "Name",
-      "email": "Email",
-      "phone": "Phone",
-      "status": "Status",
-      "created_on": "Date added",
-      "status_error": "Error"
-    }
-  },
-  "routes": {
-    "dashboard": "Dashboard",
-    "organization": "My organisation",
-    "apps": "My applications",
-    "users": "Users",
-    "store": "All applications",
-    "organizations": "NGOs",
-    "requests": "Access Requests",
-    "practice_programs": "Internship Programs"
-  },
-  "login": {
-    "title": "Register NGO",
-    "description": "Complete the form below, and we will contact you to validate the data and provide you with access to the platform.",
-    "about": {
-      "title": "About application form",
-      "description": "To access NGO Hub, an organization representative must fill out the following form, providing information about the organization and its members. This initial registration step involves only entering legal data, including uploading the organization's statute.",
-      "start_form": "Start form"
-    }
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "about": "About ONGHub",
-    "statistics": {
-      "mean_number_of_users": "Average number of users per organisation",
-      "number_of_active_organizations": "Organisations active in the NGO Hub",
-      "number_of_apps": "Available applications",
-      "number_of_pending_requests": "Pending applications from organisations",
-      "number_of_updated_organizations": "Number of organisations with updated data",
-      "number_of_users": "Total number of individual users",
-      "next_update": "The next data update will be required on 30 June 2024.",
-      "active_apps": "Active applications",
-      "view_active_apps": "View active apps",
-      "active_users": "Users in the organisation",
-      "handle_users": "Manage users",
-      "view_data": "View data",
-      "updated_data": "Organisation data is up-to-date",
-      "outdated_data": "The organisation's data is not up-to-date",
-      "error": "Data retrieval error",
-      "active_organizations": "Active",
-      "inactive_organizations": "Inactive",
-      "accepted_requests": "Accepted",
-      "rejected_requests": "Rejected",
-      "organization_chart": "Organisations in the NGO Hub",
-      "request_chart": "NGO Hub applications",
-      "organization_statistics_error": "Error when uploading organisation statistics",
-      "requests_statistics_error": "Error when uploading application statistics to the organisation",
-      "user_list": "Users list",
-      "filter": {
-        "yearly": "Since forever",
-        "monthly": "Lunar",
-        "daily": "Daily"
-      }
-    },
-    "activity_title": "Organisation active in the NGO Hub in",
-    "last_updated_on": "Latest data update"
-  },
-  "civic_center_service": {
-    "wrapper": {
-      "title": "My services",
-      "description": "TODO#17: Lorem ipsum",
-      "add_button": "Add Service"
-    },
-    "list": {
-      "error": "Error loading the list of services"
-    },
-    "add": {
-      "title": "Add Service",
-      "card_title": "Service Description"
-    },
-    "edit": {
-      "title": "Change Service",
-      "card_title": "Service Description"
-    },
-    "form": {
-      "section": {
-        "online": {
-          "title": "Access online",
-          "description": "TODO#14: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        "title": "Access requests",
+        "subtitle": "Manage here the access requests of organisations in NGO HUb",
+        "load_error": "Error loading requests",
+        "status_error": "Status change error",
+        "status_update": "Updated status",
+        "solved": "Request solved",
+        "description": "TODO#18: zYI339%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+        "reject": "Rejects",
+        "approve": "Approve",
+        "view_form": "View form",
+        "requests": "Requests",
+        "created_on": "Date added",
+        "data_pending": "The data below corresponds to a pending application.",
+        "modals": {
+            "approve": {
+                "title": "Approve and send confirmation",
+                "description": "Following approval, the NGO will receive a confirmation email to the address provided at registration and a link to complete the process and gain access to the platform. Confirm approval?",
+                "confirm": "Yes, I approve the request"
+            },
+            "reject": {
+                "title": "Reject and send email",
+                "description": "Following rejection, the NGO will receive a confirmation e-mail to the address provided upon registration. Confirm rejection?",
+                "confirm": "Rejects the application"
+            }
         },
-        "email_or_phone": {
-          "title": "Access by email or phone",
-          "description": "TODO#15: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        "constants": {
+            "approved": "Approved",
+            "rejected": "Rejected",
+            "pending": "In process"
         },
-        "physical": {
-          "title": "Access by presentation at the location",
-          "description": "TODO#16: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+        "header": {
+            "org_name": "Organisation",
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "status": "Status",
+            "created_on": "Date added",
+            "status_error": "Error"
         }
-      },
-      "name": {
-        "required": "Service name is mandatory",
-        "min": "The name cannot be less than 3 characters long",
-        "max": "The name cannot be longer than 50 characters",
-        "pattern": "The name does not have the valid format.",
-        "label": "Name of service*",
-        "helper": "",
-        "placeholder": "Name of service"
-      },
-      "location": {
-        "required": "Location is mandatory",
-        "label": "Location where the service is available*",
-        "helper": "",
-        "placeholder": "Bucharest"
-      },
-      "start_date": {
-        "required": "Start date is mandatory",
-        "label": "Service start date*",
-        "helper": "",
-        "placeholder": "31.12.2999"
-      },
-      "end_date": {
-        "label": "Service end date*",
-        "helper": "",
-        "placeholder": "31.12.2999",
-        "start_date_after_end_date": "The end date cannot be less than the start date"
-      },
-      "is_period_not_determined": {
-        "label": "Indefinite period",
-        "helper": ""
-      },
-      "short_description": {
-        "required": "Description is required",
-        "min": "The description cannot be less than 3 characters long",
-        "max": "The description cannot be longer than 250 characters",
-        "pattern": "The description is not in valid format.",
-        "label": "Short service description*",
-        "helper": "Describe the service in 3-250 characters",
-        "placeholder": "TODO#13: Lorem ipsum"
-      },
-      "long_description": {
-        "required": "Description is required",
-        "min": "The description cannot be less than 3 characters long",
-        "max": "The description cannot be longer than 3000 characters",
-        "pattern": "The description is not in valid format.",
-        "label": "Extended service description*",
-        "helper": "Add a more comprehensive description of the service offered",
-        "placeholder": "TODO#12: Lorem ipsum"
-      },
-      "domains": {
-        "required": "The field is mandatory",
-        "label": "Areas*",
-        "helper": "Select at least one domain"
-      },
-      "age_category": {
-        "label": "Age category*",
-        "helper": "Select a minimum of one or all age categories",
-        "required": "Age category is mandatory"
-      },
-      "online": {
-        "toggle": {
-          "label": "The service can be accessed online"
-        },
-        "link": {
-          "required": "Link is required",
-          "pattern": "The link format is invalid.",
-          "label": "Link to access page (button)*",
-          "helper": "Add the link where anyone can access this service.",
-          "placeholder": ""
-        },
-        "description": {
-          "max": "The description cannot be longer than 1000 characters",
-          "pattern": "The description is not in valid format.",
-          "label": "Online access description",
-          "placeholder": "TODO#11: Lorem ipsum"
+    },
+    "routes": {
+        "dashboard": "Dashboard",
+        "organization": "My organisation",
+        "apps": "My applications",
+        "users": "Users",
+        "store": "All applications",
+        "organizations": "NGOs",
+        "requests": "Access Requests",
+        "practice_programs": "Internship Programs"
+    },
+    "login": {
+        "title": "Register NGO",
+        "description": "Complete the form below, and we will contact you to validate the data and provide you with access to the platform.",
+        "about": {
+            "title": "About application form",
+            "description": "To access NGO Hub, an organization representative must fill out the following form, providing information about the organization and its members. This initial registration step involves only entering legal data, including uploading the organization's statute.",
+            "start_form": "Start form"
         }
-      },
-      "email_or_phone": {
-        "toggle": {
-          "label": "The service can be accessed by phone or e-mail"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "about": "About ONGHub",
+        "statistics": {
+            "mean_number_of_users": "Average number of users per organisation",
+            "number_of_active_organizations": "Organisations active in the NGO Hub",
+            "number_of_apps": "Available applications",
+            "number_of_pending_requests": "Pending applications from organisations",
+            "number_of_updated_organizations": "Number of organisations with updated data",
+            "number_of_users": "Total number of individual users",
+            "next_update": "The next data update will be required on 30 June 2024.",
+            "active_apps": "Active applications",
+            "view_active_apps": "View active apps",
+            "active_users": "Users in the organisation",
+            "handle_users": "Manage users",
+            "view_data": "View data",
+            "updated_data": "Organisation data is up-to-date",
+            "outdated_data": "The organisation's data is not up-to-date",
+            "error": "Data retrieval error",
+            "active_organizations": "Active",
+            "inactive_organizations": "Inactive",
+            "accepted_requests": "Accepted",
+            "rejected_requests": "Rejected",
+            "organization_chart": "Organisations in the NGO Hub",
+            "request_chart": "NGO Hub applications",
+            "organization_statistics_error": "Error when uploading organisation statistics",
+            "requests_statistics_error": "Error when uploading application statistics to the organisation",
+            "user_list": "Users list",
+            "filter": {
+                "yearly": "Since forever",
+                "monthly": "Lunar",
+                "daily": "Daily"
+            }
         },
-        "phone": {
-          "required": "Phone number is required",
-          "min": "The phone number cannot be less than 10 characters long",
-          "max": "The phone number cannot have more than 15 characters",
-          "pattern": "The phone number has an invalid format",
-          "helper": "Telephone number where the applicant can request the service",
-          "label": "Phone*"
+        "activity_title": "Organisation active in the NGO Hub in",
+        "last_updated_on": "Latest data update"
+    },
+    "civic_center_service": {
+        "wrapper": {
+            "title": "My services",
+            "description": "TODO#17: Lorem ipsum",
+            "add_button": "Add Service"
         },
-        "email": {
-          "required": "Email is required",
-          "max": "The email cannot be longer than 50 characters",
-          "pattern": "The email has an invalid format",
-          "helper": "E-mail address where the applicant can request the service",
-          "label": "E-mail*"
+        "list": {
+            "error": "Error loading the list of services"
         },
-        "description": {
-          "max": "The description cannot be longer than 1000 characters",
-          "pattern": "The description is not in valid format.",
-          "label": "Email access description",
-          "placeholder": "TODO#10: Lorem ipsum"
+        "add": {
+            "title": "Add Service",
+            "card_title": "Service Description"
+        },
+        "edit": {
+            "title": "Change Service",
+            "card_title": "Service Description"
+        },
+        "form": {
+            "section": {
+                "online": {
+                    "title": "Access online",
+                    "description": "TODO#14: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+                },
+                "email_or_phone": {
+                    "title": "Access by email or phone",
+                    "description": "TODO#15: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+                },
+                "physical": {
+                    "title": "Access by presentation at the location",
+                    "description": "TODO#16: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+                }
+            },
+            "name": {
+                "required": "Service name is mandatory",
+                "min": "The name cannot be less than 3 characters long",
+                "max": "The name cannot be longer than 50 characters",
+                "pattern": "The name does not have the valid format.",
+                "label": "Name of service*",
+                "helper": "",
+                "placeholder": "Name of service"
+            },
+            "location": {
+                "required": "Location is mandatory",
+                "label": "Location where the service is available*",
+                "helper": "",
+                "placeholder": "Bucharest"
+            },
+            "start_date": {
+                "required": "Start date is mandatory",
+                "label": "Service start date*",
+                "helper": "",
+                "placeholder": "31.12.2999"
+            },
+            "end_date": {
+                "label": "Service end date*",
+                "helper": "",
+                "placeholder": "31.12.2999",
+                "start_date_after_end_date": "The end date cannot be less than the start date"
+            },
+            "is_period_not_determined": {
+                "label": "Indefinite period",
+                "helper": ""
+            },
+            "short_description": {
+                "required": "Description is required",
+                "min": "The description cannot be less than 3 characters long",
+                "max": "The description cannot be longer than 250 characters",
+                "pattern": "The description is not in valid format.",
+                "label": "Short service description*",
+                "helper": "Describe the service in 3-250 characters",
+                "placeholder": "TODO#13: Lorem ipsum"
+            },
+            "long_description": {
+                "required": "Description is required",
+                "min": "The description cannot be less than 3 characters long",
+                "max": "The description cannot be longer than 3000 characters",
+                "pattern": "The description is not in valid format.",
+                "label": "Extended service description*",
+                "helper": "Add a more comprehensive description of the service offered",
+                "placeholder": "TODO#12: Lorem ipsum"
+            },
+            "domains": {
+                "required": "The field is mandatory",
+                "label": "Areas*",
+                "helper": "Select at least one domain"
+            },
+            "age_category": {
+                "label": "Age category*",
+                "helper": "Select a minimum of one or all age categories",
+                "required": "Age category is mandatory"
+            },
+            "online": {
+                "toggle": {
+                    "label": "The service can be accessed online"
+                },
+                "link": {
+                    "required": "Link is required",
+                    "pattern": "The link format is invalid.",
+                    "label": "Link to access page (button)*",
+                    "helper": "Add the link where anyone can access this service.",
+                    "placeholder": ""
+                },
+                "description": {
+                    "max": "The description cannot be longer than 1000 characters",
+                    "pattern": "The description is not in valid format.",
+                    "label": "Online access description",
+                    "placeholder": "TODO#11: Lorem ipsum"
+                }
+            },
+            "email_or_phone": {
+                "toggle": {
+                    "label": "The service can be accessed by phone or e-mail"
+                },
+                "phone": {
+                    "required": "Phone number is required",
+                    "min": "The phone number cannot be less than 10 characters long",
+                    "max": "The phone number cannot have more than 15 characters",
+                    "pattern": "The phone number has an invalid format",
+                    "helper": "Telephone number where the applicant can request the service",
+                    "label": "Phone*"
+                },
+                "email": {
+                    "required": "Email is required",
+                    "max": "The email cannot be longer than 50 characters",
+                    "pattern": "The email has an invalid format",
+                    "helper": "E-mail address where the applicant can request the service",
+                    "label": "E-mail*"
+                },
+                "description": {
+                    "max": "The description cannot be longer than 1000 characters",
+                    "pattern": "The description is not in valid format.",
+                    "label": "Email access description",
+                    "placeholder": "TODO#10: Lorem ipsum"
+                }
+            },
+            "physical": {
+                "toggle": {
+                    "label": "The service can be accessed by showing up at the location"
+                },
+                "address": {
+                    "required": "Address is required",
+                    "max": "The address cannot be longer than 300 characters",
+                    "pattern": "The address is not in valid format.",
+                    "label": "Service address*",
+                    "helper": "Enter the exact location from where a person can access the service"
+                },
+                "description": {
+                    "max": "The formatted description cannot be longer than 1000 characters",
+                    "label": "Physical access description",
+                    "placeholder": "TODO#9: Lorem ipsum",
+                    "helper": "Mention hours of operation or if the applicant is required to bring something, maximum 250 characters"
+                }
+            },
+            "access": {
+                "mandatory": "At least one type of access is mandatory"
+            }
+        },
+        "feedback": {
+            "success_create": "The service was created",
+            "success_update": "The service has been successfully modified",
+            "success_delete": "Service has been deleted",
+            "error_create": "Service creation error",
+            "error_update": "Service change error",
+            "error_delete": "Service deletion error"
+        },
+        "details": {
+            "available": "Available",
+            "age_category": "Age category",
+            "domains": "Domains",
+            "email": "E-mail",
+            "phone": "Phone",
+            "address": "Address",
+            "access": {
+                "online": {
+                    "title": "Online",
+                    "description": "TODO#5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+                },
+                "email_or_phone": {
+                    "title": "By e-mail or phone",
+                    "description": "TODO#6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+                },
+                "physical": {
+                    "title": "By submission to",
+                    "description": "TODO#7: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+                }
+            },
+            "delete_modal": {
+                "title": "Delete Service",
+                "description": "TODO#8: Lorem Ipsum is simply dummy text of the printing and typesetting industry"
+            }
         }
-      },
-      "physical": {
-        "toggle": {
-          "label": "The service can be accessed by showing up at the location"
+    },
+    "practice_program": {
+        "add": {
+            "title": "Add practice programme",
+            "card_title": "Program Description"
         },
-        "address": {
-          "required": "Address is required",
-          "max": "The address cannot be longer than 300 characters",
-          "pattern": "The address is not in valid format.",
-          "label": "Service address*",
-          "helper": "Enter the exact location from where a person can access the service"
+        "edit": {
+            "title": "Change practice schedule",
+            "card_title": "Program Description"
         },
-        "description": {
-          "max": "The formatted description cannot be longer than 1000 characters",
-          "label": "Physical access description",
-          "placeholder": "TODO#9: Lorem ipsum",
-          "helper": "Mention hours of operation or if the applicant is required to bring something, maximum 250 characters"
+        "form": {
+            "title": {
+                "required": "The title of the programme is mandatory",
+                "min": "The title may not be less than 3 characters long",
+                "max": "The title cannot be longer than 50 characters",
+                "pattern": "The title does not have the valid format.",
+                "label": "Title of internship programme*",
+                "helper": "",
+                "placeholder": "Internship Program"
+            },
+            "location": {
+                "required": "The city is mandatory",
+                "label": "City*",
+                "helper": "Start typing the name of the town in the field above, then select the desired one from the list",
+                "placeholder": "Miercurea Ciuc"
+            },
+            "deadline": {
+                "label": "Deadline application",
+                "helper": "Choose date from calendar",
+                "placeholder": "31.12.2025"
+            },
+            "description": {
+                "required": "Description is required",
+                "min": "The description cannot be less than 3 characters long",
+                "max": "The description cannot be longer than 3000 characters",
+                "pattern": "The description is not in valid format.",
+                "label": "Description of the internship programme*",
+                "helper": "",
+                "placeholder": "Lorem ipsum"
+            },
+            "start_date": {
+                "required": "Start date is mandatory",
+                "label": "Start date of internship*",
+                "helper": "",
+                "placeholder": "31.12.2999"
+            },
+            "end_date": {
+                "label": "End date of internship programme*",
+                "helper": "",
+                "placeholder": "31.12.2999",
+                "start_date_after_end_date": "The end date cannot be earlier than the start date."
+            },
+            "is_period_not_determined": {
+                "label": "Indefinite period",
+                "helper": ""
+            },
+            "min_working_hours": {
+                "required": "Field is mandatory",
+                "min": "The field cannot be smaller than 0",
+                "label": "Number of hours (minimum)",
+                "helper": "",
+                "placeholder": "0"
+            },
+            "max_working_hours": {
+                "required": "Field is mandatory",
+                "min": "The field cannot be smaller than 0",
+                "label": "Number of hours (maximum)",
+                "helper": "",
+                "placeholder": "0",
+                "min_larger_than_max": "The maximum number of hours worked may not be less than the minimum number of hours worked"
+            },
+            "link": {
+                "pattern": "The link format is invalid.",
+                "label": "Link to application page (button)",
+                "helper": "Add the link where anyone can apply to the internship program",
+                "placeholder": "www.example.com"
+            },
+            "domains": {
+                "required": "The field is mandatory",
+                "label": "Areas*",
+                "helper": "Select at least one domain"
+            },
+            "skills": {
+                "label": "The participant will learn (key words)",
+                "helper": "Adds skills that program participants will have the opportunity to develop during the program",
+                "placeholder": "Select/Add..."
+            },
+            "faculties": {
+                "label": "Faculties",
+                "helper": "Complete only if the internship programme is only dedicated to students of certain faculties",
+                "placeholder": "Select..."
+            }
+        },
+        "list": {
+            "title": "My internship programmes"
+        },
+        "details": {
+            "deadline": "Deadline application",
+            "deadline_unlimited": "unlimited",
+            "period": "Programme period",
+            "period_starting_with": "Since",
+            "working_hours": "Number of hours",
+            "faculties": "Dedicated to students at",
+            "domains": "Domains",
+            "skills": "You will learn",
+            "list_error": "Error loading data",
+            "delete_modal": {
+                "title": "Delete Practice Program",
+                "description": "Confirm deletion of the internship programme?"
+            }
+        },
+        "feedback": {
+            "success_create": "The internship programme was created",
+            "success_update": "The internship programme has been successfully modified",
+            "success_delete": "The internship programme has been deleted",
+            "error_create": "Error when creating the internship programme",
+            "error_update": "Error when changing the practice schedule",
+            "error_delete": "Error when deleting the practice programme"
         }
-      },
-      "access": {
-        "mandatory": "At least one type of access is mandatory"
-      }
     },
     "feedback": {
-      "success_create": "The service was created",
-      "success_update": "The service has been successfully modified",
-      "success_delete": "Service has been deleted",
-      "error_create": "Service creation error",
-      "error_update": "Service change error",
-      "error_delete": "Service deletion error"
-    },
-    "details": {
-      "available": "Available",
-      "age_category": "Age category",
-      "domains": "Domains",
-      "email": "E-mail",
-      "phone": "Phone",
-      "address": "Address",
-      "access": {
-        "online": {
-          "title": "Online",
-          "description": "TODO#5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        "title": "Feedback",
+        "header": {
+            "service_name": "Service",
+            "rating": "Rating",
+            "interaction_date": "Date of interaction",
+            "feedback_author": "Author",
+            "created_on": "Data feedback"
         },
-        "email_or_phone": {
-          "title": "By e-mail or phone",
-          "description": "TODO#6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        "action": {
+            "load_error": "Error loading feedback",
+            "remove_error": "Error deleting feedback",
+            "remove_success": "Feedback successfully deleted"
         },
-        "physical": {
-          "title": "By submission to",
-          "description": "TODO#7: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+        "remove_modal": {
+            "title": "Delete feedback",
+            "description": "Confirm deletion of feedback?"
+        },
+        "view_modal": {
+            "details": "Feedback details",
+            "author_name": "Author name feedback",
+            "interaction_when": "When did you interact with the service?",
+            "interaction_how": "How was your interaction with this service?",
+            "date_added": "Date of feedback"
         }
-      },
-      "delete_modal": {
-        "title": "Delete Service",
-        "description": "TODO#8: Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-      }
     }
-  },
-  "practice_program": {
-    "add": {
-      "title": "Add practice programme",
-      "card_title": "Program Description"
-    },
-    "edit": {
-      "title": "Change practice schedule",
-      "card_title": "Program Description"
-    },
-    "form": {
-      "title": {
-        "required": "The title of the programme is mandatory",
-        "min": "The title may not be less than 3 characters long",
-        "max": "The title cannot be longer than 50 characters",
-        "pattern": "The title does not have the valid format.",
-        "label": "Title of internship programme*",
-        "helper": "",
-        "placeholder": "Internship Program"
-      },
-      "location": {
-        "required": "The city is mandatory",
-        "label": "City*",
-        "helper": "Start typing the name of the town in the field above, then select the desired one from the list",
-        "placeholder": "Miercurea Ciuc"
-      },
-      "deadline": {
-        "label": "Deadline application",
-        "helper": "Choose date from calendar",
-        "placeholder": "31.12.2025"
-      },
-      "description": {
-        "required": "Description is required",
-        "min": "The description cannot be less than 3 characters long",
-        "max": "The description cannot be longer than 3000 characters",
-        "pattern": "The description is not in valid format.",
-        "label": "Description of the internship programme*",
-        "helper": "",
-        "placeholder": "Lorem ipsum"
-      },
-      "start_date": {
-        "required": "Start date is mandatory",
-        "label": "Start date of internship*",
-        "helper": "",
-        "placeholder": "31.12.2999"
-      },
-      "end_date": {
-        "label": "End date of internship programme*",
-        "helper": "",
-        "placeholder": "31.12.2999",
-        "start_date_after_end_date": "The end date cannot be earlier than the start date."
-      },
-      "is_period_not_determined": {
-        "label": "Indefinite period",
-        "helper": ""
-      },
-      "min_working_hours": {
-        "required": "Field is mandatory",
-        "min": "The field cannot be smaller than 0",
-        "label": "Number of hours (minimum)",
-        "helper": "",
-        "placeholder": "0"
-      },
-      "max_working_hours": {
-        "required": "Field is mandatory",
-        "min": "The field cannot be smaller than 0",
-        "label": "Number of hours (maximum)",
-        "helper": "",
-        "placeholder": "0",
-        "min_larger_than_max": "The maximum number of hours worked may not be less than the minimum number of hours worked"
-      },
-      "link": {
-        "pattern": "The link format is invalid.",
-        "label": "Link to application page (button)",
-        "helper": "Add the link where anyone can apply to the internship program",
-        "placeholder": "www.example.com"
-      },
-      "domains": {
-        "required": "The field is mandatory",
-        "label": "Areas*",
-        "helper": "Select at least one domain"
-      },
-      "skills": {
-        "label": "The participant will learn (key words)",
-        "helper": "Adds skills that program participants will have the opportunity to develop during the program",
-        "placeholder": "Select/Add..."
-      },
-      "faculties": {
-        "label": "Faculties",
-        "helper": "Complete only if the internship programme is only dedicated to students of certain faculties",
-        "placeholder": "Select..."
-      }
-    },
-    "list": {
-      "title": "My internship programmes"
-    },
-    "details": {
-      "deadline": "Deadline application",
-      "deadline_unlimited": "unlimited",
-      "period": "Programme period",
-      "period_starting_with": "Since",
-      "working_hours": "Number of hours",
-      "faculties": "Dedicated to students at",
-      "domains": "Domains",
-      "skills": "You will learn",
-      "list_error": "Error loading data",
-      "delete_modal": {
-        "title": "Delete Practice Program",
-        "description": "Confirm deletion of the internship programme?"
-      }
-    },
-    "feedback": {
-      "success_create": "The internship programme was created",
-      "success_update": "The internship programme has been successfully modified",
-      "success_delete": "The internship programme has been deleted",
-      "error_create": "Error when creating the internship programme",
-      "error_update": "Error when changing the practice schedule",
-      "error_delete": "Error when deleting the practice programme"
-    }
-  },
-  "feedback": {
-    "title": "Feedback",
-    "header": {
-      "service_name": "Service",
-      "rating": "Rating",
-      "interaction_date": "Date of interaction",
-      "feedback_author": "Author",
-      "created_on": "Data feedback"
-    },
-    "action": {
-      "load_error": "Error loading feedback",
-      "remove_error": "Error deleting feedback",
-      "remove_success": "Feedback successfully deleted"
-    },
-    "remove_modal": {
-      "title": "Delete feedback",
-      "description": "Confirm deletion of feedback?"
-    },
-    "view_modal": {
-      "details": "Feedback details",
-      "author_name": "Author name feedback",
-      "interaction_when": "When did you interact with the service?",
-      "interaction_how": "How was your interaction with this service?",
-      "date_added": "Date of feedback"
-    }
-  }
 }
