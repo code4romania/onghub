@@ -154,22 +154,22 @@
       "user_agreement": {
         "title": "Acordul de instalare",
         "list_item_1": "Organizația nu realizează activități și nu susține cauze de natură politică sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_2": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal, care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
-        "list_item_3": {
+        "list_item_2": "Soluțiile digitale puse la dispoziție nu vor fi folosite pentru dezvoltarea sau implementarea unui sa mai multor proiecte care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
+        "list_item_3": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal;",
+        "list_item_4": {
           "part_1": "Organizația a luat la cunoștință și respectă ",
           "code_of_conduct": "codul de conduită",
           "peas_policy": "Politica PEAS",
           "part_2": "al Code for Romania și "
         },
-        "list_item_4": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
-        "list_item_5": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
-        "list_item_6": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
-        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
+        "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
+        "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
+        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
         "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
         "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
         "form": {
           "agreement": {
-            "required": "Pentru a merge mai departe, vă rugăm să citiți cu atenție acordul și să confirmați că sunteți de acord."
+            "required": "Pentru a merge mai departe, citește cu atenție clauzele și confirmă-ți acordul, bifând câmpul de mai sus."
           }
         }
       },
@@ -319,17 +319,17 @@
       },
       "short": {
         "required": "Descrierea scurta este obligatorie",
-        "max": "Descrierea scurtă poate avea maxim 250 de caractere",
-        "min": "Descrierea scrută poate avea minim 150 de caractere",
+        "max": "Descrierea scurtă trebuie să aibă maxim 250 de caractere",
+        "min": "Descrierea scrută trebuie să aibă minim 150 de caractere",
         "label": "Descrierea scurtă a organizației*",
         "helper": "Prezintă organizația în 150 - 250 de caractere. Această descriere va fi preluată împreună cu celelalte informații generale în ecosistemul NGO Hub."
       },
       "long": {
         "required": "Prezentarea este obligatorie",
-        "max": "Prezentarea poate avea maxim 2000 de caractere",
-        "min": "Prezentarea poate avea minim 500 de caractere",
+        "max": "Prezentarea trebuie să aibă maxim 2000 de caractere",
+        "min": "Prezentarea trebuie să aibă minim 500 de caractere",
         "label": "Prezentare detaliată a organizație*",
-        "helper": "Adaugă o prezentare mai detaliată a organizației de maxim 2000 de caractere. Această prezentare va fi afișată pe paginile de prezentare a organizației din ecosistemul NGO Hub."
+        "helper": "Adaugă o prezentare mai detaliată a organizației. Această prezentare va fi afișată pe paginile de prezentare a organizației din ecosistemul NGO Hub. Prezentarea poate avea între 500 și 2000 de caractere."
       },
       "contact": {
         "required": "Numele și prenumele sunt obligatorii",
@@ -493,7 +493,7 @@
     "other": "Alte persoane relevante în organizație",
     "other_information": "Numele persoanelor adăugate sunt pentru a ușura comunicarea cu diferite persoane din organizația ta. De exemplu, aici poți adăuga managerul de comunicare sau persoana de fundraising dedicată din ONG-ul tău, sau coordonatori de sucursale din alte orașe. Datele de contact ale persoanelor relevante nu vor fi afișate public.",
     "statute": "Statutul organizației",
-    "statute_information": "Încarcă statutul organizației. Acesta nu va fi afișat public. Fișiere acceptate: pdf, maxim 25 MB.",
+    "statute_information": "Încarcă statutul anonimizat. Acesta nu va fi afișat public. Documentul este folosit doar a valida statutul de organizație neguvernamentală, și a confirma că scopul și misiunea organizației nu contravin cu criteliile de eligibilitate (ca de exemplu organizația pe care o reprezinți nu desfășoară activități care să încalce drepturile omului, nu este afiliată unui partid politic, nu este o asociație de locatari, etc.) Fișiere acceptate: pdf, maxim 25 MB.",
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
