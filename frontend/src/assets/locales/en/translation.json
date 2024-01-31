@@ -21,8 +21,8 @@
     "next": "Read more",
     "send": "Send",
     "invalid_url": "The URL has an invalid format",
-    "processing": "It is processing...",
-    "loading": "Loading...",
+    "processing": "It is processing …",
+    "loading": "Loading …",
     "completion_status": {
       "completed": "Completed",
       "not_completed": "Not completed"
@@ -242,7 +242,7 @@
       },
       "contact_information": {
         "title": "Informații de contact",
-        "subtitle": ""
+        "subtitle": "These pieces of information will be made public on the organization's presentation pages on the various platforms included in NGO Hub (e.g., redirectioneaza.ro, where the organization's name, contact email, and website are displayed)."
       },
       "communication_and_social_media": {
         "title": "Comunicare și social media",
@@ -1513,12 +1513,12 @@
       "skills": {
         "label": "The participant will learn (key words)",
         "helper": "Adds skills that program participants will have the opportunity to develop during the program",
-        "placeholder": "Select/Add..."
+        "placeholder": "Select/Add …"
       },
       "faculties": {
         "label": "Faculties",
         "helper": "Complete only if the internship programme is only dedicated to students of certain faculties",
-        "placeholder": "Select..."
+        "placeholder": "Select …"
       }
     },
     "list": {
