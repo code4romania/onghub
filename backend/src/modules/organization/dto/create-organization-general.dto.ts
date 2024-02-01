@@ -94,7 +94,7 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization long description */
   @IsString()
-  @Length(200, 700)
+  @Length(500, 2000)
   description?: string;
 
   /* 
