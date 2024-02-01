@@ -430,11 +430,11 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: translations.long.required,
       },
       maxLength: {
-        value: 700,
+        value: 2000,
         message: translations.long.max,
       },
       minLength: {
-        value: 200,
+        value: 500,
         message: translations.long.min,
       },
     },
