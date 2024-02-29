@@ -166,7 +166,7 @@ export class OngApplicationService {
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId },
       )
-      .orderBy('application.name', 'ASC');;
+      .orderBy('application.name', 'ASC');
 
     // 2. Get only the applications assigned to your organization and the independent applications
     if (!showAllApps) {
