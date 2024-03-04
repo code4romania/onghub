@@ -164,7 +164,8 @@
         },
         "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
         "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
-        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
+        "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus;",
+        "paragraph": "Continuarea procesului de înregistrare reprezintă declarația reprezentantului organizației că organizația pe care o reprezintă îndeplinește criteriile de eligibilitate menționate mai sus și este de acord cu clauzele.",
         "support_paragraph": "Dacă ai întrebări, ne poți scrie la: ",
         "terms_and_agreement_paragraph": "Am citit și sunt de acord cu criteriile menționate mai sus",
         "form": {
@@ -307,11 +308,12 @@
         "max": "Numărul RAF poate avea maxim 20 de caractere",
         "min": "Numărul RAF poate avea minim 8 caractere",
         "invalid": "Numărul RAF are un format invalid",
-        "label": "Număr de înregistrare în RAF*"
+        "label": "Număr de înregistrare în RAF*",
+        "placeholder": "56/14.09.2020"
       },
       "city": {
-        "required": "Orașul este obligatoriu",
-        "label": "Oraș*"
+        "required": "Localitatea este obligatorie",
+        "label": "Localitate*"
       },
       "county": {
         "required": "Județul este obligatoriu",
@@ -328,7 +330,7 @@
         "required": "Prezentarea este obligatorie",
         "max": "Prezentarea trebuie să aibă maxim 2000 de caractere",
         "min": "Prezentarea trebuie să aibă minim 500 de caractere",
-        "label": "Prezentare detaliată a organizație*",
+        "label": "Prezentare detaliată a organizației*",
         "helper": "Adaugă o prezentare mai detaliată a organizației. Această prezentare va fi afișată pe paginile de prezentare a organizației din ecosistemul NGO Hub. Prezentarea poate avea între 500 și 2000 de caractere."
       },
       "contact": {
@@ -388,7 +390,7 @@
         "placeholder": "Adresa"
       },
       "organization_city": {
-        "label": "Oraș"
+        "label": "Localitate"
       },
       "organization_county": {
         "label": "Județ"
@@ -623,77 +625,77 @@
     "income": {
       "membership": {
         "label": "Venituri din cotizații",
-        "info": "Venituri din cotizații info"
+        "info": "Totalul veniturilor din cotizațiile membrilor asociației, dacă este cazul ONG-ului tău."
       },
       "donations": {
         "label": "Venituri din donații",
-        "info": "Venituri din donații info"
+        "info": "Totalul donațiilor individuale pe care le-ai primit în anul precedent (fie SMS sau donație prin platforme de crowdfunding)."
       },
       "percent": {
-        "label": "Venituri din redirecționarea a 3.5% din impozitul pe venit%",
-        "info": "Venituri din redirecționarea a 3.5% din impozitul pe venit% info"
+        "label": "Venituri din redirecționarea a 3.5% din impozitul pe venit",
+        "info": "Totalul veniturilor obținute prin formularele 230 trimise către organizația ta."
       },
       "sponsorship": {
         "label": "Venituri din sponsorizări",
-        "info": "Venituri din sponsorizări info"
+        "info": "Totalul veniturilor din sponsorizările primite de la companii sau obținute prin granturi sau alte donații de la persoane juridice."
       },
       "economic": {
-        "label": "Venituri din activitatea economica",
-        "info": "Venituri din activitatea economica info"
+        "label": "Venituri din activitatea economică",
+        "info": "Totalul veniturilor pe care le-ai obținut în urma contractelor de prestări servicii, dacă este cazul."
       },
       "other": {
         "label": "Alte venituri",
-        "info": "Alte venituri info"
+        "info": "Introdu aici totalul veniturilor obținute din alte surse (de exemplu vânzarea de obiecte la târguri)."
       },
       "financial": {
         "label": "Venituri financiare",
-        "info": "Venituri financiare info"
+        "info": "Totalul veniturilor care au rezultat in urma unor operațiuni financiare, de exemplu dobânda pe care o obții la depozite sau diferențele de schimb valutar."
       }
     },
     "expense": {
       "net": {
         "label": "Salarii nete (resurse umane)",
-        "info": "Salarii nete (resurse umane) info"
+        "info": "Cheltuielile tale totale cu salariile nete ale angajaților și contractorilor tăi."
       },
       "cas": {
         "label": "Contribuții CAS (resurse umane)",
-        "info": "Contribuții CAS (resurse umane) info"
+        "info": "Totalul taxelor pe care le-ai plătit către stat."
       },
       "economic": {
-        "label": "Cheltuieli directe din activitatea economica",
-        "info": "Cheltuieli directe din activitatea economica info"
+        "label": "Cheltuieli directe din activitatea economică",
+        "info": "Totalul sumelor cheltuite pe contrate de prestări servicii."
       },
       "administrative": {
         "label": "Cheltuieli administrative",
-        "info": "Cheltuieli administrative info"
+        "info": "Totalul cheltuielilor tale cu chiria, utilitățile și alte servicii care țin de sediul/sediile tale."
       },
       "transport": {
         "label": "Transport și cazare",
-        "info": "Transport și cazare info"
+        "info": "Totalul cheltuielilor cu orice tip de transport și cazare și diurnele personalului tău angajat."
       },
       "catering": {
         "label": "Catering",
-        "info": "Catering info"
+        "info": "Totalul cheltuielilor făcute în anul precedent cu catering-ul consumat la evenimente sau cu alte ocazii."
       },
       "production": {
         "label": "Producție",
-        "info": "Producție info"
+        "info": "Totalul cheltuielilor de producere a materialelor tale de comunicare (de exemplu stickere, roll-upuri, flyere etc.)."
       },
       "software": {
         "label": "Servicii software",
-        "info": "Servicii software info"
+        "info": "Totalul cheltuielilor cu abonamente la aplicații pe care le utilizezi (de exemplu Mailchimp, Google Drive etc.)."
       },
       "advertising": {
         "label": "Reclame și publicitate",
-        "info": "Reclame și publicitate info"
+        "info": "Totalul cheltuielilor organizației pe campanii de comunicare, de exemplu Facebook Ads sau LinkedIn Ads."
       },
       "taxes": {
         "label": "Alte taxe",
-        "info": "Alte taxe info"
+        "info": "Totalul oricăror alte taxe pe care le-ai plătit în anul precedent (de exemplu TVA, dacă a fost cazul)."
       },
       "expense": {
         "label": "Alte cheltuieli",
-        "info": "Alte cheltuieli info"
+        "info": "Introduci aici totalul oricăror altor cheltuieli pe care nu le-ai trecut in alte segmente ale acestui buget (de exemplu achiziția unei rulote pentru o caravana etc.)."
       }
     }
   },
@@ -1451,8 +1453,8 @@
         "placeholder": "Program de Practică"
       },
       "location": {
-        "required": "Orașul este obligatoriu",
-        "label": "Oraș*",
+        "required": "Localitatea este obligatorie",
+        "label": "Localitate*",
         "helper": "Începe să scrii numele localității în câmpul de mai sus, apoi selectează-l pe cel dorit din listă",
         "placeholder": "Miercurea Ciuc"
       },

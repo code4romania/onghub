@@ -68,6 +68,7 @@ const translations = {
     min: i18n.t('general:config.raf.min'),
     invalid: i18n.t('general:config.raf.invalid'),
     label: i18n.t('general:config.raf.label'),
+    placeholder: i18n.t('general:config.raf.placeholder'),
   },
   city: {
     required: i18n.t('general:config.city.required'),
@@ -363,7 +364,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       type: 'text',
       label: translations.raf.label,
       helperText: '',
-      placeholder: '',
+      placeholder: translations.raf.placeholder,
     },
   },
   city: {

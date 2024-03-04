@@ -622,77 +622,77 @@
     "income": {
       "membership": {
         "label": "Income from contributions",
-        "info": "Income from membership fees info"
+        "info": "The total income from the contributions of the association members, if applicable to your NGO."
       },
       "donations": {
         "label": "Income from donations",
-        "info": "Income from donations info"
+        "info": "The total of individual donations you received in the previous year (either SMS or donation through crowdfunding platforms)."
       },
       "percent": {
         "label": "Revenue from the redirection of 3.5% of income tax%",
-        "info": "Revenue from the redirection of 3.5% of income tax% info"
+        "info": "The total income obtained through the 230 forms sent to your organization."
       },
       "sponsorship": {
         "label": "Sponsorship income",
-        "info": "Sponsorship income info"
+        "info": "The total income from sponsorships received from companies or obtained through grants or other donations from legal entities."
       },
       "economic": {
         "label": "Income from economic activity",
-        "info": "Income from economic activity info"
+        "info": "The total income you obtained from service contracts, if applicable."
       },
       "other": {
         "label": "Other income",
-        "info": "Other income info"
+        "info": "Enter here the total income obtained from other sources (for example, selling items at fairs)."
       },
       "financial": {
         "label": "Financial income",
-        "info": "Financial income info"
+        "info": "The total income resulting from financial operations, for example the interest you get on deposits or exchange rate differences."
       }
     },
     "expense": {
       "net": {
         "label": "Net salaries (human resources)",
-        "info": "Net salaries (human resources) info"
+        "info": "Your total expenses with the net salaries of your employees and contractors."
       },
       "cas": {
         "label": "CAS contributions (human resources)",
-        "info": "CAS contributions (human resources) info"
+        "info": "The total taxes you paid to the state."
       },
       "economic": {
         "label": "Direct expenditure from economic activity",
-        "info": "Direct expenditure from economic activity info"
+        "info": "The total amount spent on service contracts."
       },
       "administrative": {
         "label": "Administrative expenditure",
-        "info": "Administrative expenditure info"
+        "info": "Your total expenses with rent, utilities and other services related to your headquarters."
       },
       "transport": {
         "label": "Transport and accommodation",
-        "info": "Transport and accommodation info"
+        "info": "Total expenses with any type of transport and accommodation and per diem of your employees."
       },
       "catering": {
         "label": "Catering",
-        "info": "Catering info"
+        "info": "Total expenses made in the previous year with the catering consumed at events or on other occasions."
       },
       "production": {
         "label": "Production",
-        "info": "Production info"
+        "info": "Total expenses for producing your communication materials (for example stickers, roll-ups, flyers etc.)."
       },
       "software": {
         "label": "Software services",
-        "info": "Software services info"
+        "info": "Total expenses with subscriptions to applications you use (for example Mailchimp, Google Drive etc.)."
       },
       "advertising": {
         "label": "Advertising and publicity",
-        "info": "Advertising and publicity info"
+        "info": "Total expenses of the organization on communication campaigns, for example Facebook Ads or LinkedIn Ads."
       },
       "taxes": {
         "label": "Other taxes",
-        "info": "Other tax info"
+        "info": "Total of any other taxes you paid in the previous year, for example VAT if applicable."
       },
       "expense": {
         "label": "Other expenses",
-        "info": "Other expenses info"
+        "info": "Enter here the total of any other expenses you have not entered in other segments of this budget (for example the purchase of a trailer for a caravan etc.)."
       }
     }
   },
