@@ -277,9 +277,9 @@
         "helper": ""
       },
       "email": {
-        "required": "Email-ul este obligatoriu",
-        "max": "Email-ul poate avea maxim 250 de caractere",
-        "invalid": "Email-ul are un format invalid.",
+        "required": "E-mail-ul este obligatoriu",
+        "max": "E-mail-ul poate avea maxim 250 de caractere",
+        "invalid": "E-mail-ul are un format invalid.",
         "label": "E-mail-ul de contact al organizației*",
         "helper": "Exemplu: contact@organizatie.ro"
       },
@@ -341,10 +341,10 @@
         "label": "Nume și prenume*"
       },
       "contact_email": {
-        "required": "Email-ul contactului este obligatoriu",
-        "max": "Email-ul contactului poate avea maxim 50 de caractere",
-        "invalid": "Email-ul contactului are un format invalid",
-        "label": "Email*"
+        "required": "E-mail-ul contactului este obligatoriu",
+        "max": "E-mail-ul contactului poate avea maxim 50 de caractere",
+        "invalid": "E-mail-ul contactului are un format invalid",
+        "label": "E-mail*"
       },
       "contact_phone": {
         "required": "Numărul de telefon este obligatoriu",
@@ -523,7 +523,7 @@
     "header": {
       "name": "Nume și prenume",
       "role": "Rol",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Telefon"
     },
     "legal_config": {
@@ -535,10 +535,10 @@
         "label": "Nume și prenume*"
       },
       "email": {
-        "required": "Email-ul reprezentantului legal este obligatoriu.",
-        "maxim": "Email-ul reprezentantului legal nu poate avea mai mult de 50 de caractere.",
-        "invalid": "Email-ul are un format invalid.",
-        "label": "Email*"
+        "required": "E-mail-ul reprezentantului legal este obligatoriu.",
+        "maxim": "E-mail-ul reprezentantului legal nu poate avea mai mult de 50 de caractere.",
+        "invalid": "E-mail-ul are un format invalid.",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "Numărul de telefon al reprezentantului legal este obligatoriu.",
@@ -557,10 +557,10 @@
         "label": "Nume și prenume*"
       },
       "email": {
-        "required": "Email-ul membrului Consiliului Director este obligatoriu.",
-        "maxim": "Email-ul membrului Consiliului Director nu poate avea mai mult de 50 de caractere.",
-        "invalid": "Email-ul membrului Consiliului Director are un format invalid.",
-        "label": "Email*"
+        "required": "E-mail-ul membrului Consiliului Director este obligatoriu.",
+        "maxim": "E-mail-ul membrului Consiliului Director nu poate avea mai mult de 50 de caractere.",
+        "invalid": "E-mail-ul membrului Consiliului Director are un format invalid.",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "Telefonul directorului este invalid.",
@@ -838,7 +838,7 @@
     },
     "list_header": {
       "name": "Nume",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Telefon",
       "status": "Acces general",
       "created": "Data adăugării"
@@ -862,10 +862,10 @@
         "label": "Nume și prenume*"
       },
       "email": {
-        "required": "Email-ul este obligatoriu",
-        "max": "Email-ul poate avea maxim 50 de caractere",
-        "invalid": "Email-ul are un format invalid",
-        "label": "Email*"
+        "required": "E-mail-ul este obligatoriu",
+        "max": "E-mail-ul poate avea maxim 50 de caractere",
+        "invalid": "E-mail-ul are un format invalid",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "Numărul de telefon este obligatoriu",
@@ -1084,7 +1084,7 @@
       "define_active": "Faptul că aplicația este activă în contul organizației tale înseamnă că ai acces la ea și poți să o folosești.",
       "open": "Deschide aplicația",
       "pending": "Solicitarea ta așteaptă aprobare.",
-      "configure": "Aplicația aceasta trebuie instalată și configurata conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe emailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
+      "configure": "Aplicația aceasta trebuie instalată și configurata conform cu nevoile ONG-ului tău. Un membru al echipei Code for Romania te va contacta pentru detalii suplimentare în cel mai scurt timp, pe e-mailul persoanei de contact menționat în profilul tău de organizație. Îți mulțumim.",
       "cancel": "Anulează solicitare",
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
@@ -1178,7 +1178,7 @@
     "header": {
       "org_name": "Organizație",
       "name": "Nume",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Telefon",
       "status": "Status",
       "created_on": "Data adăugării",
@@ -1363,9 +1363,9 @@
           "label": "Telefon*"
         },
         "email": {
-          "required": "Email-ul este obligatoriu",
-          "max": "Email-ul nu poate avea mai mult de 50 de caractere",
-          "pattern": "Email-ul are un format invalid",
+          "required": "E-mail-ul este obligatoriu",
+          "max": "E-mail-ul nu poate avea mai mult de 50 de caractere",
+          "pattern": "E-mail-ul are un format invalid",
           "helper": "Adresa de e-mail la care solicitantul poate solicita serviciul",
           "label": "E-mail*"
         },

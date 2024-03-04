@@ -107,7 +107,7 @@
     "description": "Manage your organisation profile from here to access available applications.",
     "description_admin": "Manage your organisation profile from here to access available applications.",
     "description_request": "Manage your organisation profile from here to access available applications.",
-    "no_access": "Your organization has been restricted. For more details, contact our team free of charge by email at",
+    "no_access": "Your organization has been restricted. For more details, contact our team free of charge by e-mail at",
     "inactive": "Oops! Your organization is inactive.",
     "back": "Back to website",
     "send_mail": "Send E-Mail",
@@ -137,7 +137,7 @@
     },
     "create": {
       "congratulations": "Congratulations",
-      "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the email address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
+      "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the e-mail address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
       "again": "Try again",
       "steps": {
         "first": "Step 1",
@@ -174,14 +174,14 @@
         }
       },
       "errors": {
-        "REQ_001": "There is already a user with this email or phone number.",
+        "REQ_001": "There is already a user with this e-mail or phone number.",
         "REQ_007": "There is already an organisation with this CUI",
         "REQ_008": "There is already an organisation with this RAF",
         "REQ_009": "There is already an organisation with this name",
         "REQ_010": "There is already an organisation with this alias",
-        "REQ_011": "There is already an organisation with this email",
+        "REQ_011": "There is already an organisation with this e-mail",
         "REQ_012": "There is already an organisation with this phone number",
-        "REQ_002": "There is already an application with this email or phone number.",
+        "REQ_002": "There is already an application with this e-mail or phone number.",
         "ORG_026": "Error updating general data"
       }
     },
@@ -207,8 +207,8 @@
       },
       "email": {
         "required": "E-mail is required",
-        "max": "The email cannot be longer than 50 characters",
-        "invalid": "The email has an invalid format",
+        "max": "The e-mail cannot be longer than 50 characters",
+        "invalid": "The e-mail has an invalid format",
         "label": "E-mail"
       }
     },
@@ -242,7 +242,7 @@
       },
       "contact_information": {
         "title": "Informații de contact",
-        "subtitle": "These pieces of information will be made public on the organization's presentation pages on the various platforms included in NGO Hub (e.g., redirectioneaza.ro, where the organization's name, contact email, and website are displayed)."
+        "subtitle": "These pieces of information will be made public on the organization's presentation pages on the various platforms included in NGO Hub (e.g., redirectioneaza.ro, where the organization's name, contact e-mail, and website are displayed)."
       },
       "communication_and_social_media": {
         "title": "Comunicare și social media",
@@ -276,10 +276,10 @@
         "helper": ""
       },
       "email": {
-        "required": "Email is required",
-        "max": "The email can have a maximum of 250 characters",
-        "invalid": "The email has an invalid format.",
-        "label": "Organisation's contact email*",
+        "required": "E-mail is required",
+        "max": "The e-mail can have a maximum of 250 characters",
+        "invalid": "The e-mail has an invalid format.",
+        "label": "Organisation's contact e-mail*",
         "helper": "Example: contact@organizatie.ro"
       },
       "phone": {
@@ -339,10 +339,10 @@
         "label": "Full name*"
       },
       "contact_email": {
-        "required": "Contact email is required",
-        "max": "The contact email can have a maximum of 50 characters",
-        "invalid": "The contact email has an invalid format",
-        "label": "Email*"
+        "required": "Contact e-mail is required",
+        "max": "The contact e-mail can have a maximum of 50 characters",
+        "invalid": "The contact e-mail has an invalid format",
+        "label": "E-mail*"
       },
       "contact_phone": {
         "required": "Phone number is required",
@@ -520,7 +520,7 @@
     "header": {
       "name": "Full name",
       "role": "Role",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Phone"
     },
     "legal_config": {
@@ -532,10 +532,10 @@
         "label": "Full name*"
       },
       "email": {
-        "required": "Email of the legal representative is required.",
-        "maxim": "The email of the legal representative cannot be longer than 50 characters.",
-        "invalid": "The email has an invalid format.",
-        "label": "Email*"
+        "required": "E-mail of the legal representative is required.",
+        "maxim": "The e-mail of the legal representative cannot be longer than 50 characters.",
+        "invalid": "The e-mail has an invalid format.",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "The telephone number of the legal representative is mandatory.",
@@ -554,10 +554,10 @@
         "label": "Full name*"
       },
       "email": {
-        "required": "The email of the member of the Board of Directors is mandatory.",
-        "maxim": "The Governing Board member's email may not be longer than 50 characters.",
-        "invalid": "The Governing Board member's email has an invalid format.",
-        "label": "Email*"
+        "required": "The e-mail of the member of the Board of Directors is mandatory.",
+        "maxim": "The Governing Board member's e-mail may not be longer than 50 characters.",
+        "invalid": "The Governing Board member's e-mail has an invalid format.",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "The director's phone is invalid.",
@@ -780,7 +780,7 @@
     "subtitle": "Manage user accounts from here. You can add new users and edit or restrict existing users.",
     "add": "Add User",
     "not_found": "User does not exist in the database",
-    "failure_email": "There is already a user with this email",
+    "failure_email": "There is already a user with this e-mail",
     "failure_phone": "There is already a user with this phone number",
     "tabs": {
       "users": "Users",
@@ -835,7 +835,7 @@
     },
     "list_header": {
       "name": "Name",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Phone",
       "status": "General access",
       "created": "Date added"
@@ -859,10 +859,10 @@
         "label": "Full name*"
       },
       "email": {
-        "required": "Email is required",
-        "max": "The email can have a maximum of 50 characters",
-        "invalid": "The email has an invalid format",
-        "label": "Email*"
+        "required": "E-mail is required",
+        "max": "The e-mail can have a maximum of 50 characters",
+        "invalid": "The e-mail has an invalid format",
+        "label": "E-mail*"
       },
       "phone": {
         "required": "Phone number is required",
@@ -1077,10 +1077,10 @@
       "delete": "Remove application",
       "contact": "We will contact you within 24-48 hours.",
       "active": "The app is active for your organisation.",
-      "define_active": "Lorem ipsum. What does it mean that the application is active. According to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
+      "define_active": "Lorem ipsum. What does it mean that the application is active. According to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact e-mail mentioned in your organization profile. Thank you.",
       "open": "Open the app",
       "pending": "Your request is awaiting approval.",
-      "configure": "This application must be installed and configured according to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact email mentioned in your organization profile. Thank you.",
+      "configure": "This application must be installed and configured according to the needs of your NGO. A member of the Code for Romania team will contact you for further details as soon as possible on the contact e-mail mentioned in your organization profile. Thank you.",
       "cancel": "Cancel request",
       "restore": "Contact us for a refund.",
       "close_button": "Remove application",
@@ -1157,11 +1157,11 @@
     "modals": {
       "approve": {
         "title": "Approve and send confirmation",
-        "description": "Following approval, the NGO will receive a confirmation email to the address provided at registration and a link to complete the process and gain access to the platform. Confirm approval?",
+        "description": "Following approval, the NGO will receive a confirmation e-mail to the address provided at registration and a link to complete the process and gain access to the platform. Confirm approval?",
         "confirm": "Yes, I approve the request"
       },
       "reject": {
-        "title": "Reject and send email",
+        "title": "Reject and send e-mail",
         "description": "Following rejection, the NGO will receive a confirmation e-mail to the address provided upon registration. Confirm rejection?",
         "confirm": "Rejects the application"
       }
@@ -1174,7 +1174,7 @@
     "header": {
       "org_name": "Organisation",
       "name": "Name",
-      "email": "Email",
+      "email": "E-mail",
       "phone": "Phone",
       "status": "Status",
       "created_on": "Date added",
@@ -1261,7 +1261,7 @@
           "description": "TODO#14: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "email_or_phone": {
-          "title": "Access by email or phone",
+          "title": "Access by e-mail or phone",
           "description": "TODO#15: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
         },
         "physical": {
@@ -1359,16 +1359,16 @@
           "label": "Phone*"
         },
         "email": {
-          "required": "Email is required",
-          "max": "The email cannot be longer than 50 characters",
-          "pattern": "The email has an invalid format",
+          "required": "E-mail is required",
+          "max": "The e-mail cannot be longer than 50 characters",
+          "pattern": "The e-mail has an invalid format",
           "helper": "E-mail address where the applicant can request the service",
           "label": "E-mail*"
         },
         "description": {
           "max": "The description cannot be longer than 1000 characters",
           "pattern": "The description is not in valid format.",
-          "label": "Email access description",
+          "label": "E-mail access description",
           "placeholder": "TODO#10: Lorem ipsum"
         }
       },
