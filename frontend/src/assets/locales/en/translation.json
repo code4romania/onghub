@@ -84,7 +84,7 @@
       "description": "After closing your NGO Hub account you will no longer have access to the applications made available through this portal. If you wish to close your account permanently, click the button below and our team will contact you to complete the process."
     },
     "inactive": "Oops! Your account is inactive.",
-    "no_access": "You no longer have access to ONGHub. For more details, contact the platform administrator",
+    "no_access": "You no longer have access to NGOHub. For more details, contact the platform administrator",
     "back": "Back to website",
     "config": {
       "old": {
@@ -1202,7 +1202,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "about": "About ONGHub",
+    "about": "About NGOHub",
     "statistics": {
       "mean_number_of_users": "Average number of users per organisation",
       "number_of_active_organizations": "Organisations active in the NGO Hub",

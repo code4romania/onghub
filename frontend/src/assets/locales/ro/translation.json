@@ -1089,7 +1089,7 @@
       "restore": "Contactează-ne pentru restituirea accesului.",
       "close_button": "Elimină aplicația",
       "close_title": "Confirmă eliminarea aplicației",
-      "close_description": "Confirmând eliminarea aplicației nu vei mai putea accesa aplicația din contul NGO HUb al organizației tale. Aplicația va rămâne disponibilă în tab-ul Aplicațiile mele de unde o vei putea solicita dacă vei vrea să o folosești din nou.",
+      "close_description": "Confirmând eliminarea aplicației nu vei mai putea accesa aplicația din contul NGO HUb al organizației tale. Aplicația va rămâne disponibilă în tab-ul 'Toate aplicațiile' de unde o vei putea solicita dacă vei vrea să o folosești din nou.",
       "another_description": "Descriere aplicație",
       "pending_removal": "Aplicația a fost marcată pentru a fi ștearsă",
       "disabled": {

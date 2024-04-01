@@ -5,14 +5,14 @@ export const APPLICATION_TYPES = [
   },
   {
     id: 2,
-    type: 'Colecteaza date din ONGHub',
+    type: 'Colectează date din NGOHub',
   },
   {
     id: 3,
-    type: 'Necesita login simplu',
+    type: 'Necesită login simplu',
   },
   {
     id: 4,
-    type: 'Necesita login cu confirmare',
+    type: 'Necesită login cu confirmare',
   },
 ];

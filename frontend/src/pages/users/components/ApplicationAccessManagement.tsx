@@ -46,7 +46,7 @@ const ApplicationAccessManagement = ({
         </span>
         <div className="flex items-center justify-between">
           {/* <span className="font-robotoBold text-gray-800 text-base font-bold mr-4">
-            Access ONGHub
+            Access NGOHub
           </span>
           <Toggle enabled={enabled} setEnabled={setEnabled} /> */}
         </div>
