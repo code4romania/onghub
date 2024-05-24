@@ -7,6 +7,9 @@ export class UpdatePracticesAndServices1716541753299
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
+      `UPDATE "civic_center_service" set "age_categories" = '{}'`,
+    );
+    await queryRunner.query(
       `ALTER TYPE "public"."civic_center_service_age_categories_enum" RENAME TO "civic_center_service_age_categories_enum_old"`,
     );
     await queryRunner.query(
@@ -23,6 +26,9 @@ export class UpdatePracticesAndServices1716541753299
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `UPDATE "civic_center_service" set "age_categories" = '{}'`,
+    );
     await queryRunner.query(
       `CREATE TYPE "public"."civic_center_service_age_categories_enum_old" AS ENUM('0-18', '18-25', '25-35', '35-60', '60+')`,
     );
