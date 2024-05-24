@@ -40,12 +40,13 @@ const EditCivicCenterService = () => {
 
   useEffect(() => {
     if (civicCenterService) {
-      const { startDate, endDate, domains, ...formData } = civicCenterService;
+      const { startDate, endDate, domains, beneficiaries, ...formData } = civicCenterService;
 
       const location = mapCitiesToSelect(civicCenterService.location);
 
       reset({
         ...formData,
+        beneficiaries: beneficiaries.map(mapToId),
         domains: domains.map(mapToId),
         startDate: new Date(startDate),
         endDate: endDate ? new Date(endDate) : endDate,

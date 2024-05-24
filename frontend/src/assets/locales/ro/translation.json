@@ -1247,25 +1247,6 @@
       "description": "Aici poți vizualiza și edita toate serviciile oferite de organizația ta.",
       "add_button": "Adaugă Serviciu"
     },
-    "beneficiaries": {
-      "COPII": "copii (0-14 ani)",
-      "TINERI": "tineri (15-18 ani)",
-      "ADULTI": "adulți (18-25 ani)",
-      "VARSTNICI": "vârstnici (>65 ani)",
-      "FAMILIE": "familie",
-      "RISC_DE_SARACIE": "persoane aflate în risc de sărăcie",
-      "ADICTII": "persoane cu adicţii (alcool, droguri, jocuri de noroc etc.)",
-      "AFECTIUNI_MEDICALE": "persoane cu afecţiuni medicale",
-      "AFECTIUNI_PSIHICE": "persoane cu afecţiuni psihice",
-      "DIZABILITATI": "persoane cu dizabilităţi",
-      "COMUNITATI_IZOLATE": "persoane din comunităţi izolate",
-      "FARA_ADAPOST": "persoane fără adăpost",
-      "PRIVATE_DE_LIBERTATE": "persoane private de libertate",
-      "TRAFICULUI_DE_PERSOANE": "victime ale traficului de persoane",
-      "VIOLENTEI_DOMESTICE": "victime ale violenţei domestice",
-      "SOMERI": "şomeri de lungă durată",
-      "APARTINATORII_BENEFICIARILOR": "servicii sociale de suport pentru aparţinătorii beneficiarilor"
-    },
     "list": {
       "error": "Eroare la încărcarea listei de servicii"
     },

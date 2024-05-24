@@ -14,7 +14,6 @@ import {
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
 import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
-import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 
 export class CreateCivicCenterServiceDto {
   @IsString()
@@ -48,7 +47,7 @@ export class CreateCivicCenterServiceDto {
   domains: number[];
 
   @IsArray()
-  ageCategories: AgeCategory[];
+  beneficiaries: number[];
 
   @IsBoolean()
   hasOnlineAccess: boolean;

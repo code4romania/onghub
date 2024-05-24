@@ -18,6 +18,7 @@ import { S3FileManagerService } from './services/s3-file-manager.service';
 import { FileManagerService } from './services/file-manager.service';
 import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
 import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
+import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficiary.entity';
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { ServiceDomain } from 'src/modules/civic-center-service/entities/service
       Skill,
       PracticeDomain,
       ServiceDomain,
+      Beneficiary,
     ]),
     HttpModule,
   ],
