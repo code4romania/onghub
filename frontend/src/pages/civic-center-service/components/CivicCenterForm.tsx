@@ -18,10 +18,12 @@ import ServerSelect from '../../../components/server-select/ServerSelect';
 import Textarea from '../../../components/Textarea/Textarea';
 import Toggle from '../../../components/toggle/Toggle';
 import { CivicCenterServicePayload } from '../../../services/civic-center-service/interfaces/civic-center-service-payload.interface';
-import { useServiceDomainsQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import {
+  useBeneficiariesQuery,
+  useServiceDomainsQuery,
+} from '../../../services/nomenclature/Nomenclature.queries';
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
 import { CivicCenterFormConfig } from '../config/CivicCenterFormConfig';
-import { ageCategories } from '../constants/age-categories.constants';
 import SubsectionHeader from './SubsectionHeader';
 
 interface CivicCenterFormProps {
@@ -45,6 +47,7 @@ const CivicCenterForm = ({
 
   // load nomenclature data
   const { data: domains } = useServiceDomainsQuery();
+  const { data: beneficiaries } = useBeneficiariesQuery();
 
   // translarions
   const { t } = useTranslation(['civic_center_service']);
@@ -276,19 +279,19 @@ const CivicCenterForm = ({
                 }}
               />
               <Controller
-                key={CivicCenterFormConfig.ageCategories.key}
-                name={CivicCenterFormConfig.ageCategories.key}
-                rules={CivicCenterFormConfig.ageCategories.rules}
+                key={CivicCenterFormConfig.beneficiaries.key}
+                name={CivicCenterFormConfig.beneficiaries.key}
+                rules={CivicCenterFormConfig.beneficiaries.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <ChipSelection
                       id="civic-center-service-form__ageCategories"
-                      {...CivicCenterFormConfig.ageCategories.config}
-                      values={ageCategories}
+                      {...CivicCenterFormConfig.beneficiaries.config}
+                      values={beneficiaries}
                       defaultItems={value}
                       error={(errors as Record<string, { message: string }>)[
-                        CivicCenterFormConfig.ageCategories.key
+                        CivicCenterFormConfig.beneficiaries.key
                       ]?.message?.toString()}
                       onItemsChange={onChange}
                     ></ChipSelection>

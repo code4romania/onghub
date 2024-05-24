@@ -15,6 +15,7 @@ import { Coalition } from '../entities/coalition.entity';
 import { Federation } from '../entities/federation.entity';
 import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
 import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
+import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficiary.entity';
 
 @Injectable()
 export class NomenclaturesService {
@@ -39,6 +40,8 @@ export class NomenclaturesService {
     private readonly practiceDomainRepository: Repository<PracticeDomain>,
     @InjectRepository(ServiceDomain)
     private readonly serviceDomainRepository: Repository<ServiceDomain>,
+    @InjectRepository(Beneficiary)
+    private readonly beneficiaryRepository: Repository<Beneficiary>,
   ) {}
 
   public getCity(conditions: FindOneOptions<City>) {
@@ -154,5 +157,9 @@ export class NomenclaturesService {
 
   public getServiceDomains(conditions: FindManyOptions<ServiceDomain>) {
     return this.serviceDomainRepository.find(conditions);
+  }
+
+  public getBeneficiaries(conditions: FindManyOptions<Beneficiary>) {
+    return this.beneficiaryRepository.find(conditions);
   }
 }

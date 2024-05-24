@@ -23,8 +23,6 @@ export const dataToCsv = (items: { id: number; name: string }[]): string => {
   return items ? items.map((item) => item.name).join(', ') : '';
 };
 
-export const formatAgeCategories = (item: CivicCenterService) => {
-  return item?.ageCategories
-    .map((key) => i18n.t(`beneficiaries.${key}`, { ns: 'civic_center_service' }))
-    .join(', ');
+export const formatBeneficiaries = (item: CivicCenterService) => {
+  return item?.beneficiaries.map((item) => item.name).join(', ');
 };

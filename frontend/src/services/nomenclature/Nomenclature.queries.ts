@@ -15,6 +15,7 @@ import {
   getFaculties,
   getPracticeDomains,
   getServiceDomains,
+  getBeneficiaries,
 } from './Nomenclatures.service';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
@@ -59,6 +60,13 @@ export const usePracticeDomainsQuery = () => {
 
 export const useServiceDomainsQuery = () => {
   return useQuery(['service-domains'], () => getServiceDomains(), {
+    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60,
+  });
+};
+
+export const useBeneficiariesQuery = () => {
+  return useQuery(['beneficiaries'], () => getBeneficiaries(), {
     cacheTime: 1000 * 60 * 60,
     staleTime: 1000 * 60 * 60,
   });
