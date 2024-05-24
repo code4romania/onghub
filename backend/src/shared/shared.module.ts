@@ -16,6 +16,8 @@ import { AnafService, NomenclaturesService } from './services';
 import { HttpModule } from '@nestjs/axios';
 import { S3FileManagerService } from './services/s3-file-manager.service';
 import { FileManagerService } from './services/file-manager.service';
+import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
+import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
 
 @Global()
 @Module({
@@ -29,6 +31,8 @@ import { FileManagerService } from './services/file-manager.service';
       Coalition,
       Faculty,
       Skill,
+      PracticeDomain,
+      ServiceDomain,
     ]),
     HttpModule,
   ],

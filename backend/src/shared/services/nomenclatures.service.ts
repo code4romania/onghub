@@ -13,6 +13,8 @@ import { CitySearchDto } from '../dto/city-search.dto';
 import { NOMENCLATURE_ERRORS } from '../constants/nomenclature-error.constants';
 import { Coalition } from '../entities/coalition.entity';
 import { Federation } from '../entities/federation.entity';
+import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
+import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
 
 @Injectable()
 export class NomenclaturesService {
@@ -33,6 +35,10 @@ export class NomenclaturesService {
     private readonly facultiesRepository: Repository<Faculty>,
     @InjectRepository(Skill)
     private readonly skillsRepository: Repository<Skill>,
+    @InjectRepository(PracticeDomain)
+    private readonly practiceDomainRepository: Repository<PracticeDomain>,
+    @InjectRepository(ServiceDomain)
+    private readonly serviceDomainRepository: Repository<ServiceDomain>,
   ) {}
 
   public getCity(conditions: FindOneOptions<City>) {
@@ -140,5 +146,13 @@ export class NomenclaturesService {
 
   public createSkills(skills: Partial<Skill>[]): Promise<Skill[]> {
     return this.skillsRepository.save(skills);
+  }
+
+  public getPracticeDomains(conditions: FindManyOptions<PracticeDomain>) {
+    return this.practiceDomainRepository.find(conditions);
+  }
+
+  public getServiceDomains(conditions: FindManyOptions<ServiceDomain>) {
+    return this.serviceDomainRepository.find(conditions);
   }
 }

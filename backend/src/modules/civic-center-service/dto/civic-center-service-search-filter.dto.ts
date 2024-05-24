@@ -21,5 +21,5 @@ export class CivicCenterServiceSearchFilterDto extends OmitType(BaseFilterDto, [
 
   @IsArray()
   @IsOptional()
-  ageCategories?: AgeCategory[];
+  ageCategories?: AgeCategory[]; //TODO: this needs to be renamed to beneficiaries
 }

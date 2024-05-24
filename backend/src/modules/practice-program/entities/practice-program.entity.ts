@@ -11,6 +11,7 @@ import {
   ManyToMany,
   ManyToOne,
 } from 'typeorm';
+import { PracticeDomain } from './practice_domain.entity';
 
 @Entity()
 export class PracticeProgram extends BaseEntity {
@@ -82,7 +83,7 @@ export class PracticeProgram extends BaseEntity {
     },
     inverseJoinColumn: { name: 'domain_id', referencedColumnName: 'id' },
   })
-  domains: Domain[];
+  domains: PracticeDomain[];
 
   @ManyToMany(() => Faculty, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable({

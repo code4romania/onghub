@@ -1,4 +1,4 @@
-import { AgeCategory } from '../../../common/enums/age-category.enum';
+import { Beneficiary } from '../../../common/enums/age-category.enum';
 import { BaseEntity } from '../../../common/interfaces/base-entity.interface';
 import { City } from '../../../common/interfaces/city.interface';
 import { Domain } from '../../../common/interfaces/domain.interface';
@@ -12,7 +12,7 @@ export interface CivicCenterService extends BaseEntity {
   shortDescription: string;
   longDescription: string;
   domains: Domain[];
-  ageCategories: AgeCategory[];
+  ageCategories: Beneficiary[];
   hasOnlineAccess: boolean;
   onlineAccessLink?: string;
   onlineAccessDescription?: string;
