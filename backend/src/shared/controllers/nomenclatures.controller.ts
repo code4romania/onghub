@@ -58,4 +58,14 @@ export class NomenclaturesController {
   getSkills() {
     return this.nomenclaturesService.getSkills({});
   }
+
+  @Get('practice-domains')
+  getPracticeDomains() {
+    return this.nomenclaturesService.getPracticeDomains({});
+  }
+
+  @Get('service-domains')
+  getServiceDomains() {
+    return this.nomenclaturesService.getServiceDomains({});
+  }
 }
