@@ -28,6 +28,7 @@ import { OngApplicationService } from 'src/modules/application/services/ong-appl
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
 import { ApplicationPullingType } from 'src/modules/application/enums/application-pulling-type.enum';
 import { OngApplicationStatus } from 'src/modules/application/enums/ong-application-status.enum';
+import { Beneficiary } from '../entities/beneficiary.entity';
 
 @Injectable()
 export class CivicCenterServiceService {
@@ -55,7 +56,14 @@ export class CivicCenterServiceService {
         },
       });
 
-      // 3. Check if undetermined flag and end date have correct values
+      // 3. Get beneficiaries
+      const beneficiaries = await this.nomenclatureService.getBeneficiaries({
+        where: {
+          id: In(createCivicCenterServiceDto.beneficiaries),
+        },
+      });
+
+      // 4. Check if undetermined flag and end date have correct values
       if (
         createCivicCenterServiceDto.endDate &&
         createCivicCenterServiceDto.isPeriodNotDetermined
@@ -71,6 +79,7 @@ export class CivicCenterServiceService {
         ...createCivicCenterServiceDto,
         location: location,
         domains,
+        beneficiaries,
       });
 
       return service;
@@ -169,6 +178,15 @@ export class CivicCenterServiceService {
         });
       }
 
+      let beneficiaries: Beneficiary[];
+      if (updateCivicCenterServiceDto.beneficiaries) {
+        beneficiaries = await this.nomenclatureService.getBeneficiaries({
+          where: {
+            id: In(updateCivicCenterServiceDto.beneficiaries),
+          },
+        });
+      }
+
       // 4. Validate received data
       await this.validateData(updateCivicCenterServiceDto);
 
@@ -178,6 +196,7 @@ export class CivicCenterServiceService {
         ...updateCivicCenterServiceDto,
         location: location || civicService.location,
         domains: domains || civicService.domains,
+        beneficiaries: beneficiaries || civicService.beneficiaries,
       });
 
       return service;
@@ -214,6 +233,7 @@ export class CivicCenterServiceService {
         'location',
         'domains',
         'organization',
+        'beneficiaries',
         'organization.organizationGeneral',
       ],
     });
@@ -234,7 +254,7 @@ export class CivicCenterServiceService {
   public async findAll(organizationId: number): Promise<CivicCenterService[]> {
     return this.civicCenterServiceRepository.getMany({
       where: { organizationId },
-      relations: ['location', 'domains'],
+      relations: ['location', 'domains', 'beneficiaries'],
       order: {
         createdOn: OrderDirection.DESC,
       },
@@ -284,7 +304,7 @@ export class CivicCenterServiceService {
     civicCenterServiceFilterDto: CivicCenterServiceSearchFilterDto,
   ): Promise<Pagination<CivicCenterServiceFlat>> {
     try {
-      const { domains, ageCategories, ...restOfFilters } =
+      const { domains, beneficiaries, ...restOfFilters } =
         civicCenterServiceFilterDto;
 
       // 1. get only active services and map correctly ids for domains and age categories
@@ -295,7 +315,8 @@ export class CivicCenterServiceService {
           status: OrganizationStatus.ACTIVE,
         },
         domains: domains?.length > 0 ? { id: In(domains) } : null,
-        ageCategories: ageCategories ? ArrayOverlap(ageCategories) : null,
+        beneficiaries:
+          beneficiaries?.length > 0 ? { id: In(beneficiaries) } : null,
       };
 
       // 2. return all paginated services
@@ -342,7 +363,7 @@ export class CivicCenterServiceService {
 
     const practiceProgram = await this.civicCenterServiceRepository.get({
       where,
-      relations: ['location', 'location.county', 'domains'],
+      relations: ['location', 'location.county', 'domains', 'beneficiaries'],
     });
 
     if (!practiceProgram) {

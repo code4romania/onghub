@@ -1,7 +1,6 @@
 import { OmitType } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsOptional } from 'class-validator';
 import { BaseFilterDto } from 'src/common/base/base-filter.dto';
-import { AgeCategory } from 'src/modules/practice-program/enums/age-category.enum';
 
 export class CivicCenterServiceSearchFilterDto extends OmitType(BaseFilterDto, [
   'orderBy',
@@ -21,5 +20,5 @@ export class CivicCenterServiceSearchFilterDto extends OmitType(BaseFilterDto, [
 
   @IsArray()
   @IsOptional()
-  ageCategories?: AgeCategory[]; //TODO: this needs to be renamed to beneficiaries
+  beneficiaries?: number[];
 }

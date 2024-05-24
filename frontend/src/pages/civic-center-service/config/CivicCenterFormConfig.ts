@@ -61,7 +61,7 @@ const translations = {
     label: i18n.t('civic_center_service:form.domains.label'),
     helper: i18n.t('civic_center_service:form.domains.helper'),
   },
-  ageCategories: {
+  beneficiaries: {
     label: i18n.t('civic_center_service:form.age_category.label'),
     helper: i18n.t('civic_center_service:form.age_category.helper'),
     required: i18n.t('civic_center_service:form.age_category.required'),
@@ -261,17 +261,17 @@ export const CivicCenterFormConfig: Record<string, any> = {
       helperText: translations.domains.helper,
     },
   },
-  ageCategories: {
-    key: 'ageCategories',
+  beneficiaries: {
+    key: 'beneficiaries',
     rules: {
       required: {
         value: true,
-        message: translations.ageCategories.required,
+        message: translations.beneficiaries.required,
       },
     },
     config: {
-      title: translations.ageCategories.label,
-      helperText: translations.ageCategories.helper,
+      title: translations.beneficiaries.label,
+      helperText: translations.beneficiaries.helper,
     },
   },
   online: {

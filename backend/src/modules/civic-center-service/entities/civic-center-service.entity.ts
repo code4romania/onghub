@@ -11,9 +11,9 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 import { Feedback } from './feedback.entity';
 import { ServiceDomain } from './service-domain.entity';
+import { Beneficiary } from './beneficiary.entity';
 
 @Entity()
 export class CivicCenterService extends BaseEntity {
@@ -70,13 +70,16 @@ export class CivicCenterService extends BaseEntity {
   })
   domains: ServiceDomain[];
 
-  @Column({
-    type: 'enum',
-    enum: AgeCategory,
-    array: true,
-    name: 'age_categories',
+  @ManyToMany(() => Domain, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'civic_center_service_to_beneficiary',
+    joinColumn: {
+      name: 'civic_center_service_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: { name: 'beneficiary_id', referencedColumnName: 'id' },
   })
-  ageCategories: AgeCategory[];
+  beneficiaries: Beneficiary[];
 
   @Column({ type: 'boolean', name: 'has_online_access', default: false })
   hasOnlineAccess: boolean;

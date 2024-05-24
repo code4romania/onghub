@@ -37,6 +37,10 @@ export const getServiceDomains = (): Promise<Domain[]> => {
   return API.get(`/nomenclatures/service-domains`).then((res) => res.data);
 };
 
+export const getBeneficiaries = (): Promise<{ id: number; name: string }[]> => {
+  return API.get(`/nomenclatures/beneficiaries`).then((res) => res.data);
+};
+
 export const getRegions = (): Promise<Region[]> => {
   return API.get(`/nomenclatures/regions`).then((res) => res.data);
 };

@@ -68,4 +68,9 @@ export class NomenclaturesController {
   getServiceDomains() {
     return this.nomenclaturesService.getServiceDomains({});
   }
+
+  @Get('beneficiaries')
+  getBeneficiaries() {
+    return this.nomenclaturesService.getBeneficiaries({});
+  }
 }

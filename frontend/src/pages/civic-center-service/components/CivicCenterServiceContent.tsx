@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   calculatePeriod,
   dataToCsv,
-  formatAgeCategories,
+  formatBeneficiaries,
 } from '../../../common/helpers/pulling-apps-helper';
 
 interface CivicCenterServiceContentProps {
@@ -65,7 +65,7 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
           />
           <CivicCenterAccessDetailsRow
             label={t('details.age_category')}
-            value={formatAgeCategories(service)}
+            value={formatBeneficiaries(service)}
           />
           <CivicCenterAccessDetailsRow
             label={t('details.domains')}
