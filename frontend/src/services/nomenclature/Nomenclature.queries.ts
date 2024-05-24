@@ -13,6 +13,8 @@ import {
   getCoalitions,
   getSkills,
   getFaculties,
+  getPracticeDomains,
+  getServiceDomains,
 } from './Nomenclatures.service';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
@@ -45,6 +47,20 @@ export const useDomainsQuery = () => {
     onSuccess: (data: Domain[]) => {
       setDomains(data);
     },
+  });
+};
+
+export const usePracticeDomainsQuery = () => {
+  return useQuery(['practice-domains'], () => getPracticeDomains(), {
+    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60,
+  });
+};
+
+export const useServiceDomainsQuery = () => {
+  return useQuery(['service-domains'], () => getServiceDomains(), {
+    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60,
   });
 };
 

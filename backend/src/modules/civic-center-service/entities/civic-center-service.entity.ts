@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { AgeCategory } from '../../practice-program/enums/age-category.enum';
 import { Feedback } from './feedback.entity';
+import { ServiceDomain } from './service-domain.entity';
 
 @Entity()
 export class CivicCenterService extends BaseEntity {
@@ -67,7 +68,7 @@ export class CivicCenterService extends BaseEntity {
     },
     inverseJoinColumn: { name: 'domain_id', referencedColumnName: 'id' },
   })
-  domains: Domain[];
+  domains: ServiceDomain[];
 
   @Column({
     type: 'enum',

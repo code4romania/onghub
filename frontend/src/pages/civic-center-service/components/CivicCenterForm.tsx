@@ -18,9 +18,8 @@ import ServerSelect from '../../../components/server-select/ServerSelect';
 import Textarea from '../../../components/Textarea/Textarea';
 import Toggle from '../../../components/toggle/Toggle';
 import { CivicCenterServicePayload } from '../../../services/civic-center-service/interfaces/civic-center-service-payload.interface';
-import { useDomainsQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useServiceDomainsQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
-import { useNomenclature } from '../../../store/nomenclature/nomenclature.selectors';
 import { CivicCenterFormConfig } from '../config/CivicCenterFormConfig';
 import { ageCategories } from '../constants/age-categories.constants';
 import SubsectionHeader from './SubsectionHeader';
@@ -40,14 +39,12 @@ const CivicCenterForm = ({
   onChangeFormValidity,
   resetField,
 }: CivicCenterFormProps) => {
-  const { domains } = useNomenclature();
-
   // component state
   const [civicCenterProgramPeriodError, setCivicCenterPeriodError] = useState<string>();
   const [civicCenterMandatoryAccessError, setCivicCenterMandatoryAccessError] = useState<string>();
 
   // load nomenclature data
-  useDomainsQuery();
+  const { data: domains } = useServiceDomainsQuery();
 
   // translarions
   const { t } = useTranslation(['civic_center_service']);
@@ -268,7 +265,7 @@ const CivicCenterForm = ({
                     <ChipSelection
                       id="civic-center-service-form__domains"
                       {...CivicCenterFormConfig.domains.config}
-                      values={[...domains]}
+                      values={domains}
                       defaultItems={value}
                       error={(errors as Record<string, { message: string }>)[
                         CivicCenterFormConfig.domains.key

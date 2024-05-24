@@ -10,8 +10,8 @@ import Textarea from '../../../components/Textarea/Textarea';
 import ChipSelection from '../../../components/chip-selection/ChipSelection';
 import { useNomenclature } from '../../../store/selectors';
 import {
-  useDomainsQuery,
   useFacultiesQuery,
+  usePracticeDomainsQuery,
   useSkillsQuery,
 } from '../../../services/nomenclature/Nomenclature.queries';
 import CreatableSelectComponent from '../../../components/creatable-multi-select/CreatableMultiSelect';
@@ -34,7 +34,7 @@ const PracticeProgramForm = ({
   onChangeFormValidity,
 }: PracticeProgramFormProps) => {
   // store data
-  const { domains, skills, faculties } = useNomenclature();
+  const { skills, faculties } = useNomenclature();
 
   // component state
   const [practiceProgramPeriodError, setPracticeProgramPeriodError] = useState<string>();
@@ -44,7 +44,7 @@ const PracticeProgramForm = ({
   const { t } = useTranslation(['practice_program']);
 
   // load nomenclature data
-  useDomainsQuery();
+  const { data: domains } = usePracticeDomainsQuery();
   useSkillsQuery();
   useFacultiesQuery();
 
@@ -312,7 +312,7 @@ const PracticeProgramForm = ({
                   <ChipSelection
                     id="practice-program-form__domains"
                     {...PracticeProgramFormConfig.domains.config}
-                    values={[...domains]}
+                    values={domains}
                     defaultItems={value}
                     error={(errors as Record<string, { message: string }>)[
                       PracticeProgramFormConfig.domains.key

@@ -1,9 +1,10 @@
-import { Domain } from 'domain';
 import { City } from '../../common/interfaces/city.interface';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { County } from '../../common/interfaces/county.interface';
+import { Domain } from '../../common/interfaces/domain.interface';
 import { Faculty } from '../../common/interfaces/faculty.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
+import { PullingAppDomain } from '../../common/interfaces/pullin-app-domain.interface';
 import { Region } from '../../common/interfaces/region.interface';
 import { Skill } from '../../common/interfaces/skill.interface';
 import API from '../API';
@@ -24,8 +25,16 @@ export const getCities = (searchTerm: string, countyId?: number): Promise<City[]
   return API.get(`/nomenclatures/cities?${queryParams}`).then((res) => res.data);
 };
 
-export const getDomains = (): Promise<Domain[]> => {
+export const getDomains = (): Promise<PullingAppDomain[]> => {
   return API.get(`/nomenclatures/domains`).then((res) => res.data);
+};
+
+export const getPracticeDomains = (): Promise<PullingAppDomain[]> => {
+  return API.get(`/nomenclatures/practice-domains`).then((res) => res.data);
+};
+
+export const getServiceDomains = (): Promise<Domain[]> => {
+  return API.get(`/nomenclatures/service-domains`).then((res) => res.data);
 };
 
 export const getRegions = (): Promise<Region[]> => {

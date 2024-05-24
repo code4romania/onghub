@@ -45,7 +45,7 @@ const ChipSelection = ({
   helperText,
   defaultItems = [],
   onItemsChange,
-  values,
+  values = [],
   error,
   readonly,
   id,
