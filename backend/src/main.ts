@@ -1,4 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import './instrument';
+import * as Sentry from '@sentry/node';
+import {
+  BaseExceptionFilter,
+  HttpAdapterHost,
+  NestFactory,
+} from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Environment } from './env.validation';
@@ -13,6 +19,9 @@ async function bootstrap() {
     bodyParser: false,
     bufferLogs: true,
   });
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  Sentry.setupNestErrorHandler(app, new BaseExceptionFilter(httpAdapter));
 
   app.use(helmet());
 

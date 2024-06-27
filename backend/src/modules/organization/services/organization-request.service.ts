@@ -25,6 +25,7 @@ import ApproveOngRequestEvent from 'src/modules/notifications/events/approve-ong
 import RejectOngRequestEvent from 'src/modules/notifications/events/reject-ong-request-event.class';
 import DisableOngRequestEvent from 'src/modules/notifications/events/disable-ong-request-event.class';
 import { ValidateCreateOrganizationRequestDto } from '../dto/validate-create-organization-request.dto';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OrganizationRequestService {
@@ -199,68 +200,78 @@ export class OrganizationRequestService {
     logo: Express.Multer.File[],
     organizationStatute: Express.Multer.File[],
   ) {
-    // 1. Check if the admin email is not in the user table already (is unique).
-    const foundProfile = await this.userService.findOne({
-      where: { email: createReqDto.admin.email },
-    });
-
-    // 2. There is already and admin with the email address
-    if (foundProfile) {
-      throw new BadRequestException({
-        ...ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
-      });
-    }
-
-    // 3. Check if there isn't already a request made by the same user.
-    const foundRequest = await this.organizationRequestRepository.get({
-      where: [
-        { email: createReqDto.admin.email, status: RequestStatus.PENDING },
-        {
-          phone: createReqDto.admin.phone,
-          status: RequestStatus.PENDING,
-        },
-      ],
-    });
-
-    // 4. Throw error for duplicate request
-    if (foundRequest) {
-      throw new BadRequestException({
-        ...ORGANIZATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
-      });
-    }
-
-    // 5. Validate files
-    this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
-    this.fileManagerService.validateFiles(organizationStatute, FILE_TYPE.FILE);
-
-    // 6. create organization
-    const organization = await this.organizationService.create(
-      createReqDto.admin,
-      createReqDto.organization,
-      logo,
-      organizationStatute,
-    );
-
     try {
-      // 7. create request
-      const request = await this.organizationRequestRepository.save({
-        name: createReqDto.admin.name,
-        email: createReqDto.admin.email,
-        phone: createReqDto.admin.phone,
-        organizationName: createReqDto.organization.general.name,
-        organizationId: organization.id,
+      // 1. Check if the admin email is not in the user table already (is unique).
+      const foundProfile = await this.userService.findOne({
+        where: { email: createReqDto.admin.email },
       });
 
-      // 8. trigger emails for admin and super-admin
-      this.eventEmitter.emit(
-        EVENTS.CREATE_ORGANIZATION_REQUEST,
-        new CreateOngRequestEvent(createReqDto.admin.email, request.id),
+      // 2. There is already and admin with the email address
+      if (foundProfile) {
+        throw new BadRequestException({
+          ...ORGANIZATION_REQUEST_ERRORS.CREATE.USER_EXISTS,
+        });
+      }
+
+      // 3. Check if there isn't already a request made by the same user.
+      const foundRequest = await this.organizationRequestRepository.get({
+        where: [
+          { email: createReqDto.admin.email, status: RequestStatus.PENDING },
+          {
+            phone: createReqDto.admin.phone,
+            status: RequestStatus.PENDING,
+          },
+        ],
+      });
+
+      // 4. Throw error for duplicate request
+      if (foundRequest) {
+        throw new BadRequestException({
+          ...ORGANIZATION_REQUEST_ERRORS.CREATE.REQ_EXISTS,
+        });
+      }
+
+      // 5. Validate files
+      this.fileManagerService.validateFiles(logo, FILE_TYPE.IMAGE);
+      this.fileManagerService.validateFiles(
+        organizationStatute,
+        FILE_TYPE.FILE,
       );
 
-      return request;
-    } catch (error) {
-      this.logger.error({ error, payload: createReqDto });
-      throw error;
+      // 6. create organization
+      const organization = await this.organizationService.create(
+        createReqDto.admin,
+        createReqDto.organization,
+        logo,
+        organizationStatute,
+      );
+
+      try {
+        // 7. create request
+        const request = await this.organizationRequestRepository.save({
+          name: createReqDto.admin.name,
+          email: createReqDto.admin.email,
+          phone: createReqDto.admin.phone,
+          organizationName: createReqDto.organization.general.name,
+          organizationId: organization.id,
+        });
+
+        // 8. trigger emails for admin and super-admin
+        this.eventEmitter.emit(
+          EVENTS.CREATE_ORGANIZATION_REQUEST,
+          new CreateOngRequestEvent(createReqDto.admin.email, request.id),
+        );
+
+        return request;
+      } catch (error) {
+        this.logger.error({ error, payload: createReqDto });
+        throw error;
+      }
+    } catch (err) {
+      Sentry.captureException(err, {
+        extra: { ...createReqDto },
+      });
+      throw err;
     }
   }
 
