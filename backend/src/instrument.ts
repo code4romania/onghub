@@ -1,17 +1,21 @@
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 // Ensure to call this before importing any other modules!
 Sentry.init({
-  dsn: 'https://4fd4562bbb7f94e16b3f79c4f96b6237@o375441.ingest.us.sentry.io/4507502912012288',
+  dsn: process.env.SENTRY_DSN,
   integrations: [
     // Add our Profiling integration
     nodeProfilingIntegration(),
   ],
 
+  environment: process.env.NODE_ENV,
+
   // Add Tracing by setting tracesSampleRate
   // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.5,
 
   // Set sampling rate for profiling
   // This is relative to tracesSampleRate
