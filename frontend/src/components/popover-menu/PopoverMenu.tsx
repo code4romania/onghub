@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactNode } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 
-interface MenuItem {
+export interface MenuItem {
   name: string;
-  icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
+  icon: (props: React.ComponentProps<'svg'>) => any; // TODO:  ANY TO BE CHANGED IF NEEDED
   onClick: (row: any) => void;
   type?: PopoverMenuRowType;
   htmlFor?: string;
