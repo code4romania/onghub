@@ -45,7 +45,7 @@ export class PublicAPIController {
   }
 
   @Public()
-  @Throttle(1, 60)
+  @Throttle({default: {limit: 1, ttl: 60 * 1000}})
   @ApiBody({ type: ContactMailDto })
   @Post('/contact')
   async sendMail(@Body() mailOptions: ContactMailDto): Promise<void> {

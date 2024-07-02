@@ -1,7 +1,6 @@
-import { CacheModule, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from '@nestjs/cache-manager';
+import { Module } from '@nestjs/common';
 import { CacheConfigService } from 'src/common/config/cache-config.service';
-import { TypeOrmConfigService } from 'src/common/config/typeorm-config.service';
 
 /**
  * Will register the CacheModule using the provided configuration

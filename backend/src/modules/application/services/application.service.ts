@@ -190,8 +190,8 @@ export class ApplicationService {
         'ongApp.applicationId = application.id',
       )
       .where('ongApp.organizationId = :organizationId', { organizationId })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
+      .andWhere('ongApp.status = :ongAppStatus', {
+        ongAppStatus: OngApplicationStatus.ACTIVE,
       })
       .andWhere('application.status = :status', {
         status: ApplicationStatus.ACTIVE,
@@ -450,8 +450,8 @@ export class ApplicationService {
       .where('ongApp.organizationId = :organizationId', {
         organizationId,
       })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
+      .andWhere('ongApp.status = :ongAppStatus', {
+        ongAppStatus: OngApplicationStatus.ACTIVE,
       })
       .andWhere('application.status = :status', {
         status: ApplicationStatus.ACTIVE,
@@ -488,8 +488,8 @@ export class ApplicationService {
         organizationId,
       })
       .andWhere('userOngApp.userId = :userId', { userId })
-      .andWhere('ongApp.status = :status', {
-        status: OngApplicationStatus.ACTIVE,
+      .andWhere('ongApp.status = :ongAppStatus', {
+        ongAppStatus: OngApplicationStatus.ACTIVE,
       })
       .andWhere('application.status = :status', {
         status: ApplicationStatus.ACTIVE,
