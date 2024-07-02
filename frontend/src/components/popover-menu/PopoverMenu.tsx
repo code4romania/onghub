@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { DotsVerticalIcon } from '@heroicons/react/outline';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 
 interface MenuItem {
@@ -53,7 +53,7 @@ const PopoverMenu = ({ row, menuItems }: MenuProps) => {
               'group bg-white rounded-md inline-flex items-center sm:text-sm lg:text-base text-xs font-medium hover:text-gray-900 focus:outline-none',
             )}
           >
-            <DotsVerticalIcon
+            <EllipsisVerticalIcon
               className={classNames(
                 open ? 'text-gray-600' : 'text-gray-400',
                 'h-5 w-5 group-hover:text-gray-500',

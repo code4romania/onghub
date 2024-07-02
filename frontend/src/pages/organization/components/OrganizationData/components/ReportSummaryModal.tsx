@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Controller, useForm } from 'react-hook-form';
 import InputField from '../../../../../components/InputField/InputField';
 import { ReportSummaryConfig } from './ReportSummayConfig';
@@ -67,7 +67,7 @@ const ReportSummaryModal = ({ onClose, year, defaultValue, onSave }: ReportSumma
                     onClick={() => onClose()}
                   >
                     <span className="sr-only">{t('modal.close', { ns: 'organization' })}</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">

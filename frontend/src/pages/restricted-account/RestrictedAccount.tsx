@@ -1,5 +1,5 @@
-import { Auth } from 'aws-amplify';
 import React from 'react';
+import { signOut } from 'aws-amplify/auth';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header/Header';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -11,7 +11,7 @@ const RestrictedAccount = () => {
   const { t } = useTranslation('account');
 
   const onGoBackToSite = async () => {
-    await Auth.signOut();
+    await signOut();
     setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
   };
 

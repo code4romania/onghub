@@ -35,7 +35,7 @@ import { ICreateOrganizationPayload } from '../interfaces/CreateOrganization.int
 import { updateActiveStepIndexInLocalStorage } from '../../../common/helpers/utils.helper';
 import { useInitStep } from '../../../common/hooks/useInitStep';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
-import { PlusIcon } from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import AddCoFedModal from '../../../components/add-fed-co-modal/AddFedCoModal';
 import { classNames } from '../../../common/helpers/tailwind.helper';
 
@@ -392,30 +392,30 @@ const CreateOrganizationActivity = () => {
 
             {(isPartOfInternationalOrganization == 'true' ||
               isPartOfInternationalOrganization === true) && (
-              <Controller
-                key={OrganizationActivityConfig.internationalOrganizationName.key}
-                name={OrganizationActivityConfig.internationalOrganizationName.key}
-                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationActivityConfig.internationalOrganizationName.config,
-                        name: OrganizationActivityConfig.internationalOrganizationName.key,
-                        error:
-                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                            ?.message,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-activity__international-name',
-                      }}
-                      readonly={readonly}
-                    />
-                  );
-                }}
-              />
-            )}
+                <Controller
+                  key={OrganizationActivityConfig.internationalOrganizationName.key}
+                  name={OrganizationActivityConfig.internationalOrganizationName.key}
+                  rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <InputField
+                        config={{
+                          ...OrganizationActivityConfig.internationalOrganizationName.config,
+                          name: OrganizationActivityConfig.internationalOrganizationName.key,
+                          error:
+                            errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                              ?.message,
+                          defaultValue: value,
+                          onChange: onChange,
+                          id: 'create-organization-activity__international-name',
+                        }}
+                        readonly={readonly}
+                      />
+                    );
+                  }}
+                />
+              )}
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <div>

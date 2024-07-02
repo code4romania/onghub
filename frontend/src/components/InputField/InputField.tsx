@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { ExclamationCircleIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
 const InputField = (props: {
@@ -74,7 +74,7 @@ const InputField = (props: {
                 {showPassword ? (
                   <EyeIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
                 ) : (
-                  <EyeOffIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
+                  <EyeSlashIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
                 )}
               </div>
             )}

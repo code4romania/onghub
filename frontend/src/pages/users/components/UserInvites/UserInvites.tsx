@@ -12,7 +12,7 @@ import {
 import { useUser } from '../../../../store/selectors';
 import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
 import { useTranslation } from 'react-i18next';
-import { ReplyIcon, TrashIcon } from '@heroicons/react/outline';
+import { ArrowUturnLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { IInvite } from '../../interfaces/Invite.interface';
@@ -57,7 +57,7 @@ const UserInvites = () => {
     const pendingUserMenuItems = [
       {
         name: t('invites.resend'),
-        icon: ReplyIcon,
+        icon: ArrowUturnLeftIcon,
         onClick: onResendInvite,
       },
       {

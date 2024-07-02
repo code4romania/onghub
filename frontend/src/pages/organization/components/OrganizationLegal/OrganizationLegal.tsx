@@ -1,5 +1,5 @@
-import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
-import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
+import { PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
@@ -295,8 +295,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                    handleSubmit(handleSave)();
-                  }
+                  handleSubmit(handleSave)();
+                }
             }
           >
             <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
@@ -414,7 +414,7 @@ const OrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
                   {isEditMode && !isRemovingOrganizationStatute && (
-                    <XIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
+                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
                   {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
                 </a>

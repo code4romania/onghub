@@ -1,4 +1,4 @@
-import { BanIcon, EyeIcon, RefreshIcon } from '@heroicons/react/outline';
+import { NoSymbolIcon, EyeIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -143,7 +143,7 @@ const Organizations = () => {
       },
       {
         name: t('restrict'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictOrganization,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -158,7 +158,7 @@ const Organizations = () => {
       },
       {
         name: t('activate'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onActivateOrganization,
         type: PopoverMenuRowType.SUCCESS,
       },

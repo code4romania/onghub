@@ -1,5 +1,5 @@
 import React from 'react';
-import { Auth } from 'aws-amplify';
+import { getCurrentUser, signOut } from 'aws-amplify/auth';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
@@ -31,7 +31,7 @@ const AuthProvider = ({ children }: any) => {
 
   const logout: any = async () => {
     try {
-      await Auth.signOut({ global: true });
+      await signOut({ global: true });
     } catch (err) {
       console.log(err);
     } finally {
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     (async () => {
       try {
-        await Auth.currentAuthenticatedUser();
+        await getCurrentUser();
         const { data: profile, error } = await refetchUserProfile();
         if (!profile) throw error;
 

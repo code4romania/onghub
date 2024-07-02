@@ -1,4 +1,4 @@
-import { DownloadIcon, PencilIcon, TrashIcon, UploadIcon } from '@heroicons/react/outline';
+import { ArrowDownTrayIcon, PencilIcon, TrashIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -153,7 +153,7 @@ const OrganizationData = () => {
     const employeeMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
@@ -162,13 +162,13 @@ const OrganizationData = () => {
     const adminMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: t('upload'),
-        icon: UploadIcon,
+        icon: ArrowUpTrayIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
         htmlFor: 'uploadPartners',
@@ -184,13 +184,13 @@ const OrganizationData = () => {
     const superAdminMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: t('upload'),
-        icon: UploadIcon,
+        icon: ArrowUpTrayIcon,
         onClick: setSelectedPartner,
         type: PopoverMenuRowType.UPLOAD,
         htmlFor: 'uploadPartners',
@@ -212,8 +212,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-              ? employeeMenuItems
-              : adminMenuItems
+                ? employeeMenuItems
+                : adminMenuItems
           }
         />
       ),
@@ -226,7 +226,7 @@ const OrganizationData = () => {
     const employeeMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
@@ -235,13 +235,13 @@ const OrganizationData = () => {
     const adminMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: t('upload'),
-        icon: UploadIcon,
+        icon: ArrowUpTrayIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
         htmlFor: 'uploadInvestors',
@@ -257,13 +257,13 @@ const OrganizationData = () => {
     const superAdminMenuItems = [
       {
         name: t('download'),
-        icon: DownloadIcon,
+        icon: ArrowDownTrayIcon,
         onClick: onDownloadFile,
         type: PopoverMenuRowType.DOWNLOAD,
       },
       {
         name: t('upload'),
-        icon: UploadIcon,
+        icon: ArrowUpTrayIcon,
         onClick: setSelectedInvestor,
         type: PopoverMenuRowType.UPLOAD,
         htmlFor: 'uploadInvestors',
@@ -285,8 +285,8 @@ const OrganizationData = () => {
             id
               ? superAdminMenuItems
               : role === UserRole.EMPLOYEE
-              ? employeeMenuItems
-              : adminMenuItems
+                ? employeeMenuItems
+                : adminMenuItems
           }
         />
       ),
@@ -457,7 +457,7 @@ const OrganizationData = () => {
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer break-keep"
                 download
               >
-                <DownloadIcon className="w-5 h-5" />
+                <ArrowDownTrayIcon className="w-5 h-5" />
                 {t('partners.download')}
               </a>
             </p>
@@ -499,7 +499,7 @@ const OrganizationData = () => {
                 className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer break-keep"
                 download
               >
-                <DownloadIcon className="w-5 h-5" />
+                <ArrowDownTrayIcon className="w-5 h-5" />
                 {t('investors.download')}
               </a>
             </p>

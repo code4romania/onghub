@@ -4,10 +4,10 @@ import { getNavigationRoutes } from './Menu';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
-import { XIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { NGOHUB_INFORMATION_URL } from '../../common/constants/constants';
-import { InformationCircleIcon } from '@heroicons/react/outline';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 export default function SlidingMenu({
   isOpen,
@@ -85,7 +85,7 @@ export default function SlidingMenu({
                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                         onClick={() => setSlidingMenuOpen(false)}
                       >
-                        <XIcon className="w-6 h-6" />
+                        <XMarkIcon className="w-6 h-6" />
                         <span className="sr-only">Close panel</span>
                       </button>
                     </div>
