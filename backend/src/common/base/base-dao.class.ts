@@ -59,10 +59,7 @@ export abstract class BaseDAO<T> {
     return this.repository.save(record);
   }
 
-  async update(
-    findCriteria: FindOptionsWhere<T>,
-    updates: QueryDeepPartialEntity<T>,
-  ) {
+  async update(findCriteria: FindOptionsWhere<T>, updates: QueryDeepPartialEntity<T>): Promise<any> {
     const record = await this.get({ where: findCriteria });
 
     if (!record) {
