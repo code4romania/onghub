@@ -4,10 +4,12 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Patch,
   Post,
   Query,
+  Res,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -45,6 +47,7 @@ import { OrganizationWithPracticePrograms } from '../interfaces/OrganizationWith
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationFinancialService } from '../services/organization-financial.service';
+import { FileManagerService } from 'src/shared/services/file-manager.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -55,6 +58,7 @@ export class OrganizationController {
     private readonly organizationService: OrganizationService,
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationRequestService: OrganizationRequestService,
+    private readonly fileManager: FileManagerService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -65,6 +69,24 @@ export class OrganizationController {
   ): Promise<Pagination<OrganizationView>> {
     return this.organizationService.findAll({ options: filters });
   }
+
+  @Roles(Role.SUPER_ADMIN)
+  @ApiQuery({ type: () => OrganizationFilterDto })
+  @Get('download')
+  @Header(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  )
+  @Header('Content-Disposition', 'attachment; filename="NGOs.xlsx"')
+  async downloadAll(
+    @Res({ passthrough: true }) res: any,
+    @Query() filters: OrganizationFilterDto,
+  ): Promise<any> {
+    const data = await  this.organizationService.findAllForDownload({ options: filters });
+    res.end(this.fileManager.jsonToExcelBuffer(data, 'NGOs'));
+  }
+
+
 
   @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)

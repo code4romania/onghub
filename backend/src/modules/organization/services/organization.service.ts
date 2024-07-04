@@ -325,6 +325,14 @@ export class OrganizationService {
       paginationOptions,
     );
 
+    for(let index in ongList.items) {
+      const data = await this.findWithRelations(ongList.items[index].id);
+      ongList.items[index] = {
+        ...ongList.items[index],
+        ...data
+      }
+    }
+
     // Map the logo url
     const items =
       await this.fileManagerService.mapLogoToEntity<OrganizationView>(
@@ -335,6 +343,153 @@ export class OrganizationService {
       ...ongList,
       items,
     };
+  }
+
+  public async findAllForDownload({
+    options,
+  }: {
+    options: OrganizationFilterDto;
+  }): Promise<Organization[]> {
+    const organizations = await this.organizationRepository.getMany({
+      relations: [
+        'organizationGeneral',
+        'organizationGeneral.city',
+        'organizationGeneral.county',
+        'organizationGeneral.organizationCity',
+        'organizationGeneral.organizationCounty',
+        'organizationActivity',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
+        'organizationActivity.domains',
+        'organizationActivity.cities',
+        'organizationActivity.cities.county',
+        'organizationActivity.federations',
+        'organizationActivity.coalitions',
+        'organizationActivity.branches',
+        'organizationActivity.branches.county',
+        'organizationActivity.regions',
+        'organizationLegal',
+        'organizationLegal.legalReprezentative',
+        'organizationLegal.directors',
+        'organizationFinancial',
+        'organizationReport',
+        'organizationReport.reports',
+        'organizationReport.partners',
+        'organizationReport.investors',
+      ],
+    });
+
+    const ignoreKeys = ['organizationGeneralId', 'organizationActivityId', 'organizationLegalId', 'organizationReportId', 'organizationGeneral.id', 'organizationGeneral.logo', 'organizationGeneral.cityId', 'organizationGeneral.countyId', 'organizationGeneral.organizationCityId', 'organizationGeneral.organizationCountyId', 'organizationGeneral.city.id', 'organizationGeneral.city.countyId', 'organizationGeneral.county.id', 'organizationGeneral.county.abbreviation', 'organizationGeneral.county.regionId', 'organizationGeneral.organizationCity.id', 'organizationGeneral.organizationCity.countyId', 'organizationGeneral.organizationCounty.id', 'organizationGeneral.organizationCounty.abbreviation', 'organizationGeneral.organizationCounty.regionId', 'organizationActivity.id', 'organizationLegal.id', 'organizationLegal.legalReprezentativeId', 'organizationLegal.organizationStatute', 'organizationLegal.legalReprezentative.id', 'organizationReport.id' ];
+
+    const mappingObject = {
+      id: "ID",
+      status: "Status",
+      completionStatus: "Completion Status",
+      "organizationGeneral.name": "Organization Name",
+      "organizationGeneral.alias": "Organization Alias",
+      "organizationGeneral.type": "Organization Type",
+      "organizationGeneral.email": "Organization Email",
+      "organizationGeneral.phone": "Organization Phone",
+      "organizationGeneral.yearCreated": "Year Created",
+      "organizationGeneral.cui": "CUI",
+      "organizationGeneral.rafNumber": "RAF Number",
+      "organizationGeneral.shortDescription": "Short Description",
+      "organizationGeneral.description": "Description",
+      "organizationGeneral.address": "Address",
+      "organizationGeneral.logo": "Logo",
+      "organizationGeneral.website": "Website",
+      "organizationGeneral.facebook": "Facebook",
+      "organizationGeneral.instagram": "Instagram",
+      "organizationGeneral.twitter": "Twitter",
+      "organizationGeneral.linkedin": "LinkedIn",
+      "organizationGeneral.tiktok": "TikTok",
+      "organizationGeneral.donationWebsite": "Donation Website",
+      "organizationGeneral.redirectLink": "Redirect Link",
+      "organizationGeneral.donationSMS": "Donation SMS",
+      "organizationGeneral.donationKeyword": "Donation Keyword",
+      "organizationGeneral.contact.email": "Contact Email",
+      "organizationGeneral.contact.phone": "Contact Phone",
+      "organizationGeneral.contact.fullName": "Contact Full Name",
+      "organizationGeneral.cityId": "City ID",
+      "organizationGeneral.countyId": "County ID",
+      "organizationGeneral.organizationAddress": "Organization Address",
+      "organizationGeneral.organizationCityId": "Organization City ID",
+      "organizationGeneral.organizationCountyId": "Organization County ID",
+      "organizationGeneral.city.id": "City ID",
+      "organizationGeneral.city.name": "City Name",
+      "organizationGeneral.city.countyId": "City County ID",
+      "organizationGeneral.county.id": "County ID",
+      "organizationGeneral.county.name": "County Name",
+      "organizationGeneral.county.abbreviation": "County Abbreviation",
+      "organizationGeneral.county.regionId": "County Region ID",
+      "organizationGeneral.organizationCity.id": "Organization City ID",
+      "organizationGeneral.organizationCity.name": "Organization City Name",
+      "organizationGeneral.organizationCity.countyId": "Organization City County ID",
+      "organizationGeneral.organizationCounty.id": "Organization County ID",
+      "organizationGeneral.organizationCounty.name": "Organization County Name",
+      "organizationGeneral.organizationCounty.abbreviation": "Organization County Abbreviation",
+      "organizationGeneral.organizationCounty.regionId": "Organization County Region ID",
+      "organizationActivity.id": "Organization Activity ID",
+      "organizationActivity.area": "Activity Area",
+      "organizationActivity.isPartOfFederation": "Is Part of Federation",
+      "organizationActivity.isPartOfCoalition": "Is Part of Coalition",
+      "organizationActivity.isPartOfInternationalOrganization": "Is Part of International Organization",
+      "organizationActivity.internationalOrganizationName": "International Organization Name",
+      "organizationActivity.isSocialServiceViable": "Is Social Service Viable",
+      "organizationActivity.offersGrants": "Offers Grants",
+      "organizationActivity.isPublicIntrestOrganization": "Is Public Interest Organization",
+      "organizationActivity.hasBranches": "Has Branches",
+      "organizationActivity.federations": "Federations",
+      "organizationActivity.coalitions": "Coalitions",
+      "organizationActivity.domains": "Domains",
+      "organizationActivity.cities": "Cities",
+      "organizationActivity.branches": "Branches",
+      "organizationActivity.regions": "Regions",
+      "organizationLegal.id": "Organization Legal ID",
+      "organizationLegal.legalReprezentativeId": "Legal Representative ID",
+      "organizationLegal.others": "Others",
+      "organizationLegal.organizationStatute": "Organization Statute",
+      "organizationLegal.legalReprezentative.id": "Legal Representative ID",
+      "organizationLegal.legalReprezentative.fullName": "Legal Representative Full Name",
+      "organizationLegal.legalReprezentative.email": "Legal Representative Email",
+      "organizationLegal.legalReprezentative.phone": "Legal Representative Phone",
+      "organizationLegal.directors": "Directors",
+      "organizationFinancial": "Organization Financials",
+      "organizationReport.id": "Organization Report ID",
+      "organizationReport.reports": "Reports",
+      "organizationReport.partners": "Partners",
+      "organizationReport.investors": "Investors",
+      "organizationGeneral.contact.name": "Contact Name",
+      "organizationGeneral.organizationCity": "Organization City",
+      "organizationGeneral.organizationCounty": "Organization County"
+    };    
+
+    function flattenObject(obj: any, parent: string = '', res: any = {}): any {
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const propName = parent ? `${parent}.${key}` : key;
+
+          if(ignoreKeys.includes(propName)) {
+            continue;
+          }
+
+          if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+            flattenObject(obj[key], propName, res);
+          } else if (Array.isArray(obj[key])) {
+            res[mappingObject[propName] || propName] = JSON.stringify(obj[key]);
+          } else {
+            res[mappingObject[propName] || propName] = obj[key];
+          }
+        }
+      }
+      return res;
+    }
+
+    const flatten = organizations.map((org) => {
+      return flattenObject(org);
+    });
+
+    return flatten;
   }
 
   public async getLogo(id: number): Promise<string> {
