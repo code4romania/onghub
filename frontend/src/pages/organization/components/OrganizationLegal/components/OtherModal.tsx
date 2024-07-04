@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import ContactForm from '../../../../../components/Contact/Contact';
 import { Person } from '../../../../../common/interfaces/person.interface';
@@ -69,7 +69,7 @@ const OtherModal = ({ onClose, defaultValue, isEdit, onSave, id }: OtherModalPro
                     onClick={onClose}
                   >
                     <span className="sr-only">{t('modal.close', { ns: 'organization' })}</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">

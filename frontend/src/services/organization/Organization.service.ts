@@ -1,4 +1,4 @@
-import formatISO9075 from 'date-fns/formatISO9075';
+import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';

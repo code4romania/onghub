@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 
 interface FeedbackViewModalProps {
@@ -65,7 +65,7 @@ const FeedbackViewModal = ({
                         className="right-5 fixed w-min"
                         onClick={onClose}
                       >
-                        <XIcon className="mx-auto sm:h-5 sm:w-5 h-4 w-4" />
+                        <XMarkIcon className="mx-auto sm:h-5 sm:w-5 h-4 w-4" />
                       </button>
                     </div>
                     <div className="mt-6">

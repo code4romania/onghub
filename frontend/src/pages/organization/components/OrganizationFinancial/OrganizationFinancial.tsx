@@ -1,4 +1,4 @@
-import { EyeIcon, PencilIcon } from '@heroicons/react/outline';
+import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 import React, { useContext, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';

@@ -1,12 +1,12 @@
 import {
   CheckCircleIcon,
   ClockIcon,
-  CollectionIcon,
+  RectangleStackIcon,
   SunIcon,
   UserGroupIcon,
   UsersIcon,
-  ViewGridAddIcon,
-} from '@heroicons/react/solid';
+  SquaresPlusIcon,
+} from '@heroicons/react/24/solid';
 import { formatDate } from '../../../common/helpers/format.helper';
 
 interface PartialSimpleDashboardStatistics {
@@ -28,7 +28,7 @@ export const SuperAdminDashboardStatisticsMapping: Record<
     title: 'statistics.number_of_active_organizations',
   },
   numberOfApps: {
-    icon: CollectionIcon,
+    icon: RectangleStackIcon,
     title: 'statistics.number_of_apps',
   },
   numberOfPendingRequests: {
@@ -55,7 +55,7 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
     iconColor: 'bg-indigo-500',
   },
   numberOfApps: {
-    icon: CollectionIcon,
+    icon: RectangleStackIcon,
     title: 'statistics.number_of_apps',
     iconColor: 'bg-indigo-500',
   },
@@ -77,7 +77,7 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
     },
   }),
   numberOfInstalledApps: (value: number, isAdmin: boolean) => ({
-    icon: ViewGridAddIcon,
+    icon: SquaresPlusIcon,
     info: [
       {
         title: value,
@@ -129,7 +129,7 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
     },
   }),
   numberOfInstalledApps: (value: number, organizationId?: number) => ({
-    icon: ViewGridAddIcon,
+    icon: SquaresPlusIcon,
     info: [
       {
         title: value,

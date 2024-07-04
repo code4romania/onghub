@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PencilIcon } from '@heroicons/react/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';

@@ -4,7 +4,7 @@ import { formatDate } from '../../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
 import { CompletionStatus } from '../../../enums/CompletionStatus.enum';
 import { Report } from '../../../interfaces/Report.interface';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import i18n from '../../../../../common/config/i18n';
 import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
@@ -60,7 +60,7 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
           rel="noreferrer"
         >
           {`${translations.report}${row.year}`}
-          <ExternalLinkIcon className="w-4 h-4" />
+          <ArrowTopRightOnSquareIcon className="w-4 h-4" />
         </a>
       ) : (
         translations.not_available

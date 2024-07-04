@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BanIcon } from '@heroicons/react/outline';
-import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid';
+import { NoSymbolIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, ArrowPathIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
@@ -102,7 +102,7 @@ const UserList = (props: { organizationId?: number }) => {
     const activeUserMenuItems = [
       {
         name: t('list.restrict'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -121,7 +121,7 @@ const UserList = (props: { organizationId?: number }) => {
     const restrictedUserMenuItems = [
       {
         name: t('list.give_access'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onRestoreAccess,
       },
       {

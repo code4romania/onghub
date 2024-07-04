@@ -1,4 +1,4 @@
-import { PlusIcon, XIcon } from '@heroicons/react/solid';
+import { PlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import {
   Controller,
@@ -317,7 +317,7 @@ const ApplicationForm = ({
                     remove(fields.length - 1);
                   }}
                 >
-                  <XIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
+                  <XMarkIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
                   {t('form.delete_step')}
                 </button>
               )}

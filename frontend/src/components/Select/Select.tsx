@@ -2,7 +2,7 @@
 
 import React, { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
 import { classNames } from '../../common/helpers/tailwind.helper';
 
 const Select = (props: {
@@ -45,13 +45,13 @@ const Select = (props: {
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
                       : props.selected) || (
-                      <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
-                        {props.config.label}
-                      </span>
-                    )}
+                        <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
+                          {props.config.label}
+                        </span>
+                      )}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                    <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                   </span>
                 </Listbox.Button>
 

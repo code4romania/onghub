@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ArrowCircleLeftIcon, ArrowCircleRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -119,9 +119,9 @@ const Menu = (props: { isNarrow: boolean, setIsNarrow: React.Dispatch<React.SetS
           )}
         >
           {props.isNarrow ? (
-            <ArrowCircleRightIcon className="w-5 h-5" />
+            <ArrowRightCircleIcon className="w-5 h-5" />
           ) : (
-            <ArrowCircleLeftIcon className="w-5 h-5" />
+            <ArrowLeftCircleIcon className="w-5 h-5" />
           )}
           <span
             className={classNames(

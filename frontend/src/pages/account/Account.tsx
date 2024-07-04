@@ -3,7 +3,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import InputField from '../../components/InputField/InputField';
 import { AccountConfig } from './AccountConfig';
-import { Auth } from 'aws-amplify';
 import { useErrorToast, useSuccessToast } from '../../common/hooks/useToast';
 import { useProfileQuery, useUserMutation } from '../../services/user/User.queries';
 import { useAuthContext } from '../../contexts/AuthContext';
@@ -11,6 +10,7 @@ import { useUser } from '../../store/user/User.selectors';
 import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../users/enums/UserRole.enum';
+import { getCurrentUser, updatePassword } from 'aws-amplify/auth';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -45,9 +45,9 @@ const Account = () => {
   };
 
   const onChangePassword = async (data: any) => {
-    Auth.currentAuthenticatedUser()
+    getCurrentUser()
       .then((user) => {
-        return Auth.changePassword(user, data.oldPassword, data.newPassword);
+        return updatePassword({ oldPassword: data.oldPassword, newPassword: data.newPassword });
       })
       .then(() => {
         setReadonly(true);
