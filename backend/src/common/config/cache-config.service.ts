@@ -3,7 +3,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-redis-yet';
+import * as redisStore from 'cache-manager-redis-store';
+
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {
