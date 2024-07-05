@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { XCircleIcon } from '@heroicons/react/solid';
+import { XCircleIcon } from '@heroicons/react/24/solid';
 import { Combobox } from '@headlessui/react';
-import PlusIcon from '@heroicons/react/solid/PlusIcon';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { ChipItem } from '../../common/interfaces/chip-item.interface';
 interface SearchSelectProps {
@@ -59,8 +59,8 @@ const SearchSelect = ({
     query === ''
       ? values
       : values.filter((value) => {
-          return value.name.toLowerCase().includes(query.toLowerCase());
-        });
+        return value.name.toLowerCase().includes(query.toLowerCase());
+      });
 
   const onRemoveSelection = (itemId: number) => {
     setSelectedItems(selectedItems.filter((item) => item.id !== itemId));

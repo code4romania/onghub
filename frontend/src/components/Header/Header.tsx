@@ -3,12 +3,12 @@ import './Header.css';
 import logo from './../../assets/images/logo.svg';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { Menu, Transition } from '@headlessui/react';
-import { CogIcon, LogoutIcon, MenuIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { CogIcon, ArrowLeftEndOnRectangleIcon, Bars4Icon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
-import { Auth } from 'aws-amplify';
 import { useTranslation } from 'react-i18next';
+import { signInWithRedirect } from 'aws-amplify/auth';
 
 interface HeaderProps {
   openSlidingMenu?: any;
@@ -34,7 +34,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                   className="flex items-center gap-4 hover:bg-green-tab py-2 px-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
                   onClick={() => openSlidingMenu(true)}
                 >
-                  <MenuIcon className="w-5 h-5" />
+                  <Bars4Icon className="w-5 h-5" />
                 </button>
               </div>
             )}
@@ -53,7 +53,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
               <button
                 aria-label={t('enter')}
                 className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
-                onClick={(e) => Auth.federatedSignIn()}
+                onClick={(e) => signInWithRedirect()}
               >
                 {t('enter')}
               </button>
@@ -111,7 +111,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                             )}
                             onClick={logout}
                           >
-                            <LogoutIcon
+                            <ArrowLeftEndOnRectangleIcon
                               className="mr-3 sm:h-5 sm:w-5 h-4 w-4 text-gray-800 "
                               aria-hidden="true"
                             />

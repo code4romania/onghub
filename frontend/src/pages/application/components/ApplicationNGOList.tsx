@@ -1,4 +1,4 @@
-import { ShieldCheckIcon, TrashIcon } from '@heroicons/react/outline';
+import { ShieldCheckIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import { useErrorToast } from '../../../common/hooks/useToast';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
-import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
+import PopoverMenu, { MenuItem, PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import {
   useApplicationOrganizationQuery,
@@ -75,7 +75,7 @@ const ApplicationNGOList = () => {
   }, [error]);
 
   const buildApplicationActionColumns = (): TableColumn<ApplicationOrganization> => {
-    const restrictedApplicationMenu = [
+    const restrictedApplicationMenu: MenuItem[] = [
       {
         name: t('list.activate'),
         icon: ShieldCheckIcon,
@@ -90,7 +90,7 @@ const ApplicationNGOList = () => {
       },
     ];
 
-    const pendingRemovalApplicationMenu = [
+    const pendingRemovalApplicationMenu: MenuItem[] = [
       {
         name: t('list.remove'),
         icon: TrashIcon,
@@ -99,7 +99,7 @@ const ApplicationNGOList = () => {
       },
     ];
 
-    const activeApplicationMenu = [
+    const activeApplicationMenu: MenuItem[] = [
       {
         name: t('list.restrict'),
         icon: ShieldCheckIcon,
@@ -117,8 +117,8 @@ const ApplicationNGOList = () => {
             row.status === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
               : row.status === OngApplicationStatus.RESTRICTED
-              ? restrictedApplicationMenu
-              : pendingRemovalApplicationMenu
+                ? restrictedApplicationMenu
+                : pendingRemovalApplicationMenu
           }
         />
       ),

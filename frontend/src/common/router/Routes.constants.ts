@@ -1,10 +1,10 @@
 import {
-  TemplateIcon,
+  RectangleGroupIcon,
   UserGroupIcon,
-  ViewGridAddIcon,
-  CollectionIcon,
-} from '@heroicons/react/outline';
-import { DatabaseIcon, SunIcon, UserAddIcon } from '@heroicons/react/solid';
+  SquaresPlusIcon,
+  RectangleStackIcon,
+} from '@heroicons/react/24/outline';
+import { CircleStackIcon, SunIcon, UserPlusIcon } from '@heroicons/react/24/solid';
 import i18n from '../config/i18n';
 
 const translations = {
@@ -19,22 +19,22 @@ const translations = {
 };
 
 export const EMPLOYEE_ROUTES = [
-  { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
+  { id: 0, name: translations.dashboard, href: '', icon: RectangleGroupIcon },
   { id: 1, name: translations.organization, href: 'organization', icon: SunIcon },
-  { id: 2, name: translations.apps, href: 'applications', icon: ViewGridAddIcon },
+  { id: 2, name: translations.apps, href: 'applications', icon: SquaresPlusIcon },
 ];
 
 export const ADMIN_ROUTES = [
-  { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
+  { id: 0, name: translations.dashboard, href: '', icon: RectangleGroupIcon },
   { id: 1, name: translations.organization, href: 'organization/general', icon: SunIcon },
   { id: 2, name: translations.users, href: 'users/list', icon: UserGroupIcon },
-  { id: 3, name: translations.apps, href: 'my-apps', icon: ViewGridAddIcon },
-  { id: 4, name: translations.store, href: 'all-apps', icon: CollectionIcon },
+  { id: 3, name: translations.apps, href: 'my-apps', icon: SquaresPlusIcon },
+  { id: 4, name: translations.store, href: 'all-apps', icon: RectangleStackIcon },
 ];
 
 export const SUPER_ADMIN_ROUTES = [
-  { id: 0, name: translations.dashboard, href: '', icon: TemplateIcon },
-  { id: 1, name: translations.organizations, href: 'organizations', icon: DatabaseIcon },
-  { id: 2, name: translations.requests, href: 'requests', icon: UserAddIcon },
-  { id: 3, name: translations.store, href: 'applications', icon: CollectionIcon },
+  { id: 0, name: translations.dashboard, href: '', icon: RectangleGroupIcon },
+  { id: 1, name: translations.organizations, href: 'organizations', icon: CircleStackIcon },
+  { id: 2, name: translations.requests, href: 'requests', icon: UserPlusIcon },
+  { id: 3, name: translations.store, href: 'applications', icon: RectangleStackIcon },
 ];

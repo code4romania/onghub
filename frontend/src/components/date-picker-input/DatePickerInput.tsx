@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import DatePicker from 'react-datepicker';
 
 interface DatePickerInputProps {

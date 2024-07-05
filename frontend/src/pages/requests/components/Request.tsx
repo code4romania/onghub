@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-import { ExclamationIcon, XIcon, CheckIcon } from '@heroicons/react/outline';
+import { ArrowTopRightOnSquareIcon, XMarkIcon, CheckIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -130,7 +130,7 @@ const Request = () => {
           {request?.status === RequestStatus.PENDING && (
             <div className="w-full mb-6 bg-white shadow rounded-lg py-5 lg:px-10 px-5 flex justify-between items-center flex-col sm:flex-row gap-3">
               <div className="flex gap-4">
-                <ExclamationIcon className="text-orange h-7 w-7" />
+                <ArrowTopRightOnSquareIcon className="text-orange h-7 w-7" />
                 <p className="text-gray-800 font-titilliumBold rounded-md sm:text-lg lg:text-xl text-md hover:bg-green-tab lg:whitespace-nowrap">
                   {t('data_pending')}
                 </p>
@@ -142,7 +142,7 @@ const Request = () => {
                   className="red-button gap-2 sm:text-sm lg:text-base text-xs items-center"
                   onClick={() => setRejectModalOpen(true)}
                 >
-                  <XIcon className="w-5 h-5" /> {t('reject')}
+                  <XMarkIcon className="w-5 h-5" /> {t('reject')}
                 </button>
                 <button
                   aria-label={t('approve')}

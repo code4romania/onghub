@@ -1,6 +1,6 @@
-import { Auth } from 'aws-amplify';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { fetchAuthSession, getCurrentUser, signOut } from 'aws-amplify/auth';
 import { useAuthContext } from '../contexts/AuthContext';
 import { RESTRICTED_USER_ERRORS } from '../common/constants/error.constants';
 import i18n from '../common/config/i18n';
@@ -18,17 +18,15 @@ const API = axios.create({
 API.interceptors.request.use(async (request) => {
   // add auth header with jwt if account is logged in and request is to the api url
   try {
-    const user = await Auth.currentAuthenticatedUser();
+    const user = await getCurrentUser();
 
     if (!request.headers) {
-      request.headers = {};
+      (request.headers as any) = {};
     }
 
-    if (user?.getSignInUserSession()) {
-      request.headers.Authorization = `Bearer ${user
-        .getSignInUserSession()
-        .getAccessToken()
-        .getJwtToken()}`;
+    const session = await fetchAuthSession();
+    if (session) {
+      request.headers.Authorization = `Bearer ${session.tokens?.accessToken}`;
     }
   } catch (err) {
     // User not authenticated. May be a public API.
@@ -57,7 +55,7 @@ const AxiosInterceptor = ({ children }: AxiosInterceptorProps) => {
       async (error: any) => {
         // Redirect to login once we have restricted access
         if (error.response.status === 401) {
-          await Auth.signOut();
+          await signOut();
           // set initial application state
           setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
         }

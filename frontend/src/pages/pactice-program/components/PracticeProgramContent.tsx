@@ -1,5 +1,5 @@
 import React from 'react';
-import { LocationMarkerIcon } from '@heroicons/react/solid';
+import { MapPinIcon } from '@heroicons/react/24/solid';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from '../../../common/helpers/format.helper';
 import { PracticeProgram } from '../../../services/practice-program/interfaces/practice-program.interface';
@@ -57,7 +57,7 @@ const PracticeProgramContent = ({ program }: PracticeProgramContentProps) => {
       <div className="flex flex-col gap-2">
         <h3 className="font-titilliumBold text-2xl">{program.title}</h3>
         <p className="flex font-titilliumSemiBold text-base items-center gap-1 pb-11">
-          <LocationMarkerIcon className="h-4 w-4" />
+          <MapPinIcon className="h-4 w-4" />
           <span>{program.location.name}</span>
         </p>
       </div>

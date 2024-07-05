@@ -1,4 +1,4 @@
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import React, { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 export interface InputProps extends ComponentPropsWithoutRef<'input'> {

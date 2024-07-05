@@ -92,7 +92,7 @@ export const getUsersForDownload = async (
   status?: UserStatus,
   interval?: Date[],
   organizationId?: number,
-): Promise<{ data: any; headers: AxiosResponseHeaders }> => {
+): Promise<{ data: any; headers: any }> => {
   let requestUrl = `/user/download?orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;

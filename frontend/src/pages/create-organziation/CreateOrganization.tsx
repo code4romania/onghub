@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';

@@ -4,8 +4,8 @@ import {
   PlusIcon,
   TrashIcon,
   XCircleIcon,
-  XIcon,
-} from '@heroicons/react/solid';
+  XMarkIcon,
+} from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
@@ -399,7 +399,7 @@ const CreateOrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
                   {isEditMode && (
-                    <XIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
+                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
                 </a>
               )}

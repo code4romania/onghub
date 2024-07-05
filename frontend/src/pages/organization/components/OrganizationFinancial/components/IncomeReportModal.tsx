@@ -1,12 +1,12 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import ReportTableRow from './ReportTableRow';
 import { Controller, useForm } from 'react-hook-form';
 import { IncomeReportConfig } from './IncomeReportConfig';
 import { ReportModalProps } from '../../../interfaces/ReportModalProps.interface';
 import { Income } from '../../../interfaces/Income.interface';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import { useSelectedOrganization } from '../../../../../store/selectors';
 import { AuthContext } from '../../../../../contexts/AuthContext';
 import { UserRole } from '../../../../users/enums/UserRole.enum';
@@ -91,7 +91,7 @@ const IncomeReportModal = ({
                     onClick={() => onClose()}
                   >
                     <span className="sr-only">{t('modal.close', { ns: 'organization' })}</span>
-                    <XIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">
@@ -124,7 +124,7 @@ const IncomeReportModal = ({
                   className="mt-4 sm:text-sm lg:text-base text-xs leading-4 font-normal text-gray-400 text-right flex flex-row-reverse"
                   rel="noreferrer"
                 >
-                  <ExternalLinkIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
+                  <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-1 text-gray-400 cursor-pointer" />
                   {t('modal.anaf')}
                 </a>
                 <form className="overflow-x-auto">
