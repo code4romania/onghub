@@ -40,7 +40,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 
     // Providers
     DatabaseProviderModule,
-    // CacheProviderModule,
+    CacheProviderModule,
     QueueProviderModule,
 
     // Business modules
