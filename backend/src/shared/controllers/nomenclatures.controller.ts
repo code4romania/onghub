@@ -13,8 +13,7 @@ import { NomenclaturesService } from '../services';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Public()
-// @UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)
 @Controller('nomenclatures')
 export class NomenclaturesController {
   constructor(private nomenclaturesService: NomenclaturesService) {}
