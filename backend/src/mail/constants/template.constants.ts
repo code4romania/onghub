@@ -89,4 +89,18 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       },
     },
   },
+  APPLICATION_REQUEST: {
+    template: ORGANIZATION_REQUEST,
+    subject: '',
+    context: {
+      title: '',
+      subtitle: (organizationName, applicationName) =>
+        `O nouă cerere de instalare a aplicației ${applicationName} a fost creată în ONG Hub pentru organizația ${organizationName}.`,
+      cta: {
+        link: () =>
+          `${process.env.ONGHUB_URL}/applications/requests`,
+        label: 'Organizatia',
+      },
+    },
+  },
 };

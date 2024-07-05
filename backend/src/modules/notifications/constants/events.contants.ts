@@ -5,4 +5,5 @@ export const EVENTS = {
   REJECT_ORGANIZATION_REQUEST: 'reject.ong.request',
   DISABLE_ORGANIZATION_REQUEST: 'disable.ong.request',
   RESTRICT_ORGANIZATION: 'restrict.organization',
+  REQUEST_APPLICATION_ACCESS: 'application.request',
 };
