@@ -138,6 +138,7 @@
     "create": {
       "congratulations": "Felicitări",
       "success": "Ai completat cu succes formularul de aplicare pentru NGO Hub. Confirmarea aplicării și o copie a formularului completat au fost trimise pe adresa de e-mail indicată. Vom verifica aplicația și te vom contacta în cel mai scurt timp pentru a finaliza procesul de implementare al NGO Hub pentru organizația ta.",
+      "success_helper": "Pentru orice modificări necesare ulterioare trimiterii formularului, trimiteți un mesaj pe",
       "again": "Încearcă din nou",
       "steps": {
         "first": "Pasul 1",

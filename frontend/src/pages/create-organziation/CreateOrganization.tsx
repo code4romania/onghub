@@ -163,7 +163,7 @@ const CreateOrganization = () => {
       <Header hideLogInButton />
       <div className="flex p-6">
         <div className="content w-full flex flex-col gap-4" >
-          <ProgressSteps activeStepIndex={activeStepIndex} setActiveStepIndex={setActiveStepIndex} disabled={error !== null || success} />
+          {!success && <ProgressSteps activeStepIndex={activeStepIndex} setActiveStepIndex={setActiveStepIndex} disabled={error !== null || success} />}
           {!success && !error && (
             <Outlet
               context={[
@@ -186,7 +186,10 @@ const CreateOrganization = () => {
                   {t('create.congratulations')}
                 </span>
               </div>
-              <p className="leading-6">{t('create.success')}</p>
+              <div className='flex flex-col gap-4'>
+                <p className="leading-6">{t('create.success')}</p>
+                <p className="leading-6">{t('create.success_helper')}<a href={'mailto:civic@commitglobal.org'} className='text-blue-500 hover:underline'>&nbsp;civic@commitglobal.org</a></p>
+              </div>
             </div>
           )}
           {error && (

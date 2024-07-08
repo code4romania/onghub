@@ -72,7 +72,7 @@ const steps_seed: IProgressStep[] = [
 
 export default function ProgressSteps({ activeStepIndex, setActiveStepIndex, disabled }: { activeStepIndex: number, setActiveStepIndex: (index: number) => void, disabled: boolean }) {
   const [steps, setSteps] = useState<IProgressStep[]>(steps_seed);
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handlePreviousStepClick = (step: IProgressStep) => {
@@ -82,22 +82,28 @@ export default function ProgressSteps({ activeStepIndex, setActiveStepIndex, dis
     navigate(step.href);
   };
 
-  useEffect(() => {
-    const stepsMapper = (steps: IProgressStep[], activeIndex: number) => {
-      return steps.map((step, index) => {
-        if (index < activeIndex) {
-          step.status = PROGRESS_STEP_TYPE.COMPLETE;
-        } else if (index === activeIndex) {
-          step.status = PROGRESS_STEP_TYPE.CURRENT;
-        } else {
-          step.status = PROGRESS_STEP_TYPE.UPCOMING;
-        }
-        return step;
-      })
-    }
+  const stepsMapper = (steps: IProgressStep[], activeIndex: number) => {
+    return steps.map((step, index) => {
+      if (index < activeIndex) {
+        step.status = PROGRESS_STEP_TYPE.COMPLETE;
+      } else if (index === activeIndex) {
+        step.status = PROGRESS_STEP_TYPE.CURRENT;
+      } else {
+        step.status = PROGRESS_STEP_TYPE.UPCOMING;
+      }
+      return step;
+    })
+  }
 
+  useEffect(() => {
     setSteps((steps => stepsMapper(steps, activeStepIndex)))
   }, [activeStepIndex]);
+
+
+  useEffect(() => {
+    const currentStepIndex = steps.findIndex(step => step.href === location.pathname);
+    setActiveStepIndex(currentStepIndex);
+  }, [location]);
 
   return (
     <nav aria-label="Progress">
