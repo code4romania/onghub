@@ -57,6 +57,9 @@ The deployment process requires to understand the infrastructure orchestration.
 3. BE deployed in AWS ECS
 4. AWS Infrastructure managed by Terraform ([terraform-ngohub](https://github.com/code4romania/terraform-ngohub))
 
+![alt text](docs/DeploymentDiagram.png)
+
+
 ### Front-End Deployment
 
 -   Deployed using AWS Amplify
