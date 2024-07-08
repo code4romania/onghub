@@ -280,11 +280,11 @@ const CreateOrganizationLegal = () => {
       email: data.legalReprezentative_email,
     };
 
-    updateActiveStepIndexInLocalStorage(activeStepIndex, 5, setActiveStepIndex);
-    setOrganization((org: any) => ({
-      ...org,
+    // updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
+    setOrganization({
+      ...organization,
       legal: { legalReprezentative, directors, directorsDeleted, others, organizationStatute },
-    }));
+    }, 4);
   };
 
   return (
