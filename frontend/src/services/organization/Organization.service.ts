@@ -90,6 +90,12 @@ export const getOrganizations = async (
   return API.get(requestUrl).then((res) => res.data);
 };
 
+export const downloadOrganizations = async (): Promise<any> => {
+  return API.get(`/organization/download`, { responseType: 'arraybuffer' }).then((res) => {
+    return { data: res.data, headers: res.headers };
+  });
+};
+
 export const retryAnafReports = (id: number, cui: string): Promise<IOrganizationFinancial[]> => {
   return API.post(`/organization/${id}/report-entries-retry/`, { cui }).then((res) => res.data);
 };

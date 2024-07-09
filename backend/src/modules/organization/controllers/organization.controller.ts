@@ -78,15 +78,10 @@ export class OrganizationController {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   )
   @Header('Content-Disposition', 'attachment; filename="NGOs.xlsx"')
-  async downloadAll(
-    @Res({ passthrough: true }) res: any,
-    @Query() filters: OrganizationFilterDto,
-  ): Promise<any> {
-    const data = await  this.organizationService.findAllForDownload({ options: filters });
+  async downloadAll(@Res({ passthrough: true }) res: any): Promise<any> {
+    const data = await this.organizationService.findAllForDownload();
     res.end(this.fileManager.jsonToExcelBuffer(data, 'NGOs'));
   }
-
-
 
   @ApiParam({ name: 'id', type: Number })
   @Roles(Role.SUPER_ADMIN)
