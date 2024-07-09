@@ -17,7 +17,7 @@ export class SharedController {
 
   @Get('version')
   version() {
-    return 'v0.1.18';
+    return 'v0.1.20';
   }
 
   @ApiQuery({ name: 'path', type: String })

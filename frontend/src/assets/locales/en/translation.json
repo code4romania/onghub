@@ -879,6 +879,7 @@
     "restrict": "Temporarily restricts",
     "title": "NGOs",
     "list": "List of NGOs",
+    "download_list": "Download list",
     "administer": " organisations registered in the NGO Hub.",
     "restrict_error": "Organisation restriction error",
     "activate_error": "Organisation activation error",
