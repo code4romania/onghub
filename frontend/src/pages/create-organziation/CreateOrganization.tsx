@@ -123,6 +123,7 @@ const CreateOrganization = () => {
           setSuccess(true);
         },
         onError: (requestError: any) => {
+          //TODO: add sentry
           setErrorCode(
             (requestError as any)?.response?.data?.code,
           );
