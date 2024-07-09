@@ -24,7 +24,7 @@ services:
       - 6379:6379
   mailcatcher:
     restart: on-failure:10
-    image: dockage/mailcatcher:0.7.1
+    image: dockage/mailcatcher:0.9.0
     ports:
       - '1080:1080'
       - '1025:1025'

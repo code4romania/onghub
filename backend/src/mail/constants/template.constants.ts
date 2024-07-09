@@ -31,7 +31,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       cta: {
         link: (requestId) =>
           `${process.env.ONGHUB_URL}/requests/${requestId}/general`,
-        label: 'Solicitare creare',
+        label: 'Vezi solicitare',
       },
     },
   },
@@ -44,7 +44,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
         `Profilul organizației a fost creat cu succes în NGO Hub. De acum poți intra în cont și poți accesa toate aplicațiile disponibile pro-bono în ecosistemul dedicat societății civile. Dacă ai nevoie de ajutor, ne găsești la ${process.env.MAIL_CONTACT}.`,
       cta: {
         link: () => `${process.env.ONGHUB_URL}/`,
-        label: 'Organizatia ta',
+        label: 'Acceseaza NGO Hub',
       },
     },
   },
@@ -85,7 +85,21 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       cta: {
         link: (organizationId) =>
           `${process.env.ONGHUB_URL}/organizations/${organizationId}/applications`,
-        label: 'Organizatia',
+        label: 'Vezi cererea',
+      },
+    },
+  },
+  APPLICATION_REQUEST: {
+    template: ORGANIZATION_REQUEST,
+    subject: '',
+    context: {
+      title: '',
+      subtitle: (organizationName, applicationName) =>
+        `O nouă cerere de instalare a aplicației ${applicationName} a fost creată în ONG Hub pentru organizația ${organizationName}.`,
+      cta: {
+        link: () =>
+          `${process.env.ONGHUB_URL}/applications/requests`,
+        label: 'Vezi cererea',
       },
     },
   },
