@@ -157,7 +157,7 @@ const CreateOrganizationGeneral = () => {
 
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
 
-      setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
+      setOrganization({ ...organization, general: organizationGeneral });
       localStorage.setItem(
         CREATE_LOCAL_STORAGE_KEY,
         JSON.stringify({ ...organization, general: organizationGeneral }),

@@ -76,7 +76,7 @@ const CreateOrganizationUser = () => {
         ...data,
       };
 
-      setOrganization((org: any) => ({ ...org, admin }));
+      setOrganization({ ...organization, admin });
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
       updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);

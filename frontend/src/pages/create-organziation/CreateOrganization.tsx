@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { InternalErrors } from '../../common/errors/internal-errors';
@@ -17,22 +17,26 @@ import {
   ORGANIZATION_AGREEMENT_KEY,
 } from './constants/CreateOrganization.constant';
 import { ICreateOrganizationPayload } from './interfaces/CreateOrganization.interface';
+import { IOrganization } from '../organization/interfaces/Organization.interface';
+import { CREATE_ORGANIZARION_ERRORS } from '../../common/errors/entities/create-organization-errors.class';
+import { updateActiveStepIndexInLocalStorage } from '../../common/helpers/utils.helper';
 
 const STEPS = ['agreement', 'account', 'general', 'activity', 'legal'];
 
 const CreateOrganization = () => {
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [errorCode, setErrorCode] = useState<CREATE_ORGANIZARION_ERRORS | null>();
   const [organization, setOrganization] = useState<ICreateOrganizationPayload | null>(null);
   const [logo, setLogo] = useState<File | null>(null);
   const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const navigate = useNavigate();
 
+  const error = useMemo(() => errorCode ? InternalErrors.createOrganizationErrors.getError(errorCode) : null, [errorCode]);
+
   const {
-    mutateAsync: mutateRequest,
+    mutate: mutateRequest,
     isLoading: requestLoading,
-    error: requestError,
   } = useCreateOrganizationRequestMutation();
 
   const { t } = useTranslation(['organization', 'common']);
@@ -58,78 +62,97 @@ const CreateOrganization = () => {
   }, []);
 
   useEffect(() => {
-    if (organization?.legal) {
-      submit();
+    if (activeStepIndex) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [organization?.legal]);
+  }, [activeStepIndex])
 
-  useEffect(() => {
-    if (requestError) {
-      setError(
-        InternalErrors.createOrganizationErrors.getError(
-          (requestError as any)?.response?.data?.code,
-        ),
-      );
+
+  const onComplete = (updatedOrganization: any, step?: number) => {
+    setOrganization(updatedOrganization);
+
+    if (updatedOrganization &&
+      updatedOrganization.admin &&
+      updatedOrganization.general &&
+      updatedOrganization.activity &&
+      updatedOrganization.legal &&
+      step === 4) {
+      submit(updatedOrganization);
     }
-  }, [requestError]);
+  }
 
-  const submit = async () => {
-    if (
-      organization &&
-      organization.admin &&
-      organization.general &&
-      organization.activity &&
-      organization.legal &&
-      activeStepIndex === 5
-    ) {
-      // parse and map activity id's correctly
-      let { activity } = organization;
+  const submit = async (organization: ICreateOrganizationPayload) => {
+    // parse and map activity id's correctly
+    let { activity } = organization;
 
-      // map existing coalitions
-      const coalitions = activity.coalitions
-        ? [...activity.coalitions.filter((val: any) => !val.isNew).map(mapSelectToValue)]
-        : [];
-      const federations = activity.federations
-        ? [...activity.federations.filter((val: any) => !val.isNew).map(mapSelectToValue)]
-        : [];
+    // map existing coalitions
+    const coalitions = activity.coalitions
+      ? [...activity.coalitions.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+      : [];
+    const federations = activity.federations
+      ? [...activity.federations.filter((val: any) => !val.isNew).map(mapSelectToValue)]
+      : [];
 
-      // map new federations and coalitions
-      const newFederations = activity.federations
-        ? [...activity.federations.filter((val: any) => val.isNew).map((val: any) => val.value)]
-        : [];
+    // map new federations and coalitions
+    const newFederations = activity.federations
+      ? [...activity.federations.filter((val: any) => val.isNew).map((val: any) => val.value)]
+      : [];
 
-      const newCoalitions = activity.coalitions
-        ? [...activity.coalitions.filter((val: any) => val.isNew).map((val: any) => val.value)]
-        : [];
+    const newCoalitions = activity.coalitions
+      ? [...activity.coalitions.filter((val: any) => val.isNew).map((val: any) => val.value)]
+      : [];
 
-      activity = {
-        ...activity,
-        branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
-        cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
-        regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
-        coalitions,
-        federations,
-        newFederations,
-        newCoalitions,
-      };
+    activity = {
+      ...activity,
+      branches: activity.branches ? [...activity.branches.map(mapSelectToValue)] : [],
+      cities: activity.cities ? [...activity.cities.map(mapSelectToValue)] : [],
+      regions: activity.regions ? [...activity.regions.map(mapSelectToValue)] : [],
+      coalitions,
+      federations,
+      newFederations,
+      newCoalitions,
+    };
 
-      await mutateRequest(
-        { organization: { ...organization, activity }, logo, organizationStatute },
-        {
-          onSuccess: () => {
-            localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
-            localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
-            localStorage.removeItem(ORGANIZATION_AGREEMENT_KEY);
-            setSuccess(true);
-          },
+    mutateRequest(
+      { organization: { ...organization, activity }, logo, organizationStatute },
+      {
+        onSuccess: () => {
+          localStorage.removeItem(CREATE_LOCAL_STORAGE_KEY);
+          localStorage.removeItem(CREATE_LOCAL_STORAGE_ACTIVE_STEP_KEY);
+          localStorage.removeItem(ORGANIZATION_AGREEMENT_KEY);
+          setSuccess(true);
         },
-      );
-    }
+        onError: (requestError: any) => {
+          //TODO: add sentry
+          setErrorCode(
+            (requestError as any)?.response?.data?.code,
+          );
+        }
+      },
+    );
   };
 
   const reset = () => {
+    switch (errorCode) {
+      case CREATE_ORGANIZARION_ERRORS.FILE_002:
+      case CREATE_ORGANIZARION_ERRORS.FILE_004: {
+        navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
+        updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
+        break;
+      }
+      case CREATE_ORGANIZARION_ERRORS.FILE_003:
+      case CREATE_ORGANIZARION_ERRORS.FILE_005: {
+        navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`);
+        updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
+        break;
+      }
+      default: {
+        // DO NOTHING.
+      }
+    }
+
     setSuccess(false);
-    setError('');
+    setErrorCode(null);
   };
 
   if (requestLoading) {
@@ -140,13 +163,13 @@ const CreateOrganization = () => {
     <div className="w-screen h-screen max-w-full ">
       <Header hideLogInButton />
       <div className="flex p-6">
-        <div className="content w-full flex flex-col gap-4">
-          <ProgressSteps />
+        <div className="content w-full flex flex-col gap-4" >
+          {!success && <ProgressSteps activeStepIndex={activeStepIndex} setActiveStepIndex={setActiveStepIndex} disabled={error !== null || success} />}
           {!success && !error && (
             <Outlet
               context={[
                 organization,
-                setOrganization,
+                onComplete,
                 logo,
                 setLogo,
                 organizationStatute,
@@ -164,7 +187,10 @@ const CreateOrganization = () => {
                   {t('create.congratulations')}
                 </span>
               </div>
-              <p className="leading-6">{t('create.success')}</p>
+              <div className='flex flex-col gap-4'>
+                <p className="leading-6">{t('create.success')}</p>
+                <p className="leading-6">{t('create.success_helper')}<a href={'mailto:civic@commitglobal.org'} className='text-blue-500 hover:underline'>&nbsp;civic@commitglobal.org</a></p>
+              </div>
             </div>
           )}
           {error && (

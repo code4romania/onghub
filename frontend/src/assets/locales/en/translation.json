@@ -138,6 +138,7 @@
     "create": {
       "congratulations": "Congratulations",
       "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the e-mail address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
+      "success_helper": "If you have any questions, you can contact us at:",
       "again": "Try again",
       "steps": {
         "first": "Step 1",

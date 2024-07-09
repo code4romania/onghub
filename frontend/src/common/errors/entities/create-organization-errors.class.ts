@@ -1,7 +1,7 @@
 import i18n from '../../config/i18n';
 import { ErrorClass } from '../base-error.class';
 
-const enum CREATE_ORGANIZARION_ERRORS {
+export const enum CREATE_ORGANIZARION_ERRORS {
   REQ_001 = 'REQ_001',
   REQ_002 = 'REQ_002',
   REQ_007 = 'REQ_007',

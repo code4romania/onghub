@@ -104,10 +104,10 @@ const CreateOrganizationActivity = () => {
 
   // submit
   const handleSave = (data: any) => {
-    setOrganization((org: ICreateOrganizationPayload) => ({
-      ...org,
+    setOrganization({
+      ...organization,
       activity: parseOrganizationActivityDataToPayload(data),
-    }));
+    });
     localStorage.setItem(
       CREATE_LOCAL_STORAGE_KEY,
       JSON.stringify({ ...organization, activity: parseOrganizationActivityDataToPayload(data) }),
