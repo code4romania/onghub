@@ -1085,7 +1085,7 @@
       "restore": "Contact us for a refund.",
       "close_button": "Remove application",
       "close_title": "Confirm app removal",
-      "close_description": "By confirming the removal of the app you will no longer be able to access the app from your organisation's NGO HUb account. The app will remain available in the My Apps tab where you can request it if you want to use it again.",
+      "close_description": "By confirming the removal of the app you will no longer be able to access the app from your organisation's NGO Hub account. The app will remain available in the My Apps tab where you can request it if you want to use it again.",
       "another_description": "Application description",
       "pending_removal": "The application has been flagged for deletion",
       "disabled": {
@@ -1142,7 +1142,7 @@
   },
   "requests": {
     "title": "Access requests",
-    "subtitle": "Manage here the access requests of organisations in NGO HUb",
+    "subtitle": "Manage here the access requests of organisations in NGO Hub",
     "load_error": "Error loading requests",
     "status_error": "Status change error",
     "status_update": "Updated status",
