@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
 import { useApplicationQuery } from '../../services/application/Application.queries';
+import { useErrorToast } from '../../common/hooks/useToast';
 
 const Application = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Application = () => {
 
   if (error) {
     navigate('/applications');
+    useErrorToast(t('wrong', { ns: 'common' }));
+    return null;
   }
 
   const navigateBack = () => {
