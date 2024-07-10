@@ -90,7 +90,7 @@ When a new deployment is needed, there is a flow of events to understand:
 
 2. Once the Docker Image is available in ECR, we can instruct ECS to pick the new image to replace the current. We do this, by navigating to [locals.tf](https://github.com/code4romania/terraform-ngohub/blob/main/locals.tf) in the [terraform-ngohub](https://github.com/code4romania/terraform-ngohub) repository and update the backend `tag` with the new, fresh one.
 
-    ```json
+    ```terraform
         backend = {
             domain = "api${local.env_suffix}.${var.root_domain}"
             image = {
@@ -100,35 +100,33 @@ When a new deployment is needed, there is a flow of events to understand:
         }
     ```
 
-    🧠 There are **2 important** triggers on the Terraform Repository (4) ran by Terraform Cloud(5):
+    🧠 There are **2 important** triggers on the Terraform Repository (4) ran by Terraform Cloud (5):
 
-    1. `terraform plan`
+    1. `terraform plan` - will be visibile in the PR, and will display the infrastructure changes.
         1. PR to _develop_ - plan for `staging` environment
         2. PR to _main_ - plan for `production` environment
-    2. `terraform apply`
 
-        1. Close PR to _develop_ - apply changes in `staging`
-        2. Close PR to _main_ - apply changes in `production`
+    2. `terraform apply` - will make the infrastructure changes as described in the plan.
+        1. Merge PR to _develop_ - apply changes in `staging`
+        2. Merge PR to _main_ - apply changes in `production`
 
-        1️⃣ (1) will be visibile in the PR, and will display the infrastructure changes.  
-         2️⃣ (2) will make the infrastructure changes as described in the plan.
 
     🏆 In the end, we want to apply the changes (close the PR) so a new ECS Task Definition will be created using the new image with the new `tag` we updated and the ECS Service will replace the old task definition with the new one, ensuring zero downtime deployment.
 
-     <hr/>
+<hr/>
 
-    ❌ DO NOT try to push changes directly to develop/main. The branches are protected.
+❌ DO NOT try to push changes directly to develop/main. The branches are protected.
 
-    ✅ Recommended steps:
+#### ✅ Recommended steps:
 
-    1. create a new branch from develop
-    2. make changes in [locals.tf](https://github.com/code4romania/terraform-ngohub/blob/main/locals.tf) as described above
-    3. commit changes
-    4. open PR against develop
-    5. check the `terraform plan` is working as expected
-    6. close the PR
-    7. test changes in the staging environment
-    8. once you are sure everything is fine, repeat for the `main` branch to deploy into `production`.
+1. create a new branch from develop
+2. make changes in [locals.tf](https://github.com/code4romania/terraform-ngohub/blob/main/locals.tf) as described above
+3. commit changes
+4. open PR against develop
+5. check the `terraform plan` is working as expected
+6. close the PR
+7. test changes in the staging environment
+8. once you are sure everything is fine, repeat for the `main` branch to deploy into `production`.
 
 ## Feedback
 
