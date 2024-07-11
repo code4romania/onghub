@@ -10,7 +10,6 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
-import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 import { Trim } from 'src/common/decorators/trim.decorator';
 import { CreateOrganizationDto } from 'src/modules/organization/dto/create-organization.dto';
 
@@ -30,7 +29,6 @@ export class CreateUserRequestDto {
 
   @IsString()
   @IsNotEmpty()
-  @ToRoPhoneNumber()
   @IsPhoneValid()
   phone: string;
 }

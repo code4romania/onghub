@@ -15,7 +15,6 @@ import { ToNumber } from 'src/common/decorators/to-number.decorator';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Trim } from 'src/common/decorators/trim.decorator';
-import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -50,7 +49,6 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @IsNotEmpty()
   @IsPhoneValid()
-  @ToRoPhoneNumber()
   phone: string;
 
   /* 
