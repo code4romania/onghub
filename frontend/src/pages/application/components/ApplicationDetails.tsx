@@ -40,8 +40,12 @@ const ApplicationDetails = () => {
   useEffect(() => {
     if (application.videoLink) {
       // cleanup some unwanted prefixes
-      const link = (application.videoLink as string).replace('https://', '').replace('http://', '');
-      console.log(`https://${link}`);
+      let link = (application.videoLink as string).replace('https://', '').replace('http://', '');
+
+      if (link.includes('youtu.be')) {
+        link = link.replace('youtu.be', 'youtube.com/embed'); //youtube.com/embed is needed in order to be able to allow outside requests
+      }
+
       setYoutubeLink(`https://${link}`);
     } else {
       setYoutubeLink('');
