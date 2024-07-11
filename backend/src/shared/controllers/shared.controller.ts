@@ -17,11 +17,6 @@ export class SharedController {
 
   @Get('version')
   version() {
-    return 'v0.1.20';
-  }
-
-  @Get('version2')
-  version2() {
     return {version: process.env.VERSION, revision: process.env.REVISION};
   }
 
