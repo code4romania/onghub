@@ -16,6 +16,7 @@ jobs:
     name: Build Docker image
     uses: code4romania/.github/.github/workflows/build-push-image-ecr.yml@main
     with:
+      context: backend
       image_name: onghub
       region: eu-west-1
       dockerfile: ./backend/Dockerfile
