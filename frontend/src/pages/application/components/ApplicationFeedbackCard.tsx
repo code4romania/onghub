@@ -16,7 +16,7 @@ const ApplicationFeedbackCard = ({
   descriptionIsHtml,
 }: ApplicationFeedbackCardProps) => {
   return (
-    <div className="w-full h-full shadow rounded-lg">
+    <div className="w-full h-full bg-white shadow rounded-lg">
       <div className="py-5 lg:px-10 px-5 flex gap-2 items-center">
         {icon}
         <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800">
