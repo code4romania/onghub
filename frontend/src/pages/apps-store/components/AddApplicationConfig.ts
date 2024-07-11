@@ -74,6 +74,15 @@ export const PullingTypeOptions = [
   },
 ];
 
+export function isHtmlContentEmpty(html: string): boolean {
+  // Remove all HTML tags
+  const stripped = html.replace(/<[^>]*>/g, '');
+  // Remove whitespace
+  const trimmed = stripped.trim();
+
+  return trimmed.length === 0;
+}
+
 export const AddAppConfig: Record<string, any> = {
   name: {
     key: 'name',
@@ -156,17 +165,12 @@ export const AddAppConfig: Record<string, any> = {
   description: {
     key: 'description',
     rules: {
-      required: {
-        value: true,
-        message: translations.description.required,
-      },
       maxLength: {
         value: 7000,
         message: translations.description.max,
       },
-      minLength: {
-        value: 200,
-        message: translations.description.min,
+      validate: (value: string) => {
+        return !isHtmlContentEmpty(value) || translations.description.required;
       },
     },
     config: {

@@ -19,6 +19,7 @@ import Textarea from '../../../components/Textarea/Textarea';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
+import RichText from '../../../components/RichText/RichText';
 
 interface ApplicationFormProps {
   control: Control<CreateApplicationDto, object>;
@@ -114,14 +115,13 @@ const ApplicationForm = ({
               control={control}
               render={({ field: { onChange, value } }) => {
                 return (
-                  <Textarea
+                  <RichText
                     config={{
                       ...AddAppConfig.description.config,
                       name: AddAppConfig.description.key,
                       error: errors.description?.message,
-                      defaultValue: value,
+                      value: value,
                       onChange: onChange,
-                      id: 'application-form__description',
                     }}
                   />
                 );
