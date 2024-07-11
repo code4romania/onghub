@@ -701,7 +701,7 @@
     },
     "retry_anaf_warning": "Datele nu au fost actualizate.",
     "retry_anaf_button": "Încearcă din nou",
-    "retry_anaf_error": "Service unavailable.",
+    "retry_anaf_error": "Serviciu momentan indisponibil.",
     "no_financial_info": "Nu există date pentru solicitarea dumneavoastră."
   },
   "open_data": {
