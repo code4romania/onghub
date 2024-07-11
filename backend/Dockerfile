@@ -17,6 +17,11 @@ FROM --platform=linux/amd64 node:16.15.1-alpine as production
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
+ARG VERSION
+ARG REVISION
+ENV VERSION=${VERSION}
+ENV REVISION=${REVISION}
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
