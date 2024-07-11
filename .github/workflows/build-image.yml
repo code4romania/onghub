@@ -12,6 +12,18 @@ on:
 name: Build Docker image
 
 jobs:
+  build:
+    name: Build Docker image
+    uses: code4romania/.github/.github/workflows/build-push-image-ecr.yml@main
+    with:
+      image_name: onghub
+      region: eu-west-1
+      dockerfile: ./backend/Dockerfile
+    secrets:
+      role_to_assume: ${{ secrets.ROLE_TO_ASSUME }}
+
+
+
   build-docker-image:
     name: Build Docker image
     runs-on: ubuntu-latest
