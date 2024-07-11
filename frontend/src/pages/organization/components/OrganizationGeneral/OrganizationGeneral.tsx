@@ -564,24 +564,27 @@ const OrganizationGeneral = () => {
                   );
                 }}
               />
-              <Controller
-                key={OrganizationGeneralConfig.hasSameAddress.key}
-                name={OrganizationGeneralConfig.hasSameAddress.key}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.hasSameAddress.config,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__same-address-checkbox',
-                      }}
-                      disabled={readonly}
-                    />
-                  );
-                }}
-              />
+              {!readonly && (
+                <Controller
+                  key={OrganizationGeneralConfig.hasSameAddress.key}
+                  name={OrganizationGeneralConfig.hasSameAddress.key}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    console.log(value);
+                    return (
+                      <InputField
+                        config={{
+                          ...OrganizationGeneralConfig.hasSameAddress.config,
+                          defaultValue: value,
+                          onChange: onChange,
+                          id: 'create-organization-general__same-address-checkbox',
+                        }}
+                        disabled={readonly}
+                      />
+                    );
+                  }}
+                />
+              )}
 
               <Controller
                 key={OrganizationGeneralConfig.organizationAddress.key}
