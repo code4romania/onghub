@@ -695,7 +695,11 @@
         "label": "Other expenses",
         "info": "Enter here the total of any other expenses you have not entered in other segments of this budget (for example the purchase of a trailer for a caravan etc.)."
       }
-    }
+    },
+    "retry_anaf_warning": "Your data is not up to date.",
+    "retry_anaf_button": "Try again",
+    "retry_anaf_error": "Service unavailable.",
+    "no_financial_info": "No data available for your request."
   },
   "open_data": {
     "load_error": "Data could not be uploaded",
