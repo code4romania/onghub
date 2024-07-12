@@ -78,7 +78,7 @@ const Organization = () => {
     >
       <div className="pb-6 flex">
         <nav
-          className="lg:flex hidden xs:pt-6 pt-0 flex-col flex-wrap space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 lg:flex-row cursor-pointer select-none"
+          className="2xl:flex hidden xs:pt-6 pt-0 flex-col flex-wrap space-y-4 sm:space-y-0 sm:gap-x-4 sm:gap-y-4 lg:flex-row cursor-pointer select-none"
           aria-label="Tabs"
         >
           {ORGANIZATION_EXTENDED_TABS.map((tab) => (
@@ -97,7 +97,7 @@ const Organization = () => {
             </a>
           ))}
         </nav>
-        <span className="lg:hidden block w-full max-w-sm">
+        <span className="2xl:hidden block w-full max-w-sm">
           <Select
             config={{
               label: '',
