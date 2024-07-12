@@ -29,10 +29,11 @@ const Select = (props: {
             </Listbox.Label>
             {props.readonly && (
               <span className="font-normal text-gray-900 sm:text-sm lg:text-base text-xs">
-                {props.selected &&
-                  (props.config.displayedAttribute
+                {props.selected
+                  ? props.config.displayedAttribute
                     ? props.selected[props.config.displayedAttribute]
-                    : props.selected)}
+                    : props.selected
+                  : '-'}
               </span>
             )}
             {!props.readonly && (
@@ -45,10 +46,10 @@ const Select = (props: {
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
                       : props.selected) || (
-                        <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
-                          {props.config.label}
-                        </span>
-                      )}
+                      <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
+                        {props.config.label}
+                      </span>
+                    )}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
