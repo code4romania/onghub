@@ -18,7 +18,7 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
   useEffect(() => {
     if (value) {
       setDateRange(value);
-    } else[setDateRange([])];
+    } else [setDateRange([])];
   }, [value]);
 
   useEffect(() => {
@@ -43,7 +43,8 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
           />
         </div>
         <DatePicker
-          className="block w-full pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"
+          wrapperClassName="w-full"
+          className="block w-full h-[44px] pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}
