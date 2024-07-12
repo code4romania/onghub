@@ -698,7 +698,11 @@
         "label": "Alte cheltuieli",
         "info": "Introduci aici totalul oricăror altor cheltuieli pe care nu le-ai trecut in alte segmente ale acestui buget (de exemplu achiziția unei rulote pentru o caravana etc.)."
       }
-    }
+    },
+    "retry_anaf_warning": "Datele nu au fost actualizate.",
+    "retry_anaf_button": "Încearcă din nou",
+    "retry_anaf_error": "Serviciu momentan indisponibil.",
+    "no_financial_info": "Nu există date pentru solicitarea dumneavoastră."
   },
   "open_data": {
     "load_error": "Datele nu s-au putut încărca",
