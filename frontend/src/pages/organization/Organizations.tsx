@@ -39,6 +39,7 @@ const Organizations = () => {
   const [status, setStatus] = useState<{ status: CompletionStatus; label: string } | null>();
   const [usersRange, setUserRange] = useState<{ status: string; label: string } | null>(null);
 
+  // const isLoading = true;
   const { organizations } = useOrganizations();
 
   const { t } = useTranslation(['organizations', 'common']);

@@ -4,7 +4,7 @@ import Spinner from '../spinner/Spinner';
 const LoadingContent = () => {
   return (
     <div className="text-center">
-      <Spinner className="inline w-8 h-8 mr-2" />
+      <Spinner className="inline w-8 h-8" />
     </div>
   );
 };
