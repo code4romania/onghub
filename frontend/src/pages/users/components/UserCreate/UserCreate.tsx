@@ -14,6 +14,7 @@ import { UserOngApplicationStatus } from '../../../requests/interfaces/OngApplic
 import { CREATE_USER_ERRORS } from '../../constants/error.constants';
 import ApplicationAccessManagement from '../ApplicationAccessManagement';
 import { UserCreateConfig } from './UserCreateConfig';
+import PhoneNumberInput from '../../../../components/IntlTelInput/PhoneNumberInput';
 
 const UserCreate = () => {
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ const UserCreate = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
+                    <PhoneNumberInput
                       config={{
                         ...UserCreateConfig.phone.config,
                         name: UserCreateConfig.phone.key,

@@ -1,0 +1,16 @@
+.PhoneInputInput {
+  @apply block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100 min-w-[6.5rem];
+  padding-left: 3.5rem;
+}
+
+.PhoneInput.error {
+  .PhoneInputInput {
+    @apply border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 pr-10;
+  }
+}
+
+.PhoneInputCountry {
+  position: absolute;
+  top: calc(100% - 50% - 0.5rem);
+  left: 0.75rem;
+}

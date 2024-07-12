@@ -1,5 +1,6 @@
-import { NAME_REGEX, PHONE_REGEX, EMAIL_REGEX } from '../../../../../common/helpers/format.helper';
+import { NAME_REGEX, EMAIL_REGEX } from '../../../../../common/helpers/format.helper';
 import i18n from '../../../../../common/config/i18n';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 const translations = {
   name: {
@@ -86,9 +87,8 @@ export const DirectorConfig: Record<string, any> = {
         value: 10,
         message: translations.phone.minim,
       },
-      pattern: {
-        value: PHONE_REGEX,
-        message: translations.phone.invalid,
+      validate: (value: string) => {
+        return isPossiblePhoneNumber(value) || translations.phone.invalid;
       },
     },
     config: {

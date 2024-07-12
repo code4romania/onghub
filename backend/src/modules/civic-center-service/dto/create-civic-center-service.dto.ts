@@ -13,7 +13,6 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
-import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 
 export class CreateCivicCenterServiceDto {
   @IsString()
@@ -73,7 +72,6 @@ export class CreateCivicCenterServiceDto {
   @IsString()
   @IsOptional()
   @IsPhoneValid()
-  @ToRoPhoneNumber()
   phoneAccess?: string;
 
   @IsString()

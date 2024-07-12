@@ -27,6 +27,7 @@ import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 import FormInput from '../../../../components/form-input/FormInput';
+import PhoneNumberInput from '../../../../components/IntlTelInput/PhoneNumberInput';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -550,7 +551,7 @@ const OrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
+                    <PhoneNumberInput
                       config={{
                         ...OrganizationGeneralConfig.phone.config,
                         name: OrganizationGeneralConfig.phone.key,
