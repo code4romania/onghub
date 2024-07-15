@@ -47,7 +47,7 @@ const DataTableComponent = ({
     <div
       className={classNames(
         !loading && data?.length > 0 ? 'border-gray-200' : '',
-        'rdt_TableWrapper', //why do we need this padding here?
+        'rdt_TableWrapper',
       )}
     >
       <DataTable
@@ -80,7 +80,7 @@ const DataTableComponent = ({
         onChangeRowsPerPage={onChangeRowsPerPage}
         noDataComponent={<EmptyContent />}
         progressComponent={
-          <div className="flex justify-center items-center  pt-28 bg-red-600">
+          <div className="flex justify-center items-center  pt-28">
             <LoadingContent />
           </div>
         }
