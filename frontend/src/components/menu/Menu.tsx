@@ -12,6 +12,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import { useTranslation } from 'react-i18next';
 import { NGOHUB_INFORMATION_URL } from '../../common/constants/constants';
+import { FRONTEND_VERSION } from '../../common/constants/version.constants';
 
 export const getNavigationRoutes = (role: UserRole) => {
   let routes = EMPLOYEE_ROUTES;
@@ -133,7 +134,7 @@ const Menu = (props: { isNarrow: boolean, setIsNarrow: React.Dispatch<React.SetS
           </span>
         </a>
       </div>
-      <div className="flex items-center justify-start text-white">v0.1.1</div>
+      <div className="flex items-center justify-start text-white">{FRONTEND_VERSION}</div>
     </nav>
   );
 };

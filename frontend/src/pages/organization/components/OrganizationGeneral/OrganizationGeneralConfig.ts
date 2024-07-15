@@ -11,7 +11,7 @@ import { URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/OrganizationType.enum';
 import i18n from '../../../../common/config/i18n';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 const translations = {
   url: i18n.t('common:invalid_url'),
@@ -284,7 +284,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: translations.phone.max,
       },
       validate: (value: string) => {
-        return isPossiblePhoneNumber(value) || translations.phone.invalid;
+        return isValidPhoneNumber(value) || translations.phone.invalid;
       },
     },
     config: {
@@ -512,7 +512,7 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         message: translations.contact_phone.min,
       },
       validate: (value: string) => {
-        return isPossiblePhoneNumber(value) || translations.contact_phone.invalid;
+        return isValidPhoneNumber(value) || translations.contact_phone.invalid;
       },
     },
     config: {

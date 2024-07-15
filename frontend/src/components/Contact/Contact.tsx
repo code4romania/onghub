@@ -4,6 +4,7 @@ import InputField from '../InputField/InputField';
 import { Controller } from 'react-hook-form';
 import { IInputConfig } from '../InputField/InputConfig.interface';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import PhoneNumberInput from '../IntlTelInput/PhoneNumberInput';
 
 interface ContactFormProps {
   control: any;
@@ -26,18 +27,32 @@ const ContactForm = (props: ContactFormProps) => {
           control={props.control}
           render={({ field: { onChange, value } }) => {
             return (
-              <InputField
-                config={{
-                  ...config.config,
-                  name: config.key,
-                  error: props.errors[config?.key]?.message,
-                  defaultValue: value,
-                  onChange: onChange,
-                  id: props.id + '__' + config.key,
-                }}
-                readonly={props.readonly}
-                disabled={props.disabled}
-              />
+              config.key.includes('phone') ? (
+                <PhoneNumberInput
+                  config={{
+                    label: config.config.label,
+                    error: props.errors[config.key]?.message,
+                    defaultValue: value,
+                    onChange: onChange,
+                    id: props.id + '__' + config.key,
+                  }}
+                  readonly={props.readonly}
+                  disabled={props.disabled}
+                />
+              ) : (
+                <InputField
+                  config={{
+                    ...config.config,
+                    name: config.key,
+                    error: props.errors[config?.key]?.message,
+                    defaultValue: value,
+                    onChange: onChange,
+                    id: props.id + '__' + config.key,
+                  }}
+                  readonly={props.readonly}
+                  disabled={props.disabled}
+                />
+              )
             );
           }}
         />
