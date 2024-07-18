@@ -87,12 +87,12 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization short description */
   @IsString()
-  @Length(50, 250)
+  @Length(50, 275) // In the frontend there should be a 250 limit, but due to '\r\n' characters being counted, we need to increase the limit
   shortDescription?: string;
 
   /* Organization long description */
   @IsString()
-  @Length(500, 2000)
+  @Length(500, 2100) // In the frontend there should be a 2000 limit, but due to '\r\n' characters being counted, we need to increase the limit
   description?: string;
 
   /* 
