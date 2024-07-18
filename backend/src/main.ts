@@ -10,9 +10,10 @@ import { AppModule } from './app.module';
 import { Environment } from './env.validation';
 import helmet from 'helmet';
 import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { createQueueMonitoring } from 'src/libs/bull-board';
+import { flattenValidationErrors } from './common/helpers/validation-error.parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -37,6 +38,19 @@ async function bootstrap() {
       transform: true,
       transformOptions: { enableImplicitConversion: true },
       forbidNonWhitelisted: false,
+
+      exceptionFactory: (errors) => {
+        const validationErrors = flattenValidationErrors(errors);
+
+        Sentry.captureException(
+          new Error('[ValidationPipe] Validation failed'),
+          {
+            extra: { validationErrors: validationErrors },
+          },
+        );
+
+        return new BadRequestException(flattenValidationErrors(errors));
+      },
     }),
   );
 
