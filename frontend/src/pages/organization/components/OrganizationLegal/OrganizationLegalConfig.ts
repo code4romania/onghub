@@ -88,7 +88,7 @@ export const OrganizationLegalConfig: Record<string, any> = {
         message: translations.phone.minim,
       },
       validate: (value: string) => {
-        return isValidPhoneNumber(value || '') || translations.phone.invalid;
+        return value ? isValidPhoneNumber(value || '') || translations.phone.invalid : null;
       },
     },
     config: {
