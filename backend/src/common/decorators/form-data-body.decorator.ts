@@ -1,8 +1,13 @@
 import {
+  BadRequestException,
   createParamDecorator,
   ExecutionContext,
   ValidationPipe,
 } from '@nestjs/common';
+import * as Sentry from '@sentry/node';
+import { ValidationError } from 'class-validator';
+import { iterate } from 'iterare';
+import { flattenValidationErrors } from '../helpers/validation-error.parser';
 
 export const RawBody = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): any => {
@@ -23,5 +28,17 @@ export const FormDataBody = () =>
       validateCustomDecorators: true,
       whitelist: true,
       skipMissingProperties: true,
+      exceptionFactory: (errors) => {
+        const validationErrors = flattenValidationErrors(errors);
+
+        Sentry.captureException(
+          new Error('[ValidationPipe] FormData Validation failed'),
+          {
+            extra: { validationErrors: validationErrors },
+          },
+        );
+
+        return new BadRequestException(flattenValidationErrors(errors));
+      },
     }),
   );
