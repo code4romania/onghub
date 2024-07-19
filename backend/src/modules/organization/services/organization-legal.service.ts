@@ -13,6 +13,7 @@ import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto';
 import { OrganizationLegalRepository } from '../repositories';
 import { ContactService } from './contact.service';
+import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
 
 @Injectable()
 export class OrganizationLegalService {
@@ -26,8 +27,8 @@ export class OrganizationLegalService {
   public async update(
     id: number,
     updateOrganizationLegalDto: UpdateOrganizationLegalDto,
-    organizationStatutePath?: string,
     organizationStatute?: Express.Multer.File[],
+    nonPoliticalAffiliationFile?: Express.Multer.File[],
   ) {
     const orgLegal = await this.organizationLegalRepostory.get({
       where: { id },
@@ -62,7 +63,7 @@ export class OrganizationLegalService {
 
       try {
         const uploadedFile = await this.fileManagerService.uploadFiles(
-          organizationStatutePath,
+          `${id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
           organizationStatute,
           FILE_TYPE.FILE,
         );
@@ -70,6 +71,41 @@ export class OrganizationLegalService {
         organizationLegalData = {
           ...organizationLegalData,
           organizationStatute: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...ORGANIZATION_ERRORS.UPLOAD,
+        });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+        }
+      }
+    }
+
+    // Non Political Affiliation File
+    if (nonPoliticalAffiliationFile) {
+      if (orgLegal.nonPoliticalAffiliationFile) {
+        await this.fileManagerService.deleteFiles([
+          orgLegal.nonPoliticalAffiliationFile,
+        ]);
+      }
+
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${id}/${ORGANIZATION_FILES_DIR.NON_POLITICAL_AFFILITION}`,
+          nonPoliticalAffiliationFile,
+          FILE_TYPE.FILE,
+        );
+
+        organizationLegalData = {
+          ...organizationLegalData,
+          nonPoliticalAffiliationFile: uploadedFile[0],
         };
       } catch (error) {
         this.logger.error({
@@ -106,6 +142,17 @@ export class OrganizationLegalService {
       organizationLegal = {
         ...organizationLegal,
         organizationStatute: organizationStatutePublicUrl,
+      };
+    }
+
+    if (organizationLegal.nonPoliticalAffiliationFile) {
+      const nonPoliticalAffiliationFilePublicUrl =
+        await this.fileManagerService.generatePresignedURL(
+          organizationLegal.nonPoliticalAffiliationFile,
+        );
+      organizationLegal = {
+        ...organizationLegal,
+        nonPoliticalAffiliationFile: nonPoliticalAffiliationFilePublicUrl,
       };
     }
 

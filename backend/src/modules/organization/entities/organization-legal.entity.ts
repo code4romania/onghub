@@ -45,4 +45,11 @@ export class OrganizationLegal extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'organization_statute', nullable: true })
   organizationStatute: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'non_political_affiliation_file',
+    nullable: true,
+  })
+  nonPoliticalAffiliationFile: string;
 }

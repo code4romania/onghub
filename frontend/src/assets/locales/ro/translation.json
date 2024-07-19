@@ -497,9 +497,17 @@
     "other_information": "Numele persoanelor adăugate sunt pentru a ușura comunicarea cu diferite persoane din organizația ta. De exemplu, aici poți adăuga managerul de comunicare sau persoana de fundraising dedicată din ONG-ul tău, sau coordonatori de sucursale din alte orașe. Datele de contact ale persoanelor relevante nu vor fi afișate public.",
     "statute": "Statutul organizației",
     "statute_information": "Încarcă statutul anonimizat. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida statutul de organizație neguvernamentală, și a confirma că scopul și misiunea organizației nu contravin cu criteliile de eligibilitate (ca de exemplu organizația pe care o reprezinți nu desfășoară activități care să încalce drepturile omului, nu este afiliată unui partid politic, nu este o asociație de locatari, etc.) Fișiere acceptate: pdf, maxim 25 MB.",
+
     "document": "Document",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
+
+    "non_political_affiliation": "Declarație de neapartenență politică",
+    "non_political_affiliation_information": "Încarcă declarația pe proprie răspundere prin care reprezentantul legal al organizației declară că președintele și membrii Consiliul Director nu fac parte din conducerea unui partid politic și/sau nu dețin nicio funcție publică. Această declarație nu va fi afișată public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 25 MB",
+    "non_political_affiliation_document": "Document",
+    "non_political_affiliation_file_name": "Declarație",
+    "non_political_affiliation_upload": "Încarcă fișier",
+
     "modal": {
       "add": "Adaugă",
       "edit_director": "Editare membru Consiliu Director",

@@ -28,4 +28,8 @@ export class UpdateOrganizationLegalDto {
   @IsOptional()
   @IsString()
   organizationStatute?: string;
+
+  @IsOptional()
+  @IsString()
+  nonPoliticalAffiliationFile?: string;
 }

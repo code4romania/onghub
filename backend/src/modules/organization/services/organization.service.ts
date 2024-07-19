@@ -969,6 +969,7 @@ export class OrganizationService {
     updateOrganizationDto: UpdateOrganizationDto,
     logo?: Express.Multer.File[],
     organizationStatute?: Express.Multer.File[],
+    nonPoliticalAffiliationFile?: Express.Multer.File[],
   ): Promise<any> {
     const organization = await this.find(id);
 
@@ -994,11 +995,16 @@ export class OrganizationService {
         FILE_TYPE.FILE,
       );
 
+      this.fileManagerService.validateFiles(
+        nonPoliticalAffiliationFile,
+        FILE_TYPE.FILE,
+      );
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
-        `${id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
         organizationStatute,
+        nonPoliticalAffiliationFile,
       );
     }
 

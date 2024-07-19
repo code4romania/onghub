@@ -32,6 +32,7 @@ import { OthersTableHeaders } from './table-headers/OthersTable.headers';
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
   const [organizationStatute, setOrganizationStatute] = useState<File | null>(null);
+  const [nonPoliticalAffiliationFile, setNonPoliticalAffiliationFile] = useState<File | null>(null);
   // directors
   const [directors, setDirectors] = useState<Partial<Contact>[]>([]);
   const [directorsDeleted, setDirectorsDeleted] = useState<number[]>([]);
@@ -247,9 +248,18 @@ const OrganizationLegal = () => {
     );
   };
 
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeStatuteFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setOrganizationStatute(event.target.files[0]);
+      event.target.value = '';
+    } else {
+      event.target.value = '';
+    }
+  };
+
+  const onChangeNonPoliticalAffiliationFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setNonPoliticalAffiliationFile(event.target.files[0]);
       event.target.value = '';
     } else {
       event.target.value = '';
@@ -296,8 +306,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                    handleSubmit(handleSave)();
-                  }
+                  handleSubmit(handleSave)();
+                }
             }
           >
             {isLoadingUpdateOrganization ? (
@@ -382,6 +392,9 @@ const OrganizationLegal = () => {
               </button>
             )}
           </section>
+          {
+            // Statute section
+          }
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
@@ -402,7 +415,7 @@ const OrganizationLegal = () => {
                       id="uploadStatute"
                       type="file"
                       accept={FILE_TYPES_ACCEPT.STATUTE}
-                      onChange={onChangeFile}
+                      onChange={onChangeStatuteFile}
                     />
                     {!organizationStatute && isSubmitted && (
                       <p
@@ -423,6 +436,59 @@ const OrganizationLegal = () => {
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
+                  {isEditMode && !isRemovingOrganizationStatute && (
+                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
+                  )}
+                  {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
+                </a>
+              )}
+            </div>
+          </section>
+
+          {
+            // Political Affiliation section
+          }
+          <section className="flex flex-col gap-6 w-full pt-8">
+            <SectionHeader title={t('non_political_affiliation')} subTitle={t('non_political_affiliation_information')} />
+            <div className="flex flex-col gap-y-4">
+              <h3>{t('non_political_affiliation_document')}</h3>
+              {isEditMode &&
+                !organizationLegal?.organizationStatute &&
+                organizationStatute === null && (
+                  <div className="flex flex-col gap-y-1">
+                    <label
+                      htmlFor="uploadDeclaration"
+                      className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      {t('statute_upload')}
+                    </label>
+                    <input
+                      className="h-0 w-0"
+                      name="uploadDeclaration"
+                      id="uploadDeclaration"
+                      type="file"
+                      accept={FILE_TYPES_ACCEPT.NON_POLITICAL_AFFILIATION}
+                      onChange={onChangeNonPoliticalAffiliationFile}
+                    />
+                    {!nonPoliticalAffiliationFile && isSubmitted && (
+                      <p
+                        className="mt-1 sm:text-sm text-xs text-red-600 whitespace-pre-wrap"
+                        id={`organization-statute__input-error`}
+                      >
+                        {`${t('organization_statute.required')}`}
+                      </p>
+                    )}
+                  </div>
+                )}
+              {(organizationLegal?.organizationStatute || nonPoliticalAffiliationFile) && (
+                <a
+                  aria-label={t('')}
+                  href={fileToURL(nonPoliticalAffiliationFile) || organizationLegal?.organizationStatute}
+                  download
+                  className="text-indigo-600 font-medium text-sm flex items-center"
+                >
+                  <PaperClipIcon className=" w-4 h-4 text-gray-600" />
+                  {t('non_political_affiliation_file_name')}
                   {isEditMode && !isRemovingOrganizationStatute && (
                     <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
