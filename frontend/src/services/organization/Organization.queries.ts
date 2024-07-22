@@ -17,8 +17,10 @@ import { useSelectedOrganization } from '../../store/selectors';
 import useStore from '../../store/store';
 import {
   activateOrganization,
+  deleteBalanceSheetFile,
   deleteInvestors,
   deleteInvestorsByProfile,
+  deleteNonPolicalAffiliationFile,
   deleteOrganizationStatute,
   deletePartners,
   deletePartnersByProfile,
@@ -59,6 +61,8 @@ interface OrganizationPayload {
   };
   logo?: File | null;
   organizationStatute?: File | null;
+  nonPoliticalAffiliationFile?: File | null;
+  balanceSheetFile?: File | null;
 }
 
 /**SUPER ADMIN */
@@ -154,8 +158,22 @@ export const useOrganizationMutation = () => {
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
-    ({ id, organization, logo, organizationStatute }: OrganizationPayload) =>
-      patchOrganization(id as number, organization, logo, organizationStatute),
+    ({
+      id,
+      organization,
+      logo,
+      organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
+    }: OrganizationPayload) =>
+      patchOrganization(
+        id as number,
+        organization,
+        logo,
+        organizationStatute,
+        nonPoliticalAffiliationFile,
+        balanceSheetFile,
+      ),
     {
       onSuccess: (
         data:
@@ -275,8 +293,20 @@ export const useOrganizationByProfileMutation = () => {
   } = useStore();
   const { organizationFinancial } = useSelectedOrganization();
   return useMutation(
-    ({ organization, logo, organizationStatute }: OrganizationPayload) =>
-      patchOrganizationByProfile(organization, logo, organizationStatute),
+    ({
+      organization,
+      logo,
+      organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
+    }: OrganizationPayload) =>
+      patchOrganizationByProfile(
+        organization,
+        logo,
+        organizationStatute,
+        nonPoliticalAffiliationFile,
+        balanceSheetFile,
+      ),
     {
       onSuccess: (
         data:
@@ -363,6 +393,37 @@ export const useDeleteOrganizationStatuteMutation = () => {
         setOrganizationLegal({
           ...(organizationLegal as IOrganizationLegal),
           organizationStatute: undefined,
+        });
+      },
+    },
+  );
+};
+
+export const useDeleteNonPoliticalAffiliationFileMutation = () => {
+  const { setOrganizationLegal, organizationLegal } = useStore();
+  return useMutation(
+    ({ organizationId }: { organizationId: number }) =>
+      deleteNonPolicalAffiliationFile(organizationId),
+    {
+      onSuccess: () => {
+        setOrganizationLegal({
+          ...(organizationLegal as IOrganizationLegal),
+          nonPoliticalAffiliationFile: undefined,
+        });
+      },
+    },
+  );
+};
+
+export const useDeleteBalanceSheetFileMutation = () => {
+  const { setOrganizationLegal, organizationLegal } = useStore();
+  return useMutation(
+    ({ organizationId }: { organizationId: number }) => deleteBalanceSheetFile(organizationId),
+    {
+      onSuccess: () => {
+        setOrganizationLegal({
+          ...(organizationLegal as IOrganizationLegal),
+          balanceSheetFile: undefined,
         });
       },
     },

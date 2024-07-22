@@ -52,4 +52,11 @@ export class OrganizationLegal extends BaseEntity {
     nullable: true,
   })
   nonPoliticalAffiliationFile: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'balance_sheet_file',
+    nullable: true,
+  })
+  balanceSheetFile: string;
 }

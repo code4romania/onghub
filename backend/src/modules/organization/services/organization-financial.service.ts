@@ -73,10 +73,9 @@ export class OrganizationFinancialService {
   public async update(
     updateOrganizationFinancialDto: UpdateOrganizationFinancialDto,
   ) {
-    const organizationFinancial =
-      await this.organizationFinancialRepository.get({
-        where: { id: updateOrganizationFinancialDto.id },
-      });
+    let organizationFinancial = await this.organizationFinancialRepository.get({
+      where: { id: updateOrganizationFinancialDto.id },
+    });
 
     const totals = Object.values(updateOrganizationFinancialDto.data).reduce(
       (prev: number, current: number) => (prev += +current || 0),

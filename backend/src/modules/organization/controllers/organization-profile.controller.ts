@@ -55,6 +55,8 @@ export class OrganizationProfileController {
     FileFieldsInterceptor([
       { name: 'logo', maxCount: 1 },
       { name: 'organizationStatute', maxCount: 1 },
+      { name: 'nonPoliticalAffiliationFile', maxCount: 1 },
+      { name: 'balanceSheetFile', maxCount: 1 },
     ]),
   )
   @Patch()
@@ -65,9 +67,13 @@ export class OrganizationProfileController {
     {
       logo,
       organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
     }: {
       logo: Express.Multer.File[];
       organizationStatute: Express.Multer.File[];
+      nonPoliticalAffiliationFile: Express.Multer.File[];
+      balanceSheetFile: Express.Multer.File[];
     },
   ) {
     return this.organizationService.update(
@@ -75,6 +81,8 @@ export class OrganizationProfileController {
       updateOrganizationDto,
       logo,
       organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
     );
   }
 

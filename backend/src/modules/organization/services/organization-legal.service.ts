@@ -29,6 +29,7 @@ export class OrganizationLegalService {
     updateOrganizationLegalDto: UpdateOrganizationLegalDto,
     organizationStatute?: Express.Multer.File[],
     nonPoliticalAffiliationFile?: Express.Multer.File[],
+    balanceSheetFile?: Express.Multer.File[],
   ) {
     const orgLegal = await this.organizationLegalRepostory.get({
       where: { id },
@@ -123,6 +124,39 @@ export class OrganizationLegalService {
       }
     }
 
+    // Non Political Affiliation File
+    if (balanceSheetFile) {
+      if (orgLegal.balanceSheetFile) {
+        await this.fileManagerService.deleteFiles([orgLegal.balanceSheetFile]);
+      }
+
+      try {
+        const uploadedFile = await this.fileManagerService.uploadFiles(
+          `${id}/${ORGANIZATION_FILES_DIR.BALANCE_SHEET}`,
+          balanceSheetFile,
+          FILE_TYPE.FILE,
+        );
+
+        organizationLegalData = {
+          ...organizationLegalData,
+          balanceSheetFile: uploadedFile[0],
+        };
+      } catch (error) {
+        this.logger.error({
+          error: { error },
+          ...ORGANIZATION_ERRORS.UPLOAD,
+        });
+        if (error instanceof HttpException) {
+          throw error;
+        } else {
+          throw new InternalServerErrorException({
+            ...ORGANIZATION_ERRORS.UPLOAD,
+            error,
+          });
+        }
+      }
+    }
+
     await this.organizationLegalRepostory.save({
       id,
       ...organizationLegalData,
@@ -153,6 +187,17 @@ export class OrganizationLegalService {
       organizationLegal = {
         ...organizationLegal,
         nonPoliticalAffiliationFile: nonPoliticalAffiliationFilePublicUrl,
+      };
+    }
+
+    if (organizationLegal.balanceSheetFile) {
+      const balanceSheetFile =
+        await this.fileManagerService.generatePresignedURL(
+          organizationLegal.balanceSheetFile,
+        );
+      organizationLegal = {
+        ...organizationLegal,
+        balanceSheetFile: balanceSheetFile,
       };
     }
 
@@ -189,6 +234,75 @@ export class OrganizationLegalService {
       const err = error?.response;
       throw new InternalServerErrorException({
         ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+        error: err,
+      });
+    }
+  }
+
+  public async deleteNonPoliticalAffiliation(
+    organizationLegalId: number,
+  ): Promise<void> {
+    try {
+      // 1. Query organization legal data
+      const organizationLegal = await this.organizationLegalRepostory.get({
+        where: { id: organizationLegalId },
+      });
+
+      if (organizationLegal?.nonPoliticalAffiliationFile) {
+        // 2. remove file from s3
+        await this.fileManagerService.deleteFiles([
+          organizationLegal.nonPoliticalAffiliationFile,
+        ]);
+
+        // 3. remove path from database
+        await this.organizationLegalRepostory.save({
+          ...organizationLegal,
+          nonPoliticalAffiliationFile: null,
+        });
+      }
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+      });
+
+      const err = error?.response;
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+        error: err,
+      });
+    }
+  }
+
+  public async deleteBalanceSheetFile(
+    organizationLegalId: number,
+  ): Promise<void> {
+    try {
+      const organizationLegal = await this.organizationLegalRepostory.get({
+        where: { id: organizationLegalId },
+      });
+
+      if (organizationLegal?.balanceSheetFile) {
+        // 2. remove file from s3
+        await this.fileManagerService.deleteFiles([
+          organizationLegal.balanceSheetFile,
+        ]);
+
+        // 3. remove path from database
+        await this.organizationLegalRepostory.save({
+          ...organizationLegal,
+          balanceSheetFile: null,
+        });
+      }
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
+      });
+
+      const err = error?.response;
+      throw new InternalServerErrorException({
+        ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
         error: err,
       });
     }

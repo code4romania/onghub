@@ -32,4 +32,8 @@ export class UpdateOrganizationLegalDto {
   @IsOptional()
   @IsString()
   nonPoliticalAffiliationFile?: string;
+
+  @IsOptional()
+  @IsString()
+  balanceSheetFile?: string;
 }

@@ -68,6 +68,15 @@ export const ORGANIZATION_ERRORS = {
       message: 'Error while deleting the organization statute',
       errorCode: 'ORG_027',
     },
+    NON_POLITICAL_AFFILIATION: {
+      message:
+        'Error while deleting the organization non political affiliation file',
+      errorCode: 'ORG_027',
+    },
+    BALANCE_SHEET: {
+      message: 'Error while deleting the organization balance sheet file',
+      errorCode: 'ORG_027',
+    },
   },
   ALREADY_RESTRICTED: {
     message: 'Organization is already RESTRICTED',
