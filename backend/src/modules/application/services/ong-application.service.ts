@@ -29,6 +29,8 @@ import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
 import { OngApplicationFilterDto } from '../dto/ong-application-filters.dto';
+import ApplicationRequestEvent from 'src/modules/notifications/events/ong-requested-application-access-event.class';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OngApplicationService {
@@ -89,8 +91,20 @@ export class OngApplicationService {
             : OngApplicationStatus.ACTIVE,
       });
 
+      if(application.type === ApplicationTypeEnum.STANDALONE) {
+        // 8. trigger emails for admin and super-admin
+        this.eventEmitter.emit(
+          EVENTS.REQUEST_APPLICATION_ACCESS,
+          new ApplicationRequestEvent(organizationId, application.name),
+        );
+      }
+
+
       return ongApp;
     } catch (error) {
+      Sentry.captureException(error, {
+        extra: {organizationId, applicationId},
+      })
       this.logger.error({ error: { error }, ...ONG_APPLICATION_ERRORS.CREATE });
       const err = error?.response;
       throw new BadRequestException({

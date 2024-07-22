@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ArrowCircleLeftIcon, ArrowCircleRightIcon, InformationCircleIcon } from '@heroicons/react/outline';
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -12,6 +12,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { UserRole } from '../../pages/users/enums/UserRole.enum';
 import { useTranslation } from 'react-i18next';
 import { NGOHUB_INFORMATION_URL } from '../../common/constants/constants';
+import { FRONTEND_VERSION } from '../../common/constants/version.constants';
 
 export const getNavigationRoutes = (role: UserRole) => {
   let routes = EMPLOYEE_ROUTES;
@@ -119,9 +120,9 @@ const Menu = (props: { isNarrow: boolean, setIsNarrow: React.Dispatch<React.SetS
           )}
         >
           {props.isNarrow ? (
-            <ArrowCircleRightIcon className="w-5 h-5" />
+            <ArrowRightCircleIcon className="w-5 h-5" />
           ) : (
-            <ArrowCircleLeftIcon className="w-5 h-5" />
+            <ArrowLeftCircleIcon className="w-5 h-5" />
           )}
           <span
             className={classNames(
@@ -133,7 +134,7 @@ const Menu = (props: { isNarrow: boolean, setIsNarrow: React.Dispatch<React.SetS
           </span>
         </a>
       </div>
-      <div className="flex items-center justify-start text-white">v0.1.1</div>
+      <div className="flex items-center justify-start text-white">{FRONTEND_VERSION}</div>
     </nav>
   );
 };

@@ -1,4 +1,4 @@
-import { BanIcon, EyeIcon, RefreshIcon, TrashIcon } from '@heroicons/react/outline';
+import { NoSymbolIcon, EyeIcon, ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -102,7 +102,7 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.activate'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onActivateApplication,
         type: PopoverMenuRowType.SUCCESS,
       },
@@ -123,7 +123,7 @@ const ApplicationListTable = () => {
       },
       {
         name: t('list.restrict'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },

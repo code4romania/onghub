@@ -12,7 +12,6 @@ import {
 } from 'class-validator';
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
-import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 import { Access } from 'src/modules/application/interfaces/application-access.interface';
 import { Role } from '../enums/role.enum';
 
@@ -30,7 +29,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @ToRoPhoneNumber()
   @IsPhoneValid()
   phone: string;
 

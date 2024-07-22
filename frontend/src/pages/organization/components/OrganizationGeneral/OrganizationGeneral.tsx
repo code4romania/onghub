@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PencilIcon } from '@heroicons/react/solid';
+import { PencilIcon } from '@heroicons/react/24/solid';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,7 @@ import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 import FormInput from '../../../../components/form-input/FormInput';
+import PhoneNumberInput from '../../../../components/IntlTelInput/PhoneNumberInput';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -550,7 +551,7 @@ const OrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
+                    <PhoneNumberInput
                       config={{
                         ...OrganizationGeneralConfig.phone.config,
                         name: OrganizationGeneralConfig.phone.key,
@@ -564,24 +565,27 @@ const OrganizationGeneral = () => {
                   );
                 }}
               />
-              <Controller
-                key={OrganizationGeneralConfig.hasSameAddress.key}
-                name={OrganizationGeneralConfig.hasSameAddress.key}
-                control={control}
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <InputField
-                      config={{
-                        ...OrganizationGeneralConfig.hasSameAddress.config,
-                        defaultValue: value,
-                        onChange: onChange,
-                        id: 'create-organization-general__same-address-checkbox',
-                      }}
-                      disabled={readonly}
-                    />
-                  );
-                }}
-              />
+              {!readonly && (
+                <Controller
+                  key={OrganizationGeneralConfig.hasSameAddress.key}
+                  name={OrganizationGeneralConfig.hasSameAddress.key}
+                  control={control}
+                  render={({ field: { onChange, value } }) => {
+                    console.log(value);
+                    return (
+                      <InputField
+                        config={{
+                          ...OrganizationGeneralConfig.hasSameAddress.config,
+                          defaultValue: value,
+                          onChange: onChange,
+                          id: 'create-organization-general__same-address-checkbox',
+                        }}
+                        disabled={readonly}
+                      />
+                    );
+                  }}
+                />
+              )}
 
               <Controller
                 key={OrganizationGeneralConfig.organizationAddress.key}

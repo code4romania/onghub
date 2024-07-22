@@ -1,5 +1,6 @@
-import { NAME_REGEX, EMAIL_REGEX, PHONE_REGEX } from '../../../common/helpers/format.helper';
+import { NAME_REGEX, EMAIL_REGEX } from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 const translations = {
   name: {
@@ -67,9 +68,8 @@ export const CreateOrganizationUserConfig: Record<string, any> = {
         value: 15,
         message: translations.phone.max,
       },
-      pattern: {
-        value: PHONE_REGEX,
-        message: translations.phone.invalid,
+      validate: (value: string) => {
+        return isValidPhoneNumber(value) || translations.phone.invalid;
       },
     },
     config: {

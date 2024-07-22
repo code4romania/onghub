@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PencilIcon } from '@heroicons/react/solid';
+import { PencilIcon } from '@heroicons/react/24/solid';
 import React, { useContext, useEffect, useState } from 'react';
 import { classNames } from '../../../../common/helpers/tailwind.helper';
 import ChipSelection from '../../../../components/chip-selection/ChipSelection';
@@ -33,7 +33,7 @@ import { useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { parseOrganizationActivityDataToPayload } from '../../../../services/organization/Organization.helper';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
-import { PlusIcon } from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import AddCoFedModal from '../../../../components/add-fed-co-modal/AddFedCoModal';
 
 const OrganizationActivity = () => {
@@ -435,30 +435,30 @@ const OrganizationActivity = () => {
 
           {(isPartOfInternationalOrganization == 'true' ||
             isPartOfInternationalOrganization === true) && (
-            <Controller
-              key={OrganizationActivityConfig.internationalOrganizationName.key}
-              name={OrganizationActivityConfig.internationalOrganizationName.key}
-              rules={OrganizationActivityConfig.internationalOrganizationName.rules}
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <InputField
-                    config={{
-                      ...OrganizationActivityConfig.internationalOrganizationName.config,
-                      name: OrganizationActivityConfig.internationalOrganizationName.key,
-                      error:
-                        errors[OrganizationActivityConfig.internationalOrganizationName.key]
-                          ?.message,
-                      defaultValue: value,
-                      onChange: onChange,
-                      id: 'organization-activity__name',
-                    }}
-                    readonly={readonly}
-                  />
-                );
-              }}
-            />
-          )}
+              <Controller
+                key={OrganizationActivityConfig.internationalOrganizationName.key}
+                name={OrganizationActivityConfig.internationalOrganizationName.key}
+                rules={OrganizationActivityConfig.internationalOrganizationName.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationActivityConfig.internationalOrganizationName.config,
+                        name: OrganizationActivityConfig.internationalOrganizationName.key,
+                        error:
+                          errors[OrganizationActivityConfig.internationalOrganizationName.key]
+                            ?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'organization-activity__name',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+            )}
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <div className="pb-5">

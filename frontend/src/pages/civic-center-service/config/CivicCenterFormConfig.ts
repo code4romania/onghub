@@ -1,11 +1,7 @@
-import {
-  ALPHANUMERIC_REGEX,
-  EMAIL_REGEX,
-  PHONE_REGEX,
-  URL_REGEX,
-} from '../../../common/helpers/format.helper';
+import { ALPHANUMERIC_REGEX, EMAIL_REGEX, URL_REGEX } from '../../../common/helpers/format.helper';
 import i18n from '../../../common/config/i18n';
 import InputFieldHttpAddon from '../../../components/InputField/components/InputFieldHttpAddon';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 const translations = {
   name: {
@@ -359,9 +355,8 @@ export const CivicCenterFormConfig: Record<string, any> = {
           value: 15,
           message: translations.emailOrPhone.phone.max,
         },
-        pattern: {
-          value: PHONE_REGEX,
-          message: translations.emailOrPhone.phone.pattern,
+        validate: (value: string) => {
+          return isValidPhoneNumber(value) || translations.emailOrPhone.phone.pattern;
         },
       },
       config: {

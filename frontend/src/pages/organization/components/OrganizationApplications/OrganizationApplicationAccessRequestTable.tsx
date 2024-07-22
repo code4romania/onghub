@@ -1,4 +1,4 @@
-import { ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
+import { ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -57,7 +57,7 @@ const OrganizationApplicationRequestsTable = ({
       },
       {
         name: t('options.reject_request'),
-        icon: XIcon,
+        icon: XMarkIcon,
         onClick: onReject,
         type: PopoverMenuRowType.REMOVE,
       },

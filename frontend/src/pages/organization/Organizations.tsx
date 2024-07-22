@@ -1,4 +1,4 @@
-import { BanIcon, EyeIcon, RefreshIcon } from '@heroicons/react/outline';
+import { NoSymbolIcon, EyeIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,7 @@ import { CompletionStatus } from './enums/CompletionStatus.enum';
 import { OrganizationStatus } from './enums/OrganizationStatus.enum';
 import { IOrganizationView } from './interfaces/Organization.interface';
 import { OrganizationsTableHeaders } from './table-headers/OrganizationsTable.headers';
+import { downloadOrganizations } from '../../services/organization/Organization.service';
 
 const Organizations = () => {
   const navigate = useNavigate();
@@ -143,7 +144,7 @@ const Organizations = () => {
       },
       {
         name: t('restrict'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictOrganization,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -158,7 +159,7 @@ const Organizations = () => {
       },
       {
         name: t('activate'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onActivateOrganization,
         type: PopoverMenuRowType.SUCCESS,
       },
@@ -201,6 +202,17 @@ const Organizations = () => {
         refetch();
       },
     });
+  };
+
+  const onExport = async () => {
+    const { data } = await downloadOrganizations();
+    const url = URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'NGOList.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
 
   return (
@@ -248,6 +260,14 @@ const Organizations = () => {
           <p className="text-gray-800 font-titilliumBold sm:text-lg lg:text-xl text-md">
             {t('list')}
           </p>
+          <button
+            aria-label={t('download_list')}
+            type="button"
+            className="edit-button sm:text-sm lg:text-base text-xs"
+            onClick={onExport}
+          >
+            {t('download_list')}
+          </button>
         </div>
         <DataTableComponent
           columns={[...OrganizationsTableHeaders, buildOrganizationsActionColumn()]}

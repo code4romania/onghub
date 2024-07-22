@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { GlobeAltIcon, PlusIcon, XIcon } from '@heroicons/react/outline';
+import { GlobeAltIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import logo from '../../../assets/images/logo.svg';
 import { useAuthContext } from '../../../contexts/AuthContext';
 import { UserRole } from '../../users/enums/UserRole.enum';
 import { ApplicationTypeEnum } from '../../apps-store/constants/ApplicationType.enum';
-import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ClockIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import {
   useAbandonApplicationRequestMutation,
@@ -40,8 +40,12 @@ const ApplicationDetails = () => {
   useEffect(() => {
     if (application.videoLink) {
       // cleanup some unwanted prefixes
-      const link = (application.videoLink as string).replace('https://', '').replace('http://', '');
-      console.log(`https://${link}`);
+      let link = (application.videoLink as string).replace('https://', '').replace('http://', '');
+
+      if (link.includes('youtu.be')) {
+        link = link.replace('youtu.be', 'youtube.com/embed'); //youtube.com/embed is needed in order to be able to allow outside requests
+      }
+
       setYoutubeLink(`https://${link}`);
     } else {
       setYoutubeLink('');
@@ -185,7 +189,7 @@ const ApplicationDetails = () => {
                             className="edit-button px-8 flex gap-4"
                             onClick={() => setConfirmationModalOpen(true)}
                           >
-                            <XIcon className="h-5 w-5" />
+                            <XMarkIcon className="h-5 w-5" />
                             {t('details.delete')}
                           </button>
                         </div>
@@ -299,7 +303,7 @@ const ApplicationDetails = () => {
                         className="edit-button px-8 flex gap-4"
                         onClick={abandonRequest}
                       >
-                        <XIcon className="h-5 w-5" />
+                        <XMarkIcon className="h-5 w-5" />
                         {t('details.cancel')}
                       </button>
                     }
@@ -343,6 +347,7 @@ const ApplicationDetails = () => {
         )}
 
         <ApplicationFeedbackCard
+          descriptionIsHtml
           title={t('details.description')}
           description={application?.description}
         />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BanIcon } from '@heroicons/react/outline';
-import { PencilIcon, RefreshIcon, TrashIcon } from '@heroicons/react/solid';
+import { NoSymbolIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, ArrowPathIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { PaginationConfig } from '../../../../common/config/pagination.config';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
@@ -102,7 +102,7 @@ const UserList = (props: { organizationId?: number }) => {
     const activeUserMenuItems = [
       {
         name: t('list.restrict'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictAccess,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -121,7 +121,7 @@ const UserList = (props: { organizationId?: number }) => {
     const restrictedUserMenuItems = [
       {
         name: t('list.give_access'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onRestoreAccess,
       },
       {
@@ -297,11 +297,16 @@ const UserList = (props: { organizationId?: number }) => {
             <Select
               config={{
                 label: t('list.access_to_app'),
-                collection: [{ id: null, name: t('filters.all') }, ...appsNameList?.sort((a, b) => (a.name < b.name ? -1 : 1)) || []],
+                collection: [
+                  { id: null, name: t('filters.all') },
+                  ...(appsNameList?.sort((a, b) => (a.name < b.name ? -1 : 1)) || []),
+                ],
                 displayedAttribute: 'name',
               }}
               selected={appsFilter[0]}
-              onChange={(selection: ApplicationListItem) => selection.id ? setAppsFilters([selection]) : setAppsFilters([])}
+              onChange={(selection: ApplicationListItem) =>
+                selection.id ? setAppsFilters([selection]) : setAppsFilters([])
+              }
             />
           </div>
         </div>
@@ -333,7 +338,7 @@ const UserList = (props: { organizationId?: number }) => {
           onChangeRowsPerPage={onRowsPerPageChange}
           onChangePage={onChangePage}
           onSort={onSort}
-          onRowClicked={onEdit}
+          onRowClicked={role === UserRole.ADMIN ? onEdit : undefined}
         />
         {isConfirmRemoveModalOpen && (
           <ConfirmationModal

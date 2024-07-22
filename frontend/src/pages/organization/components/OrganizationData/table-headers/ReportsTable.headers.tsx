@@ -4,7 +4,7 @@ import { formatDate } from '../../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
 import { CompletionStatus } from '../../../enums/CompletionStatus.enum';
 import { Report } from '../../../interfaces/Report.interface';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 import i18n from '../../../../../common/config/i18n';
 import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
@@ -55,12 +55,12 @@ export const ReportsTableHeaders: TableColumn<Report>[] = [
         <a
           aria-label={`${translations.report}${row.year}`}
           className="text-indigo-600 font-bold text-sm cursor-pointer flex underline decoration-solid"
-          href={row.report || ''}
+          href={'//' + row.report || ''}
           target="_blank"
           rel="noreferrer"
         >
           {`${translations.report}${row.year}`}
-          <ExternalLinkIcon className="w-4 h-4" />
+          <ArrowTopRightOnSquareIcon className="w-4 h-4" />
         </a>
       ) : (
         translations.not_available

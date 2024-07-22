@@ -17,7 +17,7 @@ export class SharedController {
 
   @Get('version')
   version() {
-    return 'v0.0.2';
+    return {version: process.env.VERSION, revision: process.env.REVISION};
   }
 
   @ApiQuery({ name: 'path', type: String })

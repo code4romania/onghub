@@ -15,7 +15,6 @@ import { ToNumber } from 'src/common/decorators/to-number.decorator';
 import { IsPhoneValid } from 'src/common/decorators/is-phone-valid.decorator';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Trim } from 'src/common/decorators/trim.decorator';
-import { ToRoPhoneNumber } from 'src/common/decorators/to-ro-phone-number.decorator';
 
 export class CreateOrganizationGeneralDto {
   /* 
@@ -50,7 +49,6 @@ export class CreateOrganizationGeneralDto {
   @IsString()
   @IsNotEmpty()
   @IsPhoneValid()
-  @ToRoPhoneNumber()
   phone: string;
 
   /* 
@@ -89,12 +87,12 @@ export class CreateOrganizationGeneralDto {
 
   /* Organization short description */
   @IsString()
-  @Length(50, 250)
+  @Length(50, 275) // In the frontend there should be a 250 limit, but due to '\r\n' characters being counted, we need to increase the limit
   shortDescription?: string;
 
   /* Organization long description */
   @IsString()
-  @Length(500, 2000)
+  @Length(500, 2100) // In the frontend there should be a 2000 limit, but due to '\r\n' characters being counted, we need to increase the limit
   description?: string;
 
   /* 

@@ -1,5 +1,4 @@
 import {
-  CacheInterceptor,
   ClassSerializerInterceptor,
   Controller,
   Get,
@@ -11,6 +10,7 @@ import { ILike } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { FacultySearchDto } from '../dto/faculty-search.dto';
 import { NomenclaturesService } from '../services';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Public()
 @UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)

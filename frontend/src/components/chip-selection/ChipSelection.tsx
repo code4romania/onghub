@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CheckIcon from '@heroicons/react/solid/CheckIcon';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { ChipItem } from '../../common/interfaces/chip-item.interface';
 

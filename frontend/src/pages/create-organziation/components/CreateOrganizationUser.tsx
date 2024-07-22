@@ -15,6 +15,7 @@ import {
   CREATE_LOCAL_STORAGE_KEY,
 } from '../constants/CreateOrganization.constant';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
+import PhoneNumberInput from '../../../components/IntlTelInput/PhoneNumberInput';
 
 const CreateOrganizationUser = () => {
   const [readonly] = useState(false);
@@ -76,7 +77,7 @@ const CreateOrganizationUser = () => {
         ...data,
       };
 
-      setOrganization((org: any) => ({ ...org, admin }));
+      setOrganization({ ...organization, admin });
       localStorage.setItem(CREATE_LOCAL_STORAGE_KEY, JSON.stringify({ ...organization, admin }));
       navigate(`/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`);
       updateActiveStepIndexInLocalStorage(activeStepIndex, 2, setActiveStepIndex);
@@ -149,10 +150,9 @@ const CreateOrganizationUser = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => {
                     return (
-                      <InputField
+                      <PhoneNumberInput
                         config={{
-                          ...CreateOrganizationUserConfig.phone.config,
-                          name: CreateOrganizationUserConfig.phone.key,
+                          label: CreateOrganizationUserConfig.phone.config.label,
                           error: errors[CreateOrganizationUserConfig.phone.key]?.message,
                           defaultValue: value,
                           onChange: onChange,

@@ -5,6 +5,7 @@ interface ApplicationFeedbackCardProps {
   description: string;
   icon?: React.ReactNode;
   actions?: React.ReactNode;
+  descriptionIsHtml?: boolean;
 }
 
 const ApplicationFeedbackCard = ({
@@ -12,6 +13,7 @@ const ApplicationFeedbackCard = ({
   title,
   description,
   actions,
+  descriptionIsHtml,
 }: ApplicationFeedbackCardProps) => {
   return (
     <div className="w-full h-full bg-white shadow rounded-lg">
@@ -23,7 +25,15 @@ const ApplicationFeedbackCard = ({
       </div>
       <div className="w-full border-t border-gray-300" />
       <div className="lg:p-8 p-5 flex flex-col gap-4">
-        <p className="break-word sm:text-sm lg:text-base text-xs">{description}</p>
+        {descriptionIsHtml ? (
+          <p
+            className="richtext_html break-word sm:text-sm lg:text-base text-xs"
+            dangerouslySetInnerHTML={{ __html: description || '' }}
+          />
+        ) : (
+          <p className="break-word sm:text-sm lg:text-base text-xs">{description}</p>
+        )}
+
         <div>{actions}</div>
       </div>
     </div>

@@ -54,8 +54,17 @@ const RichText = (props: { config: RichTextConfig; readonly?: boolean; disabled?
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
             onEditorStateChange={onEditorStateChange}
+            editorStyle={{
+              flex: 1,
+            }}
             readOnly={props.disabled}
             toolbarHidden={props.disabled}
+            wrapperStyle={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 350,
+              borderColor: props.config.error && '#fca5a5',
+            }}
           />
         </div>
       )}

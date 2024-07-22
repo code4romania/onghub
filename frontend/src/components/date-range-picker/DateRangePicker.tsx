@@ -1,4 +1,4 @@
-import { CalendarIcon } from '@heroicons/react/outline';
+import { CalendarIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
@@ -43,7 +43,8 @@ const DateRangePicker = ({ label, value, onChange, id }: DateRangePickerProps) =
           />
         </div>
         <DatePicker
-          className="block w-full pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"
+          wrapperClassName="w-full"
+          className="block w-full h-[44px] pr-10 border-gray-300 shadow-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm lg:text-base text-xs leading-loose"
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}

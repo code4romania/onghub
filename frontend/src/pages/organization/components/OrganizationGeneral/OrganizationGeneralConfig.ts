@@ -7,10 +7,11 @@ import {
   rangeOfYears,
   EMAIL_REGEX,
 } from './../../../../common/helpers/format.helper';
-import { PHONE_REGEX, URL_REGEX } from '../../../../common/helpers/format.helper';
+import { URL_REGEX } from '../../../../common/helpers/format.helper';
 import InputFieldHttpAddon from '../../../../components/InputField/components/InputFieldHttpAddon';
 import { OrganizationTypeEnum, OrganizationTypeNaming } from './../../enums/OrganizationType.enum';
 import i18n from '../../../../common/config/i18n';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 
 const translations = {
   url: i18n.t('common:invalid_url'),
@@ -282,9 +283,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 15,
         message: translations.phone.max,
       },
-      pattern: {
-        value: PHONE_REGEX,
-        message: translations.phone.invalid,
+      validate: (value: string) => {
+        return isValidPhoneNumber(value) || translations.phone.invalid;
       },
     },
     config: {
@@ -511,9 +511,8 @@ export const OrganizationGeneralConfig: Record<string, any> = {
         value: 10,
         message: translations.contact_phone.min,
       },
-      pattern: {
-        value: PHONE_REGEX,
-        message: translations.contact_phone.invalid,
+      validate: (value: string) => {
+        return isValidPhoneNumber(value) || translations.contact_phone.invalid;
       },
     },
     config: {

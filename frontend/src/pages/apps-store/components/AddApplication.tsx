@@ -1,4 +1,4 @@
-import { PencilIcon } from '@heroicons/react/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { LocationMarkerIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { MapPinIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { CivicCenterService } from '../../../services/civic-center-service/interfaces/civic-center-service.interface';
 import { useTranslation } from 'react-i18next';
 import {
@@ -50,7 +50,7 @@ const CivicCenterServiceContent = ({ service }: CivicCenterServiceContentProps) 
     <section className="divide-y divide-gray-100">
       <div className="flex flex-col gap-2 pb-8">
         <p className="flex font-titilliumSemiBold text-base items-center gap-2">
-          <LocationMarkerIcon className="h-4 w-4 min-h-[1rem] min-w-[1rem]" />
+          <MapPinIcon className="h-4 w-4 min-h-[1rem] min-w-[1rem]" />
           <span className="break-word">{service.location.name}</span>
         </p>
         <h3 className="font-titilliumBold text-2xl break-word">{service.name}</h3>

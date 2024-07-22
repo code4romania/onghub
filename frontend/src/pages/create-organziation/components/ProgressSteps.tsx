@@ -4,6 +4,7 @@ import i18n from '../../../common/config/i18n';
 import { CREATE_FLOW_URL } from '../constants/CreateOrganization.constant';
 
 export interface IProgressStep {
+  index: number;
   id: string;
   name: string;
   href: string;
@@ -33,30 +34,35 @@ const translations = {
 
 const steps_seed: IProgressStep[] = [
   {
+    index: 0,
     id: translations.steps.first,
     name: translations.agreement,
     href: `/${CREATE_FLOW_URL.BASE}/agreement`,
     status: PROGRESS_STEP_TYPE.CURRENT,
   },
   {
+    index: 1,
     id: translations.steps.second,
     name: translations.account,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACCOUNT}`,
     status: PROGRESS_STEP_TYPE.CURRENT,
   },
   {
+    index: 2,
     id: translations.steps.third,
     name: translations.general,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.GENERAL}`,
     status: PROGRESS_STEP_TYPE.UPCOMING,
   },
   {
+    index: 3,
     id: translations.steps.fourth,
     name: translations.activity,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.ACTIVITY}`,
     status: PROGRESS_STEP_TYPE.UPCOMING,
   },
   {
+    index: 4,
     id: translations.steps.fifth,
     name: translations.legal,
     href: `/${CREATE_FLOW_URL.BASE}/${CREATE_FLOW_URL.LEGAL}`,
@@ -64,31 +70,39 @@ const steps_seed: IProgressStep[] = [
   },
 ];
 
-export default function ProgressSteps() {
+export default function ProgressSteps({ activeStepIndex, setActiveStepIndex, disabled }: { activeStepIndex: number, setActiveStepIndex: (index: number) => void, disabled: boolean }) {
+  const [steps, setSteps] = useState<IProgressStep[]>(steps_seed);
   const location = useLocation();
-  const [steps, setSteps] = useState(steps_seed);
-
   const navigate = useNavigate();
 
-  const handlePreviousStepClick = (href: string) => {
-    navigate(href);
+  const handlePreviousStepClick = (step: IProgressStep) => {
+    if (disabled) return;
+
+    setActiveStepIndex(step.index);
+    navigate(step.href);
   };
 
-  useEffect(() => {
-    if (location) {
-      const steps_copy = steps;
-      steps_copy.forEach((step) => {
+  const stepsMapper = (steps: IProgressStep[], activeIndex: number) => {
+    return steps.map((step, index) => {
+      if (index < activeIndex) {
+        step.status = PROGRESS_STEP_TYPE.COMPLETE;
+      } else if (index === activeIndex) {
+        step.status = PROGRESS_STEP_TYPE.CURRENT;
+      } else {
         step.status = PROGRESS_STEP_TYPE.UPCOMING;
-      });
-      const index = steps_copy.findIndex((item) => item.href == location.pathname);
-      for (let i = 0; i < index; i++) {
-        steps_copy[i].status = PROGRESS_STEP_TYPE.COMPLETE;
       }
-      if (index > -1) {
-        steps_copy[index].status = PROGRESS_STEP_TYPE.CURRENT;
-      }
-      setSteps([...steps_copy]);
-    }
+      return step;
+    })
+  }
+
+  useEffect(() => {
+    setSteps((steps => stepsMapper(steps, activeStepIndex)))
+  }, [activeStepIndex]);
+
+
+  useEffect(() => {
+    const currentStepIndex = steps.findIndex(step => step.href === location.pathname);
+    setActiveStepIndex(currentStepIndex);
   }, [location]);
 
   return (
@@ -102,10 +116,10 @@ export default function ProgressSteps() {
             {step.status === PROGRESS_STEP_TYPE.COMPLETE ? (
               <a
                 aria-label={`Step ${step.name}`}
-                className="group pl-4 py-2 flex flex-col border-l-4 border-indigo-600 hover:border-indigo-800 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
-                onClick={handlePreviousStepClick.bind(null, step.href)}
+                className="group pl-4 py-2 flex flex-col border-l-4 border-indigo-600 hover:border-indigo-800 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4 select-none"
+                onClick={handlePreviousStepClick.bind(null, step)}
               >
-                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase group-hover:text-indigo-800">
+                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase group-hover:text-indigo-800 select-none">
                   {step.id}
                 </span>
                 <span className="text-sm font-medium">{step.name}</span>
@@ -113,10 +127,10 @@ export default function ProgressSteps() {
             ) : step.status === PROGRESS_STEP_TYPE.CURRENT ? (
               <a
                 aria-label={`Step ${step.name}`}
-                className="pl-4 py-2 flex flex-col border-l-4 border-indigo-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
+                className="pl-4 py-2 flex flex-col border-l-4 border-indigo-600 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4 select-none"
                 aria-current="step"
               >
-                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase">
+                <span className="text-xs text-indigo-600 font-semibold tracking-wide uppercase select-none">
                   {step.id}
                 </span>
                 <span className="text-sm font-medium">{step.name}</span>
@@ -124,9 +138,9 @@ export default function ProgressSteps() {
             ) : (
               <a
                 aria-label={`Step ${step.name}`}
-                className="group pl-4 py-2 flex flex-col border-l-4 border-gray-200 hover:border-gray-300 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
+                className="group pl-4 py-2 flex flex-col border-l-4 border-gray-200 hover:border-gray-300 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4 select-none"
               >
-                <span className="text-xs text-gray-500 font-semibold tracking-wide uppercase group-hover:text-gray-700">
+                <span className="text-xs text-gray-500 font-semibold tracking-wide uppercase group-hover:text-gray-700 select-none">
                   {step.id}
                 </span>
                 <span className="text-sm font-medium">{step.name}</span>

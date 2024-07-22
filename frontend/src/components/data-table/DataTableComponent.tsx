@@ -1,6 +1,6 @@
 import React from 'react';
 import DataTable, { SortOrder, TableColumn } from 'react-data-table-component';
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import EmptyContent from './EmptyContent';
 import LoadingContent from './LoadingContent';
 import { classNames } from '../../common/helpers/tailwind.helper';
@@ -79,7 +79,11 @@ const DataTableComponent = ({
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
         noDataComponent={<EmptyContent />}
-        progressComponent={<LoadingContent />}
+        progressComponent={
+          <div className="flex justify-center items-center  pt-28">
+            <LoadingContent />
+          </div>
+        }
         defaultSortFieldId={defaultSortFieldId}
         defaultSortAsc={defaultSortAsc}
         onRowClicked={onRowClicked}

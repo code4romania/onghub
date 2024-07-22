@@ -1,4 +1,4 @@
-import { EyeIcon, ShieldCheckIcon, XIcon } from '@heroicons/react/outline';
+import { EyeIcon, ShieldCheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { TableColumn, SortOrder } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -86,7 +86,7 @@ const ApplicationRequests = () => {
       },
       {
         name: t('requests.reject'),
-        icon: XIcon,
+        icon: XMarkIcon,
         onClick: onOpenReject,
         type: PopoverMenuRowType.REMOVE,
       },

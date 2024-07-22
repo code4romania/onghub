@@ -22,6 +22,7 @@ import {
   CREATE_LOCAL_STORAGE_KEY,
 } from '../constants/CreateOrganization.constant';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
+import PhoneNumberInput from '../../../components/IntlTelInput/PhoneNumberInput';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
@@ -157,7 +158,7 @@ const CreateOrganizationGeneral = () => {
 
       await validationMutate({ organization: { general: organizationGeneral } }); // Throws errors
 
-      setOrganization((org: any) => ({ ...org, general: organizationGeneral }));
+      setOrganization({ ...organization, general: organizationGeneral });
       localStorage.setItem(
         CREATE_LOCAL_STORAGE_KEY,
         JSON.stringify({ ...organization, general: organizationGeneral }),
@@ -505,7 +506,7 @@ const CreateOrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
+                    <PhoneNumberInput
                       config={{
                         ...OrganizationGeneralConfig.phone.config,
                         name: OrganizationGeneralConfig.phone.key,

@@ -138,6 +138,7 @@
     "create": {
       "congratulations": "Congratulations",
       "success": "You have successfully completed the NGO Hub application form. Confirmation of your application and a copy of the completed form have been sent to the e-mail address indicated. We will verify your application and contact you as soon as possible to complete the NGO Hub implementation process for your organisation.",
+      "success_helper": "If you have any questions, you can contact us at:",
       "again": "Try again",
       "steps": {
         "first": "Step 1",
@@ -694,7 +695,11 @@
         "label": "Other expenses",
         "info": "Enter here the total of any other expenses you have not entered in other segments of this budget (for example the purchase of a trailer for a caravan etc.)."
       }
-    }
+    },
+    "retry_anaf_warning": "Your data is not up to date.",
+    "retry_anaf_button": "Try again",
+    "retry_anaf_error": "Service unavailable.",
+    "no_financial_info": "No data available for your request."
   },
   "open_data": {
     "load_error": "Data could not be uploaded",
@@ -879,6 +884,7 @@
     "restrict": "Temporarily restricts",
     "title": "NGOs",
     "list": "List of NGOs",
+    "download_list": "Download list",
     "administer": " organisations registered in the NGO Hub.",
     "restrict_error": "Organisation restriction error",
     "activate_error": "Organisation activation error",

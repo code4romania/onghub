@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 interface ModalProps {
   title: string;
@@ -49,7 +49,7 @@ const Modal = ({ children, title, onClose }: ModalProps) => {
                     aria-label="close-modal"
                     type="button"
                   >
-                    <XIcon className="h-6 w-6" />
+                    <XMarkIcon className="h-6 w-6" />
                   </button>
                 </div>
                 {children}

@@ -16,6 +16,8 @@ import DeleteAppRequestEvent from '../events/delete-app-request-event.class';
 import DisableOngRequestEvent from '../events/disable-ong-request-event.class';
 import RejectOngRequestEvent from '../events/reject-ong-request-event.class';
 import RestrictOngEvent from '../events/restrict-ong-event.class';
+import ApplicationRequestEvent from '../events/ong-requested-application-access-event.class';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class NotificationsService {
@@ -68,6 +70,8 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
+
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_APP_DELETE,
         error,
@@ -115,6 +119,7 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_ONG_CREATE,
         error,
@@ -150,6 +155,7 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_ONG_APPROVE,
         error,
@@ -178,6 +184,7 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_ONG_REJECT,
         error,
@@ -210,6 +217,7 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.REQUEST_ONG_DISABLE,
         error,
@@ -246,10 +254,60 @@ export class NotificationsService {
         },
       });
     } catch (error) {
+      Sentry.captureException(error);
       this.logger.error({
         ...NOTIFICATIONS_ERRORS.RESTRICT_ONG,
         error,
       });
     }
   }
+
+  @OnEvent(EVENTS.REQUEST_APPLICATION_ACCESS)
+  async handleRequestApplicationAccess({applicationName, organizationId}: ApplicationRequestEvent) {
+    
+    try {
+      const superAdmins = await this.userService.findMany({
+        where: { role: Role.SUPER_ADMIN },
+      });
+
+      const organization = await this.organizationService.find(organizationId, {
+        relations: ['organizationGeneral']
+      });
+
+      const {
+        template,
+        context: {
+          subtitle,
+          cta: { link, label },
+        },
+      } = MAIL_OPTIONS.APPLICATION_REQUEST;
+
+      await this.mailService.sendEmail({
+        to: superAdmins.map((user) => user.email),
+        template,
+        subject: `${organization.organizationGeneral.name} solicita acces la aplicatia "${applicationName}!"`,
+        context: {
+          title: `${organization.organizationGeneral.name} solicita acces la aplicatia "${applicationName}!"`,
+          subtitle: subtitle(
+            organization.organizationGeneral.name,
+            applicationName,
+          ),
+          cta: {
+            link: link(),
+            label,
+          },
+        },
+      });
+
+    } catch (error) {
+      Sentry.captureException(error);
+      this.logger.error({
+        ...NOTIFICATIONS_ERRORS.REQUEST_APPLICATION_ACCESS,
+        error,
+      });
+    }
+
+  }
+
 }
+

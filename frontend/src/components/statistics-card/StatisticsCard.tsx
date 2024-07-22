@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useTranslation } from 'react-i18next';
 

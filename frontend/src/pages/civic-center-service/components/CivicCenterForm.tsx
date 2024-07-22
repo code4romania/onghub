@@ -25,6 +25,7 @@ import {
 import { getCities } from '../../../services/nomenclature/Nomenclatures.service';
 import { CivicCenterFormConfig } from '../config/CivicCenterFormConfig';
 import SubsectionHeader from './SubsectionHeader';
+import PhoneNumberInput from '../../../components/IntlTelInput/PhoneNumberInput';
 
 interface CivicCenterFormProps {
   control: Control<CivicCenterServicePayload, object>;
@@ -419,7 +420,7 @@ const CivicCenterForm = ({
                     control={control}
                     render={({ field: { onChange, value } }) => {
                       return (
-                        <InputField
+                        <PhoneNumberInput
                           config={{
                             ...CivicCenterFormConfig.emailOrPhone.phone.config,
                             name: CivicCenterFormConfig.emailOrPhone.phone.key,

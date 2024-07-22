@@ -1,4 +1,4 @@
-import formatISO9075 from 'date-fns/formatISO9075';
+import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
@@ -88,6 +88,12 @@ export const getOrganizations = async (
   }
 
   return API.get(requestUrl).then((res) => res.data);
+};
+
+export const downloadOrganizations = async (): Promise<any> => {
+  return API.get(`/organization/download`, { responseType: 'arraybuffer' }).then((res) => {
+    return { data: res.data, headers: res.headers };
+  });
 };
 
 export const retryAnafReports = (id: number, cui: string): Promise<IOrganizationFinancial[]> => {

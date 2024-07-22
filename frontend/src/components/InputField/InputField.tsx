@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { classNames } from '../../common/helpers/tailwind.helper';
-import { ExclamationCircleIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { InputFieldConfig } from './InputFieldConfig.interface';
 
 const InputField = (props: {
@@ -51,7 +51,7 @@ const InputField = (props: {
                 props.config.error
                   ? 'border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 pr-10'
                   : 'focus:ring-indigo-500 focus:border-indigo-500',
-                props.config.addOn ? 'pl-14' : 'pl-4',
+                props.config.addOn ? 'pl-16' : 'pl-4',
                 props.config.type === 'checkbox'
                   ? ''
                   : 'block w-full border-gray-300 shadow-sm sm:text-base text-sm rounded-md disabled:bg-gray-100 min-w-[6.5rem]',
@@ -74,7 +74,7 @@ const InputField = (props: {
                 {showPassword ? (
                   <EyeIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
                 ) : (
-                  <EyeOffIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
+                  <EyeSlashIcon className="h-5 w-5 text-gray-700" aria-hidden="true" />
                 )}
               </div>
             )}

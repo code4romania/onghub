@@ -1,4 +1,4 @@
-import { EyeIcon, PencilIcon } from '@heroicons/react/outline';
+import { EyeIcon, PencilIcon } from '@heroicons/react/24/outline';
 import React, { useContext, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -82,19 +82,21 @@ const OrganizationFinancial = () => {
 
   const onUpdateAnaf = () => {
     if (organization && organizationGeneral?.cui) {
-      retryAnaf({ organizationId: organization?.id, cui: organizationGeneral?.cui }, {
-        onSuccess: (data) => {
-          if (data[0].synched_anaf === false) {
+      retryAnaf(
+        { organizationId: organization?.id, cui: organizationGeneral?.cui },
+        {
+          onSuccess: (data) => {
+            if (data[0].synched_anaf === false) {
+              useErrorToast(t('no_financial_info'));
+            }
+          },
+          onError: () => {
             useErrorToast(t('retry_anaf_error'));
-          }
+          },
         },
-        onError: () => {
-          useErrorToast(t('retry_anaf_error'));
-        }
-      });
+      );
     }
-  }
-
+  };
 
   const onView = (row: IOrganizationFinancial) => {
     setSelectedReport(row);
@@ -135,21 +137,26 @@ const OrganizationFinancial = () => {
             {t('data_update', { ns: 'financial' })}
           </p>
         </div>
-        {organization?.status === OrganizationStatus.PENDING && organizationFinancial[0].synched_anaf === false && role == UserRole.SUPER_ADMIN && (
-          <div className='flex my-2 gap-4 items-center flex-column'>
-            <p className='flex'>
-              <span className='text-yellow-900 sm:text-sm lg:text-base text-xs font-normal'>{t('retry_anaf_warning')}&nbsp;</span>
-            </p>
-            <button
-              aria-label={t('retry_anaf_button')}
-              className="edit-button flex gap-4 justify-center disabled:bg-gray-50"
-              onClick={onUpdateAnaf}
-              disabled={false}
-            >
-              {t('retry_anaf_button')}
-            </button>
-            {isLoadinAnaf && <LoadingContent />}
-          </div>)}
+        {organization?.status === OrganizationStatus.PENDING &&
+          organizationFinancial[0].synched_anaf === false &&
+          role == UserRole.SUPER_ADMIN && (
+            <div className="flex my-2 gap-4 items-center flex-column">
+              <p className="flex">
+                <span className="text-yellow-900 sm:text-sm lg:text-base text-xs font-normal">
+                  {t('retry_anaf_warning')}&nbsp;
+                </span>
+              </p>
+              <button
+                aria-label={t('retry_anaf_button')}
+                className="edit-button flex gap-4 justify-center disabled:bg-gray-50"
+                onClick={onUpdateAnaf}
+                disabled={false}
+              >
+                {t('retry_anaf_button')}
+              </button>
+              {isLoadinAnaf && <LoadingContent />}
+            </div>
+          )}
         <DataTableComponent
           columns={[...OrganizationFinancialTableHeaders, buildActionColumn()]}
           data={organizationFinancial}

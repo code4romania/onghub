@@ -1,4 +1,4 @@
-import { EyeIcon, TrashIcon } from '@heroicons/react/outline';
+import { EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';

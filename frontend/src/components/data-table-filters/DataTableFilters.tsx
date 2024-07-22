@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { AdjustmentsIcon, SearchIcon } from '@heroicons/react/outline';
+import { AdjustmentsVerticalIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import debouce from 'lodash.debounce';
 import { useTranslation } from 'react-i18next';
 
@@ -52,7 +52,7 @@ const DataTableFilters = ({
       <div className="py-4 lg:px-10 px-4 flex gap-x-6 gap-y-4 flex-wrap">
         <div className="mt-1 relative rounded-md sm:w-auto w-full">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <SearchIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
           </div>
           <input
             type="text"
@@ -69,7 +69,7 @@ const DataTableFilters = ({
             className="edit-button sm:text-sm lg:text-base text-xs"
             onClick={setFiltersCollapsed.bind(null, !filtersCollapsed)}
           >
-            <AdjustmentsIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
+            <AdjustmentsVerticalIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
             {filtersCollapsed ? t('filters.hide') : t('filters.show')}
           </button>
           {filtersCollapsed && (
@@ -79,7 +79,7 @@ const DataTableFilters = ({
               className="edit-button bg-gray-50 sm:text-sm lg:text-base text-xs"
               onClick={resetFilters}
             >
-              <AdjustmentsIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
+              <AdjustmentsVerticalIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
               {t('filters.reset')}
             </button>
           )}

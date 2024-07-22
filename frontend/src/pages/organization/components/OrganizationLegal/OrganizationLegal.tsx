@@ -1,5 +1,5 @@
-import { PaperClipIcon, XIcon } from '@heroicons/react/outline';
-import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/solid';
+import { PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useForm } from 'react-hook-form';
@@ -47,7 +47,8 @@ const OrganizationLegal = () => {
   const [selectedOther, setSelectedOther] = useState<Partial<Person> | null>(null);
   // queries
   const { organizationLegal, organization } = useSelectedOrganization();
-  const { updateOrganization } = useOutletContext<OrganizationContext>();
+  const { updateOrganization, isLoading: isLoadingUpdateOrganization } =
+    useOutletContext<OrganizationContext>();
   const { mutate: deleteOrganizationStatute, isLoading: isRemovingOrganizationStatute } =
     useDeleteOrganizationStatuteMutation();
 
@@ -209,7 +210,7 @@ const OrganizationLegal = () => {
       return;
     }
 
-    if (!organizationStatute) {
+    if (!(organizationStatute || organizationLegal?.organizationStatute)) {
       return;
     }
 
@@ -299,8 +300,17 @@ const OrganizationLegal = () => {
                   }
             }
           >
-            <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
-            {isEditMode ? t('save', { ns: 'common' }) : t('edit', { ns: 'common' })}
+            {isLoadingUpdateOrganization ? (
+              <Spinner className="h-4 w-4 mr-2 text-green-700 fill-white" />
+            ) : (
+              <PencilIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />
+            )}
+
+            {isLoadingUpdateOrganization
+              ? t('loading', { ns: 'common' })
+              : isEditMode
+                ? t('save', { ns: 'common' })
+                : t('edit', { ns: 'common' })}
           </button>
         )}
       </div>
@@ -414,7 +424,7 @@ const OrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('file_name')}
                   {isEditMode && !isRemovingOrganizationStatute && (
-                    <XIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
+                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteStatute} />
                   )}
                   {isRemovingOrganizationStatute && <Spinner className="w-4 h-4 ml-2" />}
                 </a>

@@ -1,5 +1,5 @@
-import { BanIcon, RefreshIcon } from '@heroicons/react/outline';
-import { TrashIcon } from '@heroicons/react/solid';
+import { NoSymbolIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -52,7 +52,7 @@ const OrganizationApplicationsTable = ({
     const restrictedApplicationMenu = [
       {
         name: t('options.restore_access'),
-        icon: RefreshIcon,
+        icon: ArrowPathIcon,
         onClick: onActivateApplication,
         type: PopoverMenuRowType.INFO,
       },
@@ -67,7 +67,7 @@ const OrganizationApplicationsTable = ({
     const activeApplicationMenu = [
       {
         name: t('options.restrict_access'),
-        icon: BanIcon,
+        icon: NoSymbolIcon,
         onClick: onRestrictApplication,
         type: PopoverMenuRowType.REMOVE,
       },
@@ -91,8 +91,8 @@ const OrganizationApplicationsTable = ({
             row.ongStatus === OngApplicationStatus.ACTIVE
               ? activeApplicationMenu
               : row.ongStatus === OngApplicationStatus.PENDING_REMOVAL
-              ? pendingRemovalApplicationMenu
-              : restrictedApplicationMenu
+                ? pendingRemovalApplicationMenu
+                : restrictedApplicationMenu
           }
         />
       ),
@@ -150,8 +150,8 @@ const OrganizationApplicationsTable = ({
           data={
             applications
               ? applications.filter(
-                  (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
-                )
+                (application) => application.type !== ApplicationTypeEnum.INDEPENDENT,
+              )
               : []
           }
           loading={
