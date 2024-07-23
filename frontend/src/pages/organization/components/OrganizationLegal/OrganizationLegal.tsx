@@ -485,7 +485,11 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
-              <h3>{t('document')}</h3>
+              {!organizationLegal?.organizationStatute &&
+                organizationStatute === null && (
+                  <h3>{t('no_document')}</h3>
+                )
+              }
               {isEditMode &&
                 !organizationLegal?.organizationStatute &&
                 organizationStatute === null && (
@@ -538,7 +542,10 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('non_political_affiliation')} subTitle={t('non_political_affiliation_information')} />
             <div className="flex flex-col gap-y-4">
-              <h3>{t('non_political_affiliation_document')}</h3>
+              {!organizationLegal?.nonPoliticalAffiliationFile &&
+                nonPoliticalAffiliationFile === null && (
+                  <h3>{t('non_political_affiliation_no_document')}</h3>
+                )}
               {isEditMode &&
                 !organizationLegal?.nonPoliticalAffiliationFile &&
                 nonPoliticalAffiliationFile === null && (
@@ -581,7 +588,10 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('balance_sheet')} subTitle={t('balance_sheet_information')} />
             <div className="flex flex-col gap-y-4">
-              <h3>{t('balance_sheet_document')}</h3>
+              {!organizationLegal?.balanceSheetFile &&
+                balanceSheetFile === null && (
+                  <h3>{t('balance_sheet_no_document')}</h3>
+                )}
               {isEditMode &&
                 !organizationLegal?.balanceSheetFile &&
                 balanceSheetFile === null && (
