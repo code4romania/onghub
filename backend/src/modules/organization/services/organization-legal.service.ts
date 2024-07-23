@@ -124,7 +124,7 @@ export class OrganizationLegalService {
       }
     }
 
-    // Non Political Affiliation File
+    // Balance Sheet File
     if (balanceSheetFile) {
       if (orgLegal.balanceSheetFile) {
         await this.fileManagerService.deleteFiles([orgLegal.balanceSheetFile]);
