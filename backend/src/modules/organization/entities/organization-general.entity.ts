@@ -30,6 +30,25 @@ export class OrganizationGeneral extends BaseEntity {
   @Column({ type: 'text', name: 'cui', unique: true })
   cui: string;
 
+  @Column({ type: 'text', name: 'association_registry_number', nullable: true })
+  associationRegistryNumber: string;
+
+  @Column({ type: 'text', name: 'association_registry_part', nullable: true })
+  associationRegistryPart: string;
+
+  @Column({
+    type: 'text',
+    name: 'association_registry_section',
+    nullable: true,
+  })
+  associationRegistrySection: string;
+
+  @Column({ type: 'text', name: 'association_registry_issuer', nullable: true })
+  associationRegistryIssuer: string;
+
+  @Column({ type: 'text', name: 'national_registry_number', nullable: true })
+  nationalRegistryNumber: string;
+
   @Column({ type: 'text', name: 'raf_number', unique: true })
   rafNumber: string;
 

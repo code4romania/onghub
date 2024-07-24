@@ -312,6 +312,12 @@
         "label": "Număr de înregistrare în RAF*",
         "placeholder": "56/14.09.2020"
       },
+      "association_registry_number": {
+        "required": "Numărul de înregistrare în Registrul Special este obligatoriu",
+        "max": "Numărul de înregistrare în Registrul Special poate avea maxim 30 de caractere",
+        "helper": "Numărul care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial.",
+        "label": "Număr si data de înscriere în Registrul Special"
+      },
       "city": {
         "required": "Localitatea este obligatorie",
         "label": "Localitate*"

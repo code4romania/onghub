@@ -290,23 +290,22 @@ const OrganizationGeneral = () => {
                 }}
               />
               <Controller
-                key={OrganizationGeneralConfig.rafNumber.key}
-                name={OrganizationGeneralConfig.rafNumber.key}
-                rules={OrganizationGeneralConfig.rafNumber.rules}
+                key={OrganizationGeneralConfig.associationRegistryNumber.key}
+                name={OrganizationGeneralConfig.associationRegistryNumber.key}
+                rules={OrganizationGeneralConfig.associationRegistryNumber.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <InputField
                       config={{
-                        ...OrganizationGeneralConfig.rafNumber.config,
-                        name: OrganizationGeneralConfig.rafNumber.key,
-                        error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
+                        ...OrganizationGeneralConfig.associationRegistryNumber.config,
+                        name: OrganizationGeneralConfig.associationRegistryNumber.key,
+                        error: errors[OrganizationGeneralConfig.associationRegistryNumber.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
-                        id: 'organization-general__raf-no',
+                        id: 'organization-general__associationRegistryNumber',
                       }}
                       readonly={readonly}
-                      disabled={disabled}
                     />
                   );
                 }}
@@ -571,7 +570,6 @@ const OrganizationGeneral = () => {
                   name={OrganizationGeneralConfig.hasSameAddress.key}
                   control={control}
                   render={({ field: { onChange, value } }) => {
-                    console.log(value);
                     return (
                       <InputField
                         config={{

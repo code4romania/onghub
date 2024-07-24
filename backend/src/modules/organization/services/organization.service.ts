@@ -407,7 +407,15 @@ export class OrganizationService {
       'organizationGeneral.phone': 'Organization Phone',
       'organizationGeneral.yearCreated': 'Year Created',
       'organizationGeneral.cui': 'CUI',
-      'organizationGeneral.rafNumber': 'RAF Number',
+      'organizationGeneral.associationRegistryNumber':
+        'Association Registry Number',
+      'organizationGeneral.associationRegistryPart':
+        'Association Registry Part',
+      'organizationGeneral.associationRegistrySection':
+        'Association Registry Section',
+      'organizationGeneral.associationRegistryIssuer':
+        'Association Registry Issuer',
+      'organizationGeneral.nationalRegistryNumber': 'National Registry Number',
       'organizationGeneral.shortDescription': 'Short Description',
       'organizationGeneral.description': 'Description',
       'organizationGeneral.address': 'Address',
@@ -1381,7 +1389,8 @@ export class OrganizationService {
 
   public async validateOrganizationGeneral(
     cui: string,
-    rafNumber: string,
+    associationRegistryNumber: string,
+    nationalRegistryNumber: string,
     name: string,
     email: string,
     phone: string,
@@ -1410,15 +1419,28 @@ export class OrganizationService {
       );
     }
 
-    const organizationWithRafNumber =
+    const organizationWithAssociationRegistryNumber =
       await this.organizationGeneralService.findOne({
-        where: { rafNumber },
+        where: { associationRegistryNumber },
       });
 
-    if (organizationWithRafNumber) {
+    if (organizationWithAssociationRegistryNumber) {
       errors.push(
         new BadRequestException(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ASSOCIATION_REGISTRY_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithNationalRegistryNumber =
+      await this.organizationGeneralService.findOne({
+        where: { nationalRegistryNumber },
+      });
+
+    if (organizationWithNationalRegistryNumber) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.NATIONAL_REGISTRY_NUMBER_EXISTS,
         ),
       );
     }

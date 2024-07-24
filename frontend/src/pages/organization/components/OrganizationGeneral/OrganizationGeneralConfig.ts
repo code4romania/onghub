@@ -71,6 +71,11 @@ const translations = {
     label: i18n.t('general:config.raf.label'),
     placeholder: i18n.t('general:config.raf.placeholder'),
   },
+  associationRegistryNumber: {
+    max: i18n.t('general:config.association_registry_number.max'),
+    label: i18n.t('general:config.association_registry_number.label'),
+    helper: i18n.t('general:config.association_registry_number.helper'),
+  },
   city: {
     required: i18n.t('general:config.city.required'),
     label: i18n.t('general:config.city.label'),
@@ -338,6 +343,21 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       label: translations.cui.label,
       helperText: '',
       placeholder: '',
+    },
+  },
+  associationRegistryNumber: {
+    key: 'associationRegistryNumber',
+    rules: {
+      maxLength: {
+        value: 30,
+        message: translations.associationRegistryNumber.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.associationRegistryNumber.label,
+      helperText: translations.associationRegistryNumber.helper,
+      placeholder: 'nr/zz.ll.aaaa',
     },
   },
   rafNumber: {

@@ -175,9 +175,17 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       message: 'An organization with this cui already exists',
       errorCode: 'REQ_007',
     },
-    RAF_NUMBER_EXISTS: {
-      message: 'An organization with this rafNumber already exists',
-      errorCode: 'REQ_008',
+
+    ASSOCIATION_REGISTRY_NUMBER_EXISTS: {
+      message:
+        'An organization with this asscotiation registry number already exists',
+      errorCode: 'REQ_013',
+    },
+
+    NATIONAL_REGISTRY_NUMBER_EXISTS: {
+      message:
+        'An organization with this national registry number already exists',
+      errorCode: 'REQ_014',
     },
     ORGANIZATION_NAME_EXISTS: {
       message: 'An organization with this name already exists',
