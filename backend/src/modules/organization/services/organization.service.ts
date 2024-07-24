@@ -623,8 +623,7 @@ export class OrganizationService {
         await this.fileManagerService.generatePresignedURL(
           organization.organizationLegal.balanceSheetFile,
         );
-      organization.organizationLegal.nonPoliticalAffiliationFile =
-        balanceSheetFile;
+      organization.organizationLegal.balanceSheetFile = balanceSheetFile;
     }
 
     return organization;

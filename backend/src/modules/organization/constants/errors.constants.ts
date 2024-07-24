@@ -43,6 +43,15 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while uploading the files',
     errorCode: 'ORG_010',
   },
+  UPLOAD_NON_POLITICAL_AFFILIATION: {
+    message: 'Error while uploading the non political affiliation file',
+    errorCode: 'ORG_030',
+  },
+
+  UPLOAD_BALANCE_SHEET: {
+    message: 'Error while uploading the balance sheet file',
+    errorCode: 'ORG_031',
+  },
   GET_REPORT: {
     message: 'Report not found',
     errorCode: 'ORG_011',

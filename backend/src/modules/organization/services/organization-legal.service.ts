@@ -14,6 +14,7 @@ import { UpdateOrganizationLegalDto } from '../dto/update-organization-legal.dto
 import { OrganizationLegalRepository } from '../repositories';
 import { ContactService } from './contact.service';
 import { ORGANIZATION_FILES_DIR } from '../constants/files.constants';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OrganizationLegalService {
@@ -78,6 +79,7 @@ export class OrganizationLegalService {
           error: { error },
           ...ORGANIZATION_ERRORS.UPLOAD,
         });
+        Sentry.captureException(error);
         if (error instanceof HttpException) {
           throw error;
         } else {
@@ -111,13 +113,14 @@ export class OrganizationLegalService {
       } catch (error) {
         this.logger.error({
           error: { error },
-          ...ORGANIZATION_ERRORS.UPLOAD,
+          ...ORGANIZATION_ERRORS.UPLOAD_NON_POLITICAL_AFFILIATION,
         });
+        Sentry.captureException(error);
         if (error instanceof HttpException) {
           throw error;
         } else {
           throw new InternalServerErrorException({
-            ...ORGANIZATION_ERRORS.UPLOAD,
+            ...ORGANIZATION_ERRORS.UPLOAD_NON_POLITICAL_AFFILIATION,
             error,
           });
         }
@@ -144,13 +147,14 @@ export class OrganizationLegalService {
       } catch (error) {
         this.logger.error({
           error: { error },
-          ...ORGANIZATION_ERRORS.UPLOAD,
+          ...ORGANIZATION_ERRORS.UPLOAD_BALANCE_SHEET,
         });
+        Sentry.captureException(error);
         if (error instanceof HttpException) {
           throw error;
         } else {
           throw new InternalServerErrorException({
-            ...ORGANIZATION_ERRORS.UPLOAD,
+            ...ORGANIZATION_ERRORS.UPLOAD_BALANCE_SHEET,
             error,
           });
         }
@@ -231,6 +235,7 @@ export class OrganizationLegalService {
         ...ORGANIZATION_ERRORS.DELETE.STATUTE,
       });
 
+      Sentry.captureException(error);
       const err = error?.response;
       throw new InternalServerErrorException({
         ...ORGANIZATION_ERRORS.DELETE.STATUTE,
@@ -265,6 +270,7 @@ export class OrganizationLegalService {
         error,
         ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
       });
+      Sentry.captureException(error);
 
       const err = error?.response;
       throw new InternalServerErrorException({
@@ -300,6 +306,7 @@ export class OrganizationLegalService {
         ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
       });
 
+      Sentry.captureException(error);
       const err = error?.response;
       throw new InternalServerErrorException({
         ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
