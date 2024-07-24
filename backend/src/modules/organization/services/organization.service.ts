@@ -589,12 +589,33 @@ export class OrganizationService {
     }
 
     // Public: The URL can be replaced as above OR move all public in the "public" folder of each organization for better structure
+
+    // Statute
     if (organization.organizationLegal.organizationStatute) {
       const organizationStatute =
         await this.fileManagerService.generatePresignedURL(
           organization.organizationLegal.organizationStatute,
         );
       organization.organizationLegal.organizationStatute = organizationStatute;
+    }
+
+    // Non Political Affiliation File
+    if (organization.organizationLegal.nonPoliticalAffiliationFile) {
+      const nonPoliticalAffiliationFile =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.nonPoliticalAffiliationFile,
+        );
+      organization.organizationLegal.nonPoliticalAffiliationFile =
+        nonPoliticalAffiliationFile;
+    }
+
+    // Balance Sheet File
+    if (organization.organizationLegal.balanceSheetFile) {
+      const balanceSheetFile =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.balanceSheetFile,
+        );
+      organization.organizationLegal.balanceSheetFile = balanceSheetFile;
     }
 
     return organization;
@@ -961,6 +982,8 @@ export class OrganizationService {
     updateOrganizationDto: UpdateOrganizationDto,
     logo?: Express.Multer.File[],
     organizationStatute?: Express.Multer.File[],
+    nonPoliticalAffiliationFile?: Express.Multer.File[],
+    balanceSheetFile?: Express.Multer.File[],
   ): Promise<any> {
     const organization = await this.find(id);
 
@@ -986,11 +1009,19 @@ export class OrganizationService {
         FILE_TYPE.FILE,
       );
 
+      this.fileManagerService.validateFiles(
+        nonPoliticalAffiliationFile,
+        FILE_TYPE.FILE,
+      );
+
+      this.fileManagerService.validateFiles(balanceSheetFile, FILE_TYPE.FILE);
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
-        `${id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
         organizationStatute,
+        nonPoliticalAffiliationFile,
+        balanceSheetFile,
       );
     }
 
@@ -1149,6 +1180,64 @@ export class OrganizationService {
         const err = error?.response;
         throw new InternalServerErrorException({
           ...ORGANIZATION_ERRORS.DELETE.STATUTE,
+          error: err,
+        });
+      }
+    }
+  }
+
+  public async deleteNonPoliticalAffiliation(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteNonPoliticalAffiliation(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+          error: err,
+        });
+      }
+    }
+  }
+
+  public async deleteBalanceSheet(organizationId: number): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteBalanceSheetFile(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
           error: err,
         });
       }

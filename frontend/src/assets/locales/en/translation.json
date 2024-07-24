@@ -494,9 +494,22 @@
     "other_information": "This information will be public, be careful what you share.",
     "statute": "The status of the organisation",
     "statute_information": "This information will be public, be careful what you share.",
-    "document": "Document",
+    "no_document": "No document uploaded",
     "file_name": "Statute_Organisation",
     "statute_upload": "Upload file",
+
+    "non_political_affiliation": "Declaration of non-political affiliation",
+    "non_political_affiliation_information": "Upload the self-declaration by the legal representative of the organization stating that the president and members of the Board of Directors are not part of the leadership of a political party and/or do not hold any public office. This declaration will not be displayed publicly. The document is only used to validate the organization's eligibility to access certain solutions in NGO Hub (such as Vot ONG and RO Help). Accepted file formats: pdf, maximum 25 MB",
+    "non_political_affiliation_no_document": "No document uploaded",
+    "non_political_affiliation_file_name": "Declaration of non-political affiliation",
+    "non_political_affiliation_upload": "Upload file",
+
+    "balance_sheet": "Balance Sheet",
+    "balance_sheet_information": "Upload the latest balance sheet submitted to the Ministry of Finance. This will not be displayed publicly. The document is only used to validate the organization's eligibility to access certain solutions in NGO Hub (such as Vot ONG and RO Help). Accepted file formats: pdf, maximum 50 MB",
+    "balance_sheet_no_document": "No document uploaded",
+    "balance_sheet_file_name": "Balance Sheet",
+    "balance_sheet_upload": "Upload file",
+
     "modal": {
       "add": "Add",
       "edit_director": "Editing of the Board member",
@@ -517,6 +530,16 @@
     "delete_statute_modal": {
       "title": "Are you sure you want to delete the Organisation's Constitution?",
       "description": "TODO#1: Lorem ipsum."
+    },
+
+    "delete_non_politicial_affiliation_modal": {
+      "title": "Are you sure you want to delete the Declaration of non-political affiliation?",
+      "description": ""
+    },
+
+    "delete_balance_sheet_modal": {
+      "title": "Are you sure you want to delete the Balance Sheet?",
+      "description": ""
     },
     "header": {
       "name": "Full name",

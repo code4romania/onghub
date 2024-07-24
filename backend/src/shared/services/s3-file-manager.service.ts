@@ -95,17 +95,18 @@ export class S3FileManagerService {
     path: string,
     files: Express.Multer.File[],
     fileType: FILE_TYPE,
-    fileName?: string,
   ): Promise<string[]> {
     this.logger.log(`Preparing to upload ${files.length} files...`);
 
     this.validateFiles(files, fileType);
 
+    const extension = files[0].originalname.split('.').pop();
+
     // Create upload params
     const params: FileUploadParams[] = files.map((file) => ({
       Body: file.buffer,
       Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
-      Key: `${path}/${uuid()}`,
+      Key: `${path}/${uuid()}.${extension}`,
     }));
 
     // Prepare upload

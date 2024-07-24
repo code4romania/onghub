@@ -27,8 +27,16 @@ export const patchOrganizationByProfile = (
   update: any,
   logo?: File | null,
   organizationStatute?: File | null,
+  nonPoliticalAffiliationFile?: File | null,
+  balanceSheetFile?: File | null,
 ): Promise<any> => {
-  const payload = generateOrganizationFormDataPayload(update, logo, organizationStatute);
+  const payload = generateOrganizationFormDataPayload(
+    update,
+    logo,
+    organizationStatute,
+    nonPoliticalAffiliationFile,
+    balanceSheetFile,
+  );
   return API.patch(`/organization-profile`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
@@ -128,8 +136,16 @@ export const patchOrganization = (
   update: any,
   logo?: File | null,
   organizationStatute?: File | null,
+  nonPoliticalAffiliationFile?: File | null,
+  balanceSheetFile?: File | null,
 ): Promise<any> => {
-  const payload = generateOrganizationFormDataPayload(update, logo, organizationStatute);
+  const payload = generateOrganizationFormDataPayload(
+    update,
+    logo,
+    organizationStatute,
+    nonPoliticalAffiliationFile,
+    balanceSheetFile,
+  );
   return API.patch(`/organization/${id}`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((res) => res.data);
@@ -167,10 +183,22 @@ export const deleteOrganizationStatute = (organizationId: number) => {
   return API.delete(`organization/${organizationId}/statute`).then((res) => res.data);
 };
 
+export const deleteNonPolicalAffiliationFile = (organizationId: number) => {
+  return API.delete(`organization/${organizationId}/non-political-affiliation`).then(
+    (res) => res.data,
+  );
+};
+
+export const deleteBalanceSheetFile = (organizationId: number) => {
+  return API.delete(`organization/${organizationId}/balance-sheet`).then((res) => res.data);
+};
+
 const generateOrganizationFormDataPayload = (
   update: any,
   logo?: File | null,
   organizationStatute?: File | null,
+  nonPoliticalAffiliationFile?: File | null,
+  balanceSheetFile?: File | null,
 ) => {
   let payload = new FormData();
 
@@ -201,6 +229,14 @@ const generateOrganizationFormDataPayload = (
 
   if (organizationStatute) {
     payload.append('organizationStatute', organizationStatute);
+  }
+
+  if (nonPoliticalAffiliationFile) {
+    payload.append('nonPoliticalAffiliationFile', nonPoliticalAffiliationFile);
+  }
+
+  if (balanceSheetFile) {
+    payload.append('balanceSheetFile', balanceSheetFile);
   }
 
   return payload;
