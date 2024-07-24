@@ -843,13 +843,16 @@
       "email": "E-mail",
       "phone": "Phone",
       "status": "General access",
-      "created": "Date added"
+      "created": "Date added",
+      "organizationAlias": "Organization"
     },
     "invites_header": {
       "name": "Name",
       "email": "E-mail",
       "phone": "Phone",
-      "added_on": "Date added"
+      "added_on": "Date added",
+      "role": "Role",
+      "organizationAlias": "Organization"
     },
     "status": {
       "active": "Activ",

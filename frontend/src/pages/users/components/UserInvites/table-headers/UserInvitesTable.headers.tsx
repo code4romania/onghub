@@ -10,6 +10,8 @@ const translations = {
   email: i18n.t('user:invites_header.email'),
   phone: i18n.t('user:invites_header.phone'),
   added_on: i18n.t('user:invites_header.added_on'),
+  organizationAlias: i18n.t('user:invites_header.organizationAlias'),
+  role: i18n.t('user:invites_header.role'),
 };
 
 export const UserInvitesTableHeaders: TableColumn<IInvite>[] = [
@@ -40,5 +42,26 @@ export const UserInvitesTableHeaders: TableColumn<IInvite>[] = [
     sortable: true,
     minWidth: '10rem',
     selector: (row: IInvite) => formatDate(row?.createdOn),
+  },
+];
+
+export const UserInvitesTableHeaderSuperAdmin: TableColumn<IInvite>[] = [
+  {
+    id: 'organization.organizationGeneral.alias',
+    name: <DataTableNameHeader text={translations.organizationAlias} />,
+    sortable: true,
+    grow: 1,
+    wrap: false,
+    minWidth: '15rem',
+    selector: (row: IInvite) => row.organization.organizationGeneral.alias,
+  },
+  {
+    id: 'role',
+    name: <DataTableNameHeader text={translations.role} />,
+    sortable: true,
+    grow: 1,
+    wrap: false,
+    minWidth: '10rem',
+    selector: (row: IInvite) => row.role,
   },
 ];

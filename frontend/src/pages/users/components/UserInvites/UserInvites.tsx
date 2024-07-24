@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { SortOrder, TableColumn } from 'react-data-table-component';
 import DataTableFilters from '../../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../../components/data-table/DataTableComponent';
@@ -10,13 +10,18 @@ import {
   useResendInviteMutation,
 } from '../../../../services/user/User.queries';
 import { useUser } from '../../../../store/selectors';
-import { UserInvitesTableHeaders } from './table-headers/UserInvitesTable.headers';
+import {
+  UserInvitesTableHeaderSuperAdmin,
+  UserInvitesTableHeaders,
+} from './table-headers/UserInvitesTable.headers';
 import { useTranslation } from 'react-i18next';
 import { ArrowUturnLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useErrorToast, useSuccessToast } from '../../../../common/hooks/useToast';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { IInvite } from '../../interfaces/Invite.interface';
 import { OrderDirection } from '../../../../common/enums/sort-direction.enum';
+import { useAuthContext } from '../../../../contexts/AuthContext';
+import { UserRole } from '../../enums/UserRole.enum';
 
 const UserInvites = () => {
   const [isConfirmRemoveModalOpen, setIsConfirmRemoveModalOpen] = useState<boolean>(false);
@@ -28,6 +33,7 @@ const UserInvites = () => {
   const [orderByColumn, setOrderByColumn] = useState<string>();
   const [orderDirection, setOrderDirection] = useState<OrderDirection>();
 
+  const { role } = useAuthContext();
   const { invites } = useUser();
 
   const { t } = useTranslation(['user', 'common']);
@@ -52,6 +58,14 @@ const UserInvites = () => {
   useEffect(() => {
     if (selectedInviteeForDeletion) setIsConfirmRemoveModalOpen(true);
   }, [selectedInviteeForDeletion]);
+
+  const ListTableHeader = useMemo(() => {
+    if (role === UserRole.SUPER_ADMIN) {
+      return [...UserInvitesTableHeaderSuperAdmin, ...UserInvitesTableHeaders];
+    }
+
+    return UserInvitesTableHeaders;
+  }, [role]);
 
   const buildUserActionColumn = (): TableColumn<IInvite> => {
     const pendingUserMenuItems = [
@@ -164,7 +178,7 @@ const UserInvites = () => {
           </button> */}
         </div>
         <DataTableComponent
-          columns={[...UserInvitesTableHeaders, buildUserActionColumn()]}
+          columns={[...ListTableHeader, buildUserActionColumn()]}
           data={invites}
           loading={isLoading}
           sortServer

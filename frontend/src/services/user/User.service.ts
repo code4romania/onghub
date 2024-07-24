@@ -1,10 +1,9 @@
-import { AxiosResponseHeaders } from 'axios';
 import { formatISO9075 } from 'date-fns';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
 import { IInvite } from '../../pages/users/interfaces/Invite.interface';
-import { IUser } from '../../pages/users/interfaces/User.interface';
+import { IUser, IUserWithApplications } from '../../pages/users/interfaces/User.interface';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
 import API from '../API';
 
@@ -64,7 +63,7 @@ export const getUsers = async (
   interval?: Date[],
   organizationId?: number,
   availableAppsIDs?: number[],
-): Promise<PaginatedEntity<IUser>> => {
+): Promise<PaginatedEntity<IUserWithApplications>> => {
   let requestUrl = `/user?limit=${limit}&page=${page}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
 
   if (search) requestUrl = `${requestUrl}&search=${search}`;

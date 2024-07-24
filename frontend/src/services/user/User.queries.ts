@@ -14,7 +14,7 @@ import {
 import { useMutation, useQuery } from 'react-query';
 import useStore from '../../store/store';
 import { IUserPayload } from '../../pages/users/interfaces/UserPayload.interface';
-import { IUser } from '../../pages/users/interfaces/User.interface';
+import { IUserWithApplications } from '../../pages/users/interfaces/User.interface';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { UserStatus } from '../../pages/users/enums/UserStatus.enum';
@@ -72,7 +72,7 @@ export const useUsersQuery = (
         availableAppsIDs?.map((app) => app.id),
       ),
     {
-      onSuccess: (data: PaginatedEntity<IUser>) => {
+      onSuccess: (data: PaginatedEntity<IUserWithApplications>) => {
         setUsers({
           items: data.items,
           meta: { ...data.meta, orderByColumn: orderBy, orderDirection },

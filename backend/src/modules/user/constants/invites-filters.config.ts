@@ -7,10 +7,21 @@ export const INVITE_FILTERS_CONFIG = {
     email: true,
     phone: true,
     createdOn: true,
+    role: true,
+    organization: {
+      id: true,
+      organizationGeneral: {
+        alias: true,
+      },
+    },
   },
   searchableColumns: ['name'],
   defaultSortBy: 'name',
   defaultOrderDirection: OrderDirection.ASC,
-  relations: {},
+  relations: {
+    organization: {
+      organizationGeneral: true,
+    },
+  },
   rangeColumn: 'createdOn',
 };

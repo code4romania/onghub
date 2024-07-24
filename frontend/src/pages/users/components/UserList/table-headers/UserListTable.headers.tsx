@@ -2,7 +2,7 @@ import React from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { formatDate } from '../../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../../components/status-badge/StatusBadge';
-import { IUser } from '../../../interfaces/User.interface';
+import { IUserWithApplications } from '../../../interfaces/User.interface';
 import { UserStatus } from '../../../enums/UserStatus.enum';
 import i18n from '../../../../../common/config/i18n';
 import DataTableNameHeader from '../../../../../components/data-table-name-header/DataTableNameHeader';
@@ -15,9 +15,10 @@ const translations = {
   created: i18n.t('user:list_header.created'),
   active: i18n.t('user:status.active'),
   restricted: i18n.t('user:status.restricted'),
+  organizationAlias: i18n.t('user:list_header.organizationAlias'),
 };
 
-export const UserListTableHeaders: TableColumn<IUser>[] = [
+export const UserListTableHeaders: TableColumn<IUserWithApplications>[] = [
   {
     id: 'name',
     name: <DataTableNameHeader text={translations.name} />,
@@ -25,7 +26,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     grow: 1,
     wrap: false,
     minWidth: '15rem',
-    selector: (row: IUser) => row.name,
+    selector: (row: IUserWithApplications) => row.name,
   },
   {
     id: 'email',
@@ -33,21 +34,21 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     sortable: true,
     grow: 1,
     minWidth: '20rem',
-    selector: (row: IUser) => row.email,
+    selector: (row: IUserWithApplications) => row.email,
   },
   {
     id: 'phone',
     name: <DataTableNameHeader text={translations.phone} />,
     sortable: true,
     minWidth: '9rem',
-    selector: (row: IUser) => row.phone,
+    selector: (row: IUserWithApplications) => row.phone,
   },
   {
     id: 'availableApps',
     name: <DataTableNameHeader text="Access Aplicatii" />,
     sortable: false,
     minWidth: '15rem',
-    cell: (row: IUser) => (
+    cell: (row: IUserWithApplications) => (
       <div>
         {`(${row.availableApps.length})`}{' '}
         {row?.availableApps?.map((app, i) => (
@@ -62,7 +63,6 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
         ))}
       </div>
     ),
-    selector: (row: IUser) => row.availableAppsList || '',
   },
   {
     id: 'status',
@@ -70,7 +70,7 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     sortField: 'status',
     name: <DataTableNameHeader text={translations.status} />,
     minWidth: '10rem',
-    cell: (row: IUser) => (
+    cell: (row: IUserWithApplications) => (
       <StatusBadge
         status={row.status === UserStatus.ACTIVE ? BadgeStatus.SUCCESS : BadgeStatus.ERROR}
         value={row.status === UserStatus.ACTIVE ? translations.active : translations.restricted}
@@ -82,6 +82,16 @@ export const UserListTableHeaders: TableColumn<IUser>[] = [
     minWidth: '10rem',
     name: <DataTableNameHeader text={translations.created} />,
     sortable: true,
-    selector: (row: IUser) => formatDate(row?.createdOn as string),
+    selector: (row: IUserWithApplications) => formatDate(row?.createdOn as string),
   },
 ];
+
+export const UserListTableHeaderOrganizationAlias: TableColumn<IUserWithApplications> = {
+  id: 'organizationAlias',
+  name: <DataTableNameHeader text={translations.organizationAlias} />,
+  sortable: true,
+  grow: 1,
+  wrap: false,
+  minWidth: '15rem',
+  selector: (row: IUserWithApplications) => row.organizationAlias,
+};

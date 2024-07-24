@@ -35,6 +35,7 @@ export const ADMIN_ROUTES = [
 export const SUPER_ADMIN_ROUTES = [
   { id: 0, name: translations.dashboard, href: '', icon: RectangleGroupIcon },
   { id: 1, name: translations.organizations, href: 'organizations', icon: CircleStackIcon },
-  { id: 2, name: translations.requests, href: 'requests', icon: UserPlusIcon },
-  { id: 3, name: translations.store, href: 'applications', icon: RectangleStackIcon },
+  { id: 2, name: translations.users, href: 'users/list', icon: UserGroupIcon },
+  { id: 3, name: translations.requests, href: 'requests', icon: UserPlusIcon },
+  { id: 4, name: translations.store, href: 'applications', icon: RectangleStackIcon },
 ];
