@@ -1,6 +1,9 @@
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
+import {
+  IOrganizationFull,
+  IOrganizationView,
+} from '../../pages/organization/interfaces/Organization.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const organizationsSlice = (set: any) => ({
@@ -16,7 +19,7 @@ export const organizationsSlice = (set: any) => ({
       orderDirection: OrderDirection.ASC,
     },
   },
-  setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => {
+  setOrganizations: (organizations: PaginatedEntity<IOrganizationView>) => {
     set({ organizations });
   },
 });

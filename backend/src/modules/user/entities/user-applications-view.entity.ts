@@ -17,29 +17,27 @@ import { Role } from '../enums/role.enum';
 
 @ViewEntity('UserApplicationsView', {
   expression: `
-        SELECT
-            u.id,
-            u.name,
-            u.email,
-            u.phone,
-            u.status,
-            u.role,
-            u.organization_id as "organizationId",
-            u.created_on as "createdOn",
-            u.updated_on as "updatedOn",
-            ARRAY_AGG(DISTINCT a.id) as "availableAppsIDs",
-            json_agg(json_build_object('id', a.id, 'name', a.name, 'type', a.type)) as "availableApps"
-        FROM
-            "user" u
-        LEFT JOIN user_ong_application uoa ON u.id = uoa.user_id AND uoa.status = 'active'
-        LEFT JOIN ong_application oa ON uoa.ong_application_id = oa.id AND oa.status = 'active'
-        LEFT JOIN application a ON (oa.application_id = a.id OR a.type = 'independent') AND a.status = 'active'
-        WHERE
-            "u"."role" = 'employee' AND
-            "u"."status" IN('active', 'restricted') AND
-            "u"."deleted_on" IS NULL
-        GROUP BY
-            u.id
+      SELECT u.id,
+          u.name,
+          u.email,
+          u.phone,
+          u.status,
+          u.role,
+          u.organization_id AS "organizationId",
+          u.created_on AS "createdOn",
+          u.updated_on AS "updatedOn",
+          og.alias as "organizationAlias",
+          array_agg(DISTINCT a.id) AS "availableAppsIDs",
+          json_agg(DISTINCT jsonb_build_object('id', a.id, 'name', a.name, 'type', a.type)) AS "availableApps"
+        FROM "user" u
+          LEFT JOIN user_ong_application uoa ON u.id = uoa.user_id AND uoa.status = 'active'::user_ong_application_status_enum
+          LEFT JOIN ong_application oa ON uoa.ong_application_id = oa.id AND oa.status = 'active'::ong_application_status_enum
+          LEFT JOIN application a ON (oa.application_id = a.id OR a.type = 'independent'::application_type_enum) AND a.status = 'active'::application_status_enum
+          LEFT JOIN organization o ON u.organization_id = o.id
+          LEFT JOIN organization_general og ON o.organization_general_id = og.id
+      WHERE u.role = 'employee'::user_role_enum AND (u.status = ANY (ARRAY['active'::user_status_enum, 'restricted'::user_status_enum])) AND u.deleted_on IS NULL
+      GROUP BY u.id, og.alias;
+
   `,
 })
 export class UserApplicationsView {
@@ -75,4 +73,7 @@ export class UserApplicationsView {
 
   @ViewColumn()
   organizationId: number;
+
+  @ViewColumn()
+  organizationAlias: string;
 }

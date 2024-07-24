@@ -325,14 +325,6 @@ export class OrganizationService {
       paginationOptions,
     );
 
-    for (let index in ongList.items) {
-      const data = await this.findWithRelations(ongList.items[index].id);
-      ongList.items[index] = {
-        ...ongList.items[index],
-        ...data,
-      };
-    }
-
     // Map the logo url
     const items =
       await this.fileManagerService.mapLogoToEntity<OrganizationView>(

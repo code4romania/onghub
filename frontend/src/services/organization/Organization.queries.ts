@@ -7,7 +7,10 @@ import { CompletionStatus } from '../../pages/organization/enums/CompletionStatu
 import { Contact } from '../../pages/organization/interfaces/Contact.interface';
 import { Expense } from '../../pages/organization/interfaces/Expense.interface';
 import { Income } from '../../pages/organization/interfaces/Income.interface';
-import { IOrganizationFull } from '../../pages/organization/interfaces/Organization.interface';
+import {
+  IOrganizationFull,
+  IOrganizationView,
+} from '../../pages/organization/interfaces/Organization.interface';
 import { IOrganizationActivity } from '../../pages/organization/interfaces/OrganizationActivity.interface';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
 import { IOrganizationGeneral } from '../../pages/organization/interfaces/OrganizationGeneral.interface';
@@ -78,7 +81,7 @@ export const useOrganizationsQuery = (
     () =>
       getOrganizations(limit, page, orderBy, orderDirection, search, status, interval, userCount),
     {
-      onSuccess: (data: PaginatedEntity<IOrganizationFull>) => {
+      onSuccess: (data: PaginatedEntity<IOrganizationView>) => {
         setOrganizations({
           items: data.items,
           meta: { ...data.meta, orderByColumn: orderBy, orderDirection },

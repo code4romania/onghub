@@ -1,6 +1,6 @@
 import { OrderDirection } from 'src/common/enums/order-direction.enum';
 
-export const USER_FILTERS_CONFIG = {
+export const USER_APPLICATIONS_FILTERS_CONFIG = {
   selectColumns: {
     id: true,
     name: true,
@@ -10,6 +10,8 @@ export const USER_FILTERS_CONFIG = {
     status: true,
     availableApps: true,
     availableAppsIDs: true,
+    organizationId: true,
+    organizationAlias: true,
   },
   searchableColumns: ['name', 'email'],
   defaultSortBy: 'name',

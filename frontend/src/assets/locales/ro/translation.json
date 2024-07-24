@@ -846,13 +846,16 @@
       "email": "E-mail",
       "phone": "Telefon",
       "status": "Acces general",
-      "created": "Data adăugării"
+      "created": "Data adăugării",
+      "organizationAlias": "Organizație"
     },
     "invites_header": {
       "name": "Nume",
       "email": "E-mail",
       "phone": "Telefon",
-      "added_on": "Data adăugării"
+      "added_on": "Data adăugării",
+      "role": "Rol",
+      "organizationAlias": "Organizație"
     },
     "status": {
       "active": "Activ",
