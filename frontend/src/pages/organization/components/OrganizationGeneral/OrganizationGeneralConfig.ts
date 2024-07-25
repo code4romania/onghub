@@ -72,10 +72,43 @@ const translations = {
     placeholder: i18n.t('general:config.raf.placeholder'),
   },
   associationRegistryNumber: {
+    required: i18n.t('general:config.association_registry_number.required'),
     max: i18n.t('general:config.association_registry_number.max'),
     label: i18n.t('general:config.association_registry_number.label'),
     helper: i18n.t('general:config.association_registry_number.helper'),
+    placeholder: i18n.t('general:config.association_registry_number.placeholder'),
   },
+  associationRegistryPart: {
+    max: i18n.t('general:config.association_registry_part.max'),
+    label: i18n.t('general:config.association_registry_part.label'),
+    required: i18n.t('general:config.association_registry_part.required'),
+    helper: i18n.t('general:config.association_registry_part.helper'),
+    placeholder: i18n.t('general:config.association_registry_part.placeholder'),
+  },
+
+  associationRegistrySection: {
+    max: i18n.t('general:config.association_registry_section.max'),
+    label: i18n.t('general:config.association_registry_section.label'),
+    required: i18n.t('general:config.association_registry_section.required'),
+    helper: i18n.t('general:config.association_registry_section.helper'),
+    placeholder: i18n.t('general:config.association_registry_section.placeholder'),
+  },
+
+  associationRegistryIssuer: {
+    max: i18n.t('general:config.association_registry_issuer.max'),
+    label: i18n.t('general:config.association_registry_issuer.label'),
+    required: i18n.t('general:config.association_registry_issuer.required'),
+    helper: i18n.t('general:config.association_registry_issuer.helper'),
+    placeholder: i18n.t('general:config.association_registry_issuer.placeholder'),
+  },
+  nationalRegistryNumber: {
+    max: i18n.t('general:config.national_registry_number.max'),
+    label: i18n.t('general:config.national_registry_number.label'),
+    required: i18n.t('general:config.national_registry_number.required'),
+    helper: i18n.t('general:config.national_registry_number.helper'),
+    placeholder: i18n.t('general:config.national_registry_number.placeholder'),
+  },
+
   city: {
     required: i18n.t('general:config.city.required'),
     label: i18n.t('general:config.city.label'),
@@ -348,6 +381,10 @@ export const OrganizationGeneralConfig: Record<string, any> = {
   associationRegistryNumber: {
     key: 'associationRegistryNumber',
     rules: {
+      required: {
+        value: true,
+        message: translations.associationRegistryNumber.required,
+      },
       maxLength: {
         value: 30,
         message: translations.associationRegistryNumber.max,
@@ -357,7 +394,83 @@ export const OrganizationGeneralConfig: Record<string, any> = {
       type: 'text',
       label: translations.associationRegistryNumber.label,
       helperText: translations.associationRegistryNumber.helper,
-      placeholder: 'nr/zz.ll.aaaa',
+      placeholder: translations.associationRegistryNumber.placeholder,
+    },
+  },
+  associationRegistryPart: {
+    key: 'associationRegistryPart',
+    rules: {
+      required: {
+        value: true,
+        message: translations.associationRegistryPart.required,
+      },
+      maxLength: {
+        value: 10,
+        message: translations.associationRegistryPart.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.associationRegistryPart.label,
+      helperText: translations.associationRegistryPart.helper,
+      placeholder: translations.associationRegistryPart.placeholder,
+    },
+  },
+  associationRegistrySection: {
+    key: 'associationRegistrySection',
+    rules: {
+      required: {
+        value: true,
+        message: translations.associationRegistrySection.required,
+      },
+      maxLength: {
+        value: 10,
+        message: translations.associationRegistrySection.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.associationRegistrySection.label,
+      helperText: translations.associationRegistrySection.helper,
+      placeholder: translations.associationRegistrySection.placeholder,
+    },
+  },
+  associationRegistryIssuer: {
+    key: 'associationRegistryIssuer',
+    rules: {
+      required: {
+        value: true,
+        message: translations.associationRegistryIssuer.required,
+      },
+      maxLength: {
+        value: 100,
+        message: translations.associationRegistryIssuer.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.associationRegistryIssuer.label,
+      helperText: translations.associationRegistryIssuer.helper,
+      placeholder: translations.associationRegistryIssuer.placeholder,
+    },
+  },
+  nationalRegistryNumber: {
+    key: 'nationalRegistryNumber',
+    rules: {
+      required: {
+        value: true,
+        message: translations.nationalRegistryNumber.required,
+      },
+      maxLength: {
+        value: 30,
+        message: translations.nationalRegistryNumber.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: translations.nationalRegistryNumber.label,
+      helperText: translations.nationalRegistryNumber.helper,
+      placeholder: translations.nationalRegistryNumber.placeholder,
     },
   },
   rafNumber: {

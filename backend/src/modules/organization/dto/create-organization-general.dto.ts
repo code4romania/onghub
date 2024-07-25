@@ -81,12 +81,12 @@ export class CreateOrganizationGeneralDto {
   associationRegistryNumber: string;
 
   @IsString()
-  @MaxLength(20)
+  @MaxLength(10)
   @Trim()
   associationRegistryPart: string;
 
   @IsString()
-  @MaxLength(20)
+  @MaxLength(10)
   @Trim()
   associationRegistrySection: string;
 
