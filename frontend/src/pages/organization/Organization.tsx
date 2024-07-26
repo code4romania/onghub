@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
-import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { useCountiesQuery, useIssuersQuery } from '../../services/nomenclature/Nomenclature.queries';
 import {
   useOrganizationMutation,
   useOrganizationQuery,
@@ -28,6 +28,7 @@ const Organization = () => {
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
+  useIssuersQuery();
 
   // load organization data
   const { error } = useOrganizationQuery(id as string);

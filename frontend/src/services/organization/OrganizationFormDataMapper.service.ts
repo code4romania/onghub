@@ -19,8 +19,15 @@ export const mapOrganizationGeneralToFormData = (
   general: ICreateOrganizationGeneral,
   organizationGeneralKey: string,
 ): FormData => {
-  const { city, county, contact, organizationCity, organizationCounty, ...organizationGeneral } =
-    general;
+  const {
+    city,
+    county,
+    contact,
+    organizationCity,
+    organizationCounty,
+    associationRegistryIssuer,
+    ...organizationGeneral
+  } = general;
 
   // map basic organization general fields
   let organizationGeneralPayload = mapEntityToFormData(
@@ -32,6 +39,11 @@ export const mapOrganizationGeneralToFormData = (
   // mapt county id and city id
   organizationGeneralPayload.append(`${organizationGeneralKey}[countyId]`, county?.id.toString());
   organizationGeneralPayload.append(`${organizationGeneralKey}[cityId]`, city?.id.toString());
+
+  organizationGeneralPayload.append(
+    `${organizationGeneralKey}[associationRegistryIssuerId]`,
+    associationRegistryIssuer?.id.toString(),
+  );
 
   // map optional address dada
   if (organizationCity) {

@@ -16,12 +16,14 @@ import {
   getPracticeDomains,
   getServiceDomains,
   getBeneficiaries,
+  getIssuers,
 } from './Nomenclatures.service';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
 import { Skill } from '../../common/interfaces/skill.interface';
 import { Faculty } from '../../common/interfaces/faculty.interface';
 import { alphabeticallySort } from '../../common/helpers/utils.helper';
+import { Issuer } from '../../common/interfaces/issuer.interface';
 
 export const useCitiesQuery = (countyId: number) => {
   const { setCities } = useStore();
@@ -38,6 +40,15 @@ export const useCountiesQuery = () => {
   return useQuery('counties', () => getCounties(), {
     onSuccess: (data: County[]) => {
       setCounties(data);
+    },
+  });
+};
+
+export const useIssuersQuery = () => {
+  const { setIssuers } = useStore();
+  return useQuery('issuers', () => getIssuers(), {
+    onSuccess: (data: Issuer[]) => {
+      setIssuers(data);
     },
   });
 };

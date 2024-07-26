@@ -560,6 +560,7 @@ export class OrganizationService {
         'organizationGeneral.county',
         'organizationGeneral.organizationCity',
         'organizationGeneral.organizationCounty',
+        'organizationGeneral.associationRegistryIssuer',
         'organizationActivity',
         'organizationActivity.federations',
         'organizationActivity.coalitions',

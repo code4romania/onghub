@@ -7,7 +7,7 @@ import { InternalErrors } from '../../common/errors/internal-errors';
 import { mapSelectToValue } from '../../common/helpers/format.helper';
 import Header from '../../components/Header/Header';
 import { Loading } from '../../components/loading/Loading';
-import { useCountiesQuery } from '../../services/nomenclature/Nomenclature.queries';
+import { useCountiesQuery, useIssuersQuery } from '../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestMutation } from '../../services/request/Request.queries';
 import ProgressSteps from './components/ProgressSteps';
 import {
@@ -42,6 +42,7 @@ const CreateOrganization = () => {
   const { t } = useTranslation(['organization', 'common']);
 
   useCountiesQuery();
+  useIssuersQuery();
 
   useEffect(() => {
     const { activeStepIndex } = JSON.parse(

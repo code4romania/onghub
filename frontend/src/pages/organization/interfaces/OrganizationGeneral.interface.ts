@@ -13,7 +13,11 @@ export interface IOrganizationGeneral extends BaseEntity {
   phone: string;
   yearCreated: number;
   cui: string;
-  rafNumber: string;
+  associationRegistryNumber: string;
+  associationRegistryPart: string;
+  associationRegistrySection: string;
+  associationRegistryIssuerId: number;
+  nationalRegistryNumber: string;
   shortDescription: string;
   description: string;
   logo?: string;

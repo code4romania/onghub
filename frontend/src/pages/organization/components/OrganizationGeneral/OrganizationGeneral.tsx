@@ -21,7 +21,7 @@ import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Select from '../../../../components/Select/Select';
 import Textarea from '../../../../components/Textarea/Textarea';
 import { useAuthContext } from '../../../../contexts/AuthContext';
-import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
+import { useCitiesQuery, useIssuersQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
@@ -34,7 +34,7 @@ const OrganizationGeneral = () => {
   const [county, setCounty] = useState<any>();
   const [organizationCounty, setOrganizationCounty] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
-  const { counties } = useNomenclature();
+  const { counties, issuers } = useNomenclature();
   const { disabled, updateOrganization } = useOutletContext<OrganizationContext>();
   const { role } = useAuthContext();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -145,6 +145,7 @@ const OrganizationGeneral = () => {
       countyId,
       organizationCountyId,
       organizationCityId,
+      associationRegistryIssuerId,
       ...organizationGeneralData
     } = data;
 
@@ -362,15 +363,16 @@ const OrganizationGeneral = () => {
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
-                    <InputField
+                    <Select
                       config={{
                         ...OrganizationGeneralConfig.associationRegistryIssuer.config,
-                        name: OrganizationGeneralConfig.associationRegistryIssuer.key,
-                        error: errors[OrganizationGeneralConfig.associationRegistryIssuer.key]?.message,
-                        defaultValue: value,
-                        onChange: onChange,
+                        collection: issuers,
+                        displayedAttribute: 'name',
                         id: 'organization-general__associationRegistryIssuer',
                       }}
+                      error={errors[OrganizationGeneralConfig.associationRegistryIssuer.key]?.message}
+                      selected={value}
+                      onChange={onChange}
                       readonly={readonly}
                     />
                   );

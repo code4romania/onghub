@@ -6,6 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { ContactPerson } from '../interfaces/contact-person.interface';
 import { OrganizationType } from '../enums/organization-type.enum';
 import { Organization } from './organization.entity';
+import { Issuer } from 'src/shared/entities';
 
 @Entity()
 export class OrganizationGeneral extends BaseEntity {
@@ -43,13 +44,21 @@ export class OrganizationGeneral extends BaseEntity {
   })
   associationRegistrySection: string;
 
-  @Column({ type: 'text', name: 'association_registry_issuer', nullable: true })
-  associationRegistryIssuer: string;
+  @Column({
+    type: 'integer',
+    name: 'association_registry_issuer_id',
+    nullable: true,
+  })
+  associationRegistryIssuerId: number;
+
+  @ManyToOne((type) => Issuer)
+  @JoinColumn({ name: 'association_registry_issuer_id' })
+  associationRegistryIssuer: Issuer;
 
   @Column({ type: 'text', name: 'national_registry_number', nullable: true })
   nationalRegistryNumber: string;
 
-  @Column({ type: 'text', name: 'raf_number', unique: true })
+  @Column({ type: 'text', name: 'raf_number', unique: true, nullable: true })
   rafNumber: string;
 
   @Column({ type: 'text', name: 'short_description', nullable: true })

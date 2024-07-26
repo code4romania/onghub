@@ -9,7 +9,7 @@ import { IPageTab } from '../../../common/interfaces/tabs.interface';
 import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
 import ContentWrapper from '../../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../../components/loading/Loading';
-import { useCountiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useCountiesQuery, useIssuersQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import {
   useApproveOrganizationRequestMutation,
   useRejectOrganizationRequestMutation,
@@ -38,6 +38,7 @@ const Request = () => {
 
   // TODO: Load nomenclature data on app init
   useCountiesQuery();
+  useIssuersQuery();
 
   // load organization data
   const { data: request, error, isLoading: dataLoading } = useOrganizationRequest(id || '');

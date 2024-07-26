@@ -90,10 +90,9 @@ export class CreateOrganizationGeneralDto {
   @Trim()
   associationRegistrySection: string;
 
-  @IsString()
-  @MaxLength(100)
-  @Trim()
-  associationRegistryIssuer: string;
+  @IsNumber()
+  @ToNumber()
+  associationRegistryIssuerId: number;
 
   @IsString()
   @MaxLength(30)
