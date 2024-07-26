@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { ISSUERS } from './seed/issuers.seed';
 import { Issuer } from 'src/shared/entities';
-export class AddIssuer1721896584559 implements MigrationInterface {
-  name = 'AddIssuer1721896584559';
+export class AddIssuer1721829705666 implements MigrationInterface {
+  name = 'AddIssuer1721829705666';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
