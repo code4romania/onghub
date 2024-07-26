@@ -45,6 +45,7 @@ import { OrganizationHistory } from './entities/organization-history.entity';
 import { OrganizationRequestHistory } from './entities/organization-request-history.entity';
 import { PracticeProgramModule } from '../practice-program/practice-program.module';
 import { CivicCenterModule } from '../civic-center-service/civic-center.module';
+import { OrganizationCronsService } from './services/crons.service';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { CivicCenterModule } from '../civic-center-service/civic-center.module';
     OrganizationViewRepository,
     OrganizationRequestRepository,
     OrganizationRequestService,
+    OrganizationCronsService,
   ],
   exports: [OrganizationService, OrganizationRequestService],
 })

@@ -22,7 +22,7 @@ export class EmailConfigService {
       defaults: {
         from: '"No Reply" <no-reply@localhost>',
       },
-      preview: true,
+      preview: false,
       template: {
         dir: __dirname + '/../../mail/templates',
         adapter: new HandlebarsAdapter({ asset_url: this.createAssetUrl }),

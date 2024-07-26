@@ -4,7 +4,7 @@ import { OrganizationFinancialRepository } from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import { CompletionStatus } from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
-import { OrganizationFinancial } from '../entities';
+import { Organization, OrganizationFinancial } from '../entities';
 import {
   AnafService,
   FinancialInformation,
@@ -12,6 +12,8 @@ import {
 import { OnEvent } from '@nestjs/event-emitter';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { ORGANIZATION_EVENTS } from '../constants/events.constants';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -20,7 +22,9 @@ export class OrganizationFinancialService {
   constructor(
     private readonly organizationFinancialRepository: OrganizationFinancialRepository,
     private readonly anafService: AnafService,
-  ) {}
+  ) {
+    // this.handleRegenerateFinancial({ organizationId: 170, cui: '29244879' });
+  }
 
   @OnEvent(ORGANIZATION_EVENTS.CUI_CHANGED)
   async handleCuiChanged({ organizationId, newCUI }: CUIChangedEvent) {
@@ -146,5 +150,49 @@ export class OrganizationFinancialService {
       totalExpense: expense?.val_indicator,
       totalIncome: income?.val_indicator,
     };
+  }
+
+  public async generateNewReports({
+    organization,
+    year,
+  }: {
+    organization: Organization;
+    year: number;
+  }): Promise<void> {
+    if (
+      organization.organizationFinancial.find(
+        (financial) => financial.year === year,
+      )
+    ) {
+      // Avoid duplicating data
+      return;
+    }
+
+    const financialFromAnaf = await this.getFinancialInformation(
+      organization.organizationGeneral.cui,
+      year,
+    );
+
+    // 3. Generate financial reports data
+    const newFinancialReport = this.generateFinancialReportsData(
+      year,
+      financialFromAnaf,
+    );
+
+    // 4. Save the new reports
+    try {
+      await Promise.all(
+        newFinancialReport.map((orgFinancial) =>
+          this.organizationFinancialRepository.save({
+            ...orgFinancial,
+            organizationId: organization.id,
+          }),
+        ),
+      );
+    } catch (err) {
+      Sentry.captureException(err, {
+        extra: { organization, year },
+      });
+    }
   }
 }
