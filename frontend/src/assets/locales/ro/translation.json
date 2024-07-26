@@ -35,7 +35,7 @@
     "show_more": "Vezi tot",
     "show_less": "Arată mai puțin",
     "upload": {
-      "file": "Numai fișiere de tip PDF sunt permise pentru statutul organizației.",
+      "file": "Numai fișiere de tip PDF sunt permise pentru incarcare.",
       "image": "Numai fișiere de tip PNG, JPG, JPEG sunt permise pentru logo",
       "image_size": "Dimensiunea maximă pentru logo este de 6 MB",
       "document_size": "Dimensiunea maximă pentru statutul organizației este de 25 MB",
