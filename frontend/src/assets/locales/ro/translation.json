@@ -38,9 +38,9 @@
       "file": "Numai fișiere de tip PDF sunt permise pentru incarcare.",
       "image": "Numai fișiere de tip PNG, JPG, JPEG sunt permise pentru logo",
       "image_size": "Dimensiunea maximă pentru logo este de 6 MB",
-      "document_size": "Dimensiunea maximă pentru statutul organizației este de 25 MB",
+      "document_size": "Dimensiunea maximă pentru fișiere este de 25 MB",
       "logo": "Eroare la încărcarea logo-ului",
-      "statute": "Eroare la încărcarea statutului organizației"
+      "statute": "Eroare la încărcarea fișierului"
     },
     "filters": {
       "hide": "Ascunde filtre",
@@ -509,7 +509,7 @@
     "non_political_affiliation_upload": "Încarcă fișier",
 
     "balance_sheet": "Bilanț contabil",
-    "balance_sheet_information": "Încarcă ultimul bilanțul contabil depus la Ministerul de Finanțe. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 50 MB",
+    "balance_sheet_information": "Încarcă ultimul bilanțul contabil depus la Ministerul de Finanțe. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 25 MB",
     "balance_sheet_no_document": "Nu există niciun document adăugat",
     "balance_sheet_file_name": "Bilanț contabil",
     "balance_sheet_upload": "Încarcă fișier",
