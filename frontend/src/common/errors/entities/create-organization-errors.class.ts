@@ -10,6 +10,8 @@ export const enum CREATE_ORGANIZARION_ERRORS {
   REQ_010 = 'REQ_010',
   REQ_011 = 'REQ_011',
   REQ_012 = 'REQ_012',
+  REQ_013 = 'REQ_013',
+  REQ_014 = 'REQ_014',
   FILE_002 = 'FILE_002',
   FILE_003 = 'FILE_003',
   FILE_004 = 'FILE_004',
@@ -39,6 +41,8 @@ export class CreateOrganizationError extends ErrorClass<CREATE_ORGANIZARION_ERRO
       [CREATE_ORGANIZARION_ERRORS.REQ_010]: i18n.t('organization:create.errors.REQ_010'),
       [CREATE_ORGANIZARION_ERRORS.REQ_011]: i18n.t('organization:create.errors.REQ_011'),
       [CREATE_ORGANIZARION_ERRORS.REQ_012]: i18n.t('organization:create.errors.REQ_012'),
+      [CREATE_ORGANIZARION_ERRORS.REQ_013]: i18n.t('organization:create.errors.REQ_013'),
+      [CREATE_ORGANIZARION_ERRORS.REQ_014]: i18n.t('organization:create.errors.REQ_014'),
     });
   }
 

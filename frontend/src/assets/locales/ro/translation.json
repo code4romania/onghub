@@ -183,6 +183,8 @@
         "REQ_010": "Există deja o organizație cu acest alias",
         "REQ_011": "Există deja o organizație cu acest e-mail",
         "REQ_012": "Există deja o organizație cu acest număr de telefon",
+        "REQ_013": "Există deja o organizație cu acest Număr si data de înscriere în Registrul Special",
+        "REQ_014": "Există deja o organizație cu acest Numărul de înregistrare în Registrul Național",
         "REQ_002": "Există deja o cerere cu acest e-mail sau cu acest număr de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
@@ -330,7 +332,7 @@
         "required": "Secțiunea din Registrul Special este obligatorie",
         "max": "Secțiunea din Registrul Special poate avea maxim 10 de caractere",
         "helper": "Secțiunea care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial, după număr, dată și parte.",
-        "label": "Secțiuna",
+        "label": "Secțiunea",
         "placeholder": "I"
       },
       "association_registry_issuer": {

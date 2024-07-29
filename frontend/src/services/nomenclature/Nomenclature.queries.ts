@@ -46,7 +46,9 @@ export const useCountiesQuery = () => {
 
 export const useIssuersQuery = () => {
   const { setIssuers } = useStore();
-  return useQuery('issuers', () => getIssuers(), {
+  return useQuery(['issuers'], () => getIssuers(), {
+    cacheTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60,
     onSuccess: (data: Issuer[]) => {
       setIssuers(data);
     },
