@@ -6,3 +6,4 @@ export * from './federation.entity';
 export * from './coalition.entity';
 export * from './faculty.entity';
 export * from './skill.entity';
+export * from './issuer.entity';

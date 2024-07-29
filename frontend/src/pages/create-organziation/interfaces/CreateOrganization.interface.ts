@@ -1,5 +1,6 @@
 import { City } from '../../../common/interfaces/city.interface';
 import { County } from '../../../common/interfaces/county.interface';
+import { Issuer } from '../../../common/interfaces/issuer.interface';
 import { Person } from '../../../common/interfaces/person.interface';
 import { OrganizationAreaEnum } from '../../organization/components/OrganizationActivity/OrganizationActivityConfig';
 import { OrganizationTypeEnum } from '../../organization/enums/OrganizationType.enum';
@@ -27,7 +28,12 @@ export interface ICreateOrganizationGeneral {
   phone: string;
   yearCreated: number;
   cui: string;
-  rafNumber: string;
+  associationRegistryNumber: string;
+  associationRegistryPart: string;
+  associationRegistrySection: string;
+  associationRegistryIssuerId: number;
+  associationRegistryIssuer: Issuer;
+  nationalRegistryNumber: string;
   shortDescription: string;
   description: string;
   logo?: string;

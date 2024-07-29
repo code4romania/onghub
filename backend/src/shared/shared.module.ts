@@ -9,6 +9,7 @@ import {
   Domain,
   Faculty,
   Federation,
+  Issuer,
   Region,
   Skill,
 } from './entities';
@@ -35,6 +36,7 @@ import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficia
       PracticeDomain,
       ServiceDomain,
       Beneficiary,
+      Issuer,
     ]),
     HttpModule,
   ],
