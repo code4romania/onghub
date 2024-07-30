@@ -11,6 +11,7 @@ const Select = (props: {
     collection: any[];
     displayedAttribute: string;
     id?: string;
+    helperText?: string;
   };
   selected?: any;
   error?: string | any;
@@ -46,10 +47,10 @@ const Select = (props: {
                     {(props.config.displayedAttribute && props.selected
                       ? props.selected[props.config.displayedAttribute]
                       : props.selected) || (
-                      <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
-                        {props.config.label}
-                      </span>
-                    )}
+                        <span className="text-gray-700 font-normal sm:text-sm lg:text-base text-xs">
+                          {props.config.label}
+                        </span>
+                      )}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -113,6 +114,11 @@ const Select = (props: {
       {props.error && (
         <p className="mt-1 text-sm text-red-600" id={`${props.config.id}__error`}>
           {props.error}
+        </p>
+      )}
+      {!props.error && !props.readonly && (
+        <p className="mt-1 sm:text-sm text-xs text-gray-500 font-normal" id="email-description">
+          {props.config.helperText}
         </p>
       )}
     </div>

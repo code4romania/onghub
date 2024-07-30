@@ -183,8 +183,8 @@
         "REQ_010": "Există deja o organizație cu acest alias",
         "REQ_011": "Există deja o organizație cu acest e-mail",
         "REQ_012": "Există deja o organizație cu acest număr de telefon",
-        "REQ_013": "Există deja o organizație cu acest Număr si data de înscriere în Registrul Special",
-        "REQ_014": "Există deja o organizație cu acest Numărul de înregistrare în Registrul Național",
+        "REQ_013": "Există deja o organizație cu acest număr si dată de înscriere în Registrul Special",
+        "REQ_014": "Există deja o organizație cu acest număr de înregistrare în Registrul Național",
         "REQ_002": "Există deja o cerere cu acest e-mail sau cu acest număr de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
