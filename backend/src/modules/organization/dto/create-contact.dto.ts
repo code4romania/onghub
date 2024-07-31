@@ -28,4 +28,9 @@ export class CreateContactDto {
   @IsNotEmpty()
   @MaxLength(50)
   email: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(50)
+  role: string;
 }

@@ -585,7 +585,8 @@
       "name": "Nume și prenume",
       "role": "Rol",
       "email": "E-mail",
-      "phone": "Telefon"
+      "phone": "Telefon",
+      "role": "Rol"
     },
     "legal_config": {
       "name": {
@@ -607,6 +608,10 @@
         "minim": "Numărul de telefon al reprezentantului legal nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul reprezentantului legal nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "director_config": {
@@ -629,6 +634,10 @@
         "minim": "Numărul de telefon al membrului Consiliului Director nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul membrului Consiliului Director nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "other_config": {
