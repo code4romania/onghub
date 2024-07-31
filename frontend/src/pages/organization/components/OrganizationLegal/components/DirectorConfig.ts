@@ -23,6 +23,10 @@ const translations = {
     invalid: i18n.t('legal:director_config.phone.invalid'),
     phone: i18n.t('legal:director_config.phone.label'),
   },
+  role: {
+    maxim: i18n.t('legal:director_config.role.maxim'),
+    role: i18n.t('legal:director_config.role.label'),
+  },
 };
 
 export const DirectorConfig: Record<string, any> = {
@@ -96,6 +100,21 @@ export const DirectorConfig: Record<string, any> = {
       label: translations.phone.phone,
       helperText: '',
       placeholder: '0721111111',
+    },
+  },
+  role: {
+    key: 'role',
+    rules: {
+      maxLength: {
+        value: 50,
+        message: translations.phone.maxim,
+      },
+    },
+    config: {
+      type: 'text',
+      label: i18n.t('legal:director_config.role.label'),
+      helperText: '',
+      placeholder: 'Administrator',
     },
   },
 };

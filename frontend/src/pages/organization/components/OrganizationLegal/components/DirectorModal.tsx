@@ -92,7 +92,7 @@ const DirectorModal = ({ isEdit, onClose, defaultValue, onSave, id }: DirectorMo
                     control={control}
                     errors={errors}
                     readonly={false}
-                    configs={[DirectorConfig.fullName, DirectorConfig.email, DirectorConfig.phone]}
+                    configs={[DirectorConfig.fullName, DirectorConfig.email, DirectorConfig.phone, DirectorConfig.role]}
                     id={id}
                   />
                 </form>
