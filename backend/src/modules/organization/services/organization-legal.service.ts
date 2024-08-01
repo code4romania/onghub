@@ -164,7 +164,6 @@ export class OrganizationLegalService {
     await this.organizationLegalRepostory.save({
       id,
       ...organizationLegalData,
-      others: organizationLegalData?.others || null,
     });
 
     let organizationLegal = await this.organizationLegalRepostory.get({
