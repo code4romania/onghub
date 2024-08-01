@@ -281,6 +281,7 @@ const CreateOrganizationLegal = () => {
       fullName: data.legalReprezentative_fullName,
       phone: data.legalReprezentative_phone,
       email: data.legalReprezentative_email,
+      role: data.legalReprezentative_role,
     };
 
     // updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
