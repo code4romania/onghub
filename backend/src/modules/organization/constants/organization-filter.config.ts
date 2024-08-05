@@ -12,7 +12,7 @@ export const ORGANIZATION_FILTERS_CONFIG = {
     completionStatus: true,
     logo: true,
   },
-  searchableColumns: ['name'],
+  searchableColumns: ['name', 'alias'],
   defaultSortBy: 'id',
   defaultOrderDirection: OrderDirection.ASC,
   relations: {},
