@@ -299,7 +299,7 @@ const CreateOrganizationLegal = () => {
             <SectionHeader title={t('representative')} subTitle={t('representative_information')} />
             <form className="space-y-8">
               <ContactForm
-                className="flex-row gap-x-6 sm:flex-nowrap flex-wrap"
+                className="flex-row gap-x-6 flex-wrap"
                 control={control}
                 errors={errors}
                 readonly={!isEditMode}
