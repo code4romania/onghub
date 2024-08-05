@@ -24,7 +24,7 @@ const translations = {
 
 export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   {
-    id: 'name',
+    id: 'alias',
     name: <DataTableNameHeader text={translations.ong} />,
     sortable: true,
     minWidth: '10rem',
