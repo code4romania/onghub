@@ -8899,11 +8899,11 @@ export const CITIES = [
     countyId: 33,
     name: 'Bucuresci',
   },
-  {
-    id: 1781,
-    countyId: 11,
-    name: 'Bucuresti',
-  },
+  // {
+  //   id: 1781,
+  //   countyId: 11,
+  //   name: 'Bucuresti',
+  // },
   {
     id: 1782,
     countyId: 6,

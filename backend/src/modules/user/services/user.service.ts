@@ -16,7 +16,7 @@ import {
   Not,
   UpdateResult,
 } from 'typeorm';
-import { USER_FILTERS_CONFIG } from '../constants/user-filters.config';
+import { USER_APPLICATIONS_FILTERS_CONFIG } from '../constants/user-filters.config';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserFilterDto } from '../dto/user-filter.dto';
@@ -194,26 +194,7 @@ export class UserService {
 
     // For Admin user we will sort by organizationId
     return this.userApplicationsView.getManyPaginated(
-      USER_FILTERS_CONFIG,
-      organizationId
-        ? { ...paginationOptions, organizationId }
-        : paginationOptions,
-    );
-  }
-
-  public async findAll(
-    options: UserFilterDto,
-    organizationId?: number,
-  ): Promise<Pagination<User>> {
-    const paginationOptions: any = {
-      role: Role.EMPLOYEE,
-      status: `$in:${UserStatus.ACTIVE},${UserStatus.RESTRICTED}`,
-      ...options,
-    };
-
-    // For Admin user we will sort by organizationId
-    return this.userRepository.getManyPaginated(
-      USER_FILTERS_CONFIG,
+      USER_APPLICATIONS_FILTERS_CONFIG,
       organizationId
         ? { ...paginationOptions, organizationId }
         : paginationOptions,
@@ -353,7 +334,7 @@ export class UserService {
 
     // For Admin user we will sort by organizationId
     const users = await this.userApplicationsView.getManyPaginated(
-      USER_FILTERS_CONFIG,
+      USER_APPLICATIONS_FILTERS_CONFIG,
       organizationId
         ? { ...paginationOptions, organizationId }
         : paginationOptions,

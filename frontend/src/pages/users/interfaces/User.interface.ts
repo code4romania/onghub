@@ -13,3 +13,14 @@ export interface IUser extends BaseEntity {
   availableAppsList?: string;
   availableApps: { id: number; name: string; type: string }[];
 }
+
+export interface IUserWithApplications extends BaseEntity {
+  name: string;
+  email: string;
+  phone: string;
+  status: UserStatus;
+  availableApps: { id: number; name: string; type: string }[];
+  availableAppsIDs: number[];
+  organizationId: number;
+  organizationAlias: string;
+}

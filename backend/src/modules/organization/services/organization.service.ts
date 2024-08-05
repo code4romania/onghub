@@ -325,14 +325,6 @@ export class OrganizationService {
       paginationOptions,
     );
 
-    for (let index in ongList.items) {
-      const data = await this.findWithRelations(ongList.items[index].id);
-      ongList.items[index] = {
-        ...ongList.items[index],
-        ...data,
-      };
-    }
-
     // Map the logo url
     const items =
       await this.fileManagerService.mapLogoToEntity<OrganizationView>(
@@ -415,7 +407,15 @@ export class OrganizationService {
       'organizationGeneral.phone': 'Organization Phone',
       'organizationGeneral.yearCreated': 'Year Created',
       'organizationGeneral.cui': 'CUI',
-      'organizationGeneral.rafNumber': 'RAF Number',
+      'organizationGeneral.associationRegistryNumber':
+        'Association Registry Number',
+      'organizationGeneral.associationRegistryPart':
+        'Association Registry Part',
+      'organizationGeneral.associationRegistrySection':
+        'Association Registry Section',
+      'organizationGeneral.associationRegistryIssuer':
+        'Association Registry Issuer',
+      'organizationGeneral.nationalRegistryNumber': 'National Registry Number',
       'organizationGeneral.shortDescription': 'Short Description',
       'organizationGeneral.description': 'Description',
       'organizationGeneral.address': 'Address',
@@ -560,6 +560,7 @@ export class OrganizationService {
         'organizationGeneral.county',
         'organizationGeneral.organizationCity',
         'organizationGeneral.organizationCounty',
+        'organizationGeneral.associationRegistryIssuer',
         'organizationActivity',
         'organizationActivity.federations',
         'organizationActivity.coalitions',
@@ -597,12 +598,33 @@ export class OrganizationService {
     }
 
     // Public: The URL can be replaced as above OR move all public in the "public" folder of each organization for better structure
+
+    // Statute
     if (organization.organizationLegal.organizationStatute) {
       const organizationStatute =
         await this.fileManagerService.generatePresignedURL(
           organization.organizationLegal.organizationStatute,
         );
       organization.organizationLegal.organizationStatute = organizationStatute;
+    }
+
+    // Non Political Affiliation File
+    if (organization.organizationLegal.nonPoliticalAffiliationFile) {
+      const nonPoliticalAffiliationFile =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.nonPoliticalAffiliationFile,
+        );
+      organization.organizationLegal.nonPoliticalAffiliationFile =
+        nonPoliticalAffiliationFile;
+    }
+
+    // Balance Sheet File
+    if (organization.organizationLegal.balanceSheetFile) {
+      const balanceSheetFile =
+        await this.fileManagerService.generatePresignedURL(
+          organization.organizationLegal.balanceSheetFile,
+        );
+      organization.organizationLegal.balanceSheetFile = balanceSheetFile;
     }
 
     return organization;
@@ -969,6 +991,8 @@ export class OrganizationService {
     updateOrganizationDto: UpdateOrganizationDto,
     logo?: Express.Multer.File[],
     organizationStatute?: Express.Multer.File[],
+    nonPoliticalAffiliationFile?: Express.Multer.File[],
+    balanceSheetFile?: Express.Multer.File[],
   ): Promise<any> {
     const organization = await this.find(id);
 
@@ -994,11 +1018,19 @@ export class OrganizationService {
         FILE_TYPE.FILE,
       );
 
+      this.fileManagerService.validateFiles(
+        nonPoliticalAffiliationFile,
+        FILE_TYPE.FILE,
+      );
+
+      this.fileManagerService.validateFiles(balanceSheetFile, FILE_TYPE.FILE);
+
       return this.organizationLegalService.update(
         organization.organizationLegalId,
         updateOrganizationDto.legal,
-        `${id}/${ORGANIZATION_FILES_DIR.STATUTE}`,
         organizationStatute,
+        nonPoliticalAffiliationFile,
+        balanceSheetFile,
       );
     }
 
@@ -1163,6 +1195,64 @@ export class OrganizationService {
     }
   }
 
+  public async deleteNonPoliticalAffiliation(
+    organizationId: number,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteNonPoliticalAffiliation(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.NON_POLITICAL_AFFILIATION,
+          error: err,
+        });
+      }
+    }
+  }
+
+  public async deleteBalanceSheet(organizationId: number): Promise<void> {
+    try {
+      const organization = await this.organizationRepository.get({
+        where: { id: organizationId },
+        relations: ['organizationLegal'],
+      });
+
+      await this.organizationLegalService.deleteBalanceSheetFile(
+        organization.organizationLegalId,
+      );
+    } catch (error) {
+      this.logger.error({
+        error,
+        ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
+      });
+
+      if (error instanceof HttpException) {
+        throw error;
+      } else {
+        const err = error?.response;
+        throw new InternalServerErrorException({
+          ...ORGANIZATION_ERRORS.DELETE.BALANCE_SHEET,
+          error: err,
+        });
+      }
+    }
+  }
+
   /**
    * Will update the status from PENDING to ACTIVE
    *
@@ -1300,7 +1390,8 @@ export class OrganizationService {
 
   public async validateOrganizationGeneral(
     cui: string,
-    rafNumber: string,
+    associationRegistryNumber: string,
+    nationalRegistryNumber: string,
     name: string,
     email: string,
     phone: string,
@@ -1329,15 +1420,28 @@ export class OrganizationService {
       );
     }
 
-    const organizationWithRafNumber =
+    const organizationWithAssociationRegistryNumber =
       await this.organizationGeneralService.findOne({
-        where: { rafNumber },
+        where: { associationRegistryNumber },
       });
 
-    if (organizationWithRafNumber) {
+    if (organizationWithAssociationRegistryNumber) {
       errors.push(
         new BadRequestException(
-          ORGANIZATION_REQUEST_ERRORS.CREATE.RAF_NUMBER_EXISTS,
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ASSOCIATION_REGISTRY_NUMBER_EXISTS,
+        ),
+      );
+    }
+
+    const organizationWithNationalRegistryNumber =
+      await this.organizationGeneralService.findOne({
+        where: { nationalRegistryNumber },
+      });
+
+    if (organizationWithNationalRegistryNumber) {
+      errors.push(
+        new BadRequestException(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.NATIONAL_REGISTRY_NUMBER_EXISTS,
         ),
       );
     }

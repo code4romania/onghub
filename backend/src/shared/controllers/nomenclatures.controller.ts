@@ -73,4 +73,9 @@ export class NomenclaturesController {
   getBeneficiaries() {
     return this.nomenclaturesService.getBeneficiaries({});
   }
+
+  @Get('issuers')
+  getIssuers() {
+    return this.nomenclaturesService.getIssuers({});
+  }
 }

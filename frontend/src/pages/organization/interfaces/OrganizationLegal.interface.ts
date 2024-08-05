@@ -7,4 +7,6 @@ export interface IOrganizationLegal extends BaseEntity {
   directors: Contact[];
   others: Person[];
   organizationStatute?: string;
+  nonPoliticalAffiliationFile?: string;
+  balanceSheetFile?: string;
 }

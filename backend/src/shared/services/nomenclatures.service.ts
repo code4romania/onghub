@@ -5,6 +5,7 @@ import {
   County,
   Domain,
   Faculty,
+  Issuer,
   Region,
   Skill,
 } from 'src/shared/entities';
@@ -42,6 +43,8 @@ export class NomenclaturesService {
     private readonly serviceDomainRepository: Repository<ServiceDomain>,
     @InjectRepository(Beneficiary)
     private readonly beneficiaryRepository: Repository<Beneficiary>,
+    @InjectRepository(Issuer)
+    private readonly issuersRepository: Repository<Issuer>,
   ) {}
 
   public getCity(conditions: FindOneOptions<City>) {
@@ -161,5 +164,9 @@ export class NomenclaturesService {
 
   public getBeneficiaries(conditions: FindManyOptions<Beneficiary>) {
     return this.beneficiaryRepository.find(conditions);
+  }
+
+  public getIssuers(conditions: FindManyOptions<Issuer>) {
+    return this.issuersRepository.find(conditions);
   }
 }

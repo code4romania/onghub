@@ -4,4 +4,5 @@ export interface Contact extends BaseEntity {
   fullName: string;
   email: string;
   phone: string;
+  role: string;
 }

@@ -13,6 +13,9 @@ export class Contact extends BaseEntity {
   @Column({ type: 'text', name: 'phone', nullable: true })
   phone: string;
 
+  @Column({ type: 'text', name: 'role', nullable: true })
+  role: string;
+
   @ManyToMany(
     (type) => OrganizationLegal,
     (organizationLegal) => organizationLegal.directors,

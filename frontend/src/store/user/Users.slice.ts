@@ -1,6 +1,6 @@
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
-import { IUser } from '../../pages/users/interfaces/User.interface';
+import { IUserWithApplications } from '../../pages/users/interfaces/User.interface';
 
 export const usersSlice = (set: any) => ({
   users: {
@@ -15,7 +15,7 @@ export const usersSlice = (set: any) => ({
       orderDirection: OrderDirection.ASC,
     },
   },
-  setUsers: (users: PaginatedEntity<IUser>) => {
+  setUsers: (users: PaginatedEntity<IUserWithApplications>) => {
     set({ users });
   },
 });

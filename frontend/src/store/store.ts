@@ -16,10 +16,11 @@ import { Federation } from '../common/interfaces/federations.interface';
 import { organizationLegalSlice } from './organization/organization-legal.slice';
 import { organizationReportsSlice } from './organization/organization-reports.slice';
 import { profileSlice } from './user/Profile.slice';
-import { IUser } from '../pages/users/interfaces/User.interface';
+import { IUser, IUserWithApplications } from '../pages/users/interfaces/User.interface';
 import {
   IOrganization,
   IOrganizationFull,
+  IOrganizationView,
 } from '../pages/organization/interfaces/Organization.interface';
 import { organizationSlice } from './organization/organization.slice';
 import { usersSlice } from './user/Users.slice';
@@ -45,9 +46,10 @@ import { Skill } from '../common/interfaces/skill.interface';
 import { Faculty } from '../common/interfaces/faculty.interface';
 import { IFeedback } from '../pages/civic-center-service/interfaces/Feedback.interface';
 import { feedbacksSlice } from './civic-center-service/Feedback.slice';
+import { Issuer } from '../common/interfaces/issuer.interface';
 
 interface OrganizationState {
-  organizations: PaginatedEntity<IOrganizationFull>;
+  organizations: PaginatedEntity<IOrganizationView>;
   organization: IOrganization | null;
   organizationGeneral: IOrganizationGeneral | null;
   organizationFinancial: IOrganizationFinancial[];
@@ -60,7 +62,7 @@ interface OrganizationState {
   setOrganizationFinancial: (organizationFinancial: IOrganizationFinancial[]) => void;
   setOrganizationReport: (organizationReport: IOrganizationReport) => void;
   setOrganizationLegal: (organizationLegal: IOrganizationLegal) => void;
-  setOrganizations: (organizations: PaginatedEntity<IOrganizationFull>) => void;
+  setOrganizations: (organizations: PaginatedEntity<IOrganizationView>) => void;
 }
 interface NomenclatureState {
   counties: County[];
@@ -71,6 +73,7 @@ interface NomenclatureState {
   coalitions: Coalition[];
   skills: Skill[];
   faculties: Faculty[];
+  issuers: Issuer[];
   setCounties: (counties: County[]) => void;
   setCities: (cities: City[]) => void;
   setDomains: (domains: Domain[]) => void;
@@ -79,6 +82,7 @@ interface NomenclatureState {
   setCoalitions: (coaltions: Coalition[]) => void;
   setSkills: (skills: Skill[]) => void;
   setFaculties: (faculties: Faculty[]) => void;
+  setIssuers: (issuers: Issuer[]) => void;
 }
 
 interface ProfileState {
@@ -87,8 +91,8 @@ interface ProfileState {
 }
 
 interface UserState {
-  users: PaginatedEntity<IUser>;
-  setUsers: (users: PaginatedEntity<IUser>) => void;
+  users: PaginatedEntity<IUserWithApplications>;
+  setUsers: (users: PaginatedEntity<IUserWithApplications>) => void;
 }
 
 interface InviteState {

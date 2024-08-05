@@ -43,6 +43,15 @@ export const ORGANIZATION_ERRORS = {
     message: 'Error while uploading the files',
     errorCode: 'ORG_010',
   },
+  UPLOAD_NON_POLITICAL_AFFILIATION: {
+    message: 'Error while uploading the non political affiliation file',
+    errorCode: 'ORG_030',
+  },
+
+  UPLOAD_BALANCE_SHEET: {
+    message: 'Error while uploading the balance sheet file',
+    errorCode: 'ORG_031',
+  },
   GET_REPORT: {
     message: 'Report not found',
     errorCode: 'ORG_011',
@@ -66,6 +75,15 @@ export const ORGANIZATION_ERRORS = {
     },
     STATUTE: {
       message: 'Error while deleting the organization statute',
+      errorCode: 'ORG_027',
+    },
+    NON_POLITICAL_AFFILIATION: {
+      message:
+        'Error while deleting the organization non political affiliation file',
+      errorCode: 'ORG_027',
+    },
+    BALANCE_SHEET: {
+      message: 'Error while deleting the organization balance sheet file',
       errorCode: 'ORG_027',
     },
   },
@@ -157,9 +175,17 @@ export const ORGANIZATION_REQUEST_ERRORS = {
       message: 'An organization with this cui already exists',
       errorCode: 'REQ_007',
     },
-    RAF_NUMBER_EXISTS: {
-      message: 'An organization with this rafNumber already exists',
-      errorCode: 'REQ_008',
+
+    ASSOCIATION_REGISTRY_NUMBER_EXISTS: {
+      message:
+        'An organization with this asscotiation registry number already exists',
+      errorCode: 'REQ_013',
+    },
+
+    NATIONAL_REGISTRY_NUMBER_EXISTS: {
+      message:
+        'An organization with this national registry number already exists',
+      errorCode: 'REQ_014',
     },
     ORGANIZATION_NAME_EXISTS: {
       message: 'An organization with this name already exists',

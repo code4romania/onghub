@@ -107,7 +107,6 @@ export class OrganizationReportService {
         `${organizationId}/${ORGANIZATION_FILES_DIR.PARTNERS}`,
         files,
         FILE_TYPE.FILE,
-        `${partner.year}_${PARTNER_LIST}`,
       );
 
       await this.partnerRepository.save({
@@ -158,7 +157,6 @@ export class OrganizationReportService {
         `${organizationId}/${ORGANIZATION_FILES_DIR.INVESTORS}`,
         files,
         FILE_TYPE.FILE,
-        `${investor.year}_${INVESTOR_LIST}`,
       );
 
       await this.investorRepository.save({

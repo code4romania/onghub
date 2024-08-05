@@ -21,7 +21,7 @@ import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Select from '../../../../components/Select/Select';
 import Textarea from '../../../../components/Textarea/Textarea';
 import { useAuthContext } from '../../../../contexts/AuthContext';
-import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
+import { useCitiesQuery, useIssuersQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
@@ -34,7 +34,7 @@ const OrganizationGeneral = () => {
   const [county, setCounty] = useState<any>();
   const [organizationCounty, setOrganizationCounty] = useState<any>();
   const [file, setFile] = useState<File | null>(null);
-  const { counties } = useNomenclature();
+  const { counties, issuers } = useNomenclature();
   const { disabled, updateOrganization } = useOutletContext<OrganizationContext>();
   const { role } = useAuthContext();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -145,6 +145,7 @@ const OrganizationGeneral = () => {
       countyId,
       organizationCountyId,
       organizationCityId,
+      associationRegistryIssuerId,
       ...organizationGeneralData
     } = data;
 
@@ -290,28 +291,115 @@ const OrganizationGeneral = () => {
                 }}
               />
               <Controller
-                key={OrganizationGeneralConfig.rafNumber.key}
-                name={OrganizationGeneralConfig.rafNumber.key}
-                rules={OrganizationGeneralConfig.rafNumber.rules}
+                key={OrganizationGeneralConfig.associationRegistryNumber.key}
+                name={OrganizationGeneralConfig.associationRegistryNumber.key}
+                rules={OrganizationGeneralConfig.associationRegistryNumber.rules}
                 control={control}
                 render={({ field: { onChange, value } }) => {
                   return (
                     <InputField
                       config={{
-                        ...OrganizationGeneralConfig.rafNumber.config,
-                        name: OrganizationGeneralConfig.rafNumber.key,
-                        error: errors[OrganizationGeneralConfig.rafNumber.key]?.message,
+                        ...OrganizationGeneralConfig.associationRegistryNumber.config,
+                        name: OrganizationGeneralConfig.associationRegistryNumber.key,
+                        error: errors[OrganizationGeneralConfig.associationRegistryNumber.key]?.message,
                         defaultValue: value,
                         onChange: onChange,
-                        id: 'organization-general__raf-no',
+                        id: 'organization-general__associationRegistryNumber',
                       }}
                       readonly={readonly}
-                      disabled={disabled}
                     />
                   );
                 }}
               />
 
+              <Controller
+                key={OrganizationGeneralConfig.associationRegistryPart.key}
+                name={OrganizationGeneralConfig.associationRegistryPart.key}
+                rules={OrganizationGeneralConfig.associationRegistryPart.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.associationRegistryPart.config,
+                        name: OrganizationGeneralConfig.associationRegistryPart.key,
+                        error: errors[OrganizationGeneralConfig.associationRegistryPart.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'organization-general__associationRegistryPart',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
+                key={OrganizationGeneralConfig.associationRegistrySection.key}
+                name={OrganizationGeneralConfig.associationRegistrySection.key}
+                rules={OrganizationGeneralConfig.associationRegistrySection.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.associationRegistrySection.config,
+                        name: OrganizationGeneralConfig.associationRegistrySection.key,
+                        error: errors[OrganizationGeneralConfig.associationRegistrySection.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'organization-general__associationRegistrySection',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
+                key={OrganizationGeneralConfig.associationRegistryIssuer.key}
+                name={OrganizationGeneralConfig.associationRegistryIssuer.key}
+                rules={OrganizationGeneralConfig.associationRegistryIssuer.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <Select
+                      config={{
+                        ...OrganizationGeneralConfig.associationRegistryIssuer.config,
+                        collection: issuers,
+                        displayedAttribute: 'name',
+                        id: 'organization-general__associationRegistryIssuer',
+                      }}
+                      error={errors[OrganizationGeneralConfig.associationRegistryIssuer.key]?.message}
+                      selected={value}
+                      onChange={onChange}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
+
+              <Controller
+                key={OrganizationGeneralConfig.nationalRegistryNumber.key}
+                name={OrganizationGeneralConfig.nationalRegistryNumber.key}
+                rules={OrganizationGeneralConfig.nationalRegistryNumber.rules}
+                control={control}
+                render={({ field: { onChange, value } }) => {
+                  return (
+                    <InputField
+                      config={{
+                        ...OrganizationGeneralConfig.nationalRegistryNumber.config,
+                        name: OrganizationGeneralConfig.nationalRegistryNumber.key,
+                        error: errors[OrganizationGeneralConfig.nationalRegistryNumber.key]?.message,
+                        defaultValue: value,
+                        onChange: onChange,
+                        id: 'organization-general__nationalRegistryNumberr',
+                      }}
+                      readonly={readonly}
+                    />
+                  );
+                }}
+              />
               <Controller
                 key={OrganizationGeneralConfig.address.key}
                 name={OrganizationGeneralConfig.address.key}
@@ -571,7 +659,6 @@ const OrganizationGeneral = () => {
                   name={OrganizationGeneralConfig.hasSameAddress.key}
                   control={control}
                   render={({ field: { onChange, value } }) => {
-                    console.log(value);
                     return (
                       <InputField
                         config={{

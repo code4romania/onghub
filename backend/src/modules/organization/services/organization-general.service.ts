@@ -90,7 +90,13 @@ export class OrganizationGeneralService {
 
       let organizationGeneral = await this.organizationGeneralRepository.get({
         where: { id: organization.organizationGeneralId },
-        relations: ['city', 'county', 'organizationCounty', 'organizationCity'],
+        relations: [
+          'city',
+          'county',
+          'organizationCounty',
+          'organizationCity',
+          'associationRegistryIssuer',
+        ],
       });
 
       // Effect 1: Update financial data if CUI has changed
@@ -150,6 +156,14 @@ export class OrganizationGeneralService {
         { id: Not(orgGeneralId), alias: newDTO?.alias },
         { id: Not(orgGeneralId), email: newDTO?.email },
         { id: Not(orgGeneralId), phone: newDTO?.phone },
+        {
+          id: Not(orgGeneralId),
+          nationalRegistryNumber: newDTO?.nationalRegistryNumber,
+        },
+        {
+          id: Not(orgGeneralId),
+          associationRegistryNumber: newDTO?.associationRegistryNumber,
+        },
       ],
     });
     for (let i = 0; i < existing.length; i++) {
@@ -171,6 +185,21 @@ export class OrganizationGeneralService {
       if (existing[i].phone === newDTO?.phone) {
         errors.push(
           ORGANIZATION_REQUEST_ERRORS.CREATE.ORGANIZATION_PHONE_EXISTS,
+        );
+      }
+      if (
+        existing[i].nationalRegistryNumber === newDTO?.nationalRegistryNumber
+      ) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.NATIONAL_REGISTRY_NUMBER_EXISTS,
+        );
+      }
+      if (
+        existing[i].associationRegistryNumber ===
+        newDTO?.associationRegistryNumber
+      ) {
+        errors.push(
+          ORGANIZATION_REQUEST_ERRORS.CREATE.ASSOCIATION_REGISTRY_NUMBER_EXISTS,
         );
       }
     }

@@ -212,6 +212,8 @@ export class OrganizationController {
     FileFieldsInterceptor([
       { name: 'logo', maxCount: 1 },
       { name: 'organizationStatute', maxCount: 1 },
+      { name: 'nonPoliticalAffiliationFile', maxCount: 1 },
+      { name: 'balanceSheetFile', maxCount: 1 },
     ]),
   )
   @Patch(':id')
@@ -222,9 +224,13 @@ export class OrganizationController {
     {
       logo,
       organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
     }: {
       logo: Express.Multer.File[];
       organizationStatute: Express.Multer.File[];
+      nonPoliticalAffiliationFile: Express.Multer.File[];
+      balanceSheetFile: Express.Multer.File[];
     },
   ) {
     return this.organizationService.update(
@@ -232,6 +238,8 @@ export class OrganizationController {
       updateOrganizationDto,
       logo,
       organizationStatute,
+      nonPoliticalAffiliationFile,
+      balanceSheetFile,
     );
   }
 
@@ -317,6 +325,29 @@ export class OrganizationController {
   ) {
     // for admin user.organizationId has precedence
     return this.organizationService.deleteOrganizationStatute(
+      user?.organizationId || id,
+    );
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id/non-political-affiliation')
+  deleteNonPoliticalAffiliation(
+    @ExtractUser() user: User,
+    @Param('id') id: number,
+  ) {
+    // for admin user.organizationId has precedence
+    return this.organizationService.deleteNonPoliticalAffiliation(
+      user?.organizationId || id,
+    );
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiParam({ name: 'id', type: String })
+  @Delete(':id/balance-sheet')
+  deleteBalanceSheet(@ExtractUser() user: User, @Param('id') id: number) {
+    // for admin user.organizationId has precedence
+    return this.organizationService.deleteBalanceSheet(
       user?.organizationId || id,
     );
   }

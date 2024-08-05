@@ -62,7 +62,6 @@ export class ApplicationService {
           `${APPLICATIONS_FILES_DIR}`,
           logo,
           FILE_TYPE.IMAGE,
-          createApplicationDto.name,
         );
 
         createApplicationDto = {
@@ -339,7 +338,6 @@ export class ApplicationService {
           `${APPLICATIONS_FILES_DIR}`,
           logo,
           FILE_TYPE.IMAGE,
-          application.name,
         );
 
         applicationPayload = {

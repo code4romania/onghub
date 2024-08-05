@@ -90,6 +90,7 @@ const CreateOrganizationLegal = () => {
       fullName: legal.legalReprezentative_fullName,
       phone: legal.legalReprezentative_phone,
       email: legal.legalReprezentative_email,
+      role: legal.legalReprezentative_role,
     };
 
     //Using isValidating because RHF triggers 2 renders and update local storage with invalid data
@@ -184,7 +185,8 @@ const CreateOrganizationLegal = () => {
         !(
           director.fullName === selectedDirector?.fullName &&
           director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.phone
+          director.phone === selectedDirector?.phone &&
+          director.role === selectedDirector?.role
         ),
     );
     setDirectors([...filteredDirectors, { ...selectedDirector, ...contact }]);
@@ -206,7 +208,8 @@ const CreateOrganizationLegal = () => {
         !(
           director.fullName === selectedDirector?.fullName &&
           director.email === selectedDirector?.email &&
-          director.phone === selectedDirector?.phone
+          director.phone === selectedDirector?.phone &&
+          director.role === selectedDirector?.role
         ),
     );
     setDirectors(filteredDirectors);
@@ -278,6 +281,7 @@ const CreateOrganizationLegal = () => {
       fullName: data.legalReprezentative_fullName,
       phone: data.legalReprezentative_phone,
       email: data.legalReprezentative_email,
+      role: data.legalReprezentative_role,
     };
 
     // updateActiveStepIndexInLocalStorage(activeStepIndex, 4, setActiveStepIndex);
@@ -295,7 +299,7 @@ const CreateOrganizationLegal = () => {
             <SectionHeader title={t('representative')} subTitle={t('representative_information')} />
             <form className="space-y-8">
               <ContactForm
-                className="flex-row gap-x-6 sm:flex-nowrap flex-wrap"
+                className="flex-row gap-x-6 flex-wrap"
                 control={control}
                 errors={errors}
                 readonly={!isEditMode}
@@ -303,6 +307,7 @@ const CreateOrganizationLegal = () => {
                   OrganizationLegalConfig.legal_reprezentative_name,
                   OrganizationLegalConfig.legal_reprezentative_email,
                   OrganizationLegalConfig.legal_reprezentative_phone,
+                  OrganizationLegalConfig.legal_reprezentative_role,
                 ]}
                 id="create-organization-legal"
               />

@@ -4,4 +4,6 @@ export interface IInvite {
   email: string;
   phone: string;
   createdOn: Date;
+  role: string;
+  organization: { id: number; organizationGeneral: { alias: string } };
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { NoSymbolIcon } from '@heroicons/react/24/outline';
 import { PencilIcon, ArrowPathIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { SortOrder, TableColumn } from 'react-data-table-component';
@@ -16,11 +16,14 @@ import {
   useRestrictUserMutation,
   useUsersQuery,
 } from '../../../../services/user/User.queries';
-import { useOngApplications, useUser } from '../../../../store/selectors';
+import { useUser } from '../../../../store/selectors';
 import { UserStatusOptions } from '../../constants/filters.constants';
 import { UserStatus } from '../../enums/UserStatus.enum';
-import { IUser } from '../../interfaces/User.interface';
-import { UserListTableHeaders } from './table-headers/UserListTable.headers';
+import { IUserWithApplications } from '../../interfaces/User.interface';
+import {
+  UserListTableHeaderOrganizationAlias,
+  UserListTableHeaders,
+} from './table-headers/UserListTable.headers';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../../../components/confim-removal-modal/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +38,7 @@ import { ApplicationListItem } from '../../../../services/application/interfaces
 
 const UserList = (props: { organizationId?: number }) => {
   const navigate = useNavigate();
-  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [selectedUser, setSelectedUser] = useState<IUserWithApplications | null>(null);
   const [page, setPage] = useState<number>();
   const [rowsPerPage, setRowsPerPage] = useState<number>();
   const [orderByColumn, setOrderByColumn] = useState<string>();
@@ -98,7 +101,15 @@ const UserList = (props: { organizationId?: number }) => {
     removeUserMutation.error,
   ]);
 
-  const buildUserActionColumn = (): TableColumn<IUser> => {
+  const ListTableHeader = useMemo(() => {
+    if (role === UserRole.SUPER_ADMIN) {
+      return [UserListTableHeaderOrganizationAlias, ...UserListTableHeaders];
+    }
+
+    return UserListTableHeaders;
+  }, [role]);
+
+  const buildUserActionColumn = (): TableColumn<IUserWithApplications> => {
     const activeUserMenuItems = [
       {
         name: t('list.restrict'),
@@ -142,7 +153,7 @@ const UserList = (props: { organizationId?: number }) => {
 
     return {
       name: '',
-      cell: (row: IUser) => (
+      cell: (row: IUserWithApplications) => (
         <PopoverMenu
           row={row}
           menuItems={
@@ -178,7 +189,7 @@ const UserList = (props: { organizationId?: number }) => {
   /**
    * ROW ACTIONS
    */
-  const onRestoreAccess = (row: IUser) => {
+  const onRestoreAccess = (row: IUserWithApplications) => {
     restoreUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
         useSuccessToast(`${t('list.restore_success')} ${row.name}`);
@@ -187,7 +198,7 @@ const UserList = (props: { organizationId?: number }) => {
     });
   };
 
-  const onEdit = (row: IUser) => {
+  const onEdit = (row: IUserWithApplications) => {
     navigate(`/user/${row.id}`);
   };
 
@@ -206,7 +217,7 @@ const UserList = (props: { organizationId?: number }) => {
     setIsConfirmRemoveModalOpen(false);
   };
 
-  const onRestrictAccess = (row: IUser) => {
+  const onRestrictAccess = (row: IUserWithApplications) => {
     restrictUserAccessMutation.mutate([row.id], {
       onSuccess: () => {
         useSuccessToast(`${t('list.restrict_success')} ${row.name}`);
@@ -326,7 +337,7 @@ const UserList = (props: { organizationId?: number }) => {
           </button>
         </div>
         <DataTableComponent
-          columns={[...UserListTableHeaders, buildUserActionColumn()]}
+          columns={[...ListTableHeader, buildUserActionColumn()]}
           data={users.items}
           loading={isLoading}
           pagination
