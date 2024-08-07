@@ -83,19 +83,53 @@ export class OrganizationFinancialService {
       0,
     );
 
+    const hasData =
+      Object.values(organizationFinancial.data).length ||
+      Object.values(updateOrganizationFinancialDto.data).length;
+
     if (!organizationFinancial) {
       throw new NotFoundException({
         ...ORGANIZATION_ERRORS.ANAF,
       });
     }
 
+    let status = CompletionStatus.NOT_COMPLETED;
+
+    if (hasData && !organizationFinancial.synched_anaf) {
+      status = CompletionStatus.PENDING;
+    } else if (
+      hasData &&
+      organizationFinancial.synched_anaf &&
+      totals === organizationFinancial.total
+    ) {
+      status = CompletionStatus.COMPLETED;
+    } else if (
+      hasData &&
+      organizationFinancial.synched_anaf &&
+      totals !== organizationFinancial.total
+    ) {
+      status = CompletionStatus.INVALID;
+    }
+
     return this.organizationFinancialRepository.save({
       ...organizationFinancial,
       data: updateOrganizationFinancialDto.data,
-      status:
-        totals === organizationFinancial.total
-          ? CompletionStatus.COMPLETED
-          : CompletionStatus.NOT_COMPLETED,
+      status,
+    });
+  }
+
+  public updateANAFStatus(
+    financialId: number,
+    financialInformation: FinancialInformation,
+  ): Promise<OrganizationFinancial> {
+    if (!financialInformation.totalIncome) {
+      return;
+    }
+
+    return this.organizationFinancialRepository.save({
+      id: financialId,
+      synched_anaf: true,
+      ...financialInformation,
     });
   }
 

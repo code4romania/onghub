@@ -37,6 +37,14 @@ export class Organization extends BaseEntity {
   })
   completionStatus: CompletionStatus;
 
+  @Column({
+    type: 'enum',
+    enum: CompletionStatus,
+    name: 'financial_completion_status',
+    default: CompletionStatus.NOT_COMPLETED,
+  })
+  financialCompletionStatus: CompletionStatus;
+
   @Exclude()
   @Column({
     type: 'integer',

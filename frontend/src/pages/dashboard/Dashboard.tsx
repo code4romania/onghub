@@ -51,11 +51,11 @@ const Dashboard = () => {
                   stat={
                     role === UserRole.ADMIN
                       ? AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersAdmin(
-                          statistics.numberOfUsers,
-                        )
+                        statistics.numberOfUsers,
+                      )
                       : AdminEmployeeDashboardExtendedStatisticsMapping.numberOfUsersEmployee(
-                          statistics.numberOfUsers,
-                        )
+                        statistics.numberOfUsers,
+                      )
                   }
                 />
               </div>

@@ -1649,7 +1649,6 @@ export class OrganizationService {
 
       // 6. If all the statuses above are true than the organization is up to date
       const organizationInSync =
-        organizationFinancialCompleted &&
         organizationReportsCompleted &&
         organizationInvestorsCompleted &&
         organizationPartnersCompleted;
@@ -1659,6 +1658,9 @@ export class OrganizationService {
         { id: organizationId },
         {
           completionStatus: organizationInSync
+            ? CompletionStatus.COMPLETED
+            : CompletionStatus.NOT_COMPLETED,
+          financialCompletionStatus: organizationFinancialCompleted
             ? CompletionStatus.COMPLETED
             : CompletionStatus.NOT_COMPLETED,
           syncedOn: new Date(),
