@@ -143,17 +143,6 @@ export const useUpdateApplicationMutation = () => {
   );
 };
 
-export const useActivateApplication = () => {
-  return useMutation(({ applicationId }: { applicationId: string }) =>
-    activateApplication(applicationId),
-  );
-};
-
-export const useDectivateApplication = () => {
-  return useMutation(({ applicationId }: { applicationId: string }) =>
-    deactivateApplication(applicationId),
-  );
-};
 
 export const useRestrictApplicationMutation = () => {
   return useMutation(

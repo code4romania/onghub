@@ -110,24 +110,6 @@ export class ApplicationController {
 
   @Roles(Role.SUPER_ADMIN)
   @ApiParam({ name: 'id', type: String })
-  @Patch(':id/activate')
-  activate(@Param('id') id: number) {
-    return this.appService.update(id, {
-      status: ApplicationStatus.ACTIVE,
-    });
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
-  @Patch(':id/deactivate')
-  deactivate(@Param('id') id: number) {
-    return this.appService.update(id, {
-      status: ApplicationStatus.DISABLED,
-    });
-  }
-
-  @Roles(Role.SUPER_ADMIN)
-  @ApiParam({ name: 'id', type: String })
   @ApiQuery({ type: () => ApplicationAccessFilterDto })
   @Patch(':id/restrict')
   restrict(

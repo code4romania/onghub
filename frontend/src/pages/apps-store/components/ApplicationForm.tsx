@@ -20,10 +20,11 @@ import { CreateApplicationDto } from '../../../services/application/interfaces/A
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 import RichText from '../../../components/RichText/RichText';
+import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
 
 interface ApplicationFormProps {
   control: Control<CreateApplicationDto, object>;
-  errors: FieldErrorsImpl<DeepRequired<CreateApplicationDto>>;
+  errors: FieldErrorsImpl<DeepRequired<CreateApplicationDto> & { status?: ApplicationStatus }>;
   watch: UseFormWatch<CreateApplicationDto>;
   file: File | null;
   setFile: (file: File) => void;
@@ -264,6 +265,12 @@ const ApplicationForm = ({
             )}
           </div>
           {/* End Logo */}
+          <div className='flex flex-col gap-4 pt-4'>
+            <SectionHeader title={t('appstore:config.status.section_title')} subTitle={t('appstore:config.status.section_subtitle')} />
+            {readonly && (
+              <RadioGroup control={control} errors={errors.status} config={AddAppConfig.status} />
+            )}
+          </div>
           <div className="flex flex-col gap-4 pt-4">
             <SectionHeader title={t('form.steps_title')} subTitle={t('form.steps_subtitle')} />
             {fields.map((item, index) => {

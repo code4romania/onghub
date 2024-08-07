@@ -5,17 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PaginationConfig } from '../../../common/config/pagination.config';
 import { OrderDirection } from '../../../common/enums/sort-direction.enum';
-import { useErrorToast, useSuccessToast } from '../../../common/hooks/useToast';
-import ConfirmationModal from '../../../components/confim-removal-modal/ConfirmationModal';
+import { useErrorToast } from '../../../common/hooks/useToast';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
 import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import {
-  useActivateApplication,
   useApplicationsQuery,
-  useDectivateApplication,
-  useRemoveApplication,
 } from '../../../services/application/Application.queries';
 import {
   Application,
@@ -34,13 +30,12 @@ const ApplicationListTable = () => {
   const [searchWord, setSearchWord] = useState<string | null>(null);
   const [status, setStatus] = useState<{ status: ApplicationStatus; label: string } | null>();
   const [type, setType] = useState<{ type: ApplicationTypeEnum; label: string } | null>();
-  const [applicationToBeRemoved, setApplicationToBeRemoved] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
   const { t } = useTranslation(['appstore', 'common']);
 
-  const { isLoading, error, refetch } = useApplicationsQuery(
+  const { isLoading, error } = useApplicationsQuery(
     rowsPerPage as number,
     page as number,
     orderByColumn as string,
@@ -50,25 +45,7 @@ const ApplicationListTable = () => {
     type?.type,
   );
 
-  const {
-    mutateAsync: activateApplication,
-    error: activateApplicationError,
-    isLoading: activateApplicationLoading,
-  } = useActivateApplication();
-
-  const {
-    mutateAsync: deactivateApplication,
-    error: deactivateApplicationError,
-    isLoading: deactivateApplicationLoading,
-  } = useDectivateApplication();
-
   const { applications } = useApplications();
-
-  const {
-    mutateAsync: removeApplication,
-    error: removeApplicationError,
-    isLoading: removeApplicationLoading,
-  } = useRemoveApplication();
 
   useEffect(() => {
     if (applications?.meta) {
@@ -84,35 +61,9 @@ const ApplicationListTable = () => {
       useErrorToast(t('list.load_error'));
     }
 
-    if (activateApplicationError || deactivateApplicationError) {
-      useErrorToast(t('list.access_error'));
-    }
-
-    if (removeApplicationError) {
-      useErrorToast(t('list.remove_error'));
-    }
-  }, [error, deactivateApplicationError, activateApplicationError, removeApplicationError]);
+  }, [error]);
 
   const buildUserActionColumn = (): TableColumn<Application> => {
-    const restrictedApplicationMenu = [
-      {
-        name: t('list.view'),
-        icon: EyeIcon,
-        onClick: onView,
-      },
-      {
-        name: t('list.activate'),
-        icon: ArrowPathIcon,
-        onClick: onActivateApplication,
-        type: PopoverMenuRowType.SUCCESS,
-      },
-      {
-        name: t('list.remove'),
-        icon: TrashIcon,
-        onClick: onDeleteApplication,
-        type: PopoverMenuRowType.REMOVE,
-      },
-    ];
 
     const activeApplicationMenu = [
       {
@@ -121,12 +72,6 @@ const ApplicationListTable = () => {
         onClick: onView,
         type: PopoverMenuRowType.INFO,
       },
-      {
-        name: t('list.restrict'),
-        icon: NoSymbolIcon,
-        onClick: onRestrictApplication,
-        type: PopoverMenuRowType.REMOVE,
-      },
     ];
 
     return {
@@ -134,11 +79,7 @@ const ApplicationListTable = () => {
       cell: (row: Application) => (
         <PopoverMenu
           row={row}
-          menuItems={
-            row.status === ApplicationStatus.ACTIVE
-              ? activeApplicationMenu
-              : restrictedApplicationMenu
-          }
+          menuItems={activeApplicationMenu}
         />
       ),
       width: '50px',
@@ -179,50 +120,10 @@ const ApplicationListTable = () => {
     selected.type === ApplicationTypeEnum.ALL ? setType(null) : setType(selected);
   };
 
-  const onActivateApplication = (row: Application) => {
-    activateApplication(
-      { applicationId: row.id.toString() },
-      {
-        onSuccess: () => refetch(),
-      },
-    );
-  };
-
-  const onRestrictApplication = (row: Application) => {
-    deactivateApplication(
-      { applicationId: row.id.toString() },
-      {
-        onSuccess: () => refetch(),
-      },
-    );
-  };
-
   const onResetFilters = () => {
     setStatus(null);
     setType(null);
     setSearchWord(null);
-  };
-
-  const onDeleteApplication = (row: Application) => {
-    setApplicationToBeRemoved(row.id);
-  };
-
-  const onConfirmDeleteApplication = () => {
-    if (applicationToBeRemoved)
-      removeApplication(
-        { applicationId: applicationToBeRemoved },
-        {
-          onSuccess: () => {
-            useSuccessToast(t('list.remove_success'));
-            refetch();
-          },
-          onSettled: () => setApplicationToBeRemoved(null),
-        },
-      );
-  };
-
-  const onCancelRemoveApplication = () => {
-    setApplicationToBeRemoved(null);
   };
 
   return (
@@ -267,10 +168,7 @@ const ApplicationListTable = () => {
           columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
           data={applications.items}
           loading={
-            isLoading ||
-            activateApplicationLoading ||
-            deactivateApplicationLoading ||
-            removeApplicationLoading
+            isLoading
           }
           pagination
           sortServer
@@ -284,16 +182,6 @@ const ApplicationListTable = () => {
           onRowClicked={onView}
         />
       </div>
-      {applicationToBeRemoved && (
-        <ConfirmationModal
-          title={t('list.confirmation')}
-          description={t('list.description')}
-          closeBtnLabel={t('back', { ns: 'common' })}
-          confirmBtnLabel={t('delete', { ns: 'common' })}
-          onClose={onCancelRemoveApplication}
-          onConfirm={onConfirmDeleteApplication}
-        />
-      )}
     </div>
   );
 };

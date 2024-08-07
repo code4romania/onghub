@@ -1062,6 +1062,15 @@
         "label": "Descriere scurtă",
         "helper": "Descrie aplicația în maxim 200 de caractere"
       },
+      "status": {
+        "label": "Status aplicație",
+        "options": {
+          "active": "Activă (aplicația poate fi adăugată de organizații în profilul lor)",
+          "disabled": "Inactivă (aplicația nu poate fi adăugată de organizații în profilul lor)"
+        },
+        "section_title": "Status aplicație",
+        "section_subtitle": "Statusul aplicației influențează disponibilitatea acesteia pentru organizații"
+      },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
         "max": "Descrierea extinsă poate avea maxim 7000 de caractere",
