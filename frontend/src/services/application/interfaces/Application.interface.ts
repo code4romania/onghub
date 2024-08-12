@@ -39,7 +39,7 @@ export interface ApplicationWithOngStatus {
   pullingType?: ApplicationPullingType;
   website: string;
   createdOn: Date;
-  applicationLabel: ApplicationLabel;
+  applicationLabel: string;
 }
 
 export interface ApplicationAccess {

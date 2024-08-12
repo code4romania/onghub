@@ -284,7 +284,7 @@ const ApplicationForm = ({
               render={({ field: { onChange, value } }) => {
                 return (
                   <CreatableSelectComponent
-                    id="practice-program-form__skills"
+                    id="application-form__application-label"
                     value={value}
                     isMulti={false}
                     label={AddAppConfig.applicationLabel.config.label}
@@ -295,6 +295,7 @@ const ApplicationForm = ({
                     ]?.message?.toString()}
                     onChange={onChange}
                     options={[...applicationLabels.map(mapNameToSelect)]}
+                    validation={(inputValue) => inputValue ? inputValue.length < 30 : false}
                   />
                 );
               }}

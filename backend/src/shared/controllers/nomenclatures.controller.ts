@@ -10,7 +10,7 @@ import { ILike } from 'typeorm';
 import { CitySearchDto } from '../dto/city-search.dto';
 import { FacultySearchDto } from '../dto/faculty-search.dto';
 import { NomenclaturesService } from '../services';
-import { CacheInterceptor } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Public()
 @UseInterceptors(ClassSerializerInterceptor, CacheInterceptor)
@@ -79,6 +79,7 @@ export class NomenclaturesController {
     return this.nomenclaturesService.getIssuers({});
   }
 
+  @CacheTTL(60 * 5)
   @Get('application-labels')
   getApplicationLabels() {
     return this.nomenclaturesService.getApplicationLabels({});

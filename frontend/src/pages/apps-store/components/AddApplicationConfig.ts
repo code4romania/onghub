@@ -172,7 +172,7 @@ export const AddAppConfig: Record<string, any> = {
     config: {
       type: 'text',
       label: i18n.t('appstore:config.application_label.label'),
-      helperText: '',
+      helperText: i18n.t('appstore:config.application_label.helper'),
       placeholder: '',
     },
   },

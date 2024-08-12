@@ -27,6 +27,7 @@
       "completed": "Completat",
       "not_completed": "Necompletat"
     },
+    "add_option": "Adaugă opțiunea",
     "any": "Toate",
     "restricted": "Restricționat",
     "active": "Activ",
@@ -1106,6 +1107,10 @@
         "min": "Pasul trebuie să aibă minim 2 caractere",
         "max": "Pasul trebuie să aibă maxim 100 de caractere",
         "label": "Pas"
+      },
+      "application_label": {
+        "label": "Eticheta pentru aplicație (eticheta apare în meniul Toate aplicațiile)",
+        "helper": "Adaugă o etichetă deja existentă sau creează una nouă"
       }
     },
     "request_modal": {
