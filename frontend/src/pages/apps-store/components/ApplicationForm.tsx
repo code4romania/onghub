@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
-import { fileToURL } from '../../../common/helpers/format.helper';
+import { fileToURL, mapNameToSelect } from '../../../common/helpers/format.helper';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
@@ -21,6 +21,10 @@ import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 import RichText from '../../../components/RichText/RichText';
 import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
+import CreatableSelectComponent from '../../../components/creatable-multi-select/CreatableMultiSelect';
+import { useStore } from 'zustand';
+import { useNomenclature } from '../../../store/selectors';
+import { useApplicationLabelsQuery } from '../../../services/nomenclature/Nomenclature.queries';
 
 interface ApplicationFormProps {
   control: Control<CreateApplicationDto, object>;
@@ -47,6 +51,10 @@ const ApplicationForm = ({
   });
 
   const { t } = useTranslation('appstore');
+
+  const { applicationLabels } = useNomenclature()
+
+  useApplicationLabelsQuery();
 
   // watchers
   const type = watch('type');
@@ -265,12 +273,33 @@ const ApplicationForm = ({
             )}
           </div>
           {/* End Logo */}
-          <div className='flex flex-col gap-4 pt-4'>
+          {readonly && <div className='flex flex-col gap-4 pt-4'>
             <SectionHeader title={t('appstore:config.status.section_title')} subTitle={t('appstore:config.status.section_subtitle')} />
-            {readonly && (
-              <RadioGroup control={control} errors={errors.status} config={AddAppConfig.status} />
-            )}
-          </div>
+            <RadioGroup control={control} errors={errors.status} config={AddAppConfig.status} />
+            <Controller
+              key={AddAppConfig.applicationLabel.key}
+              name={AddAppConfig.applicationLabel.key}
+              rules={AddAppConfig.applicationLabel.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <CreatableSelectComponent
+                    id="practice-program-form__skills"
+                    value={value}
+                    isMulti={false}
+                    label={AddAppConfig.applicationLabel.config.label}
+                    helperText={AddAppConfig.applicationLabel.config.helperText}
+                    placeholder={AddAppConfig.applicationLabel.config.placeholder}
+                    error={(errors as Record<string, { message: string }>)[
+                      AddAppConfig.applicationLabel.key
+                    ]?.message?.toString()}
+                    onChange={onChange}
+                    options={[...applicationLabels.map(mapNameToSelect)]}
+                  />
+                );
+              }}
+            />
+          </div>}
           <div className="flex flex-col gap-4 pt-4">
             <SectionHeader title={t('form.steps_title')} subTitle={t('form.steps_subtitle')} />
             {fields.map((item, index) => {

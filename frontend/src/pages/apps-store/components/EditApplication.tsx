@@ -13,6 +13,7 @@ import { CreateApplicationDto } from '../../../services/application/interfaces/A
 import ApplicationForm from './ApplicationForm';
 import { useTranslation } from 'react-i18next';
 import { PullingTypeOptions } from './AddApplicationConfig';
+import { mapNameToSelect } from '../../../common/helpers/format.helper';
 
 const EditApplication = () => {
   const navigate = useNavigate();
@@ -45,12 +46,16 @@ const EditApplication = () => {
 
   useEffect(() => {
     if (application) {
+
+
+
       reset({
         ...application,
         steps: application.steps?.map((step) => ({ item: step })),
         pullingType: application.pullingType
           ? (PullingTypeOptions.find((item) => item.value === application.pullingType) as any)
           : undefined,
+        applicationLabel: mapNameToSelect(application.applicationLabel)
       });
       setLogo(application.logo);
     }
@@ -65,6 +70,8 @@ const EditApplication = () => {
   const onSubmit = async (data: Partial<CreateApplicationDto>) => {
     // don't set the logo path
     const { logo, ...payload } = data;
+
+    console.log(data);
 
     await updateApplication(
       {

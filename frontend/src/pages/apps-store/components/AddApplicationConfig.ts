@@ -166,6 +166,16 @@ export const AddAppConfig: Record<string, any> = {
       },
     ],
   },
+  applicationLabel: {
+    key: 'applicationLabel',
+    rules: {},
+    config: {
+      type: 'text',
+      label: i18n.t('appstore:config.application_label.label'),
+      helperText: '',
+      placeholder: '',
+    },
+  },
   shortDescription: {
     key: 'shortDescription',
     rules: {

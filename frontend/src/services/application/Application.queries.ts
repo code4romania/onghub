@@ -5,9 +5,7 @@ import { ApplicationTypeEnum } from '../../pages/apps-store/constants/Applicatio
 import { OngApplicationStatus } from '../../pages/requests/interfaces/OngApplication.interface';
 import useStore from '../../store/store';
 import {
-  activateApplication,
   createApplication,
-  deactivateApplication,
   getApplicationById,
   getApplicationOrganizations,
   getApplications,
@@ -142,7 +140,6 @@ export const useUpdateApplicationMutation = () => {
     }) => updateApplication(applicationId, applicationUpdatePayload, logo),
   );
 };
-
 
 export const useRestrictApplicationMutation = () => {
   return useMutation(

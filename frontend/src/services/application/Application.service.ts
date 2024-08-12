@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
-import { cleanupPayload } from '../../common/helpers/format.helper';
+import { cleanupPayload, mapSelectToApplicationLabel } from '../../common/helpers/format.helper';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { ApplicationTypeEnum } from '../../pages/apps-store/constants/ApplicationType.enum';
 import { OngApplicationStatus } from '../../pages/requests/interfaces/OngApplication.interface';
@@ -14,6 +14,7 @@ import {
   ApplicationStatus,
   ApplicationWithOngStatus,
 } from './interfaces/Application.interface';
+import { mapEntityToFormData } from '../organization/OrganizationFormDataMapper.service';
 
 export const createApplication = (
   createApplicationDto: CreateApplicationDto,
@@ -137,9 +138,9 @@ const generateApplicationFormDataPayload = (
   logo?: File,
 ): FormData => {
   // we remove the logo and steps
-  const { steps, pullingType, ...data } = applicationDto;
+  const { steps, pullingType, applicationLabel, ...data } = applicationDto;
   // create form data payload
-  const payload = new FormData();
+  let payload = new FormData();
   for (const prop in cleanupPayload(data)) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload.append(prop, (data as any)[prop] as string);
@@ -159,6 +160,14 @@ const generateApplicationFormDataPayload = (
   // check if logo was attached and add file
   if (logo) {
     payload.append('logo', logo);
+  }
+
+  if (applicationLabel) {
+    payload = mapEntityToFormData(
+      payload,
+      'applicationLabel',
+      mapSelectToApplicationLabel(applicationLabel),
+    );
   }
 
   return payload;

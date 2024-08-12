@@ -16,6 +16,7 @@ export interface CreatableMultiSelectProps {
   onChange: any;
   options: ISelectData[];
   id?: string;
+  isMulti?: boolean;
 }
 
 const CreatableMultiSelect = ({
@@ -28,6 +29,7 @@ const CreatableMultiSelect = ({
   readonly,
   options,
   id,
+  isMulti = true,
 }: CreatableMultiSelectProps) => {
   return (
     <div>
@@ -47,7 +49,7 @@ const CreatableMultiSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={true}
               selected={false}
-              onClick={() => {}}
+              onClick={() => { }}
               id={id}
             />
           ))}
@@ -55,7 +57,7 @@ const CreatableMultiSelect = ({
       )}
       {!readonly && (
         <CreatableSelect
-          isMulti
+          isMulti={isMulti}
           placeholder={placeholder}
           classNamePrefix="reactselect"
           onChange={onChange}

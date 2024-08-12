@@ -78,4 +78,9 @@ export class NomenclaturesController {
   getIssuers() {
     return this.nomenclaturesService.getIssuers({});
   }
+
+  @Get('application-labels')
+  getApplicationLabels() {
+    return this.nomenclaturesService.getApplicationLabels({});
+  }
 }

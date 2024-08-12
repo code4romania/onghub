@@ -5,8 +5,11 @@ import { IPageTab } from '../../common/interfaces/tabs.interface';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { Loading } from '../../components/loading/Loading';
 import Select from '../../components/Select/Select';
-import { useApplicationQuery } from '../../services/application/Application.queries';
+import { useApplicationQuery, useRemoveApplication } from '../../services/application/Application.queries';
 import { APPLICATION_TABS } from './constants/ApplicationTabs';
+import ConfirmationModal from '../../components/confim-removal-modal/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
+import { useErrorToast } from '../../common/hooks/useToast';
 
 const ApplicationWithOngList = () => {
   const navigate = useNavigate();
@@ -17,12 +20,28 @@ const ApplicationWithOngList = () => {
   });
   const params = useParams();
   const locationLength = location.pathname.split('/').length - 1;
+  const { t } = useTranslation(['appstore', 'common']);
+
+  const [applicationToBeRemoved, setApplicationToBeRemoved] = useState<number | null>(null);
 
   const {
     data: application,
     isLoading,
     refetch: refecthApplication,
   } = useApplicationQuery(params.id ? params?.id : '');
+
+  const {
+    mutateAsync: removeApplication,
+    error: removeApplicationError,
+    isLoading: removeApplicationLoading,
+  } = useRemoveApplication();
+
+  useEffect(() => {
+    if (removeApplicationError) {
+      useErrorToast(t('list.remove_error'));
+    }
+  }, [removeApplicationError]);
+
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_TABS.find(
@@ -59,6 +78,27 @@ const ApplicationWithOngList = () => {
     navigate('/applications');
   };
 
+  const onCancelRemoveApplication = () => {
+    setApplicationToBeRemoved(null);
+  }
+
+  const onConfirmDeleteApplication = () => {
+    if (applicationToBeRemoved) {
+      removeApplication({ applicationId: applicationToBeRemoved }, {
+        onSuccess: () => {
+          setApplicationToBeRemoved(null);
+          naivgateBack();
+        },
+      })
+    }
+  }
+
+  const onSetApplicationToBeRemoved = () => {
+    if (params.id) {
+      setApplicationToBeRemoved(+params.id);
+    }
+  }
+
   return (
     <ContentWrapper
       title={application?.name || ''}
@@ -69,6 +109,11 @@ const ApplicationWithOngList = () => {
       editButton={{
         btnLabel: 'Editeaza',
         onBtnClick: onApplicationEdit,
+        visible: true,
+      }}
+      deleteButton={{
+        btnLabel: 'Sterge',
+        onBtnClick: onSetApplicationToBeRemoved,
         visible: true,
       }}
     >
@@ -106,7 +151,18 @@ const ApplicationWithOngList = () => {
         </span>
       </div>
       <Outlet context={[application, refecthApplication]} />
-    </ContentWrapper>
+      {applicationToBeRemoved && (
+        <ConfirmationModal
+          title={t('list.confirmation')}
+          description={t('list.description')}
+          closeBtnLabel={t('back', { ns: 'common' })}
+          confirmBtnLabel={t('delete', { ns: 'common' })}
+          onClose={onCancelRemoveApplication}
+          onConfirm={onConfirmDeleteApplication}
+        />
+      )}
+
+    </ContentWrapper >
   );
 };
 

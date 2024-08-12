@@ -37,6 +37,8 @@ import { ApplicationTableViewRepository } from '../repositories/application-tabl
 import { ApplicationRepository } from '../repositories/application.repository';
 import { OngApplicationRepository } from '../repositories/ong-application.repository';
 import { UserOngApplicationRepository } from '../repositories/user-ong-application.repository';
+import { ApplicationLabel } from 'src/shared/entities/application-labels.entity';
+import { NomenclaturesService } from 'src/shared/services';
 
 @Injectable()
 export class ApplicationService {
@@ -49,6 +51,7 @@ export class ApplicationService {
     private readonly ongApplicationRepository: OngApplicationRepository,
     private readonly userOngApplicationRepository: UserOngApplicationRepository,
     private readonly applicationOngViewRepository: ApplicationOngViewRepository,
+    private readonly nomenclatureService: NomenclaturesService,
   ) {}
 
   public async create(
@@ -250,6 +253,7 @@ export class ApplicationService {
         'application.video_link as "videoLink"',
         'application.pulling_type as "pullingType"',
         'application.status as "applicationStatus"',
+        'applicationLabel',
       ])
       .leftJoin(
         'ong_application',
@@ -261,6 +265,11 @@ export class ApplicationService {
         'user_ong_application',
         'userOngApp',
         'userOngApp.ong_application_id = ongApp.id',
+      )
+      .leftJoin(
+        '_application-label',
+        'applicationLabel',
+        'applicationLabel.id = application.application_label_id',
       )
       .where('application.id = :applicationId', { applicationId });
 
@@ -292,8 +301,19 @@ export class ApplicationService {
       );
     }
 
+    const applicationLabel = {
+      id: applicationWithDetails.applicationLabel_id,
+      name: applicationWithDetails.applicationLabel_name,
+    };
+
+    delete applicationWithDetails.applicationLabel_id;
+    delete applicationWithDetails.applicationLabel_name;
+    delete applicationWithDetails.applicationLabel_created_on;
+    delete applicationWithDetails.applicationLabel_updated_on;
+
     return {
       ...applicationWithDetails,
+      applicationLabel,
       logo,
     };
   }
@@ -346,7 +366,19 @@ export class ApplicationService {
         };
       }
 
-      return this.applicationRepository.update({ id }, applicationPayload);
+      let applicationLabel = null;
+      if (applicationPayload.applicationLabel) {
+        applicationLabel = await this.saveAndGetApplicationLabel(
+          applicationPayload.applicationLabel,
+        );
+      }
+
+      console.log(applicationLabel);
+
+      return this.applicationRepository.update(
+        { id },
+        { ...applicationPayload, applicationLabel },
+      );
     } catch (error) {
       this.logger.error({
         error: { error },
@@ -501,5 +533,18 @@ export class ApplicationService {
       .getCount();
 
     return applicationCount;
+  }
+
+  private async saveAndGetApplicationLabel(
+    label: Partial<ApplicationLabel>,
+  ): Promise<ApplicationLabel> {
+    if (label.id) {
+      return label as ApplicationLabel;
+    }
+
+    const newLabel =
+      await this.nomenclatureService.createApplicationLabel(label);
+
+    return newLabel;
   }
 }

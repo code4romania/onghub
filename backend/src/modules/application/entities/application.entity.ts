@@ -1,9 +1,17 @@
 import { BaseEntity } from 'src/common/base/base-entity.class';
-import { Column, Entity, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { OngApplication } from './ong-application.entity';
+import { ApplicationLabel } from 'src/shared/entities/application-labels.entity';
 
 @Entity()
 export class Application extends BaseEntity {
@@ -60,4 +68,11 @@ export class Application extends BaseEntity {
 
   @OneToMany(() => OngApplication, (ongApp) => ongApp.application)
   ongApplications: OngApplication[];
+
+  @Column({ type: 'integer', name: 'application_label_id', nullable: true })
+  applicationLabelId: number;
+
+  @ManyToOne((type) => ApplicationLabel)
+  @JoinColumn({ name: 'application_label_id' })
+  applicationLabel: ApplicationLabel;
 }
