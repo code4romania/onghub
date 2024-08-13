@@ -46,9 +46,6 @@ const EditApplication = () => {
 
   useEffect(() => {
     if (application) {
-
-
-
       reset({
         ...application,
         steps: application.steps?.map((step) => ({ item: step })),
@@ -70,9 +67,6 @@ const EditApplication = () => {
   const onSubmit = async (data: Partial<CreateApplicationDto>) => {
     // don't set the logo path
     const { logo, ...payload } = data;
-
-    console.log(data);
-
     await updateApplication(
       {
         applicationId: id as string,
