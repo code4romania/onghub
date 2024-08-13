@@ -3,6 +3,7 @@ import useStore from '../store';
 export const useNomenclature = () => {
   const counties = useStore((state) => state.counties);
   const cities = useStore((state) => state.cities);
+  const organizationCities = useStore((state) => state.organizationCities);
   const domains = useStore((state) => state.domains);
   const regions = useStore((state) => state.regions);
   const federations = useStore((state) => state.federations);
@@ -13,6 +14,7 @@ export const useNomenclature = () => {
   return {
     counties,
     cities,
+    organizationCities,
     domains,
     regions,
     federations,

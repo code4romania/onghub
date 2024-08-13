@@ -12,6 +12,7 @@ import { Skill } from '../../common/interfaces/skill.interface';
 export const nomenclatureSlice = (set: any) => ({
   counties: [],
   cities: [],
+  organizationCities: [],
   domains: [],
   regions: [],
   federations: [],
@@ -24,6 +25,9 @@ export const nomenclatureSlice = (set: any) => ({
   },
   setCities: (cities: City[]) => {
     set({ cities });
+  },
+  setOrganizationCities: (cities: City[]) => {
+    set({ organizationCities: cities });
   },
   setDomains: (domains: Domain[]) => {
     set({ domains });

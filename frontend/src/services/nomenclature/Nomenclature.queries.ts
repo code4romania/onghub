@@ -35,6 +35,16 @@ export const useCitiesQuery = (countyId: number) => {
   });
 };
 
+export const useOrganizationCitiesQuery = (countyId: number) => {
+  const { setOrganizationCities } = useStore();
+  return useQuery(['cities', countyId], () => getCities('', countyId), {
+    onSuccess: (data: City[]) => {
+      setOrganizationCities(data);
+    },
+    enabled: !!countyId,
+  });
+};
+
 export const useCountiesQuery = () => {
   const { setCounties } = useStore();
   return useQuery('counties', () => getCounties(), {

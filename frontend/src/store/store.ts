@@ -67,6 +67,7 @@ interface OrganizationState {
 interface NomenclatureState {
   counties: County[];
   cities: City[];
+  organizationCities: City[];
   domains: Domain[];
   regions: Region[];
   federations: Federation[];
@@ -76,6 +77,7 @@ interface NomenclatureState {
   issuers: Issuer[];
   setCounties: (counties: County[]) => void;
   setCities: (cities: City[]) => void;
+  setOrganizationCities: (cities: City[]) => void;
   setDomains: (domains: Domain[]) => void;
   setRegions: (regions: Region[]) => void;
   setFederations: (federations: Federation[]) => void;

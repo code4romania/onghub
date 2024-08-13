@@ -13,7 +13,7 @@ import Select from '../../../components/Select/Select';
 import Textarea from '../../../components/Textarea/Textarea';
 import ErrorsBanner from '../../../components/errors-banner/ErrorsBanner';
 import SectionHeader from '../../../components/section-header/SectionHeader';
-import { useCitiesQuery, useIssuersQuery } from '../../../services/nomenclature/Nomenclature.queries';
+import { useCitiesQuery, useOrganizationCitiesQuery } from '../../../services/nomenclature/Nomenclature.queries';
 import { useCreateOrganizationRequestValidationMutation } from '../../../services/request/Request.queries';
 import { useNomenclature } from '../../../store/selectors';
 import { OrganizationGeneralConfig } from '../../organization/components/OrganizationGeneral/OrganizationGeneralConfig';
@@ -31,7 +31,7 @@ const CreateOrganizationGeneral = () => {
   const [organizationCounty, setOrganizationCounty] = useState<any>();
   const [organizationCity, setOrganizationCity] = useState<any>();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
-  const { cities, counties, issuers } = useNomenclature();
+  const { cities, counties, issuers, organizationCities } = useNomenclature();
 
   const [organization, setOrganization, logo, setLogo, , , activeStepIndex, setActiveStepIndex] =
     useOutletContext<any>();
@@ -42,6 +42,8 @@ const CreateOrganizationGeneral = () => {
 
   // queries
   useCitiesQuery(county?.id);
+  useOrganizationCitiesQuery(organizationCounty?.id);
+
   const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
@@ -129,17 +131,25 @@ const CreateOrganizationGeneral = () => {
     if (county && !readonly && !city) {
       setValue('city', null);
     }
+  }, [cities]);
 
-    if (organizationCity && !readonly && !organizationCity) {
+  useEffect(() => {
+    if (organizationCounty && !readonly && !organizationCity) {
       setValue('organizationCity', null);
     }
-  }, [cities]);
+  }, [organizationCities]);
 
   useEffect(() => {
     if (county && city && city.county.id !== county.id) {
       setCity(null);
     }
   }, [county]);
+
+  useEffect(() => {
+    if (organizationCounty && organizationCity && organizationCity.county.id !== organizationCounty.id) {
+      setOrganizationCity(null);
+    }
+  }, [organizationCounty]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -669,8 +679,6 @@ const CreateOrganizationGeneral = () => {
                         onChange={(e: any) => {
                           onChange(e);
                           setOrganizationCounty(e);
-                          setValue('organizationCity', null);
-                          setOrganizationCity(null);
                         }}
                         readonly={readonly}
                       />
@@ -688,7 +696,7 @@ const CreateOrganizationGeneral = () => {
                         config={{
                           id: 'create-organization-general__organization-city',
                           ...OrganizationGeneralConfig.organizationCity.config,
-                          collection: cities || [],
+                          collection: organizationCities || [],
                           displayedAttribute: 'name',
                         }}
                         error={errors[OrganizationGeneralConfig.organizationCity.key]?.message}
