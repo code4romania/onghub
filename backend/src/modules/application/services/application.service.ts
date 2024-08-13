@@ -373,8 +373,6 @@ export class ApplicationService {
         );
       }
 
-      console.log(applicationLabel);
-
       return this.applicationRepository.update(
         { id },
         { ...applicationPayload, applicationLabel },
