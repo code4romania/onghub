@@ -1110,7 +1110,8 @@
       },
       "application_label": {
         "label": "Eticheta pentru aplicație (eticheta apare în meniul Toate aplicațiile)",
-        "helper": "Adaugă o etichetă deja existentă sau creează una nouă"
+        "helper": "Adaugă o etichetă deja existentă sau creează una nouă",
+        "maxLength": "Eticheta poate avea maxim 30 de caractere"
       }
     },
     "request_modal": {

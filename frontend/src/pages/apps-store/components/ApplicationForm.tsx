@@ -7,6 +7,7 @@ import {
   FieldErrorsImpl,
   DeepRequired,
   UseFormWatch,
+  UseFormClearErrors,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
@@ -15,14 +16,12 @@ import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import Select from '../../../components/Select/Select';
-import Textarea from '../../../components/Textarea/Textarea';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 import RichText from '../../../components/RichText/RichText';
 import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
 import CreatableSelectComponent from '../../../components/creatable-multi-select/CreatableMultiSelect';
-import { useStore } from 'zustand';
 import { useNomenclature } from '../../../store/selectors';
 import { useApplicationLabelsQuery } from '../../../services/nomenclature/Nomenclature.queries';
 
@@ -34,6 +33,7 @@ interface ApplicationFormProps {
   setFile: (file: File) => void;
   logo?: string | null;
   readonly?: boolean;
+  clearErrors?: UseFormClearErrors<CreateApplicationDto>;
 }
 
 const ApplicationForm = ({
@@ -44,6 +44,7 @@ const ApplicationForm = ({
   logo,
   file,
   setFile,
+  clearErrors
 }: ApplicationFormProps) => {
   const { fields, append, remove } = useFieldArray<CreateApplicationDto>({
     control,
@@ -67,6 +68,18 @@ const ApplicationForm = ({
       event.target.value = '';
     }
   };
+
+  const ribbonValidation = (inputValue: string) => {
+    if (inputValue.length > 30 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+      control.setError(AddAppConfig.applicationLabel.key, { type: 'maxLength', message: t('config.application_label.maxLength') });
+      return false;
+    } else if (inputValue.length > 30) {
+      return false;
+    } else if (inputValue.length < 30 && clearErrors && (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+      clearErrors(AddAppConfig.applicationLabel.key);
+    }
+    return true;
+  }
 
   return (
     <div className="p-5 sm:p-10 flex">
@@ -295,7 +308,7 @@ const ApplicationForm = ({
                     ]?.message?.toString()}
                     onChange={onChange}
                     options={[...applicationLabels.map(mapNameToSelect)]}
-                    validation={(inputValue) => inputValue ? inputValue.length < 30 : false}
+                    validation={ribbonValidation}
                   />
                 );
               }}

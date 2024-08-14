@@ -58,6 +58,11 @@ const CreatableMultiSelect = ({
           ))}
         </div>
       )}
+      {error && (
+        <p className="my-1 text-sm text-red-600" id={`${id}__input-error`}>
+          {error}
+        </p>
+      )}
       {!readonly && (
         <CreatableSelect
           isMulti={isMulti}
@@ -76,11 +81,7 @@ const CreatableMultiSelect = ({
           {helperText}
         </p>
       )}
-      {error && (
-        <p className="mt-1 text-sm text-red-600" id={`${id}__input-error`}>
-          {error}
-        </p>
-      )}
+
     </div>
   );
 };

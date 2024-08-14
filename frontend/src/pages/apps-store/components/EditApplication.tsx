@@ -28,6 +28,7 @@ const EditApplication = () => {
     formState: { errors },
     reset,
     watch,
+    clearErrors
   } = useForm<CreateApplicationDto>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -118,6 +119,7 @@ const EditApplication = () => {
           logo={logo}
           file={file}
           setFile={setFile}
+          clearErrors={clearErrors}
         />
       </div>
     </ContentWrapper>

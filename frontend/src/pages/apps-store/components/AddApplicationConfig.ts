@@ -168,7 +168,12 @@ export const AddAppConfig: Record<string, any> = {
   },
   applicationLabel: {
     key: 'applicationLabel',
-    rules: {},
+    rules: {
+      maxLength: {
+        value: 30,
+        message: translations.short.max,
+      },
+    },
     config: {
       type: 'text',
       label: i18n.t('appstore:config.application_label.label'),
