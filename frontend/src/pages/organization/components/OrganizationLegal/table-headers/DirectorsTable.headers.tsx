@@ -8,6 +8,7 @@ const translations = {
   name: i18n.t('legal:header.name'),
   email: i18n.t('legal:header.email'),
   phone: i18n.t('legal:header.phone'),
+  role: i18n.t('legal:header.role'),
 };
 
 export const DirectorsTableHeaders: TableColumn<Contact>[] = [
@@ -31,6 +32,14 @@ export const DirectorsTableHeaders: TableColumn<Contact>[] = [
     id: 'phone',
     name: <DataTableNameHeader text={translations.phone} />,
     selector: (row: Contact) => row.phone,
+    grow: 1,
+    minWidth: '10rem',
+    sortable: true,
+  },
+  {
+    id: 'role',
+    name: <DataTableNameHeader text={translations.role} />,
+    selector: (row: Contact) => row.role,
     grow: 1,
     minWidth: '10rem',
     sortable: true,

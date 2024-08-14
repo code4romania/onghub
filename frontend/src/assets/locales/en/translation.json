@@ -35,7 +35,7 @@
     "show_more": "See all",
     "show_less": "Show less",
     "upload": {
-      "file": "Only PDF files are allowed for the organisation's status.",
+      "file": "Only PDF files are allowed for upload.",
       "image": "Only PNG, JPG, JPEG files are allowed for the logo",
       "image_size": "The maximum size for the logo is 6 MB",
       "document_size": "The maximum size for the organisation's charter is 25 MB",

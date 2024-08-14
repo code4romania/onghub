@@ -4,6 +4,7 @@ import { County } from '../../common/interfaces/county.interface';
 import { Domain } from '../../common/interfaces/domain.interface';
 import { Faculty } from '../../common/interfaces/faculty.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
+import { Issuer } from '../../common/interfaces/issuer.interface';
 import { Region } from '../../common/interfaces/region.interface';
 import { Skill } from '../../common/interfaces/skill.interface';
 
@@ -17,6 +18,7 @@ export const nomenclatureSlice = (set: any) => ({
   coalitions: [],
   skills: [],
   faculties: [],
+  issuers: [],
   setCounties: (counties: County[]) => {
     set({ counties });
   },
@@ -40,6 +42,9 @@ export const nomenclatureSlice = (set: any) => ({
   },
   setFaculties: (faculties: Faculty[]) => {
     set({ faculties });
+  },
+  setIssuers: (issuers: Issuer[]) => {
+    set({ issuers });
   },
 });
 

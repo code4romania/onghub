@@ -247,6 +247,7 @@ const OrganizationLegal = () => {
       fullName: data.legalReprezentative_fullName,
       phone: data.legalReprezentative_phone,
       email: data.legalReprezentative_email,
+      role: data.legalReprezentative_role,
     };
 
     updateOrganization(
@@ -427,6 +428,7 @@ const OrganizationLegal = () => {
                   OrganizationLegalConfig.legal_reprezentative_name,
                   OrganizationLegalConfig.legal_reprezentative_email,
                   OrganizationLegalConfig.legal_reprezentative_phone,
+                  OrganizationLegalConfig.legal_reprezentative_role,
                 ]}
               />
             </form>

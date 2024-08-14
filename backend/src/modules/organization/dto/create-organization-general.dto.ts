@@ -75,6 +75,30 @@ export class CreateOrganizationGeneralDto {
   @Trim()
   cui: string;
 
+  @IsString()
+  @MaxLength(30)
+  @Trim()
+  associationRegistryNumber: string;
+
+  @IsString()
+  @MaxLength(10)
+  @Trim()
+  associationRegistryPart: string;
+
+  @IsString()
+  @MaxLength(10)
+  @Trim()
+  associationRegistrySection: string;
+
+  @IsNumber()
+  @ToNumber()
+  associationRegistryIssuerId: number;
+
+  @IsString()
+  @MaxLength(30)
+  @Trim()
+  nationalRegistryNumber: string;
+
   /* 
   Organization Register of Associations and Foundations Number 
   @example 1249/A/2020

@@ -10,6 +10,8 @@ export const ORGANIZATION_ERRORS: Record<string, string> = {
   REQ_010: i18n.t('organization:create.errors.REQ_010'),
   REQ_011: i18n.t('organization:create.errors.REQ_011'),
   REQ_012: i18n.t('organization:create.errors.REQ_012'),
+  REQ_013: i18n.t('organization:create.errors.REQ_013'),
+  REQ_014: i18n.t('organization:create.errors.REQ_014'),
   UPDATE_GENERAL: i18n.t('organization:create.errors.ORG_026'),
 };
 

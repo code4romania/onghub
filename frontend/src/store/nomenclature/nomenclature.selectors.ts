@@ -9,5 +9,16 @@ export const useNomenclature = () => {
   const coalitions = useStore((state) => state.coalitions);
   const skills = useStore((state) => state.skills);
   const faculties = useStore((state) => state.faculties);
-  return { counties, cities, domains, regions, federations, coalitions, skills, faculties };
+  const issuers = useStore((state) => state.issuers);
+  return {
+    counties,
+    cities,
+    domains,
+    regions,
+    federations,
+    coalitions,
+    skills,
+    faculties,
+    issuers,
+  };
 };

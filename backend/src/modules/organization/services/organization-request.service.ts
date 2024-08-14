@@ -73,6 +73,7 @@ export class OrganizationRequestService {
         'organization.organizationGeneral.county',
         'organization.organizationGeneral.organizationCity',
         'organization.organizationGeneral.organizationCounty',
+        'organization.organizationGeneral.associationRegistryIssuer',
         'organization.organizationActivity',
         'organization.organizationActivity.federations',
         'organization.organizationActivity.coalitions',
@@ -172,13 +173,21 @@ export class OrganizationRequestService {
     if (organization) {
       // 2.1 validate organization general
       if (organization.general) {
-        const { cui, rafNumber, name, email, phone, alias } =
-          organization.general;
+        const {
+          cui,
+          name,
+          email,
+          phone,
+          alias,
+          associationRegistryNumber,
+          nationalRegistryNumber,
+        } = organization.general;
 
         errors.push(
           ...(await this.organizationService.validateOrganizationGeneral(
             cui,
-            rafNumber,
+            associationRegistryNumber,
+            nationalRegistryNumber,
             name,
             email,
             phone,
@@ -340,9 +349,8 @@ export class OrganizationRequestService {
 
   public async sendRestrictRequest(organizationId: number): Promise<void> {
     try {
-      const organization = await this.organizationService.findWithUsers(
-        organizationId,
-      );
+      const organization =
+        await this.organizationService.findWithUsers(organizationId);
 
       this.eventEmitter.emit(
         EVENTS.DISABLE_ORGANIZATION_REQUEST,

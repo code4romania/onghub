@@ -60,3 +60,7 @@ export const getSkills = (): Promise<Skill[]> => {
 export const getFaculties = (): Promise<Faculty[]> => {
   return API.get(`/nomenclatures/faculties`).then((res) => res.data);
 };
+
+export const getIssuers = (): Promise<{ id: number; name: string }[]> => {
+  return API.get(`/nomenclatures/issuers`).then((res) => res.data);
+};

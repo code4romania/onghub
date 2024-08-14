@@ -35,12 +35,12 @@
     "show_more": "Vezi tot",
     "show_less": "Arată mai puțin",
     "upload": {
-      "file": "Numai fișiere de tip PDF sunt permise pentru statutul organizației.",
+      "file": "Numai fișiere de tip PDF sunt permise pentru incarcare.",
       "image": "Numai fișiere de tip PNG, JPG, JPEG sunt permise pentru logo",
       "image_size": "Dimensiunea maximă pentru logo este de 6 MB",
-      "document_size": "Dimensiunea maximă pentru statutul organizației este de 25 MB",
+      "document_size": "Dimensiunea maximă pentru fișiere este de 25 MB",
       "logo": "Eroare la încărcarea logo-ului",
-      "statute": "Eroare la încărcarea statutului organizației"
+      "statute": "Eroare la încărcarea fișierului"
     },
     "filters": {
       "hide": "Ascunde filtre",
@@ -183,6 +183,8 @@
         "REQ_010": "Există deja o organizație cu acest alias",
         "REQ_011": "Există deja o organizație cu acest e-mail",
         "REQ_012": "Există deja o organizație cu acest număr de telefon",
+        "REQ_013": "Există deja o organizație cu acest număr si dată de înscriere în Registrul Special",
+        "REQ_014": "Există deja o organizație cu acest număr de înregistrare în Registrul Național",
         "REQ_002": "Există deja o cerere cu acest e-mail sau cu acest număr de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
@@ -311,6 +313,40 @@
         "invalid": "Numărul RAF are un format invalid",
         "label": "Număr de înregistrare în RAF*",
         "placeholder": "56/14.09.2020"
+      },
+      "association_registry_number": {
+        "required": "Numărul de înregistrare în Registrul Special este obligatoriu",
+        "max": "Numărul de înregistrare în Registrul Special poate avea maxim 30 de caractere",
+        "helper": "Numărul care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial.",
+        "label": "Număr si data de înscriere în Registrul Special",
+        "placeholder": "123/14.09.2020"
+      },
+      "association_registry_part": {
+        "required": "Partea din Registrul Special este obligatorie",
+        "max": "Partea din Registrul Special poate avea maxim 10 de caractere",
+        "helper": "Partea care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial, după număr, și dată. A corespunde asociațiilor, B fundațiilor, C federațiilor.",
+        "label": "Partea",
+        "placeholder": "A"
+      },
+      "association_registry_section": {
+        "required": "Secțiunea din Registrul Special este obligatorie",
+        "max": "Secțiunea din Registrul Special poate avea maxim 10 de caractere",
+        "helper": "Secțiunea care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial, după număr, dată și parte.",
+        "label": "Secțiunea",
+        "placeholder": "I"
+      },
+      "association_registry_issuer": {
+        "required": "Emitentul Registrului Special este obligatoriu",
+        "max": "Emitentul Registrului Special poate avea maxim 100 de caractere",
+        "helper": "Selectează din lista instanțelor de judecată, instanța care a conferit organizației statutul juridic. Instanța emitentă se află în antetul Certificatului de înscriere a persoanei juridice fără scop patrimonial.",
+        "label": "Instanța emitentă"
+      },
+      "national_registry_number": {
+        "required": "Numărul de înregistrare în Registrul Național este obligatoriu",
+        "max": "Numărul de înregistrare în Registrul Național poate avea maxim 30 de caractere",
+        "helper": "Acest număr se regăsește pe extrasele din Registrul Național pe care le solicitați (de exemplu pentru actualizarea anuală a datelor la bancă). Numărul poate fi regăsit și pe site-ul Ministerului Justiției - https://www.just.ro/registrul-national-ong/",
+        "label": "Numărul de înregistrare în Registrul Național, oferit de Ministerul Justiției",
+        "placeholder": "123/A/2020"
       },
       "city": {
         "required": "Localitatea este obligatorie",
@@ -509,7 +545,7 @@
     "non_political_affiliation_upload": "Încarcă fișier",
 
     "balance_sheet": "Bilanț contabil",
-    "balance_sheet_information": "Încarcă ultimul bilanțul contabil depus la Ministerul de Finanțe. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 50 MB",
+    "balance_sheet_information": "Încarcă ultimul bilanțul contabil depus la Ministerul de Finanțe. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 25 MB",
     "balance_sheet_no_document": "Nu există niciun document adăugat",
     "balance_sheet_file_name": "Bilanț contabil",
     "balance_sheet_upload": "Încarcă fișier",
@@ -549,7 +585,8 @@
       "name": "Nume și prenume",
       "role": "Rol",
       "email": "E-mail",
-      "phone": "Telefon"
+      "phone": "Telefon",
+      "role": "Rol"
     },
     "legal_config": {
       "name": {
@@ -571,6 +608,10 @@
         "minim": "Numărul de telefon al reprezentantului legal nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul reprezentantului legal nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "director_config": {
@@ -593,6 +634,10 @@
         "minim": "Numărul de telefon al membrului Consiliului Director nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul membrului Consiliului Director nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "other_config": {
