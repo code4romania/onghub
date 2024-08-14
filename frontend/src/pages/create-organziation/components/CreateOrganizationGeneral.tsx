@@ -124,20 +124,20 @@ const CreateOrganizationGeneral = () => {
   }, [organization]);
 
   const handleSetCounty = (newCounty: County) => {
-    if (newCounty.id === county.id) {
+    if (county && newCounty.id === county.id) {
       return;
     }
 
-    setCounty(county);
+    setCounty(newCounty);
     setValue('city', null);
   }
 
   const handleSetOrganizationCounty = (newCounty: County) => {
-    if (newCounty.id === organizationCounty.id) {
+    if (organizationCounty && newCounty.id === organizationCounty.id) {
       return;
     }
 
-    setOrganizationCounty(county);
+    setOrganizationCounty(newCounty);
     setValue('organizationCity', null);
   }
 
