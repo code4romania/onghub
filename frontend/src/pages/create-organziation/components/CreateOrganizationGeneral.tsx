@@ -23,13 +23,12 @@ import {
 } from '../constants/CreateOrganization.constant';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 import PhoneNumberInput from '../../../components/IntlTelInput/PhoneNumberInput';
+import { County } from '../../../common/interfaces/county.interface';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
-  const [city, setCity] = useState<any>();
   const [organizationCounty, setOrganizationCounty] = useState<any>();
-  const [organizationCity, setOrganizationCity] = useState<any>();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { counties, issuers } = useNomenclature();
 
@@ -120,36 +119,25 @@ const CreateOrganizationGeneral = () => {
     if (organization && organization.general) {
       reset(organization.general);
       setCounty(organization.general.county);
-      setCity(organization.general.city);
       setOrganizationCounty(organization.general.organizationCounty);
-      setOrganizationCity(organization.general.organizationCity);
     }
   }, [organization]);
 
-  useEffect(() => {
-    if (county && !readonly && !city) {
+  const handleSetCounty = (county: County) => {
+    setCounty(county);
+    const { city } = getValues();
+    if (county && city && city.county.id !== county.id) {
       setValue('city', null);
     }
+  }
 
-  }, [cities]);
-
-  useEffect(() => {
-    if (organizationCounty && !readonly && !organizationCity) {
+  const handleSetOrganizationCounty = (county: County) => {
+    setOrganizationCounty(county);
+    const { organizationCity } = getValues();
+    if (county && organizationCity && organizationCity.county.id !== county) {
       setValue('organizationCity', null);
     }
-  }, [organizationCities]);
-
-  useEffect(() => {
-    if (county && city && city.county.id !== county.id) {
-      setCity(null);
-    }
-  }, [county]);
-
-  useEffect(() => {
-    if (organizationCounty && organizationCity && organizationCity.county.id !== organizationCounty.id) {
-      setOrganizationCity(null);
-    }
-  }, [organizationCounty]);
+  }
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -417,7 +405,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setCounty(e);
+                          handleSetCounty(e);
                         }}
                         readonly={readonly}
                       />
@@ -678,9 +666,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setOrganizationCounty(e);
-                          setValue('organizationCity', null);
-                          setOrganizationCity(null);
+                          handleSetOrganizationCounty(e)
                         }}
                         readonly={readonly}
                       />
