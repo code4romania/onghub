@@ -123,20 +123,22 @@ const CreateOrganizationGeneral = () => {
     }
   }, [organization]);
 
-  const handleSetCounty = (county: County) => {
-    setCounty(county);
-    const { city } = getValues();
-    if (county && city && city.county.id !== county.id) {
-      setValue('city', null);
+  const handleSetCounty = (newCounty: County) => {
+    if (newCounty.id === county.id) {
+      return;
     }
+
+    setCounty(county);
+    setValue('city', null);
   }
 
-  const handleSetOrganizationCounty = (county: County) => {
-    setOrganizationCounty(county);
-    const { organizationCity } = getValues();
-    if (county && organizationCity && organizationCity.county.id !== county) {
-      setValue('organizationCity', null);
+  const handleSetOrganizationCounty = (newCounty: County) => {
+    if (newCounty.id === organizationCounty.id) {
+      return;
     }
+
+    setOrganizationCounty(county);
+    setValue('organizationCity', null);
   }
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
