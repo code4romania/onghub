@@ -325,7 +325,7 @@ const ApplicationForm = ({
                               )?.steps[index]?.item?.message as any),
                             defaultValue: value,
                             onChange: onChange,
-                            id: 'application-form__step',
+                            id: `application-form__step_${index}`,
                           }}
                         />
                       );
@@ -336,6 +336,8 @@ const ApplicationForm = ({
             })}
             <div className="flex gap-4 sm:flex-row flex-col">
               <button
+                id='application-form__step'
+                type="button"
                 className="save-button sm:text-sm lg:text-base text-xs"
                 onClick={(e: any) => {
                   e.preventDefault();
@@ -347,6 +349,8 @@ const ApplicationForm = ({
               </button>
               {fields.length > 0 && (
                 <button
+                  type="button"
+                  id='application-form_delete-step'
                   aria-label={t('form.delete_step')}
                   className="add-button sm:text-sm lg:text-base text-xs"
                   onClick={(e: any) => {

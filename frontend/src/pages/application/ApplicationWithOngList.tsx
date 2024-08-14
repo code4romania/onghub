@@ -31,17 +31,8 @@ const ApplicationWithOngList = () => {
   } = useApplicationQuery(params.id ? params?.id : '');
 
   const {
-    mutateAsync: removeApplication,
-    error: removeApplicationError,
-    isLoading: removeApplicationLoading,
+    mutate: removeApplication,
   } = useRemoveApplication();
-
-  useEffect(() => {
-    if (removeApplicationError) {
-      useErrorToast(t('list.remove_error'));
-    }
-  }, [removeApplicationError]);
-
 
   useEffect(() => {
     const found: IPageTab | undefined = APPLICATION_TABS.find(
@@ -84,12 +75,16 @@ const ApplicationWithOngList = () => {
 
   const onConfirmDeleteApplication = () => {
     if (applicationToBeRemoved) {
-      removeApplication({ applicationId: applicationToBeRemoved }, {
-        onSuccess: () => {
-          setApplicationToBeRemoved(null);
-          naivgateBack();
-        },
-      })
+      removeApplication({ applicationId: applicationToBeRemoved },
+        {
+          onSuccess: () => {
+            setApplicationToBeRemoved(null);
+            naivgateBack();
+          },
+          onError: () => {
+            useErrorToast(t('list.remove_error'));
+          }
+        })
     }
   }
 
