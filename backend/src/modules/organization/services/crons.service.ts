@@ -5,6 +5,8 @@ import { OrganizationFinancialService } from './organization-financial.service';
 import { OrganizationReportService } from './organization-report.service';
 import * as Sentry from '@sentry/node';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { MailService } from 'src/mail/services/mail.service';
+import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 
 @Injectable()
 export class OrganizationCronsService {
@@ -14,9 +16,21 @@ export class OrganizationCronsService {
     private readonly organizationRepository: OrganizationRepository,
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
+    private readonly mailService: MailService,
   ) {}
 
-  @Cron('0 0 5 1 1 *') // 1st of January, 5:00 AM
+  /** 
+  * * * * * *
+  | | | | | | 
+  | | | | | day of week
+  | | | | months
+  | | | day of month
+  | | hours
+  | minutes
+  seconds (optional)
+*/
+
+  @Cron('0 5 1 1 *') // 1st of January, 5:00 AM
   async generateFinancialDataAndReportsForPreviousYear() {
     const lastYear = new Date().getFullYear() - 1;
 
@@ -55,6 +69,54 @@ export class OrganizationCronsService {
           },
         });
       }
+    }
+  }
+
+  @Cron('0 12 1 6 *') // 1st of June, 12 PM server time
+  async sendEmailToRemindFinancialDataCompletion() {
+    // 1. Get all organizations with are missing the previous year the financial data and reports
+    const organizations = await this.organizationRepository.getMany({
+      relations: {
+        organizationGeneral: true,
+        organizationFinancial: true,
+      },
+    });
+
+    // Filter organization to send email only to those who have the reports available for the last year
+    // Some organizations created in the current year will not have the data available
+    const receivers = organizations
+      .filter((org) => {
+        return org.organizationFinancial.some(
+          (financialReport) =>
+            financialReport.year === new Date().getFullYear() - 1,
+        );
+      })
+      .map((org) => org.organizationGeneral.email);
+
+    const {
+      subject,
+      template,
+      context: {
+        title,
+        subtitle,
+        cta: { link, label },
+      },
+    } = MAIL_OPTIONS.REMIND_TO_COMPLETE_FINANCIAL_DATA;
+
+    for (let email of receivers) {
+      await this.mailService.sendEmail({
+        to: email,
+        template,
+        subject,
+        context: {
+          title,
+          subtitle: subtitle(),
+          cta: {
+            link: link(),
+            label,
+          },
+        },
+      });
     }
   }
 }

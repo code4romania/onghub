@@ -15,8 +15,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
     template: ORGANIZATION_REQUEST,
     subject: 'NGO Hub - Solicitare creare cont organizație',
     context: {
-      title:
-        'Ești doar la un pas de a primi accesul în NGO Hub.',
+      title: 'Ești doar la un pas de a primi accesul în NGO Hub.',
       subtitle: () =>
         `Solicitarea de a crea un cont pentru organizația ta în NGO Hub a fost trimisă cu succes. Echipa NGO Hub va verifica informațiile primite și imediat ce este aprobată vei primi o notificare cu detalii despre accesarea ecosistemului de soluții NGO Hub. Dacă ai întrebări, ne poți contacta la ${process.env.MAIL_CONTACT}`,
     },
@@ -97,9 +96,21 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       subtitle: (organizationName, applicationName) =>
         `O nouă cerere de instalare a aplicației ${applicationName} a fost creată în ONG Hub pentru organizația ${organizationName}.`,
       cta: {
-        link: () =>
-          `${process.env.ONGHUB_URL}/applications/requests`,
+        link: () => `${process.env.ONGHUB_URL}/applications/requests`,
         label: 'Vezi cererea',
+      },
+    },
+  },
+  REMIND_TO_COMPLETE_FINANCIAL_DATA: {
+    template: ORGANIZATION_REQUEST,
+    subject: 'Va reamintim sa actualizati datele financiare in ONG Hub!',
+    context: {
+      title: 'Va reamintim sa actualizati datele financiare in ONG Hub!',
+      subtitle: () =>
+        'Pentru a va pastra accesul in contul de ONG Hub, va rugam sa actualizati datele financiare pana la data de 30 Iunie.',
+      cta: {
+        link: () => `${process.env.ONGHUB_URL}/organization/financial`,
+        label: 'Completeaza informatiile financiare',
       },
     },
   },
