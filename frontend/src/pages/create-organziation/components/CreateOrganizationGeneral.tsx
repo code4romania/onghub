@@ -31,7 +31,7 @@ const CreateOrganizationGeneral = () => {
   const [organizationCounty, setOrganizationCounty] = useState<any>();
   const [organizationCity, setOrganizationCity] = useState<any>();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
-  const { cities, counties, issuers } = useNomenclature();
+  const { counties, issuers } = useNomenclature();
 
   const [organization, setOrganization, logo, setLogo, , , activeStepIndex, setActiveStepIndex] =
     useOutletContext<any>();
@@ -41,7 +41,8 @@ const CreateOrganizationGeneral = () => {
   const { t } = useTranslation(['general', 'common']);
 
   // queries
-  useCitiesQuery(county?.id);
+  const { data: cities } = useCitiesQuery(county?.id);
+  const { data: organizationCities } = useCitiesQuery(organizationCounty?.id);
   const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
@@ -130,16 +131,25 @@ const CreateOrganizationGeneral = () => {
       setValue('city', null);
     }
 
-    if (organizationCity && !readonly && !organizationCity) {
+  }, [cities]);
+
+  useEffect(() => {
+    if (organizationCounty && !readonly && !organizationCity) {
       setValue('organizationCity', null);
     }
-  }, [cities]);
+  }, [organizationCities]);
 
   useEffect(() => {
     if (county && city && city.county.id !== county.id) {
       setCity(null);
     }
   }, [county]);
+
+  useEffect(() => {
+    if (organizationCounty && organizationCity && organizationCity.county.id !== organizationCounty.id) {
+      setOrganizationCity(null);
+    }
+  }, [organizationCounty]);
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -688,7 +698,7 @@ const CreateOrganizationGeneral = () => {
                         config={{
                           id: 'create-organization-general__organization-city',
                           ...OrganizationGeneralConfig.organizationCity.config,
-                          collection: cities || [],
+                          collection: organizationCities || [],
                           displayedAttribute: 'name',
                         }}
                         error={errors[OrganizationGeneralConfig.organizationCity.key]?.message}
