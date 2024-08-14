@@ -5,6 +5,7 @@ import '../multi-select/MultiSelect.css';
 import { Chip } from '../chip-selection/ChipSelection';
 import { ISelectData } from '../../common/helpers/format.helper';
 import CreatableSelect from 'react-select/creatable';
+import i18n from '../../common/config/i18n';
 
 export interface CreatableMultiSelectProps {
   label: string;
@@ -16,6 +17,8 @@ export interface CreatableMultiSelectProps {
   onChange: any;
   options: ISelectData[];
   id?: string;
+  isMulti?: boolean;
+  validation?: (inputValue: string) => boolean;
 }
 
 const CreatableMultiSelect = ({
@@ -28,6 +31,8 @@ const CreatableMultiSelect = ({
   readonly,
   options,
   id,
+  isMulti = true,
+  validation,
 }: CreatableMultiSelectProps) => {
   return (
     <div>
@@ -47,21 +52,28 @@ const CreatableMultiSelect = ({
               item={{ id: item.value, name: item.label }}
               readonly={true}
               selected={false}
-              onClick={() => {}}
+              onClick={() => { }}
               id={id}
             />
           ))}
         </div>
       )}
+      {error && (
+        <p className="my-1 text-sm text-red-600" id={`${id}__input-error`}>
+          {error}
+        </p>
+      )}
       {!readonly && (
         <CreatableSelect
-          isMulti
+          isMulti={isMulti}
           placeholder={placeholder}
           classNamePrefix="reactselect"
           onChange={onChange}
           value={value}
           options={options}
           id={id}
+          formatCreateLabel={(text) => `${i18n.t('common:add_option')}: ${text}`}
+          isValidNewOption={validation ? validation : () => true}
         />
       )}
       {!error && !readonly && helperText && (
@@ -69,11 +81,7 @@ const CreatableMultiSelect = ({
           {helperText}
         </p>
       )}
-      {error && (
-        <p className="mt-1 text-sm text-red-600" id={`${id}__input-error`}>
-          {error}
-        </p>
-      )}
+
     </div>
   );
 };

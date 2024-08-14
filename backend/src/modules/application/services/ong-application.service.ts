@@ -91,7 +91,7 @@ export class OngApplicationService {
             : OngApplicationStatus.ACTIVE,
       });
 
-      if(application.type === ApplicationTypeEnum.STANDALONE) {
+      if (application.type === ApplicationTypeEnum.STANDALONE) {
         // 8. trigger emails for admin and super-admin
         this.eventEmitter.emit(
           EVENTS.REQUEST_APPLICATION_ACCESS,
@@ -99,12 +99,11 @@ export class OngApplicationService {
         );
       }
 
-
       return ongApp;
     } catch (error) {
       Sentry.captureException(error, {
-        extra: {organizationId, applicationId},
-      })
+        extra: { organizationId, applicationId },
+      });
       this.logger.error({ error: { error }, ...ONG_APPLICATION_ERRORS.CREATE });
       const err = error?.response;
       throw new BadRequestException({
@@ -174,6 +173,11 @@ export class OngApplicationService {
     const applicationsQuery = this.applicationRepository
       .getQueryBuilder()
       .select(ORGANIZATION_ALL_APPS_COLUMNS)
+      .leftJoin(
+        '_application-label',
+        'applicationLabel',
+        'applicationLabel.id = application.application_label_id',
+      )
       .leftJoin(
         'ong_application',
         'ongApp',

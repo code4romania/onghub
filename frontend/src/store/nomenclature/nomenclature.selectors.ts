@@ -10,6 +10,7 @@ export const useNomenclature = () => {
   const skills = useStore((state) => state.skills);
   const faculties = useStore((state) => state.faculties);
   const issuers = useStore((state) => state.issuers);
+  const applicationLabels = useStore((state) => state.applicationLabels);
   return {
     counties,
     cities,
@@ -20,5 +21,6 @@ export const useNomenclature = () => {
     skills,
     faculties,
     issuers,
+    applicationLabels,
   };
 };

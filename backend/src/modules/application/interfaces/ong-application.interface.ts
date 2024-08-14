@@ -1,3 +1,4 @@
+import { ApplicationLabel } from 'src/shared/entities/application-labels.entity';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationStatus } from '../enums/application-status.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
@@ -23,4 +24,5 @@ export interface IOngApplicationDetails extends IOngApplication {
   videoLink: string;
   userStatus: UserOngApplicationStatus;
   pullingType: ApplicationPullingType;
+  applicationLabel: ApplicationLabel;
 }

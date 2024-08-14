@@ -20,6 +20,7 @@ import { FileManagerService } from './services/file-manager.service';
 import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
 import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
 import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficiary.entity';
+import { ApplicationLabel } from './entities/application-labels.entity';
 
 @Global()
 @Module({
@@ -37,6 +38,7 @@ import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficia
       ServiceDomain,
       Beneficiary,
       Issuer,
+      ApplicationLabel,
     ]),
     HttpModule,
   ],

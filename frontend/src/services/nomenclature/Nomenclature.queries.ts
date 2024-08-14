@@ -17,6 +17,7 @@ import {
   getServiceDomains,
   getBeneficiaries,
   getIssuers,
+  getApplicationLabels,
 } from './Nomenclatures.service';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { Federation } from '../../common/interfaces/federations.interface';
@@ -126,6 +127,15 @@ export const useFacultiesQuery = () => {
   return useQuery('faculties', () => getFaculties(), {
     onSuccess: (data: Faculty[]) => {
       setFaculties(data);
+    },
+  });
+};
+
+export const useApplicationLabelsQuery = () => {
+  const { setApplicationLabels } = useStore();
+  return useQuery('application-labels', () => getApplicationLabels(), {
+    onSuccess: (data) => {
+      setApplicationLabels(data);
     },
   });
 };

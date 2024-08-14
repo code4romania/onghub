@@ -47,6 +47,7 @@ import { Faculty } from '../common/interfaces/faculty.interface';
 import { IFeedback } from '../pages/civic-center-service/interfaces/Feedback.interface';
 import { feedbacksSlice } from './civic-center-service/Feedback.slice';
 import { Issuer } from '../common/interfaces/issuer.interface';
+import { ApplicationLabel } from '../common/interfaces/application-label.interface';
 
 interface OrganizationState {
   organizations: PaginatedEntity<IOrganizationView>;
@@ -74,6 +75,7 @@ interface NomenclatureState {
   skills: Skill[];
   faculties: Faculty[];
   issuers: Issuer[];
+  applicationLabels: ApplicationLabel[];
   setCounties: (counties: County[]) => void;
   setCities: (cities: City[]) => void;
   setDomains: (domains: Domain[]) => void;
@@ -83,6 +85,7 @@ interface NomenclatureState {
   setSkills: (skills: Skill[]) => void;
   setFaculties: (faculties: Faculty[]) => void;
   setIssuers: (issuers: Issuer[]) => void;
+  setApplicationLabels: (applicationLabels: ApplicationLabel[]) => void;
 }
 
 interface ProfileState {

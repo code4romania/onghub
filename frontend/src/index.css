@@ -176,13 +176,21 @@
   transform: rotate(-45deg);
   position: absolute;
   background-color: #374159;
-  padding: 0.5rem 4.5rem;
+  padding-top: 0.5rem;
+  padding-left: 3.5rem;
+  padding-bottom: 0.5rem;
+  padding-right: 4.5rem;
   color: white;
   overflow: hidden;
+  width: 18rem;
+  margin-left: -0.5rem;
 }
 
 .ribbon p {
   margin: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
 }
 
 .richtext_html ul {

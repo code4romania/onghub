@@ -64,3 +64,7 @@ export const getFaculties = (): Promise<Faculty[]> => {
 export const getIssuers = (): Promise<{ id: number; name: string }[]> => {
   return API.get(`/nomenclatures/issuers`).then((res) => res.data);
 };
+
+export const getApplicationLabels = (): Promise<{ id: number; name: string }[]> => {
+  return API.get(`/nomenclatures/application-labels`).then((res) => res.data);
+};

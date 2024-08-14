@@ -1,3 +1,4 @@
+import { ApplicationLabel } from '../../../common/interfaces/application-label.interface';
 import { ApplicationTypeEnum } from '../../../pages/apps-store/constants/ApplicationType.enum';
 import { ApplicationPullingType } from '../../../pages/apps-store/enums/application-pulling-type.enum';
 import {
@@ -38,6 +39,7 @@ export interface ApplicationWithOngStatus {
   pullingType?: ApplicationPullingType;
   website: string;
   createdOn: Date;
+  applicationLabel: string;
 }
 
 export interface ApplicationAccess {
