@@ -10,6 +10,7 @@ export const ORGANIZATION_ALL_APPS_COLUMNS = [
   'ongApp.status as "ongStatus"',
   'ongApp.created_on as "createdOn"',
   'application.type as type',
+  'applicationLabel.name as "applicationLabel"',
 ];
 
 export const APPLICATIONS_FILES_DIR = 'applications';

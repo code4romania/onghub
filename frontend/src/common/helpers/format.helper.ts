@@ -70,6 +70,11 @@ export const mapSelectToSkill = (
 ): { id?: number; name: string } =>
   item?.__isNew__ ? { name: item.label } : { id: item.value, name: item.label };
 
+export const mapSelectToApplicationLabel = (
+  item: ISelectData & { __isNew__?: boolean },
+): { id?: number; name: string } =>
+  item?.__isNew__ ? { name: item.label } : { id: item.value, name: item.label };
+
 // Cities / Counties
 export const mapCitiesToSelect = (item: any): ISelectData => ({
   value: item?.id,

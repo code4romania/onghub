@@ -27,6 +27,7 @@
       "completed": "Completat",
       "not_completed": "Necompletat"
     },
+    "add_option": "Adaugă opțiunea",
     "any": "Toate",
     "restricted": "Restricționat",
     "active": "Activ",
@@ -1062,6 +1063,15 @@
         "label": "Descriere scurtă",
         "helper": "Descrie aplicația în maxim 200 de caractere"
       },
+      "status": {
+        "label": "Status aplicație",
+        "options": {
+          "active": "Activă (aplicația poate fi adăugată de organizații în profilul lor)",
+          "disabled": "Inactivă (aplicația nu poate fi adăugată de organizații în profilul lor)"
+        },
+        "section_title": "Status aplicație",
+        "section_subtitle": "Statusul aplicației influențează disponibilitatea acesteia pentru organizații"
+      },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
         "max": "Descrierea extinsă poate avea maxim 7000 de caractere",
@@ -1097,6 +1107,11 @@
         "min": "Pasul trebuie să aibă minim 2 caractere",
         "max": "Pasul trebuie să aibă maxim 100 de caractere",
         "label": "Pas"
+      },
+      "application_label": {
+        "label": "Eticheta pentru aplicație (eticheta apare în meniul Toate aplicațiile)",
+        "helper": "Adaugă o etichetă deja existentă sau creează una nouă",
+        "maxLength": "Eticheta poate avea maxim 30 de caractere"
       }
     },
     "request_modal": {

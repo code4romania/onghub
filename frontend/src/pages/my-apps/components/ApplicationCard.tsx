@@ -31,8 +31,7 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
 
   return (
     <div className="bg-white rounded-xl shadow flex flex-col gap-1 items-center justify-between lg:p-8 p-5 relative overflow-auto sm:min-h-[28rem] w-full">
-      {(application.ongStatus === OngApplicationStatus.RESTRICTED ||
-        application.status === ApplicationStatus.DISABLED) && (
+      {(application.ongStatus === OngApplicationStatus.RESTRICTED) && (
         <div className="ribbon lg:-left-14 -left-16">
           <p className="sm:text-sm lg:text-base text-xs">{t('unavailable', { ns: 'common' })}</p>
         </div>
@@ -45,6 +44,12 @@ const ApplicationCard = ({ application }: { application: ApplicationWithOngStatu
             </p>
           </div>
         )}
+      {application.applicationLabel && application.ongStatus !== OngApplicationStatus.PENDING_REMOVAL && application.ongStatus !== OngApplicationStatus.RESTRICTED && (
+        <div className="ribbon lg:-left-14 -left-16">
+          <p className="sm:text-sm lg:text-base text-xs">
+            {application.applicationLabel}
+          </p>
+        </div>)}
       <img
         alt="Application logo"
         src={application.logo || logo}

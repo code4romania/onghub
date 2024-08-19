@@ -17,6 +17,7 @@ import { Federation } from '../entities/federation.entity';
 import { PracticeDomain } from 'src/modules/practice-program/entities/practice_domain.entity';
 import { ServiceDomain } from 'src/modules/civic-center-service/entities/service-domain.entity';
 import { Beneficiary } from 'src/modules/civic-center-service/entities/beneficiary.entity';
+import { ApplicationLabel } from '../entities/application-labels.entity';
 
 @Injectable()
 export class NomenclaturesService {
@@ -45,6 +46,8 @@ export class NomenclaturesService {
     private readonly beneficiaryRepository: Repository<Beneficiary>,
     @InjectRepository(Issuer)
     private readonly issuersRepository: Repository<Issuer>,
+    @InjectRepository(ApplicationLabel)
+    private readonly applicationLabelRepository: Repository<ApplicationLabel>,
   ) {}
 
   public getCity(conditions: FindOneOptions<City>) {
@@ -168,5 +171,15 @@ export class NomenclaturesService {
 
   public getIssuers(conditions: FindManyOptions<Issuer>) {
     return this.issuersRepository.find(conditions);
+  }
+
+  public getApplicationLabels(conditions: FindManyOptions<ApplicationLabel>) {
+    return this.applicationLabelRepository.find(conditions);
+  }
+
+  public createApplicationLabel(
+    applicationLabel: Partial<ApplicationLabel>,
+  ): Promise<ApplicationLabel> {
+    return this.applicationLabelRepository.save(applicationLabel);
   }
 }

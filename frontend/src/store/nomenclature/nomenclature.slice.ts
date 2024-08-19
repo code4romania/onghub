@@ -1,3 +1,4 @@
+import { ApplicationLabel } from '../../common/interfaces/application-label.interface';
 import { City } from '../../common/interfaces/city.interface';
 import { Coalition } from '../../common/interfaces/coalitions.interface';
 import { County } from '../../common/interfaces/county.interface';
@@ -19,6 +20,7 @@ export const nomenclatureSlice = (set: any) => ({
   skills: [],
   faculties: [],
   issuers: [],
+  applicationLabels: [],
   setCounties: (counties: County[]) => {
     set({ counties });
   },
@@ -45,6 +47,9 @@ export const nomenclatureSlice = (set: any) => ({
   },
   setIssuers: (issuers: Issuer[]) => {
     set({ issuers });
+  },
+  setApplicationLabels: (applicationLabels: ApplicationLabel[]) => {
+    set({ applicationLabels });
   },
 });
 

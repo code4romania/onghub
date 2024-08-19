@@ -13,6 +13,7 @@ import { CreateApplicationDto } from '../../../services/application/interfaces/A
 import ApplicationForm from './ApplicationForm';
 import { useTranslation } from 'react-i18next';
 import { PullingTypeOptions } from './AddApplicationConfig';
+import { mapNameToSelect } from '../../../common/helpers/format.helper';
 
 const EditApplication = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const EditApplication = () => {
     formState: { errors },
     reset,
     watch,
+    clearErrors
   } = useForm<CreateApplicationDto>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -51,6 +53,7 @@ const EditApplication = () => {
         pullingType: application.pullingType
           ? (PullingTypeOptions.find((item) => item.value === application.pullingType) as any)
           : undefined,
+        applicationLabel: mapNameToSelect(application.applicationLabel)
       });
       setLogo(application.logo);
     }
@@ -65,7 +68,6 @@ const EditApplication = () => {
   const onSubmit = async (data: Partial<CreateApplicationDto>) => {
     // don't set the logo path
     const { logo, ...payload } = data;
-
     await updateApplication(
       {
         applicationId: id as string,
@@ -117,6 +119,7 @@ const EditApplication = () => {
           logo={logo}
           file={file}
           setFile={setFile}
+          clearErrors={clearErrors}
         />
       </div>
     </ContentWrapper>

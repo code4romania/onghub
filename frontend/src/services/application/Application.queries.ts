@@ -5,9 +5,7 @@ import { ApplicationTypeEnum } from '../../pages/apps-store/constants/Applicatio
 import { OngApplicationStatus } from '../../pages/requests/interfaces/OngApplication.interface';
 import useStore from '../../store/store';
 import {
-  activateApplication,
   createApplication,
-  deactivateApplication,
   getApplicationById,
   getApplicationOrganizations,
   getApplications,
@@ -140,18 +138,6 @@ export const useUpdateApplicationMutation = () => {
       applicationUpdatePayload: Partial<CreateApplicationDto>;
       logo?: File;
     }) => updateApplication(applicationId, applicationUpdatePayload, logo),
-  );
-};
-
-export const useActivateApplication = () => {
-  return useMutation(({ applicationId }: { applicationId: string }) =>
-    activateApplication(applicationId),
-  );
-};
-
-export const useDectivateApplication = () => {
-  return useMutation(({ applicationId }: { applicationId: string }) =>
-    deactivateApplication(applicationId),
   );
 };
 

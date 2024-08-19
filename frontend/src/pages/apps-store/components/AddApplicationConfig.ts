@@ -3,6 +3,7 @@ import InputFieldHttpAddon from '../../../components/InputField/components/Input
 import { ApplicationTypeEnum, ApplicationTypeNaming } from '../constants/ApplicationType.enum';
 import i18n from '../../../common/config/i18n';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
+import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
 
 const translations = {
   name: {
@@ -16,6 +17,9 @@ const translations = {
   type: {
     label: i18n.t('appstore:config.type.label'),
     required: i18n.t('appstore:config.type.required'),
+  },
+  status: {
+    label: i18n.t('appstore:config.status.label'),
   },
   short: {
     required: i18n.t('appstore:config.short.required'),
@@ -138,6 +142,44 @@ export const AddAppConfig: Record<string, any> = {
         value: ApplicationTypeEnum.STANDALONE,
       },
     ],
+  },
+  status: {
+    key: 'status',
+    label: translations.status.label,
+    rules: {
+      required: {
+        value: true,
+        message: translations.type.required,
+      },
+    },
+    helperText: '',
+    radioConfigs: [
+      {
+        label: i18n.t('appstore:config.status.options.active'),
+        name: 'status',
+        value: ApplicationStatus.ACTIVE,
+      },
+      {
+        label: i18n.t('appstore:config.status.options.disabled'),
+        name: 'status',
+        value: ApplicationStatus.DISABLED,
+      },
+    ],
+  },
+  applicationLabel: {
+    key: 'applicationLabel',
+    rules: {
+      maxLength: {
+        value: 30,
+        message: translations.short.max,
+      },
+    },
+    config: {
+      type: 'text',
+      label: i18n.t('appstore:config.application_label.label'),
+      helperText: i18n.t('appstore:config.application_label.helper'),
+      placeholder: '',
+    },
   },
   shortDescription: {
     key: 'shortDescription',
