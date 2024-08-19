@@ -206,12 +206,17 @@ export class OrganizationService {
       ? lastYear - 1
       : lastYear;
 
+    // BR: ANAF data will be available only if the organization existed last year, otherwise is futile to try to fetch it
+    const organizationExistedLastYear =
+      createOrganizationDto.general.yearCreated < new Date().getFullYear();
+
     // get anaf data
-    const financialInformation =
-      await this.organizationFinancialService.getFinancialInformation(
-        createOrganizationDto.general.cui,
-        yearToGetAnafData,
-      );
+    const financialInformation = organizationExistedLastYear
+      ? await this.organizationFinancialService.getFinancialInformation(
+          createOrganizationDto.general.cui,
+          yearToGetAnafData,
+        )
+      : null;
 
     // create the parent entry with default values
     const organization = await this.organizationRepository.save({
@@ -235,16 +240,24 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial:
-        this.organizationFinancialService.generateFinancialReportsData(
-          yearToGetAnafData,
-          financialInformation,
-        ),
-      organizationReport: {
-        reports: [{ year: yearToGetAnafData }],
-        partners: [{ year: yearToGetAnafData }],
-        investors: [{ year: yearToGetAnafData }],
-      },
+      ...(organizationExistedLastYear
+        ? {
+            organizationFinancial:
+              this.organizationFinancialService.generateFinancialReportsData(
+                yearToGetAnafData,
+                financialInformation,
+              ),
+          }
+        : {}),
+      ...(organizationExistedLastYear
+        ? {
+            organizationReport: {
+              reports: [{ year: yearToGetAnafData }],
+              partners: [{ year: yearToGetAnafData }],
+              investors: [{ year: yearToGetAnafData }],
+            },
+          }
+        : {}),
     });
 
     // upload logo
