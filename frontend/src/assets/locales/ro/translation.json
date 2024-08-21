@@ -25,7 +25,9 @@
     "loading": "Se încarcă...",
     "completion_status": {
       "completed": "Completat",
-      "not_completed": "Necompletat"
+      "not_completed": "Necompletat",
+      "invalid": "Invalid",
+      "pending": "In verificare"
     },
     "add_option": "Adaugă opțiunea",
     "any": "Toate",
@@ -1313,8 +1315,8 @@
       "active_users": "Utilizatori în organizație",
       "handle_users": "Gestionează utilizatori",
       "view_data": "Vizualizează datele",
-      "updated_data": "Datele organizației sunt actualizate",
-      "outdated_data": "Datele organizației nu sunt actualizate",
+      "financial_reports_are_uptodate": "Rapoartele financiare sunt actualizate",
+      "financial_reports_are_outdated": "Rapoartele financiare nu sunt actualizate",
       "error": "Eroare la preluarea datelor",
       "active_organizations": "Active",
       "inactive_organizations": "Inactive",

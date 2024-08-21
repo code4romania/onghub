@@ -27,8 +27,8 @@ import {
   PARTNER_LIST,
 } from '../constants/files.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
 import * as Sentry from '@sentry/node';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class OrganizationReportService {
@@ -279,5 +279,38 @@ export class OrganizationReportService {
         },
       });
     }
+  }
+
+  public async countNotCompletedReports(organizationId: number) {
+    const count = await this.organizationReportRepository.count({
+      where: [
+        {
+          organization: {
+            id: organizationId,
+          },
+          partners: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+        {
+          organization: {
+            id: organizationId,
+          },
+          reports: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+        {
+          organization: {
+            id: organizationId,
+          },
+          investors: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+      ],
+    });
+
+    return count;
   }
 }

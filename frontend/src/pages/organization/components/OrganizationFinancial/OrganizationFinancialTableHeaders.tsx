@@ -4,7 +4,7 @@ import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.i
 import { formatCurrency, formatDate } from '../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
 import { FinancialType } from '../../enums/FinancialType.enum';
-import { CompletionStatus } from '../../enums/CompletionStatus.enum';
+import { OrganizationFinancialReportStatus } from '../../enums/CompletionStatus.enum';
 import i18n from '../../../../common/config/i18n';
 import DataTableNameHeader from '../../../../components/data-table-name-header/DataTableNameHeader';
 
@@ -19,6 +19,23 @@ const translations = {
   sum: i18n.t('financial:modal.sum'),
   completed: i18n.t('common:completion_status.completed'),
   not_completed: i18n.t('common:completion_status.not_completed'),
+  invalid: i18n.t('common:completion_status.invalid'),
+  pending: i18n.t('common:completion_status.pending'),
+};
+
+const mapReportStatusToTextAndBadge = (status: OrganizationFinancialReportStatus) => {
+  switch (status) {
+    case OrganizationFinancialReportStatus.COMPLETED:
+      return { translation: translations.completed, badge: BadgeStatus.SUCCESS };
+    case OrganizationFinancialReportStatus.INVALID:
+      return { translation: translations.invalid, badge: BadgeStatus.ERROR };
+    case OrganizationFinancialReportStatus.NOT_COMPLETED:
+      return { translation: translations.not_completed, badge: BadgeStatus.WARNING };
+    case OrganizationFinancialReportStatus.PENDING:
+      return { translation: translations.pending, badge: BadgeStatus.WARNING };
+    default:
+      return { translation: 'Error', badge: BadgeStatus.ERROR };
+  }
 };
 
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
@@ -69,14 +86,8 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: <DataTableNameHeader text={translations.status} />,
     cell: (row: IOrganizationFinancial) => (
       <StatusBadge
-        status={
-          row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
-        }
-        value={
-          row.status === CompletionStatus.COMPLETED
-            ? translations.completed
-            : translations.not_completed
-        }
+        status={mapReportStatusToTextAndBadge(row.reportStatus).badge}
+        value={mapReportStatusToTextAndBadge(row.reportStatus).translation}
       />
     ),
     sortable: true,

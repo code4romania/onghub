@@ -93,6 +93,11 @@ import { OrganizationCronsService } from './services/crons.service';
     OrganizationRequestService,
     OrganizationCronsService,
   ],
-  exports: [OrganizationService, OrganizationRequestService],
+  exports: [
+    OrganizationService,
+    OrganizationRequestService,
+    OrganizationFinancialService,
+    OrganizationReportService,
+  ],
 })
 export class OrganizationModule {}

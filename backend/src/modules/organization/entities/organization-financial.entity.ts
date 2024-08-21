@@ -49,7 +49,7 @@ export class OrganizationFinancial extends BaseEntity {
     name: 'completion_status',
     default: CompletionStatus.NOT_COMPLETED,
   })
-  status: CompletionStatus;
+  status: CompletionStatus; // TODO: delete after data migration in production. The Status will be moved to reportStatus
 
   @Column({
     type: 'enum',

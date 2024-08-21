@@ -32,8 +32,14 @@ const OrganizationOverview = () => {
           <div className="flex gap-4 flex-col-reverse lg:flex-row">
             <div className="flex flex-col gap-4 flex-wrap lg:w-2/3">
               <ExetendedStatisticsCard
-                stat={SuperAdminOverviewExtendedStatisticsMapping.isOrganizationUpdated(
-                  data.isOrganizationUpdated,
+                stat={SuperAdminOverviewExtendedStatisticsMapping.isOrganizationFinancialReportsUpdated(
+                  data.numberOfErroredFinancialReports === 0,
+                  organization?.id,
+                )}
+              />
+              <ExetendedStatisticsCard
+                stat={SuperAdminOverviewExtendedStatisticsMapping.isOrganizationReportsPartnersInvestorsUpdated(
+                  data.numberOfErroredReportsInvestorsPartners === 0,
                   organization?.id,
                 )}
               />
@@ -55,8 +61,8 @@ const OrganizationOverview = () => {
             <div className="flex gap-4 lg:w-1/3">
               <ExetendedStatisticsCard
                 stat={SuperAdminOverviewExtendedStatisticsMapping.activity({
-                  organizationCreatedOn: data.organizationCreatedOn,
-                  organizationSyncedOn: data.organizationSyncedOn,
+                  organizationCreatedOn: new Date(data.organizationCreatedOn),
+                  organizationSyncedOn: new Date(data.organizationSyncedOn),
                 })}
               />
             </div>

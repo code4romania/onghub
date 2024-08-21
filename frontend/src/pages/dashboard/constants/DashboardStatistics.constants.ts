@@ -62,17 +62,35 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
 };
 
 export const AdminEmployeeDashboardExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean) => ({
+  isOrganizationFinancialReportsUpdated: (isUpdated: boolean) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
     info: [
       {
-        title: isUpdated ? 'statistics.updated_data' : 'statistics.outdated_data',
+        title: isUpdated
+          ? 'TODO: De mutat in banner - Rapoartele financiare sunt actualizate'
+          : 'TODO: De mutat in banner - Rapoartele financiare nu sunt actualizate',
         subtitle: 'statistics.next_update',
       },
     ],
     button: {
       href: 'organization/financial',
+      label: 'statistics.view_data',
+    },
+  }),
+  isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean) => ({
+    icon: CheckCircleIcon,
+    alert: !isUpdated,
+    info: [
+      {
+        title: isUpdated
+          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
+          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
+        subtitle: 'statistics.next_update',
+      },
+    ],
+    button: {
+      href: 'organization/data',
       label: 'statistics.view_data',
     },
   }),
@@ -114,17 +132,35 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
 };
 
 export const SuperAdminOverviewExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean, organizationId?: number) => ({
+  isOrganizationFinancialReportsUpdated: (isUpdated: boolean, organizationId?: number) => ({
     icon: CheckCircleIcon,
     alert: !isUpdated,
     info: [
       {
-        title: isUpdated ? 'statistics.updated_data' : 'statistics.outdated_data',
+        title: isUpdated
+          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
+          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
         subtitle: 'statistics.next_update',
       },
     ],
     button: {
       href: `/organizations/${organizationId}/financial`,
+      label: 'statistics.view_data',
+    },
+  }),
+  isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean, organizationId?: number) => ({
+    icon: CheckCircleIcon,
+    alert: !isUpdated,
+    info: [
+      {
+        title: isUpdated
+          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
+          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
+        subtitle: 'statistics.next_update',
+      },
+    ],
+    button: {
+      href: `organization/${organizationId}/data`,
       label: 'statistics.view_data',
     },
   }),

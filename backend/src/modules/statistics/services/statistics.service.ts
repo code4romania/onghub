@@ -15,7 +15,10 @@ import {
   IOrganizationStatistics,
   IOrganizationStatusStatistics,
 } from 'src/modules/statistics/interfaces/organization-statistics.interface';
-import { OrganizationService } from 'src/modules/organization/services';
+import {
+  OrganizationFinancialService,
+  OrganizationService,
+} from 'src/modules/organization/services';
 import { OrganizationRequestService } from 'src/modules/organization/services/organization-request.service';
 import { UserService } from 'src/modules/user/services/user.service';
 import { OrganizatioStatusnStatisticsViewRepository } from '../repositories/organization-status-statistics-view.repository';
@@ -31,6 +34,7 @@ import { ApplicationService } from 'src/modules/application/services/application
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { In } from 'typeorm';
 import { ApplicationStatus } from 'src/modules/application/enums/application-status.enum';
+import { OrganizationReportService } from 'src/modules/organization/services/organization-report.service';
 
 @Injectable()
 export class StatisticsService {
@@ -43,6 +47,8 @@ export class StatisticsService {
     private readonly applicationService: ApplicationService,
     private readonly practiceProgramService: PracticeProgramService,
     private readonly civicCenterService: CivicCenterServiceService,
+    private readonly organizationFinancialService: OrganizationFinancialService,
+    private readonly organizationReportService: OrganizationReportService,
   ) {}
 
   public async getOrganizationRequestStatistics(
@@ -225,12 +231,7 @@ export class StatisticsService {
         });
 
       const numberOfUpdatedOrganizations =
-        await this.organizationsService.countOrganizations({
-          where: {
-            status: OrganizationStatus.ACTIVE,
-            completionStatus: CompletionStatus.COMPLETED,
-          },
-        });
+        await this.organizationsService.countOrganizationsWithUpdatedReports();
 
       const numberOfUsers = await this.userService.countUsers({
         where: {
@@ -273,6 +274,7 @@ export class StatisticsService {
     }
   }
 
+  // TODO: Cata - we can transform this in a view
   public async getOrganizationStatistics(
     organizationId: number,
     role?: Role,
@@ -295,14 +297,30 @@ export class StatisticsService {
         },
       });
 
+      const numberOfErroredFinancialReports =
+        await this.organizationFinancialService.countNotCompletedReports(
+          organizationId,
+        );
+
+      const numberOfErroredReportsInvestorsPartners =
+        await this.organizationReportService.countNotCompletedReports(
+          organizationId,
+        );
+
+      const financialReportsAndReportsInvestorPartenerslastUpdatedOn =
+        await this.organizationsService.getFinancialAndReportsLastUpdatedOn(
+          organizationId,
+        );
+
       return {
-        isOrganizationUpdated:
-          organization.completionStatus === CompletionStatus.COMPLETED,
         organizationCreatedOn: organization.createdOn,
-        organizationSyncedOn: organization.syncedOn,
+        organizationSyncedOn:
+          financialReportsAndReportsInvestorPartenerslastUpdatedOn,
         numberOfInstalledApps: activeApps,
         numberOfUsers,
         hubStatistics: await this.getGeneralONGHubStatistics(),
+        numberOfErroredFinancialReports,
+        numberOfErroredReportsInvestorsPartners,
       };
     } catch (error) {
       this.logger.error({

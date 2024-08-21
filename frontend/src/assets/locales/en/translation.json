@@ -25,7 +25,9 @@
     "loading": "Loading …",
     "completion_status": {
       "completed": "Completed",
-      "not_completed": "Not completed"
+      "not_completed": "Not completed",
+      "invalid": "Invalid",
+      "pending": "Pending"
     },
     "any": "All",
     "restricted": "Restricted",
@@ -1248,8 +1250,8 @@
       "active_users": "Users in the organisation",
       "handle_users": "Manage users",
       "view_data": "View data",
-      "updated_data": "Organisation data is up-to-date",
-      "outdated_data": "The organisation's data is not up-to-date",
+      "financial_reports_are_uptodate": "The Financial Reports are up-to-date",
+      "financial_reports_are_outdated": "The Financial Reports needs to be updated",
       "error": "Data retrieval error",
       "active_organizations": "Active",
       "inactive_organizations": "Inactive",

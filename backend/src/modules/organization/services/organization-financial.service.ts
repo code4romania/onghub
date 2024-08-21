@@ -2,7 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationFinancialDto } from '../dto/update-organization-financial.dto';
 import { OrganizationFinancialRepository } from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import {
+  CompletionStatus,
+  OrganizationFinancialReportStatus,
+} from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
 import { Organization, OrganizationFinancial } from '../entities';
 import {
@@ -12,8 +15,8 @@ import {
 import { OnEvent } from '@nestjs/event-emitter';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { ORGANIZATION_EVENTS } from '../constants/events.constants';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import * as Sentry from '@sentry/node';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -26,11 +29,13 @@ export class OrganizationFinancialService {
     // this.handleRegenerateFinancial({ organizationId: 170, cui: '29244879' });
   }
 
+  // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
   @OnEvent(ORGANIZATION_EVENTS.CUI_CHANGED)
   async handleCuiChanged({ organizationId, newCUI }: CUIChangedEvent) {
     return this.handleRegenerateFinancial({ organizationId, cui: newCUI });
   }
 
+  // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
   public async handleRegenerateFinancial({
     organizationId,
     cui,
@@ -45,7 +50,7 @@ export class OrganizationFinancialService {
       });
       // 2. Get the financial data from ANAF for the new CUI
       const lastYear = new Date().getFullYear() - 1;
-      const financialFromAnaf = await this.getFinancialInformation(
+      const financialFromAnaf = await this.getFinancialInformationFromANAF(
         cui,
         lastYear,
       );
@@ -82,20 +87,37 @@ export class OrganizationFinancialService {
         where: { id: updateOrganizationFinancialDto.id },
       });
 
+    if (!organizationFinancial) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.ANAF, // TODO: update error as it has incorrect message. Basically here we didn't find the entity to update, we don't have problems with the ANAF data
+      });
+    }
+
     const totals = Object.values(updateOrganizationFinancialDto.data).reduce(
       (prev: number, current: number) => (prev += +current || 0),
       0,
     );
 
-    if (!organizationFinancial) {
-      throw new NotFoundException({
-        ...ORGANIZATION_ERRORS.ANAF,
-      });
+    let reportStatus: OrganizationFinancialReportStatus;
+
+    // BR: Look into OrganizationFinancialReportStatus (ENUM) to understand the business logic behind the statuses
+    if (organizationFinancial.synched_anaf) {
+      if (organizationFinancial.total === totals) {
+        reportStatus = OrganizationFinancialReportStatus.COMPLETED;
+      } else {
+        reportStatus = OrganizationFinancialReportStatus.INVALID;
+      }
+    } else if (totals !== 0) {
+      reportStatus = OrganizationFinancialReportStatus.PENDING;
+    } else {
+      reportStatus = OrganizationFinancialReportStatus.NOT_COMPLETED;
     }
 
     return this.organizationFinancialRepository.save({
       ...organizationFinancial,
       data: updateOrganizationFinancialDto.data,
+      reportStatus,
+      // TODO: remove this status
       status:
         totals === organizationFinancial.total
           ? CompletionStatus.COMPLETED
@@ -125,7 +147,7 @@ export class OrganizationFinancialService {
     ];
   }
 
-  public async getFinancialInformation(
+  public async getFinancialInformationFromANAF(
     cui: string,
     year: number,
   ): Promise<FinancialInformation> {
@@ -168,7 +190,7 @@ export class OrganizationFinancialService {
       return;
     }
 
-    const financialFromAnaf = await this.getFinancialInformation(
+    const financialFromAnaf = await this.getFinancialInformationFromANAF(
       organization.organizationGeneral.cui,
       year,
     );
@@ -194,5 +216,16 @@ export class OrganizationFinancialService {
         extra: { organization, year },
       });
     }
+  }
+
+  public async countNotCompletedReports(organizationId: number) {
+    const count = await this.organizationFinancialRepository.count({
+      where: {
+        organizationId,
+        reportStatus: Not(OrganizationFinancialReportStatus.COMPLETED),
+      },
+    });
+
+    return count;
   }
 }
