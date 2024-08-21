@@ -16,7 +16,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { ORGANIZATION_EVENTS } from '../constants/events.constants';
 import * as Sentry from '@sentry/node';
-import { Not } from 'typeorm';
+import { In, Not } from 'typeorm';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -222,7 +222,12 @@ export class OrganizationFinancialService {
     const count = await this.organizationFinancialRepository.count({
       where: {
         organizationId,
-        reportStatus: Not(OrganizationFinancialReportStatus.COMPLETED),
+        reportStatus: Not(
+          In([
+            OrganizationFinancialReportStatus.COMPLETED,
+            OrganizationFinancialReportStatus.PENDING,
+          ]),
+        ),
       },
     });
 
