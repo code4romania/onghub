@@ -26,15 +26,39 @@ const translations = {
 const mapReportStatusToTextAndBadge = (status: OrganizationFinancialReportStatus) => {
   switch (status) {
     case OrganizationFinancialReportStatus.COMPLETED:
-      return { translation: translations.completed, badge: BadgeStatus.SUCCESS };
+      return {
+        translation: translations.completed,
+        badge: BadgeStatus.SUCCESS,
+        tooltipContent:
+          'financial reports exist, admin filled in and it checks out against ANAF information',
+      };
     case OrganizationFinancialReportStatus.INVALID:
-      return { translation: translations.invalid, badge: BadgeStatus.ERROR };
+      return {
+        translation: translations.invalid,
+        badge: BadgeStatus.ERROR,
+        tooltipContent:
+          'financial reports exist, admin filled in but it does not check out against ANAF information',
+      };
     case OrganizationFinancialReportStatus.NOT_COMPLETED:
-      return { translation: translations.not_completed, badge: BadgeStatus.WARNING };
+      return {
+        translation: translations.not_completed,
+        badge: BadgeStatus.WARNING,
+        tooltipContent: 'financial reports exist, but no data has been added',
+      };
     case OrganizationFinancialReportStatus.PENDING:
-      return { translation: translations.pending, badge: BadgeStatus.WARNING };
+      return {
+        translation: translations.pending,
+        badge: BadgeStatus.WARNING,
+        tooltipContent:
+          'financial reports exist, admin filled in some information, but ANAF information is not yet ready',
+      };
     default:
-      return { translation: 'Error', badge: BadgeStatus.ERROR };
+      return {
+        translation: 'Error',
+        badge: BadgeStatus.ERROR,
+        tooltipContent:
+          'Error error error anaf error Error error error anaf error Error error error anaf error ',
+      };
   }
 };
 
@@ -88,6 +112,8 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
       <StatusBadge
         status={mapReportStatusToTextAndBadge(row.reportStatus).badge}
         value={mapReportStatusToTextAndBadge(row.reportStatus).translation}
+        tooltip
+        tooltipContent={mapReportStatusToTextAndBadge(row.reportStatus).tooltipContent}
       />
     ),
     sortable: true,

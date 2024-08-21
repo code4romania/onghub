@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
+import { getYear } from 'date-fns';
 
 interface ExtendedStatisticsCardInfo {
   icon: any;
@@ -40,7 +41,14 @@ const ExetendedStatisticsCard = ({ stat }: { stat: ExtendedStatisticsCardInfo })
                 {t(row.title.toString())}
               </span>
               <span className="text-gray-500 wrap sm:text-sm lg:text-base text-xs">
-                {t(row.subtitle)}
+                {t(row.subtitle, {
+                  value:
+                    row.subtitle === 'statistics.next_update'
+                      ? getYear(new Date())
+                      : row.subtitle === 'statistics.next_year_update'
+                        ? getYear(new Date()) + 1
+                        : undefined,
+                })}
               </span>
             </div>
           ))}
