@@ -20,6 +20,7 @@ const translations = {
   },
   status: {
     label: i18n.t('appstore:config.status.label'),
+    required: i18n.t('appstore:config.status.required'),
   },
   short: {
     required: i18n.t('appstore:config.short.required'),
@@ -80,11 +81,11 @@ export const PullingTypeOptions = [
 
 export function isHtmlContentEmpty(html: string): boolean {
   // Remove all HTML tags
-  const stripped = html.replace(/<[^>]*>/g, '');
+  const stripped = html?.replace(/<[^>]*>/g, '');
   // Remove whitespace
-  const trimmed = stripped.trim();
+  const trimmed = stripped?.trim();
 
-  return trimmed.length === 0;
+  return trimmed?.length === 0;
 }
 
 export const AddAppConfig: Record<string, any> = {
@@ -149,7 +150,7 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       required: {
         value: true,
-        message: translations.type.required,
+        message: translations.status.required,
       },
     },
     helperText: '',
@@ -171,6 +172,10 @@ export const AddAppConfig: Record<string, any> = {
     rules: {
       maxLength: {
         value: 30,
+        message: translations.short.max,
+      },
+      minLength: {
+        value: 2,
         message: translations.short.max,
       },
     },

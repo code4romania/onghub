@@ -8,13 +8,11 @@ import { OrderDirection } from '../../../common/enums/sort-direction.enum';
 import { useErrorToast } from '../../../common/hooks/useToast';
 import DataTableFilters from '../../../components/data-table-filters/DataTableFilters';
 import DataTableComponent from '../../../components/data-table/DataTableComponent';
-import PopoverMenu, { PopoverMenuRowType } from '../../../components/popover-menu/PopoverMenu';
 import Select from '../../../components/Select/Select';
 import {
   useApplicationsQuery,
 } from '../../../services/application/Application.queries';
 import {
-  Application,
   ApplicationStatus,
 } from '../../../services/application/interfaces/Application.interface';
 import { useApplications } from '../../../store/selectors';
@@ -63,29 +61,6 @@ const ApplicationListTable = () => {
 
   }, [error]);
 
-  const buildUserActionColumn = (): TableColumn<Application> => {
-
-    const activeApplicationMenu = [
-      {
-        name: t('list.view'),
-        icon: EyeIcon,
-        onClick: onView,
-        type: PopoverMenuRowType.INFO,
-      },
-    ];
-
-    return {
-      name: '',
-      cell: (row: Application) => (
-        <PopoverMenu
-          row={row}
-          menuItems={activeApplicationMenu}
-        />
-      ),
-      width: '50px',
-      allowOverflow: true,
-    };
-  };
 
   const onRowsPerPageChange = (rows: number) => {
     setRowsPerPage(rows);
@@ -165,7 +140,7 @@ const ApplicationListTable = () => {
           </p>
         </div>
         <DataTableComponent
-          columns={[...ApplicationtListTableHeaders, buildUserActionColumn()]}
+          columns={[...ApplicationtListTableHeaders]}
           data={applications.items}
           loading={
             isLoading

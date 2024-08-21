@@ -71,9 +71,10 @@ const CreatableMultiSelect = ({
           onChange={onChange}
           value={value}
           options={options}
+          isClearable
           id={id}
           formatCreateLabel={(text) => `${i18n.t('common:add_option')}: ${text}`}
-          isValidNewOption={validation ? validation : () => true}
+          isValidNewOption={(validation ? validation : () => true)}
         />
       )}
       {!error && !readonly && helperText && (
