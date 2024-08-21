@@ -67,7 +67,7 @@ const Login = () => {
           <div className="font-titilliumSemiBold text-lg md:text-xl max-w-3xl text-center pb-10 sm:pb-14">
             {t('description')}
           </div>
-          <div className="w-full max-w-4xl bg-white shadow rounded-lg px-4 sm:px-10 py-4 sm:py-[58px] flex sm:grid gap-6 sm:gap-12 sm:grid-cols-2 flex-col-reverse">
+          <div className="w-full max-w-4xl bg-white shadow rounded-lg px-4 sm:px-10 py-4 sm:py-[58px] flex sm:grid gap-6 sm:gap-12 sm:grid-cols-2 flex-col-reverse items-center">
             <div className="flex flex-col gap-5">
               <div className="font-titilliumBold text-2xl md:text-[2rem]">{t('about.title')}</div>
               <div className="font-titillium">{t('about.description')}</div>
@@ -80,7 +80,7 @@ const Login = () => {
                 {t('about.start_form')}
               </button>
             </div>
-            <div className="bg-clock bg-no-repeat bg-contain w-full h-40 sm:h-full bg-center"></div>
+            <div className="bg-clock bg-no-repeat bg-contain w-full h-40 sm:h-60 bg-center"></div>
           </div>
         </div>
       </div>
