@@ -68,8 +68,8 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
     info: [
       {
         title: isUpdated
-          ? 'Informațiile financiare sunt actualizate'
-          : 'Informațiile financiare nu sunt actualizate',
+          ? 'statistics.financial_reports.updated'
+          : 'statistics.financial_reports.not_updated',
         subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
@@ -84,8 +84,8 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
     info: [
       {
         title: isUpdated
-          ? 'Informațiile din secțiunea “ONG-ul în numere” sunt actualizate'
-          : 'Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate',
+          ? 'statistics.organization_reports.updated'
+          : 'statistics.organization_reports.not_updated',
         subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
@@ -138,8 +138,8 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
     info: [
       {
         title: isUpdated
-          ? 'Informațiile financiare sunt actualizate'
-          : 'Informațiile financiare nu sunt actualizate',
+          ? 'statistics.financial_reports.updated'
+          : 'statistics.financial_reports.not_updated',
         subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
@@ -154,8 +154,8 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
     info: [
       {
         title: isUpdated
-          ? 'Informațiile din secțiunea “ONG-ul în numere” sunt actualizate'
-          : 'Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate',
+          ? 'statistics.organization_reports.updated'
+          : 'statistics.organization_reports.not_updated',
         subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
