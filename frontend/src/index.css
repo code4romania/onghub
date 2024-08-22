@@ -176,21 +176,26 @@
   transform: rotate(-45deg);
   position: absolute;
   background-color: #374159;
-  padding-top: 0.5rem;
-  padding-left: 3.5rem;
-  padding-bottom: 0.5rem;
-  padding-right: 4.5rem;
+  padding: 0.5rem 3.1rem;
   color: white;
+  width: 14rem; /* Adjust the width to fit text nicely */
+  text-align: center;
   overflow: hidden;
-  width: 18rem;
-  margin-left: -0.5rem;
+  left: -3.5rem; /* Adjusted positioning */
+  top: 2rem; /* Adjust as necessary */
+
+  @media screen and (max-width: 768px) {
+    width: 13rem;
+  }
 }
 
 .ribbon p {
   margin: 0;
-  white-space: normal;
-  overflow-wrap: break-word;
+  white-space: normal; /* Allow text to wrap */
+  overflow-wrap: break-word; /* Handle long words */
+  word-wrap: break-word; /* Ensure compatibility with older browsers */
   text-align: center;
+  line-height: 1; /* Adjust line height to maintain readability */
 }
 
 .richtext_html ul {

@@ -73,9 +73,17 @@ export class ApplicationService {
         };
       }
 
+      let applicationLabel = null;
+      if (createApplicationDto.applicationLabel) {
+        applicationLabel = await this.saveAndGetApplicationLabel(
+          createApplicationDto.applicationLabel,
+        );
+      }
+
       // 3. save the app
       return this.applicationRepository.save({
         ...createApplicationDto,
+        applicationLabel,
       });
     } catch (error) {
       this.logger.error({

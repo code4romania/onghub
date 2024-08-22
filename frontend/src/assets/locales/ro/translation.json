@@ -48,7 +48,7 @@
       "reset": "Resetează filtre",
       "show": "Filtre"
     },
-    "unavailable": "În curând",
+    "unavailable": "Temporar indisponibilă",
     "to_be_removed": "De eliminat",
     "decimal": "Valori cu decimale nu sunt permise.",
     "unknown_error": "A apărut o eroare necunoscută",
@@ -1065,6 +1065,7 @@
       },
       "status": {
         "label": "Status aplicație",
+        "required": "Statusul aplicației este obligatoriu",
         "options": {
           "active": "Activă (aplicația poate fi adăugată de organizații în profilul lor)",
           "disabled": "Inactivă (aplicația nu poate fi adăugată de organizații în profilul lor)"
@@ -1111,7 +1112,8 @@
       "application_label": {
         "label": "Eticheta pentru aplicație (eticheta apare în meniul Toate aplicațiile)",
         "helper": "Adaugă o etichetă deja existentă sau creează una nouă",
-        "maxLength": "Eticheta poate avea maxim 30 de caractere"
+        "maxLength": "Eticheta poate avea maxim 30 de caractere",
+        "minLength": "Eticheta poate avea minimum 2 de caractere"
       }
     },
     "request_modal": {

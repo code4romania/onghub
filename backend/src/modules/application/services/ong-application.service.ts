@@ -132,6 +132,11 @@ export class OngApplicationService {
         'ongApp.applicationId = application.id AND ongApp.organizationId = :organizationId',
         { organizationId },
       )
+      .leftJoin(
+        '_application-label',
+        'applicationLabel',
+        'applicationLabel.id = application.application_label_id',
+      )
       .where(
         'ongApp.organizationId = :organizationId and ongApp.status != :status',
         {
