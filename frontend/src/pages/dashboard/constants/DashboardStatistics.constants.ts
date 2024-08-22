@@ -1,5 +1,4 @@
 import {
-  CheckCircleIcon,
   ClockIcon,
   RectangleStackIcon,
   SunIcon,
@@ -7,6 +6,7 @@ import {
   UsersIcon,
   SquaresPlusIcon,
 } from '@heroicons/react/24/solid';
+import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { formatDate } from '../../../common/helpers/format.helper';
 
 interface PartialSimpleDashboardStatistics {
@@ -63,14 +63,14 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
 
 export const AdminEmployeeDashboardExtendedStatisticsMapping = {
   isOrganizationFinancialReportsUpdated: (isUpdated: boolean) => ({
-    icon: CheckCircleIcon,
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
         title: isUpdated
-          ? 'TODO: De mutat in banner - Rapoartele financiare sunt actualizate'
-          : 'TODO: De mutat in banner - Rapoartele financiare nu sunt actualizate',
-        subtitle: 'statistics.next_update',
+          ? 'Informațiile financiare sunt actualizate'
+          : 'Informațiile financiare nu sunt actualizate',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
@@ -79,14 +79,14 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
     },
   }),
   isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean) => ({
-    icon: CheckCircleIcon,
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
         title: isUpdated
-          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
-          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
-        subtitle: 'statistics.next_update',
+          ? 'Informațiile din secțiunea “ONG-ul în numere” sunt actualizate'
+          : 'Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
@@ -133,14 +133,14 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
 
 export const SuperAdminOverviewExtendedStatisticsMapping = {
   isOrganizationFinancialReportsUpdated: (isUpdated: boolean, organizationId?: number) => ({
-    icon: CheckCircleIcon,
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
         title: isUpdated
-          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
-          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
-        subtitle: 'statistics.next_update',
+          ? 'Informațiile financiare sunt actualizate'
+          : 'Informațiile financiare nu sunt actualizate',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
@@ -149,14 +149,14 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
     },
   }),
   isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean, organizationId?: number) => ({
-    icon: CheckCircleIcon,
+    icon: ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
         title: isUpdated
-          ? 'TODO: De mutat in banner - Rapoartele sunt actualizate'
-          : 'TODO: De mutat in banner - Rapoartele nu sunt actualizate',
-        subtitle: 'statistics.next_update',
+          ? 'Informațiile din secțiunea “ONG-ul în numere” sunt actualizate'
+          : 'Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
