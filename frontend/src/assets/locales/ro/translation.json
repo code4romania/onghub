@@ -719,6 +719,13 @@
         "info": "Totalul veniturilor care au rezultat in urma unor operațiuni financiare, de exemplu dobânda pe care o obții la depozite sau diferențele de schimb valutar."
       }
     },
+    "tooltip": {
+      "completed": "Toate informațiile au fost completate și se potrivesc cu cele de la ANAF",
+      "not_completed": "Informațiile nu au fost completate încă. Te rugăm să introduci informațiile financiare pentru a evita suspendarea contului",
+      "invalid": "Informațiile introduse nu se potrivesc cu cele de la ANAF. Te rugăm să le revizuiești și să corectezi eventualele erori",
+      "pending": "Informațiile au fost completate parțial sau integral și sunt în curs de verificare cu informațiile de la ANAF",
+      "error": "Eroare la obținerea statusului"
+    },
     "expense": {
       "net": {
         "label": "Salarii nete (resurse umane)",
@@ -1309,7 +1316,7 @@
       "view_active_apps": "Vezi aplicațiile active",
       "active_users": "Utilizatori în organizație",
       "handle_users": "Gestionează utilizatori",
-      "view_data": "Vizualizează datele",
+      "view_data": "Vizualizează informațiile",
       "financial_reports_are_uptodate": "Rapoartele financiare sunt actualizate",
       "financial_reports_are_outdated": "Rapoartele financiare nu sunt actualizate",
       "error": "Eroare la preluarea datelor",
@@ -1326,6 +1333,14 @@
         "yearly": "Dintotdeauna",
         "monthly": "Lunar",
         "daily": "Zilnic"
+      },
+      "financial_reports": {
+        "updated": "Informațiile financiare sunt actualizate",
+        "not_updated": "Informațiile financiare nu sunt actualizate"
+      },
+      "organization_reports": {
+        "updated": "Informațiile din secțiunea “ONG-ul în numere” sunt actualizate",
+        "not_updated": "Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate"
       }
     },
     "activity_title": "Organizație activă în NGO Hub din",
