@@ -53,7 +53,7 @@ const StatusBadge = ({ status, value, tooltip, tooltipContent = '' }: StatusBadg
             maxWidth: '250px',
             backgroundColor:
               status === BadgeStatus.SUCCESS
-                ? colors.green[200]
+                ? colors.green[300]
                 : status === BadgeStatus.ERROR
                   ? colors.red[200]
                   : colors.yellow[200],
@@ -62,7 +62,7 @@ const StatusBadge = ({ status, value, tooltip, tooltipContent = '' }: StatusBadg
                 ? colors.green[900]
                 : status === BadgeStatus.ERROR
                   ? colors.red[900]
-                  : colors.yellow[900],
+                  : colors.amber[600],
           }}
         />
       )}
