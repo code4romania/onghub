@@ -8,14 +8,14 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
       "organization".id AS "id",
       "organization".status AS "status",
       "organization".created_on AS "createdOn",
-      CASE WHEN MIN(COALESCE("organization_financial".status, 'Not Completed')) != 'Completed'
-        OR MIN(COALESCE("report".status, 'Not Completed')) != 'Completed'
-        OR MIN(COALESCE("partner".status, 'Not Completed')) != 'Completed'
-        OR MIN(COALESCE("investor".status, 'Not Completed')) != 'Completed' THEN
-        'Not completed'
-      ELSE
-        'Completed'
-      END AS "completionStatus",
+    	CASE 
+        WHEN COUNT(DISTINCT CASE WHEN "organization_financial".status != 'Completed' OR "organization_financial".status IS NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "report".status != 'Completed' OR "report".status IS NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "partner".status != 'Completed' OR "partner".status IS NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "investor".status != 'Completed' OR "investor".status IS NULL THEN 1 END) > 0
+        THEN 'Not completed'
+        ELSE 'Completed'
+    	END AS "completionStatus",
       "organization_general".name AS "name",
       "organization_general".alias AS "alias",
       COUNT("user".id) AS "userCount",
