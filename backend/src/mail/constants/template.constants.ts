@@ -134,6 +134,37 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
       },
     },
   },
+  WEEKLY_REMINDER_TO_UPDATE_ORGANIZATION_REPORTS: {
+    template: ORGANIZATION_REQUEST,
+    subject:
+      'Actualizați profilul organizației până pe 30 iunie pentru a evita suspendarea contului',
+    context: {
+      title:
+        'Actualizați profilul organizației până pe 30 iunie pentru a evita suspendarea contului',
+      subtitle: () => `
+          <p>Bună,</p>
+
+          <p>Ne bucurăm că ești parte din comunitatea NGO Hub!</p>
+
+          <p>Îți reamintim că termenul limită pentru actualizarea datelor din profilul tău este 30 iunie ${new Date().getFullYear()}. Pentru a-ți păstra contul activ, te rugăm să îți actualizezi informațiile cât mai curând posibil.</p>
+
+          <p>Aceștia sunt pașii pe care trebuie să îi urmezi pentru actualizare:</p>
+
+          <ol>
+              <li>Conectează-te la contul tău NGO Hub</li>
+              <li>Mergi la secțiunea „Organizația mea"</li>
+              <li>Verifică și actualizează toate informațiile din secțiunea „Informații financiare" și „ONG-ul în numere".</li>
+              <li>Salvează modificările</li>
+          </ol>
+
+          <p>Dacă ai nevoie de ajutor sau ai orice fel de întrebare, ne poți contacta oricând la <a href="mailto:civic@code4.ro">civic@code4.ro</a> sau poți programa o sesiune Civic Tech 911 direct din contul NGO Hub al organizației.</p>
+      `,
+      cta: {
+        link: () => `${process.env.ONGHUB_URL}/organization`,
+        label: 'Intra in cont',
+      },
+    },
+  },
   NOTIFY_FOR_UNAVAILABLE_OR_INVALID_FINANCIAL_INFORMATION: {
     template: ORGANIZATION_REQUEST,
     subject:

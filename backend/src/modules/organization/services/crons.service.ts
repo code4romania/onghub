@@ -139,6 +139,49 @@ export class OrganizationCronsService {
     }
   }
 
+  // Every monday at 8:00 AM (server time) from 8th to 30th of June
+  @Cron('0 8 8-30 6 1')
+  async sendReminderForOrganizationProfileUpdate() {
+    // 1. Get all organizations missin the completion of financial data and reports
+    const organizations: { adminEmail: string }[] =
+      await this.organizationViewRepository.getMany({
+        where: {
+          completionStatus: CompletionStatus.NOT_COMPLETED,
+        },
+        select: {
+          adminEmail: true,
+        },
+      });
+
+    const receivers = organizations.map((org) => org.adminEmail);
+
+    const {
+      subject,
+      template,
+      context: {
+        title,
+        subtitle,
+        cta: { link, label },
+      },
+    } = MAIL_OPTIONS.WEEKLY_REMINDER_TO_UPDATE_ORGANIZATION_REPORTS;
+
+    for (let email of receivers) {
+      await this.mailService.sendEmail({
+        to: email,
+        template,
+        subject,
+        context: {
+          title,
+          subtitle: subtitle(),
+          cta: {
+            link: link(),
+            label,
+          },
+        },
+      });
+    }
+  }
+
   /**
    * At 07:00 (Server Time) every Monday in every month from June through December.
    */
