@@ -478,6 +478,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={!county}
                       />
                     );
                   }}
@@ -703,6 +704,7 @@ const OrganizationGeneral = () => {
                       placeholder={OrganizationGeneralConfig.organizationAddress.config.placeholder}
                       onChange={onChange}
                       id="create-organization-general__org-organization-address"
+                      disabled={watchHasSameAddress}
                     />
                   );
                 }}
@@ -729,6 +731,7 @@ const OrganizationGeneral = () => {
                           handleSetOrganizationCounty(e)
                         }}
                         readonly={readonly}
+                        disabled={watchHasSameAddress}
                       />
                     );
                   }}
@@ -751,6 +754,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={watchHasSameAddress || !organizationCounty}
                       />
                     );
                   }}

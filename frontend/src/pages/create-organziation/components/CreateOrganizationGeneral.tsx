@@ -92,6 +92,8 @@ const CreateOrganizationGeneral = () => {
       setValue('organizationAddress', address);
       setValue('organizationCity', city);
       setValue('organizationCounty', county);
+
+      setOrganizationCounty(county);
     }
   }, [watchHasSameAddress]);
 
@@ -432,6 +434,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={!county}
                       />
                     );
                   }}
@@ -644,6 +647,7 @@ const CreateOrganizationGeneral = () => {
                         onChange: onChange,
                         id: 'create-organization-general__org-organization-address',
                       }}
+                      disabled={watchHasSameAddress}
                       readonly={readonly}
                     />
                   );
@@ -671,6 +675,7 @@ const CreateOrganizationGeneral = () => {
                           handleSetOrganizationCounty(e)
                         }}
                         readonly={readonly}
+                        disabled={watchHasSameAddress}
                       />
                     );
                   }}
@@ -693,6 +698,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={watchHasSameAddress || !organizationCounty}
                       />
                     );
                   }}
