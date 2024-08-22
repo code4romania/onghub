@@ -119,4 +119,17 @@ export class OrganizationCronsService {
       });
     }
   }
+
+  /**
+   * At 07:00 (Server Time) every Monday in every month from June through December.
+   */
+  @Cron('0 7 * 6-12 1')
+  async fetchANAFDataForFinancialReports() {
+    try {
+      await this.organizationFinancialService.refetchANAFDataForFinancialReports();
+    } catch (err) {
+      Sentry.captureMessage('fetchANAFDataForFinancialReports failed');
+      Sentry.captureException(err);
+    }
+  }
 }
