@@ -15,11 +15,13 @@ import {
   AnafService,
   FinancialInformation,
 } from 'src/shared/services/anaf.service';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { ORGANIZATION_EVENTS } from '../constants/events.constants';
 import * as Sentry from '@sentry/node';
 import { In, Not } from 'typeorm';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import InvalidFinancialReportsEvent from 'src/modules/notifications/events/invalid-financial-reports-event.class';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -29,10 +31,8 @@ export class OrganizationFinancialService {
     private readonly organizationFinancialRepository: OrganizationFinancialRepository,
     private readonly organizationRepository: OrganizationRepository,
     private readonly anafService: AnafService,
-  ) {
-    // this.handleRegenerateFinancial({ organizationId: 170, cui: '29244879' });
-    // this.refetchANAFDataForFinancialReports();
-  }
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
   @OnEvent(ORGANIZATION_EVENTS.CUI_CHANGED)
@@ -256,7 +256,7 @@ export class OrganizationFinancialService {
     type OrganizationsWithMissingANAFData = {
       id: number;
       organizationFinancial: OrganizationFinancial[];
-      organizationGeneral: { cui: string };
+      organizationGeneral: { cui: string; email: string };
     };
 
     const data: OrganizationsWithMissingANAFData[] =
@@ -274,6 +274,7 @@ export class OrganizationFinancialService {
           id: true,
           organizationGeneral: {
             cui: true,
+            email: true,
           },
           organizationFinancial: true,
         },
@@ -311,6 +312,9 @@ export class OrganizationFinancialService {
           {},
         );
 
+        // A notification will be sent to the organization if the completed data is invalid
+        let sendNotificationForInvalidData = false;
+
         // Iterate over all years and call ANAF
         for (let year of Object.keys(years)) {
           // 2. Fetch data from ANAF for the given CUI and YEAR
@@ -321,33 +325,53 @@ export class OrganizationFinancialService {
 
           if (anafData) {
             // We have the data, upadate the reports. First "Income"
-            if (years[year].Income)
+            if (years[year].Income) {
+              const reportStatus = this.determineReportStatus(
+                years[year].Income.existingTotal,
+                anafData.totalIncome,
+                true,
+              );
               await this.organizationFinancialRepository.updateOne({
                 id: years[year].Income.id,
                 total: anafData.totalIncome,
                 numberOfEmployees: anafData.numberOfEmployees,
                 synched_anaf: true,
-                reportStatus: this.determineReportStatus(
-                  years[year].Income.existingTotal,
-                  anafData.totalIncome,
-                  true,
-                ),
+                reportStatus,
               });
 
+              sendNotificationForInvalidData = sendNotificationForInvalidData
+                ? true
+                : reportStatus !== OrganizationFinancialReportStatus.COMPLETED;
+            }
+
             // Second: "Expense"
-            if (years[year].Expense)
+            if (years[year].Expense) {
+              const reportStatus = this.determineReportStatus(
+                years[year].Expense.existingTotal,
+                anafData.totalExpense,
+                true,
+              );
               await this.organizationFinancialRepository.updateOne({
                 id: years[year].Expense.id,
                 total: anafData.totalExpense,
                 numberOfEmployees: anafData.numberOfEmployees,
                 synched_anaf: true,
-                reportStatus: this.determineReportStatus(
-                  years[year].Expense.existingTotal,
-                  anafData.totalExpense,
-                  true,
-                ),
+                reportStatus,
               });
+
+              sendNotificationForInvalidData = sendNotificationForInvalidData
+                ? true
+                : reportStatus !== OrganizationFinancialReportStatus.COMPLETED;
+            }
           }
+        }
+
+        // In case one of the report is invalid, we notify the ADMIN to modify them
+        if (sendNotificationForInvalidData) {
+          this.eventEmitter.emit(
+            EVENTS.INVALID_FINANCIAL_REPORTS,
+            new InvalidFinancialReportsEvent(org.organizationGeneral.email),
+          );
         }
       } catch (err) {
         Sentry.captureException(err, {
