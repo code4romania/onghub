@@ -1,6 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationFinancialDto } from '../dto/update-organization-financial.dto';
-import { OrganizationFinancialRepository } from '../repositories';
+import {
+  OrganizationFinancialRepository,
+  OrganizationRepository,
+} from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
 import {
   CompletionStatus,
@@ -24,9 +27,11 @@ export class OrganizationFinancialService {
 
   constructor(
     private readonly organizationFinancialRepository: OrganizationFinancialRepository,
+    private readonly organizationRepository: OrganizationRepository,
     private readonly anafService: AnafService,
   ) {
     // this.handleRegenerateFinancial({ organizationId: 170, cui: '29244879' });
+    // this.refetchANAFDataForFinancialReports();
   }
 
   // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
@@ -101,17 +106,11 @@ export class OrganizationFinancialService {
     let reportStatus: OrganizationFinancialReportStatus;
 
     // BR: Look into OrganizationFinancialReportStatus (ENUM) to understand the business logic behind the statuses
-    if (organizationFinancial.synched_anaf) {
-      if (organizationFinancial.total === totals) {
-        reportStatus = OrganizationFinancialReportStatus.COMPLETED;
-      } else {
-        reportStatus = OrganizationFinancialReportStatus.INVALID;
-      }
-    } else if (totals !== 0) {
-      reportStatus = OrganizationFinancialReportStatus.PENDING;
-    } else {
-      reportStatus = OrganizationFinancialReportStatus.NOT_COMPLETED;
-    }
+    reportStatus = this.determineReportStatus(
+      totals,
+      organizationFinancial.total,
+      organizationFinancial.synched_anaf,
+    );
 
     return this.organizationFinancialRepository.save({
       ...organizationFinancial,
@@ -145,6 +144,24 @@ export class OrganizationFinancialService {
         numberOfEmployees: financialInformation?.numberOfEmployees ?? 0,
       },
     ];
+  }
+
+  private determineReportStatus(
+    addedByOrganizationTotal: number,
+    anafTotal: number,
+    isSynced: boolean,
+  ) {
+    if (isSynced) {
+      if (anafTotal === addedByOrganizationTotal) {
+        return OrganizationFinancialReportStatus.COMPLETED;
+      } else {
+        return OrganizationFinancialReportStatus.INVALID;
+      }
+    } else if (addedByOrganizationTotal !== 0) {
+      return OrganizationFinancialReportStatus.PENDING;
+    } else {
+      return OrganizationFinancialReportStatus.NOT_COMPLETED;
+    }
   }
 
   public async getFinancialInformationFromANAF(
@@ -232,5 +249,113 @@ export class OrganizationFinancialService {
     });
 
     return count;
+  }
+
+  async refetchANAFDataForFinancialReports() {
+    // 1. Find all organizations with missing ANAF data in the Financial Reports
+    type OrganizationsWithMissingANAFData = {
+      id: number;
+      organizationFinancial: OrganizationFinancial[];
+      organizationGeneral: { cui: string };
+    };
+
+    const data: OrganizationsWithMissingANAFData[] =
+      await this.organizationRepository.getMany({
+        relations: {
+          organizationFinancial: true,
+          organizationGeneral: true,
+        },
+        where: {
+          organizationFinancial: {
+            synched_anaf: false,
+          },
+        },
+        select: {
+          id: true,
+          organizationGeneral: {
+            cui: true,
+          },
+          organizationFinancial: true,
+        },
+      });
+
+    for (let org of data) {
+      try {
+        // Find all years for which we should call ANAF services
+        type YearsFinancial = {
+          [year: string]: {
+            Income: { id: number; existingTotal: number };
+            Expense: { id: number; existingTotal: number };
+          };
+        };
+        const years: YearsFinancial = org.organizationFinancial.reduce(
+          (acc, curr) => {
+            if (!acc[curr.year]) {
+              acc[curr.year] = {};
+            }
+
+            const existingData = curr.data as Object;
+            let existingTotal = null;
+
+            if (curr.data) {
+              existingTotal = Object.keys(existingData).reduce(
+                (acc, curr) => acc + +existingData[curr],
+                0,
+              );
+            }
+
+            acc[curr.year][curr.type] = { id: curr.id, existingTotal };
+
+            return acc;
+          },
+          {},
+        );
+
+        // Iterate over all years and call ANAF
+        for (let year of Object.keys(years)) {
+          // 2. Fetch data from ANAF for the given CUI and YEAR
+          const anafData = await this.getFinancialInformationFromANAF(
+            org.organizationGeneral.cui,
+            +year,
+          );
+
+          if (anafData) {
+            // We have the data, upadate the reports. First "Income"
+            if (years[year].Income)
+              await this.organizationFinancialRepository.updateOne({
+                id: years[year].Income.id,
+                total: anafData.totalIncome,
+                numberOfEmployees: anafData.numberOfEmployees,
+                synched_anaf: true,
+                reportStatus: this.determineReportStatus(
+                  years[year].Income.existingTotal,
+                  anafData.totalIncome,
+                  true,
+                ),
+              });
+
+            // Second: "Expense"
+            if (years[year].Expense)
+              await this.organizationFinancialRepository.updateOne({
+                id: years[year].Expense.id,
+                total: anafData.totalExpense,
+                numberOfEmployees: anafData.numberOfEmployees,
+                synched_anaf: true,
+                reportStatus: this.determineReportStatus(
+                  years[year].Expense.existingTotal,
+                  anafData.totalExpense,
+                  true,
+                ),
+              });
+          }
+        }
+      } catch (err) {
+        Sentry.captureException(err, {
+          extra: {
+            organization: org.id,
+          },
+        });
+      }
+    }
   }
 }

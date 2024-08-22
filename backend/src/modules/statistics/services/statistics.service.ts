@@ -274,7 +274,6 @@ export class StatisticsService {
     }
   }
 
-  // TODO: Cata - we can transform this in a view
   public async getOrganizationStatistics(
     organizationId: number,
     role?: Role,
