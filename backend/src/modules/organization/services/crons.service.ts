@@ -1,12 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OrganizationRepository } from '../repositories/organization.repository';
-import { OrganizationFinancialRepository } from '../repositories';
+import {
+  OrganizationFinancialRepository,
+  OrganizationViewRepository,
+} from '../repositories';
 import { OrganizationFinancialService } from './organization-financial.service';
 import { OrganizationReportService } from './organization-report.service';
 import * as Sentry from '@sentry/node';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
+import { EntityManager, In, Not, getManager } from 'typeorm';
+import {
+  CompletionStatus,
+  OrganizationFinancialReportStatus,
+} from '../enums/organization-financial-completion.enum';
+import { InjectEntityManager } from '@nestjs/typeorm';
 
 @Injectable()
 export class OrganizationCronsService {
@@ -14,6 +23,7 @@ export class OrganizationCronsService {
 
   constructor(
     private readonly organizationRepository: OrganizationRepository,
+    private readonly organizationViewRepository: OrganizationViewRepository,
     private readonly organizationFinancialService: OrganizationFinancialService,
     private readonly organizationReportService: OrganizationReportService,
     private readonly mailService: MailService,
@@ -72,26 +82,35 @@ export class OrganizationCronsService {
     }
   }
 
+  /**
+   *
+   *  Organizations must complete their reports until 30th of June each year, otherwise the account will be suspended
+   *
+   *  The reports are:
+   *    1. Financial Report
+   *    2. ONG In Numere
+   *      2.1. Reports
+   *      2.2. Investors
+   *      2.3. Partners
+   *
+   *
+   *  On 1st Of june, we send an email to all organization which didn't fully complete their reports.
+   *
+   */
   @Cron('0 12 1 6 *') // 1st of June, 12 PM server time
-  async sendEmailToRemindFinancialDataCompletion() {
-    // 1. Get all organizations with are missing the previous year the financial data and reports
-    const organizations = await this.organizationRepository.getMany({
-      relations: {
-        organizationGeneral: true,
-        organizationFinancial: true,
-      },
-    });
+  async sendEmailToRemindOrganizationProfileUpdate() {
+    // 1. Get all organizations missin the completion of financial data and reports
+    const organizations: { adminEmail: string }[] =
+      await this.organizationViewRepository.getMany({
+        where: {
+          completionStatus: CompletionStatus.NOT_COMPLETED,
+        },
+        select: {
+          adminEmail: true,
+        },
+      });
 
-    // Filter organization to send email only to those who have the reports available for the last year
-    // Some organizations created in the current year will not have the data available
-    const receivers = organizations
-      .filter((org) => {
-        return org.organizationFinancial.some(
-          (financialReport) =>
-            financialReport.year === new Date().getFullYear() - 1,
-        );
-      })
-      .map((org) => org.organizationGeneral.email);
+    const receivers = organizations.map((org) => org.adminEmail);
 
     const {
       subject,
@@ -101,7 +120,7 @@ export class OrganizationCronsService {
         subtitle,
         cta: { link, label },
       },
-    } = MAIL_OPTIONS.REMIND_TO_COMPLETE_FINANCIAL_DATA;
+    } = MAIL_OPTIONS.REMIND_TO_UPDATE_ORGANIZATION_REPORTS;
 
     for (let email of receivers) {
       await this.mailService.sendEmail({

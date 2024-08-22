@@ -13,11 +13,12 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
           OR COUNT(DISTINCT CASE WHEN "report".status != 'Completed' OR "report".status IS NULL THEN 1 END) > 0
           OR COUNT(DISTINCT CASE WHEN "partner".status != 'Completed' OR "partner".status IS NULL THEN 1 END) > 0
           OR COUNT(DISTINCT CASE WHEN "investor".status != 'Completed' OR "investor".status IS NULL THEN 1 END) > 0
-        THEN 'Not completed'
+        THEN 'Not Completed'
         ELSE 'Completed'
     	END AS "completionStatus",
       "organization_general".name AS "name",
       "organization_general".alias AS "alias",
+      "organization_general".email AS "adminEmail",
       COUNT("user".id) AS "userCount",
       "organization_general".logo AS "logo",
       MAX(GREATEST(COALESCE("organization_financial".updated_on, '1970-01-01'), COALESCE("report".updated_on, '1970-01-01'), COALESCE("partner".updated_on, '1970-01-01'), COALESCE("investor".updated_on, '1970-01-01'))) AS "updatedOn"
@@ -67,4 +68,7 @@ export class OrganizationView {
 
   @ViewColumn()
   completionStatus: CompletionStatus;
+
+  @ViewColumn()
+  adminEmail: string;
 }
