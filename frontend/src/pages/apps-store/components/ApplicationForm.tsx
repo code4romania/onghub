@@ -70,7 +70,9 @@ const ApplicationForm = ({
   };
 
   const ribbonValidation = (inputValue: string) => {
-    if (inputValue.length > 30 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+    const labelError = (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key];
+
+    if (inputValue.length > 30 && !labelError) {
       control.setError(AddAppConfig.applicationLabel.key, { type: 'maxLength', message: t('config.application_label.maxLength') });
     }
 
@@ -79,7 +81,7 @@ const ApplicationForm = ({
     }
 
 
-    if (inputValue.length > 2 && inputValue.length < 30 && (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+    if (inputValue.length > 2 && inputValue.length < 30 && labelError) {
       clearErrors && clearErrors(AddAppConfig.applicationLabel.key);
     }
 
@@ -87,7 +89,7 @@ const ApplicationForm = ({
       return true;
     }
 
-    if (inputValue.length && inputValue.length < 3 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+    if (inputValue.length && inputValue.length < 3 && !labelError) {
       control.setError(AddAppConfig.applicationLabel.key, { type: 'minLength', message: t('config.application_label.minLength') });
     }
 
