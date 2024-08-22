@@ -72,16 +72,29 @@ const ApplicationForm = ({
   const ribbonValidation = (inputValue: string) => {
     if (inputValue.length > 30 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
       control.setError(AddAppConfig.applicationLabel.key, { type: 'maxLength', message: t('config.application_label.maxLength') });
-      return false;
-    } else if (inputValue.length > 2 && inputValue.length < 30 && clearErrors && (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
-      clearErrors(AddAppConfig.applicationLabel.key);
-      return true
-    } else if (inputValue.length > 0 && inputValue.length < 3 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
-      control.setError(AddAppConfig.applicationLabel.key, { type: 'minLength', message: t('config.application_label.minLength') });
-      return false
     }
 
-    console.log('inputValue', inputValue);
+    if (inputValue.length > 30) {
+      return false;
+    }
+
+
+    if (inputValue.length > 2 && inputValue.length < 30 && (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+      clearErrors && clearErrors(AddAppConfig.applicationLabel.key);
+    }
+
+    if (inputValue.length > 2 && inputValue.length < 30) {
+      return true;
+    }
+
+    if (inputValue.length && inputValue.length < 3 && !(errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key]) {
+      control.setError(AddAppConfig.applicationLabel.key, { type: 'minLength', message: t('config.application_label.minLength') });
+    }
+
+    if (inputValue.length < 3) {
+      return false;
+    }
+
     return true;
   }
 

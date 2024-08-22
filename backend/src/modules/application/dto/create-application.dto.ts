@@ -11,6 +11,7 @@ import { REGEX } from 'src/common/constants/patterns.constant';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
 import { ApplicationLabel } from 'src/shared/entities/application-labels.entity';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 export class CreateApplicationDto {
   @IsString()
@@ -60,4 +61,7 @@ export class CreateApplicationDto {
 
   @IsOptional()
   applicationLabel: Partial<ApplicationLabel>;
+
+  @IsEnum(ApplicationStatus)
+  status: ApplicationStatus;
 }
