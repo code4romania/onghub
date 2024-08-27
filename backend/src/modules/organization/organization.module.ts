@@ -46,6 +46,7 @@ import { OrganizationRequestHistory } from './entities/organization-request-hist
 import { PracticeProgramModule } from '../practice-program/practice-program.module';
 import { CivicCenterModule } from '../civic-center-service/civic-center.module';
 import { OrganizationCronsService } from './services/crons.service';
+import { TestingController } from './controllers/testing.controller';
 
 @Module({
   imports: [
@@ -69,7 +70,11 @@ import { OrganizationCronsService } from './services/crons.service';
     PracticeProgramModule,
     CivicCenterModule,
   ],
-  controllers: [OrganizationController, OrganizationProfileController],
+  controllers: [
+    OrganizationController,
+    OrganizationProfileController,
+    TestingController,
+  ],
   providers: [
     ContactService,
     OrganizationService,
@@ -98,6 +103,7 @@ import { OrganizationCronsService } from './services/crons.service';
     OrganizationRequestService,
     OrganizationFinancialService,
     OrganizationReportService,
+    OrganizationCronsService, // FOR TESTING CONTROLLER PURPOSE
   ],
 })
 export class OrganizationModule {}

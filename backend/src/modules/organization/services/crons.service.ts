@@ -15,7 +15,6 @@ import {
   CompletionStatus,
   OrganizationFinancialReportStatus,
 } from '../enums/organization-financial-completion.enum';
-import { InjectEntityManager } from '@nestjs/typeorm';
 
 @Injectable()
 export class OrganizationCronsService {
