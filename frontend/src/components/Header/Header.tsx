@@ -142,12 +142,14 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
           <WarningBanner
             text={t('statistics.financial_reports.not_updated', { ns: 'dashboard' })}
             actionText={t('statistics.financial_reports.please_update', { ns: 'dashboard' })}
+            actionLink="/organization/financial"
           />
         )}
         {reportsStatus && reportsStatus.numberOfErroredReportsInvestorsPartners > 0 && (
           <WarningBanner
             text={t('statistics.organization_reports.not_updated', { ns: 'dashboard' })}
             actionText={t('statistics.organization_reports.please_update', { ns: 'dashboard' })}
+            actionLink="/organization/data"
           />
         )}
       </header>

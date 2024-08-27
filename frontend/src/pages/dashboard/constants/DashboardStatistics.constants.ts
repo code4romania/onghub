@@ -160,7 +160,7 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
       },
     ],
     button: {
-      href: `organization/${organizationId}/data`,
+      href: `/organizations/${organizationId}/data`,
       label: 'statistics.view_data',
     },
   }),
