@@ -51,6 +51,7 @@ const StatusBadge = ({ status, value, tooltip, tooltipContent = '' }: StatusBadg
           content={tooltipContent}
           style={{
             maxWidth: '250px',
+            zIndex: 100_000,
             backgroundColor:
               status === BadgeStatus.SUCCESS
                 ? colors.green[300]
