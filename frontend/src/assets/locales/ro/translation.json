@@ -1317,8 +1317,6 @@
       "active_users": "Utilizatori în organizație",
       "handle_users": "Gestionează utilizatori",
       "view_data": "Vizualizează informațiile",
-      "financial_reports_are_uptodate": "Rapoartele financiare sunt actualizate",
-      "financial_reports_are_outdated": "Rapoartele financiare nu sunt actualizate",
       "error": "Eroare la preluarea datelor",
       "active_organizations": "Active",
       "inactive_organizations": "Inactive",
@@ -1336,11 +1334,13 @@
       },
       "financial_reports": {
         "updated": "Informațiile financiare sunt actualizate",
-        "not_updated": "Informațiile financiare nu sunt actualizate"
+        "not_updated": "Informațiile financiare nu sunt actualizate.",
+        "please_update": "Actualizeaza-ți datele pentru a putea continua sa folosesti NGO Hub."
       },
       "organization_reports": {
         "updated": "Informațiile din secțiunea “ONG-ul în numere” sunt actualizate",
-        "not_updated": "Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate"
+        "not_updated": "Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate.",
+        "please_update": "Adauga noile raportari pentru a putea continua sa folosesti NHO Hub."
       }
     },
     "activity_title": "Organizație activă în NGO Hub din",

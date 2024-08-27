@@ -21,8 +21,11 @@ import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableH
 import { OrganizationStatus } from '../../enums/OrganizationStatus.enum';
 import LoadingContent from '../../../../components/data-table/LoadingContent';
 import { useRetryAnafFinancialMutation } from '../../../../services/organization/Organization.queries';
+import { useQueryClient } from 'react-query';
 
 const OrganizationFinancial = () => {
+  const queryClient = useQueryClient();
+
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
@@ -120,6 +123,9 @@ const OrganizationFinancial = () => {
         },
       },
       {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        },
         onError: () => {
           useErrorToast(t('save_error', { ns: 'organization' }));
         },

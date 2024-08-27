@@ -31,6 +31,8 @@ import { UpdateOrganizationDto } from '../dto/update-organization.dto';
 import { Organization } from '../entities';
 import { OrganizationRequestService } from '../services/organization-request.service';
 import { OrganizationService } from '../services/organization.service';
+import { OrganizationFinancialService } from '../services';
+import { OrganizationReportService } from '../services/organization-report.service';
 
 @ApiTooManyRequestsResponse()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -40,12 +42,38 @@ export class OrganizationProfileController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly organizationRequestService: OrganizationRequestService,
+    private readonly organizationFinancialService: OrganizationFinancialService,
+    private readonly organizationReportService: OrganizationReportService,
   ) {}
 
   @Roles(Role.ADMIN, Role.EMPLOYEE)
   @Get()
   findOne(@ExtractUser() user: User): Promise<Organization> {
     return this.organizationService.findWithRelations(user.organizationId);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get('reports-status')
+  async getReportsStatus(
+    @ExtractUser() user: User,
+  ): Promise<{
+    numberOfErroredFinancialReports: number;
+    numberOfErroredReportsInvestorsPartners: number;
+  }> {
+    const numberOfErroredFinancialReports =
+      await this.organizationFinancialService.countNotCompletedReports(
+        user.organizationId,
+      );
+
+    const numberOfErroredReportsInvestorsPartners =
+      await this.organizationReportService.countNotCompletedReports(
+        user.organizationId,
+      );
+
+    return {
+      numberOfErroredFinancialReports,
+      numberOfErroredReportsInvestorsPartners,
+    };
   }
 
   @Roles(Role.ADMIN)

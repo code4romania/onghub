@@ -15,6 +15,8 @@ import { useUser } from '../../store/selectors';
 import { useTranslation } from 'react-i18next';
 import { signInWithRedirect } from 'aws-amplify/auth';
 import WarningBanner from '../warning-banner/WarningBanner';
+import { UserRole } from '../../pages/users/enums/UserRole.enum';
+import { useOrganizationReportsStatus } from '../../services/organization/Organization.queries';
 
 interface HeaderProps {
   openSlidingMenu?: any;
@@ -26,7 +28,9 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
   const navigate = useNavigate();
   const { profile } = useUser();
 
-  const { t } = useTranslation('header');
+  const { data: reportsStatus } = useOrganizationReportsStatus(profile?.role === UserRole.ADMIN);
+
+  const { t } = useTranslation(['header', 'dashboard']);
 
   return (
     <>
@@ -134,14 +138,18 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
             )}
           </div>
         </nav>
-        <WarningBanner
-          text="Datele financiare ale organizatiei nu sunt actualizate."
-          actionText="Actualizeaza-ti datele pentru a putea continua sa folosesti NGO Hub."
-        />
-        <WarningBanner
-          text="Raportarile organizatiei nu sunt actualizate."
-          actionText="Adauga noile raportari pentru a putea continua sa folosesti NHO Hub."
-        />
+        {reportsStatus && reportsStatus.numberOfErroredFinancialReports > 0 && (
+          <WarningBanner
+            text={t('statistics.financial_reports.not_updated', { ns: 'dashboard' })}
+            actionText={t('statistics.financial_reports.please_update', { ns: 'dashboard' })}
+          />
+        )}
+        {reportsStatus && reportsStatus.numberOfErroredReportsInvestorsPartners > 0 && (
+          <WarningBanner
+            text={t('statistics.organization_reports.not_updated', { ns: 'dashboard' })}
+            actionText={t('statistics.organization_reports.please_update', { ns: 'dashboard' })}
+          />
+        )}
       </header>
     </>
   );
