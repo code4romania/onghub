@@ -4,7 +4,10 @@ import { Organization } from './organization.entity';
 import { Income } from '../dto/income.dto';
 import { Expense } from '../dto/expense.dto';
 import { FinancialType } from '../enums/organization-financial-type.enum';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import {
+  CompletionStatus,
+  OrganizationFinancialReportStatus,
+} from '../enums/organization-financial-completion.enum';
 import { Exclude } from 'class-transformer';
 
 @Entity()
@@ -46,7 +49,15 @@ export class OrganizationFinancial extends BaseEntity {
     name: 'completion_status',
     default: CompletionStatus.NOT_COMPLETED,
   })
-  status: CompletionStatus;
+  status: CompletionStatus; // TODO: delete after data migration in production. The Status will be moved to reportStatus
+
+  @Column({
+    type: 'enum',
+    enum: OrganizationFinancialReportStatus,
+    name: 'status',
+    default: OrganizationFinancialReportStatus.NOT_COMPLETED,
+  })
+  reportStatus: OrganizationFinancialReportStatus;
 
   @Column({
     type: 'boolean',

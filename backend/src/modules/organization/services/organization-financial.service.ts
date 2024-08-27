@@ -1,17 +1,27 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { UpdateOrganizationFinancialDto } from '../dto/update-organization-financial.dto';
-import { OrganizationFinancialRepository } from '../repositories';
+import {
+  OrganizationFinancialRepository,
+  OrganizationRepository,
+} from '../repositories';
 import { ORGANIZATION_ERRORS } from '../constants/errors.constants';
-import { CompletionStatus } from '../enums/organization-financial-completion.enum';
+import {
+  CompletionStatus,
+  OrganizationFinancialReportStatus,
+} from '../enums/organization-financial-completion.enum';
 import { FinancialType } from '../enums/organization-financial-type.enum';
-import { OrganizationFinancial } from '../entities';
+import { Organization, OrganizationFinancial } from '../entities';
 import {
   AnafService,
   FinancialInformation,
 } from 'src/shared/services/anaf.service';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import CUIChangedEvent from '../events/CUI-changed-event.class';
 import { ORGANIZATION_EVENTS } from '../constants/events.constants';
+import * as Sentry from '@sentry/node';
+import { In, Not } from 'typeorm';
+import { EVENTS } from 'src/modules/notifications/constants/events.contants';
+import InvalidFinancialReportsEvent from 'src/modules/notifications/events/invalid-financial-reports-event.class';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -19,14 +29,18 @@ export class OrganizationFinancialService {
 
   constructor(
     private readonly organizationFinancialRepository: OrganizationFinancialRepository,
+    private readonly organizationRepository: OrganizationRepository,
     private readonly anafService: AnafService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
+  // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
   @OnEvent(ORGANIZATION_EVENTS.CUI_CHANGED)
   async handleCuiChanged({ organizationId, newCUI }: CUIChangedEvent) {
     return this.handleRegenerateFinancial({ organizationId, cui: newCUI });
   }
 
+  // TODO: Deprecated, we don't allow changing the CUI anymore, so this is obsolete. To be discussed and deleted
   public async handleRegenerateFinancial({
     organizationId,
     cui,
@@ -41,7 +55,7 @@ export class OrganizationFinancialService {
       });
       // 2. Get the financial data from ANAF for the new CUI
       const lastYear = new Date().getFullYear() - 1;
-      const financialFromAnaf = await this.getFinancialInformation(
+      const financialFromAnaf = await this.getFinancialInformationFromANAF(
         cui,
         lastYear,
       );
@@ -78,20 +92,31 @@ export class OrganizationFinancialService {
         where: { id: updateOrganizationFinancialDto.id },
       });
 
+    if (!organizationFinancial) {
+      throw new NotFoundException({
+        ...ORGANIZATION_ERRORS.ANAF, // TODO: update error as it has incorrect message. Basically here we didn't find the entity to update, we don't have problems with the ANAF data
+      });
+    }
+
     const totals = Object.values(updateOrganizationFinancialDto.data).reduce(
       (prev: number, current: number) => (prev += +current || 0),
       0,
     );
 
-    if (!organizationFinancial) {
-      throw new NotFoundException({
-        ...ORGANIZATION_ERRORS.ANAF,
-      });
-    }
+    let reportStatus: OrganizationFinancialReportStatus;
+
+    // BR: Look into OrganizationFinancialReportStatus (ENUM) to understand the business logic behind the statuses
+    reportStatus = this.determineReportStatus(
+      totals,
+      organizationFinancial.total,
+      organizationFinancial.synched_anaf,
+    );
 
     return this.organizationFinancialRepository.save({
       ...organizationFinancial,
       data: updateOrganizationFinancialDto.data,
+      reportStatus,
+      // TODO: remove this status
       status:
         totals === organizationFinancial.total
           ? CompletionStatus.COMPLETED
@@ -121,7 +146,25 @@ export class OrganizationFinancialService {
     ];
   }
 
-  public async getFinancialInformation(
+  private determineReportStatus(
+    addedByOrganizationTotal: number,
+    anafTotal: number,
+    isSynced: boolean,
+  ) {
+    if (isSynced) {
+      if (anafTotal === addedByOrganizationTotal) {
+        return OrganizationFinancialReportStatus.COMPLETED;
+      } else {
+        return OrganizationFinancialReportStatus.INVALID;
+      }
+    } else if (addedByOrganizationTotal !== 0) {
+      return OrganizationFinancialReportStatus.PENDING;
+    } else {
+      return OrganizationFinancialReportStatus.NOT_COMPLETED;
+    }
+  }
+
+  public async getFinancialInformationFromANAF(
     cui: string,
     year: number,
   ): Promise<FinancialInformation> {
@@ -146,5 +189,197 @@ export class OrganizationFinancialService {
       totalExpense: expense?.val_indicator,
       totalIncome: income?.val_indicator,
     };
+  }
+
+  public async generateNewReports({
+    organization,
+    year,
+  }: {
+    organization: Organization;
+    year: number;
+  }): Promise<void> {
+    if (
+      organization.organizationFinancial.find(
+        (financial) => financial.year === year,
+      )
+    ) {
+      // Avoid duplicating data
+      return;
+    }
+
+    const financialFromAnaf = await this.getFinancialInformationFromANAF(
+      organization.organizationGeneral.cui,
+      year,
+    );
+
+    // 3. Generate financial reports data
+    const newFinancialReport = this.generateFinancialReportsData(
+      year,
+      financialFromAnaf,
+    );
+
+    // 4. Save the new reports
+    try {
+      await Promise.all(
+        newFinancialReport.map((orgFinancial) =>
+          this.organizationFinancialRepository.save({
+            ...orgFinancial,
+            organizationId: organization.id,
+          }),
+        ),
+      );
+    } catch (err) {
+      Sentry.captureException(err, {
+        extra: { organization, year },
+      });
+    }
+  }
+
+  public async countNotCompletedReports(organizationId: number) {
+    const count = await this.organizationFinancialRepository.count({
+      where: {
+        organizationId,
+        reportStatus: Not(
+          In([
+            OrganizationFinancialReportStatus.COMPLETED,
+            OrganizationFinancialReportStatus.PENDING,
+          ]),
+        ),
+      },
+    });
+
+    return count;
+  }
+
+  async refetchANAFDataForFinancialReports() {
+    // 1. Find all organizations with missing ANAF data in the Financial Reports
+    type OrganizationsWithMissingANAFData = {
+      id: number;
+      organizationFinancial: OrganizationFinancial[];
+      organizationGeneral: { cui: string; email: string };
+    };
+
+    const data: OrganizationsWithMissingANAFData[] =
+      await this.organizationRepository.getMany({
+        relations: {
+          organizationFinancial: true,
+          organizationGeneral: true,
+        },
+        where: {
+          organizationFinancial: {
+            synched_anaf: false,
+          },
+        },
+        select: {
+          id: true,
+          organizationGeneral: {
+            cui: true,
+            email: true,
+          },
+          organizationFinancial: true,
+        },
+      });
+
+    for (let org of data) {
+      try {
+        // Find all years for which we should call ANAF services
+        type YearsFinancial = {
+          [year: string]: {
+            Income: { id: number; existingTotal: number };
+            Expense: { id: number; existingTotal: number };
+          };
+        };
+        const years: YearsFinancial = org.organizationFinancial.reduce(
+          (acc, curr) => {
+            if (!acc[curr.year]) {
+              acc[curr.year] = {};
+            }
+
+            const existingData = curr.data as Object;
+            let existingTotal = null;
+
+            if (curr.data) {
+              existingTotal = Object.keys(existingData).reduce(
+                (acc, curr) => acc + +existingData[curr],
+                0,
+              );
+            }
+
+            acc[curr.year][curr.type] = { id: curr.id, existingTotal };
+
+            return acc;
+          },
+          {},
+        );
+
+        // A notification will be sent to the organization if the completed data is invalid
+        let sendNotificationForInvalidData = false;
+
+        // Iterate over all years and call ANAF
+        for (let year of Object.keys(years)) {
+          // 2. Fetch data from ANAF for the given CUI and YEAR
+          const anafData = await this.getFinancialInformationFromANAF(
+            org.organizationGeneral.cui,
+            +year,
+          );
+
+          if (anafData) {
+            // We have the data, upadate the reports. First "Income"
+            if (years[year].Income) {
+              const reportStatus = this.determineReportStatus(
+                years[year].Income.existingTotal,
+                anafData.totalIncome,
+                true,
+              );
+              await this.organizationFinancialRepository.updateOne({
+                id: years[year].Income.id,
+                total: anafData.totalIncome,
+                numberOfEmployees: anafData.numberOfEmployees,
+                synched_anaf: true,
+                reportStatus,
+              });
+
+              sendNotificationForInvalidData = sendNotificationForInvalidData
+                ? true
+                : reportStatus !== OrganizationFinancialReportStatus.COMPLETED;
+            }
+
+            // Second: "Expense"
+            if (years[year].Expense) {
+              const reportStatus = this.determineReportStatus(
+                years[year].Expense.existingTotal,
+                anafData.totalExpense,
+                true,
+              );
+              await this.organizationFinancialRepository.updateOne({
+                id: years[year].Expense.id,
+                total: anafData.totalExpense,
+                numberOfEmployees: anafData.numberOfEmployees,
+                synched_anaf: true,
+                reportStatus,
+              });
+
+              sendNotificationForInvalidData = sendNotificationForInvalidData
+                ? true
+                : reportStatus !== OrganizationFinancialReportStatus.COMPLETED;
+            }
+          }
+        }
+
+        // In case one of the report is invalid, we notify the ADMIN to modify them
+        if (sendNotificationForInvalidData) {
+          this.eventEmitter.emit(
+            EVENTS.INVALID_FINANCIAL_REPORTS,
+            new InvalidFinancialReportsEvent(org.organizationGeneral.email),
+          );
+        }
+      } catch (err) {
+        Sentry.captureException(err, {
+          extra: {
+            organization: org.id,
+          },
+        });
+      }
+    }
   }
 }

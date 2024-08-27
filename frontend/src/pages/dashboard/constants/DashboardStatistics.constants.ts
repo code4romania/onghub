@@ -1,5 +1,4 @@
 import {
-  CheckCircleIcon,
   ClockIcon,
   RectangleStackIcon,
   SunIcon,
@@ -7,6 +6,7 @@ import {
   UsersIcon,
   SquaresPlusIcon,
 } from '@heroicons/react/24/solid';
+import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { formatDate } from '../../../common/helpers/format.helper';
 
 interface PartialSimpleDashboardStatistics {
@@ -62,17 +62,35 @@ export const AdminDashboardSimpleStatisticsMapping: Record<
 };
 
 export const AdminEmployeeDashboardExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean) => ({
-    icon: CheckCircleIcon,
+  isOrganizationFinancialReportsUpdated: (isUpdated: boolean) => ({
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
-        title: isUpdated ? 'statistics.updated_data' : 'statistics.outdated_data',
-        subtitle: 'statistics.next_update',
+        title: isUpdated
+          ? 'statistics.financial_reports.updated'
+          : 'statistics.financial_reports.not_updated',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
       href: 'organization/financial',
+      label: 'statistics.view_data',
+    },
+  }),
+  isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean) => ({
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
+    alert: !isUpdated,
+    info: [
+      {
+        title: isUpdated
+          ? 'statistics.organization_reports.updated'
+          : 'statistics.organization_reports.not_updated',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
+      },
+    ],
+    button: {
+      href: 'organization/data',
       label: 'statistics.view_data',
     },
   }),
@@ -114,17 +132,35 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
 };
 
 export const SuperAdminOverviewExtendedStatisticsMapping = {
-  isOrganizationUpdated: (isUpdated: boolean, organizationId?: number) => ({
-    icon: CheckCircleIcon,
+  isOrganizationFinancialReportsUpdated: (isUpdated: boolean, organizationId?: number) => ({
+    icon: isUpdated ? CheckCircleIcon : ExclamationTriangleIcon,
     alert: !isUpdated,
     info: [
       {
-        title: isUpdated ? 'statistics.updated_data' : 'statistics.outdated_data',
-        subtitle: 'statistics.next_update',
+        title: isUpdated
+          ? 'statistics.financial_reports.updated'
+          : 'statistics.financial_reports.not_updated',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
       },
     ],
     button: {
       href: `/organizations/${organizationId}/financial`,
+      label: 'statistics.view_data',
+    },
+  }),
+  isOrganizationReportsPartnersInvestorsUpdated: (isUpdated: boolean, organizationId?: number) => ({
+    icon: ExclamationTriangleIcon,
+    alert: !isUpdated,
+    info: [
+      {
+        title: isUpdated
+          ? 'statistics.organization_reports.updated'
+          : 'statistics.organization_reports.not_updated',
+        subtitle: isUpdated ? 'statistics.next_year_update' : 'statistics.next_update',
+      },
+    ],
+    button: {
+      href: `/organizations/${organizationId}/data`,
       label: 'statistics.view_data',
     },
   }),

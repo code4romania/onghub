@@ -198,24 +198,21 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
-    // BR: ANAF data is available after 30 June each year (aprox).
-    // If the current date is gt 30 June we query the last year, otherwise 2 years ago
     const lastYear = new Date().getFullYear() - 1;
-    const _30June = new Date(new Date().getFullYear(), 5, 30);
-    const yearToGetAnafData = isBefore(new Date(), _30June)
-      ? lastYear - 1
-      : lastYear;
+    // BR: ANAF data will be available only if the organization existed last year, otherwise is futile to try to fetch it or generate reports.
+    const organizationExistedLastYear =
+      createOrganizationDto.general.yearCreated < new Date().getFullYear();
 
     // get anaf data
-    const financialInformation =
-      await this.organizationFinancialService.getFinancialInformation(
-        createOrganizationDto.general.cui,
-        yearToGetAnafData,
-      );
+    const financialInformation = organizationExistedLastYear
+      ? await this.organizationFinancialService.getFinancialInformationFromANAF(
+          createOrganizationDto.general.cui,
+          lastYear,
+        )
+      : null;
 
     // create the parent entry with default values
     const organization = await this.organizationRepository.save({
-      syncedOn: new Date(),
       organizationGeneral: {
         contact: {
           fullName: createUserRequestDto.name,
@@ -235,16 +232,24 @@ export class OrganizationService {
       organizationLegal: {
         ...createOrganizationDto.legal,
       },
-      organizationFinancial:
-        this.organizationFinancialService.generateFinancialReportsData(
-          yearToGetAnafData,
-          financialInformation,
-        ),
-      organizationReport: {
-        reports: [{ year: yearToGetAnafData }],
-        partners: [{ year: yearToGetAnafData }],
-        investors: [{ year: yearToGetAnafData }],
-      },
+      ...(organizationExistedLastYear
+        ? {
+            organizationFinancial:
+              this.organizationFinancialService.generateFinancialReportsData(
+                lastYear,
+                financialInformation,
+              ),
+          }
+        : {}),
+      ...(organizationExistedLastYear
+        ? {
+            organizationReport: {
+              reports: [{ year: lastYear }],
+              partners: [{ year: lastYear }],
+              investors: [{ year: lastYear }],
+            },
+          }
+        : {}),
     });
 
     // upload logo
@@ -1040,8 +1045,6 @@ export class OrganizationService {
           updateOrganizationDto.financial,
         );
 
-      await this.updateOrganizationCompletionStatus(organization.id);
-
       return organizationFinancial;
     }
 
@@ -1050,8 +1053,6 @@ export class OrganizationService {
         organization.organizationReportId,
         updateOrganizationDto.report,
       );
-
-      await this.updateOrganizationCompletionStatus(organization.id);
 
       return organizationReport;
     }
@@ -1082,8 +1083,6 @@ export class OrganizationService {
       files,
     );
 
-    await this.updateOrganizationCompletionStatus(organization.id);
-
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -1112,8 +1111,6 @@ export class OrganizationService {
       files,
     );
 
-    await this.updateOrganizationCompletionStatus(organization.id);
-
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -1135,8 +1132,6 @@ export class OrganizationService {
 
     await this.organizationReportService.deletePartner(partnerId);
 
-    await this.updateOrganizationCompletionStatus(organization.id);
-
     return this.organizationReportService.findOne(
       organization.organizationReportId,
     );
@@ -1157,8 +1152,6 @@ export class OrganizationService {
     }
 
     await this.organizationReportService.deleteInvestor(investorId);
-
-    await this.updateOrganizationCompletionStatus(organization.id);
 
     return this.organizationReportService.findOne(
       organization.organizationReportId,
@@ -1531,7 +1524,7 @@ export class OrganizationService {
     let financialFromAnaf = null;
     try {
       financialFromAnaf =
-        await this.organizationFinancialService.getFinancialInformation(
+        await this.organizationFinancialService.getFinancialInformationFromANAF(
           organization.organizationGeneral.cui,
           year,
         );
@@ -1563,8 +1556,6 @@ export class OrganizationService {
           partners: [...organization.organizationReport.partners, { year }],
           investors: [...organization.organizationReport.investors, { year }],
         },
-        syncedOn: new Date(),
-        completionStatus: CompletionStatus.NOT_COMPLETED,
       });
 
       return orgUpdated;
@@ -1580,6 +1571,14 @@ export class OrganizationService {
     findConditions?: FindManyOptions<Organization>,
   ): Promise<number> {
     return this.organizationRepository.count(findConditions);
+  }
+
+  public async countOrganizationsWithUpdatedReports(): Promise<number> {
+    return this.organizationViewRepository.count({
+      where: {
+        completionStatus: CompletionStatus.COMPLETED,
+      },
+    });
   }
 
   public async countOrganizationsWithActivePracticePrograms(): Promise<number> {
@@ -1604,74 +1603,19 @@ export class OrganizationService {
     });
   }
 
-  /**
-   * Check if the organization has all the financial, report, partner and investor data corectly completed and update the completionStatus
-   */
-  private async updateOrganizationCompletionStatus(
+  public async getFinancialAndReportsLastUpdatedOn(
     organizationId: number,
-  ): Promise<void> {
-    try {
-      // 1. get organization with financial, report, partener and investor data
-      const organization = await this.organizationRepository.get({
-        where: { id: organizationId },
-        relations: [
-          'organizationFinancial',
-          'organizationReport',
-          'organizationReport.reports',
-          'organizationReport.partners',
-          'organizationReport.investors',
-        ],
-      });
+  ): Promise<Date> {
+    const data = await this.organizationViewRepository.get({
+      where: {
+        id: organizationId,
+      },
+      select: {
+        updatedOn: true,
+      },
+    });
 
-      // 2. check if we have all financial data completed
-      const organizationFinancialCompleted =
-        organization.organizationFinancial.findIndex(
-          (financial) => financial.status === CompletionStatus.NOT_COMPLETED,
-        ) < 0;
-
-      // 3. check if report data is completed
-      const organizationReportsCompleted =
-        organization.organizationReport.reports.findIndex(
-          (report) => report.status === CompletionStatus.NOT_COMPLETED,
-        ) < 0;
-
-      // 4. check if investor data is completed
-      const organizationInvestorsCompleted =
-        organization.organizationReport.investors.findIndex(
-          (investor) => investor.status === CompletionStatus.NOT_COMPLETED,
-        ) < 0;
-
-      // 5. check if partner data si completed
-      const organizationPartnersCompleted =
-        organization.organizationReport.partners.findIndex(
-          (partner) => partner.status === CompletionStatus.NOT_COMPLETED,
-        ) < 0;
-
-      // 6. If all the statuses above are true than the organization is up to date
-      const organizationInSync =
-        organizationFinancialCompleted &&
-        organizationReportsCompleted &&
-        organizationInvestorsCompleted &&
-        organizationPartnersCompleted;
-
-      // 7. Update the organization with latest status
-      await this.organizationRepository.update(
-        { id: organizationId },
-        {
-          completionStatus: organizationInSync
-            ? CompletionStatus.COMPLETED
-            : CompletionStatus.NOT_COMPLETED,
-          syncedOn: new Date(),
-        },
-      );
-    } catch (error) {
-      // TO: validate if we throw error
-      this.logger.error({
-        ...ORGANIZATION_ERRORS.COMPLETION_STATUS,
-        error,
-        organizationId,
-      });
-    }
+    return data.updatedOn;
   }
 
   private flattenOrganization(

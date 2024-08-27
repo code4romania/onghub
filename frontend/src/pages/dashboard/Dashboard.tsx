@@ -35,11 +35,19 @@ const Dashboard = () => {
         <div className="flex flex-col gap-8">
           <div className="flex gap-4 flex-col-reverse lg:flex-row">
             <div className="flex flex-col gap-4 flex-wrap lg:w-2/3">
-              <ExetendedStatisticsCard
-                stat={AdminEmployeeDashboardExtendedStatisticsMapping.isOrganizationUpdated(
-                  statistics.isOrganizationUpdated,
-                )}
-              />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <ExetendedStatisticsCard
+                  stat={AdminEmployeeDashboardExtendedStatisticsMapping.isOrganizationFinancialReportsUpdated(
+                    statistics.numberOfErroredFinancialReports === 0,
+                  )}
+                />
+                <ExetendedStatisticsCard
+                  stat={AdminEmployeeDashboardExtendedStatisticsMapping.isOrganizationReportsPartnersInvestorsUpdated(
+                    statistics.numberOfErroredReportsInvestorsPartners === 0,
+                  )}
+                />
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <ExetendedStatisticsCard
                   stat={AdminEmployeeDashboardExtendedStatisticsMapping.numberOfInstalledApps(
@@ -63,8 +71,8 @@ const Dashboard = () => {
             <div className="flex gap-4 lg:w-1/3">
               <ExetendedStatisticsCard
                 stat={AdminEmployeeDashboardExtendedStatisticsMapping.activity({
-                  organizationCreatedOn: statistics.organizationCreatedOn,
-                  organizationSyncedOn: statistics.organizationSyncedOn,
+                  organizationCreatedOn: new Date(statistics.organizationCreatedOn),
+                  organizationSyncedOn: new Date(statistics.organizationSyncedOn),
                 })}
               />
             </div>

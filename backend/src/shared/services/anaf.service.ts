@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ANAF_URL } from 'src/common/constants/anaf.constants';
 import { firstValueFrom, lastValueFrom, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import * as Sentry from '@sentry/node';
 
 export interface FinancialInformation {
   numberOfEmployees: number;
@@ -28,6 +29,12 @@ export class AnafService {
         map((res) => res.data.i),
         catchError((err) => {
           this.logger.error('ANAF error', err);
+          Sentry.captureException(err, {
+            extra: {
+              companyCUI,
+              year,
+            },
+          });
           return of(null);
         }),
       )

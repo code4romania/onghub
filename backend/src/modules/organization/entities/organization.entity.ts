@@ -16,26 +16,12 @@ import { OrganizationRequest } from './organization-request.entity';
 @Entity()
 export class Organization extends BaseEntity {
   @Column({
-    type: 'timestamp with time zone',
-    name: 'synced_on',
-  })
-  syncedOn: Date;
-
-  @Column({
     type: 'enum',
     enum: OrganizationStatus,
     name: 'status',
     default: OrganizationStatus.PENDING,
   })
   status: OrganizationStatus;
-
-  @Column({
-    type: 'enum',
-    enum: CompletionStatus,
-    name: 'completion_status',
-    default: CompletionStatus.NOT_COMPLETED,
-  })
-  completionStatus: CompletionStatus;
 
   @Exclude()
   @Column({

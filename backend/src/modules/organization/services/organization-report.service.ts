@@ -19,7 +19,7 @@ import {
   OrganizationReportRepository,
   PartnerRepository,
 } from '../repositories';
-import { OrganizationReport } from '../entities';
+import { Organization, OrganizationReport } from '../entities';
 import { S3FileManagerService } from 'src/shared/services/s3-file-manager.service';
 import {
   INVESTOR_LIST,
@@ -27,7 +27,8 @@ import {
   PARTNER_LIST,
 } from '../constants/files.constants';
 import { FILE_TYPE } from 'src/shared/enum/FileType.enum';
-import { FILE_ERRORS } from 'src/shared/constants/file-errors.constants';
+import * as Sentry from '@sentry/node';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class OrganizationReportService {
@@ -227,5 +228,89 @@ export class OrganizationReportService {
       numberOfInvestors: null,
       status: CompletionStatus.NOT_COMPLETED,
     });
+  }
+
+  public async generateNewReports({
+    organization,
+    year,
+  }: {
+    organization: Organization;
+    year: number;
+  }): Promise<void> {
+    const organizationReport = organization.organizationReport;
+
+    // Check if the given organizationId has already reports for the given year to avoid duplicating them
+    const hasReport = organizationReport.reports.find(
+      (report) => report.year === year,
+    );
+    const hasPartners = organizationReport.partners.find(
+      (partner) => partner.year === year,
+    );
+    const hasInvestors = organizationReport.investors.find(
+      (investor) => investor.year === year,
+    );
+
+    if (hasReport && hasPartners && hasInvestors) {
+      return;
+    }
+
+    try {
+      await this.organizationReportRepository.save({
+        ...organizationReport,
+        ...(!hasReport
+          ? { reports: [...organizationReport.reports, { year }] }
+          : {}),
+        ...(!hasPartners
+          ? {
+              partners: [...organizationReport.partners, { year }],
+            }
+          : {}),
+        ...(!hasInvestors
+          ? {
+              investors: [...organizationReport.investors, { year }],
+            }
+          : {}),
+      });
+    } catch (err) {
+      Sentry.captureException(err, {
+        extra: {
+          organization,
+          year,
+        },
+      });
+    }
+  }
+
+  public async countNotCompletedReports(organizationId: number) {
+    const count = await this.organizationReportRepository.count({
+      where: [
+        {
+          organization: {
+            id: organizationId,
+          },
+          partners: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+        {
+          organization: {
+            id: organizationId,
+          },
+          reports: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+        {
+          organization: {
+            id: organizationId,
+          },
+          investors: {
+            status: Not(CompletionStatus.COMPLETED),
+          },
+        },
+      ],
+    });
+
+    return count;
   }
 }

@@ -3,8 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { classNames } from '../../common/helpers/tailwind.helper';
 import { useErrorToast } from '../../common/hooks/useToast';
-import { useCountiesQuery, useIssuersQuery } from '../../services/nomenclature/Nomenclature.queries';
 import {
+  useCountiesQuery,
+  useIssuersQuery,
+} from '../../services/nomenclature/Nomenclature.queries';
+import {
+  OrganizationPayload,
   useOrganizationMutation,
   useOrganizationQuery,
 } from '../../services/organization/Organization.queries';
@@ -14,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import ContentWrapper from '../../components/content-wrapper/ContentWrapper';
 import { useSelectedOrganization } from '../../store/selectors';
 import Select from '../../components/Select/Select';
+import { OrganizationContext } from './interfaces/OrganizationContext';
 
 const Organization = () => {
   const navigate = useNavigate();
@@ -110,7 +115,9 @@ const Organization = () => {
           />
         </span>
       </div>
-      <Outlet context={{ disabled: true, isLoading, updateOrganization }} />
+      <Outlet
+        context={{ disabled: true, isLoading, updateOrganization } satisfies OrganizationContext}
+      />
     </ContentWrapper>
   );
 };

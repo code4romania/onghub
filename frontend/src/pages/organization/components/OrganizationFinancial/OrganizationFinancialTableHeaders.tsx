@@ -4,7 +4,7 @@ import { IOrganizationFinancial } from '../../interfaces/OrganizationFinancial.i
 import { formatCurrency, formatDate } from '../../../../common/helpers/format.helper';
 import StatusBadge, { BadgeStatus } from '../../../../components/status-badge/StatusBadge';
 import { FinancialType } from '../../enums/FinancialType.enum';
-import { CompletionStatus } from '../../enums/CompletionStatus.enum';
+import { OrganizationFinancialReportStatus } from '../../enums/CompletionStatus.enum';
 import i18n from '../../../../common/config/i18n';
 import DataTableNameHeader from '../../../../components/data-table-name-header/DataTableNameHeader';
 
@@ -19,6 +19,50 @@ const translations = {
   sum: i18n.t('financial:modal.sum'),
   completed: i18n.t('common:completion_status.completed'),
   not_completed: i18n.t('common:completion_status.not_completed'),
+  invalid: i18n.t('common:completion_status.invalid'),
+  pending: i18n.t('common:completion_status.pending'),
+  tooltip: {
+    completed: i18n.t('financial:tooltip.completed'),
+    not_completed: i18n.t('financial:tooltip.not_completed'),
+    pending: i18n.t('financial:tooltip.pending'),
+    invalid: i18n.t('financial:tooltip.invalid'),
+    error: i18n.t('financial:tooltip.error'),
+  },
+};
+
+const mapReportStatusToTextAndBadge = (status: OrganizationFinancialReportStatus) => {
+  switch (status) {
+    case OrganizationFinancialReportStatus.COMPLETED:
+      return {
+        translation: translations.completed,
+        badge: BadgeStatus.SUCCESS,
+        tooltipContent: translations.tooltip.completed,
+      };
+    case OrganizationFinancialReportStatus.INVALID:
+      return {
+        translation: translations.invalid,
+        badge: BadgeStatus.ERROR,
+        tooltipContent: translations.tooltip.invalid,
+      };
+    case OrganizationFinancialReportStatus.NOT_COMPLETED:
+      return {
+        translation: translations.not_completed,
+        badge: BadgeStatus.WARNING,
+        tooltipContent: translations.tooltip.not_completed,
+      };
+    case OrganizationFinancialReportStatus.PENDING:
+      return {
+        translation: translations.pending,
+        badge: BadgeStatus.WARNING,
+        tooltipContent: translations.tooltip.pending,
+      };
+    default:
+      return {
+        translation: 'Error',
+        badge: BadgeStatus.ERROR,
+        tooltipContent: translations.tooltip.error,
+      };
+  }
 };
 
 export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinancial>[] = [
@@ -69,14 +113,10 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
     name: <DataTableNameHeader text={translations.status} />,
     cell: (row: IOrganizationFinancial) => (
       <StatusBadge
-        status={
-          row.status === CompletionStatus.COMPLETED ? BadgeStatus.SUCCESS : BadgeStatus.WARNING
-        }
-        value={
-          row.status === CompletionStatus.COMPLETED
-            ? translations.completed
-            : translations.not_completed
-        }
+        status={mapReportStatusToTextAndBadge(row.reportStatus).badge}
+        value={mapReportStatusToTextAndBadge(row.reportStatus).translation}
+        tooltip
+        tooltipContent={mapReportStatusToTextAndBadge(row.reportStatus).tooltipContent}
       />
     ),
     sortable: true,

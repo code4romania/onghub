@@ -18,6 +18,7 @@ import RejectOngRequestEvent from '../events/reject-ong-request-event.class';
 import RestrictOngEvent from '../events/restrict-ong-event.class';
 import ApplicationRequestEvent from '../events/ong-requested-application-access-event.class';
 import * as Sentry from '@sentry/node';
+import InvalidFinancialReportsEvent from '../events/invalid-financial-reports-event.class';
 
 @Injectable()
 export class NotificationsService {
@@ -38,9 +39,8 @@ export class NotificationsService {
         where: { role: Role.SUPER_ADMIN },
       });
 
-      const organziation = await this.organizationService.findWithRelations(
-        organizationId,
-      );
+      const organziation =
+        await this.organizationService.findWithRelations(organizationId);
 
       // send email to admin to delete the application
       const {
@@ -230,9 +230,8 @@ export class NotificationsService {
     try {
       const { organizationId } = payload;
 
-      const organization = await this.organizationService.findWithUsers(
-        organizationId,
-      );
+      const organization =
+        await this.organizationService.findWithUsers(organizationId);
 
       const admins = organization.users.filter(
         (user) => user.role === Role.ADMIN,
@@ -263,15 +262,17 @@ export class NotificationsService {
   }
 
   @OnEvent(EVENTS.REQUEST_APPLICATION_ACCESS)
-  async handleRequestApplicationAccess({applicationName, organizationId}: ApplicationRequestEvent) {
-    
+  async handleRequestApplicationAccess({
+    applicationName,
+    organizationId,
+  }: ApplicationRequestEvent) {
     try {
       const superAdmins = await this.userService.findMany({
         where: { role: Role.SUPER_ADMIN },
       });
 
       const organization = await this.organizationService.find(organizationId, {
-        relations: ['organizationGeneral']
+        relations: ['organizationGeneral'],
       });
 
       const {
@@ -298,7 +299,6 @@ export class NotificationsService {
           },
         },
       });
-
     } catch (error) {
       Sentry.captureException(error);
       this.logger.error({
@@ -306,8 +306,34 @@ export class NotificationsService {
         error,
       });
     }
-
   }
 
-}
+  @OnEvent(EVENTS.INVALID_FINANCIAL_REPORTS)
+  async handleRemindToCompleteFinancialData(
+    payload: InvalidFinancialReportsEvent,
+  ) {
+    const {
+      subject,
+      template,
+      context: {
+        title,
+        subtitle,
+        cta: { link, label },
+      },
+    } = MAIL_OPTIONS.NOTIFY_FOR_UNAVAILABLE_OR_INVALID_FINANCIAL_INFORMATION;
 
+    await this.mailService.sendEmail({
+      to: payload.email,
+      template,
+      subject,
+      context: {
+        title,
+        subtitle: subtitle(),
+        cta: {
+          link: link(),
+          label,
+        },
+      },
+    });
+  }
+}

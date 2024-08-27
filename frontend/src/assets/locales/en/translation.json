@@ -25,7 +25,9 @@
     "loading": "Loading …",
     "completion_status": {
       "completed": "Completed",
-      "not_completed": "Not completed"
+      "not_completed": "Not completed",
+      "invalid": "Invalid",
+      "pending": "Pending"
     },
     "any": "All",
     "restricted": "Restricted",
@@ -497,19 +499,16 @@
     "no_document": "No document uploaded",
     "file_name": "Statute_Organisation",
     "statute_upload": "Upload file",
-
     "non_political_affiliation": "Declaration of non-political affiliation",
     "non_political_affiliation_information": "Upload the self-declaration by the legal representative of the organization stating that the president and members of the Board of Directors are not part of the leadership of a political party and/or do not hold any public office. This declaration will not be displayed publicly. The document is only used to validate the organization's eligibility to access certain solutions in NGO Hub (such as Vot ONG and RO Help). Accepted file formats: pdf, maximum 25 MB",
     "non_political_affiliation_no_document": "No document uploaded",
     "non_political_affiliation_file_name": "Declaration of non-political affiliation",
     "non_political_affiliation_upload": "Upload file",
-
     "balance_sheet": "Balance Sheet",
     "balance_sheet_information": "Upload the latest balance sheet submitted to the Ministry of Finance. This will not be displayed publicly. The document is only used to validate the organization's eligibility to access certain solutions in NGO Hub (such as Vot ONG and RO Help). Accepted file formats: pdf, maximum 50 MB",
     "balance_sheet_no_document": "No document uploaded",
     "balance_sheet_file_name": "Balance Sheet",
     "balance_sheet_upload": "Upload file",
-
     "modal": {
       "add": "Add",
       "edit_director": "Editing of the Board member",
@@ -531,12 +530,10 @@
       "title": "Are you sure you want to delete the Organisation's Constitution?",
       "description": "TODO#1: Lorem ipsum."
     },
-
     "delete_non_politicial_affiliation_modal": {
       "title": "Are you sure you want to delete the Declaration of non-political affiliation?",
       "description": ""
     },
-
     "delete_balance_sheet_modal": {
       "title": "Are you sure you want to delete the Balance Sheet?",
       "description": ""
@@ -672,6 +669,13 @@
         "label": "Financial income",
         "info": "The total income resulting from financial operations, for example the interest you get on deposits or exchange rate differences."
       }
+    },
+    "tooltip": {
+      "completed": "All information has been completed and matches that of ANAF",
+      "not_completed": "Information has not been completed yet. Please enter your financial information to avoid account suspension",
+      "invalid": "The information entered does not match that of ANAF. Please review and correct any errors",
+      "pending": "The information has been partially or fully completed and is being checked against the information from ANAF",
+      "error": "Error getting status"
     },
     "expense": {
       "net": {
@@ -1247,9 +1251,9 @@
       "view_active_apps": "View active apps",
       "active_users": "Users in the organisation",
       "handle_users": "Manage users",
-      "view_data": "View data",
-      "updated_data": "Organisation data is up-to-date",
-      "outdated_data": "The organisation's data is not up-to-date",
+      "view_data": "View information",
+      "financial_reports_are_uptodate": "The Financial Reports are up-to-date",
+      "financial_reports_are_outdated": "The Financial Reports needs to be updated",
       "error": "Data retrieval error",
       "active_organizations": "Active",
       "inactive_organizations": "Inactive",
@@ -1264,6 +1268,14 @@
         "yearly": "Since forever",
         "monthly": "Lunar",
         "daily": "Daily"
+      },
+      "financial_reports": {
+        "updated": "Financial information is updated",
+        "not_updated": "Financial information is not updated"
+      },
+      "organization_reports": {
+        "updated": "The information in the “NGO in numbers“ section is updated",
+        "not_updated": "The information in the “NGO in numbers“ section is not updated"
       }
     },
     "activity_title": "Organisation active in the NGO Hub in",

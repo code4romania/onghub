@@ -1,4 +1,9 @@
-import { ArrowDownTrayIcon, PencilIcon, TrashIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowDownTrayIcon,
+  PencilIcon,
+  TrashIcon,
+  ArrowUpTrayIcon,
+} from '@heroicons/react/24/outline';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
 import { useTranslation } from 'react-i18next';
@@ -37,9 +42,11 @@ import ReportSummaryModal from './components/ReportSummaryModal';
 import { InvestorsTableHeaders } from './table-headers/InvestorTable.headers';
 import { PartnerTableHeaders } from './table-headers/PartnerTable.headers';
 import { ReportsTableHeaders } from './table-headers/ReportsTable.headers';
+import { useQueryClient } from 'react-query';
 
 const OrganizationData = () => {
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   const [isActivitySummaryModalOpen, setIsActivitySummaryModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
@@ -317,6 +324,9 @@ const OrganizationData = () => {
         },
       },
       {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        },
         onError: () => {
           useErrorToast(t('load_error'));
         },
@@ -325,13 +335,20 @@ const OrganizationData = () => {
   };
 
   const onDeleteReport = (row: Report) => {
-    updateReport({
-      organization: {
-        report: {
-          reportId: row.id,
+    updateReport(
+      {
+        organization: {
+          report: {
+            reportId: row.id,
+          },
         },
       },
-    });
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        },
+      },
+    );
   };
 
   const onDownloadFile = async (row: Partner | Investor) => {
