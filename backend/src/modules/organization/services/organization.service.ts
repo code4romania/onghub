@@ -198,15 +198,8 @@ export class OrganizationService {
       where: { id: In(createOrganizationDto.activity.domains) },
     });
 
-    // BR: ANAF data is available after 30 June each year (aprox).
-    // If the current date is gt 30 June we query the last year, otherwise 2 years ago
     const lastYear = new Date().getFullYear() - 1;
-    const _30June = new Date(new Date().getFullYear(), 5, 30);
-    const yearToGetAnafData = isBefore(new Date(), _30June)
-      ? lastYear - 1
-      : lastYear;
-
-    // BR: ANAF data will be available only if the organization existed last year, otherwise is futile to try to fetch it
+    // BR: ANAF data will be available only if the organization existed last year, otherwise is futile to try to fetch it or generate reports.
     const organizationExistedLastYear =
       createOrganizationDto.general.yearCreated < new Date().getFullYear();
 
@@ -214,7 +207,7 @@ export class OrganizationService {
     const financialInformation = organizationExistedLastYear
       ? await this.organizationFinancialService.getFinancialInformationFromANAF(
           createOrganizationDto.general.cui,
-          yearToGetAnafData,
+          lastYear,
         )
       : null;
 
@@ -243,7 +236,7 @@ export class OrganizationService {
         ? {
             organizationFinancial:
               this.organizationFinancialService.generateFinancialReportsData(
-                yearToGetAnafData,
+                lastYear,
                 financialInformation,
               ),
           }
@@ -251,9 +244,9 @@ export class OrganizationService {
       ...(organizationExistedLastYear
         ? {
             organizationReport: {
-              reports: [{ year: yearToGetAnafData }],
-              partners: [{ year: yearToGetAnafData }],
-              investors: [{ year: yearToGetAnafData }],
+              reports: [{ year: lastYear }],
+              partners: [{ year: lastYear }],
+              investors: [{ year: lastYear }],
             },
           }
         : {}),
