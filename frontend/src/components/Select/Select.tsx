@@ -82,7 +82,7 @@ const Select = (props: {
                             <>
                               <span
                                 className={classNames(
-                                  selected ? 'font-semibold' : 'font-normal',
+                                  'font-normal',
                                   'block truncate lg:text-base text-sm',
                                 )}
                               >
@@ -91,7 +91,7 @@ const Select = (props: {
                                   : item}
                               </span>
 
-                              {(props?.selected?.id === item.id) ? (
+                              {(props.selected?.id ? props?.selected?.id === item.id : selected) ? (
                                 <span
                                   className={classNames(
                                     active ? 'text-white' : 'text-blue-600',
