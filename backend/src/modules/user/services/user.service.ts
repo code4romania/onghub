@@ -372,7 +372,10 @@ export class UserService {
       ) {
         throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_EMAIL);
       } else if (
-        await this.userRepository.get({ where: { phone: createUserDto.phone } })
+        createUserDto.phone &&
+        (await this.userRepository.get({
+          where: { phone: createUserDto.phone },
+        }))
       ) {
         throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_PHONE);
       }

@@ -29,10 +29,7 @@ export class CognitoUserService {
       Username: email,
       DesiredDeliveryMediums: [DeliveryMediumType.EMAIL],
       UserAttributes: [
-        {
-          Name: 'phone_number',
-          Value: phone,
-        },
+        ...(phone ? [{ Name: 'phone_number', Value: phone }] : []),
         {
           Name: 'name',
           Value: name,
@@ -48,9 +45,8 @@ export class CognitoUserService {
       ],
     });
 
-    const data: AdminCreateUserCommandOutput = await this.cognitoProvider.send(
-      createUserCommand,
-    );
+    const data: AdminCreateUserCommandOutput =
+      await this.cognitoProvider.send(createUserCommand);
     return data.User.Username;
   }
 
