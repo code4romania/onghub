@@ -58,7 +58,7 @@ import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
-import { isBefore } from 'date-fns';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OrganizationService {
@@ -1304,45 +1304,59 @@ export class OrganizationService {
       await queryRunner.manager.delete(Organization, organizationId);
 
       // 2. delete report
-      const reportIds = organization.organizationReport.reports.map(
-        (report) => report.id,
-      );
-      await queryRunner.manager.delete(Report, reportIds);
+      if (organization.organizationReport?.reports.length) {
+        const reportIds = organization.organizationReport.reports.map(
+          (report) => report.id,
+        );
+        await queryRunner.manager.delete(Report, reportIds);
+      }
 
-      const inverstorIds = organization.organizationReport.investors.map(
-        (investor) => investor.id,
-      );
-      await queryRunner.manager.delete(Investor, inverstorIds);
+      if (organization.organizationReport?.investors.length) {
+        const inverstorIds = organization.organizationReport.investors.map(
+          (investor) => investor.id,
+        );
+        await queryRunner.manager.delete(Investor, inverstorIds);
+      }
 
-      const partnerIds = organization.organizationReport.partners.map(
-        (partner) => partner.id,
-      );
-      await queryRunner.manager.delete(Partner, partnerIds);
+      if (organization.organizationReport?.partners.length) {
+        const partnerIds = organization.organizationReport.partners.map(
+          (partner) => partner.id,
+        );
+        await queryRunner.manager.delete(Partner, partnerIds);
+      }
 
-      await queryRunner.manager.delete(
-        OrganizationReport,
-        organization.organizationReportId,
-      );
+      if (organization.organizationReportId) {
+        await queryRunner.manager.delete(
+          OrganizationReport,
+          organization.organizationReportId,
+        );
+      }
 
       // 3. delete financial
-      const organizationFinancialIds = organization.organizationFinancial.map(
-        (financial) => financial.id,
-      );
-      await queryRunner.manager.delete(
-        OrganizationFinancial,
-        organizationFinancialIds,
-      );
+      if (organization.organizationFinancial.length) {
+        const organizationFinancialIds = organization.organizationFinancial.map(
+          (financial) => financial.id,
+        );
+        await queryRunner.manager.delete(
+          OrganizationFinancial,
+          organizationFinancialIds,
+        );
+      }
 
       // 4. delete delete legal
-      await queryRunner.manager.delete(
-        Contact,
-        organization.organizationLegal.legalReprezentativeId,
-      );
+      if (organization.organizationLegal.legalReprezentativeId) {
+        await queryRunner.manager.delete(
+          Contact,
+          organization.organizationLegal.legalReprezentativeId,
+        );
+      }
 
-      const directorsIds = organization.organizationLegal.directors.map(
-        (director) => director.id,
-      );
-      await queryRunner.manager.delete(Contact, directorsIds);
+      if (organization.organizationLegal.directors.length) {
+        const directorsIds = organization.organizationLegal.directors.map(
+          (director) => director.id,
+        );
+        await queryRunner.manager.delete(Contact, directorsIds);
+      }
 
       await queryRunner.manager.delete(
         OrganizationLegal,
@@ -1365,6 +1379,8 @@ export class OrganizationService {
     } catch (error) {
       // since we have errors lets rollback the changes we made
       await queryRunner.rollbackTransaction();
+
+      Sentry.captureException(error);
 
       this.logger.error({
         error: { error },
