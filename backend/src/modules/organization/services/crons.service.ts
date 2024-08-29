@@ -41,10 +41,16 @@ export class OrganizationCronsService {
 
   @Cron('0 5 1 1 *') // 1st of January, 5:00 AM
   async generateFinancialDataAndReportsForPreviousYear() {
-    const lastYear = new Date().getFullYear() - 1;
+    const thisYear = new Date().getFullYear();
+    const lastYear = thisYear - 1;
 
     // 1. Get all organizations with are missing the previous year the financial data and reports
     const organizations = await this.organizationRepository.getMany({
+      where: {
+        organizationGeneral: {
+          yearCreated: Not(thisYear),
+        },
+      },
       relations: {
         organizationFinancial: true,
         organizationGeneral: true,
