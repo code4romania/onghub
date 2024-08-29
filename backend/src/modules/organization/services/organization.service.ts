@@ -1311,7 +1311,7 @@ export class OrganizationService {
         await queryRunner.manager.delete(Report, reportIds);
       }
 
-      if (organization.organizationReport?.partners.length) {
+      if (organization.organizationReport?.investors.length) {
         const inverstorIds = organization.organizationReport.investors.map(
           (investor) => investor.id,
         );
