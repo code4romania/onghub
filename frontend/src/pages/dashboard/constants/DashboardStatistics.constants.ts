@@ -119,14 +119,17 @@ export const AdminEmployeeDashboardExtendedStatisticsMapping = {
     icon: UserGroupIcon,
     info: [{ title: value, subtitle: 'statistics.active_users' }],
   }),
-  activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date }) => ({
+  activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date | null }) => ({
     icon: ClockIcon,
     info: [
       {
         subtitle: formatDate(values.organizationCreatedOn),
         title: 'activity_title',
       },
-      { subtitle: formatDate(values.organizationSyncedOn), title: 'last_updated_on' },
+      {
+        subtitle: values.organizationSyncedOn ? formatDate(values.organizationSyncedOn) : '-',
+        title: 'last_updated_on',
+      },
     ],
   }),
 };
@@ -181,14 +184,17 @@ export const SuperAdminOverviewExtendedStatisticsMapping = {
     icon: UserGroupIcon,
     info: [{ title: value, subtitle: 'statistics.active_users' }],
   }),
-  activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date }) => ({
+  activity: (values: { organizationCreatedOn: Date; organizationSyncedOn: Date | null }) => ({
     icon: ClockIcon,
     info: [
       {
         subtitle: formatDate(values.organizationCreatedOn),
         title: 'activity_title',
       },
-      { subtitle: formatDate(values.organizationSyncedOn), title: 'last_updated_on' },
+      {
+        subtitle: values.organizationSyncedOn ? formatDate(values.organizationSyncedOn) : '-',
+        title: 'last_updated_on',
+      },
     ],
   }),
 };

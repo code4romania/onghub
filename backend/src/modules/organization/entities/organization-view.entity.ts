@@ -9,19 +9,23 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
       "organization".status AS "status",
       "organization".created_on AS "createdOn",
     	CASE 
-        WHEN COUNT(DISTINCT CASE WHEN "organization_financial".status != 'Completed' OR "organization_financial".status IS NULL THEN 1 END) > 0
-          OR COUNT(DISTINCT CASE WHEN "report".status != 'Completed' OR "report".status IS NULL THEN 1 END) > 0
-          OR COUNT(DISTINCT CASE WHEN "partner".status != 'Completed' OR "partner".status IS NULL THEN 1 END) > 0
-          OR COUNT(DISTINCT CASE WHEN "investor".status != 'Completed' OR "investor".status IS NULL THEN 1 END) > 0
+        WHEN COUNT(DISTINCT CASE WHEN "organization_financial".status != 'Completed' AND "organization_financial".status IS NOT NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "report".status != 'Completed' AND "report".status IS NOT NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "partner".status != 'Completed' AND "partner".status IS NOT NULL THEN 1 END) > 0
+          OR COUNT(DISTINCT CASE WHEN "investor".status != 'Completed' AND "investor".status IS NOT NULL THEN 1 END) > 0
         THEN 'Not Completed'
         ELSE 'Completed'
     	END AS "completionStatus",
       "organization_general".name AS "name",
       "organization_general".alias AS "alias",
       "organization_general".email AS "adminEmail",
-      COUNT("user".id) AS "userCount",
+      COUNT(DISTINCT "user".id) AS "userCount",
       "organization_general".logo AS "logo",
-      MAX(GREATEST(COALESCE("organization_financial".updated_on, '1970-01-01'), COALESCE("report".updated_on, '1970-01-01'), COALESCE("partner".updated_on, '1970-01-01'), COALESCE("investor".updated_on, '1970-01-01'))) AS "updatedOn"
+      CASE
+        WHEN MAX(GREATEST(COALESCE("organization_financial".updated_on, '1970-01-01'), COALESCE("report".updated_on, '1970-01-01'), COALESCE("partner".updated_on, '1970-01-01'), COALESCE("investor".updated_on, '1970-01-01'))) = '1970-01-01'
+        THEN NULL
+        ELSE MAX(GREATEST(COALESCE("organization_financial".updated_on, '1970-01-01'), COALESCE("report".updated_on, '1970-01-01'), COALESCE("partner".updated_on, '1970-01-01'), COALESCE("investor".updated_on, '1970-01-01')))::text
+      END AS "updatedOn"
   FROM
       "organization" "organization"
       LEFT JOIN "organization_general" "organization_general" ON "organization".organization_general_id = "organization_general".id
@@ -52,7 +56,7 @@ export class OrganizationView {
   createdOn: Date;
 
   @ViewColumn()
-  updatedOn: Date;
+  updatedOn: Date | null;
 
   @ViewColumn()
   name: string;

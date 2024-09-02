@@ -58,7 +58,7 @@ import { OrganizationReportService } from './organization-report.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import RestrictOngEvent from 'src/modules/notifications/events/restrict-ong-event.class';
-import { isBefore } from 'date-fns';
+import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class OrganizationService {
@@ -1365,9 +1365,10 @@ export class OrganizationService {
     } catch (error) {
       // since we have errors lets rollback the changes we made
       await queryRunner.rollbackTransaction();
-
+      console.log(error);
+      Sentry.captureException(error);
       this.logger.error({
-        error: { error },
+        error: JSON.stringify(error),
         ...ORGANIZATION_ERRORS.DELETE.ONG,
       });
       const err = error?.response;
@@ -1615,7 +1616,7 @@ export class OrganizationService {
       },
     });
 
-    return data.updatedOn;
+    return data?.updatedOn;
   }
 
   private flattenOrganization(

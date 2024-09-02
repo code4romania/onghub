@@ -72,7 +72,9 @@ const Dashboard = () => {
               <ExetendedStatisticsCard
                 stat={AdminEmployeeDashboardExtendedStatisticsMapping.activity({
                   organizationCreatedOn: new Date(statistics.organizationCreatedOn),
-                  organizationSyncedOn: new Date(statistics.organizationSyncedOn),
+                  organizationSyncedOn: statistics.organizationSyncedOn
+                    ? new Date(statistics.organizationSyncedOn)
+                    : null,
                 })}
               />
             </div>
