@@ -35,7 +35,7 @@ export class UserHistory extends BaseEntity implements HistoryEntityInterface {
   @Column({ type: 'varchar', name: 'email' })
   email: string;
 
-  @Column({ type: 'varchar', name: 'phone' })
+  @Column({ type: 'varchar', name: 'phone', nullable: true })
   phone: string;
 
   @Column({ type: 'enum', enum: Role, name: 'role', default: Role.EMPLOYEE })

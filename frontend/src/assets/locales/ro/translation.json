@@ -953,7 +953,7 @@
         "max": "Numărul de telefon poate avea maxim 15 caractere",
         "min": "Numărul de telefon poate avea minim 10 caractere",
         "invalid": "Numărul de telefon are un format invalid",
-        "label": "Telefon*"
+        "label": "Telefon"
       }
     }
   },

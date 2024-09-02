@@ -79,10 +79,6 @@ export const UserCreateConfig: Record<string, any> = {
   phone: {
     key: 'phone',
     rules: {
-      required: {
-        value: true,
-        message: translations.phone.required,
-      },
       maxLength: {
         value: 15,
         message: translations.phone.max,
@@ -92,6 +88,9 @@ export const UserCreateConfig: Record<string, any> = {
         message: translations.phone.min,
       },
       validate: (value: string) => {
+        if (!value) {
+          return true;
+        }
         return isValidPhoneNumber(value) || translations.phone.invalid;
       },
     },

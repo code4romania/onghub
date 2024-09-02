@@ -1304,45 +1304,59 @@ export class OrganizationService {
       await queryRunner.manager.delete(Organization, organizationId);
 
       // 2. delete report
-      const reportIds = organization.organizationReport.reports.map(
-        (report) => report.id,
-      );
-      await queryRunner.manager.delete(Report, reportIds);
+      if (organization.organizationReport?.reports.length) {
+        const reportIds = organization.organizationReport.reports.map(
+          (report) => report.id,
+        );
+        await queryRunner.manager.delete(Report, reportIds);
+      }
 
-      const inverstorIds = organization.organizationReport.investors.map(
-        (investor) => investor.id,
-      );
-      await queryRunner.manager.delete(Investor, inverstorIds);
+      if (organization.organizationReport?.investors.length) {
+        const inverstorIds = organization.organizationReport.investors.map(
+          (investor) => investor.id,
+        );
+        await queryRunner.manager.delete(Investor, inverstorIds);
+      }
 
-      const partnerIds = organization.organizationReport.partners.map(
-        (partner) => partner.id,
-      );
-      await queryRunner.manager.delete(Partner, partnerIds);
+      if (organization.organizationReport?.partners.length) {
+        const partnerIds = organization.organizationReport.partners.map(
+          (partner) => partner.id,
+        );
+        await queryRunner.manager.delete(Partner, partnerIds);
+      }
 
-      await queryRunner.manager.delete(
-        OrganizationReport,
-        organization.organizationReportId,
-      );
+      if (organization.organizationReportId) {
+        await queryRunner.manager.delete(
+          OrganizationReport,
+          organization.organizationReportId,
+        );
+      }
 
       // 3. delete financial
-      const organizationFinancialIds = organization.organizationFinancial.map(
-        (financial) => financial.id,
-      );
-      await queryRunner.manager.delete(
-        OrganizationFinancial,
-        organizationFinancialIds,
-      );
+      if (organization.organizationFinancial.length) {
+        const organizationFinancialIds = organization.organizationFinancial.map(
+          (financial) => financial.id,
+        );
+        await queryRunner.manager.delete(
+          OrganizationFinancial,
+          organizationFinancialIds,
+        );
+      }
 
       // 4. delete delete legal
-      await queryRunner.manager.delete(
-        Contact,
-        organization.organizationLegal.legalReprezentativeId,
-      );
+      if (organization.organizationLegal.legalReprezentativeId) {
+        await queryRunner.manager.delete(
+          Contact,
+          organization.organizationLegal.legalReprezentativeId,
+        );
+      }
 
-      const directorsIds = organization.organizationLegal.directors.map(
-        (director) => director.id,
-      );
-      await queryRunner.manager.delete(Contact, directorsIds);
+      if (organization.organizationLegal.directors.length) {
+        const directorsIds = organization.organizationLegal.directors.map(
+          (director) => director.id,
+        );
+        await queryRunner.manager.delete(Contact, directorsIds);
+      }
 
       await queryRunner.manager.delete(
         OrganizationLegal,
@@ -1366,7 +1380,9 @@ export class OrganizationService {
       // since we have errors lets rollback the changes we made
       await queryRunner.rollbackTransaction();
       console.log(error);
+
       Sentry.captureException(error);
+
       this.logger.error({
         error: JSON.stringify(error),
         ...ORGANIZATION_ERRORS.DELETE.ONG,
