@@ -65,7 +65,9 @@ const OrganizationOverview = () => {
               <ExetendedStatisticsCard
                 stat={SuperAdminOverviewExtendedStatisticsMapping.activity({
                   organizationCreatedOn: new Date(data.organizationCreatedOn),
-                  organizationSyncedOn: new Date(data.organizationSyncedOn),
+                  organizationSyncedOn: data.organizationSyncedOn
+                    ? new Date(data.organizationSyncedOn)
+                    : null,
                 })}
               />
             </div>

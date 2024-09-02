@@ -9,7 +9,7 @@ export interface IAllOrganizationsStatistics {
 
 export interface IOrganizationStatistics {
   organizationCreatedOn: Date;
-  organizationSyncedOn: Date;
+  organizationSyncedOn: Date | null;
   numberOfInstalledApps: number;
   numberOfUsers: number;
   hubStatistics: IGeneralONGHubStatistics;

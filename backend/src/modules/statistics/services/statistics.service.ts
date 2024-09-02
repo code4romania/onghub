@@ -322,6 +322,7 @@ export class StatisticsService {
         numberOfErroredReportsInvestorsPartners,
       };
     } catch (error) {
+      console.log(error);
       this.logger.error({
         error: { error },
         ...STATISTICS_ERRORS.ORGANIZATION_STATISTICS,
