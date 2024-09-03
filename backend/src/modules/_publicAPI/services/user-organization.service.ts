@@ -38,7 +38,7 @@ export class UserOrganizationService {
       }
 
       // check if there is an organization id - this methods also handles organization not found
-      const { organizationGeneral, organizationActivity } =
+      const { organizationGeneral, organizationActivity, organizationLegal } =
         await this.organizationService.findWithRelations(user.organizationId);
 
       // parse organization activityArea to string
@@ -61,6 +61,11 @@ export class UserOrganizationService {
           activityArea: activityArea,
           logo: organizationGeneral.logo,
           description: organizationGeneral.shortDescription,
+          cui: organizationGeneral.cui,
+          legalReprezentativeFullName:
+            organizationLegal?.legalReprezentative?.fullName || '',
+          legalReprezentativeRole:
+            organizationLegal?.legalReprezentative?.role || '',
         },
       };
     } catch (error) {
