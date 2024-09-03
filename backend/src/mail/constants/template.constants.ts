@@ -137,7 +137,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
   WEEKLY_REMINDER_TO_UPDATE_ORGANIZATION_REPORTS: {
     template: ORGANIZATION_REQUEST,
     subject:
-      'Actualizați profilul organizației până pe 30 iunie pentru a evita suspendarea contului',
+      'Reminder: Actualizați profilul organizației până pe 30 iunie pentru a evita suspendarea contului',
     context: {
       title:
         'Actualizați profilul organizației până pe 30 iunie pentru a evita suspendarea contului',
@@ -188,7 +188,7 @@ export const MAIL_OPTIONS: Record<string, IMailOptions> = {
               <li>Salvează modificările</li>
           </ol>
 
-          <p>Este important să faci aceste actualizări înainte de <b>30 iunie 2024</b> pentru a evita suspendarea contului tău NGO Hub.</p>
+          <p>Este important să faci aceste actualizări pentru a evita suspendarea contului tău NGO Hub.</p>
 
           <p>Dacă ai nevoie de ajutor sau ai orice fel de întrebare, ne poți contacta oricând la <a href="mailto:civic@code4.ro">civic@code4.ro</a> sau poți programa o sesiune Civic Tech 911 direct din contul NGO Hub al organizației.</p>
       `,
