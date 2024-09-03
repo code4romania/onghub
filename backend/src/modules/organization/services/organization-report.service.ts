@@ -237,16 +237,27 @@ export class OrganizationReportService {
     organization: Organization;
     year: number;
   }): Promise<void> {
-    const organizationReport = organization.organizationReport;
+    let organizationReport = organization.organizationReport;
+
+    if (!organizationReport) {
+      const newOrganizationReport =
+        await this.organizationReportRepository.save({
+          organization: { id: organization.id },
+          reports: [],
+          partners: [],
+          investors: [],
+        });
+      organizationReport = newOrganizationReport;
+    }
 
     // Check if the given organizationId has already reports for the given year to avoid duplicating them
-    const hasReport = organizationReport.reports.find(
+    const hasReport = organizationReport?.reports.find(
       (report) => report.year === year,
     );
-    const hasPartners = organizationReport.partners.find(
+    const hasPartners = organizationReport?.partners.find(
       (partner) => partner.year === year,
     );
-    const hasInvestors = organizationReport.investors.find(
+    const hasInvestors = organizationReport?.investors.find(
       (investor) => investor.year === year,
     );
 
@@ -272,6 +283,7 @@ export class OrganizationReportService {
           : {}),
       });
     } catch (err) {
+      console.log(err);
       Sentry.captureException(err, {
         extra: {
           organization,

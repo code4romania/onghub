@@ -241,15 +241,24 @@ export class OrganizationService {
               ),
           }
         : {}),
+      // Initialize organizationReport based on whether the organization existed last year
       ...(organizationExistedLastYear
         ? {
+            // If the organization existed last year, create initial reports, partners, and investors for that year
             organizationReport: {
               reports: [{ year: lastYear }],
               partners: [{ year: lastYear }],
               investors: [{ year: lastYear }],
             },
           }
-        : {}),
+        : {
+            // If the organization is new, initialize empty arrays for reports, partners, and investors
+            organizationReport: {
+              reports: [],
+              partners: [],
+              investors: [],
+            },
+          }),
     });
 
     // upload logo
