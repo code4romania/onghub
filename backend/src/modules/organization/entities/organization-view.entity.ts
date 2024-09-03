@@ -9,7 +9,7 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
       "organization".status AS "status",
       "organization".created_on AS "createdOn",
     	CASE 
-        WHEN COUNT(DISTINCT CASE WHEN "organization_financial".status != 'Completed' AND "organization_financial".status IS NOT NULL THEN 1 END) > 0
+        WHEN COUNT(DISTINCT CASE WHEN "organization_financial".status NOT IN ('Completed', 'Pending') AND "organization_financial".status IS NOT NULL THEN 1 END) > 0
           OR COUNT(DISTINCT CASE WHEN "report".status != 'Completed' AND "report".status IS NOT NULL THEN 1 END) > 0
           OR COUNT(DISTINCT CASE WHEN "partner".status != 'Completed' AND "partner".status IS NOT NULL THEN 1 END) > 0
           OR COUNT(DISTINCT CASE WHEN "investor".status != 'Completed' AND "investor".status IS NOT NULL THEN 1 END) > 0
