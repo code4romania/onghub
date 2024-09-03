@@ -184,6 +184,35 @@ export class OrganizationFinancialService {
       return obj.indicator === 'I46';
     });
 
+    // If any of the required indicators are undefined, it likely means
+    // the CUI is not for an NGO or the ANAF service structure has changed
+    if (
+      income === undefined ||
+      expense === undefined ||
+      employees === undefined
+    ) {
+      const missingIndicators = [
+        income === undefined ? 'I38 (income)' : null,
+        expense === undefined ? 'I40 (expense)' : null,
+        employees === undefined ? 'I46 (employees)' : null,
+      ]
+        .filter(Boolean)
+        .join(', ');
+
+      const sentryMessage = `ANAF data missing required indicators (${missingIndicators}) for CUI: ${cui}, Year: ${year}`;
+      Sentry.captureMessage(sentryMessage, {
+        level: 'warning',
+        extra: {
+          cui,
+          year,
+          anafData,
+          missingIndicators,
+        },
+      });
+      this.logger.warn(sentryMessage);
+      return null;
+    }
+
     return {
       numberOfEmployees: employees?.val_indicator,
       totalExpense: expense?.val_indicator,
