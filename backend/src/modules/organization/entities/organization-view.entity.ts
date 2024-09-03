@@ -18,7 +18,7 @@ import { OrganizationStatus } from '../enums/organization-status.enum';
     	END AS "completionStatus",
       "organization_general".name AS "name",
       "organization_general".alias AS "alias",
-      "organization_general".email AS "adminEmail",
+      "organization_general".contact_person->>'email' AS "adminEmail",
       COUNT(DISTINCT "user".id) AS "userCount",
       "organization_general".logo AS "logo",
       CASE
