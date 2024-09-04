@@ -15,6 +15,7 @@ import {
   CompletionStatus,
   OrganizationFinancialReportStatus,
 } from '../enums/organization-financial-completion.enum';
+import { OrganizationStatus } from '../enums/organization-status.enum';
 
 @Injectable()
 export class OrganizationCronsService {
@@ -108,6 +109,7 @@ export class OrganizationCronsService {
     const organizations: { adminEmail: string }[] =
       await this.organizationViewRepository.getMany({
         where: {
+          status: OrganizationStatus.ACTIVE,
           completionStatus: CompletionStatus.NOT_COMPLETED,
         },
         select: {
@@ -151,6 +153,7 @@ export class OrganizationCronsService {
     const organizations: { adminEmail: string }[] =
       await this.organizationViewRepository.getMany({
         where: {
+          status: OrganizationStatus.ACTIVE,
           completionStatus: CompletionStatus.NOT_COMPLETED,
         },
         select: {

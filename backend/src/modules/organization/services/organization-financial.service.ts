@@ -22,6 +22,7 @@ import * as Sentry from '@sentry/node';
 import { In, Not } from 'typeorm';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import InvalidFinancialReportsEvent from 'src/modules/notifications/events/invalid-financial-reports-event.class';
+import { OrganizationStatus } from '../enums/organization-status.enum';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -295,6 +296,7 @@ export class OrganizationFinancialService {
           organizationGeneral: true,
         },
         where: {
+          status: OrganizationStatus.ACTIVE,
           organizationFinancial: {
             synched_anaf: false,
           },
