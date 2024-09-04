@@ -144,7 +144,7 @@ const OrganizationFinancial = () => {
           </p>
         </div>
         {organization?.status === OrganizationStatus.PENDING &&
-          organizationFinancial[0].synched_anaf === false &&
+          organizationFinancial[0]?.synched_anaf === false &&
           role == UserRole.SUPER_ADMIN && (
             <div className="flex my-2 gap-4 items-center flex-column">
               <p className="flex">
