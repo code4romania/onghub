@@ -23,6 +23,7 @@ import { In, Not } from 'typeorm';
 import { EVENTS } from 'src/modules/notifications/constants/events.contants';
 import InvalidFinancialReportsEvent from 'src/modules/notifications/events/invalid-financial-reports-event.class';
 import { OrganizationStatus } from '../enums/organization-status.enum';
+import { ContactPerson } from '../interfaces/contact-person.interface';
 
 @Injectable()
 export class OrganizationFinancialService {
@@ -286,7 +287,11 @@ export class OrganizationFinancialService {
     type OrganizationsWithMissingANAFData = {
       id: number;
       organizationFinancial: OrganizationFinancial[];
-      organizationGeneral: { cui: string; email: string };
+      organizationGeneral: {
+        cui: string;
+        email: string;
+        contact: ContactPerson;
+      };
     };
 
     const data: OrganizationsWithMissingANAFData[] =
@@ -306,6 +311,9 @@ export class OrganizationFinancialService {
           organizationGeneral: {
             cui: true,
             email: true,
+            contact: {
+              email: true,
+            },
           },
           organizationFinancial: true,
         },
@@ -398,10 +406,15 @@ export class OrganizationFinancialService {
         }
 
         // In case one of the report is invalid, we notify the ADMIN to modify them
-        if (sendNotificationForInvalidData) {
+        if (
+          sendNotificationForInvalidData &&
+          org.organizationGeneral?.contact?.email
+        ) {
           this.eventEmitter.emit(
             EVENTS.INVALID_FINANCIAL_REPORTS,
-            new InvalidFinancialReportsEvent(org.organizationGeneral.email),
+            new InvalidFinancialReportsEvent(
+              org.organizationGeneral?.contact?.email,
+            ),
           );
         }
       } catch (err) {
