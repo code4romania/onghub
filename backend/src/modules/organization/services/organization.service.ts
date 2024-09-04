@@ -373,14 +373,13 @@ export class OrganizationService {
         'organizationLegal',
         'organizationLegal.legalReprezentative',
         'organizationLegal.directors',
-        'organizationFinancial',
-        'organizationReport',
-        'organizationReport.reports',
-        'organizationReport.partners',
-        'organizationReport.investors',
+        // 'organizationFinancial',
+        // 'organizationReport',
+        // 'organizationReport.reports',
+        // 'organizationReport.partners',
+        // 'organizationReport.investors',
       ],
     });
-
     const ignoreKeys = [
       'organizationGeneralId',
       'organizationActivityId',
@@ -500,11 +499,11 @@ export class OrganizationService {
       'organizationLegal.legalReprezentative.phone':
         'Legal Representative Phone',
       'organizationLegal.directors': 'Directors',
-      organizationFinancial: 'Organization Financials',
-      'organizationReport.id': 'Organization Report ID',
-      'organizationReport.reports': 'Reports',
-      'organizationReport.partners': 'Partners',
-      'organizationReport.investors': 'Investors',
+      // organizationFinancial: 'Organization Financials',
+      // 'organizationReport.id': 'Organization Report ID',
+      // 'organizationReport.reports': 'Reports',
+      // 'organizationReport.partners': 'Partners',
+      // 'organizationReport.investors': 'Investors',
       'organizationGeneral.contact.name': 'Contact Name',
       'organizationGeneral.organizationCity': 'Organization City',
       'organizationGeneral.organizationCounty': 'Organization County',
@@ -534,11 +533,9 @@ export class OrganizationService {
       }
       return res;
     }
-
     const flatten = organizations.map((org) => {
       return flattenObject(org);
     });
-
     return flatten;
   }
 

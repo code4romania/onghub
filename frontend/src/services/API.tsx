@@ -54,14 +54,14 @@ const AxiosInterceptor = ({ children }: AxiosInterceptorProps) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async (error: any) => {
         // Redirect to login once we have restricted access
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           await signOut();
           // set initial application state
           setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
         }
 
         // If use doesn't have access to resource redirect to home
-        if (error.response.status === 403) {
+        if (error.response?.status === 403) {
           // this will trigger the redirect to restricted page
           setAuthState({
             isAuthenticated: true,
