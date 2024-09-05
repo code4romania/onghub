@@ -87,7 +87,7 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   {
     id: 'numberOfEmployees',
     name: <DataTableNameHeader text={translations.employees} />,
-    selector: (row: IOrganizationFinancial) => row.numberOfEmployees,
+    selector: (row: IOrganizationFinancial) => row.numberOfEmployees ?? '-',
     sortable: true,
     minWidth: '8rem',
     grow: 0,
@@ -95,7 +95,8 @@ export const OrganizationFinancialTableHeaders: TableColumn<IOrganizationFinanci
   {
     id: 'total',
     name: <DataTableNameHeader text={translations.sum} />,
-    selector: (row: IOrganizationFinancial) => formatCurrency(row?.total),
+    selector: (row: IOrganizationFinancial) =>
+      row?.total !== null ? formatCurrency(row?.total) : '-',
     sortable: true,
     minWidth: '7rem',
     grow: 0,

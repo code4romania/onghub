@@ -33,14 +33,14 @@ export class OrganizationFinancial extends BaseEntity {
   @Column({
     type: 'integer',
     name: 'number_of_employees',
-    default: 0,
+    nullable: true,
   })
   numberOfEmployees: number;
 
   @Column({ type: 'integer', name: 'year' })
   year: number;
 
-  @Column({ type: 'integer', name: 'total', default: 0 })
+  @Column({ type: 'integer', name: 'total', nullable: true })
   total: number;
 
   @Column({

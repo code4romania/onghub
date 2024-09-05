@@ -148,21 +148,41 @@ export class OrganizationFinancialService {
     ];
   }
 
+  /**
+   * Determines the status of a financial report based on the organization's input and ANAF data.
+   *
+   * @param addedByOrganizationTotal - The total amount entered by the organization (per each category).
+   * @param anafTotal - The total amount retrieved from ANAF.
+   * @param isSynced - Whether the report has been synced with ANAF data.
+   * @returns The status of the financial report.
+   */
   private determineReportStatus(
     addedByOrganizationTotal: number,
     anafTotal: number,
     isSynced: boolean,
-  ) {
+  ): OrganizationFinancialReportStatus {
+    // If the organization hasn't entered any data, the report is not completed
+    if (addedByOrganizationTotal === null) {
+      return OrganizationFinancialReportStatus.NOT_COMPLETED;
+    }
+
+    // If the report is synced with ANAF data
     if (isSynced) {
+      // If the totals match, the report is completed
       if (anafTotal === addedByOrganizationTotal) {
         return OrganizationFinancialReportStatus.COMPLETED;
       } else {
+        // If the totals don't match, the report is invalid
         return OrganizationFinancialReportStatus.INVALID;
       }
-    } else if (addedByOrganizationTotal !== 0) {
-      return OrganizationFinancialReportStatus.PENDING;
     } else {
-      return OrganizationFinancialReportStatus.NOT_COMPLETED;
+      // If not synced but the organization has entered some data, the report is pending
+      if (addedByOrganizationTotal !== 0) {
+        return OrganizationFinancialReportStatus.PENDING;
+      } else {
+        // If not synced and no data entered, the report is not completed
+        return OrganizationFinancialReportStatus.NOT_COMPLETED;
+      }
     }
   }
 
@@ -337,7 +357,7 @@ export class OrganizationFinancialService {
             const existingData = curr.data as Object;
             let existingTotal = null;
 
-            if (curr.data) {
+            if (existingData) {
               existingTotal = Object.keys(existingData).reduce(
                 (acc, curr) => acc + +existingData[curr],
                 0,

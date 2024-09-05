@@ -18,7 +18,7 @@ const IncomeReportModal = ({
   onClose,
   readonly,
   year,
-  total = 0,
+  total,
   defaultValue,
   onSave,
 }: ReportModalProps) => {
@@ -110,9 +110,9 @@ const IncomeReportModal = ({
                   </div>
                 </div>
                 <div className="mt-6 flex flex-row-reverse">
-                  <span className="sm:text-lg lg:text-xl text-md text-gray-900 font-bold leading-6">{`${formatCurrency(
-                    total,
-                  )} RON`}</span>
+                  <span className="sm:text-lg lg:text-xl text-md text-gray-900 font-bold leading-6">
+                    {total !== null && total !== undefined ? `${formatCurrency(total)} RON` : 'N/A'}
+                  </span>
                   <span className="sm:text-lg lg:text-xl text-md text-gray-400 font-normal leading-6 px-3">
                     {t('modal.income')}
                   </span>
@@ -178,15 +178,15 @@ const IncomeReportModal = ({
                         </td>
                         <td className="sm:whitespace-nowrap py-4 px-3 sm:text-sm lg:text-base text-xs font-bold ">
                           {`${totalDefalcat} `}
-                          {totalDefalcat !== total && (
+                          {total !== null && total !== undefined && totalDefalcat !== total && (
                             <span className="font-medium text-red-600">
                               {total > totalDefalcat
                                 ? `(${formatCurrency(total - totalDefalcat)} RON ${t(
-                                  'modal.unallocated',
-                                )})`
+                                    'modal.unallocated',
+                                  )})`
                                 : `(${formatCurrency(totalDefalcat - total)} RON ${t(
-                                  'modal.excess',
-                                )})`}
+                                    'modal.excess',
+                                  )})`}
                             </span>
                           )}
                         </td>
