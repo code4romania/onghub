@@ -35,7 +35,7 @@
     "show_more": "Vezi tot",
     "show_less": "Arată mai puțin",
     "upload": {
-      "file": "Numai fișiere de tip PDF sunt permise pentru incarcare.",
+      "file": "Numai fișiere de tip PDF sunt permise pentru încărcare.",
       "image": "Numai fișiere de tip PNG, JPG, JPEG sunt permise pentru logo",
       "image_size": "Dimensiunea maximă pentru logo este de 6 MB",
       "document_size": "Dimensiunea maximă pentru fișiere este de 25 MB",
@@ -267,11 +267,11 @@
         "helper": "Numele organizației așa cum apare în documentele legale."
       },
       "alias": {
-        "required": "Denumiea organizației este obligatoriu",
-        "max": "Denumiea organizației poate avea maxim 100 de caractere.",
-        "min": "Denumiea organizației poate avea minim 3 caractere.",
-        "invalid": "Denumiea organizației are un format invalid",
-        "label": "Denumiea organizației*",
+        "required": "Denumirea organizației este obligatoriu",
+        "max": "Denumirea organizației poate avea maxim 100 de caractere.",
+        "min": "Denumirea organizației poate avea minim 3 caractere.",
+        "invalid": "Denumirea organizației are un format invalid",
+        "label": "Denumirea organizației*",
         "helper": "Completează denumirea populară a organizației dacă este diferită de cea din acte."
       },
       "type": {
@@ -532,8 +532,7 @@
     "other": "Alte persoane relevante în organizație",
     "other_information": "Numele persoanelor adăugate sunt pentru a ușura comunicarea cu diferite persoane din organizația ta. De exemplu, aici poți adăuga managerul de comunicare sau persoana de fundraising dedicată din ONG-ul tău, sau coordonatori de sucursale din alte orașe. Datele de contact ale persoanelor relevante nu vor fi afișate public.",
     "statute": "Statutul organizației",
-    "statute_information": "Încarcă statutul anonimizat. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida statutul de organizație neguvernamentală, și a confirma că scopul și misiunea organizației nu contravin cu criteliile de eligibilitate (ca de exemplu organizația pe care o reprezinți nu desfășoară activități care să încalce drepturile omului, nu este afiliată unui partid politic, nu este o asociație de locatari, etc.) Fișiere acceptate: pdf, maxim 25 MB.",
-
+    "statute_information": "Încarcă ultima variantă a statutului în forma autentică însoțit de încheierea de la judecătorie (un singur document PDF). Pentru protecția datelor cu caracter personal, statutul poate fi anonimizat (anonimizarea se referă doar la datele cu caracter personal - CNP, adresă, telefon). Statutul încărcat nu va fi afișat public. Documentul este folosit pentru a valida statutul de organizație neguvernamentală, și a confirma că scopul și misiunea organizației nu contravin cu criteriile de eligibilitate (ca de exemplu organizația pe care o reprezinți nu desfășoară activități care să încalce drepturile omului, nu este afiliată unui partid politic, nu este o asociație de locatari, etc.). Statutul este de asemenea folosit pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 25 MB.",
     "no_document": "Nu există niciun document adăugat",
     "file_name": "Statut_Organizație",
     "statute_upload": "Încarcă fișier",
@@ -553,7 +552,7 @@
     "modal": {
       "add": "Adaugă",
       "edit_director": "Editare membru Consiliu Director",
-      "edit_director_information": "Aceste informații vor fi publice, atenție la ce împărtășești.",
+      "edit_director_information": "Numele persoanelor din Consiliul Director ar putea fi utilizate în aplicațiile în care verificarea Consiliului este necesară. Un exemplu este VotONG, soluția de desemnare a reprezentanților societății civile în diferite instituții unde vei putea fie candida ca ONG sau cu un reprezentant sau vota pentru numirea altora. Datele de contact ale membrilor consiliului director nu vor fi afișate public.",
       "add_director": "Adăugare membru Consiliu Director",
       "edit_relevant": "Editare altă persoană relevantă în organizație",
       "add_relevant": "Adăugare altă persoană relevantă în organizație",
@@ -583,7 +582,6 @@
     },
     "header": {
       "name": "Nume și prenume",
-      "role": "Rol",
       "email": "E-mail",
       "phone": "Telefon",
       "role": "Rol"
@@ -749,7 +747,7 @@
       },
       "production": {
         "label": "Producție",
-        "info": "Totalul cheltuielilor de producere a materialelor tale de comunicare (de exemplu stickere, roll-upuri, flyere etc.)."
+        "info": "Totalul cheltuielilor de producere a materialelor tale de comunicare (de exemplu stickere, roll-up-uri, flyere etc.)."
       },
       "software": {
         "label": "Servicii software",
