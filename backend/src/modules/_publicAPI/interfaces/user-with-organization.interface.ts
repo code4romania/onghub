@@ -13,5 +13,8 @@ export interface IUserWithOrganization {
     activityArea: string;
     logo: string;
     description: string;
+    cui: string;
+    legalReprezentativeFullName: string;
+    legalReprezentativeRole: string;
   };
 }

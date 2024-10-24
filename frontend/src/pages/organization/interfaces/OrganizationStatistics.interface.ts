@@ -8,12 +8,13 @@ export interface IAllOrganizationsStatistics {
 }
 
 export interface IOrganizationStatistics {
-  isOrganizationUpdated: boolean;
   organizationCreatedOn: Date;
-  organizationSyncedOn: Date;
+  organizationSyncedOn: Date | null;
   numberOfInstalledApps: number;
   numberOfUsers: number;
-  hubStatistics: IGeneralONGHubStatistics
+  hubStatistics: IGeneralONGHubStatistics;
+  numberOfErroredFinancialReports: number;
+  numberOfErroredReportsInvestorsPartners: number;
 }
 
 export interface IGeneralONGHubStatistics {

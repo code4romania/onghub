@@ -27,8 +27,7 @@ export class CreateUserDto {
   @MaxLength(50)
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsPhoneValid()
   phone: string;
 

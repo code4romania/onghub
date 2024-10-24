@@ -36,12 +36,6 @@ export class OrganizationHistory
    */
 
   @Column({
-    type: 'timestamp with time zone',
-    name: 'synced_on',
-  })
-  syncedOn: Date;
-
-  @Column({
     type: 'enum',
     enum: OrganizationStatus,
     name: 'status',

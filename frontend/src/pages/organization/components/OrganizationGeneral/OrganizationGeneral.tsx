@@ -21,13 +21,14 @@ import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Select from '../../../../components/Select/Select';
 import Textarea from '../../../../components/Textarea/Textarea';
 import { useAuthContext } from '../../../../contexts/AuthContext';
-import { useCitiesQuery, useIssuersQuery } from '../../../../services/nomenclature/Nomenclature.queries';
+import { useCitiesQuery } from '../../../../services/nomenclature/Nomenclature.queries';
 import { useNomenclature, useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { OrganizationContext } from '../../interfaces/OrganizationContext';
 import { OrganizationGeneralConfig } from './OrganizationGeneralConfig';
 import FormInput from '../../../../components/form-input/FormInput';
 import PhoneNumberInput from '../../../../components/IntlTelInput/PhoneNumberInput';
+import { County } from '../../../../common/interfaces/county.interface';
 
 const OrganizationGeneral = () => {
   const [readonly, setReadonly] = useState(true);
@@ -111,20 +112,23 @@ const OrganizationGeneral = () => {
     watchCity,
   ]);
 
-  useEffect(() => {
-    if (county && !readonly) {
-      setValue('city', null);
+  const handleSetCounty = (newCounty: County) => {
+    if (newCounty.id === county.id) {
+      return;
     }
-  }, [cities]);
 
-  useEffect(() => {
-    if (organizationCounty && !readonly) {
-      const { organizationCity, organizationCounty: orgCounty } = getValues();
-      if (organizationCity?.countyId !== orgCounty.id) {
-        setValue('organizationCity', null);
-      }
+    setCounty(newCounty);
+    setValue('city', null);
+  }
+
+  const handleSetOrganizationCounty = (newCounty: County) => {
+    if (newCounty.id === organizationCounty.id) {
+      return;
     }
-  }, [organizationCities]);
+
+    setOrganizationCounty(newCounty);
+    setValue('organizationCity', null);
+  }
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -449,8 +453,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setCounty(e);
-                          setValue('city', null, { shouldValidate: true });
+                          handleSetCounty(e);
                         }}
                         readonly={readonly}
                       />
@@ -475,6 +478,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={!county}
                       />
                     );
                   }}
@@ -700,6 +704,7 @@ const OrganizationGeneral = () => {
                       placeholder={OrganizationGeneralConfig.organizationAddress.config.placeholder}
                       onChange={onChange}
                       id="create-organization-general__org-organization-address"
+                      disabled={watchHasSameAddress}
                     />
                   );
                 }}
@@ -723,9 +728,10 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setOrganizationCounty(e);
+                          handleSetOrganizationCounty(e)
                         }}
                         readonly={readonly}
+                        disabled={watchHasSameAddress}
                       />
                     );
                   }}
@@ -748,6 +754,7 @@ const OrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={watchHasSameAddress || !organizationCounty}
                       />
                     );
                   }}

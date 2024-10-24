@@ -6,4 +6,5 @@ export const EVENTS = {
   DISABLE_ORGANIZATION_REQUEST: 'disable.ong.request',
   RESTRICT_ORGANIZATION: 'restrict.organization',
   REQUEST_APPLICATION_ACCESS: 'application.request',
+  INVALID_FINANCIAL_REPORTS: 'organization.financial.reports.invalid',
 };

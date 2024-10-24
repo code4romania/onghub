@@ -17,10 +17,15 @@ import {
   mapOrganizationLegalToFormData,
 } from './OrganizationFormDataMapper.service';
 import { IOrganizationFinancial } from '../../pages/organization/interfaces/OrganizationFinancial.interface';
+import { OrganizationReportsStatusAPI } from './interfaces/organization-reports-status.interface';
 
 /**EMPLOYEE && ADMIN */
 export const getOrganizationByProfile = (): Promise<any> => {
   return API.get(`/organization-profile`).then((res) => res.data);
+};
+
+export const getOrganizationReportsStatus = (): Promise<OrganizationReportsStatusAPI> => {
+  return API.get(`/organization-profile/reports-status`).then((res) => res.data);
 };
 
 export const patchOrganizationByProfile = (

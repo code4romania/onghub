@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { OrderDirection } from '../../common/enums/sort-direction.enum';
 import { PaginatedEntity } from '../../common/interfaces/paginated-entity.interface';
 import { Person } from '../../common/interfaces/person.interface';
@@ -31,6 +31,7 @@ import {
   getOrganizationApplicationRequests,
   getOrganizationApplications,
   getOrganizationByProfile,
+  getOrganizationReportsStatus,
   getOrganizations,
   patchOrganization,
   patchOrganizationByProfile,
@@ -43,7 +44,7 @@ import {
   uploadPartnersByProfile,
 } from './Organization.service';
 
-interface OrganizationPayload {
+export interface OrganizationPayload {
   id?: number;
   organization: {
     general?: IOrganizationGeneral;
@@ -286,6 +287,13 @@ export const useOrganizationByProfileQuery = () => {
   });
 };
 
+// Used to display errored Reports banners only for Organization Admins
+export const useOrganizationReportsStatus = (isAdmin: boolean) => {
+  return useQuery(['organization-reports-status'], () => getOrganizationReportsStatus(), {
+    enabled: isAdmin,
+  });
+};
+
 export const useOrganizationByProfileMutation = () => {
   const {
     setOrganizationGeneral,
@@ -345,39 +353,55 @@ export const useOrganizationByProfileMutation = () => {
 
 export const useUploadPartnersListByProfile = () => {
   const { setOrganizationReport } = useStore();
+  const queryClient = useQueryClient();
   return useMutation(
     ({ partnerId, data }: { partnerId: number; data: FormData }) =>
       uploadPartnersByProfile(partnerId, data),
     {
-      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+      onSuccess: (data: IOrganizationReport) => {
+        queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        setOrganizationReport(data);
+      },
     },
   );
 };
 
 export const useUploadInvestorsByProfileList = () => {
   const { setOrganizationReport } = useStore();
+  const queryClient = useQueryClient();
   return useMutation(
     ({ investorId, data }: { investorId: number; data: FormData }) =>
       uploadInvestorsByProfile(investorId, data),
     {
-      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+      onSuccess: (data: IOrganizationReport) => {
+        queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        setOrganizationReport(data);
+      },
     },
   );
 };
 
 export const useDeletePartnerByProfileMutation = () => {
+  const queryClient = useQueryClient();
   const { setOrganizationReport } = useStore();
   return useMutation(({ partnerId }: { partnerId: number }) => deletePartnersByProfile(partnerId), {
-    onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+    onSuccess: (data: IOrganizationReport) => {
+      queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+      setOrganizationReport(data);
+    },
   });
 };
 
 export const useDeleteInvestorByProfileMutation = () => {
+  const queryClient = useQueryClient();
   const { setOrganizationReport } = useStore();
   return useMutation(
     ({ investorId }: { investorId: number }) => deleteInvestorsByProfile(investorId),
     {
-      onSuccess: (data: IOrganizationReport) => setOrganizationReport(data),
+      onSuccess: (data: IOrganizationReport) => {
+        queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        setOrganizationReport(data);
+      },
     },
   );
 };

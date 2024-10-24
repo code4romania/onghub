@@ -66,12 +66,15 @@
     {{> header}}
     <div id="content">
       <h1>{{title}}</h1>
-      <p class="p1">{{subtitle}}</p>
+      <p class="p1">{{{subtitle}}}</p>
       {{#if cta}}
       <a href={{cta.link}} target="_blank">
         <button type="button">{{cta.label}}</button>
       </a>
       {{/if}}
+
+      <p class="p1">Cu drag, </p>
+      <p class="p1">Echipa NGO Hub</p>
     </div>
     {{> footer}}
   </div>

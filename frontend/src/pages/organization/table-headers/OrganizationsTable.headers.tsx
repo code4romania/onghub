@@ -24,7 +24,7 @@ const translations = {
 
 export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
   {
-    id: 'name',
+    id: 'alias',
     name: <DataTableNameHeader text={translations.ong} />,
     sortable: true,
     minWidth: '10rem',
@@ -65,7 +65,8 @@ export const OrganizationsTableHeaders: TableColumn<IOrganizationView>[] = [
     name: <DataTableNameHeader text={translations.updated_on} />,
     sortable: true,
     minWidth: '12rem',
-    selector: (row: IOrganizationView) => formatDate(row?.updatedOn as string),
+    selector: (row: IOrganizationView) =>
+      row?.updatedOn ? formatDate(row?.updatedOn as string) : '-',
   },
   {
     id: 'completionStatus',

@@ -53,7 +53,7 @@ const ContentWrapper = ({
             <button
               aria-label={deleteButton.btnLabel}
               type="button"
-              className="red-button mt-1 mr-1 sm:text-sm lg:text-base text-xs max-h-10"
+              className="red-button sm:text-sm lg:text-base text-xs max-h-10"
               onClick={deleteButton.onBtnClick}
             >
               <TrashIcon className="-ml-1 mr-2 sm:h-5 sm:w-5 h-4 w-4" aria-hidden="true" />

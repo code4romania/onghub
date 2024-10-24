@@ -23,15 +23,14 @@ import {
 } from '../constants/CreateOrganization.constant';
 import GenericFormErrorMessage from '../../../components/generic-form-error-message/GenericFormErrorMessage';
 import PhoneNumberInput from '../../../components/IntlTelInput/PhoneNumberInput';
+import { County } from '../../../common/interfaces/county.interface';
 
 const CreateOrganizationGeneral = () => {
   const [readonly] = useState(false);
   const [county, setCounty] = useState<any>();
-  const [city, setCity] = useState<any>();
   const [organizationCounty, setOrganizationCounty] = useState<any>();
-  const [organizationCity, setOrganizationCity] = useState<any>();
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
-  const { cities, counties, issuers } = useNomenclature();
+  const { counties, issuers } = useNomenclature();
 
   const [organization, setOrganization, logo, setLogo, , , activeStepIndex, setActiveStepIndex] =
     useOutletContext<any>();
@@ -41,7 +40,8 @@ const CreateOrganizationGeneral = () => {
   const { t } = useTranslation(['general', 'common']);
 
   // queries
-  useCitiesQuery(county?.id);
+  const { data: cities } = useCitiesQuery(county?.id);
+  const { data: organizationCities } = useCitiesQuery(organizationCounty?.id);
   const { mutateAsync: validationMutate } = useCreateOrganizationRequestValidationMutation();
 
   const navigate = useNavigate();
@@ -92,6 +92,8 @@ const CreateOrganizationGeneral = () => {
       setValue('organizationAddress', address);
       setValue('organizationCity', city);
       setValue('organizationCounty', county);
+
+      setOrganizationCounty(county);
     }
   }, [watchHasSameAddress]);
 
@@ -119,27 +121,27 @@ const CreateOrganizationGeneral = () => {
     if (organization && organization.general) {
       reset(organization.general);
       setCounty(organization.general.county);
-      setCity(organization.general.city);
       setOrganizationCounty(organization.general.organizationCounty);
-      setOrganizationCity(organization.general.organizationCity);
     }
   }, [organization]);
 
-  useEffect(() => {
-    if (county && !readonly && !city) {
-      setValue('city', null);
+  const handleSetCounty = (newCounty: County) => {
+    if (county && newCounty.id === county.id) {
+      return;
     }
 
-    if (organizationCity && !readonly && !organizationCity) {
-      setValue('organizationCity', null);
-    }
-  }, [cities]);
+    setCounty(newCounty);
+    setValue('city', null);
+  }
 
-  useEffect(() => {
-    if (county && city && city.county.id !== county.id) {
-      setCity(null);
+  const handleSetOrganizationCounty = (newCounty: County) => {
+    if (organizationCounty && newCounty.id === organizationCounty.id) {
+      return;
     }
-  }, [county]);
+
+    setOrganizationCounty(newCounty);
+    setValue('organizationCity', null);
+  }
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -407,7 +409,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setCounty(e);
+                          handleSetCounty(e);
                         }}
                         readonly={readonly}
                       />
@@ -432,6 +434,7 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={!county}
                       />
                     );
                   }}
@@ -644,6 +647,7 @@ const CreateOrganizationGeneral = () => {
                         onChange: onChange,
                         id: 'create-organization-general__org-organization-address',
                       }}
+                      disabled={watchHasSameAddress}
                       readonly={readonly}
                     />
                   );
@@ -668,11 +672,10 @@ const CreateOrganizationGeneral = () => {
                         selected={value}
                         onChange={(e: any) => {
                           onChange(e);
-                          setOrganizationCounty(e);
-                          setValue('organizationCity', null);
-                          setOrganizationCity(null);
+                          handleSetOrganizationCounty(e)
                         }}
                         readonly={readonly}
+                        disabled={watchHasSameAddress}
                       />
                     );
                   }}
@@ -688,13 +691,14 @@ const CreateOrganizationGeneral = () => {
                         config={{
                           id: 'create-organization-general__organization-city',
                           ...OrganizationGeneralConfig.organizationCity.config,
-                          collection: cities || [],
+                          collection: organizationCities || [],
                           displayedAttribute: 'name',
                         }}
                         error={errors[OrganizationGeneralConfig.organizationCity.key]?.message}
                         selected={value}
                         onChange={onChange}
                         readonly={readonly}
+                        disabled={watchHasSameAddress || !organizationCounty}
                       />
                     );
                   }}

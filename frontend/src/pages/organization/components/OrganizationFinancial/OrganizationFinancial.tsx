@@ -21,8 +21,11 @@ import { OrganizationFinancialTableHeaders } from './OrganizationFinancialTableH
 import { OrganizationStatus } from '../../enums/OrganizationStatus.enum';
 import LoadingContent from '../../../../components/data-table/LoadingContent';
 import { useRetryAnafFinancialMutation } from '../../../../services/organization/Organization.queries';
+import { useQueryClient } from 'react-query';
 
 const OrganizationFinancial = () => {
+  const queryClient = useQueryClient();
+
   const [isExpenseReportModalOpen, setIsExpenseReportModalOpen] = useState<boolean>(false);
   const [isIncomeReportModalOpen, setIsIncomeReportModalOpen] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<IOrganizationFinancial | null>(null);
@@ -120,6 +123,9 @@ const OrganizationFinancial = () => {
         },
       },
       {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['organization-reports-status'] });
+        },
         onError: () => {
           useErrorToast(t('save_error', { ns: 'organization' }));
         },
@@ -138,7 +144,7 @@ const OrganizationFinancial = () => {
           </p>
         </div>
         {organization?.status === OrganizationStatus.PENDING &&
-          organizationFinancial[0].synched_anaf === false &&
+          organizationFinancial[0]?.synched_anaf === false &&
           role == UserRole.SUPER_ADMIN && (
             <div className="flex my-2 gap-4 items-center flex-column">
               <p className="flex">

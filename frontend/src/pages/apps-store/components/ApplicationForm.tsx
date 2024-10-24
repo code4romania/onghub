@@ -7,28 +7,33 @@ import {
   FieldErrorsImpl,
   DeepRequired,
   UseFormWatch,
+  UseFormClearErrors,
 } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FILE_TYPES_ACCEPT } from '../../../common/constants/file.constants';
-import { fileToURL } from '../../../common/helpers/format.helper';
+import { fileToURL, mapNameToSelect } from '../../../common/helpers/format.helper';
 import InputField from '../../../components/InputField/InputField';
 import RadioGroup from '../../../components/RadioGroup/RadioGroup';
 import SectionHeader from '../../../components/section-header/SectionHeader';
 import Select from '../../../components/Select/Select';
-import Textarea from '../../../components/Textarea/Textarea';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import { ApplicationTypeEnum } from '../constants/ApplicationType.enum';
 import { AddAppConfig } from './AddApplicationConfig';
 import RichText from '../../../components/RichText/RichText';
+import { ApplicationStatus } from '../../../services/application/interfaces/Application.interface';
+import CreatableSelectComponent from '../../../components/creatable-multi-select/CreatableMultiSelect';
+import { useNomenclature } from '../../../store/selectors';
+import { useApplicationLabelsQuery } from '../../../services/nomenclature/Nomenclature.queries';
 
 interface ApplicationFormProps {
   control: Control<CreateApplicationDto, object>;
-  errors: FieldErrorsImpl<DeepRequired<CreateApplicationDto>>;
+  errors: FieldErrorsImpl<DeepRequired<CreateApplicationDto> & { status?: ApplicationStatus }>;
   watch: UseFormWatch<CreateApplicationDto>;
   file: File | null;
   setFile: (file: File) => void;
   logo?: string | null;
   readonly?: boolean;
+  clearErrors?: UseFormClearErrors<CreateApplicationDto>;
 }
 
 const ApplicationForm = ({
@@ -39,6 +44,7 @@ const ApplicationForm = ({
   logo,
   file,
   setFile,
+  clearErrors
 }: ApplicationFormProps) => {
   const { fields, append, remove } = useFieldArray<CreateApplicationDto>({
     control,
@@ -46,6 +52,10 @@ const ApplicationForm = ({
   });
 
   const { t } = useTranslation('appstore');
+
+  const { applicationLabels } = useNomenclature()
+
+  useApplicationLabelsQuery();
 
   // watchers
   const type = watch('type');
@@ -58,6 +68,37 @@ const ApplicationForm = ({
       event.target.value = '';
     }
   };
+
+  const ribbonValidation = (inputValue: string) => {
+    const labelError = (errors as Record<string, { message: string }>)[AddAppConfig.applicationLabel.key];
+
+    if (inputValue.length > 30 && !labelError) {
+      control.setError(AddAppConfig.applicationLabel.key, { type: 'maxLength', message: t('config.application_label.maxLength') });
+    }
+
+    if (inputValue.length > 30) {
+      return false;
+    }
+
+
+    if (inputValue.length > 2 && inputValue.length < 30 && labelError) {
+      clearErrors && clearErrors(AddAppConfig.applicationLabel.key);
+    }
+
+    if (inputValue.length > 2 && inputValue.length < 30) {
+      return true;
+    }
+
+    if (inputValue.length && inputValue.length < 3 && !labelError) {
+      control.setError(AddAppConfig.applicationLabel.key, { type: 'minLength', message: t('config.application_label.minLength') });
+    }
+
+    if (inputValue.length < 3) {
+      return false;
+    }
+
+    return true;
+  }
 
   return (
     <div className="p-5 sm:p-10 flex">
@@ -264,6 +305,34 @@ const ApplicationForm = ({
             )}
           </div>
           {/* End Logo */}
+          <div className='flex flex-col gap-4 pt-4'>
+            <SectionHeader title={t('appstore:config.status.section_title')} subTitle={t('appstore:config.status.section_subtitle')} />
+            <RadioGroup control={control} errors={errors.status} config={AddAppConfig.status} />
+            <Controller
+              key={AddAppConfig.applicationLabel.key}
+              name={AddAppConfig.applicationLabel.key}
+              rules={AddAppConfig.applicationLabel.rules}
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <CreatableSelectComponent
+                    id="application-form__application-label"
+                    value={value}
+                    isMulti={false}
+                    label={AddAppConfig.applicationLabel.config.label}
+                    helperText={AddAppConfig.applicationLabel.config.helperText}
+                    placeholder={AddAppConfig.applicationLabel.config.placeholder}
+                    error={(errors as Record<string, { message: string }>)[
+                      AddAppConfig.applicationLabel.key
+                    ]?.message?.toString()}
+                    onChange={onChange}
+                    options={[...applicationLabels.map(mapNameToSelect)]}
+                    validation={ribbonValidation}
+                  />
+                );
+              }}
+            />
+          </div>
           <div className="flex flex-col gap-4 pt-4">
             <SectionHeader title={t('form.steps_title')} subTitle={t('form.steps_subtitle')} />
             {fields.map((item, index) => {
@@ -288,7 +357,7 @@ const ApplicationForm = ({
                               )?.steps[index]?.item?.message as any),
                             defaultValue: value,
                             onChange: onChange,
-                            id: 'application-form__step',
+                            id: `application-form__step_${index}`,
                           }}
                         />
                       );
@@ -299,6 +368,8 @@ const ApplicationForm = ({
             })}
             <div className="flex gap-4 sm:flex-row flex-col">
               <button
+                id='application-form__step'
+                type="button"
                 className="save-button sm:text-sm lg:text-base text-xs"
                 onClick={(e: any) => {
                   e.preventDefault();
@@ -310,6 +381,8 @@ const ApplicationForm = ({
               </button>
               {fields.length > 0 && (
                 <button
+                  type="button"
+                  id='application-form_delete-step'
                   aria-label={t('form.delete_step')}
                   className="add-button sm:text-sm lg:text-base text-xs"
                   onClick={(e: any) => {

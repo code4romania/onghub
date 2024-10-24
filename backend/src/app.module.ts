@@ -27,6 +27,7 @@ import { PracticeProgramModule } from './modules/practice-program/practice-progr
 import { CivicCenterModule } from './modules/civic-center-service/civic-center.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
       useClass: RateLimiterConfigService,
     }),
     EventEmitterModule.forRoot(),
+    ScheduleModule.forRoot(),
 
     // Providers
     DatabaseProviderModule,

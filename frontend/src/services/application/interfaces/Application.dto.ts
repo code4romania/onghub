@@ -11,4 +11,5 @@ export interface CreateApplicationDto {
   website: string;
   logo: string;
   steps: { item: string }[];
+  applicationLabel: { label: string; value: string };
 }

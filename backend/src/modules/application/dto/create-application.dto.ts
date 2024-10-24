@@ -10,6 +10,8 @@ import {
 import { REGEX } from 'src/common/constants/patterns.constant';
 import { ApplicationPullingType } from '../enums/application-pulling-type.enum';
 import { ApplicationTypeEnum } from '../enums/ApplicationType.enum';
+import { ApplicationLabel } from 'src/shared/entities/application-labels.entity';
+import { ApplicationStatus } from '../enums/application-status.enum';
 
 export class CreateApplicationDto {
   @IsString()
@@ -56,4 +58,10 @@ export class CreateApplicationDto {
   @IsOptional()
   @Length(2, 100, { each: true })
   steps?: string[];
+
+  @IsOptional()
+  applicationLabel: Partial<ApplicationLabel>;
+
+  @IsEnum(ApplicationStatus)
+  status: ApplicationStatus;
 }

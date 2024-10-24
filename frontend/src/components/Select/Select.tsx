@@ -77,31 +77,33 @@ const Select = (props: {
                         value={item}
                         itemID={`${props.config.id}__select-${item.name}`}
                       >
-                        {({ selected, active }) => (
-                          <>
-                            <span
-                              className={classNames(
-                                selected ? 'font-semibold' : 'font-normal',
-                                'block truncate lg:text-base text-sm',
-                              )}
-                            >
-                              {props.config.displayedAttribute
-                                ? item[props.config.displayedAttribute]
-                                : item}
-                            </span>
-
-                            {selected ? (
+                        {
+                          ({ selected, active }) => (
+                            <>
                               <span
                                 className={classNames(
-                                  active ? 'text-white' : 'text-blue-600',
-                                  'absolute inset-y-0 right-0 flex items-center pr-4',
+                                  'font-normal',
+                                  'block truncate lg:text-base text-sm',
                                 )}
                               >
-                                <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                {props.config.displayedAttribute
+                                  ? item[props.config.displayedAttribute]
+                                  : item}
                               </span>
-                            ) : null}
-                          </>
-                        )}
+
+                              {(props.selected?.id ? props?.selected?.id === item.id : selected) ? (
+                                <span
+                                  className={classNames(
+                                    active ? 'text-white' : 'text-blue-600',
+                                    'absolute inset-y-0 right-0 flex items-center pr-4',
+                                  )}
+                                >
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </>
+                          )
+                        }
                       </Listbox.Option>
                     ))}
                   </Listbox.Options>
