@@ -426,17 +426,18 @@ export class OrganizationFinancialService {
         }
 
         // In case one of the report is invalid, we notify the ADMIN to modify them
-        if (
-          sendNotificationForInvalidData &&
-          org.organizationGeneral?.contact?.email
-        ) {
-          this.eventEmitter.emit(
-            EVENTS.INVALID_FINANCIAL_REPORTS,
-            new InvalidFinancialReportsEvent(
-              org.organizationGeneral?.contact?.email,
-            ),
-          );
-        }
+        // ! COMMENTED FOR NOW AS PER MIRUNA REQUEST UNTIL FURTHER NOTICE
+        // if (
+        //   sendNotificationForInvalidData &&
+        //   org.organizationGeneral?.contact?.email
+        // ) {
+        //   this.eventEmitter.emit(
+        //     EVENTS.INVALID_FINANCIAL_REPORTS,
+        //     new InvalidFinancialReportsEvent(
+        //       org.organizationGeneral?.contact?.email,
+        //     ),
+        //   );
+        // }
       } catch (err) {
         Sentry.captureException(err, {
           extra: {
