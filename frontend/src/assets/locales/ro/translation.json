@@ -544,6 +544,7 @@
     "non_political_affiliation_no_document": "Nu există niciun document adăugat",
     "non_political_affiliation_file_name": "Declarație de neapartenență politică",
     "non_political_affiliation_upload": "Încarcă fișier",
+    "non_political_affiliation_download_example": "Descarcă un model de declarație",
     "balance_sheet": "Bilanț contabil",
     "balance_sheet_information": "Încarcă ultimul bilanțul contabil depus la Ministerul de Finanțe. Acesta nu va fi afișat public. Documentul este folosit doar pentru a valida eligibilitatea organizației de a accesa anumite soluții din NGO Hub (ca de exemplu Vot ONG și RO Help). Fișiere acceptate: pdf, maxim 25 MB",
     "balance_sheet_no_document": "Nu există niciun document adăugat",

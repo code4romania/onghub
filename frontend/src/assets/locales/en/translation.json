@@ -504,6 +504,7 @@
     "non_political_affiliation_no_document": "No document uploaded",
     "non_political_affiliation_file_name": "Declaration of non-political affiliation",
     "non_political_affiliation_upload": "Upload file",
+    "non_political_affiliation_download_example": "Download the document model",
     "balance_sheet": "Balance Sheet",
     "balance_sheet_information": "Upload the latest balance sheet submitted to the Ministry of Finance. This will not be displayed publicly. The document is only used to validate the organization's eligibility to access certain solutions in NGO Hub (such as Vot ONG and RO Help). Accepted file formats: pdf, maximum 50 MB",
     "balance_sheet_no_document": "No document uploaded",

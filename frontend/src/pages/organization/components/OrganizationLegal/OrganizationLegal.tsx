@@ -1,4 +1,4 @@
-import { PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowDownTrayIcon, PaperClipIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { PencilIcon, PlusIcon, TrashIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import React, { useContext, useEffect, useState } from 'react';
 import { TableColumn } from 'react-data-table-component';
@@ -18,7 +18,11 @@ import PopoverMenu, { PopoverMenuRowType } from '../../../../components/popover-
 import SectionHeader from '../../../../components/section-header/SectionHeader';
 import Spinner from '../../../../components/spinner/Spinner';
 import { AuthContext } from '../../../../contexts/AuthContext';
-import { useDeleteBalanceSheetFileMutation, useDeleteNonPoliticalAffiliationFileMutation, useDeleteOrganizationStatuteMutation } from '../../../../services/organization/Organization.queries';
+import {
+  useDeleteBalanceSheetFileMutation,
+  useDeleteNonPoliticalAffiliationFileMutation,
+  useDeleteOrganizationStatuteMutation,
+} from '../../../../services/organization/Organization.queries';
 import { useSelectedOrganization } from '../../../../store/selectors';
 import { UserRole } from '../../../users/enums/UserRole.enum';
 import { Contact } from '../../interfaces/Contact.interface';
@@ -28,6 +32,7 @@ import OtherModal from './components/OtherModal';
 import { OrganizationLegalConfig } from './OrganizationLegalConfig';
 import { DirectorsTableHeaders } from './table-headers/DirectorsTable.headers';
 import { OthersTableHeaders } from './table-headers/OthersTable.headers';
+import { getNonPoliticalAffiliationTemplate } from '../../../../services/files/File.service';
 
 const OrganizationLegal = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -47,8 +52,10 @@ const OrganizationLegal = () => {
   const [isDeleteOrganizationStatuteModalOpen, setDeleteOrganizationStatuteModalOpen] =
     useState<boolean>(false);
 
-  const [isDeleteNonPoliticalAffiliationFileModalOpen, setDeleteNonPoliticalAffiliationFileModalOpen] =
-    useState<boolean>(false);
+  const [
+    isDeleteNonPoliticalAffiliationFileModalOpen,
+    setDeleteNonPoliticalAffiliationFileModalOpen,
+  ] = useState<boolean>(false);
 
   const [isDeleteBalanceSheetFileModalOpen, setDeleteBalanceSheetFileModalOpen] =
     useState<boolean>(false);
@@ -59,14 +66,16 @@ const OrganizationLegal = () => {
   const { updateOrganization, isLoading: isLoadingUpdateOrganization } =
     useOutletContext<OrganizationContext>();
 
-
   const { mutate: deleteOrganizationStatute, isLoading: isRemovingOrganizationStatute } =
     useDeleteOrganizationStatuteMutation();
 
-  const { mutate: deleteNonPoliticalAffiliationFile, isLoading: isRemovingNonPoliticalAffiliationFile } =
-    useDeleteNonPoliticalAffiliationFileMutation();
+  const {
+    mutate: deleteNonPoliticalAffiliationFile,
+    isLoading: isRemovingNonPoliticalAffiliationFile,
+  } = useDeleteNonPoliticalAffiliationFileMutation();
 
-  const { mutateAsync: deleteBalanceSheetFile, isLoading: isRemovingBalanceSheetFile } = useDeleteBalanceSheetFileMutation()
+  const { mutateAsync: deleteBalanceSheetFile, isLoading: isRemovingBalanceSheetFile } =
+    useDeleteBalanceSheetFileMutation();
 
   const { role } = useContext(AuthContext);
   // React i18n
@@ -257,7 +266,7 @@ const OrganizationLegal = () => {
         logo: null,
         organizationStatute,
         nonPoliticalAffiliationFile,
-        balanceSheetFile
+        balanceSheetFile,
       },
       {
         onSuccess: () => {
@@ -299,7 +308,6 @@ const OrganizationLegal = () => {
       event.target.value = '';
     }
   };
-
 
   const onChangeBalanceSheetFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -394,8 +402,8 @@ const OrganizationLegal = () => {
               !isEditMode
                 ? setEditMode.bind(null, true)
                 : () => {
-                  handleSubmit(handleSave)();
-                }
+                    handleSubmit(handleSave)();
+                  }
             }
           >
             {isLoadingUpdateOrganization ? (
@@ -487,11 +495,9 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('statute')} subTitle={t('statute_information')} />
             <div className="flex flex-col gap-y-4">
-              {!organizationLegal?.organizationStatute &&
-                organizationStatute === null && (
-                  <h3>{t('no_document')}</h3>
-                )
-              }
+              {!organizationLegal?.organizationStatute && organizationStatute === null && (
+                <h3>{t('no_document')}</h3>
+              )}
               {isEditMode &&
                 !organizationLegal?.organizationStatute &&
                 organizationStatute === null && (
@@ -541,8 +547,20 @@ const OrganizationLegal = () => {
           {
             // Political Affiliation section
           }
-          <section className="flex flex-col gap-6 w-full pt-8">
-            <SectionHeader title={t('non_political_affiliation')} subTitle={t('non_political_affiliation_information')} />
+          <section className="flex flex-col gap-6 w-full pt-8 items-baseline">
+            <SectionHeader
+              title={t('non_political_affiliation')}
+              subTitle={t('non_political_affiliation_information')}
+            />
+            <a
+              aria-label={t('non_political_affiliation_download_example')}
+              href={getNonPoliticalAffiliationTemplate()}
+              className="text-green-500 flex align-middle justify-center ml-2 cursor-pointer break-keep"
+              download
+            >
+              <ArrowDownTrayIcon className="w-5 h-5 mr-2" />
+              {t('non_political_affiliation_download_example')}
+            </a>
             <div className="flex flex-col gap-y-4">
               {!organizationLegal?.nonPoliticalAffiliationFile &&
                 nonPoliticalAffiliationFile === null && (
@@ -571,14 +589,20 @@ const OrganizationLegal = () => {
               {(organizationLegal?.nonPoliticalAffiliationFile || nonPoliticalAffiliationFile) && (
                 <a
                   aria-label={t('')}
-                  href={fileToURL(nonPoliticalAffiliationFile) || organizationLegal?.nonPoliticalAffiliationFile}
+                  href={
+                    fileToURL(nonPoliticalAffiliationFile) ||
+                    organizationLegal?.nonPoliticalAffiliationFile
+                  }
                   download
                   className="text-indigo-600 font-medium text-sm flex items-center"
                 >
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('non_political_affiliation_file_name')}
                   {isEditMode && !isRemovingNonPoliticalAffiliationFile && (
-                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteNonPoliticalAffiliationFile} />
+                    <XMarkIcon
+                      className="ml-2 w-4 h-4 text-gray-600"
+                      onClick={onDeleteNonPoliticalAffiliationFile}
+                    />
                   )}
                   {isRemovingNonPoliticalAffiliationFile && <Spinner className="w-4 h-4 ml-2" />}
                 </a>
@@ -590,30 +614,27 @@ const OrganizationLegal = () => {
           <section className="flex flex-col gap-6 w-full pt-8">
             <SectionHeader title={t('balance_sheet')} subTitle={t('balance_sheet_information')} />
             <div className="flex flex-col gap-y-4">
-              {!organizationLegal?.balanceSheetFile &&
-                balanceSheetFile === null && (
-                  <h3>{t('balance_sheet_no_document')}</h3>
-                )}
-              {isEditMode &&
-                !organizationLegal?.balanceSheetFile &&
-                balanceSheetFile === null && (
-                  <div className="flex flex-col gap-y-1">
-                    <label
-                      htmlFor="uploadBalanceSheet"
-                      className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      {t('balance_sheet_upload')}
-                    </label>
-                    <input
-                      className="h-0 w-0"
-                      name="uploadBalanceSheet"
-                      id="uploadBalanceSheet"
-                      type="file"
-                      accept={FILE_TYPES_ACCEPT.BALANCE_SHEET}
-                      onChange={onChangeBalanceSheetFile}
-                    />
-                  </div>
-                )}
+              {!organizationLegal?.balanceSheetFile && balanceSheetFile === null && (
+                <h3>{t('balance_sheet_no_document')}</h3>
+              )}
+              {isEditMode && !organizationLegal?.balanceSheetFile && balanceSheetFile === null && (
+                <div className="flex flex-col gap-y-1">
+                  <label
+                    htmlFor="uploadBalanceSheet"
+                    className="w-32 cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    {t('balance_sheet_upload')}
+                  </label>
+                  <input
+                    className="h-0 w-0"
+                    name="uploadBalanceSheet"
+                    id="uploadBalanceSheet"
+                    type="file"
+                    accept={FILE_TYPES_ACCEPT.BALANCE_SHEET}
+                    onChange={onChangeBalanceSheetFile}
+                  />
+                </div>
+              )}
               {(organizationLegal?.balanceSheetFile || balanceSheetFile) && (
                 <a
                   aria-label={t('')}
@@ -624,7 +645,10 @@ const OrganizationLegal = () => {
                   <PaperClipIcon className=" w-4 h-4 text-gray-600" />
                   {t('balance_sheet_file_name')}
                   {isEditMode && !isRemovingBalanceSheetFile && (
-                    <XMarkIcon className="ml-2 w-4 h-4 text-gray-600" onClick={onDeleteBalanceSheetFile} />
+                    <XMarkIcon
+                      className="ml-2 w-4 h-4 text-gray-600"
+                      onClick={onDeleteBalanceSheetFile}
+                    />
                   )}
                   {isRemovingBalanceSheetFile && <Spinner className="w-4 h-4 ml-2" />}
                 </a>

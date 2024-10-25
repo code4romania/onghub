@@ -12,6 +12,13 @@ export const getInvestorsTemplate = (): string => {
   );
 };
 
+export const getNonPoliticalAffiliationTemplate = (): string => {
+  return (
+    `https://${process.env.REACT_APP_PUBLIC_ASSETS_URL}/file_templates/Declaratie_privind_afilierea_politica_2024.docx` ||
+    ''
+  );
+};
+
 export const getPublicFileUrl = (path: string): Promise<string> => {
   return API.get(`/file?path=${encodeURIComponent(path)}`).then((res) => res.data);
 };
