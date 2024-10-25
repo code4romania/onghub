@@ -75,8 +75,8 @@ const OrganizationAgreement = () => {
           <p>{t('create.user_agreement.paragraph')}</p>
           <p>
             {t('create.user_agreement.support_paragraph')}
-            <a className="text-blue-500" href="mailto:civic@commitglobal.org">
-              civic@commitglobal.org
+            <a className="text-blue-500" href="mailto:civic@code4.ro">
+              civic@code4.ro"
             </a>
           </p>
           <form className="flex flex-row gap-2 items-center">
