@@ -1312,7 +1312,7 @@
       "number_of_pending_requests": "Cereri înscriere organizații în așteptare",
       "number_of_updated_organizations": "Număr de organizații cu datele actualizate",
       "number_of_users": "Număr total de utilizatori individuali",
-      "next_update": "Actualizează datele până pe 30.06.{{value}} pentru a evita suspendarea contului NGO Hub",
+      "next_update": "Actualizează datele până la finalul anului pentru a putea continua să folosești NGO Hub",
       "next_year_update": "Următoarea actualizare va fi necesară începând cu 01.01.{{value}}",
       "active_apps": "Aplicațiile active",
       "view_active_apps": "Vezi aplicațiile active",
@@ -1342,7 +1342,7 @@
       "organization_reports": {
         "updated": "Informațiile din secțiunea “ONG-ul în numere” sunt actualizate",
         "not_updated": "Informațiile din secțiunea “ONG-ul în numere” nu sunt actualizate.",
-        "please_update": "Adauga noile raportari pentru a putea continua sa folosesti NHO Hub."
+        "please_update": "Adauga noile raportari pentru a putea continua sa folosesti NGO Hub."
       }
     },
     "activity_title": "Organizație activă în NGO Hub din",
