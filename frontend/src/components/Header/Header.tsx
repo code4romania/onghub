@@ -14,9 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
 import { useTranslation } from 'react-i18next';
 import { signInWithRedirect } from 'aws-amplify/auth';
-import WarningBanner from '../warning-banner/WarningBanner';
-import { UserRole } from '../../pages/users/enums/UserRole.enum';
-import { useOrganizationReportsStatus } from '../../services/organization/Organization.queries';
+// import WarningBanner from '../warning-banner/WarningBanner';
+// import { UserRole } from '../../pages/users/enums/UserRole.enum';
+// import { useOrganizationReportsStatus } from '../../services/organization/Organization.queries';
 
 interface HeaderProps {
   openSlidingMenu?: any;
@@ -28,7 +28,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
   const navigate = useNavigate();
   const { profile } = useUser();
 
-  const { data: reportsStatus } = useOrganizationReportsStatus(profile?.role === UserRole.ADMIN);
+  // const { data: reportsStatus } = useOrganizationReportsStatus(profile?.role === UserRole.ADMIN);
 
   const { t } = useTranslation(['header', 'dashboard']);
 
@@ -64,7 +64,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                 <button
                   aria-label={t('enter')}
                   className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
-                  onClick={(e) => signInWithRedirect()}
+                  onClick={() => signInWithRedirect()}
                 >
                   {t('enter')}
                 </button>
@@ -138,7 +138,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
             )}
           </div>
         </nav>
-        {reportsStatus && reportsStatus.numberOfErroredFinancialReports > 0 && (
+        {/* {reportsStatus && reportsStatus.numberOfErroredFinancialReports > 0 && (
           <WarningBanner
             text={t('statistics.financial_reports.not_updated', { ns: 'dashboard' })}
             actionText={t('statistics.financial_reports.please_update', { ns: 'dashboard' })}
@@ -151,7 +151,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
             actionText={t('statistics.organization_reports.please_update', { ns: 'dashboard' })}
             actionLink="/organization/data"
           />
-        )}
+        )} */}
       </header>
     </>
   );
