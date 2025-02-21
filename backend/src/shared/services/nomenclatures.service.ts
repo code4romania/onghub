@@ -114,7 +114,10 @@ export class NomenclaturesService {
   }
 
   public getDomains(conditions: FindManyOptions<Domain>) {
-    return this.domainsRepository.find(conditions);
+    return this.domainsRepository.find({
+      ...conditions,
+      order: { name: 'ASC' as const },
+    });
   }
 
   public getRegions(conditions: FindManyOptions<Region>) {
