@@ -29,6 +29,7 @@
       "invalid": "Invalid",
       "pending": "In verificare"
     },
+    "add_option": "Adaugă opțiunea",
     "any": "Toate",
     "restricted": "Restricționat",
     "active": "Activ",
@@ -158,6 +159,13 @@
         "title": "Acordul de instalare",
         "list_item_1": "Organizația nu realizează activități și nu susține cauze de natură politică sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
         "list_item_2": "Soluțiile digitale puse la dispoziție nu vor fi folosite pentru dezvoltarea sau implementarea unui sa mai multor proiecte care încalcă legislația română sau internațională sau care discriminează pe considerente legate de etnie, rasă, sex, orientare sexuală, religie, capacități fizice sau psihice sau de apartenența la una sau mai multe categorii sociale sau economice;",
+        "list_item_3": "Asistența solicitată nu este destinată dezvoltării sau implementării unuia sau mai multor proiecte care ar putea avea un beneficiu politic sau personal;",
+        "list_item_4": {
+          "part_1": "Organizația a luat la cunoștință și respectă ",
+          "code_of_conduct": "codul de conduită",
+          "peas_policy": "Politica PEAS",
+          "part_2": "al Code for Romania și "
+        },
         "list_item_5": "Organizația va menționa contribuția Asociației Code for Romania în activitatea sa acolo unde este cazul;",
         "list_item_6": "Asociația Code for Romania are dreptul să menționeze public asistența oferită organizației;",
         "list_item_7": "Asociația Code for Romania își rezervă dreptul de restricționa accesul la NGO Hub a organizațiilor care nu respectă condițiile de mai sus, cu excepția accesului la platforma VotONG, unde decizia aparține Comisiei Electorale a fiecărei runde electorale organizate prin platformă;",
@@ -178,6 +186,8 @@
         "REQ_010": "Există deja o organizație cu acest alias",
         "REQ_011": "Există deja o organizație cu acest e-mail",
         "REQ_012": "Există deja o organizație cu acest număr de telefon",
+        "REQ_013": "Există deja o organizație cu acest număr si dată de înscriere în Registrul Special",
+        "REQ_014": "Există deja o organizație cu acest număr de înregistrare în Registrul Național",
         "REQ_002": "Există deja o cerere cu acest e-mail sau cu acest număr de telefon.",
         "ORG_026": "Eroare la actualizarea datelor generale"
       }
@@ -269,7 +279,8 @@
       },
       "type": {
         "label": "Tip organizație*",
-        "required": "Tipul organizației este obligatoriu"
+        "required": "Tipul organizației este obligatoriu",
+        "helper": ""
       },
       "email": {
         "required": "E-mail-ul este obligatoriu",
@@ -303,7 +314,42 @@
         "max": "Numărul RAF poate avea maxim 20 de caractere",
         "min": "Numărul RAF poate avea minim 8 caractere",
         "invalid": "Numărul RAF are un format invalid",
-        "label": "Număr de înregistrare în RAF*"
+        "label": "Număr de înregistrare în RAF*",
+        "placeholder": "56/14.09.2020"
+      },
+      "association_registry_number": {
+        "required": "Numărul de înregistrare în Registrul Special este obligatoriu",
+        "max": "Numărul de înregistrare în Registrul Special poate avea maxim 30 de caractere",
+        "helper": "Numărul care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial.",
+        "label": "Număr si data de înscriere în Registrul Special",
+        "placeholder": "123/14.09.2020"
+      },
+      "association_registry_part": {
+        "required": "Partea din Registrul Special este obligatorie",
+        "max": "Partea din Registrul Special poate avea maxim 10 de caractere",
+        "helper": "Partea care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial, după număr, și dată. A corespunde asociațiilor, B fundațiilor, C federațiilor.",
+        "label": "Partea",
+        "placeholder": "A"
+      },
+      "association_registry_section": {
+        "required": "Secțiunea din Registrul Special este obligatorie",
+        "max": "Secțiunea din Registrul Special poate avea maxim 10 de caractere",
+        "helper": "Secțiunea care apare pe Certificatul de înscriere a persoanei juridice fără scop patrimonial, după număr, dată și parte.",
+        "label": "Secțiunea",
+        "placeholder": "I"
+      },
+      "association_registry_issuer": {
+        "required": "Emitentul Registrului Special este obligatoriu",
+        "max": "Emitentul Registrului Special poate avea maxim 100 de caractere",
+        "helper": "Selectează din lista instanțelor de judecată, instanța care a conferit organizației statutul juridic. Instanța emitentă se află în antetul Certificatului de înscriere a persoanei juridice fără scop patrimonial.",
+        "label": "Instanța emitentă"
+      },
+      "national_registry_number": {
+        "required": "Numărul de înregistrare în Registrul Național este obligatoriu",
+        "max": "Numărul de înregistrare în Registrul Național poate avea maxim 30 de caractere",
+        "helper": "Acest număr se regăsește pe extrasele din Registrul Național pe care le solicitați (de exemplu pentru actualizarea anuală a datelor la bancă). Numărul poate fi regăsit și pe site-ul Ministerului Justiției - https://www.just.ro/registrul-national-ong/",
+        "label": "Numărul de înregistrare în Registrul Național, oferit de Ministerul Justiției",
+        "placeholder": "123/A/2020"
       },
       "city": {
         "required": "Localitatea este obligatorie",
@@ -368,6 +414,7 @@
         "helper": "Completează cu textul care se trimite prin SMS pentru a dona."
       },
       "address": {
+        "required": "Adresa este obligatorie",
         "max": "Adresa poate avea maxim 100 de caractere",
         "label": "Adresa sediului social",
         "helper": "Adresa sediului menționată în documentele legale ale organizației.",
@@ -424,6 +471,7 @@
       },
       "international": {
         "part_of": "Organizația ta face parte dintr-o organizație internațională?*",
+        "part_of_helper": "",
         "max": "Numele organizației poate avea maxim 100 de caractere.",
         "min": "Numele organizației poate avea minim 3 caractere.",
         "invalid": "Formatul este invalid.",
@@ -432,6 +480,7 @@
       },
       "branches": {
         "has_any": "Organizația are filiale sau sucursale?*",
+        "has_any_helper": "",
         "label": "Localități în care organizația are filiale sau sucursale*",
         "helper": "Începe să scrii numele localității în câmpul de mai sus. Poți introduce oricâte localități sunt relevante pentru activitatea organizației."
       },
@@ -440,7 +489,8 @@
         "helper": "Acreditarea furnizorilor de servicii sociale se realizează conform Legii 197/2012."
       },
       "grants": {
-        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*"
+        "label": "Oferi sau administrezi granturi pentru alte ONG-uri?*",
+        "helper": ""
       },
       "public": {
         "label": "Organizația este recunoscută ca fiind de utilitate publică?*",
@@ -522,15 +572,18 @@
       "description": "În cazul ștergerii statutului, un nou statut trebuie încărcat în maxim 30 de zile pentru a menține activ contul organizației în NGO Hub."
     },
     "delete_non_politicial_affiliation_modal": {
-      "title": "Ești sigur ca dorești ștergerea Declarației de neapartenență politică?"
+      "title": "Ești sigur ca dorești ștergerea Declarației de neapartenență politică?",
+      "description": ""
     },
     "delete_balance_sheet_modal": {
-      "title": "Ești sigur ca dorești ștergerea Bilanțului contabil?"
+      "title": "Ești sigur ca dorești ștergerea Bilanțului contabil?",
+      "description": ""
     },
     "header": {
       "name": "Nume și prenume",
       "email": "E-mail",
-      "phone": "Telefon"
+      "phone": "Telefon",
+      "role": "Rol"
     },
     "legal_config": {
       "name": {
@@ -552,6 +605,10 @@
         "minim": "Numărul de telefon al reprezentantului legal nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul reprezentantului legal nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "director_config": {
@@ -574,6 +631,10 @@
         "minim": "Numărul de telefon al membrului Consiliului Director nu poate avea mai puțin de 10 caractere.",
         "invalid": "Numărul de telefon are un format invalid.",
         "label": "Telefon"
+      },
+      "role": {
+        "maxim": "Rolul membrului Consiliului Director nu poate avea mai mult de 50 de caractere.",
+        "label": "Rol"
       }
     },
     "other_config": {
@@ -995,6 +1056,7 @@
       },
       "type": {
         "label": "Tipul aplicației*",
+        "helper": "",
         "required": "Tipul aplicației este obligatoriu"
       },
       "short": {
@@ -1003,6 +1065,16 @@
         "min": "Descrierea scurtă poate avea minim 50 de caractere",
         "label": "Descriere scurtă",
         "helper": "Descrie aplicația în maxim 200 de caractere"
+      },
+      "status": {
+        "label": "Status aplicație",
+        "required": "Statusul aplicației este obligatoriu",
+        "options": {
+          "active": "Activă (aplicația poate fi adăugată de organizații în profilul lor)",
+          "disabled": "Inactivă (aplicația nu poate fi adăugată de organizații în profilul lor)"
+        },
+        "section_title": "Status aplicație",
+        "section_subtitle": "Statusul aplicației influențează disponibilitatea acesteia pentru organizații"
       },
       "description": {
         "required": "Descrierea extinsă este obligatorie",
@@ -1039,6 +1111,12 @@
         "min": "Pasul trebuie să aibă minim 2 caractere",
         "max": "Pasul trebuie să aibă maxim 100 de caractere",
         "label": "Pas"
+      },
+      "application_label": {
+        "label": "Eticheta pentru aplicație (eticheta apare în meniul Toate aplicațiile)",
+        "helper": "Adaugă o etichetă deja existentă sau creează una nouă",
+        "maxLength": "Eticheta poate avea maxim 30 de caractere",
+        "minLength": "Eticheta poate avea minimum 2 de caractere"
       }
     },
     "request_modal": {
@@ -1070,6 +1148,7 @@
     },
     "form": {
       "title": "Date generale",
+      "subtitle": "",
       "logo": "Logo aplicație",
       "upload_logo": "Încarcă logo",
       "upload_description": "Încarcă logo-ul aplicației. Dimensiune recomandată - latura mică minim 1000 px. Fișiere acceptate: jpeg, png.",
@@ -1257,7 +1336,8 @@
       },
       "financial_reports": {
         "updated": "Informațiile financiare sunt actualizate",
-        "not_updated": "Informațiile financiare nu sunt actualizate."
+        "not_updated": "Informațiile financiare nu sunt actualizate.",
+        "please_update": "Actualizeaza-ți datele pentru a putea continua sa folosesti NGO Hub."
       },
       "organization_reports": {
         "updated": "Informațiile din secțiunea “ONG-ul în numere” sunt actualizate",
@@ -1306,25 +1386,30 @@
         "max": "Denumirea nu poate avea mai mult de 50 caractere",
         "pattern": "Denumirea nu are formatul valid.",
         "label": "Denumirea serviciului*",
+        "helper": "",
         "placeholder": "Denumirea serviciului"
       },
       "location": {
         "required": "Locația este obligatorie",
         "label": "Locația unde este disponibil serviciul*",
+        "helper": "",
         "placeholder": "București"
       },
       "start_date": {
         "required": "Data început este obligatorie",
         "label": "Data început serviciu*",
+        "helper": "",
         "placeholder": "31.12.2999"
       },
       "end_date": {
         "label": "Data sfârșit serviciu*",
+        "helper": "",
         "placeholder": "31.12.2999",
         "start_date_after_end_date": "Data de sfârșit nu poate fi mai mică decât data de început"
       },
       "is_period_not_determined": {
-        "label": "Perioadă nedeterminată"
+        "label": "Perioadă nedeterminată",
+        "helper": ""
       },
       "short_description": {
         "required": "Descrierea este obligatorie",
@@ -1437,13 +1522,16 @@
       "address": "Adresa",
       "access": {
         "online": {
-          "title": "Online"
+          "title": "Online",
+          "description": ""
         },
         "email_or_phone": {
-          "title": "Prin e-mail sau telefon"
+          "title": "Prin e-mail sau telefon",
+          "description": ""
         },
         "physical": {
-          "title": "Prin prezentare la adresa"
+          "title": "Prin prezentare la adresa",
+          "description": ""
         }
       },
       "delete_modal": {
@@ -1468,6 +1556,7 @@
         "max": "Titlul nu poate avea mai mult de 50 caractere",
         "pattern": "Titlul nu are formatul valid.",
         "label": "Titlu program de practică*",
+        "helper": "",
         "placeholder": "Program de Practică"
       },
       "location": {
@@ -1487,31 +1576,37 @@
         "max": "Descrierea nu poate avea mai mult de 3000 caractere",
         "pattern": "Descrierea nu are formatul valid.",
         "label": "Descrierea programului de practică*",
+        "helper": "",
         "placeholder": "Descrierea programului de practică în maxim 3000 de caractere"
       },
       "start_date": {
         "required": "Data de început este obligatorie",
         "label": "Dată început program de practică*",
+        "helper": "",
         "placeholder": "31.12.2999"
       },
       "end_date": {
         "label": "Dată sfârșit program de practică*",
+        "helper": "",
         "placeholder": "31.12.2999",
         "start_date_after_end_date": "Data de sfârșit nu poate fi anterioară datei de început."
       },
       "is_period_not_determined": {
-        "label": "Perioada nedeterminata"
+        "label": "Perioada nedeterminata",
+        "helper": ""
       },
       "min_working_hours": {
         "required": "Câmpul este obligatoriu",
         "min": "Câmpul nu poate fi mai mic decat 0",
         "label": "Număr ore (minim)",
+        "helper": "",
         "placeholder": "0"
       },
       "max_working_hours": {
         "required": "Câmpul este obligatoriu",
         "min": "Câmpul nu poate fi mai mic decat 0",
         "label": "Număr ore (maxim)",
+        "helper": "",
         "placeholder": "0",
         "min_larger_than_max": "Numărul maxim de ore lucrate nu poate fi mai mic decat numărul minim de ore lucrate"
       },
