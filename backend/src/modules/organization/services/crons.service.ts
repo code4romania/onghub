@@ -7,7 +7,7 @@ import {
 import { OrganizationFinancialService } from './organization-financial.service';
 import { OrganizationReportService } from './organization-report.service';
 import * as Sentry from '@sentry/node';
-import { Cron, CronExpression } from '@nestjs/schedule';
+// import { Cron, CronExpression } from '@nestjs/schedule';
 import { MailService } from 'src/mail/services/mail.service';
 import { MAIL_OPTIONS } from 'src/mail/constants/template.constants';
 import { EntityManager, In, Not, getManager } from 'typeorm';
@@ -40,7 +40,7 @@ export class OrganizationCronsService {
   seconds (optional)
 */
 
-  @Cron('0 5 1 1 *') // 1st of January, 5:00 AM
+  // @Cron('0 5 1 1 *') // 1st of January, 5:00 AM
   async generateFinancialDataAndReportsForPreviousYear() {
     const thisYear = new Date().getFullYear();
     const lastYear = thisYear - 1;
@@ -103,7 +103,7 @@ export class OrganizationCronsService {
    *  On 1st Of june, we send an email to all organization which didn't fully complete their reports.
    *
    */
-  @Cron('0 12 1 6 *') // 1st of June, 12 PM server time
+  // @Cron('0 12 1 6 *') // 1st of June, 12 PM server time
   async sendEmailToRemindOrganizationProfileUpdate() {
     // 1. Get all organizations missin the completion of financial data and reports
     const organizations: { adminEmail: string }[] =
@@ -147,7 +147,7 @@ export class OrganizationCronsService {
   }
 
   // Every monday at 8:00 AM (server time) from 8th to 30th of June
-  @Cron('0 8 8-30 6 1')
+  // @Cron('0 8 8-30 6 1')
   async sendReminderForOrganizationProfileUpdate() {
     // 1. Get all organizations missin the completion of financial data and reports
     const organizations: { adminEmail: string }[] =
@@ -193,7 +193,7 @@ export class OrganizationCronsService {
   /**
    * At 07:00 (Server Time) every Monday in every month from June through December.
    */
-  @Cron('0 7 * 6-12 1')
+  // @Cron('0 7 * 6-12 1')
   async fetchANAFDataForFinancialReports() {
     try {
       await this.organizationFinancialService.refetchANAFDataForFinancialReports();
