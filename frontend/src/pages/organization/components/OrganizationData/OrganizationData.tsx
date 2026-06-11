@@ -438,9 +438,9 @@ const OrganizationData = () => {
       <CardPanel title={t('report.title')}>
         <>
           <div className="py-5">
-            <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 break-word">
+            {/* <p className="sm:text-sm lg:text-base text-xs font-normal text-gray-900 break-word">
               {t('report.data_update')}
-            </p>
+            </p> */}
           </div>
           <DataTableComponent
             columns={
