@@ -362,7 +362,7 @@
       "short": {
         "required": "Descrierea scurta este obligatorie",
         "max": "Descrierea scurtă trebuie să aibă maxim 250 de caractere",
-        "min": "Descrierea scrută trebuie să aibă minim 150 de caractere",
+        "min": "Descrierea scurtă trebuie să aibă minim 150 de caractere",
         "label": "Descrierea scurtă a organizației*",
         "helper": "Prezintă organizația în 150 - 250 de caractere. Această descriere va fi preluată împreună cu celelalte informații generale în ecosistemul NGO Hub."
       },
