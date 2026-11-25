@@ -7,16 +7,11 @@ import {
 } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { setupApp } from './app.setup';
 import { Environment } from './env.validation';
-import helmet from 'helmet';
-import * as cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { createQueueMonitoring } from 'src/libs/bull-board';
-import { flattenValidationErrors } from './common/helpers/validation-error.parser';
-import { mountOidc } from './modules/oidc/oidc.mount';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -27,46 +22,9 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   Sentry.setupNestErrorHandler(app, new BaseExceptionFilter(httpAdapter));
 
-  // Behind the ALB (maybe also CloudFront): number of proxy hops to trust for
-  // req.ip / req.ips (used by ThrottlerGuardByIP). Without it every request
-  // appears to come from the load balancer. Hop count confirmed in T0.
-  app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS ?? 1));
-
-  app.use(helmet());
-  app.use(cookieParser());
-
-  // Before any Nest middleware/router (registered at init): see oidc.mount.ts
-  mountOidc(app);
-
-  app.enableCors({
-    exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
-  });
+  setupApp(app);
 
   app.useLogger(app.get(Logger));
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-      forbidNonWhitelisted: false,
-
-      exceptionFactory: (errors) => {
-        const validationErrors = flattenValidationErrors(errors);
-
-        Sentry.captureException(
-          new Error('[ValidationPipe] Validation failed'),
-          {
-            extra: { validationErrors: validationErrors },
-          },
-        );
-
-        return new BadRequestException(flattenValidationErrors(errors));
-      },
-    }),
-  );
-
-  app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.use('/admin/queues', createQueueMonitoring(app).getRouter());
 

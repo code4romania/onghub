@@ -11,6 +11,9 @@ export class BullConfigService implements SharedBullConfigurationFactory {
 
   createSharedConfiguration(): BullModuleOptions {
     return {
+      // Unset in deployed environments (Bull's default `bull`). Tests set a
+      // per-worker prefix so they never take a dev server's jobs.
+      prefix: this.configService.get('BULL_PREFIX') || undefined,
       redis: {
         host: this.configService.get('REDIS_HOST'),
         port: +this.configService.get('REDIS_PORT'),

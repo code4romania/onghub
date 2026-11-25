@@ -77,6 +77,14 @@ class EnvironmentVariables {
   @IsNumberString()
   TRUST_PROXY_HOPS?: string;
 
+  @IsOptional()
+  @IsString()
+  BULL_PREFIX?: string;
+
+  @IsOptional()
+  @IsString()
+  TYPEORM_MIGRATIONS_RUN?: string;
+
   @IsString()
   MAIL_HOST;
   @IsNumberString()
