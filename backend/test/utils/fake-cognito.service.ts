@@ -12,7 +12,8 @@ export class FakeCognitoUserService {
 
   async createUser(...args: unknown[]): Promise<string> {
     this.record('createUser', args);
-    return `test-cognito-${++this.counter}`;
+    // Unique across runs: cognito_id is UNIQUE and test DBs persist between runs.
+    return `test-cognito-${Date.now()}-${++this.counter}`;
   }
 
   async deleteUser(...args: unknown[]): Promise<void> {

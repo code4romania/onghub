@@ -1,5 +1,6 @@
 // AppModule first: importing auth files before it trips a circular import.
 import { createTestApp, TestApp } from './utils/test-app';
+import { truncate } from './utils/test-data-source';
 import { ConfigService } from '@nestjs/config';
 import * as request from 'supertest';
 import { AuthConfigService } from 'src/common/config/auth.config';
@@ -29,6 +30,8 @@ describe('own auth disabled (no keys)', () => {
   });
 
   afterAll(() => testApp?.close());
+
+  beforeEach(() => truncate(testApp.dataSource, ['user', 'organization']));
 
   it('keeps the Cognito strategy', () => {
     const strategy = testApp.app.get(ACTIVE_JWT_STRATEGY);
