@@ -24,8 +24,15 @@ export function setupApp(app: NestExpressApplication): void {
   // Before any Nest middleware/router (registered at init): see oidc.mount.ts
   mountOidc(app);
 
+  // With CORS_ORIGINS set (own auth): only those origins, with credentials,
+  // so the SPA can send the refresh / interaction cookies. Unset: as before.
+  const origins = (process.env.CORS_ORIGINS ?? '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
   app.enableCors({
     exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
+    ...(origins.length ? { origin: origins, credentials: true } : {}),
   });
 
   app.useGlobalPipes(

@@ -33,6 +33,39 @@ export class InteractionController {
     @Inject(OIDC_ACCOUNT_SOURCE) private readonly accounts: OidcAccountSource,
   ) {}
 
+  /**
+   * Called by the NGO Hub SPA on logout (credentials: 'include'): the NGO Hub
+   * logout runs on the API host and cannot see the issuer's `_session` cookie,
+   * so this closes the browser's OIDC session too. Public and idempotent;
+   * JSON-only, so a cross-site form cannot trigger it.
+   */
+  @Public()
+  @HttpCode(204)
+  @Post('session/end')
+  async endSession(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    if (!req.is('application/json')) {
+      throw new BadRequestException('application/json required');
+    }
+    const provider = this.oidc;
+    const ctx = (provider as any).createContext(req, res);
+    const cookieOptions = {
+      signed: true,
+      httpOnly: true,
+      sameSite: 'lax' as const,
+      secure: req.secure,
+    };
+    const name = provider.cookieName('session');
+    const sessionId = ctx.cookies.get(name, cookieOptions);
+    if (sessionId) {
+      const session = await provider.Session.find(sessionId);
+      await session?.destroy();
+    }
+    ctx.cookies.set(name, null, cookieOptions);
+  }
+
   @Public()
   @Get(':uid')
   async details(

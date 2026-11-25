@@ -10,6 +10,12 @@ import { OidcAccountSource } from './oidc-account-source.interface';
 import { OIDC_ROUTES } from './oidc.constants';
 
 const MINUTE = 60;
+
+/** Minimal static page (no scripts, no external resources). */
+const page = (title: string, body: string) =>
+  `<!DOCTYPE html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title}</title>` +
+  '<style>body{font-family:system-ui,sans-serif;max-width:28rem;margin:4rem auto;padding:0 1rem}button{display:block;width:100%;margin:.5rem 0;padding:.6rem;font-size:1rem}</style>' +
+  `</head><body><h1>${title}</h1>${body}</body></html>`;
 const DAY = 24 * 60 * MINUTE;
 
 /** Scopes a client may ever get. */
@@ -69,7 +75,27 @@ export function buildOidcConfiguration(
       claimsParameter: { enabled: false },
       resourceIndicators: { enabled: false },
       userinfo: { enabled: true },
-      rpInitiatedLogout: { enabled: true },
+      rpInitiatedLogout: {
+        enabled: true,
+        // The library's pages rely on an inline script our CSP blocks, and
+        // show its own wording: a plain form with a button instead.
+        async logoutSource(ctx, form) {
+          ctx.type = 'html';
+          ctx.body = page(
+            'Deconectare',
+            `<p>Vrei să te deconectezi din NGO Hub?</p>${form}` +
+              '<button autofocus type="submit" form="op.logoutForm" value="yes" name="logout">Da, deconectează-mă</button>' +
+              '<button type="submit" form="op.logoutForm">Nu</button>',
+          );
+        },
+        async postLogoutSuccessSource(ctx) {
+          ctx.type = 'html';
+          ctx.body = page(
+            'Deconectat',
+            '<p>Te-ai deconectat din NGO Hub. Poți închide această pagină.</p>',
+          );
+        },
+      },
     },
 
     routes: OIDC_ROUTES,
