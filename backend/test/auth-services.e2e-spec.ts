@@ -269,14 +269,12 @@ describe('own auth services (O5)', () => {
 
   describe('mailer', () => {
     it('sends link and code in one email, naming the client app', async () => {
-      await testApp.app
-        .get(AuthMailerService)
-        .sendLogin({
-          to: 'k@ong.ro',
-          link: 'L'.repeat(43),
-          code: '123456',
-          clientName: 'VIC',
-        });
+      await testApp.app.get(AuthMailerService).sendLogin({
+        to: 'k@ong.ro',
+        link: 'L'.repeat(43),
+        code: '123456',
+        clientName: 'VIC',
+      });
       const email = testApp.mailbox.last('k@ong.ro');
       expect(email.context.code).toBe('123456');
       expect(email.context.cta.link).toBe(

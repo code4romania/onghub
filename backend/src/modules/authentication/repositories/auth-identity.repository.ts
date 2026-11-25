@@ -12,6 +12,9 @@ import {
   UpsertAuthIdentityResult,
 } from '../models/auth-identity.model';
 
+const UUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 @Injectable()
 export class AuthIdentityRepository {
   constructor(
@@ -26,6 +29,7 @@ export class AuthIdentityRepository {
     // TypeORM 0.3.20 drops null/undefined `where` keys, so { userId: undefined }
     // would match the first row. Refuse empty lookups outright.
     if (Object.values(options).some((value) => !value)) return null;
+    if ('id' in options && !UUID.test(options.id)) return null;
 
     if ('email' in options) {
       const entity = await this.repository(manager)
@@ -88,7 +92,7 @@ export class AuthIdentityRepository {
 
   /** Identity + its user and organization statuses, or null. */
   public async findLoginState(identityId: string): Promise<LoginState> {
-    if (!identityId) return null;
+    if (!identityId || !UUID.test(identityId)) return null;
     const row = await this.authIdentityRepository
       .createQueryBuilder('identity')
       .innerJoin('identity.user', 'user')
