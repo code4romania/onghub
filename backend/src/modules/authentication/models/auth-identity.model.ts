@@ -25,6 +25,17 @@ export type UpsertAuthIdentityResult = {
   created: boolean;
 };
 
+/** What decides whether an identity may hold a session (read live, never cached). */
+export interface LoginState {
+  identity: IAuthIdentityModel;
+  userId: number;
+  email: string;
+  userStatus: string;
+  role: string;
+  organizationId: number | null;
+  organizationStatus: string | null;
+}
+
 export type FindAuthIdentityOptions =
   | Pick<IAuthIdentityModel, 'id'>
   | Pick<IAuthIdentityModel, 'userId'>

@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { testDatabaseName } from './utils/test-data-source';
+import { generateTestAuthKeys } from './utils/auth-test-config';
 
 // Jest setupFiles for the e2e suite: runs before AppModule is imported.
 //
@@ -19,8 +20,11 @@ if (existsSync(devEnv)) {
 }
 dotenv.config({ path: join(root, '.env.test'), override: true });
 
-Object.assign(process.env, {
+const worker = process.env.JEST_WORKER_ID ?? '1';
+Object.assign(process.env, generateTestAuthKeys(), {
   DATABASE_NAME: testDatabaseName(),
+  // Rate-limit counters per worker too, so one suite's flush never clears another's.
+  REDIS_KEY_PREFIX: `test:${worker}:`,
   // Queues per Jest worker, like the databases: suites never take each other's jobs.
-  BULL_PREFIX: `${process.env.BULL_PREFIX || 'test-ngohub'}-${process.env.JEST_WORKER_ID ?? '1'}`,
+  BULL_PREFIX: `${process.env.BULL_PREFIX || 'test-ngohub'}-${worker}`,
 });

@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
-import { AuthProvider, AuthTokenType } from '../enums/auth.enums';
+import {
+  AuthProvider,
+  AuthTokenForm,
+  AuthTokenType,
+} from '../enums/auth.enums';
 import {
   CreateAuthIdentityOptions,
   FindAuthIdentityOptions,
   IAuthIdentityModel,
   UpdateAuthIdentityOptions,
+  LoginState,
   UpsertAuthIdentityResult,
 } from '../models/auth-identity.model';
 import {
@@ -66,6 +71,10 @@ export class AuthIdentityFacade {
     return this.authIdentityRepository.upsert(options, manager);
   }
 
+  public async findLoginState(identityId: string): Promise<LoginState> {
+    return this.authIdentityRepository.findLoginState(identityId);
+  }
+
   public async deleteByUserId(
     userId: number,
     manager?: EntityManager,
@@ -93,8 +102,9 @@ export class AuthIdentityFacade {
   public async findLiveToken(
     identityId: string,
     type: AuthTokenType,
+    form?: AuthTokenForm,
   ): Promise<IAuthTokenModel> {
-    return this.authTokenRepository.findLiveToken(identityId, type);
+    return this.authTokenRepository.findLiveToken(identityId, type, form);
   }
 
   public async replaceLiveTokens(

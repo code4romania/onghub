@@ -7,6 +7,7 @@ import {
   CreateAuthIdentityOptions,
   FindAuthIdentityOptions,
   IAuthIdentityModel,
+  LoginState,
   UpdateAuthIdentityOptions,
   UpsertAuthIdentityResult,
 } from '../models/auth-identity.model';
@@ -83,6 +84,39 @@ export class AuthIdentityRepository {
       manager,
     );
     return { identity, created };
+  }
+
+  /** Identity + its user and organization statuses, or null. */
+  public async findLoginState(identityId: string): Promise<LoginState> {
+    if (!identityId) return null;
+    const row = await this.authIdentityRepository
+      .createQueryBuilder('identity')
+      .innerJoin('identity.user', 'user')
+      .leftJoin('organization', 'org', 'org.id = user.organization_id')
+      .select('identity')
+      .addSelect([
+        'user.id AS user_id',
+        'user.email AS user_email',
+        'user.status AS user_status',
+        'user.role AS user_role',
+        'org.id AS org_id',
+        'org.status AS org_status',
+      ])
+      .where('identity.id = :identityId', { identityId })
+      .andWhere('user.deleted_on IS NULL')
+      .getRawAndEntities();
+    const entity = row.entities[0];
+    const raw = row.raw[0];
+    if (!entity || !raw) return null;
+    return {
+      identity: AuthIdentityTransformer.fromEntity(entity),
+      userId: raw.user_id,
+      email: raw.user_email,
+      userStatus: raw.user_status,
+      role: raw.user_role,
+      organizationId: raw.org_id ?? null,
+      organizationStatus: raw.org_status ?? null,
+    };
   }
 
   /** Hard delete: tokens, sessions and provider links cascade. */

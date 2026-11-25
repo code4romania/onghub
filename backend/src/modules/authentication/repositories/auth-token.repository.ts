@@ -8,7 +8,7 @@ import {
   Repository,
 } from 'typeorm';
 import { AuthTokenEntity } from '../entities/auth-token.entity';
-import { AuthTokenType } from '../enums/auth.enums';
+import { AuthTokenForm, AuthTokenType } from '../enums/auth.enums';
 import {
   AuthTokenTransformer,
   CreateAuthTokenOptions,
@@ -50,13 +50,20 @@ export class AuthTokenRepository {
     return this.findOne({ tokenHash });
   }
 
+  /** A login emits a link and a code together: `form` picks one of the two live rows. */
   public async findLiveToken(
     identityId: string,
     type: AuthTokenType,
+    form?: AuthTokenForm,
   ): Promise<IAuthTokenModel> {
     if (!identityId || !type) return null;
 
-    return this.findOne({ identityId, type, ...this.live() });
+    return this.findOne({
+      identityId,
+      type,
+      ...(form ? { form } : {}),
+      ...this.live(),
+    });
   }
 
   public async replaceLiveTokens(

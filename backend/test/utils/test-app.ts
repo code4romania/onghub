@@ -62,15 +62,21 @@ export async function createTestApp(
     mailbox,
     cognito,
     flushRedis: async () => {
-      const prefix = process.env.BULL_PREFIX;
-      if (!prefix?.startsWith('test-')) return; // never flush a shared Redis
+      // Only this worker's test prefixes; never a shared Redis.
+      const prefixes = [
+        process.env.BULL_PREFIX && `${process.env.BULL_PREFIX}:`,
+        process.env.REDIS_KEY_PREFIX,
+      ].filter((p) => p?.startsWith('test'));
+      if (!prefixes.length) return;
       const redis = new Redis({
         host: process.env.REDIS_HOST,
         port: +process.env.REDIS_PORT,
       });
       try {
-        const keys = await redis.keys(`${prefix}:*`);
-        if (keys.length) await redis.del(...keys);
+        for (const prefix of prefixes) {
+          const keys = await redis.keys(`${prefix}*`);
+          if (keys.length) await redis.del(...keys);
+        }
       } finally {
         redis.disconnect();
       }

@@ -85,6 +85,35 @@ class EnvironmentVariables {
   @IsString()
   TYPEORM_MIGRATIONS_RUN?: string;
 
+  // Own auth (O5). All optional until the cutover; see AuthConfigService.enabled.
+  @IsOptional()
+  @IsString()
+  JWT_PRIVATE_KEY?: string;
+  @IsOptional()
+  @IsString()
+  JWT_PUBLIC_KEY?: string;
+  @IsOptional()
+  @IsString()
+  JWT_KEY_ID?: string;
+  @IsOptional()
+  @IsNumberString()
+  JWT_ACCESS_TTL_SECONDS?: string;
+  @IsOptional()
+  @IsNumberString()
+  REFRESH_TTL_DAYS_WEB?: string;
+  @IsOptional()
+  @IsString()
+  AUTH_TOKEN_KEY?: string;
+  @IsOptional()
+  @IsString()
+  WEB_APP_URL?: string;
+  @IsOptional()
+  @IsString()
+  CORS_ORIGINS?: string;
+  @IsOptional()
+  @IsString()
+  REDIS_KEY_PREFIX?: string;
+
   @IsString()
   MAIL_HOST;
   @IsNumberString()
