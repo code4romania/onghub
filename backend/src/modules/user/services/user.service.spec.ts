@@ -19,6 +19,7 @@ const makeService = () => {
     cognitoService as any,
     {} as any,
     userOngApplicationService as any,
+    { enabled: false } as any, // UserLoginLifecycle: Cognito path
   );
   return { service, userRepository, cognitoService, userOngApplicationService };
 };

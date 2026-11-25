@@ -3,6 +3,8 @@ import { createTestApp, TestApp } from './utils/test-app';
 import { ConfigService } from '@nestjs/config';
 import * as request from 'supertest';
 import { AuthConfigService } from 'src/common/config/auth.config';
+import { UserService } from 'src/modules/user/services/user.service';
+import { OrganizationService } from 'src/modules/organization/services';
 import { ACTIVE_JWT_STRATEGY } from 'src/modules/authentication/auth.module';
 import { JwtStrategy } from 'src/modules/authentication/jwt.strategy';
 import { OwnJwtStrategy } from 'src/modules/authentication/strategies/own-jwt.strategy';
@@ -50,5 +52,30 @@ describe('own auth disabled (no keys)', () => {
 
   it('protected routes still require a (Cognito) token', async () => {
     await request(testApp.app.getHttpServer()).get('/profile').expect(401);
+  });
+
+  it('creating and restricting users still goes through Cognito', async () => {
+    jest
+      .spyOn(testApp.app.get(OrganizationService), 'findWithRelations')
+      .mockImplementation(async (id: number) => ({ id }) as any);
+    const [{ id: orgId }] = await testApp.dataSource.query(
+      `INSERT INTO organization (status) VALUES ('active') RETURNING id`,
+    );
+    const users = testApp.app.get(UserService);
+    const user = await users.createEmployee({
+      name: 'Cognito User',
+      email: `cognito-${Date.now()}@ong.ro`,
+      phone: `+4073${String(Date.now()).slice(-7)}`,
+      organizationId: orgId,
+      applicationAccess: [],
+    });
+    await users.restrictAccess([user.id]);
+
+    expect(user.cognitoId).toMatch(/^test-cognito-/);
+    expect(testApp.cognito.calls.map((c) => c.method)).toEqual([
+      'createUser',
+      'globalSignOut',
+    ]);
+    expect(testApp.mailbox.sent).toHaveLength(0); // Cognito sends its own invitation
   });
 });

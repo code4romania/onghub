@@ -13,6 +13,7 @@ import { UserApplicationService } from './services/user-application.service';
 import { SharedModule } from 'src/shared/shared.module';
 import { UserApplicationsView } from './entities/user-applications-view.entity';
 import { UserApplicationsViewRepository } from './repositories/user-applications-view.repository';
+import { OwnAuthModule } from '../authentication/own-auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserApplicationsViewRepository } from './repositories/user-applications
     TypeOrmModule.forFeature([User, UserHistory, UserApplicationsView]),
     forwardRef(() => OrganizationModule),
     ApplicationModule,
+    OwnAuthModule,
   ],
   controllers: [ProfileController, AdminUserController],
   providers: [

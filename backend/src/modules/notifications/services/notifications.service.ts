@@ -130,7 +130,7 @@ export class NotificationsService {
   @OnEvent(EVENTS.APPROVE_ORGANIZATION_REQUEST)
   async handleApproveOrganizationRequest(payload: ApproveOngRequestEvent) {
     try {
-      const { adminEmail } = payload;
+      const { adminEmail, loginUrl, code } = payload;
       const {
         template,
         subject,
@@ -141,6 +141,8 @@ export class NotificationsService {
         },
       } = MAIL_OPTIONS.ORGANIZATION_REQUEST_APPROVAL;
 
+      // Own auth: the button is the admin's first login (link valid 30 days),
+      // with the code as an alternative.
       await this.mailService.sendEmail({
         to: adminEmail,
         template,
@@ -148,8 +150,9 @@ export class NotificationsService {
         context: {
           title,
           subtitle: subtitle(),
+          ...(code ? { code } : {}),
           cta: {
-            link: link(process.env.ONGHUB_URL),
+            link: loginUrl ?? link(process.env.ONGHUB_URL),
             label,
           },
         },

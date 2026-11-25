@@ -7,6 +7,7 @@ import { AuthMailerService } from './services/auth-mailer.service';
 import { AuthRateLimitService } from './services/auth-rate-limit.service';
 import { OneTimeTokenService } from './services/one-time-token.service';
 import { SessionService } from './services/session.service';
+import { UserLoginLifecycle } from './services/user-login-lifecycle.service';
 
 /**
  * Own passwordless auth services (O5), ported from VIC 2.0 without realms.
@@ -27,6 +28,7 @@ import { SessionService } from './services/session.service';
     SessionService,
     AuthRateLimitService,
     AuthMailerService,
+    UserLoginLifecycle,
   ],
   exports: [
     AuthConfigService,
@@ -35,6 +37,7 @@ import { SessionService } from './services/session.service';
     SessionService,
     AuthRateLimitService,
     AuthMailerService,
+    UserLoginLifecycle,
   ],
 })
 export class OwnAuthModule {}
