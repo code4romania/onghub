@@ -1618,5 +1618,47 @@
       "interaction_how": "How was your interaction with this service?",
       "date_added": "Date of feedback"
     }
+  },
+  "own_login": {
+    "title": "Sign in to NGO Hub",
+    "subtitle": "No password: we email you a code and a sign-in link.",
+    "email": "Email address",
+    "send": "Send the code",
+    "code_title": "Check your email",
+    "code_sent": "We sent a 6-digit code to {{email}}, if an account exists for this address. The code is valid for 15 minutes.",
+    "code": "Code from the email",
+    "verify": "Sign in",
+    "resend": "Send again",
+    "other_email": "Use another address",
+    "or_link": "You can also use the button in the email, in this browser or on another device.",
+    "register": "Your organization has no account? Register it",
+    "invalid_email": "Enter a valid email address.",
+    "invalid_code": "The code has 6 digits.",
+    "errors": {
+      "AUTH_004": "Your account or organization is restricted.",
+      "AUTH_005": "The code or link is no longer valid. Ask for a new one.",
+      "AUTH_006": "Too many wrong attempts. Ask for a new code.",
+      "AUTH_010": "Too many requests. Try again in a minute.",
+      "generic": "Something went wrong. Try again."
+    },
+    "link": {
+      "title": "Sign in with a link",
+      "for": "You are signing in as {{email}}.",
+      "invite": "You were invited to NGO Hub. You are signing in as {{email}}.",
+      "continue": "Continue",
+      "expired": "This link is no longer valid.",
+      "resend": "Send me a new link",
+      "resent": "If the link was yours, we emailed you a new one.",
+      "checking": "Checking the link..."
+    },
+    "interaction": {
+      "title": "Continue to {{client}}",
+      "redirecting": "Taking you back to {{client}}...",
+      "login_first": "Sign in to NGO Hub to continue to {{client}}.",
+      "denied": "Your NGO Hub account cannot be used for {{client}} right now (inactive user or organization).",
+      "back": "Back to {{client}}",
+      "cancel": "Cancel",
+      "expired": "This sign-in request expired. Go back to the app and try again."
+    }
   }
 }

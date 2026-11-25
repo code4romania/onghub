@@ -1,16 +1,21 @@
 import React from 'react';
 import { signOut } from 'aws-amplify/auth';
+import { OWN_AUTH } from '../../common/auth/auth-mode';
 import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header/Header';
 import { useAuthContext } from '../../contexts/AuthContext';
 import restrictedImg from './../../assets/images/restricted.webp';
 
 const RestrictedAccount = () => {
-  const { setAuthState, restrictedReason } = useAuthContext();
+  const { setAuthState, restrictedReason, logout } = useAuthContext();
 
   const { t } = useTranslation('account');
 
   const onGoBackToSite = async () => {
+    if (OWN_AUTH) {
+      await logout();
+      return;
+    }
     await signOut();
     setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
   };

@@ -12,6 +12,14 @@ import {
 } from './common/constants/error.constants';
 import { useErrorToast } from './common/hooks/useToast';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from 'react-query';
+import { OWN_AUTH } from './common/auth/auth-mode';
+import { ensureAccessToken, logout as ownLogout } from './services/auth/OwnAuth.service';
+import useStore from './store/store';
+
+// Captured once: logout puts the store back to this, so nothing from the
+// previous user stays in memory.
+const INITIAL_STORE = useStore.getState();
 
 const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({
@@ -28,10 +36,17 @@ const AuthProvider = ({ children }: any) => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
 
   const logout: any = async () => {
     try {
-      await signOut({ global: true });
+      if (OWN_AUTH) {
+        await ownLogout();
+        useStore.setState(INITIAL_STORE, true);
+        queryClient.clear();
+      } else {
+        await signOut({ global: true });
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -40,16 +55,23 @@ const AuthProvider = ({ children }: any) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
+  /** Loads the session and profile; also called right after an own-auth login. */
+  const reloadSession = async (): Promise<void> => {
+    {
       try {
-        await getCurrentUser();
+        if (OWN_AUTH) {
+          // Silent refresh from the httpOnly cookie; no cookie = logged out.
+          if (!(await ensureAccessToken())) return;
+        } else {
+          await getCurrentUser();
+        }
         const { data: profile, error } = await refetchUserProfile();
         if (!profile) throw error;
 
         setAuthState({
-          ...authState,
           isAuthenticated: true,
+          isRestricted: false,
+          restrictedReason: '',
         });
         setRole(profile?.role as UserRole);
       } catch (error: any) {
@@ -71,11 +93,15 @@ const AuthProvider = ({ children }: any) => {
       } finally {
         setIsLoading(false);
       }
-    })();
+    }
+  };
+
+  useEffect(() => {
+    reloadSession();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...authState, role, setAuthState, logout }}>
+    <AuthContext.Provider value={{ ...authState, role, setAuthState, logout, reloadSession }}>
       {isLoading ? <Loading /> : children}
     </AuthContext.Provider>
   );

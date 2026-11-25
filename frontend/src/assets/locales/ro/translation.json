@@ -1684,5 +1684,47 @@
       "interaction_how": "Cum a fost interacțiunea ta cu acest serviciu?",
       "date_added": "Data acordării feedback-ului"
     }
+  },
+  "own_login": {
+    "title": "Intră în NGO Hub",
+    "subtitle": "Fără parolă: îți trimitem pe e-mail un cod și un link de autentificare.",
+    "email": "Adresa de e-mail",
+    "send": "Trimite codul",
+    "code_title": "Verifică-ți e-mailul",
+    "code_sent": "Am trimis un cod de 6 cifre la {{email}}, dacă există un cont cu această adresă. Codul este valabil 15 minute.",
+    "code": "Codul din e-mail",
+    "verify": "Autentifică-te",
+    "resend": "Trimite din nou",
+    "other_email": "Folosește altă adresă",
+    "or_link": "Poți folosi și butonul din e-mail, din același browser sau de pe alt dispozitiv.",
+    "register": "Organizația ta nu are cont? Înregistreaz-o",
+    "invalid_email": "Introdu o adresă de e-mail validă.",
+    "invalid_code": "Codul are 6 cifre.",
+    "errors": {
+      "AUTH_004": "Contul sau organizația ta este restricționată.",
+      "AUTH_005": "Codul sau linkul nu mai este valabil. Cere unul nou.",
+      "AUTH_006": "Prea multe încercări greșite. Cere un cod nou.",
+      "AUTH_010": "Prea multe cereri. Încearcă din nou peste un minut.",
+      "generic": "A apărut o eroare. Încearcă din nou."
+    },
+    "link": {
+      "title": "Autentificare cu link",
+      "for": "Te autentifici ca {{email}}.",
+      "invite": "Ai fost invitat în NGO Hub. Te autentifici ca {{email}}.",
+      "continue": "Continuă",
+      "expired": "Linkul nu mai este valabil.",
+      "resend": "Trimite-mi un link nou",
+      "resent": "Dacă linkul era al tău, ți-am trimis unul nou pe e-mail.",
+      "checking": "Se verifică linkul..."
+    },
+    "interaction": {
+      "title": "Continuă în {{client}}",
+      "redirecting": "Te întoarcem în {{client}}...",
+      "login_first": "Autentifică-te în NGO Hub pentru a continua în {{client}}.",
+      "denied": "Contul tău NGO Hub nu poate fi folosit pentru {{client}} acum (utilizator sau organizație inactivă).",
+      "back": "Înapoi la {{client}}",
+      "cancel": "Anulează",
+      "expired": "Cererea de autentificare a expirat. Întoarce-te în aplicație și încearcă din nou."
+    }
   }
 }

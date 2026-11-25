@@ -11,6 +11,11 @@ import CreateOrganizationUser from '../../pages/create-organziation/components/C
 import CreateOrganization from '../../pages/create-organziation/CreateOrganization';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import Login from '../../pages/login/Login';
+import OwnLogin from '../../pages/login/OwnLogin';
+import LoginLink from '../../pages/login/LoginLink';
+import Interaction from '../../pages/interaction/Interaction';
+import { OWN_AUTH } from '../auth/auth-mode';
+import { safeReturnTo } from '../auth/return-to';
 import OrganizationActivity from '../../pages/organization/components/OrganizationActivity/OrganizationActivity';
 import OrganizationData from '../../pages/organization/components/OrganizationData/OrganizationData';
 import OrganizationFinancial from '../../pages/organization/components/OrganizationFinancial/OrganizationFinancial';
@@ -62,10 +67,36 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         {/* Public URLs */}
-        <Route
-          path="/login"
-          element={!isAuthenticated ? <Login /> : <Navigate to={'/'} replace={true}></Navigate>}
-        />
+        {OWN_AUTH ? (
+          <>
+            {/* NGO Hub's own login; the former /login presentation lives on /start */}
+            <Route
+              path="/login"
+              element={
+                !isAuthenticated ? (
+                  <OwnLogin />
+                ) : (
+                  <Navigate
+                    to={safeReturnTo(new URLSearchParams(window.location.search).get('returnTo'))}
+                    replace={true}
+                  ></Navigate>
+                )
+              }
+            />
+            <Route path="/login/link" element={<LoginLink />} />
+            <Route
+              path="/start"
+              element={!isAuthenticated ? <Login /> : <Navigate to={'/'} replace={true}></Navigate>}
+            />
+            {/* "Continue with NGO Hub" from client apps (VIC) */}
+            <Route path="/interaction/:uid" element={<Interaction />} />
+          </>
+        ) : (
+          <Route
+            path="/login"
+            element={!isAuthenticated ? <Login /> : <Navigate to={'/'} replace={true}></Navigate>}
+          />
+        )}
 
         {!isAuthenticated && (
           <Route path="new" element={<CreateOrganization />}>
