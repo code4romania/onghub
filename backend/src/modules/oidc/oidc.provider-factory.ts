@@ -12,8 +12,8 @@ import { OIDC_ROUTES } from './oidc.constants';
 const MINUTE = 60;
 const DAY = 24 * 60 * MINUTE;
 
-/** Scopes a client may ever get. `organization` arrives with O12. */
-export const SUPPORTED_SCOPES = ['openid', 'email', 'profile'];
+/** Scopes a client may ever get. */
+export const SUPPORTED_SCOPES = ['openid', 'email', 'profile', 'organization'];
 
 /**
  * Library default policy + one check: the library only re-prompts login when
@@ -109,6 +109,7 @@ export function buildOidcConfiguration(
       openid: ['sub'],
       email: ['email', 'email_verified'],
       profile: ['name'],
+      organization: ['organization'],
     },
     conformIdTokenClaims: true, // ID token carries only `sub`; the rest via /oidc/me
 
@@ -144,12 +145,20 @@ export function buildOidcConfiguration(
       if (!account) return undefined;
       return {
         accountId: String(account.id),
-        async claims() {
+        // Read live, no cache. The library filters by granted scope; the
+        // organization (with a presigned logo URL) is only built when granted.
+        async claims(_use: string, scope: string) {
+          const withOrganization = scope?.split(' ').includes('organization');
+          const organization =
+            withOrganization && accounts.organizationClaim
+              ? await accounts.organizationClaim(String(account.id))
+              : undefined;
           return {
             sub: String(account.id),
             email: account.email,
             email_verified: account.emailVerified,
             name: account.name,
+            ...(organization ? { organization } : {}),
           };
         },
       };

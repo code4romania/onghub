@@ -61,7 +61,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     CivicCenterModule,
     NotificationsModule,
     OidcModule.register({
-      imports: [UserModule, AuthenticationModule],
+      imports: [UserModule, AuthenticationModule, SharedModule],
       accountSource: {
         provide: OIDC_ACCOUNT_SOURCE,
         useClass: UserAccountSource,

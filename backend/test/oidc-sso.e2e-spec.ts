@@ -43,6 +43,7 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     email: string,
     clientId = 'vic',
     redirectUri = REDIRECT,
+    scope = 'openid email profile',
   ) => {
     const agent = request.agent(testApp.app.getHttpServer());
     const verifier = b64url(randomBytes(32));
@@ -53,7 +54,7 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
         client_id: clientId,
         redirect_uri: redirectUri,
         response_type: 'code',
-        scope: 'openid email profile',
+        scope,
         state: 'st',
         nonce: 'nn',
         code_challenge: b64url(createHash('sha256').update(verifier).digest()),
@@ -117,11 +118,13 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       'oidc_client',
       'user',
       'organization',
+      'organization_general',
     ]);
     ({ clientSecret } = await testApp.app.get(OidcClientService).create({
       clientId: 'vic',
       redirectUris: [REDIRECT, 'http://localhost:5173/login/ngohub/callback'],
       firstParty: true,
+      scopes: ['openid', 'email', 'profile', 'organization'],
     }));
   });
 
@@ -190,6 +193,74 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       [String(userId)],
     );
     expect(count).toBe(0);
+  });
+
+  it('organization scope: the claim at /oidc/me, read live; absent without the scope', async () => {
+    const userId = await seedUser('org@ong.ro');
+    const [{ id: generalId }] = await ds.query(
+      `INSERT INTO organization_general (name, alias, type, email, phone, year_created, cui, contact_person, address, city_id, county_id, short_description, website)
+       VALUES ('Asociația Test', 'AT', 'association', 'contact@at.ro', '+40711111111', 2001, '12345678', '{}', 'Str. Lungă 1', 1, 53, 'Pe scurt', 'https://at.ro') RETURNING id`,
+    );
+    await ds.query(
+      `UPDATE organization SET organization_general_id = $1 WHERE id = (SELECT organization_id FROM "user" WHERE id = $2)`,
+      [generalId, userId],
+    );
+    const [{ organization_id: orgId }] = await ds.query(
+      `SELECT organization_id FROM "user" WHERE id = $1`,
+      [userId],
+    );
+
+    const userinfo = async (scope: string) => {
+      testApp.mailbox.clear();
+      await testApp.flushRedis();
+      const { agent, verifier, auth } = await authorize(
+        'org@ong.ro',
+        'vic',
+        REDIRECT,
+        scope,
+      );
+      const uid = new URL(auth.headers.location).pathname.split('/').pop();
+      const resumed = await loginAndConsent(agent, uid, 'org@ong.ro');
+      const code = new URL(resumed.headers.location).searchParams.get('code');
+      const token = await exchange(agent, code, verifier).expect(200);
+      return (accessToken = token.body.access_token) =>
+        request(testApp.app.getHttpServer())
+          .get('/oidc/me')
+          .set('Authorization', `Bearer ${accessToken}`)
+          .expect(200)
+          .then((r) => r.body);
+    };
+
+    const me = await userinfo('openid email profile organization');
+    expect((await me()).organization).toEqual({
+      id: orgId,
+      cui: '12345678',
+      name: 'Asociația Test',
+      role: 'admin',
+      email: 'contact@at.ro',
+      phone: '+40711111111',
+      address: 'Str. Lungă 1',
+      county: { id: 53, name: 'Vaslui' },
+      city: { id: 1, name: '1 Decembrie' },
+      short_description: 'Pe scurt',
+      website: 'https://at.ro',
+      logo_url: null,
+      logo_url_expires_at: null,
+    });
+
+    // Live: a change in NGO Hub shows on the next call.
+    await ds.query(
+      `UPDATE organization_general SET website = 'https://nou.at.ro' WHERE id = $1`,
+      [generalId],
+    );
+    expect((await me()).organization.website).toBe('https://nou.at.ro');
+
+    const without = await userinfo('openid email');
+    expect(await without()).toEqual({
+      sub: String(userId),
+      email: 'org@ong.ro',
+      email_verified: true,
+    });
   });
 
   it('wrong client secret is refused', async () => {
