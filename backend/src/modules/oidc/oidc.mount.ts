@@ -7,6 +7,9 @@ import {
   OIDC_ROUTE_PREFIX,
 } from './oidc.constants';
 import { OidcOptions } from './oidc.options';
+import { INTERACTION_PATH } from './oidc.constants';
+import { createOidcRateLimiter } from './oidc.rate-limit';
+import { REDIS_CLIENT } from 'src/shared/redis/redis-provider.module';
 
 const DISCOVERY_PATH = '/.well-known/openid-configuration';
 
@@ -27,6 +30,24 @@ export function mountOidc(app: INestApplication): void {
 
   const { issuerHost } = app.get<OidcOptions>(OIDC_OPTIONS);
   const callback = provider.callback();
+
+  // Rate limits ahead of the provider and the interaction endpoints (Nest's
+  // ThrottlerGuard does not run on app.use routes). Skipped when the app has
+  // no Redis client (minimal test modules).
+  let redis = null;
+  try {
+    redis = app.get(REDIS_CLIENT, { strict: false });
+  } catch {
+    redis = null;
+  }
+  if (redis) {
+    const limiter = createOidcRateLimiter(redis);
+    app.use((req: Request, res: Response, next: NextFunction) =>
+      isProviderPath(req.path) || req.path.startsWith(`${INTERACTION_PATH}/`)
+        ? limiter(req, res, next)
+        : next(),
+    );
+  }
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     if (!isProviderPath(req.path)) return next();

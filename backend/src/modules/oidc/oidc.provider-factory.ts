@@ -43,11 +43,13 @@ export function buildOidcConfiguration(
   options: OidcOptions,
   accounts: OidcAccountSource,
   policy: ReturnType<typeof buildInteractionPolicy>,
+  adapter?: Configuration['adapter'],
 ): Configuration {
   const secureCookies = options.issuer.startsWith('https://');
 
   return {
-    clients: options.clients,
+    clients: options.clients ?? [],
+    ...(adapter ? { adapter } : {}),
     jwks: options.jwks,
 
     // Our own SPA handles login. Never the library's dev screen.
@@ -186,12 +188,13 @@ export function buildOidcConfiguration(
 export function createOidcProvider(
   options: OidcOptions,
   accounts: OidcAccountSource,
+  adapter?: Configuration['adapter'],
 ): Provider {
   const { Provider, interactionPolicy } = loadOidcProvider();
   const policy = buildInteractionPolicy(interactionPolicy);
   const provider = new Provider(
     options.issuer,
-    toProviderRealm(buildOidcConfiguration(options, accounts, policy)),
+    toProviderRealm(buildOidcConfiguration(options, accounts, policy, adapter)),
   );
   // Behind ALB (+ maybe CloudFront): trust X-Forwarded-*. Hop count confirmed in T0.
   provider.proxy = true;

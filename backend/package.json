@@ -27,7 +27,8 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:show": "npm run typeorm -- migration:show",
-    "schema:sync": "npm run typeorm -- schema:sync"
+    "schema:sync": "npm run typeorm -- schema:sync",
+    "oidc:register-client": "node dist/commands/oidc-register-client.js"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.29",

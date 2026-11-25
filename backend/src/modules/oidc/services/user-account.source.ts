@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/modules/user/services/user.service';
+import { AuthIdentityFacade } from 'src/modules/authentication/services/auth-identity.facade';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import {
@@ -9,7 +10,10 @@ import {
 
 @Injectable()
 export class UserAccountSource implements OidcAccountSource {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly identities: AuthIdentityFacade,
+  ) {}
 
   async findActive(accountId: string): Promise<OidcAccount | undefined> {
     // `sub` is user.id as a decimal string. Reject anything else up front:
@@ -32,12 +36,14 @@ export class UserAccountSource implements OidcAccountSource {
       return undefined;
     }
 
+    // true only after a successful login with link or code (never inherited from Cognito).
+    const identity = await this.identities.findIdentity({ userId: user.id });
+
     return {
       id: user.id,
       email: user.email,
       name: user.name,
-      // Becomes auth_identity.email_verified_at once own auth (O4-O6) lands.
-      emailVerified: false,
+      emailVerified: !!identity?.emailVerifiedAt,
     };
   }
 }

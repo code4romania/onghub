@@ -81,6 +81,7 @@ describe('OIDC provider (e2e spike)', () => {
       imports: [
         OidcModule.register({
           accountSource: { provide: OIDC_ACCOUNT_SOURCE, useValue: accounts },
+          persistence: false,
           options: {
             issuer: ISSUER,
             interactionUrl: 'http://localhost:3000/interaction',

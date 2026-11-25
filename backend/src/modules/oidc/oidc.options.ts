@@ -10,8 +10,8 @@ export interface OidcOptions {
   issuerHost?: string;
   jwks: { keys: JWK[] };
   cookieKeys: string[];
-  /** Spike only: static clients. O10 replaces this with the oidc_client table adapter. */
-  clients: ClientMetadata[];
+  /** Static clients for tests only; real clients live in oidc_client. */
+  clients?: ClientMetadata[];
 }
 
 const isProduction = () => process.env.NODE_ENV === 'production';
@@ -72,6 +72,5 @@ export function oidcOptionsFromEnv(): OidcOptions | undefined {
     issuerHost: process.env.OIDC_ISSUER_HOST || undefined,
     jwks,
     cookieKeys,
-    clients: parseJson<ClientMetadata[]>('OIDC_STATIC_CLIENTS') ?? [],
   };
 }

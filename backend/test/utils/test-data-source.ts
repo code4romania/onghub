@@ -73,6 +73,8 @@ export async function openMigrationDataSource(): Promise<DataSource> {
     migrations: [`${__dirname}/../../src/migrations/*.ts`],
     synchronize: false,
     uuidExtension: 'pgcrypto',
+    // Never CREATE EXTENSION at boot: gen_random_uuid() is built in (Postgres >= 13).
+    installExtensions: false,
   });
   await dataSource.initialize();
   return dataSource;

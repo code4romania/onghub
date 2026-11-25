@@ -29,6 +29,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       // uuid PKs default to gen_random_uuid() (built in since Postgres 13):
       // no uuid-ossp extension needed. Auth tables are the first uuid columns.
       uuidExtension: 'pgcrypto',
+      // Never CREATE EXTENSION at boot: gen_random_uuid() is built in (Postgres >= 13).
+      installExtensions: false,
       migrationsRun: runMigrations,
       synchronize: false, // never set it to TRUE in production
       subscribers: [

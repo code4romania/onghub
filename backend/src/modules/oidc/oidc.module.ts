@@ -4,6 +4,7 @@ import {
   ModuleMetadata,
   Provider as NestProvider,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { InteractionController } from './controllers/interaction.controller';
 import {
   OIDC_ACCOUNT_SOURCE,
@@ -13,6 +14,8 @@ import {
 import { OidcOptions, oidcOptionsFromEnv } from './oidc.options';
 import { OidcAccountSource } from './oidc-account-source.interface';
 import { createOidcProvider } from './oidc.provider-factory';
+import { OidcClientService } from './services/oidc-client.service';
+import { createPgAdapter } from './services/oidc-pg.adapter';
 
 export interface OidcModuleOptions {
   imports?: ModuleMetadata['imports'];
@@ -20,17 +23,24 @@ export interface OidcModuleOptions {
   accountSource: NestProvider;
   /** Defaults to the environment. `null` disables the feature. */
   options?: OidcOptions | null;
+  /**
+   * Postgres storage and the oidc_client table (default). `false` keeps the
+   * library's in-memory store, for tests that boot without a database.
+   */
+  persistence?: boolean;
 }
 
 @Module({})
 export class OidcModule {
   static register(config: OidcModuleOptions): DynamicModule {
+    const persistence = config.persistence !== false;
     return {
       module: OidcModule,
       imports: config.imports ?? [],
       controllers: [InteractionController],
       providers: [
         config.accountSource,
+        ...(persistence ? [OidcClientService] : []),
         {
           provide: OIDC_OPTIONS,
           useFactory: () =>
@@ -40,14 +50,30 @@ export class OidcModule {
         },
         {
           provide: OIDC_PROVIDER,
-          inject: [OIDC_OPTIONS, OIDC_ACCOUNT_SOURCE],
+          inject: [
+            OIDC_OPTIONS,
+            OIDC_ACCOUNT_SOURCE,
+            { token: OidcClientService, optional: true },
+            { token: DataSource, optional: true },
+          ],
           useFactory: (
             options: OidcOptions | null,
             accounts: OidcAccountSource,
-          ) => (options ? createOidcProvider(options, accounts) : null),
+            clients?: OidcClientService,
+            dataSource?: DataSource,
+          ) =>
+            options
+              ? createOidcProvider(
+                  options,
+                  accounts,
+                  persistence && clients && dataSource
+                    ? (createPgAdapter(dataSource, clients) as any)
+                    : undefined,
+                )
+              : null,
         },
       ],
-      exports: [OIDC_PROVIDER],
+      exports: [OIDC_PROVIDER, ...(persistence ? [OidcClientService] : [])],
     };
   }
 }
