@@ -235,13 +235,18 @@ export class UserService {
     }
 
     try {
+      // Guard: TypeORM 0.3.20 drops undefined/null keys from `where`, so a
+      // missing id would match (and delete) every row.
+      if (!user?.id) {
+        throw new Error('Cannot remove a user without an id');
+      }
       // 1. Remove all associated apps with the user
-      this.userOngApplicationService.remove({
+      await this.userOngApplicationService.remove({
         where: { userId: user.id },
       });
-      // 2. Remove the user from the DB
+      // 2. Remove the user from the DB (by id: cognitoId can be null)
       await this.userRepository.remove({
-        where: { cognitoId: user.cognitoId },
+        where: { id: user.id },
       });
       // 3. Delete the user from Cognito
       await this.cognitoService.deleteUser(user.cognitoId);
@@ -312,8 +317,13 @@ export class UserService {
     return { updated, failed };
   }
 
-  async resendUserInvite(userId: number): Promise<void> {
-    const user = await this.getById(userId);
+  async resendUserInvite(
+    userId: number,
+    organizationId?: number,
+  ): Promise<void> {
+    // Admins may only resend invites inside their own organization
+    // (organizationId is undefined for super-admins).
+    const user = await this.getById(userId, organizationId);
     await this.cognitoService.resendInvite(user.email);
 
     return;

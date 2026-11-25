@@ -43,13 +43,18 @@ export class AdminUserController {
 
   @ApiBody({ type: CreateUserDto })
   @Post('')
-  async create(@Body() body: CreateUserDto) {
+  async create(@Body() body: CreateUserDto, @ExtractUser() user: User) {
     return this.userService.createEmployee({
       email: body.email,
       name: body.name,
       phone: body.phone,
       applicationAccess: body.applicationAccess,
-      organizationId: body.organizationId,
+      // An admin can only add employees to their own organization; only a
+      // super-admin may target another one.
+      organizationId:
+        user.role === Role.SUPER_ADMIN
+          ? body.organizationId
+          : user.organizationId,
     });
   }
 
@@ -108,8 +113,11 @@ export class AdminUserController {
 
   @ApiParam({ name: 'id', type: Number })
   @Patch(':id/resend-invite')
-  async resendInvite(@Param('id') id: number): Promise<void> {
-    return this.userService.resendUserInvite(id);
+  async resendInvite(
+    @Param('id') id: number,
+    @ExtractUser() user: User,
+  ): Promise<void> {
+    return this.userService.resendUserInvite(id, user.organizationId);
   }
 
   @ApiBody({ type: Number, isArray: true })
