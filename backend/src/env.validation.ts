@@ -113,6 +113,15 @@ class EnvironmentVariables {
   @IsOptional()
   @IsString()
   REDIS_KEY_PREFIX?: string;
+  @IsOptional()
+  @IsString()
+  MAIL_ALLOWLIST?: string;
+  @IsOptional()
+  @IsString()
+  AUTH_TOKEN_KEY_PREVIOUS?: string;
+  @IsOptional()
+  @IsString()
+  OIDC_ALLOW_LOCALHOST_REDIRECTS?: string;
 
   @IsString()
   MAIL_HOST;
