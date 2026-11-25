@@ -21,6 +21,9 @@ import { UserStatusGuard } from './common/guards/user-status.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { RawBodyMiddleware } from './shared/middlewares/raw-body.middleware';
 import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
+import { OidcModule } from './modules/oidc/oidc.module';
+import { UserAccountSource } from './modules/oidc/services/user-account.source';
+import { OIDC_ACCOUNT_SOURCE } from './modules/oidc/oidc.constants';
 import { PublicAPIModule } from './modules/_publicAPI/public-api.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { PracticeProgramModule } from './modules/practice-program/practice-program.module';
@@ -55,6 +58,13 @@ import { ScheduleModule } from '@nestjs/schedule';
     PracticeProgramModule,
     CivicCenterModule,
     NotificationsModule,
+    OidcModule.register({
+      imports: [UserModule],
+      accountSource: {
+        provide: OIDC_ACCOUNT_SOURCE,
+        useClass: UserAccountSource,
+      },
+    }),
 
     // Other modules
     SharedModule,

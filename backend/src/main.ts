@@ -16,6 +16,7 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 import { createQueueMonitoring } from 'src/libs/bull-board';
 import { flattenValidationErrors } from './common/helpers/validation-error.parser';
+import { mountOidc } from './modules/oidc/oidc.mount';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -33,6 +34,9 @@ async function bootstrap() {
 
   app.use(helmet());
   app.use(cookieParser());
+
+  // Before any Nest middleware/router (registered at init): see oidc.mount.ts
+  mountOidc(app);
 
   app.enableCors({
     exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
