@@ -26,6 +26,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get('DATABASE_NAME'),
       migrations: runMigrations ? ['dist/migrations/*.js'] : [],
       autoLoadEntities: true,
+      // uuid PKs default to gen_random_uuid() (built in since Postgres 13):
+      // no uuid-ossp extension needed. Auth tables are the first uuid columns.
+      uuidExtension: 'pgcrypto',
       migrationsRun: runMigrations,
       synchronize: false, // never set it to TRUE in production
       subscribers: [

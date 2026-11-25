@@ -57,8 +57,11 @@ async function ensureDatabase(
   }
 }
 
-/** Creates the worker's test database if needed and applies every migration (from src, not dist). */
-export async function migrateTestDatabase(): Promise<void> {
+/**
+ * Creates the worker's test database if needed and returns a connected
+ * DataSource that knows every migration in src (not dist). Caller destroys it.
+ */
+export async function openMigrationDataSource(): Promise<DataSource> {
   const options = testConnectionOptions();
   await ensureDatabase(options);
 
@@ -69,8 +72,15 @@ export async function migrateTestDatabase(): Promise<void> {
     entities: [`${__dirname}/../../src/**/*.entity.ts`],
     migrations: [`${__dirname}/../../src/migrations/*.ts`],
     synchronize: false,
+    uuidExtension: 'pgcrypto',
   });
   await dataSource.initialize();
+  return dataSource;
+}
+
+/** Creates the worker's test database if needed and applies every migration. */
+export async function migrateTestDatabase(): Promise<void> {
+  const dataSource = await openMigrationDataSource();
   try {
     await dataSource.runMigrations({ transaction: 'each' });
   } finally {
