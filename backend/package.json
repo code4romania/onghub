@@ -125,7 +125,7 @@
     "testEnvironment": "node"
   },
   "engines": {
-    "node": "20.11.0",
-    "npm": "10.2.4"
+    "node": ">=22.12.0",
+    "npm": ">=10"
   }
 }
