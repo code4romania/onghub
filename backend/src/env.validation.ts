@@ -69,6 +69,13 @@ class EnvironmentVariables {
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
   AWS_S3_BUCKET_NAME: string;
+  @IsOptional()
+  @IsString()
+  AWS_REGION?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  TRUST_PROXY_HOPS?: string;
 
   @IsString()
   MAIL_HOST;

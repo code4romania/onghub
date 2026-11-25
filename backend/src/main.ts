@@ -9,6 +9,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Environment } from './env.validation';
 import helmet from 'helmet';
+import * as cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { GlobalExceptionFilter } from './common/exceptions/filters/global-exception.filter';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
@@ -16,7 +18,7 @@ import { createQueueMonitoring } from 'src/libs/bull-board';
 import { flattenValidationErrors } from './common/helpers/validation-error.parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bodyParser: false,
     bufferLogs: true,
   });
@@ -24,7 +26,13 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   Sentry.setupNestErrorHandler(app, new BaseExceptionFilter(httpAdapter));
 
+  // Behind the ALB (maybe also CloudFront): number of proxy hops to trust for
+  // req.ip / req.ips (used by ThrottlerGuardByIP). Without it every request
+  // appears to come from the load balancer. Hop count confirmed in T0.
+  app.set('trust proxy', Number(process.env.TRUST_PROXY_HOPS ?? 1));
+
   app.use(helmet());
+  app.use(cookieParser());
 
   app.enableCors({
     exposedHeaders: 'content-disposition', // Allow header in the Axios Response Headers
