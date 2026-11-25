@@ -17,6 +17,8 @@ import { createOidcProvider } from './oidc.provider-factory';
 import { OidcClientService } from './services/oidc-client.service';
 import { createPgAdapter } from './services/oidc-pg.adapter';
 import { OidcCleanupService } from './services/oidc-cleanup.service';
+import { journalProviderEvents } from './oidc.events';
+import { AuthEventService } from 'src/modules/authentication/services/auth-event.service';
 
 export interface OidcModuleOptions {
   imports?: ModuleMetadata['imports'];
@@ -56,22 +58,26 @@ export class OidcModule {
             OIDC_ACCOUNT_SOURCE,
             { token: OidcClientService, optional: true },
             { token: DataSource, optional: true },
+            { token: AuthEventService, optional: true },
           ],
           useFactory: (
             options: OidcOptions | null,
             accounts: OidcAccountSource,
             clients?: OidcClientService,
             dataSource?: DataSource,
-          ) =>
-            options
-              ? createOidcProvider(
-                  options,
-                  accounts,
-                  persistence && clients && dataSource
-                    ? (createPgAdapter(dataSource, clients) as any)
-                    : undefined,
-                )
-              : null,
+            events?: AuthEventService,
+          ) => {
+            if (!options) return null;
+            const provider = createOidcProvider(
+              options,
+              accounts,
+              persistence && clients && dataSource
+                ? (createPgAdapter(dataSource, clients) as any)
+                : undefined,
+            );
+            if (events) journalProviderEvents(provider, events);
+            return provider;
+          },
         },
       ],
       exports: [OIDC_PROVIDER, ...(persistence ? [OidcClientService] : [])],

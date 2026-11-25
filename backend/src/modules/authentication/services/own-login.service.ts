@@ -10,6 +10,7 @@ import { AuthIdentityFacade } from './auth-identity.facade';
 import { AuthMailerService } from './auth-mailer.service';
 import { AuthRateLimitService } from './auth-rate-limit.service';
 import { OneTimeTokenService } from './one-time-token.service';
+import { AuthEventService, AuthEventType } from './auth-event.service';
 import {
   canHoldSession,
   SessionClient,
@@ -53,6 +54,7 @@ export class OwnLoginService {
     private readonly rateLimit: AuthRateLimitService,
     private readonly mailer: AuthMailerService,
     private readonly dataSource: DataSource,
+    private readonly events: AuthEventService,
   ) {}
 
   /**
@@ -65,6 +67,7 @@ export class OwnLoginService {
     email: string,
     browserNonce: string,
     clientName?: string,
+    ip?: string,
   ): Promise<RequestLoginResult> {
     const maskedEmail = this.tokens.maskEmail(email);
 
@@ -73,6 +76,13 @@ export class OwnLoginService {
       await this.rateLimit.assertCanIssueLogin(email);
 
       const state = await this.findOrCreateState(email);
+      // userId stays null for unknown addresses; the email is never stored.
+      await this.events.record({
+        type: AuthEventType.LOGIN_REQUESTED,
+        userId: state?.userId,
+        reason: state && !canHoldSession(state) ? 'restricted' : null,
+        ip,
+      });
       if (!canHoldSession(state)) return;
 
       const issued = await this.tokens.issueLinkAndCode({
@@ -98,12 +108,14 @@ export class OwnLoginService {
     client: SessionClient = {},
     ip?: string,
   ): Promise<SessionTokens> {
-    await this.rateLimit.assertCanVerify(ip);
-    const token = await this.tokens.peekLink(secret);
-    if (!token || !LOGIN_LINK_TYPES.includes(token.type)) {
-      throw new AuthException(AuthErrorCode.AUTH_005);
-    }
-    return this.complete(token, client);
+    return this.journal('link', ip, async () => {
+      await this.rateLimit.assertCanVerify(ip);
+      const token = await this.tokens.peekLink(secret);
+      if (!token || !LOGIN_LINK_TYPES.includes(token.type)) {
+        throw new AuthException(AuthErrorCode.AUTH_005);
+      }
+      return this.complete(token, client, 'link');
+    });
   }
 
   /** Email + the 6-digit code, from the browser that asked for it. */
@@ -114,7 +126,18 @@ export class OwnLoginService {
     client: SessionClient = {},
     ip?: string,
   ): Promise<SessionTokens> {
-    await this.rateLimit.assertCanVerify(ip);
+    return this.journal('code', ip, () =>
+      this.verifyAndComplete(email, code, browserNonce, client),
+    );
+  }
+
+  private async verifyAndComplete(
+    email: string,
+    code: string,
+    browserNonce: string,
+    client: SessionClient,
+  ): Promise<SessionTokens> {
+    await this.rateLimit.assertCanVerify(client.ip);
     const identity = await this.facade.findIdentity({ email });
     if (!identity) throw new AuthException(AuthErrorCode.AUTH_005);
 
@@ -136,7 +159,25 @@ export class OwnLoginService {
       }
       throw error;
     }
-    return this.complete(token, client);
+    return this.complete(token, client, 'code');
+  }
+
+  /** Records a failed login with its error code (never the input) and rethrows. */
+  private async journal<T>(
+    method: string,
+    ip: string,
+    fn: () => Promise<T>,
+  ): Promise<T> {
+    try {
+      return await fn();
+    } catch (error) {
+      await this.events.record({
+        type: AuthEventType.LOGIN_FAILED,
+        reason: `${method}:${error instanceof AuthException ? error.code : error?.name ?? 'error'}`,
+        ip,
+      });
+      throw error;
+    }
   }
 
   /** What the link page shows before anything is clicked. Never consumes. */
@@ -189,8 +230,14 @@ export class OwnLoginService {
     return this.sessions.rotate(refreshToken);
   }
 
-  async logout(refreshToken: string): Promise<void> {
-    await this.sessions.revokeByRefreshToken(refreshToken);
+  async logout(refreshToken: string, ip?: string): Promise<void> {
+    if (await this.sessions.revokeByRefreshToken(refreshToken)) {
+      await this.events.record({
+        type: AuthEventType.SESSION_REVOKED,
+        reason: 'logout',
+        ip,
+      });
+    }
   }
 
   /**
@@ -202,6 +249,7 @@ export class OwnLoginService {
   private async complete(
     token: IAuthTokenModel,
     client: SessionClient,
+    method: string,
   ): Promise<SessionTokens> {
     const state = await this.facade.findLoginState(token.identityId);
     if (!state) throw new AuthException(AuthErrorCode.AUTH_005);
@@ -221,7 +269,18 @@ export class OwnLoginService {
         user.status = UserStatus.ACTIVE;
         await users.save(user);
       }
-      return this.sessions.createSession(state.identity, client, manager);
+      const session = await this.sessions.createSession(
+        state.identity,
+        client,
+        manager,
+      );
+      await this.events.record({
+        type: AuthEventType.LOGIN_SUCCEEDED,
+        userId: state.userId,
+        reason: `${method}:${token.type}`,
+        ip: client.ip,
+      });
+      return session;
     });
   }
 

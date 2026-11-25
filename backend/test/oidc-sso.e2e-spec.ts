@@ -120,6 +120,7 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       'user',
       'organization',
       'organization_general',
+      'auth_event',
     ]);
     ({ clientSecret } = await testApp.app.get(OidcClientService).create({
       clientId: 'vic',
@@ -359,6 +360,58 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       .set('Origin', 'https://evil.test')
       .set('Access-Control-Request-Method', 'POST');
     expect(evil.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  it('auth_event journals logins, failures and provider events, without emails or secrets (O14)', async () => {
+    const userId = await seedUser('log@ong.ro');
+    const { agent, verifier, auth } = await authorize('log@ong.ro');
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const resumed = await loginAndConsent(agent, uid, 'log@ong.ro');
+    const code = new URL(resumed.headers.location).searchParams.get('code');
+    await exchange(agent, code, verifier).expect(200);
+    await exchange(agent, code, verifier).expect(400); // replay
+    await request(testApp.app.getHttpServer())
+      .post('/auth/login-link')
+      .set('X-Forwarded-For', ip())
+      .send({ token: 'x'.repeat(43) })
+      .expect(400);
+    await new Promise((r) => setTimeout(r, 100)); // provider events are fire-and-forget
+
+    const rows = await ds.query(
+      `SELECT type, user_id, client_id, reason FROM auth_event ORDER BY id`,
+    );
+    const types = rows.map((r) => r.type);
+    expect(types).toEqual(
+      expect.arrayContaining([
+        'login.requested',
+        'login.succeeded',
+        'oidc.interaction.ended',
+        'oidc.grant.succeeded',
+        'oidc.grant.failed',
+        'login.failed',
+      ]),
+    );
+    expect(rows.find((r) => r.type === 'login.succeeded')).toMatchObject({
+      user_id: userId,
+      reason: 'link:login',
+    });
+    expect(rows.find((r) => r.type === 'oidc.grant.succeeded')).toMatchObject({
+      user_id: userId,
+      client_id: 'vic',
+    });
+    expect(rows.find((r) => r.type === 'oidc.grant.failed')).toMatchObject({
+      client_id: 'vic',
+      reason: 'invalid_grant',
+    });
+    expect(rows.find((r) => r.type === 'login.failed')).toMatchObject({
+      user_id: null,
+      reason: 'link:AUTH_005',
+    });
+
+    const dump = JSON.stringify(await ds.query(`SELECT * FROM auth_event`));
+    expect(dump).not.toContain('@');
+    expect(dump).not.toContain(code);
+    expect(dump).not.toContain(clientSecret);
   });
 
   it('wrong client secret is refused', async () => {

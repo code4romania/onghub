@@ -12,6 +12,7 @@ import { AuthTokenRepository } from './repositories/auth-token.repository';
 import { RefreshTokenRepository } from './repositories/refresh-token.repository';
 import { AuthIdentityProviderRepository } from './repositories/auth-identity-provider.repository';
 import { AuthIdentityFacade } from './services/auth-identity.facade';
+import { AuthEventService } from './services/auth-event.service';
 
 /**
  * Persistence for own auth (O4). Other modules only use AuthIdentityFacade.
@@ -36,7 +37,8 @@ import { AuthIdentityFacade } from './services/auth-identity.facade';
     RefreshTokenRepository,
     AuthIdentityProviderRepository,
     AuthIdentityFacade,
+    AuthEventService,
   ],
-  exports: [AuthIdentityFacade, TypeOrmModule],
+  exports: [AuthIdentityFacade, AuthEventService, TypeOrmModule],
 })
 export class AuthPersistenceModule {}

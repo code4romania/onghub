@@ -11,6 +11,7 @@ import { AuthIdentityFacade } from './auth-identity.facade';
 import { AuthMailerService } from './auth-mailer.service';
 import { AuthRateLimitService } from './auth-rate-limit.service';
 import { OneTimeTokenService } from './one-time-token.service';
+import { AuthEventService, AuthEventType } from './auth-event.service';
 
 export interface IssuedInvite {
   loginUrl: string;
@@ -34,6 +35,7 @@ export class UserLoginLifecycle {
     private readonly mailer: AuthMailerService,
     private readonly rateLimit: AuthRateLimitService,
     private readonly dataSource: DataSource,
+    private readonly events: AuthEventService,
   ) {}
 
   get enabled(): boolean {
@@ -59,6 +61,11 @@ export class UserLoginLifecycle {
     if (options.sendEmail !== false) {
       await this.mailer.sendInvite(user.email, issued.link, issued.code);
     }
+    await this.events.record({
+      type: AuthEventType.INVITE_SENT,
+      userId: user.id,
+      reason: options.sendEmail === false ? 'approval-email' : 'invite-email',
+    });
     return {
       loginUrl: this.mailer.loginLinkUrl(issued.link),
       code: issued.code,
@@ -93,6 +100,9 @@ export class UserLoginLifecycle {
     await this.dataSource
       .getRepository(OidcPayloadEntity)
       .delete({ accountId: In(ids.map(String)) });
+    for (const userId of ids) {
+      await this.events.record({ type: AuthEventType.ACCESS_REVOKED, userId });
+    }
   }
 
   @OnEvent(EVENTS.RESTRICT_ORGANIZATION)

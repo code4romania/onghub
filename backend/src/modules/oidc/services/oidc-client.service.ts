@@ -10,6 +10,10 @@ import {
   sealSecret,
 } from 'src/modules/authentication/services/secret-box';
 import { SUPPORTED_SCOPES } from '../oidc.provider-factory';
+import {
+  AuthEventService,
+  AuthEventType,
+} from 'src/modules/authentication/services/auth-event.service';
 
 /** HKDF purpose for client secrets: separate from every other sealed value. */
 const SECRET_PURPOSE = 'oidc-client-secret';
@@ -34,6 +38,7 @@ export class OidcClientService {
     private readonly dataSource: DataSource,
     private readonly authConfig: AuthConfigService,
     private readonly config: ConfigService,
+    private readonly events: AuthEventService,
   ) {}
 
   /** localhost redirect URIs are honoured only when this is explicitly on (never in production). */
@@ -125,6 +130,11 @@ export class OidcClientService {
       firstParty: !!input.firstParty,
       createdById: input.createdById ?? null,
     });
+    await this.events.record({
+      type: AuthEventType.OIDC_CLIENT_CREATED,
+      clientId: input.clientId,
+      userId: input.createdById,
+    });
     return { clientId: input.clientId, clientSecret };
   }
 
@@ -143,6 +153,11 @@ export class OidcClientService {
       },
     );
     if (!result.affected) throw new BadRequestException('Unknown client');
+    await this.events.record({
+      type: AuthEventType.OIDC_CLIENT_SECRET_ROTATED,
+      clientId,
+      userId: updatedById,
+    });
     return clientSecret;
   }
 

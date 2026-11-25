@@ -5,6 +5,7 @@ import {
   HttpCode,
   Inject,
   NotFoundException,
+  Optional,
   Param,
   Post,
   Req,
@@ -20,6 +21,10 @@ import {
   OIDC_PROVIDER,
 } from '../oidc.constants';
 import { OidcAccountSource } from '../oidc-account-source.interface';
+import {
+  AuthEventService,
+  AuthEventType,
+} from 'src/modules/authentication/services/auth-event.service';
 
 /**
  * JSON endpoints the SPA calls on the issuer host while an authorization
@@ -31,6 +36,7 @@ export class InteractionController {
   constructor(
     @Inject(OIDC_PROVIDER) private readonly provider: Provider | null,
     @Inject(OIDC_ACCOUNT_SOURCE) private readonly accounts: OidcAccountSource,
+    @Optional() private readonly events?: AuthEventService,
   ) {}
 
   /**
@@ -106,6 +112,13 @@ export class InteractionController {
     // Decision 5: NGO Hub only checks user + organization ACTIVE. NGO Hub
     // shows the reason; the client only learns `access_denied`.
     if (!(await this.accounts.findActive(String(userId)))) {
+      await this.events?.record({
+        type: AuthEventType.OIDC_INTERACTION_DENIED,
+        userId,
+        clientId: String(details.params.client_id ?? ''),
+        reason: 'account_inactive',
+        ip: req.ip,
+      });
       const redirectTo = await this.oidc.interactionResult(
         req,
         res,

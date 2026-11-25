@@ -55,12 +55,13 @@ export class OwnAuthController {
   @Post('web/login/request')
   async requestLogin(
     @Body() { email }: RequestLoginDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     this.assertEnabled();
     const nonce = this.tokens.newBrowserNonce();
     setLoginNonceCookie(res, nonce);
-    return this.login.requestLogin(email, nonce);
+    return this.login.requestLogin(email, nonce, undefined, req.ip);
   }
 
   @Throttle(AUTH_THROTTLE)
@@ -145,7 +146,7 @@ export class OwnAuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     this.assertEnabled();
-    await this.login.logout(req.cookies?.[REFRESH_COOKIE]);
+    await this.login.logout(req.cookies?.[REFRESH_COOKIE], req.ip);
     clearRefreshCookie(res);
   }
 
