@@ -63,6 +63,7 @@ describe('auth:migrate (O9)', () => {
       created: 3,
       existing: 0,
       queued: 0,
+      restricted: 0,
     });
     const [{ count }] = await ds.query(
       `SELECT count(*)::int AS count FROM auth_identity`,
@@ -79,6 +80,7 @@ describe('auth:migrate (O9)', () => {
       created: 3,
       existing: 0,
       queued: 3,
+      restricted: 0,
     });
 
     const rows = await ds.query(
@@ -117,6 +119,7 @@ describe('auth:migrate (O9)', () => {
       created: 0,
       existing: 3,
       queued: 0,
+      restricted: 0,
     });
     expect(await migration.pending()).toBe(3);
   });
@@ -137,6 +140,52 @@ describe('auth:migrate (O9)', () => {
       `SELECT status FROM "user" WHERE email = 'pending@ong.ro'`,
     );
     expect(status).toBe('active');
+  });
+
+  it('restricted users, and users of restricted NGOs, get an identity but no transition email', async () => {
+    const [{ id: restrictedOrg }] = await ds.query(
+      `INSERT INTO organization (status) VALUES ('restricted') RETURNING id`,
+    );
+    const [{ id: activeOrg }] = await ds.query(
+      `SELECT organization_id AS id FROM "user" WHERE email = 'activ@ong.ro'`,
+    );
+    await ds.query(
+      `INSERT INTO "user" (name, email, phone, role, status, organization_id, cognito_id) VALUES
+       ('Restrictionat', 'restrictionat@ong.ro', '+40700000013', 'employee', 'restricted', $1, 'cog-r1'),
+       ('Din ONG restrictionat', 'ong-restrictionat@ong.ro', '+40700000014', 'admin', 'active', $2, 'cog-r2')`,
+      [activeOrg, restrictedOrg],
+    );
+
+    expect(await migration.migrate({ dryRun: true })).toEqual({
+      dryRun: true,
+      users: 5,
+      created: 5,
+      existing: 0,
+      queued: 0,
+      restricted: 2,
+    });
+    expect(await migration.migrate({ dryRun: false })).toEqual({
+      dryRun: false,
+      users: 5,
+      created: 5,
+      existing: 0,
+      queued: 3,
+      restricted: 2,
+    });
+    const [{ count }] = await ds.query(
+      `SELECT count(*)::int AS count FROM auth_identity`,
+    );
+    expect(count).toBe(5); // restored later, they log in by email as usual
+
+    // Restricted after the migration, before the release: not emailed either.
+    await ds.query(
+      `UPDATE "user" SET status = 'restricted' WHERE email = 'pending@ong.ro'`,
+    );
+    await migration.release();
+    await waitFor(() => testApp.mailbox.sent.length === 2);
+    await new Promise((r) => setTimeout(r, 300));
+    const recipients = testApp.mailbox.sent.map((m) => m.to).sort();
+    expect(recipients).toEqual(['activ@ong.ro', 'super@ngohub.ro']);
   });
 
   it('drop forgets the held emails (rollback)', async () => {

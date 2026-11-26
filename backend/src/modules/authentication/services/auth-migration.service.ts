@@ -4,6 +4,8 @@ import { Job, Queue } from 'bull';
 import { DataSource } from 'typeorm';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { User } from 'src/modules/user/entities/user.entity';
+import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { AuthTokenType } from '../enums/auth.enums';
 import { AuthIdentityFacade } from './auth-identity.facade';
 import { AuthMailerService } from './auth-mailer.service';
@@ -17,6 +19,8 @@ export interface MigrationReport {
   created: number;
   existing: number;
   queued: number;
+  /** Restricted users or users of restricted NGOs: an identity, no transition email. */
+  restricted: number;
 }
 
 interface TransitionJob {
@@ -31,8 +35,14 @@ interface TransitionJob {
  *   AdminCreateUser without proof); it is set at the first link/code login;
  * - PENDING users stay PENDING until their first login;
  * - one transition email per user is queued in a PAUSED queue and only sent
- *   after `auth:release-transition` (rate limited by the queue limiter).
+ *   after `auth:migrate -- --release` (rate limited by the queue limiter);
+ * - restricted users and users of restricted NGOs get no email (they cannot
+ *   log in); if restored, they log in by email like anyone else.
  */
+const isRestricted = (user: User): boolean =>
+  user.status === UserStatus.RESTRICTED ||
+  user.organization?.status === OrganizationStatus.RESTRICTED;
+
 @Injectable()
 export class AuthMigrationService {
   private readonly logger = new Logger(AuthMigrationService.name);
@@ -48,7 +58,14 @@ export class AuthMigrationService {
     const users = await this.dataSource
       .getRepository(User)
       .createQueryBuilder('user')
-      .select(['user.id', 'user.cognitoId'])
+      .leftJoin('user.organization', 'organization')
+      .select([
+        'user.id',
+        'user.cognitoId',
+        'user.status',
+        'organization.id',
+        'organization.status',
+      ])
       .where('user.deleted_on IS NULL')
       .orderBy('user.id')
       .getMany();
@@ -59,6 +76,7 @@ export class AuthMigrationService {
       created: 0,
       existing: 0,
       queued: 0,
+      restricted: 0,
     };
 
     if (!dryRun) {
@@ -67,6 +85,8 @@ export class AuthMigrationService {
     }
 
     for (const user of users) {
+      const restricted = isRestricted(user);
+      if (restricted) report.restricted++;
       if (dryRun) {
         const existing = await this.facade.findIdentity({ userId: user.id });
         existing ? report.existing++ : report.created++;
@@ -77,6 +97,7 @@ export class AuthMigrationService {
         legacyCognitoUsername: user.cognitoId ?? undefined,
       });
       created ? report.created++ : report.existing++;
+      if (restricted) continue;
 
       // jobId dedupes: re-running never queues a second email for a user.
       const jobId = `transition-${user.id}`;
@@ -124,13 +145,18 @@ export class AuthTransitionProcessor {
 
   @Process()
   async process(job: Job<TransitionJob>): Promise<void> {
-    const user = await this.dataSource
-      .getRepository(User)
-      .findOne({
-        where: { id: job.data.userId },
-        select: { id: true, email: true },
-      });
+    const user = await this.dataSource.getRepository(User).findOne({
+      where: { id: job.data.userId },
+      relations: { organization: true },
+      select: {
+        id: true,
+        email: true,
+        status: true,
+        organization: { id: true, status: true },
+      },
+    });
     if (!user) return; // deleted since the migration
+    if (isRestricted(user)) return; // restricted since the migration
     const identity = await this.facade.findIdentity({ userId: user.id });
     if (!identity) return;
 
