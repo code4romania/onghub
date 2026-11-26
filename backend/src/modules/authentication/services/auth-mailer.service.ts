@@ -31,9 +31,8 @@ export class AuthMailerService {
     clientName,
   }: LoginEmail): Promise<void> {
     const target = clientName ? `în ${clientName} prin NGO Hub` : 'în NGO Hub';
-    await this.mailService.sendEmail({
+    await this.send({
       to,
-      template: TEMPLATE,
       subject: `Codul tău de autentificare: ${code}`,
       context: {
         title: `Autentificare ${target}`,
@@ -52,9 +51,8 @@ export class AuthMailerService {
     link: string,
     code: string,
   ): Promise<void> {
-    await this.mailService.sendEmail({
+    await this.send({
       to,
-      template: TEMPLATE,
       subject: 'Ai fost invitat în NGO Hub',
       context: {
         title: 'Bine ai venit în NGO Hub',
@@ -73,9 +71,8 @@ export class AuthMailerService {
     link: string,
     code: string,
   ): Promise<void> {
-    await this.mailService.sendEmail({
+    await this.send({
       to,
-      template: TEMPLATE,
       subject: 'NGO Hub: autentificare nouă, fără parolă',
       context: {
         title: 'NGO Hub are o autentificare nouă',
@@ -86,5 +83,35 @@ export class AuthMailerService {
         cta: { link: this.loginLinkUrl(link), label: 'Intră în NGO Hub' },
       },
     });
+  }
+
+  /**
+   * The HTML template plus a plain-text part with the same words, code and
+   * link: readable in text-only clients and when images are blocked.
+   */
+  private async send(email: {
+    to: string;
+    subject: string;
+    context: {
+      title: string;
+      subtitle: string;
+      code: string;
+      cta: { link: string; label: string };
+    };
+  }): Promise<void> {
+    const { title, subtitle, code, cta } = email.context;
+    const text = [
+      title,
+      '',
+      subtitle,
+      '',
+      `Cod: ${code}`,
+      '',
+      `${cta.label}: ${cta.link}`,
+      '',
+      'Cu drag,',
+      'Echipa NGO Hub',
+    ].join('\n');
+    await this.mailService.sendEmail({ ...email, template: TEMPLATE, text });
   }
 }

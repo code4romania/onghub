@@ -79,6 +79,10 @@ describe('own auth endpoints (O6)', () => {
     const email = testApp.mailbox.last('ana@ong.ro');
     expect(codeFrom(email)).toMatch(/^\d{6}$/);
     expect(linkFrom(email)).toMatch(/^[A-Za-z0-9_-]{43}$/);
+    // Readable without HTML or images too: a plain-text part with the code and the link.
+    expect(email.text).toContain(codeFrom(email));
+    expect(email.text).toContain(email.context.cta.link);
+    expect(email.text).not.toMatch(/<[a-z]/i);
     expect(String(known.headers['set-cookie'])).toMatch(
       /ngohub_login_nonce=.*HttpOnly/,
     );
