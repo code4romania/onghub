@@ -19,7 +19,6 @@ import { AuthenticationModule } from './modules/authentication/auth.module';
 import { JwtAuthGuard } from './modules/authentication/jwt-auth.guard';
 import { UserStatusGuard } from './common/guards/user-status.guard';
 import { RolesGuard } from './common/guards/roles.guard';
-import { RawBodyMiddleware } from './shared/middlewares/raw-body.middleware';
 import { JsonBodyMiddleware } from './shared/middlewares/json-body.middlware';
 import { OidcModule } from './modules/oidc/oidc.module';
 import { RedisProviderModule } from './shared/redis/redis-provider.module';
@@ -96,10 +95,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-    consumer
-      .apply(RawBodyMiddleware)
-      .forRoutes('api/*')
-      .apply(JsonBodyMiddleware)
-      .forRoutes('*');
+    consumer.apply(JsonBodyMiddleware).forRoutes('*');
   }
 }

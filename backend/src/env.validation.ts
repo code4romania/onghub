@@ -5,7 +5,6 @@ import {
   validateSync,
   IsString,
   IsOptional,
-  Length,
   IsNumberString,
 } from 'class-validator';
 
@@ -142,10 +141,6 @@ class EnvironmentVariables {
 
   @IsString()
   AWS_S3_BUCKET_NAME_PUBLIC: string;
-
-  @IsString()
-  @Length(32)
-  ENCRYPTION_KEY: string;
 
   @IsString()
   ONGHUB_URL: string;
