@@ -1,6 +1,6 @@
 # O0 spike: `oidc-provider` in the CommonJS NestJS backend
 
-Status: **works**. Branch `spike/o0-oidc-provider`. Not deployable until O1 (the Docker image is still Node 16).
+Status: **works**; built out in O10–O15 on `feat/ngohub-own-auth` (26 November 2026). The spike notes below are kept as written; "Since the spike" at the end says what changed.
 
 ## Versions
 
@@ -34,10 +34,14 @@ Status: **works**. Branch `spike/o0-oidc-provider`. Not deployable until O1 (the
 - The real `AppModule` (`node dist/main`, local DB) serves discovery, `/oidc/auth` → 303 to the SPA interaction URL, existing Nest routes unaffected, and `POST /interaction/:uid/login` without a token → 401.
 - `nest build` output keeps the dynamic loader (no ESM `import` emitted).
 
-## Left for later issues
+## Since the spike (O10–O15)
 
-- O10: Postgres `oidc_payload` adapter (in-memory now, so the library warns), `oidc_client` table and `findClient` (static clients from `OIDC_STATIC_CLIENTS` now), `localhost` redirect rule, rate-limit middleware ahead of `mountOidc`, key and secret loading from Secrets Manager (ephemeral keys outside production now).
-- O11: SPA pages, consent for non-first-party clients, CORS for `/interaction/*` on the issuer host.
-- O12: `organization` scope and claim.
-- O3: test infra. These e2e tests use a minimal module with a fake session guard and fake accounts, because `AppModule` in tests needs the DB, Redis and Cognito config.
-- O1: Dockerfile/engines/workflow on Node 22.12+ (blocker for deploying any of this).
+Done: O1 (Node 22 image), O3 (e2e on a local per-worker database, `test/oidc-sso.e2e-spec.ts` runs the real `AppModule`), O10 (Postgres `oidc_payload` adapter, `oidc_client` table with sealed secrets, `oidc:register-client`, localhost redirects only with `OIDC_ALLOW_LOCALHOST_REDIRECTS=true`), O11 (SPA interaction page), O12 (`organization` scope and claim, `oidc:export-orgs`), O13 (logout, session end from NGO Hub, cleanup, CORS), O14 (`auth_event` journal), O15 (super-admin panel for an application's client, `application/:id/oidc-client`).
+
+Three more provider problems, found by running VIC's login against it in Chrome (26 November 2026), each with an e2e test:
+
+8. **`prompt=login` was not honoured.** The interaction page finished with whatever NGO Hub session the browser had. Now `GET /interaction/:uid` returns `freshLogin`, the page asks for the code, and `POST /interaction/:uid/login` refuses (403 `FRESH_LOGIN_REQUIRED`) a token issued before the interaction started.
+9. **Switching accounts lost the interaction.** When another account logs in over an existing OIDC session, the library ends the old session first and revokes its grants. The adapter's `revokeByGrantId` deleted every row with that grant id, including the paused Interaction, so the resume failed with "interaction session not found". It now keeps Interaction and Session rows.
+10. **helmet's `form-action 'self'` blocked the redirect after the library's auto-submitted pages** (Chrome applies it to redirects after a form POST), leaving a blank "Submitting Callback" page. The directive is dropped on provider responses only; the library still adds its script hashes.
+
+Still open: key and secret loading from Secrets Manager (`OIDC_JWKS`, `OIDC_COOKIE_KEYS` are required in production; outside it they are generated per boot), hop count for `TRUST_PROXY_HOPS` (T0), O16 after the production runbook.
