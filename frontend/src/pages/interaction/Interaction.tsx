@@ -50,7 +50,13 @@ const Interaction = () => {
         return;
       }
       window.location.assign(result.redirectTo);
-    } catch {
+    } catch (error: any) {
+      // prompt=login and the session predates this request: log in again
+      if (error?.response?.data?.code === 'FRESH_LOGIN_REQUIRED') {
+        finishing.current = false;
+        setState('login');
+        return;
+      }
       setState('expired');
     }
   };
@@ -59,7 +65,8 @@ const Interaction = () => {
     getInteraction(uid)
       .then((result) => {
         setDetails(result);
-        if (isAuthenticated || isRestricted) finish();
+        // prompt=login (e.g. after a logout in the client): the existing session is not enough.
+        if ((isAuthenticated || isRestricted) && !result.freshLogin) finish();
         else setState('login');
       })
       .catch(() => setState('expired'));

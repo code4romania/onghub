@@ -45,6 +45,7 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     clientId = 'vic',
     redirectUri = REDIRECT,
     scope = 'openid email profile',
+    extra: Record<string, string> = {},
   ) => {
     const agent = request.agent(testApp.app.getHttpServer());
     const verifier = b64url(randomBytes(32));
@@ -60,6 +61,7 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
         nonce: 'nn',
         code_challenge: b64url(createHash('sha256').update(verifier).digest()),
         code_challenge_method: 'S256',
+        ...extra,
       });
     return { agent, verifier, auth };
   };
@@ -174,6 +176,63 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       .get('/oidc/me')
       .set('Authorization', `Bearer ${token.body.access_token}`)
       .expect(401);
+  });
+
+  it('prompt=login: a session from before the request is refused, a fresh login finishes it', async () => {
+    await seedUser('ana@ong.ro');
+    const login = async (agent: ReturnType<typeof request.agent>) => {
+      await agent
+        .post('/auth/web/login/request')
+        .set('X-Forwarded-For', ip())
+        .send({ email: 'ana@ong.ro' })
+        .expect(200);
+      const { body } = await agent
+        .post('/auth/login-link')
+        .set('X-Forwarded-For', ip())
+        .send({ token: linkFrom(testApp.mailbox.last('ana@ong.ro')) })
+        .expect(200);
+      return body.accessToken as string;
+    };
+    const earlier = await login(request.agent(testApp.app.getHttpServer()));
+    // JWT iat is in seconds: the request must start in a later second.
+    await new Promise((resolve) => setTimeout(resolve, 1100));
+
+    const { agent, auth } = await authorize(
+      'ana@ong.ro',
+      'vic',
+      REDIRECT,
+      'openid email profile',
+      { prompt: 'login' },
+    );
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const details = await agent.get(`/interaction/${uid}`).expect(200);
+    expect(details.body.freshLogin).toBe(true);
+
+    const stale = await agent
+      .post(`/interaction/${uid}/login`)
+      .set('X-Forwarded-For', ip())
+      .set('Authorization', `Bearer ${earlier}`)
+      .expect(403);
+    expect(stale.body.code).toBe('FRESH_LOGIN_REQUIRED');
+
+    testApp.mailbox.clear();
+    await testApp.flushRedis();
+    const fresh = await login(agent);
+    const done = await agent
+      .post(`/interaction/${uid}/login`)
+      .set('X-Forwarded-For', ip())
+      .set('Authorization', `Bearer ${fresh}`)
+      .expect(200);
+    expect(done.body.redirectTo).toContain(`/oidc/auth/${uid}`);
+
+    // Without prompt=login the same earlier session is enough.
+    const plain = await authorize('ana@ong.ro');
+    const plainUid = new URL(plain.auth.headers.location).pathname
+      .split('/')
+      .pop();
+    expect(
+      (await plain.agent.get(`/interaction/${plainUid}`)).body.freshLogin,
+    ).toBe(false);
   });
 
   it('restricting the user cuts off /oidc/me at once and removes OIDC state', async () => {

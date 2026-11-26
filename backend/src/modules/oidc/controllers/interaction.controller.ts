@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  ForbiddenException,
   Get,
   HttpCode,
   Inject,
@@ -85,6 +86,9 @@ export class InteractionController {
     );
     return {
       prompt: details.prompt.name,
+      // The client asked for a fresh login (prompt=login, e.g. after a logout in the client): the
+      // NGO Hub session the browser already has is not enough, the user logs in again.
+      freshLogin: requiresFreshLogin(details),
       client: {
         name: client?.clientName ?? client?.clientId,
         logo: client?.logoUri,
@@ -107,6 +111,16 @@ export class InteractionController {
     const details = await this.load(uid, req, res);
     if (details.prompt.name !== 'login') {
       throw new BadRequestException('Unexpected prompt');
+    }
+    // prompt=login: only an NGO Hub login made after this interaction started may finish it.
+    if (
+      requiresFreshLogin(details) &&
+      bearerIssuedAt(req) < Number(details.iat ?? Infinity)
+    ) {
+      throw new ForbiddenException({
+        message: 'A fresh login is required',
+        errorCode: 'FRESH_LOGIN_REQUIRED',
+      });
     }
 
     // Decision 5: NGO Hub only checks user + organization ACTIVE. NGO Hub
@@ -176,5 +190,33 @@ export class InteractionController {
       throw new BadRequestException('Interaction mismatch');
     }
     return details;
+  }
+}
+
+/** The authorization request had prompt=login. */
+function requiresFreshLogin(details: {
+  params: Record<string, unknown>;
+}): boolean {
+  return String(details.params?.prompt ?? '')
+    .split(' ')
+    .includes('login');
+}
+
+/**
+ * `iat` (seconds) of the NGO Hub access token on this request; the guard has
+ * already verified it. 0 when it cannot be read, which never counts as fresh.
+ */
+function bearerIssuedAt(req: Request): number {
+  try {
+    const token = String(req.headers.authorization ?? '').replace(
+      /^Bearer /i,
+      '',
+    );
+    const payload = JSON.parse(
+      Buffer.from(token.split('.')[1], 'base64url').toString(),
+    );
+    return Number(payload.iat) || 0;
+  } catch {
+    return 0;
   }
 }

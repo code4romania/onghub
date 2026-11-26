@@ -67,6 +67,20 @@ describe('Interaction page', () => {
     expect(mocked.finishInteraction).toHaveBeenCalledWith('uid-1', 'tok');
   });
 
+  it('prompt=login: asks for the code login even with an NGO Hub session', async () => {
+    mocked.getInteraction.mockResolvedValue({
+      prompt: 'login',
+      freshLogin: true,
+      client: { name: 'VIC' },
+      scopes: ['openid'],
+    });
+    mocked.ensureAccessToken.mockResolvedValue('tok');
+    renderPage(true);
+
+    expect(await screen.findByLabelText('Adresa de e-mail')).toBeInTheDocument();
+    expect(mocked.finishInteraction).not.toHaveBeenCalled();
+  });
+
   it('without a session: asks for the code login, naming the client', async () => {
     renderPage(false);
     expect(

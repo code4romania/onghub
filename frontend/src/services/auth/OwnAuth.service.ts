@@ -80,6 +80,8 @@ export const logout = async (): Promise<void> => {
 
 export interface InteractionDetails {
   prompt: string;
+  /** The client asked for prompt=login: log in again even with an NGO Hub session. */
+  freshLogin?: boolean;
   client: { name: string; logo?: string };
   scopes: string[];
 }
