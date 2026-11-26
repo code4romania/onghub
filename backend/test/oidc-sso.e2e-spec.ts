@@ -235,6 +235,85 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     ).toBe(false);
   });
 
+  it("prompt=login in a browser with another account's OIDC session: the new account gets the code", async () => {
+    await seedUser('ana@ong.ro');
+    const { agent, auth } = await authorize('ana@ong.ro');
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const first = await loginAndConsent(agent, uid, 'ana@ong.ro');
+    expect(first.status).toBe(303);
+    expect(
+      new URL(first.headers.location).searchParams.get('code'),
+    ).toBeTruthy();
+
+    // Same browser (agent keeps the OIDC session cookie), another person, prompt=login.
+    const orgId = (
+      await ds.query(
+        `SELECT organization_id FROM "user" WHERE email = 'ana@ong.ro'`,
+      )
+    )[0].organization_id;
+    await ds.query(
+      `INSERT INTO "user" (name, email, phone, role, status, organization_id) VALUES ('Ion', 'ion@ong.ro', '+40700000001', 'employee', 'active', $1)`,
+      [orgId],
+    );
+    await new Promise((resolve) => setTimeout(resolve, 1100));
+    const verifier = b64url(randomBytes(32));
+    const again = await agent
+      .get('/oidc/auth')
+      .set('X-Forwarded-For', ip())
+      .query({
+        client_id: 'vic',
+        redirect_uri: REDIRECT,
+        response_type: 'code',
+        scope: 'openid email profile',
+        state: 'st2',
+        nonce: 'nn2',
+        code_challenge: b64url(createHash('sha256').update(verifier).digest()),
+        code_challenge_method: 'S256',
+        prompt: 'login',
+      });
+    expect(again.status).toBe(303);
+    const uid2 = new URL(again.headers.location).pathname.split('/').pop();
+    testApp.mailbox.clear();
+    await testApp.flushRedis();
+    const resumed = await loginAndConsent(agent, uid2, 'ion@ong.ro');
+    let step = resumed;
+    const trail: string[] = [];
+    for (
+      let i = 0;
+      i < 6 &&
+      !(step.status === 303 && step.headers.location?.startsWith(REDIRECT));
+      i++
+    ) {
+      if (step.status === 200 && /<form method="post"/.test(step.text)) {
+        const action = step.text.match(/action="([^"]+)"/)[1];
+        const fields = Object.fromEntries(
+          [...step.text.matchAll(/name="([^"]+)" value="([^"]*)"/g)].map(
+            (m) => [m[1], m[2]],
+          ),
+        );
+        trail.push(`POST ${pathOf(action)}`);
+        step = await agent
+          .post(pathOf(action))
+          .set('X-Forwarded-For', ip())
+          .type('form')
+          .send(fields);
+      } else if ([302, 303].includes(step.status)) {
+        trail.push(`GET ${pathOf(step.headers.location)}`);
+        step = await agent
+          .get(pathOf(step.headers.location))
+          .set('X-Forwarded-For', ip());
+      } else break;
+    }
+    expect(trail).toEqual([
+      'POST /oidc/session/end/confirm',
+      `GET /oidc/auth/${uid2}`,
+    ]);
+    expect(step.status).toBe(303);
+    expect(
+      new URL(step.headers.location).searchParams.get('code'),
+    ).toBeTruthy();
+  });
+
   it('restricting the user cuts off /oidc/me at once and removes OIDC state', async () => {
     const userId = await seedUser('rita@ong.ro');
     const { agent, verifier, auth } = await authorize('rita@ong.ro');

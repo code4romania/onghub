@@ -1,4 +1,4 @@
-import { DataSource, IsNull, LessThan } from 'typeorm';
+import { DataSource, In, IsNull, LessThan, Not } from 'typeorm';
 import { OidcPayloadEntity } from 'src/modules/authentication/entities/oidc-payload.entity';
 import { toProviderRealm } from '../oidc-provider.loader';
 import { OidcClientService } from './oidc-client.service';
@@ -82,9 +82,15 @@ export function createPgAdapter(
       await repo().delete({ kind: this.kind, id });
     }
 
+    // The whole grant's tokens, of every kind (a replayed code revokes the access token too), but never
+    // an Interaction or Session that only remembers the grant: ending one account's session while
+    // another account logs in (prompt=login, a shared computer) must not drop the paused interaction.
     async revokeByGrantId(grantId: string): Promise<void> {
       if (!grantId) return;
-      await repo().delete({ grantId });
+      await repo().delete({
+        grantId,
+        kind: Not(In(['Interaction', 'Session'])),
+      });
     }
 
     private async findBy(where: {
