@@ -55,10 +55,6 @@ export const USER_ERRORS = {
     message: 'User is not part of an organization',
     errorCode: 'USR_014',
   },
-  INVALID_EMAIL_COGNITO_CODE_DELIVERY: {
-    message: 'Confirmation code could not be sent. The email is invalid.',
-    errorCode: 'USR_015',
-  },
   RESEND_INVITE_NOT_PENDING: {
     message: 'The user has already logged in; no invitation to resend',
     errorCode: 'USR_016',

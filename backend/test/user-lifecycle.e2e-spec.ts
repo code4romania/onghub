@@ -74,7 +74,6 @@ describe('user lifecycle without Cognito (O7)', () => {
 
   beforeEach(async () => {
     testApp.mailbox.clear();
-    testApp.cognito.calls.length = 0;
     await testApp.flushRedis();
     await truncate(ds, [
       'auth_identity',
@@ -105,7 +104,6 @@ describe('user lifecycle without Cognito (O7)', () => {
       status: 'pending',
       cognitoId: null,
     });
-    expect(testApp.cognito.calls).toEqual([]);
 
     const invite = testApp.mailbox.last('ion@ong.ro');
     expect(invite.subject).toMatch(/invitat/);
@@ -158,7 +156,6 @@ describe('user lifecycle without Cognito (O7)', () => {
       .set(auth)
       .expect(400);
     expect(res.body.code).toBe('USR_016');
-    expect(testApp.cognito.calls).toEqual([]);
   });
 
   it('restricting a user ends their NGO Hub sessions and OIDC sessions/grants', async () => {
@@ -183,7 +180,6 @@ describe('user lifecycle without Cognito (O7)', () => {
     await emp.agent.post('/auth/web/refresh').expect(401);
     const rows = await ds.query(`SELECT id FROM oidc_payload ORDER BY id`);
     expect(rows.map((r) => r.id)).toEqual(['s2']);
-    expect(testApp.cognito.calls).toEqual([]);
   });
 
   it('removing a user removes the identity (cascade) without Cognito', async () => {
@@ -207,7 +203,6 @@ describe('user lifecycle without Cognito (O7)', () => {
       [emp.id],
     );
     expect(count).toBe(0);
-    expect(testApp.cognito.calls).toEqual([]);
   });
 
   it('restricting an organization ends the sessions of all its users', async () => {

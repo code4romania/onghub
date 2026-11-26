@@ -4,7 +4,4 @@ import { CreateApplicationDto } from './create-application.dto';
 
 export class UpdateApplicationDto extends PartialType(
   OmitType(CreateApplicationDto, ['type']),
-) {
-  @IsOptional()
-  cognitoClientId?: string;
-}
+) {}

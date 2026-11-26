@@ -9,16 +9,13 @@ import { AppModule } from 'src/app.module';
 import { setupApp } from 'src/app.setup';
 import { QUEUES } from 'src/common/constants/queues.constants';
 import { MailService } from 'src/mail/services/mail.service';
-import { CognitoUserService } from 'src/modules/user/services/cognito.service';
 import { FakeMailService } from './fake-mail.service';
-import { FakeCognitoUserService } from './fake-cognito.service';
 import { migrateTestDatabase } from './test-data-source';
 
 export interface TestApp {
   app: NestExpressApplication;
   dataSource: DataSource;
   mailbox: FakeMailService;
-  cognito: FakeCognitoUserService;
   /** Deletes this worker's Bull keys (BULL_PREFIX) from the local Redis. */
   flushRedis(): Promise<void>;
   close(): Promise<void>;
@@ -31,7 +28,7 @@ export interface TestAppOptions {
 
 /**
  * Boots the whole AppModule against the worker's local test database, with
- * mail and Cognito faked. Expects test/setup-env.ts (jest-e2e.json setupFiles).
+ * mail faked. Expects test/setup-env.ts (jest-e2e.json setupFiles).
  */
 export async function createTestApp(
   options: TestAppOptions = {},
@@ -40,12 +37,9 @@ export async function createTestApp(
   await migrateTestDatabase();
 
   const mailbox = new FakeMailService();
-  const cognito = new FakeCognitoUserService();
   let builder = Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(MailService)
-    .useValue(mailbox)
-    .overrideProvider(CognitoUserService)
-    .useValue(cognito);
+    .useValue(mailbox);
   if (options.override) builder = options.override(builder);
 
   const moduleRef = await builder.compile();
@@ -60,7 +54,6 @@ export async function createTestApp(
     app,
     dataSource: app.get(DataSource),
     mailbox,
-    cognito,
     flushRedis: async () => {
       // Only this worker's test prefixes; never a shared Redis.
       const prefixes = [

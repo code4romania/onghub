@@ -71,7 +71,6 @@ export class OwnAuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    this.assertEnabled();
     const nonce = this.tokens.newBrowserNonce();
     setLoginNonceCookie(res, nonce);
     // From a client app's login page (/interaction/:uid): the email names that app.
@@ -85,7 +84,6 @@ export class OwnAuthController {
   @Throttle(AUTH_THROTTLE)
   @Get('token/:secret')
   async tokenInfo(@Param('secret') secret: string) {
-    this.assertEnabled();
     return this.login.tokenInfo(secret);
   }
 
@@ -93,7 +91,6 @@ export class OwnAuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('token/:secret/resend')
   async resend(@Param('secret') secret: string): Promise<void> {
-    this.assertEnabled();
     await this.login.resend(secret);
   }
 
@@ -105,7 +102,6 @@ export class OwnAuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<SessionResponse> {
-    this.assertEnabled();
     return this.present(
       await this.login.loginWithLink(token, requestClient(req), req.ip),
       res,
@@ -120,7 +116,6 @@ export class OwnAuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<SessionResponse> {
-    this.assertEnabled();
     const nonce = req.cookies?.[LOGIN_NONCE_COOKIE];
     if (!nonce) throw new AuthException(AuthErrorCode.AUTH_005);
     const session = await this.login.loginWithCode(
@@ -140,7 +135,6 @@ export class OwnAuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<SessionResponse> {
-    this.assertEnabled();
     try {
       return this.present(
         await this.login.refresh(req.cookies?.[REFRESH_COOKIE]),
@@ -163,7 +157,6 @@ export class OwnAuthController {
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
-    this.assertEnabled();
     await this.login.logout(req.cookies?.[REFRESH_COOKIE], req.ip);
     clearRefreshCookie(res);
   }
@@ -178,9 +171,5 @@ export class OwnAuthController {
       );
     }
     return { accessToken: tokens.accessToken, expiresIn: tokens.expiresIn };
-  }
-
-  private assertEnabled(): void {
-    if (!this.authConfig.enabled) throw new NotFoundException();
   }
 }

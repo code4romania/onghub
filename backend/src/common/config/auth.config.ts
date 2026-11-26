@@ -15,22 +15,10 @@ const splitList = (value: string): string[] =>
     .map((item) => item.trim())
     .filter(Boolean);
 
-/**
- * Typed access to the own-auth settings (keys arrive base64 encoded on one
- * line). All of them are optional until the cutover: while they are missing,
- * nothing signs or verifies NGO Hub tokens and Cognito stays in charge.
- */
+/** Typed access to the own-auth settings (keys arrive base64 encoded on one line). */
 @Injectable()
 export class AuthConfigService implements JwtOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
-
-  get enabled(): boolean {
-    return !!(
-      this.configService.get('JWT_PRIVATE_KEY') &&
-      this.configService.get('JWT_PUBLIC_KEY') &&
-      this.configService.get('AUTH_TOKEN_KEY')
-    );
-  }
 
   get privateKey(): string {
     return decodePem(this.configService.get('JWT_PRIVATE_KEY'));

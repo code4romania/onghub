@@ -24,7 +24,6 @@ import { User } from '../entities/user.entity';
 import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
-import { CognitoUserService } from './cognito.service';
 import { UserLoginLifecycle } from 'src/modules/authentication/services/user-login-lifecycle.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
@@ -46,10 +45,8 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userApplicationsView: UserApplicationsViewRepository,
-    private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
-    // Own auth (O7): used instead of Cognito once JWT/AUTH keys are configured.
     private readonly userLogin: UserLoginLifecycle,
   ) {}
 
@@ -59,8 +56,7 @@ export class UserService {
 
   /**
    * `invite: false` when the caller sends the first-login link itself (the
-   * organization-approval email). Only meaningful with own auth; Cognito
-   * always sends its own invitation.
+   * organization-approval email).
    */
   public async createAdmin(
     createUserDto: CreateUserDto,
@@ -69,11 +65,10 @@ export class UserService {
     return this.create({ ...createUserDto, role: Role.ADMIN }, options);
   }
 
-  /** Own auth only: an invitation without its own email (null with Cognito). */
+  /** An invitation without its own email (the caller puts the link in its email). */
   public async issueFirstLogin(
     user: User,
-  ): Promise<{ loginUrl: string; code: string } | null> {
-    if (!this.userLogin.enabled) return null;
+  ): Promise<{ loginUrl: string; code: string }> {
     return this.userLogin.invite(user, { sendEmail: false });
   }
 
@@ -150,15 +145,6 @@ export class UserService {
       // 2. Check if the user exists
       const user = await this.getById(id, organizationId);
 
-      // 3. Update cognito user data (own auth keeps everything in the DB)
-      if (!this.userLogin.enabled) {
-        await this.cognitoService.updateUser(user.email, {
-          phone: user.phone,
-          name: user.name,
-          ...userData,
-        });
-      }
-
       // 3. Remove current user applications
       await this.userOngApplicationService.remove({ where: { userId: id } });
 
@@ -219,13 +205,6 @@ export class UserService {
     );
   }
 
-  findByCognitoId(cognitoId: string) {
-    return this.userRepository.get({
-      where: { cognitoId },
-      relations: ['organization'],
-    });
-  }
-
   async getInvitedUsers(
     options: Partial<BaseFilterDto>,
     organizationId: number,
@@ -246,7 +225,7 @@ export class UserService {
     return invitees.items;
   }
 
-  async remove(user: User): Promise<string> {
+  async remove(user: User): Promise<void> {
     // Prevent SuperAdmin deletion
     if (user.role === Role.SUPER_ADMIN) {
       throw new InternalServerErrorException(USER_ERRORS.REMOVE_SUPERADMIN);
@@ -262,23 +241,18 @@ export class UserService {
       await this.userOngApplicationService.remove({
         where: { userId: user.id },
       });
-      // 2. Remove the user from the DB (by id: cognitoId can be null)
+      // 2. Remove the user from the DB (by id)
       await this.userRepository.remove({
         where: { id: user.id },
       });
-      // 3. Own auth: identity, tokens and sessions cascade with the user row;
-      //    OIDC sessions/grants are removed explicitly. Otherwise Cognito.
-      if (this.userLogin.enabled) {
-        await this.userLogin.revokeAccess([user.id]);
-      } else {
-        await this.cognitoService.deleteUser(user.cognitoId);
-      }
-      return user.cognitoId;
+      // 3. Identity, tokens and sessions cascade with the user row; OIDC
+      //    sessions/grants are removed explicitly.
+      await this.userLogin.revokeAccess([user.id]);
     } catch (error) {
       this.logger.error({
         error: { error },
         ...USER_ERRORS.REMOVE,
-        cognitoId: user.cognitoId,
+        userId: user.id,
       });
       throw new InternalServerErrorException({
         ...USER_ERRORS.REMOVE,
@@ -287,7 +261,7 @@ export class UserService {
     }
   }
 
-  async removeById(id: number, organizatioinId?: number): Promise<string> {
+  async removeById(id: number, organizatioinId?: number): Promise<void> {
     // 1. Get the user by id
     const user = await this.getById(id, organizatioinId);
 
@@ -305,11 +279,7 @@ export class UserService {
           { id },
           { status: UserStatus.RESTRICTED },
         );
-        if (this.userLogin.enabled) {
-          await this.userLogin.revokeAccess([user.id]);
-        } else {
-          await this.cognitoService.globalSignOut(user.cognitoId);
-        }
+        await this.userLogin.revokeAccess([user.id]);
         updated.push(id);
       } catch (error) {
         this.logger.error({
@@ -351,17 +321,11 @@ export class UserService {
     // Admins may only resend invites inside their own organization
     // (organizationId is undefined for super-admins).
     const user = await this.getById(userId, organizationId);
-    if (this.userLogin.enabled) {
-      // Only someone who never logged in still needs an invitation.
-      if (user.status !== UserStatus.PENDING) {
-        throw new BadRequestException(USER_ERRORS.RESEND_INVITE_NOT_PENDING);
-      }
-      await this.userLogin.resendInvite(user);
-      return;
+    // Only someone who never logged in still needs an invitation.
+    if (user.status !== UserStatus.PENDING) {
+      throw new BadRequestException(USER_ERRORS.RESEND_INVITE_NOT_PENDING);
     }
-    await this.cognitoService.resendInvite(user.email);
-
-    return;
+    await this.userLogin.resendInvite(user);
   }
 
   public async getUsersForDownload(
@@ -431,21 +395,11 @@ export class UserService {
       await this.organizationService.findWithRelations(
         createUserDto.organizationId,
       );
-      // 3. Own auth: no Cognito user; the invitation is ours (link + code).
-      if (this.userLogin.enabled) {
-        const user = await this.userRepository.save({ ...createUserDto });
-        if (options.invite !== false) {
-          await this.userLogin.invite(user);
-        }
-        return user;
+      // 3. Save the user; the invitation is a link + code (30 days).
+      const user = await this.userRepository.save({ ...createUserDto });
+      if (options.invite !== false) {
+        await this.userLogin.invite(user);
       }
-      // 3. Create user in Cognito
-      const cognitoId = await this.createCognitoUser(createUserDto);
-      // 4. Create user in database
-      const user = await this.userRepository.save({
-        ...createUserDto,
-        cognitoId,
-      });
       return user;
     } catch (error: HttpException | any) {
       this.logger.error({ error: { error }, ...USER_ERRORS.CREATE });
@@ -459,8 +413,6 @@ export class UserService {
         case USER_ERRORS.ALREADY_EXISTS_EMAIL.errorCode:
         // 4. USR_013: User already exists with this phone
         case USER_ERRORS.ALREADY_EXISTS_PHONE.errorCode:
-        // 5. USR_015: Cognito could not deliver the confirmation code. Email is invalid
-        case USER_ERRORS.INVALID_EMAIL_COGNITO_CODE_DELIVERY.errorCode:
           throw new BadRequestException(err);
         // 5. USR_001: Something unexpected happened
         default: {
@@ -470,33 +422,6 @@ export class UserService {
         }
       }
     }
-  }
-
-  /**
-   * Handle possible errors from Cognito while creating a user https://github.com/code4romania/onghub/issues/358
-   * We encounter the problem where the user can insert an invalid email that passes our regex validation and Cognito's
-   * Basically a user john.doe±test1@gmail.com goes as valid, but the Code could not be delivered. So we will handle this
-   * **/
-  private async createCognitoUser(
-    createUserDto: CreateUserDto,
-  ): Promise<string> {
-    let cognitoId;
-    try {
-      cognitoId = await this.cognitoService.createUser(createUserDto);
-    } catch (err) {
-      switch (err?.name) {
-        case 'UsernameExistsException':
-          throw new BadRequestException(USER_ERRORS.ALREADY_EXISTS_EMAIL);
-        case 'CodeDeliveryFailureException':
-          throw new BadRequestException(
-            USER_ERRORS.INVALID_EMAIL_COGNITO_CODE_DELIVERY,
-          );
-        default:
-          throw err;
-      }
-    }
-
-    return cognitoId;
   }
 
   private async assignApplications(

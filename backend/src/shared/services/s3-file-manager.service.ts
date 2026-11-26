@@ -37,12 +37,8 @@ export class S3FileManagerService {
 
   constructor(private configService: ConfigService) {}
 
-  // AWS_REGION first: COGNITO_REGION goes away with Cognito (O16).
   private get region(): string {
-    return (
-      this.configService.get('AWS_REGION') ??
-      this.configService.get('COGNITO_REGION')
-    );
+    return this.configService.get('AWS_REGION');
   }
 
   public async generatePresignedURL(fileName: string): Promise<string> {

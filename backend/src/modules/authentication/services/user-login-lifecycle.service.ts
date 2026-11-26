@@ -21,8 +21,7 @@ export interface IssuedInvite {
 /**
  * The parts of the user lifecycle that used to be Cognito calls (O7):
  * invitation, re-invitation, and revoking every session when a user or an
- * organization is restricted or removed. UserService calls this when own
- * auth is enabled, and Cognito otherwise.
+ * organization is restricted or removed.
  */
 @Injectable()
 export class UserLoginLifecycle {
@@ -37,10 +36,6 @@ export class UserLoginLifecycle {
     private readonly dataSource: DataSource,
     private readonly events: AuthEventService,
   ) {}
-
-  get enabled(): boolean {
-    return this.authConfig.enabled;
-  }
 
   /**
    * Creates the user's identity and an invitation (link + code, 30 days).
@@ -107,7 +102,6 @@ export class UserLoginLifecycle {
 
   @OnEvent(EVENTS.RESTRICT_ORGANIZATION)
   async onOrganizationRestricted(event: RestrictOngEvent): Promise<void> {
-    if (!this.enabled) return;
     try {
       const users: { id: number }[] = await this.dataSource.query(
         `SELECT id FROM "user" WHERE organization_id = $1`,

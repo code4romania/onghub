@@ -10,12 +10,13 @@
  * at: check them before running.
  */
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../app.module';
 import { SuperAdminService } from '../modules/authentication/services/super-admin.service';
 import { parseArgs } from './auth-super-admin.args';
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  // Loaded here, not at the top: importing AppModule validates the environment (the unit test of parseArgs has none).
+  const { AppModule } = await import('../app.module');
   const app = await NestFactory.createApplicationContext(AppModule, {
     logger: ['error', 'warn'],
   });

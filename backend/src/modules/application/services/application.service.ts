@@ -326,12 +326,6 @@ export class ApplicationService {
     };
   }
 
-  public async findOneByCognitoId(cognitoId: string): Promise<Application> {
-    return this.applicationRepository.get({
-      where: { cognitoClientId: cognitoId },
-    });
-  }
-
   public async update(
     id: number,
     updateApplicationDto: UpdateApplicationDto,

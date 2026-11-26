@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 import { AdminUserController } from './admin-user.controller';
-import { CognitoUserService } from './services/cognito.service';
 import { OrganizationModule } from '../organization/organization.module';
 import { ApplicationModule } from '../application/application.module';
 import { UserHistory } from './entities/user-history.entity';
@@ -28,7 +27,6 @@ import { OwnAuthModule } from '../authentication/own-auth.module';
     UserRepository,
     UserApplicationsViewRepository,
     UserService,
-    CognitoUserService,
     UserApplicationService,
   ],
   exports: [UserService, UserApplicationService],

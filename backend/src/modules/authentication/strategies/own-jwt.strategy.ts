@@ -1,4 +1,8 @@
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import {
@@ -20,10 +24,8 @@ import { AccessTokenPayload } from '../services/session.service';
  * on every request and keeps the old strategy's contract: req.user is the User
  * with its organization; 403 for RESTRICTED user or organization. The
  * PENDING → ACTIVE switch moved to the login itself.
- *
- * Not @Injectable: instantiated by the factory in auth.module.ts only when own
- * auth is enabled (otherwise the Cognito JwtStrategy is registered as 'jwt').
  */
+@Injectable()
 export class OwnJwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     authConfig: AuthConfigService,

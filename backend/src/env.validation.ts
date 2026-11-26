@@ -56,21 +56,13 @@ class EnvironmentVariables {
   CACHE_TTL: number;
 
   @IsString()
-  COGNITO_USER_POOL_ID: string;
-  @IsString()
-  COGNITO_CLIENT_ID: string;
-  @IsString()
-  COGNITO_REGION: string;
-
-  @IsString()
   AWS_ACCESS_KEY_ID: string;
   @IsString()
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
   AWS_S3_BUCKET_NAME: string;
-  @IsOptional()
   @IsString()
-  AWS_REGION?: string;
+  AWS_REGION: string;
 
   @IsOptional()
   @IsNumberString()
@@ -84,13 +76,11 @@ class EnvironmentVariables {
   @IsString()
   TYPEORM_MIGRATIONS_RUN?: string;
 
-  // Own auth (O5). All optional until the cutover; see AuthConfigService.enabled.
-  @IsOptional()
+  // Own auth (O5): the only login (O16).
   @IsString()
-  JWT_PRIVATE_KEY?: string;
-  @IsOptional()
+  JWT_PRIVATE_KEY: string;
   @IsString()
-  JWT_PUBLIC_KEY?: string;
+  JWT_PUBLIC_KEY: string;
   @IsOptional()
   @IsString()
   JWT_KEY_ID?: string;
@@ -104,9 +94,8 @@ class EnvironmentVariables {
   @IsOptional()
   @IsNumberString()
   SUPER_ADMIN_SESSION_HOURS?: string;
-  @IsOptional()
   @IsString()
-  AUTH_TOKEN_KEY?: string;
+  AUTH_TOKEN_KEY: string;
   @IsOptional()
   @IsString()
   WEB_APP_URL?: string;
