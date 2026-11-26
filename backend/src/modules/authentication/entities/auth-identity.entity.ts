@@ -31,7 +31,4 @@ export class AuthIdentityEntity extends AuthTimestamps {
 
   @Column({ type: 'timestamptz', name: 'last_login_at', nullable: true })
   lastLoginAt: Date;
-
-  @Column({ type: 'text', name: 'legacy_cognito_username', nullable: true })
-  legacyCognitoUsername: string;
 }

@@ -19,7 +19,7 @@ export interface IssuedInvite {
 }
 
 /**
- * The parts of the user lifecycle that used to be Cognito calls (O7):
+ * The login side of the user lifecycle (O7):
  * invitation, re-invitation, and revoking every session when a user or an
  * organization is restricted or removed.
  */

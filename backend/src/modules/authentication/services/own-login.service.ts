@@ -301,7 +301,6 @@ export class OwnLoginService {
 
     const { identity: created } = await this.facade.upsertIdentity({
       userId: user.id,
-      legacyCognitoUsername: user.cognitoId ?? undefined,
     });
     return this.facade.findLoginState(created.id);
   }

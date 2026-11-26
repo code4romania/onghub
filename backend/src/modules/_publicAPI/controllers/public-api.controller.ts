@@ -5,8 +5,8 @@ import { Public } from 'src/common/decorators/public.decorator';
 import { MailService } from 'src/mail/services/mail.service';
 import { ContactMailDto } from '../dto/contact-mail.dto';
 
-// hasAccess (HMAC), /api/ong-user and /api/generate-keys were for Cognito-era clients and went with it
-// (O16): client apps log in with NGO Hub OIDC and read the organization from /oidc/me.
+// Client apps log in with NGO Hub OIDC and read the organization from /oidc/me (O16 removed hasAccess,
+// /api/ong-user and /api/generate-keys).
 @Controller('api')
 export class PublicAPIController {
   constructor(private readonly mailService: MailService) {}

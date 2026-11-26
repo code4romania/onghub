@@ -40,7 +40,7 @@ export class UserAccountSource implements OidcAccountSource {
       return undefined;
     }
 
-    // true only after a successful login with link or code (never inherited from Cognito).
+    // true only after a successful login with link or code.
     const identity = await this.identities.findIdentity({ userId: user.id });
 
     return {

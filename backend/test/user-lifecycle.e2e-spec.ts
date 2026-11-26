@@ -102,7 +102,6 @@ describe('user lifecycle without Cognito (O7)', () => {
     expect(created.body).toMatchObject({
       email: 'ion@ong.ro',
       status: 'pending',
-      cognitoId: null,
     });
 
     const invite = testApp.mailbox.last('ion@ong.ro');

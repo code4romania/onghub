@@ -6,8 +6,6 @@ import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 @Entity()
 export class User extends BaseEntity {
-  @Column({ type: 'varchar', name: 'cognito_id', unique: true, nullable: true })
-  cognitoId: string;
 
   @Column({ type: 'varchar', name: 'name' })
   name: string;

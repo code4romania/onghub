@@ -26,9 +26,6 @@ export class UserHistory extends BaseEntity implements HistoryEntityInterface {
    =============================================================
    */
 
-  @Column({ type: 'varchar', name: 'cognito_id', nullable: true })
-  cognitoId: string;
-
   @Column({ type: 'varchar', name: 'name' })
   name: string;
 

@@ -1,5 +1,5 @@
 /**
- * Super admins without Cognito (plan 5.5). Every change goes to auth_event.
+ * Super admins (plan 5.5). Every change goes to auth_event.
  *
  *   npm run auth:super-admin                                   list them
  *   npm run auth:super-admin -- --add <email> --name "<name>" [--phone <phone>]

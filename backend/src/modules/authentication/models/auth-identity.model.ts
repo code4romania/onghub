@@ -5,15 +5,12 @@ export interface IAuthIdentityModel {
   userId: number;
   emailVerifiedAt: Date;
   lastLoginAt: Date;
-  legacyCognitoUsername: string;
   createdOn: Date;
   updatedOn: Date;
 }
 
 export type CreateAuthIdentityOptions = Pick<IAuthIdentityModel, 'userId'> &
-  Partial<
-    Pick<IAuthIdentityModel, 'emailVerifiedAt' | 'legacyCognitoUsername'>
-  >;
+  Partial<Pick<IAuthIdentityModel, 'emailVerifiedAt'>>;
 
 export type UpdateAuthIdentityOptions = Partial<
   Pick<IAuthIdentityModel, 'emailVerifiedAt' | 'lastLoginAt'>
@@ -54,7 +51,6 @@ export class AuthIdentityTransformer {
       userId: entity.userId,
       emailVerifiedAt: entity.emailVerifiedAt,
       lastLoginAt: entity.lastLoginAt,
-      legacyCognitoUsername: entity.legacyCognitoUsername,
       createdOn: entity.createdOn,
       updatedOn: entity.updatedOn,
     };
@@ -64,7 +60,6 @@ export class AuthIdentityTransformer {
     const entity = new AuthIdentityEntity();
     entity.userId = model.userId;
     entity.emailVerifiedAt = model.emailVerifiedAt;
-    entity.legacyCognitoUsername = model.legacyCognitoUsername;
     return entity;
   }
 }

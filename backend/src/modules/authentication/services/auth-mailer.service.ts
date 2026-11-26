@@ -65,26 +65,6 @@ export class AuthMailerService {
     });
   }
 
-  /** After the migration: NGO Hub no longer uses passwords. */
-  public async sendTransition(
-    to: string,
-    link: string,
-    code: string,
-  ): Promise<void> {
-    await this.send({
-      to,
-      subject: 'NGO Hub: autentificare nouă, fără parolă',
-      context: {
-        title: 'NGO Hub are o autentificare nouă',
-        subtitle:
-          'Nu mai folosești o parolă pentru NGO Hub. De acum, la fiecare autentificare primești pe e-mail ' +
-          'un link și un cod. Folosește butonul de mai jos pentru prima autentificare (valabil 30 de zile).',
-        code,
-        cta: { link: this.loginLinkUrl(link), label: 'Intră în NGO Hub' },
-      },
-    });
-  }
-
   /**
    * The HTML template plus a plain-text part with the same words, code and
    * link: readable in text-only clients and when images are blocked.

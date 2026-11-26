@@ -63,12 +63,21 @@ describe('auth persistence (O4)', () => {
     const migrations = await openMigrationDataSource();
     const runner = migrations.createQueryRunner();
     try {
-      // Undo UserEmailLowerUnique and OwnAuthTables, then redo them.
+      // Undo DropCognitoLegacy (O16): the columns and the table come back, empty.
+      await migrations.undoLastMigration();
+      expect(await runner.hasColumn('user', 'cognito_id')).toBe(true);
+      expect(await runner.hasColumn('application', 'cognito_client_id')).toBe(
+        true,
+      );
+      expect(await runner.hasTable('public_keys')).toBe(true);
+      // Then UserEmailLowerUnique and OwnAuthTables, and redo all three.
       await migrations.undoLastMigration();
       await migrations.undoLastMigration();
       expect(await runner.hasTable('auth_identity')).toBe(false);
       await migrations.runMigrations();
       expect(await runner.hasTable('auth_identity')).toBe(true);
+      expect(await runner.hasColumn('user', 'cognito_id')).toBe(false);
+      expect(await runner.hasTable('public_keys')).toBe(false);
     } finally {
       await runner.release();
       await migrations.destroy();
@@ -78,6 +87,7 @@ describe('auth persistence (O4)', () => {
   it('the email-lower-unique migration refuses to run over case duplicates', async () => {
     const migrations = await openMigrationDataSource();
     try {
+      await migrations.undoLastMigration(); // DropCognitoLegacy
       await migrations.undoLastMigration(); // drop the index
       await createUser('dup@ong.ro');
       await createUser('DUP@ong.ro');
@@ -120,18 +130,20 @@ describe('auth persistence (O4)', () => {
 
   it('upsert is idempotent', async () => {
     const userId = await createUser('b@ong.ro');
+    const verified = new Date('2026-01-01T00:00:00Z');
     const first = await facade.upsertIdentity({
       userId,
-      legacyCognitoUsername: 'c-1',
+      emailVerifiedAt: verified,
     });
     const second = await facade.upsertIdentity({
       userId,
-      legacyCognitoUsername: 'c-2',
+      emailVerifiedAt: new Date('2026-06-01T00:00:00Z'),
     });
     expect(first.created).toBe(true);
     expect(second.created).toBe(false);
     expect(second.identity.id).toBe(first.identity.id);
-    expect(second.identity.legacyCognitoUsername).toBe('c-1');
+    // The first write wins: an upsert never overwrites an existing identity.
+    expect(second.identity.emailVerifiedAt).toEqual(verified);
   });
 
   it('a token is consumed once, attempts are capped, live tokens are replaced', async () => {

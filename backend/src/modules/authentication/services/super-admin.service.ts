@@ -14,7 +14,7 @@ export interface SuperAdminSummary {
 }
 
 /**
- * Super admins without Cognito (plan 5.5): nothing in the app creates them,
+ * Super admins (plan 5.5): nothing in the app creates them,
  * so `npm run auth:super-admin` does, through this service. A super admin is
  * a user with role super-admin and no organization, invited like anyone else
  * (link + code, 30 days). Every change is written to auth_event.

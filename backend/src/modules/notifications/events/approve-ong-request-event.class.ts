@@ -1,7 +1,6 @@
 export default class ApproveOngRequestEvent {
   /**
-   * `loginUrl`/`code`: the admin's first-login link and code, with own auth.
-   * Absent with Cognito, which sends its own invitation.
+   * `loginUrl`/`code`: the admin's first-login link and code.
    */
   constructor(
     private _adminEmail: string,
