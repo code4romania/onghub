@@ -10,6 +10,7 @@ import { OidcClientService } from 'src/modules/oidc/services/oidc-client.service
 import { UserService } from 'src/modules/user/services/user.service';
 import { OidcCleanupService } from 'src/modules/oidc/services/oidc-cleanup.service';
 import { truncate } from './utils/test-data-source';
+import { exportOrganizations } from 'src/commands/oidc-export-orgs';
 
 type Agent = ReturnType<typeof request.agent>;
 const REDIRECT = 'https://vic.test/login/ngohub/callback';
@@ -472,6 +473,35 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     expect(noSession.headers['content-security-policy']).not.toMatch(
       /form-action/,
     );
+  });
+
+  it('oidc:export-orgs lists active organizations with id, CUI, name and contacts', async () => {
+    const general = async (name: string, cui: string) =>
+      (
+        await ds.query(
+          `INSERT INTO organization_general (name, alias, type, email, phone, year_created, cui, contact_person, address, city_id, county_id)
+           VALUES ($1, $1, 'association', $2, $3, 2010, $4, '{}', 'Str. 1', 1, 53) RETURNING id`,
+          [name, `${cui}@ong.ro`, `+4070${cui}`, cui],
+        )
+      )[0].id;
+    const [active] = await ds.query(
+      `INSERT INTO organization (status, organization_general_id) VALUES ('active', $1) RETURNING id`,
+      [await general('Activa', '1111111')],
+    );
+    await ds.query(
+      `INSERT INTO organization (status, organization_general_id) VALUES ('restricted', $1)`,
+      [await general('Restrictionata', '2222222')],
+    );
+
+    expect(await exportOrganizations(ds)).toEqual([
+      {
+        id: active.id,
+        cui: '1111111',
+        name: 'Activa',
+        email: '1111111@ong.ro',
+        phone: '+40701111111',
+      },
+    ]);
   });
 
   it('cleanup removes expired OIDC rows and old ended tokens, keeps live ones', async () => {
