@@ -233,5 +233,34 @@ export function createOidcProvider(
   );
   // Behind ALB (+ maybe CloudFront): trust X-Forwarded-*. Hop count confirmed in T0.
   provider.proxy = true;
+  provider.use(withoutFormActionLimit);
   return provider;
+}
+
+/**
+ * helmet's `form-action 'self'` also limits where a form POST may be
+ * redirected (Chrome enforces it), and the library's auto-submitted forms
+ * (ending another account's session when someone else logs in, the
+ * no-session logout) are followed by redirects to the client's registered
+ * redirect URI. On the provider's own responses only, that directive goes;
+ * the rest of the policy (script hashes included) stays.
+ */
+export async function withoutFormActionLimit(
+  ctx: {
+    response: { get(name: string): string };
+    set(name: string, value: string): void;
+  },
+  next: () => Promise<unknown>,
+): Promise<void> {
+  await next();
+  const csp = ctx.response.get('Content-Security-Policy');
+  if (csp && /form-action/i.test(csp)) {
+    ctx.set(
+      'Content-Security-Policy',
+      csp
+        .split(';')
+        .filter((directive) => !/^\s*form-action\b/i.test(directive))
+        .join(';'),
+    );
+  }
 }

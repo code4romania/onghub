@@ -468,6 +468,10 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       .query({ client_id: 'vic' })
       .expect(200);
     expect(noSession.headers['content-security-policy']).toMatch(/'sha256-/);
+    // The redirect after an auto-submitted form goes to the client: no form-action limit here.
+    expect(noSession.headers['content-security-policy']).not.toMatch(
+      /form-action/,
+    );
   });
 
   it('cleanup removes expired OIDC rows and old ended tokens, keeps live ones', async () => {
