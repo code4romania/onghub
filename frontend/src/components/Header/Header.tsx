@@ -13,8 +13,6 @@ import { classNames } from '../../common/helpers/tailwind.helper';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../store/selectors';
 import { useTranslation } from 'react-i18next';
-import { signInWithRedirect } from 'aws-amplify/auth';
-import { OWN_AUTH } from '../../common/auth/auth-mode';
 // import WarningBanner from '../warning-banner/WarningBanner';
 // import { UserRole } from '../../pages/users/enums/UserRole.enum';
 // import { useOrganizationReportsStatus } from '../../services/organization/Organization.queries';
@@ -65,7 +63,7 @@ const Header = ({ openSlidingMenu, hideLogInButton }: HeaderProps) => {
                 <button
                   aria-label={t('enter')}
                   className="bg-yellow-600 sm:text-base text-sm sm:px-6 sm:py-2 px-2 py-1 shadow rounded-full text-black font-titilliumBold"
-                  onClick={() => (OWN_AUTH ? navigate('/login') : signInWithRedirect())}
+                  onClick={() => navigate('/login')}
                 >
                   {t('enter')}
                 </button>

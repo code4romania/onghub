@@ -4,20 +4,12 @@ import './App.css';
 import Router from './common/router/Router';
 import { I18nextProvider } from 'react-i18next';
 import { LocaleProvider } from './contexts/LocaleContext';
-import { Amplify } from 'aws-amplify';
-import { AMPLIFY_CONFIG } from './common/config/amplify.config';
 import { ToastContainer } from 'react-toastify';
 import i18n from './common/config/i18n';
-import { OWN_AUTH } from './common/auth/auth-mode';
 
 import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from './AuthProvider';
 import { AxiosInterceptor } from './services/API';
-
-// Configure Amplify for Login (Cognito), unless NGO Hub's own login is on
-if (!OWN_AUTH) {
-  Amplify.configure(AMPLIFY_CONFIG);
-}
 
 const queryClient = new QueryClient({
   defaultOptions: {

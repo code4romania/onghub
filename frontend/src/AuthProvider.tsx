@@ -1,5 +1,4 @@
 import React from 'react';
-import { getCurrentUser, signOut } from 'aws-amplify/auth';
 import { useState, useEffect } from 'react';
 import { AuthContext } from './contexts/AuthContext';
 import { useProfileQuery } from './services/user/User.queries';
@@ -13,7 +12,6 @@ import {
 import { useErrorToast } from './common/hooks/useToast';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
-import { OWN_AUTH } from './common/auth/auth-mode';
 import { ensureAccessToken, logout as ownLogout } from './services/auth/OwnAuth.service';
 import useStore from './store/store';
 
@@ -30,7 +28,7 @@ const AuthProvider = ({ children }: any) => {
   const [role, setRole] = useState<UserRole | null>(null);
   const { t } = useTranslation('user');
 
-  // Fetch the user after the Cognito call (enabled: false will prevent it from requesting it immediately)
+  // Fetched after the session is restored (enabled: false: not on mount)
   const { refetch: refetchUserProfile } = useProfileQuery({
     enabled: false,
   });
@@ -40,13 +38,9 @@ const AuthProvider = ({ children }: any) => {
 
   const logout: any = async () => {
     try {
-      if (OWN_AUTH) {
-        await ownLogout();
-        useStore.setState(INITIAL_STORE, true);
-        queryClient.clear();
-      } else {
-        await signOut({ global: true });
-      }
+      await ownLogout();
+      useStore.setState(INITIAL_STORE, true);
+      queryClient.clear();
     } catch (err) {
       console.log(err);
     } finally {
@@ -55,16 +49,12 @@ const AuthProvider = ({ children }: any) => {
     }
   };
 
-  /** Loads the session and profile; also called right after an own-auth login. */
+  /** Loads the session and profile; also called right after a login. */
   const reloadSession = async (): Promise<void> => {
     {
       try {
-        if (OWN_AUTH) {
-          // Silent refresh from the httpOnly cookie; no cookie = logged out.
-          if (!(await ensureAccessToken())) return;
-        } else {
-          await getCurrentUser();
-        }
+        // Silent refresh from the httpOnly cookie; no cookie = logged out.
+        if (!(await ensureAccessToken())) return;
         const { data: profile, error } = await refetchUserProfile();
         if (!profile) throw error;
 

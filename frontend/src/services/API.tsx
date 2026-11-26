@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import axios from 'axios';
-import { fetchAuthSession, getCurrentUser, signOut } from 'aws-amplify/auth';
 import { useAuthContext } from '../contexts/AuthContext';
 import { RESTRICTED_USER_ERRORS } from '../common/constants/error.constants';
 import i18n from '../common/config/i18n';
-import { OWN_AUTH } from '../common/auth/auth-mode';
 import { ensureAccessToken, refreshSession } from './auth/OwnAuth.service';
 
 const API = axios.create({
@@ -18,33 +16,11 @@ const API = axios.create({
 // This needs to stay outside the component because the AuthProvider is a parent of the interceptor and it's use effect and request for profile is done before the interceptors
 // and the profile request needs the auth headers
 API.interceptors.request.use(async (request) => {
-  if (OWN_AUTH) {
-    // NGO Hub's own session: in-memory access token, refreshed via the httpOnly cookie.
-    const token = await ensureAccessToken();
-    if (token) {
-      request.headers.Authorization = `Bearer ${token}`;
-    }
-    return request;
+  // NGO Hub's session: in-memory access token, refreshed via the httpOnly cookie.
+  const token = await ensureAccessToken();
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
   }
-
-  // add auth header with jwt if account is logged in and request is to the api url
-  try {
-    const user = await getCurrentUser();
-
-    if (!request.headers) {
-      (request.headers as any) = {};
-    }
-
-    const session = await fetchAuthSession();
-    if (session) {
-      request.headers.Authorization = `Bearer ${session.tokens?.accessToken}`;
-    }
-  } catch (err) {
-    // User not authenticated. May be a public API.
-    // Catches "The user is not authenticated".
-    return request;
-  }
-
   return request;
 });
 
@@ -64,8 +40,8 @@ const AxiosInterceptor = ({ children }: AxiosInterceptorProps) => {
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async (error: any) => {
-        // Own auth: one refresh and retry before giving up on the session.
-        if (OWN_AUTH && error.response?.status === 401 && !error.config?._retried) {
+        // One refresh and retry before giving up on the session.
+        if (error.response?.status === 401 && !error.config?._retried) {
           const token = await refreshSession();
           if (token) {
             error.config._retried = true;
@@ -76,7 +52,6 @@ const AxiosInterceptor = ({ children }: AxiosInterceptorProps) => {
 
         // Redirect to login once we have restricted access
         if (error.response?.status === 401) {
-          if (!OWN_AUTH) await signOut();
           // set initial application state
           setAuthState({ isAuthenticated: false, isRestricted: false, restrictedReason: '' });
         }

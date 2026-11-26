@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { Hub } from 'aws-amplify/utils';
+import React from 'react';
 import Header from '../../components/Header/Header';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -12,39 +11,6 @@ import {
 const Login = () => {
   const { t } = useTranslation(['login']);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const listener: any = Hub.listen('auth', ({ payload }: any) => {
-      const { event, data } = payload;
-      switch (event) {
-        case 'signInWithRedirect':
-        case 'signedIn':
-          console.log('Authenticated...', data);
-          break;
-        case 'signInWithRedirect_failure':
-        case 'signedIn_failure':
-          console.log('Error', data);
-          break;
-        case 'signUp':
-          console.log('user signed up');
-          break;
-        case 'signOut':
-          console.log('user signed out');
-          break;
-        case 'tokenRefresh':
-          console.log('token refresh succeeded');
-          break;
-        case 'tokenRefresh_failure':
-          console.log('token refresh failed');
-          break;
-        case 'configured':
-          console.log('the Auth module is configured');
-          break;
-      }
-      // unsubscribe
-      return listener;
-    });
-  }, []);
 
   const onLogin = () => {
     // make sure you are not stuck in case something happens on create organization
