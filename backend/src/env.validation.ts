@@ -101,6 +101,10 @@ class EnvironmentVariables {
   @IsOptional()
   @IsNumberString()
   REFRESH_TTL_DAYS_WEB?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  SUPER_ADMIN_SESSION_HOURS?: string;
   @IsOptional()
   @IsString()
   AUTH_TOKEN_KEY?: string;

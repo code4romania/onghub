@@ -4,6 +4,7 @@ import { createHash, randomBytes } from 'crypto';
 import { EntityManager } from 'typeorm';
 import { AuthConfigService } from 'src/common/config/auth.config';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { OrganizationStatus } from 'src/modules/organization/enums/organization-status.enum';
 import { REFRESH_REUSE_GRACE_MS } from '../auth.constants';
 import { AuthErrorCode, AuthException } from '../exceptions/auth.exception';
@@ -55,17 +56,27 @@ export class SessionService {
     return this.jwtService.sign(payload);
   }
 
+  /**
+   * Super admins (plan 5.5) get a shorter session with a fixed end
+   * (SUPER_ADMIN_SESSION_HOURS, 12 by default): refreshing never extends it.
+   */
   public async createSession(
     identity: Pick<IAuthIdentityModel, 'id'>,
     client: SessionClient = {},
     manager?: EntityManager,
+    options: { superAdmin?: boolean } = {},
   ): Promise<SessionTokens> {
     const refreshToken = this.newSecret();
     const session = await this.authIdentityFacade.createSession(
       {
         identityId: identity.id,
         tokenHash: this.hash(refreshToken),
-        expiresAt: this.refreshExpiry(),
+        expiresAt: options.superAdmin
+          ? new Date(
+              Date.now() +
+                this.authConfig.superAdminSessionHours * 60 * 60 * 1000,
+            )
+          : this.refreshExpiry(),
         userAgent: client.userAgent,
         ip: client.ip,
       },
@@ -88,13 +99,17 @@ export class SessionService {
     const session = await this.authIdentityFacade.findSessionByHash(hash);
     if (session) {
       this.assertLive(session);
-      const identity = await this.allowedIdentity(session);
+      const state = await this.allowedState(session);
+      const identity = state.identity;
       const refreshToken = this.newSecret();
       const rotated = await this.authIdentityFacade.rotateSession(
         session.id,
         hash,
         this.hash(refreshToken),
-        this.refreshExpiry(),
+        // A super admin's session keeps its fixed end; the others slide.
+        state.role === Role.SUPER_ADMIN
+          ? session.expiresAt
+          : this.refreshExpiry(),
       );
       return rotated
         ? this.tokens(identity, session.id, refreshToken)
@@ -115,7 +130,7 @@ export class SessionService {
       await this.authIdentityFacade.revokeSession(rotatedAway.id);
       throw new AuthException(AuthErrorCode.AUTH_008);
     }
-    const identity = await this.allowedIdentity(rotatedAway);
+    const { identity } = await this.allowedState(rotatedAway);
     return this.tokens(identity, rotatedAway.id);
   }
 
@@ -167,16 +182,14 @@ export class SessionService {
   }
 
   /** A session only refreshes while its user and organization are not restricted. */
-  private async allowedIdentity(
-    session: IRefreshTokenModel,
-  ): Promise<IAuthIdentityModel> {
+  private async allowedState(session: IRefreshTokenModel): Promise<LoginState> {
     const state = await this.authIdentityFacade.findLoginState(
       session.identityId,
     );
     if (!canHoldSession(state)) {
       throw new AuthException(AuthErrorCode.AUTH_008);
     }
-    return state.identity;
+    return state;
   }
 
   private refreshExpiry(): Date {

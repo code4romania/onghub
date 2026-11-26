@@ -18,6 +18,8 @@ export enum AuthEventType {
   OIDC_SESSION_ENDED = 'oidc.session.ended',
   OIDC_CLIENT_CREATED = 'oidc.client.created',
   OIDC_CLIENT_SECRET_ROTATED = 'oidc.client.secret_rotated',
+  SUPER_ADMIN_ADDED = 'super_admin.added',
+  SUPER_ADMIN_REMOVED = 'super_admin.removed',
 }
 
 export interface AuthEventInput {

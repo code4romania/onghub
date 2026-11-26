@@ -52,6 +52,11 @@ export class AuthConfigService implements JwtOptionsFactory {
     return +(this.configService.get('REFRESH_TTL_DAYS_WEB') || 7);
   }
 
+  /** Super admins: a shorter session with a fixed end (plan 5.5). */
+  get superAdminSessionHours(): number {
+    return +(this.configService.get('SUPER_ADMIN_SESSION_HOURS') || 12);
+  }
+
   /** HMAC key for emailed secrets; also the root of secret-box keys. */
   get authTokenKey(): Buffer {
     const raw = this.configService.get<string>('AUTH_TOKEN_KEY');

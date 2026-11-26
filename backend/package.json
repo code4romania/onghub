@@ -31,7 +31,8 @@
     "oidc:register-client": "node dist/commands/oidc-register-client.js",
     "oidc:export-orgs": "node dist/commands/oidc-export-orgs.js",
     "oidc:generate-keys": "node dist/commands/oidc-generate-keys.js",
-    "auth:migrate": "node dist/commands/auth-migrate.js"
+    "auth:migrate": "node dist/commands/auth-migrate.js",
+    "auth:super-admin": "node dist/commands/auth-super-admin.js"
   },
   "dependencies": {
     "@anchan828/typeorm-history": "1.0.29",

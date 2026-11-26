@@ -19,6 +19,7 @@ import { UserLoginLifecycle } from './services/user-login-lifecycle.service';
  * Own passwordless auth services (O5), ported from VIC 2.0 without realms.
  * Inert until JWT_PRIVATE_KEY / JWT_PUBLIC_KEY / AUTH_TOKEN_KEY are set.
  */
+import { SuperAdminService } from './services/super-admin.service';
 @Module({
   imports: [
     AuthPersistenceModule,
@@ -42,6 +43,7 @@ import { UserLoginLifecycle } from './services/user-login-lifecycle.service';
     UserLoginLifecycle,
     AuthMigrationService,
     AuthTransitionProcessor,
+    SuperAdminService,
   ],
   exports: [
     AuthConfigService,
@@ -52,6 +54,7 @@ import { UserLoginLifecycle } from './services/user-login-lifecycle.service';
     AuthMailerService,
     UserLoginLifecycle,
     AuthMigrationService,
+    SuperAdminService,
   ],
 })
 export class OwnAuthModule {}

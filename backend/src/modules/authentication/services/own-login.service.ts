@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { UserStatus } from 'src/modules/user/enums/user-status.enum';
 import { User } from 'src/modules/user/entities/user.entity';
+import { Role } from 'src/modules/user/enums/role.enum';
 import { AuthTokenType } from '../enums/auth.enums';
 import { AuthErrorCode, AuthException } from '../exceptions/auth.exception';
 import { LoginState } from '../models/auth-identity.model';
@@ -273,6 +274,7 @@ export class OwnLoginService {
         state.identity,
         client,
         manager,
+        { superAdmin: state.role === Role.SUPER_ADMIN },
       );
       await this.events.record({
         type: AuthEventType.LOGIN_SUCCEEDED,
