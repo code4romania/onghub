@@ -858,17 +858,21 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
       'http://localhost:5173/login/ngohub/callback',
     );
     expect(auth.status).toBe(400);
-    expect(auth.body).toEqual({ error: 'invalid_redirect_uri' });
+    // A page for the person in the browser: the code, never the request's parameters.
+    expect(auth.headers['content-type']).toMatch(/text\/html/);
+    expect(auth.text).toContain('<code>invalid_redirect_uri</code>');
+    expect(auth.text).not.toContain('localhost:5173');
   });
 
   it('unknown or disabled clients are refused', async () => {
-    expect((await authorize('x@ong.ro', 'nope')).auth.body).toEqual({
-      error: 'invalid_client',
-    });
+    const unknown = (await authorize('x@ong.ro', 'nope')).auth;
+    expect(unknown.status).toBe(400);
+    expect(unknown.text).toContain('<code>invalid_client</code>');
+    expect(unknown.text).not.toContain('nope');
     await ds.query(`UPDATE oidc_client SET status = 'disabled'`);
-    expect((await authorize('x@ong.ro')).auth.body).toEqual({
-      error: 'invalid_client',
-    });
+    expect((await authorize('x@ong.ro')).auth.text).toContain(
+      '<code>invalid_client</code>',
+    );
   });
 
   it('the client secret is stored sealed, never in clear', async () => {

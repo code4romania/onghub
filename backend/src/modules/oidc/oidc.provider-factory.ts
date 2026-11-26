@@ -223,10 +223,19 @@ export function buildOidcConfiguration(
       return grant;
     },
 
-    // Never echo request parameters back.
+    // Errors a person sees in the browser (a bad redirect_uri, an unknown
+    // client): fixed text and the error code only, never request parameters.
     async renderError(ctx, out) {
-      ctx.type = 'application/json';
-      ctx.body = { error: out.error };
+      const code = String(out.error ?? 'server_error').replace(/[^a-z_]/gi, '');
+      ctx.type = 'html';
+      ctx.body =
+        '<!doctype html><html lang="ro"><head><meta charset="utf-8">' +
+        '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+        '<title>NGO Hub</title></head><body>' +
+        '<h1>Cererea de autentificare nu poate fi procesată</h1>' +
+        '<p>Aplicația care v-a trimis aici a făcut o cerere greșită. Reveniți în aplicație și ' +
+        'încercați din nou; dacă problema continuă, contactați echipa aplicației.</p>' +
+        `<p>Cod: <code>${code}</code></p></body></html>`;
     },
   };
 }
