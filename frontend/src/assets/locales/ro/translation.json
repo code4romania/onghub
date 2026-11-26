@@ -1726,5 +1726,40 @@
       "cancel": "Anulează",
       "expired": "Cererea de autentificare a expirat. Întoarce-te în aplicație și încearcă din nou."
     }
+  },
+  "oidc_client": {
+    "title": "Autentificare cu NGO Hub (OIDC)",
+    "description": "Clientul OpenID Connect prin care aplicația își autentifică utilizatorii cu NGO Hub. Un singur client per aplicație.",
+    "fields": {
+      "client_id": "Client ID",
+      "redirect_uris": "URI-uri de redirect",
+      "post_logout_uris": "URI-uri după deconectare (opțional)",
+      "scopes": "Scope-uri",
+      "first_party": "Aplicație proprie (fără ecran de consimțământ)",
+      "status": "Stare"
+    },
+    "hints": {
+      "client_id": "Litere mici, cifre și cratime, de ex. vic. Nu se mai poate schimba.",
+      "uris": "Câte unul pe linie, exact cum le trimite aplicația. Doar https."
+    },
+    "create": "Creează clientul",
+    "secret": {
+      "title": "Secretul clientului",
+      "once": "Copiază-l acum în configurația aplicației. NGO Hub nu îl mai afișează niciodată.",
+      "done": "L-am copiat"
+    },
+    "rotate": {
+      "button": "Generează un secret nou",
+      "warning": "Secretul vechi nu va mai funcționa. Aplicația trebuie actualizată în același timp, altfel autentificarea cu NGO Hub se oprește.",
+      "confirm": "Da, generează",
+      "cancel": "Renunță"
+    },
+    "errors": {
+      "client_id": "Client ID: 3–64 caractere, litere mici, cifre și cratime.",
+      "redirect_required": "Adaugă cel puțin un URI de redirect.",
+      "generic": "Nu am putut salva clientul."
+    },
+    "yes": "Da",
+    "no": "Nu"
   }
 }

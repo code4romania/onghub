@@ -1660,5 +1660,40 @@
       "cancel": "Cancel",
       "expired": "This sign-in request expired. Go back to the app and try again."
     }
+  },
+  "oidc_client": {
+    "title": "Login with NGO Hub (OIDC)",
+    "description": "The OpenID Connect client the application uses to log its users in with NGO Hub. One client per application.",
+    "fields": {
+      "client_id": "Client ID",
+      "redirect_uris": "Redirect URIs",
+      "post_logout_uris": "Post-logout URIs (optional)",
+      "scopes": "Scopes",
+      "first_party": "Own application (no consent screen)",
+      "status": "Status"
+    },
+    "hints": {
+      "client_id": "Lower-case letters, digits and dashes, e.g. vic. It cannot be changed later.",
+      "uris": "One per line, exactly as the application sends them. https only."
+    },
+    "create": "Create the client",
+    "secret": {
+      "title": "Client secret",
+      "once": "Copy it into the application configuration now. NGO Hub never shows it again.",
+      "done": "I copied it"
+    },
+    "rotate": {
+      "button": "Generate a new secret",
+      "warning": "The old secret stops working. Update the application at the same time, otherwise login with NGO Hub stops.",
+      "confirm": "Yes, generate",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "client_id": "Client ID: 3–64 characters, lower-case letters, digits and dashes.",
+      "redirect_required": "Add at least one redirect URI.",
+      "generic": "Could not save the client."
+    },
+    "yes": "Yes",
+    "no": "No"
   }
 }

@@ -504,6 +504,140 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     ]);
   });
 
+  describe('super admin: the OIDC client of an application (O15)', () => {
+    const tokenFor = async (email: string, role: string): Promise<string> => {
+      await ds.query(
+        `INSERT INTO "user" (name, email, phone, role, status) VALUES ('Super', $1, '+40700000099', $2, 'active')`,
+        [email, role],
+      );
+      const agent = request.agent(testApp.app.getHttpServer());
+      await agent
+        .post('/auth/web/login/request')
+        .set('X-Forwarded-For', ip())
+        .send({ email })
+        .expect(200);
+      const { body } = await agent
+        .post('/auth/login-link')
+        .set('X-Forwarded-For', ip())
+        .send({ token: linkFrom(testApp.mailbox.last(email)) })
+        .expect(200);
+      return body.accessToken;
+    };
+    const application = async (): Promise<number> =>
+      (
+        await ds.query(
+          `INSERT INTO application (name, type, short_description, description, website)
+           VALUES ('VIC', 'independent', 'scurt', 'lung', 'https://vic.test') RETURNING id`,
+        )
+      )[0].id;
+    const api = (token: string) => {
+      const server = testApp.app.getHttpServer();
+      return {
+        get: (url: string) =>
+          request(server)
+            .get(url)
+            .set('X-Forwarded-For', ip())
+            .set('Authorization', `Bearer ${token}`),
+        post: (url: string) =>
+          request(server)
+            .post(url)
+            .set('X-Forwarded-For', ip())
+            .set('Authorization', `Bearer ${token}`),
+      };
+    };
+    const body = {
+      clientId: 'vic-app',
+      redirectUris: [REDIRECT],
+      scopes: ['openid', 'email', 'profile', 'organization'],
+      firstParty: true,
+    };
+
+    beforeEach(async () => {
+      await truncate(ds, ['application']);
+    });
+
+    it('creates the client once and shows its secret once; the secret works; rotating replaces it', async () => {
+      const id = await application();
+      const sa = api(await tokenFor('super@ngohub.ro', 'super-admin'));
+
+      expect(
+        (await sa.get(`/application/${id}/oidc-client`).expect(200)).body,
+      ).toEqual({ client: null });
+
+      const created = await sa
+        .post(`/application/${id}/oidc-client`)
+        .send(body)
+        .expect(201);
+      expect(created.body.clientId).toBe('vic-app');
+      expect(created.body.clientSecret).toMatch(/^[\w-]{43}$/);
+
+      const shown = await sa.get(`/application/${id}/oidc-client`).expect(200);
+      expect(shown.body.client).toMatchObject({
+        clientId: 'vic-app',
+        redirectUris: [REDIRECT],
+        scopes: body.scopes,
+        firstParty: true,
+        status: 'active',
+      });
+      expect(JSON.stringify(shown.body)).not.toContain(
+        created.body.clientSecret,
+      );
+
+      await sa.post(`/application/${id}/oidc-client`).send(body).expect(409);
+
+      const rotated = await sa
+        .post(`/application/${id}/oidc-client/rotate-secret`)
+        .expect(201);
+      expect(rotated.body.clientSecret).not.toBe(created.body.clientSecret);
+
+      // The new secret is the one the token endpoint accepts.
+      await seedUser('ana@ong.ro');
+      const flow = await authorize('ana@ong.ro', 'vic-app');
+      const uid = new URL(flow.auth.headers.location).pathname.split('/').pop();
+      const back = await loginAndConsent(flow.agent, uid, 'ana@ong.ro');
+      const code = new URL(back.headers.location).searchParams.get('code');
+      await exchange(flow.agent, code, flow.verifier, created.body.clientSecret)
+        .auth('vic-app', created.body.clientSecret)
+        .expect(401);
+      testApp.mailbox.clear();
+      await testApp.flushRedis();
+      const flow2 = await authorize('ana@ong.ro', 'vic-app');
+      const uid2 = new URL(flow2.auth.headers.location).pathname
+        .split('/')
+        .pop();
+      const back2 = await loginAndConsent(flow2.agent, uid2, 'ana@ong.ro');
+      const code2 = new URL(back2.headers.location).searchParams.get('code');
+      await exchange(flow2.agent, code2, flow2.verifier)
+        .auth('vic-app', rotated.body.clientSecret)
+        .expect(200);
+    });
+
+    it('refuses invalid redirect URIs, unknown scopes, missing applications and non super admins', async () => {
+      const id = await application();
+      const sa = api(await tokenFor('super@ngohub.ro', 'super-admin'));
+
+      for (const uri of [
+        'http://vic.test/cb',
+        'https://vic.test/cb#x',
+        'not a url',
+      ]) {
+        await sa
+          .post(`/application/${id}/oidc-client`)
+          .send({ ...body, redirectUris: [uri] })
+          .expect(400);
+      }
+      await sa
+        .post(`/application/${id}/oidc-client`)
+        .send({ ...body, scopes: ['openid', 'offline_access'] })
+        .expect(400);
+      await sa.get(`/application/999999/oidc-client`).expect(404);
+
+      const admin = api(await tokenFor('admin@ong.ro', 'admin'));
+      await admin.get(`/application/${id}/oidc-client`).expect(403);
+      await admin.post(`/application/${id}/oidc-client`).send(body).expect(403);
+    });
+  });
+
   it('cleanup removes expired OIDC rows and old ended tokens, keeps live ones', async () => {
     await ds.query(
       `INSERT INTO oidc_payload (kind, id, payload, expires_at) VALUES

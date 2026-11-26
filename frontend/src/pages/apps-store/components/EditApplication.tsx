@@ -11,6 +11,7 @@ import {
 } from '../../../services/application/Application.queries';
 import { CreateApplicationDto } from '../../../services/application/interfaces/Application.dto';
 import ApplicationForm from './ApplicationForm';
+import OidcClientPanel from './OidcClientPanel';
 import { useTranslation } from 'react-i18next';
 import { PullingTypeOptions } from './AddApplicationConfig';
 import { mapNameToSelect } from '../../../common/helpers/format.helper';
@@ -122,6 +123,7 @@ const EditApplication = () => {
           clearErrors={clearErrors}
         />
       </div>
+      <OidcClientPanel applicationId={id as string} />
     </ContentWrapper>
   );
 };

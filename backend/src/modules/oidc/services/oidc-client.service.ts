@@ -29,6 +29,17 @@ export interface CreateOidcClientInput {
   createdById?: number;
 }
 
+export interface OidcClientSummary {
+  clientId: string;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
+  scopes: string[];
+  firstParty: boolean;
+  status: OidcClientStatus;
+  createdOn: Date;
+  updatedOn: Date;
+}
+
 /** Client metadata as oidc-provider expects it (snake_case). */
 export type ProviderClientMetadata = Record<string, unknown>;
 
@@ -88,6 +99,26 @@ export class OidcClientService {
       grant_types: ['authorization_code'],
       response_types: ['code'],
       first_party: client.firstParty,
+    };
+  }
+
+  /** The client of an application, for the super-admin page; never the secret. */
+  async findByApplication(
+    applicationId: number,
+  ): Promise<OidcClientSummary | null> {
+    const client = await this.repository().findOne({
+      where: { applicationId },
+    });
+    if (!client) return null;
+    return {
+      clientId: client.clientId,
+      redirectUris: client.redirectUris,
+      postLogoutRedirectUris: client.postLogoutRedirectUris,
+      scopes: client.allowedScopes,
+      firstParty: client.firstParty,
+      status: client.status,
+      createdOn: client.createdOn,
+      updatedOn: client.updatedOn,
     };
   }
 

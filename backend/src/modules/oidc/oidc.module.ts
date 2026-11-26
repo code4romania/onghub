@@ -14,6 +14,7 @@ import {
 import { OidcOptions, oidcOptionsFromEnv } from './oidc.options';
 import { OidcAccountSource } from './oidc-account-source.interface';
 import { createOidcProvider } from './oidc.provider-factory';
+import { OidcClientController } from './controllers/oidc-client.controller';
 import { OidcClientService } from './services/oidc-client.service';
 import { createPgAdapter } from './services/oidc-pg.adapter';
 import { OidcCleanupService } from './services/oidc-cleanup.service';
@@ -40,7 +41,10 @@ export class OidcModule {
     return {
       module: OidcModule,
       imports: config.imports ?? [],
-      controllers: [InteractionController],
+      controllers: [
+        InteractionController,
+        ...(persistence ? [OidcClientController] : []),
+      ],
       providers: [
         config.accountSource,
         ...(persistence ? [OidcClientService, OidcCleanupService] : []),
