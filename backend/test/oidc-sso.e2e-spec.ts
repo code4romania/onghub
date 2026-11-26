@@ -447,6 +447,125 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     );
   });
 
+  it('silent SSO survives a revoked grant and asks for no consent when more scopes are requested', async () => {
+    await seedUser('grant@ong.ro');
+    const { agent, verifier, auth } = await authorize(
+      'grant@ong.ro',
+      'vic',
+      REDIRECT,
+      'openid',
+    );
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const resumed = await loginAndConsent(agent, uid, 'grant@ong.ro');
+    const code = new URL(resumed.headers.location).searchParams.get('code');
+    await exchange(agent, code, verifier).expect(200);
+    // Replaying the code revokes the grant; the OIDC session still remembers its id.
+    await exchange(agent, code, verifier).expect(400);
+
+    const again = async (scope: string) => {
+      const v = b64url(randomBytes(32));
+      const res = await agent
+        .get('/oidc/auth')
+        .set('X-Forwarded-For', ip())
+        .query({
+          client_id: 'vic',
+          redirect_uri: REDIRECT,
+          response_type: 'code',
+          scope,
+          state: 's3',
+          nonce: 'n3',
+          code_challenge: b64url(createHash('sha256').update(v).digest()),
+          code_challenge_method: 'S256',
+        });
+      // A first-party client never lands on a consent step NGO Hub cannot show.
+      expect(res.headers.location).toMatch(
+        /^https:\/\/vic\.test\/login\/ngohub\/callback\?/,
+      );
+      return {
+        code: new URL(res.headers.location).searchParams.get('code'),
+        v,
+      };
+    };
+
+    await again('openid');
+    const wider = await again('openid email organization');
+    const token = await exchange(agent, wider.code, wider.v).expect(200);
+    const me = await request(testApp.app.getHttpServer())
+      .get('/oidc/me')
+      .set('Authorization', `Bearer ${token.body.access_token}`)
+      .expect(200);
+    expect(me.body.email).toBe('grant@ong.ro');
+  });
+
+  it('prompt=consent from a first-party client is finished by the logged-in user, only that user', async () => {
+    await seedUser('consent@ong.ro');
+    await seedUser('other@ong.ro');
+    const first = await authorize('consent@ong.ro');
+    const firstUid = new URL(first.auth.headers.location).pathname
+      .split('/')
+      .pop();
+    await loginAndConsent(first.agent, firstUid, 'consent@ong.ro');
+    const agent = first.agent;
+
+    const auth = await agent
+      .get('/oidc/auth')
+      .set('X-Forwarded-For', ip())
+      .query({
+        client_id: 'vic',
+        redirect_uri: REDIRECT,
+        response_type: 'code',
+        scope: 'openid email',
+        state: 's4',
+        prompt: 'consent',
+        code_challenge: b64url(
+          createHash('sha256').update('w'.repeat(43)).digest(),
+        ),
+        code_challenge_method: 'S256',
+      });
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const details = await agent.get(`/interaction/${uid}`).expect(200);
+    expect(details.body.prompt).toBe('consent');
+
+    const bearerFor = async (email: string) => {
+      const other = request.agent(testApp.app.getHttpServer());
+      await other
+        .post('/auth/web/login/request')
+        .set('X-Forwarded-For', ip())
+        .send({ email })
+        .expect(200);
+      const { body } = await other
+        .post('/auth/login-link')
+        .set('X-Forwarded-For', ip())
+        .send({ token: linkFrom(testApp.mailbox.last(email)) })
+        .expect(200);
+      return body.accessToken as string;
+    };
+
+    // Another NGO Hub account cannot finish the consent of this browser's OIDC session.
+    await agent
+      .post(`/interaction/${uid}/login`)
+      .set('X-Forwarded-For', ip())
+      .set('Authorization', `Bearer ${await bearerFor('other@ong.ro')}`)
+      .expect(403);
+
+    // The session's own user, from this browser's NGO Hub session.
+    const refreshed = await agent
+      .post('/auth/web/refresh')
+      .set('X-Forwarded-For', ip())
+      .expect(200);
+    const done = await agent
+      .post(`/interaction/${uid}/login`)
+      .set('X-Forwarded-For', ip())
+      .set('Authorization', `Bearer ${refreshed.body.accessToken}`)
+      .expect(200);
+    const resumed = await agent
+      .get(pathOf(done.body.redirectTo))
+      .set('X-Forwarded-For', ip());
+    expect(
+      new URL(resumed.headers.location).searchParams.get('code'),
+    ).toBeTruthy();
+  });
+
   it('client-initiated logout: our confirm page with a session; CSP-allowed auto-submit without', async () => {
     await seedUser('out@ong.ro');
     const { agent, auth } = await authorize('out@ong.ro');

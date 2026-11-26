@@ -191,24 +191,35 @@ export function buildOidcConfiguration(
     },
 
     // First-party clients skip consent: grant exactly the requested scopes
-    // (the library already dropped those not in the client's `scope`).
+    // (the library already dropped those not in the client's `scope`). The
+    // grant the session remembers may be gone (revoked by a code replay or a
+    // client logout), belong to another account, or lack scopes asked for now:
+    // NGO Hub has no consent screen, so it is replaced or widened, never
+    // turned into a consent prompt (found by the OpenID conformance suite).
     async loadExistingGrant(ctx: KoaContextWithOIDC) {
       const { client, session, provider } = ctx.oidc;
       const grantId =
         ctx.oidc.result?.consent?.grantId ||
         session.grantIdFor(client.clientId);
-      if (grantId) {
-        return provider.Grant.find(grantId);
-      }
+      const existing = grantId ? await provider.Grant.find(grantId) : undefined;
       if (!client['first_party']) {
-        return undefined;
+        return existing;
       }
-      const grant = new provider.Grant({
-        clientId: client.clientId,
-        accountId: session.accountId,
-      });
-      grant.addOIDCScope([...ctx.oidc.requestParamScopes].join(' '));
-      await grant.save();
+      const grant =
+        existing &&
+        existing.accountId === session.accountId &&
+        existing.clientId === client.clientId
+          ? existing
+          : new provider.Grant({
+              clientId: client.clientId,
+              accountId: session.accountId,
+            });
+      const requested = [...ctx.oidc.requestParamScopes];
+      const granted = new Set((grant.getOIDCScope() || '').split(' '));
+      if (grant !== existing || requested.some((s) => !granted.has(s))) {
+        grant.addOIDCScope(requested.join(' '));
+        await grant.save();
+      }
       return grant;
     },
 

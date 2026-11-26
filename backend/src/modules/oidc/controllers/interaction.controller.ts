@@ -109,6 +109,9 @@ export class InteractionController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const details = await this.load(uid, req, res);
+    if (details.prompt.name === 'consent') {
+      return this.finishFirstPartyConsent(details, userId, req, res);
+    }
     if (details.prompt.name !== 'login') {
       throw new BadRequestException('Unexpected prompt');
     }
@@ -177,6 +180,46 @@ export class InteractionController {
   private get oidc(): Provider {
     if (!this.provider) throw new NotFoundException();
     return this.provider;
+  }
+
+  /**
+   * A consent step reaches NGO Hub only when a client asks for it
+   * (prompt=consent). First-party clients have no consent screen: the user
+   * the OIDC session belongs to finishes it, with the requested scopes.
+   * Third-party consent is not supported.
+   */
+  private async finishFirstPartyConsent(
+    details: Awaited<ReturnType<Provider['interactionDetails']>>,
+    userId: number,
+    req: Request,
+    res: Response,
+  ) {
+    const provider = this.oidc;
+    const clientId = String(details.params.client_id ?? '');
+    const client = await provider.Client.find(clientId);
+    if (!client?.['first_party']) {
+      throw new BadRequestException('Unexpected prompt');
+    }
+    const accountId = details.session?.accountId;
+    if (!accountId || accountId !== String(userId)) {
+      throw new ForbiddenException('Another account owns this session');
+    }
+    const existing = details.grantId
+      ? await provider.Grant.find(details.grantId)
+      : undefined;
+    const grant =
+      existing && existing.accountId === accountId
+        ? existing
+        : new provider.Grant({ accountId, clientId });
+    grant.addOIDCScope(String(details.params.scope ?? 'openid'));
+    const grantId = await grant.save();
+    const redirectTo = await provider.interactionResult(
+      req,
+      res,
+      { consent: { grantId } },
+      { mergeWithLastSubmission: true },
+    );
+    return { redirectTo };
   }
 
   private async load(uid: string, req: Request, res: Response) {
