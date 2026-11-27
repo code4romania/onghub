@@ -1,4 +1,4 @@
-import { parseArgs } from './auth-super-admin';
+import { parseArgs } from './auth-super-admin.args';
 
 describe('auth:super-admin arguments', () => {
   it('lists without arguments, adds with a name, removes by email', () => {

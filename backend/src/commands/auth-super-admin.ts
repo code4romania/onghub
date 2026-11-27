@@ -12,28 +12,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { SuperAdminService } from '../modules/authentication/services/super-admin.service';
-
-export function parseArgs(argv: string[]): {
-  add?: string;
-  remove?: string;
-  name?: string;
-  phone?: string;
-} {
-  const known = ['--add', '--remove', '--name', '--phone'];
-  const out: Record<string, string> = {};
-  for (let i = 0; i < argv.length; i += 2) {
-    const flag = argv[i];
-    const value = argv[i + 1];
-    if (!known.includes(flag)) throw new Error(`Unknown argument ${flag}`);
-    if (value === undefined || value.startsWith('--')) {
-      throw new Error(`${flag} needs a value`);
-    }
-    out[flag.slice(2)] = value;
-  }
-  if (out.add && out.remove) throw new Error('--add or --remove, not both');
-  if (out.add && !out.name) throw new Error('--add needs --name');
-  return out;
-}
+import { parseArgs } from './auth-super-admin.args';
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
