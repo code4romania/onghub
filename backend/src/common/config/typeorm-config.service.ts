@@ -12,6 +12,11 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
+    // Default (unset) keeps running migrations on boot. The e2e harness
+    // migrates from src itself and sets this to `false`.
+    const runMigrations =
+      this.configService.get('TYPEORM_MIGRATIONS_RUN') !== 'false';
+
     return {
       type: 'postgres',
       host: this.configService.get('DATABASE_HOST'),
@@ -19,9 +24,14 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get('DATABASE_USER'),
       password: this.configService.get('DATABASE_PASSWORD'),
       database: this.configService.get('DATABASE_NAME'),
-      migrations: ['dist/migrations/*.js'],
+      migrations: runMigrations ? ['dist/migrations/*.js'] : [],
       autoLoadEntities: true,
-      migrationsRun: true,
+      // uuid PKs default to gen_random_uuid() (built in since Postgres 13):
+      // no uuid-ossp extension needed. Auth tables are the first uuid columns.
+      uuidExtension: 'pgcrypto',
+      // Never CREATE EXTENSION at boot: gen_random_uuid() is built in (Postgres >= 13).
+      installExtensions: false,
+      migrationsRun: runMigrations,
       synchronize: false, // never set it to TRUE in production
       subscribers: [
         OrganizationHistorySubscriber,

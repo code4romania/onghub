@@ -301,8 +301,13 @@ export class OrganizationRequestService {
       });
     }
 
-    // 3. Create the ADMIN user
-    await this.userService.createAdmin({ email, phone, name, organizationId });
+    // 3. Create the ADMIN user. With own auth the approval email below
+    //    carries the first-login link, so no separate invitation is sent.
+    const admin = await this.userService.createAdmin(
+      { email, phone, name, organizationId },
+      { invite: false },
+    );
+    const firstLogin = await this.userService.issueFirstLogin(admin);
     // 2. Update organization status from PENDING to ACTIVE
     await this.organizationService.activate(organizationId);
     // 4. Update the request status
@@ -310,7 +315,7 @@ export class OrganizationRequestService {
     // 5. Send email with approval
     this.eventEmitter.emit(
       EVENTS.APPROVE_ORGANIZATION_REQUEST,
-      new ApproveOngRequestEvent(email),
+      new ApproveOngRequestEvent(email, firstLogin?.loginUrl, firstLogin?.code),
     );
 
     return this.find(requestId);

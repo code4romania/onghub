@@ -23,6 +23,9 @@ export const dataSource = new DataSource({
   migrations: ['dist/migrations/*.js'],
   migrationsRun: true,
   synchronize: false, // never set it to TRUE in production
+  uuidExtension: 'pgcrypto',
+  // Never CREATE EXTENSION at boot: gen_random_uuid() is built in (Postgres >= 13).
+  installExtensions: false,
   ssl:
     process.env.NODE_ENV === 'local' // enable SSL for REMOTE deployment, and disable for local to let migrations work
       ? false

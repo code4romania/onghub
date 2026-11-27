@@ -11,6 +11,7 @@ import ConfirmationModal from '../../components/confim-removal-modal/Confirmatio
 import { useTranslation } from 'react-i18next';
 import { UserRole } from '../users/enums/UserRole.enum';
 import { getCurrentUser, updatePassword } from 'aws-amplify/auth';
+import { OWN_AUTH } from '../../common/auth/auth-mode';
 
 const Account = () => {
   const [readonly, setReadonly] = useState(true);
@@ -94,6 +95,8 @@ const Account = () => {
           <span className="font-titilliumBold sm:text-lg lg:text-xl text-md text-gray-800 flex items-center">
             {t('settings')}
           </span>
+          {/* No password with NGO Hub's own login (link + code). */}
+          {!OWN_AUTH && (
           <div className="flex gap-4">
             {!readonly && (
               <button
@@ -121,6 +124,7 @@ const Account = () => {
               {readonly ? t('change_password') : t('save', { ns: 'common' })}
             </button>
           </div>
+          )}
         </div>
 
         <div className="w-full border-t border-gray-300" />

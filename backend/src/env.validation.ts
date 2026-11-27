@@ -69,6 +69,63 @@ class EnvironmentVariables {
   AWS_SECRET_ACCESS_KEY: string;
   @IsString()
   AWS_S3_BUCKET_NAME: string;
+  @IsOptional()
+  @IsString()
+  AWS_REGION?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  TRUST_PROXY_HOPS?: string;
+
+  @IsOptional()
+  @IsString()
+  BULL_PREFIX?: string;
+
+  @IsOptional()
+  @IsString()
+  TYPEORM_MIGRATIONS_RUN?: string;
+
+  // Own auth (O5). All optional until the cutover; see AuthConfigService.enabled.
+  @IsOptional()
+  @IsString()
+  JWT_PRIVATE_KEY?: string;
+  @IsOptional()
+  @IsString()
+  JWT_PUBLIC_KEY?: string;
+  @IsOptional()
+  @IsString()
+  JWT_KEY_ID?: string;
+  @IsOptional()
+  @IsNumberString()
+  JWT_ACCESS_TTL_SECONDS?: string;
+  @IsOptional()
+  @IsNumberString()
+  REFRESH_TTL_DAYS_WEB?: string;
+
+  @IsOptional()
+  @IsNumberString()
+  SUPER_ADMIN_SESSION_HOURS?: string;
+  @IsOptional()
+  @IsString()
+  AUTH_TOKEN_KEY?: string;
+  @IsOptional()
+  @IsString()
+  WEB_APP_URL?: string;
+  @IsOptional()
+  @IsString()
+  CORS_ORIGINS?: string;
+  @IsOptional()
+  @IsString()
+  REDIS_KEY_PREFIX?: string;
+  @IsOptional()
+  @IsString()
+  MAIL_ALLOWLIST?: string;
+  @IsOptional()
+  @IsString()
+  AUTH_TOKEN_KEY_PREVIOUS?: string;
+  @IsOptional()
+  @IsString()
+  OIDC_ALLOW_LOCALHOST_REDIRECTS?: string;
 
   @IsString()
   MAIL_HOST;

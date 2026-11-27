@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="ro">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
@@ -67,6 +69,9 @@
     <div id="content">
       <h1>{{title}}</h1>
       <p class="p1">{{{subtitle}}}</p>
+      {{#if code}}
+      <p class="code" style="font-size: 32px; letter-spacing: 8px; font-weight: bold;">{{code}}</p>
+      {{/if}}
       {{#if cta}}
       <a href={{cta.link}} target="_blank">
         <button type="button">{{cta.label}}</button>
@@ -79,3 +84,4 @@
     {{> footer}}
   </div>
 </body>
+</html>

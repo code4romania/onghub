@@ -14,6 +14,8 @@ export const AuthContext = createContext({
     }>
   >,
   logout: () => null,
+  /** Own auth: load session + profile after a login (no-op promise by default). */
+  reloadSession: (() => Promise.resolve()) as () => Promise<void>,
 });
 
 export function useAuthContext() {

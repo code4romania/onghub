@@ -1,18 +1,19 @@
-FROM --platform=linux/amd64 node:16.15.1-alpine As development
+# Node >= 22.12 is required: oidc-provider 9 / jose 6 are ESM-only and are
+# loaded from this CommonJS app via require(esm). Keep in sync with
+# package.json "engines" and .nvmrc.
+FROM --platform=linux/amd64 node:22.17.0-alpine AS development
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-# Install rimraf to allow 'nestjs build' remove the dist 
-RUN npm install rimraf 
-RUN npm install --only=development
+RUN npm ci
 
 COPY . .
 
 RUN npm run build
 
-FROM --platform=linux/amd64 node:16.15.1-alpine as production
+FROM --platform=linux/amd64 node:22.17.0-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -26,7 +27,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm ci --omit=dev
 
 COPY --from=development /usr/src/app/dist ./dist
 

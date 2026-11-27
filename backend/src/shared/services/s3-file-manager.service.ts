@@ -32,10 +32,18 @@ export class S3FileManagerService {
   private readonly s3 = new AWS.S3({
     accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
     secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-    region: this.configService.get('COGNITO_REGION'),
+    region: this.region,
   });
 
   constructor(private configService: ConfigService) {}
+
+  // AWS_REGION first: COGNITO_REGION goes away with Cognito (O16).
+  private get region(): string {
+    return (
+      this.configService.get('AWS_REGION') ??
+      this.configService.get('COGNITO_REGION')
+    );
+  }
 
   public async generatePresignedURL(fileName: string): Promise<string> {
     return this.s3.getSignedUrlPromise('getObject', {
@@ -48,9 +56,7 @@ export class S3FileManagerService {
   public async getFileURL(fileName: string): Promise<string> {
     return `https://${this.configService.get(
       'AWS_S3_BUCKET_NAME',
-    )}.s3.${this.configService.get(
-      'COGNITO_REGION',
-    )}.amazonaws.com/${fileName}`;
+    )}.s3.${this.region}.amazonaws.com/${fileName}`;
   }
 
   // TODO: look over this function again, find a better way to validate the files

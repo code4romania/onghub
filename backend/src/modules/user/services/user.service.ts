@@ -25,6 +25,7 @@ import { Role } from '../enums/role.enum';
 import { UserStatus } from '../enums/user-status.enum';
 import { UserRepository } from '../repositories/user.repository';
 import { CognitoUserService } from './cognito.service';
+import { UserLoginLifecycle } from 'src/modules/authentication/services/user-login-lifecycle.service';
 import { USER_ERRORS } from '../constants/user-error.constants';
 import { Pagination } from 'src/common/interfaces/pagination';
 import { UserOngApplicationService } from 'src/modules/application/services/user-ong-application.service';
@@ -48,17 +49,32 @@ export class UserService {
     private readonly cognitoService: CognitoUserService,
     private readonly organizationService: OrganizationService,
     private readonly userOngApplicationService: UserOngApplicationService,
+    // Own auth (O7): used instead of Cognito once JWT/AUTH keys are configured.
+    private readonly userLogin: UserLoginLifecycle,
   ) {}
 
   // ****************************************************
   // ***************** PUBLIC METHODS ******************
   // ****************************************************
 
-  public async createAdmin(createUserDto: CreateUserDto) {
-    return this.create({
-      ...createUserDto,
-      role: Role.ADMIN,
-    });
+  /**
+   * `invite: false` when the caller sends the first-login link itself (the
+   * organization-approval email). Only meaningful with own auth; Cognito
+   * always sends its own invitation.
+   */
+  public async createAdmin(
+    createUserDto: CreateUserDto,
+    options: { invite?: boolean } = {},
+  ) {
+    return this.create({ ...createUserDto, role: Role.ADMIN }, options);
+  }
+
+  /** Own auth only: an invitation without its own email (null with Cognito). */
+  public async issueFirstLogin(
+    user: User,
+  ): Promise<{ loginUrl: string; code: string } | null> {
+    if (!this.userLogin.enabled) return null;
+    return this.userLogin.invite(user, { sendEmail: false });
   }
 
   public async createEmployee(createUserDto: CreateUserDto) {
@@ -134,12 +150,14 @@ export class UserService {
       // 2. Check if the user exists
       const user = await this.getById(id, organizationId);
 
-      // 3. Update cognito user data
-      await this.cognitoService.updateUser(user.email, {
-        phone: user.phone,
-        name: user.name,
-        ...userData,
-      });
+      // 3. Update cognito user data (own auth keeps everything in the DB)
+      if (!this.userLogin.enabled) {
+        await this.cognitoService.updateUser(user.email, {
+          phone: user.phone,
+          name: user.name,
+          ...userData,
+        });
+      }
 
       // 3. Remove current user applications
       await this.userOngApplicationService.remove({ where: { userId: id } });
@@ -235,16 +253,26 @@ export class UserService {
     }
 
     try {
+      // Guard: TypeORM 0.3.20 drops undefined/null keys from `where`, so a
+      // missing id would match (and delete) every row.
+      if (!user?.id) {
+        throw new Error('Cannot remove a user without an id');
+      }
       // 1. Remove all associated apps with the user
-      this.userOngApplicationService.remove({
+      await this.userOngApplicationService.remove({
         where: { userId: user.id },
       });
-      // 2. Remove the user from the DB
+      // 2. Remove the user from the DB (by id: cognitoId can be null)
       await this.userRepository.remove({
-        where: { cognitoId: user.cognitoId },
+        where: { id: user.id },
       });
-      // 3. Delete the user from Cognito
-      await this.cognitoService.deleteUser(user.cognitoId);
+      // 3. Own auth: identity, tokens and sessions cascade with the user row;
+      //    OIDC sessions/grants are removed explicitly. Otherwise Cognito.
+      if (this.userLogin.enabled) {
+        await this.userLogin.revokeAccess([user.id]);
+      } else {
+        await this.cognitoService.deleteUser(user.cognitoId);
+      }
       return user.cognitoId;
     } catch (error) {
       this.logger.error({
@@ -277,7 +305,11 @@ export class UserService {
           { id },
           { status: UserStatus.RESTRICTED },
         );
-        await this.cognitoService.globalSignOut(user.cognitoId);
+        if (this.userLogin.enabled) {
+          await this.userLogin.revokeAccess([user.id]);
+        } else {
+          await this.cognitoService.globalSignOut(user.cognitoId);
+        }
         updated.push(id);
       } catch (error) {
         this.logger.error({
@@ -312,8 +344,21 @@ export class UserService {
     return { updated, failed };
   }
 
-  async resendUserInvite(userId: number): Promise<void> {
-    const user = await this.getById(userId);
+  async resendUserInvite(
+    userId: number,
+    organizationId?: number,
+  ): Promise<void> {
+    // Admins may only resend invites inside their own organization
+    // (organizationId is undefined for super-admins).
+    const user = await this.getById(userId, organizationId);
+    if (this.userLogin.enabled) {
+      // Only someone who never logged in still needs an invitation.
+      if (user.status !== UserStatus.PENDING) {
+        throw new BadRequestException(USER_ERRORS.RESEND_INVITE_NOT_PENDING);
+      }
+      await this.userLogin.resendInvite(user);
+      return;
+    }
     await this.cognitoService.resendInvite(user.email);
 
     return;
@@ -364,7 +409,10 @@ export class UserService {
     return this.userRepository.update({ id }, updateUserDto);
   }
 
-  private async create(createUserDto: CreateUserDto): Promise<User> {
+  private async create(
+    createUserDto: CreateUserDto,
+    options: { invite?: boolean } = {},
+  ): Promise<User> {
     try {
       // 1. Check if user already exists with received data
       if (
@@ -383,6 +431,14 @@ export class UserService {
       await this.organizationService.findWithRelations(
         createUserDto.organizationId,
       );
+      // 3. Own auth: no Cognito user; the invitation is ours (link + code).
+      if (this.userLogin.enabled) {
+        const user = await this.userRepository.save({ ...createUserDto });
+        if (options.invite !== false) {
+          await this.userLogin.invite(user);
+        }
+        return user;
+      }
       // 3. Create user in Cognito
       const cognitoId = await this.createCognitoUser(createUserDto);
       // 4. Create user in database
