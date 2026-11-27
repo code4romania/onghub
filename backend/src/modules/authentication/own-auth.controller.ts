@@ -10,6 +10,7 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { Throttle } from '@nestjs/throttler';
 import { Request, Response } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
@@ -28,6 +29,8 @@ import { AuthErrorCode, AuthException } from './exceptions/auth.exception';
 import { OneTimeTokenService } from './services/one-time-token.service';
 import { OwnLoginService } from './services/own-login.service';
 import { SessionTokens } from './services/session.service';
+import { OIDC_PROVIDER } from '../oidc/oidc.constants';
+import { interactionClientName } from '../oidc/interaction-client-name';
 
 const AUTH_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
 
@@ -48,20 +51,35 @@ export class OwnAuthController {
     private readonly login: OwnLoginService,
     private readonly tokens: OneTimeTokenService,
     private readonly authConfig: AuthConfigService,
+    private readonly moduleRef: ModuleRef,
   ) {}
+
+  /** The OIDC provider when it runs (OidcModule registered and configured), else null. */
+  private oidcProvider(): unknown {
+    try {
+      return this.moduleRef.get(OIDC_PROVIDER, { strict: false }) ?? null;
+    } catch {
+      return null;
+    }
+  }
 
   @Throttle(AUTH_THROTTLE)
   @HttpCode(HttpStatus.OK)
   @Post('web/login/request')
   async requestLogin(
-    @Body() { email }: RequestLoginDto,
+    @Body() { email, interaction }: RequestLoginDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     this.assertEnabled();
     const nonce = this.tokens.newBrowserNonce();
     setLoginNonceCookie(res, nonce);
-    return this.login.requestLogin(email, nonce, undefined, req.ip);
+    // From a client app's login page (/interaction/:uid): the email names that app.
+    const clientName = await interactionClientName(
+      this.oidcProvider(),
+      interaction,
+    );
+    return this.login.requestLogin(email, nonce, clientName, req.ip);
   }
 
   @Throttle(AUTH_THROTTLE)

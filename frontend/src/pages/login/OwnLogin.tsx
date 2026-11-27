@@ -14,6 +14,8 @@ interface OwnLoginFormProps {
   /** Called after a successful login instead of navigating (the interaction page). */
   onLoggedIn?: () => void | Promise<void>;
   returnTo?: string;
+  /** The client app's pending login (/interaction/:uid): the email then names that app. */
+  interaction?: string;
 }
 
 /**
@@ -21,7 +23,7 @@ interface OwnLoginFormProps {
  * an httpOnly cookie the verification needs), which is why the interaction
  * page uses the code rather than the link.
  */
-export const OwnLoginForm = ({ onLoggedIn, returnTo }: OwnLoginFormProps) => {
+export const OwnLoginForm = ({ onLoggedIn, returnTo, interaction }: OwnLoginFormProps) => {
   const { t } = useTranslation('own_login');
   const navigate = useNavigate();
   const { reloadSession } = useAuthContext();
@@ -38,7 +40,7 @@ export const OwnLoginForm = ({ onLoggedIn, returnTo }: OwnLoginFormProps) => {
     if (!EMAIL.test(email.trim())) return setError(t('invalid_email'));
     setBusy(true);
     try {
-      const result = await requestLogin(email.trim());
+      const result = await requestLogin(email.trim(), interaction);
       setMaskedEmail(result.maskedEmail);
       setStep('code');
     } catch (err) {

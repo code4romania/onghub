@@ -98,7 +98,7 @@ const Interaction = () => {
         {state === 'login' && (
           <>
             <p className="text-center max-w-md">{t('interaction.login_first', { client })}</p>
-            <OwnLoginForm onLoggedIn={finish} />
+            <OwnLoginForm onLoggedIn={finish} interaction={uid} />
             <button className="underline" onClick={cancel}>
               {t('interaction.cancel')}
             </button>

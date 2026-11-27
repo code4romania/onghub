@@ -27,8 +27,13 @@ const keep = (session: SessionResponse): string => {
   return session.accessToken;
 };
 
-export const requestLogin = async (email: string): Promise<{ maskedEmail: string }> =>
-  (await AuthAPI.post('/auth/web/login/request', { email })).data;
+/** `interaction`: the client app's pending login, so the email names the app (resolved by the API). */
+export const requestLogin = async (
+  email: string,
+  interaction?: string,
+): Promise<{ maskedEmail: string }> =>
+  (await AuthAPI.post('/auth/web/login/request', interaction ? { email, interaction } : { email }))
+    .data;
 
 export const loginWithCode = async (email: string, code: string): Promise<string> =>
   keep((await AuthAPI.post('/auth/login-code', { email, code })).data);

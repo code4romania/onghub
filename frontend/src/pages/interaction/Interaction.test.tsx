@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../../common/config/i18n';
@@ -65,6 +65,18 @@ describe('Interaction page', () => {
 
     await waitFor(() => expect(assign).toHaveBeenCalledWith('https://id.test/oidc/auth/uid-1'));
     expect(mocked.finishInteraction).toHaveBeenCalledWith('uid-1', 'tok');
+  });
+
+  it('without a session: the code request carries the interaction, so the email names the app', async () => {
+    mocked.requestLogin.mockResolvedValue({ maskedEmail: 'a•••@ong.ro' });
+    renderPage(false);
+
+    fireEvent.change(await screen.findByLabelText('Adresa de e-mail'), {
+      target: { value: 'ana@ong.ro' },
+    });
+    fireEvent.submit(screen.getByLabelText('Adresa de e-mail').closest('form') as HTMLFormElement);
+
+    await waitFor(() => expect(mocked.requestLogin).toHaveBeenCalledWith('ana@ong.ro', 'uid-1'));
   });
 
   it('prompt=login: asks for the code login even with an NGO Hub session', async () => {

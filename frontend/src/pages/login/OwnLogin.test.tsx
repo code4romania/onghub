@@ -53,7 +53,7 @@ describe('OwnLoginForm', () => {
 
     await userEvent.type(screen.getByLabelText('Adresa de e-mail'), 'ana@ong.ro');
     await userEvent.click(screen.getByRole('button', { name: 'Trimite codul' }));
-    expect(mocked.requestLogin).toHaveBeenCalledWith('ana@ong.ro');
+    expect(mocked.requestLogin).toHaveBeenCalledWith('ana@ong.ro', undefined);
     expect(await screen.findByText(/a•••@ong\.ro/)).toBeInTheDocument();
 
     await userEvent.type(screen.getByLabelText('Codul din e-mail'), '12a3456');

@@ -133,6 +133,31 @@ describe('SSO with NGO Hub: own login + OIDC provider on Postgres (O10)', () => 
     }));
   });
 
+  it('the login email names the client app, read from the interaction on the server (5.2)', async () => {
+    await seedUser('ana@ong.ro');
+    const { agent, auth } = await authorize('ana@ong.ro');
+    const uid = new URL(auth.headers.location).pathname.split('/').pop();
+    const ask = (body: Record<string, string>) =>
+      agent
+        .post('/auth/web/login/request')
+        .set('X-Forwarded-For', ip())
+        .send({ email: 'ana@ong.ro', ...body });
+
+    // The client has no application here, so its name is its client_id.
+    await ask({ interaction: uid }).expect(200);
+    expect(testApp.mailbox.last('ana@ong.ro').context.title).toBe(
+      'Autentificare în vic prin NGO Hub',
+    );
+
+    // An interaction that does not exist names nothing; a malformed one is refused.
+    await testApp.flushRedis(); // the per-email limit (1/min)
+    await ask({ interaction: 'no-such-interaction' }).expect(200);
+    expect(testApp.mailbox.last('ana@ong.ro').context.title).toBe(
+      'Autentificare în NGO Hub',
+    );
+    await ask({ interaction: '<b>Bank</b>' }).expect(400);
+  });
+
   it('full flow: code + PKCE + secret, state in Postgres, userinfo with verified email', async () => {
     const userId = await seedUser('ana@ong.ro');
     const { agent, verifier, auth } = await authorize('ana@ong.ro');
